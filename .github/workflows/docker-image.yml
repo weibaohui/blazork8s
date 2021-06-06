@@ -14,8 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: show ENV
+      run: env
+    - name: show Docker version
+      run: docker version 
     - name: show Docker image
-      run: docker images 
+      run: docker images
     - name: Build server Docker image
       run: docker build . --file server/Dockerfile --tag blazork8s:server-$(date +%s)
     - name: Build ui Docker image
