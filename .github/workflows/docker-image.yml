@@ -14,6 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: show Docker image
+      run: docker images 
     - name: Build server Docker image
       run: docker build . --file server/Dockerfile --tag blazork8s:server-$(date +%s)
     - name: Build ui Docker image
