@@ -13,4 +13,8 @@
       <_ContentIncludedByDefault Remove="wwwroot\sample-data\weather.json" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Entity\Entity.csproj" />
+    </ItemGroup>
+
 </Project>

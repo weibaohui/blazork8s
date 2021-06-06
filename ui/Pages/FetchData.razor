@@ -1,4 +1,5 @@
 ﻿@page "/fetchdata"
+@using Entity
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
@@ -18,6 +19,7 @@ else
                 <th>Temp. (C)</th>
                 <th>Temp. (F)</th>
                 <th>Summary</th>
+                <th>X</th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +30,7 @@ else
                     <td>@forecast.TemperatureC</td>
                     <td>@forecast.TemperatureF</td>
                     <td>@forecast.Summary</td>
+                    <td>@forecast.X</td>
                 </tr>
             }
         </tbody>
@@ -42,14 +45,4 @@ else
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:4001/WeatherForecast");
     }
 
-    public class WeatherForecast
-    {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public string Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-    }
 }

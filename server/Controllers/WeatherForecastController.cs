@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -31,7 +31,8 @@ namespace server.Controllers
                 {
                     Date = DateTime.Now.AddDays(index),
                     TemperatureC = rng.Next(-5, 5),
-                    Summary = Summaries[rng.Next(Summaries.Length)]
+                    Summary = Summaries[rng.Next(Summaries.Length)],
+                    X="xx"
                 })
                 .ToArray();
         }
