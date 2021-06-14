@@ -35,8 +35,7 @@ namespace ui.Shared
         {
             await base.OnInitializedAsync();
 
-            // 模拟异步线程切换，正式代码中删除此行代码
-            await Task.Yield();
+           
 
             // 菜单获取可以通过数据库获取，此处为示例直接拼装的菜单集合
             TabItemTextDictionary = new()
