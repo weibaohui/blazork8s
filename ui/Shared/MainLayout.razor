@@ -1,17 +1,66 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<Layout Style="min-height: 100vh; ">
+    <Sider Collapsible Collapsed=@collapsed OnCollapse=@onCollapse>
+        <div class="logo" />
+        <Menu Theme="MenuTheme.Dark" DefaultSelectedKeys=@(new[]{"1"}) Mode="MenuMode.Inline">
+            <MenuItem Key="1"  >
+                <Icon Type="pie-chart" Theme="outline" />
+                <span> <a href="">Home</a></span>
+            </MenuItem>
+            <MenuItem Key="2" RouterLink="/counter" RouterMatch="NavLinkMatch.All">
+                <Icon Type="desktop" Theme="outline" />
+                <span class="menu";> <a href="counter">Counter</a></span>
+            </MenuItem>
+            <MenuItem Key="fetchdata" RouterLink="/fetchdata" RouterMatch="NavLinkMatch.All">
+                <Icon Type="file" Theme="outline" />
+                <span > <a href="fetchdata">Fetch Data</a></span>
+            </MenuItem>
+            @{
+                RenderFragment sub1Title =
+                    @<span>
+                        <Icon Type="user" Theme="outline"/>
+                        <span>User</span>
+                    </span>;
+            }
+            <SubMenu Key="sub1" TitleTemplate=sub1Title>
+                <MenuItem Key="3">Tom</MenuItem>
+                <MenuItem Key="4">Bill</MenuItem>
+                <MenuItem Key="5">Alex</MenuItem>
+            </SubMenu>
+            @{
+                RenderFragment sub2Title =
+                    @<span>
+                        <Icon Type="team" Theme="outline"/>
+                        <span>Team</span>
+                    </span>;
+            }
+            <SubMenu Key="sub2" TitleTemplate=sub2Title>
+                <MenuItem Key="6">Team 1</MenuItem>
+                <MenuItem Key="8">Team 2</MenuItem>
+            </SubMenu>
+            <MenuItem Key="9">
+                <Icon Type="file" Theme="outline"/>
+            </MenuItem>
+        </Menu>
+    </Sider>
+    <Layout Class="site-layout" >
+        <Header Class="site-layout-background" Style=" padding: 0 ;" ></Header>
+        <Content Style="margin:0 16px;" >
+            <div class="site-layout-background" style=" padding: 0 ; min-height: 360px">
+               @Body
+            </div>
+        </Content>
+        <Footer Style="text-align:center "> ©2018</Footer>
+    </Layout>
+</Layout>
 
-    <div class="main">
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        </div>
 
-        <div class="content px-4">
-            @Body
-        </div>
-    </div>
-</div>
+@code {
+    bool collapsed;
+   void onCollapse(bool collapsed) {
+        this.collapsed =collapsed;
+    }
+}
+
+ 
