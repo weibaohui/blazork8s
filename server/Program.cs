@@ -14,13 +14,13 @@ namespace server
     {
         public static void Main(string[] args)
         {
-            exec();
+            Exec();
             CreateHostBuilder(args).Build().Run();
         }
 
         
         
-        public static void exec()
+        public static void Exec()
         {
             Process cmd = new Process();
             cmd.StartInfo.FileName = "bash";
