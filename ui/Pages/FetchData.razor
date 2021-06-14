@@ -14,27 +14,56 @@ else
 {
     <table class="table">
         <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-                <th>X</th>
-            </tr>
+        <tr>
+            <th>Date</th>
+            <th>Temp. (C)</th>
+            <th>Temp. (F)</th>
+            <th>Summary</th>
+            <th>X</th>
+        </tr>
         </thead>
         <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                    <td>@forecast.X</td>
-                </tr>
-            }
+        @foreach (var forecast in forecasts)
+        {
+            <tr>
+                <td>@forecast.Date.ToShortDateString()</td>
+                <td>@forecast.TemperatureC</td>
+                <td>@forecast.TemperatureF</td>
+                <td>@forecast.Summary</td>
+                <td>@forecast.X</td>
+            </tr>
+        }
         </tbody>
     </table>
+    <ListView TItem="WeatherForecast" Items="@forecasts" >
+        <HeaderTemplate>
+            <div>产品列表</div>
+        </HeaderTemplate>
+        <BodyTemplate>
+            <Card>
+                <CardBody>
+                     <div class="listview-demo-desc">@context.Summary</div>
+                </CardBody>
+            </Card>
+        </BodyTemplate>
+        <FooterTemplate>
+            <div class="text-right">
+                Coptyright Bootstrap Blazor
+            </div>
+        </FooterTemplate>
+    </ListView>
+    <Card style="width: 18rem;">
+        <CardBody>
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </CardBody>
+    </Card>
+    @*  <Table TItem="WeatherForecast" Items="@forecasts.Take(1)"  >  *@
+    @*     <TableColumns>  *@
+    @*                      <TableColumn @bind-Field="@context.Summary" ></TableColumn> *@
+    @*      </TableColumns>  *@
+    @*  </Table>  *@
 }
 
 @code {

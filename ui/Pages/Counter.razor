@@ -4,13 +4,12 @@
 
 <p>Current count: @currentCount</p>
 
-<Button Type="primary"  @onclick="IncrementCount">Click me</Button>
-
+<Button @onclick="@IncrementCount" Color="Color.Danger">Click me</Button>
 @code {
     private int currentCount = 0;
 
     private void IncrementCount()
     {
-        currentCount+=1;
+        currentCount+=2;
     }
 }
