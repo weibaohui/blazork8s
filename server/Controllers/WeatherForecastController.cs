@@ -30,7 +30,7 @@ namespace server.Controllers
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
                     Date = DateTime.Now.AddDays(index),
-                    TemperatureC = rng.Next(-5, 5),
+                    TemperatureC = rng.Next(-8, 8),
                     Summary = Summaries[rng.Next(Summaries.Length)],
                     X="xx"
                 })
