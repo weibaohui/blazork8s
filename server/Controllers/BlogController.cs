@@ -34,10 +34,6 @@ namespace server.Controllers
         [Route("[action]")]
         public async Task<ActionResult<bool>> DeleteBlog(List<int> ids)
         {
-            var i = await fsql.Update<Blog>()
-                .Set(b => b.Url, "http://sample2222.com")
-                .Where(b => b.Url == "http://sample.com")
-                .ExecuteAffrowsAsync();
             var rows = await fsql.Delete<Blog>().Where(w=>ids.Contains(w.BlogId)).ExecuteAffrowsAsync();
             return Ok(rows > 0);
         }
@@ -58,7 +54,6 @@ namespace server.Controllers
         [Route("[action]")]
         public QueryData<Blog> ListBlogs(QueryPageOptions options)
         {
-            _logger.LogInformation($"{options.PageIndex},{options.PageItems}");
             var blogs = fsql.Select<Blog>()
                 .Where(b => b.Rating >= 0)
                 .OrderByDescending(b => b.BlogId)
