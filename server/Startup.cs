@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -26,6 +27,25 @@ namespace server
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            #region db
+
+            IFreeSql fsql = new FreeSql.FreeSqlBuilder()
+                .UseConnectionString(FreeSql.DataType.Sqlite, @"Data Source=db1.db")
+                .UseAutoSyncStructure(true) //自动同步实体结构到数据库，FreeSql不会扫描程序集，只有CRUD时才会生成表。
+                .UseMonitorCommand(cmd=>
+                {
+                    Console.WriteLine(cmd.CommandText );
+                    foreach (DbParameter p in cmd.Parameters)
+                    {
+                        Console.WriteLine($"{p.DbType},{p.ParameterName}={p.Value}");
+                    }
+                })
+                .Build(); //请务必定义成 Singleton 单例模式
+            services.AddSingleton(fsql);
+
+            #endregion
+           
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
