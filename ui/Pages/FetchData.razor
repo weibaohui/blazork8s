@@ -1,6 +1,6 @@
 ﻿@page "/fetchdata"
 @using Entity
-@inject HttpClient Http
+ 
 
 <h1>Weather forecast</h1>
 
@@ -40,38 +40,36 @@ else
             <div>产品列表</div>
         </HeaderTemplate>
         <BodyTemplate>
-            <Card>
-                <CardBody>
-                     <div class="listview-demo-desc">@context.Summary</div>
-                </CardBody>
-            </Card>
+         <Card Color="Color.Dark" Class="ml-3  mt-2" IsCenter="true" style="width: 18rem;">
+                    <CardHeader>
+                        @context.Summary
+                    </CardHeader>
+                    <CardBody>
+                        <h5 class="card-title">@context.X</h5>
+                        <p class="card-text">  @context.Date.ToShortDateString() 
+                                               @context.TemperatureC 
+                                               @context.TemperatureF 
+                                               @context.Summary 
+                                               @context.X 
+                        </p>
+                    </CardBody>
+                </Card>
         </BodyTemplate>
-        <FooterTemplate>
-            <div class="text-right">
-                Coptyright Bootstrap Blazor
-            </div>
-        </FooterTemplate>
     </ListView>
-    <Card style="width: 18rem;">
-        <CardBody>
-            <h5 class="card-title">Card title</h5>
-            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </CardBody>
-    </Card>
-    @*  <Table TItem="WeatherForecast" Items="@forecasts.Take(1)"  >  *@
-    @*     <TableColumns>  *@
-    @*                      <TableColumn @bind-Field="@context.Summary" ></TableColumn> *@
-    @*      </TableColumns>  *@
-    @*  </Table>  *@
+     
+<Block Title="基础表格" Introduction="基础的表格展示用法。" >
+
+  <Table TItem="WeatherForecast"  Items="@forecasts"  IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
+                                                       IsStriped="true" IsBordered="true" IsMultipleSelect="true"
+                                                       ShowToolbar="true" ShowExtendButtons="true" ShowSkeleton="true">
+        <TableColumns>
+            <TableColumn @bind-Field="@context.X" />
+            <TableColumn @bind-Field="@context.Summary" />
+            <TableColumn @bind-Field="@context.TemperatureC" />
+            <TableColumn @bind-Field="@context.TemperatureC" />
+            <TableColumn @bind-Field="@context.Date" />
+        </TableColumns>
+    </Table>
+</Block>
 }
-
-@code {
-    private WeatherForecast[] forecasts;
-
-    protected override async Task OnInitializedAsync()
-    {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:4001/WeatherForecast");
-    }
-
-}
+ 
