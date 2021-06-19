@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
+using BootstrapBlazor.Components;
 using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -26,29 +29,50 @@ namespace server.Controllers
                 .AppendData(blog)
                 .ExecuteIdentity();
             return blog;
-            
         }
+
         [HttpPost]
         [Route("[action]")]
-        public int UpdateBlog()
+        public async Task<ActionResult<int>> UpdateBlog()
         {
-            var i = fsql.Update<Blog>()
+            var i = await fsql.Update<Blog>()
                 .Set(b => b.Url, "http://sample2222.com")
                 .Where(b => b.Url == "http://sample.com")
-                .ExecuteAffrows();
+                .ExecuteAffrowsAsync();
             return i;
         }
+
         [HttpGet]
-        public List<Blog> GetBlogs()
+        [Route("[action]")]
+        public IEnumerable<Blog> GetBlogs()
         {
             var blogs = fsql.Select<Blog>()
                 .Where(b => b.Rating >= 0)
                 .OrderByDescending(b => b.BlogId)
-                .Count(out var total)
-                .Page(1, 3)
+                .Page(1, 10)
                 .ToList();
-            _logger.LogError(total.ToString());
             return blogs;
+        }
+        
+        [HttpPost]
+        [Route("[action]")]
+        public QueryData<Blog> ListBlogs(QueryPageOptions options)
+        {
+            _logger.LogInformation($"{options.PageIndex},{options.PageItems}");
+            var blogs = fsql.Select<Blog>()
+                .Where(b => b.Rating >= 0)
+                .OrderByDescending(b => b.BlogId)
+                .Count(out var total)
+                .Page(options.PageIndex, options.PageItems)
+                .ToList();
+            return new QueryData<Blog>()
+            {
+                Items = blogs,
+                TotalCount = total,
+                IsSorted = true,
+                IsFiltered = true,
+                IsSearch = true
+            };
         }
     }
 }

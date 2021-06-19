@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="BootstrapBlazor" Version="5.0.36-beta02" />
         <PackageReference Include="FreeSql" Version="2.5.200" />
         <PackageReference Include="FreeSql.Provider.Sqlite" Version="2.5.200" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />

@@ -51,8 +51,7 @@ namespace server
                 options.AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins("https://localhost:5001",
-                            "http://localhost:5000");
+                        builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader();
                     });
             });
             services.AddControllers();

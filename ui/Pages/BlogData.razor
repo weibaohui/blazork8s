@@ -1,0 +1,32 @@
+@page "/Blog"
+@using Entity
+<h3>Blog</h3>
+@if (blogs == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <Table TItem="Blog" Items="@blogs" IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
+           ShowToolbar="true"
+           IsBordered="true"
+           ShowExtendButtons="true" ShowSkeleton="true" @bind-SelectedRows="@SelectedRows"
+    OnQueryAsync="@OnQueryAsync"
+           >
+        <TableColumns>
+            <TableColumn @bind-Field="@context.Name"/>
+            <TableColumn @bind-Field="@context.Url"/>
+            <TableColumn @bind-Field="@context.Rating"/>
+            <TableColumn @bind-Field="@context.BlogId"/>
+        </TableColumns>
+    </Table>
+    <p class="mt-3">选中的行记录：</p>
+    <ul class="ul-demo">
+        @foreach (var item in SelectedRows)
+        {
+            <li>@item.Name</li>
+        }
+    </ul>
+}
