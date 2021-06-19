@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BootstrapBlazor.Components;
@@ -23,23 +24,22 @@ namespace server.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public Blog SaveBlog(Blog blog)
+        public async Task<ActionResult<bool>> SaveBlog(Blog blog)
         {
-            blog.BlogId = (int) fsql.Insert<Blog>()
-                .AppendData(blog)
-                .ExecuteIdentity();
-            return blog;
+            var rows = await fsql.InsertOrUpdate<Blog>().SetSource(blog).ExecuteAffrowsAsync();
+            return Ok(rows > 0);
         }
 
         [HttpPost]
         [Route("[action]")]
-        public async Task<ActionResult<int>> UpdateBlog()
+        public async Task<ActionResult<bool>> DeleteBlog(List<int> ids)
         {
             var i = await fsql.Update<Blog>()
                 .Set(b => b.Url, "http://sample2222.com")
                 .Where(b => b.Url == "http://sample.com")
                 .ExecuteAffrowsAsync();
-            return i;
+            var rows = await fsql.Delete<Blog>().Where(w=>ids.Contains(w.BlogId)).ExecuteAffrowsAsync();
+            return Ok(rows > 0);
         }
 
         [HttpGet]
@@ -53,7 +53,7 @@ namespace server.Controllers
                 .ToList();
             return blogs;
         }
-        
+
         [HttpPost]
         [Route("[action]")]
         public QueryData<Blog> ListBlogs(QueryPageOptions options)
