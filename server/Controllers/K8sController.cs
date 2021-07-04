@@ -1,19 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Security.Authentication;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using System.Threading.Tasks;
-using BootstrapBlazor.Components;
-using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Console = BootstrapBlazor.Components.Console;
 
 namespace server.Controllers
 {
@@ -21,14 +10,6 @@ namespace server.Controllers
     [Route("[controller]")]
     public class K8sController : ControllerBase
     {
-        private readonly ILogger<K8sController> _logger;
-
-        public K8sController(ILogger<K8sController> logger)
-        {
-            _logger = logger;
-        }
-
-
         private const string CertPem = @"-----BEGIN CERTIFICATE-----
 MIIDFTCCAf2gAwIBAgIIEYtq82oeWOAwDQYJKoZIhvcNAQELBQAwFTETMBEGA1UE
 AxMKa3ViZXJuZXRlczAeFw0yMTA1MjMxNDA2MTRaFw0yMjA2MjAwMTU5MjRaMDYx
@@ -77,16 +58,23 @@ MsTddwKBgQCzlZnQQIw9mcK5y5dcvef/N/TkGp2rakccdiicwnjdvEVvZqOfD0RQ
 nhNnQJHzAPWFZxAcQuS2HIknAHohLJ2BLeSQ1g5Qi+RezBlfqwvlYQ==
 -----END RSA PRIVATE KEY-----";
 
+        private readonly ILogger<K8sController> _logger;
+
+        public K8sController(ILogger<K8sController> logger)
+        {
+            _logger = logger;
+        }
+
         private void PodList()
         {
             var handler = new HttpClientHandler
             {
                 ClientCertificateOptions = ClientCertificateOption.Manual,
                 SslProtocols = SslProtocols.Tls12,
-                ServerCertificateCustomValidationCallback = (x, y, z, m) => true,
+                ServerCertificateCustomValidationCallback = (x, y, z, m) => true
             };
 
-       
+
             var cert = X509Certificate2.CreateFromPem(CertPem, EccPem);
             handler.ClientCertificates.Add(cert);
 
