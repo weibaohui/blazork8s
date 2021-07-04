@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using k8s;
+using k8s.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,12 +17,28 @@ namespace server
     {
         public static void Main(string[] args)
         {
-            Exec();
+            // Exec();
+            LinkK8s();
             CreateHostBuilder(args).Build().Run();
         }
 
-        
-        
+        private static void LinkK8s()
+        {
+            var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
+
+            IKubernetes client = new Kubernetes(config);
+
+            var podlistResp = client.ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
+            podlistResp.Watch<V1Pod, V1PodList>((type, item) =>
+            {
+                Console.WriteLine("==on watch event==");
+                Console.WriteLine(type);
+                Console.WriteLine(item.Metadata.Name);
+                Console.WriteLine("==on watch event==");
+            });
+        }
+
+
         public static void Exec()
         {
             Process cmd = new Process();
