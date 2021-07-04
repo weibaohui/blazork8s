@@ -11,14 +11,13 @@ else
 {
     <Table TItem="Blog" Items="@blogs" IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
            ShowToolbar="true"
-           IsBordered="true"  ShowSearch="true"  IsMultipleSelect="true"
+           IsBordered="true" ShowSearch="true" IsMultipleSelect="true"
            ShowSkeleton="true" @bind-SelectedRows="@SelectedRows"
-    OnQueryAsync="@OnQueryAsync"  OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync"
-           >
+           OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync">
         <TableColumns>
             <TableColumn @bind-Field="@context.Name" Filterable="true" Searchable="true"/>
             <TableColumn @bind-Field="@context.Url" Filterable="true" Searchable="true"/>
-            <TableColumn @bind-Field="@context.Rating" Filterable="true"  Searchable="true"/>
+            <TableColumn @bind-Field="@context.Rating" Filterable="true" Searchable="true"/>
             <TableColumn @bind-Field="@context.BlogId" Readonly="true"/>
         </TableColumns>
     </Table>

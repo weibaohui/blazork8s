@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="5.0.36-beta02" />
+        <PackageReference Include="BootstrapBlazor" Version="5.0.38-beta02" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.7" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.7" PrivateAssets="all" />
     </ItemGroup>
@@ -16,6 +16,14 @@
     <ItemGroup>
       <ProjectReference Include="..\Entity\Entity.csproj" />
 
+    </ItemGroup>
+
+    
+
+    <ItemGroup>
+      <Content Update="wwwroot\appsettings.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>
