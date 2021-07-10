@@ -25,12 +25,12 @@ else
                         @kv.ToString()
                     </p>
                 }
-                 @foreach (var kv in node.Allocatable)
-                                {
-                                    <p class="card-text">
-                                        @kv.ToString()
-                                    </p>
-                                }
+                @foreach (var kv in node.Allocatable)
+                {
+                    <p class="card-text">
+                        @kv.ToString()
+                    </p>
+                }
 
                 @foreach (var condition in node.OriginNode.Status.Conditions)
                 {
