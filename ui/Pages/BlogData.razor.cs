@@ -32,8 +32,7 @@ namespace ui.Pages
 
         private async Task<QueryData<Blog>> OnQueryAsync(QueryPageOptions options)
         {
-            var resp = await Http.PostAsJsonAsync("https://localhost:4001/Blog/ListBlogs", options);
-            return await resp.Content.ReadFromJsonAsync<QueryData<Blog>>();
+             return  await BlogService.Query(options);
         }
 
         private static Task<Blog> OnAddAsync() => Task.FromResult(new Blog() {Name = DateTime.Now.ToShortDateString()});

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using BootstrapBlazor.Components;
 using Entity;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
+using Console = System.Console;
 
 namespace ui.Service
 {
@@ -44,6 +46,12 @@ namespace ui.Service
         public async Task<List<Blog>> GetBlogList()
         {
             return await Http.GetFromJsonAsync<List<Blog>>(BE("/Blog/GetBlogs"));
+        }
+
+        public async Task<QueryData<Blog>> Query(QueryPageOptions options)
+        {
+            var resp=  await Http.PostAsJsonAsync(BE("/Blog/ListBlogs"), options);
+           return await resp.Content.ReadFromJsonAsync<QueryData<Blog>>();
         }
     }
 }
