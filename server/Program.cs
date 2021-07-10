@@ -8,10 +8,12 @@ using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using server.Service;
 using server.Service.K8s;
+using server.Utils;
 
 namespace server
 {
@@ -19,17 +21,14 @@ namespace server
     {
         public static void Main(string[] args)
         {
-            // Exec();
-            LinkK8s();
-            CreateHostBuilder(args).Build().Run();
+            var host    = CreateHostBuilder(args).Build();
+            ServiceHelper.Services = host.Services;
+            var watcher = ServiceHelper.Services.GetService<Watcher>();
+            if (watcher != null) watcher.StartWatch();
+            host.Run();
         }
 
-        private static void LinkK8s()
-        {
-            var cli = Kubectl.Instance.Client();
-            new PodWatcher().StartWatch(cli);
-            new NodeWatcher().StartWatch(cli);
-        }
+
 
 
         public static void Exec()

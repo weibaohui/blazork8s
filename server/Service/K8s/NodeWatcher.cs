@@ -10,24 +10,21 @@ namespace server.Service.K8s
     {
         private readonly ILogger<NodeWatcher> _logger;
 
-        public NodeWatcher()
-        {
-        }
-
         public NodeWatcher(ILogger<NodeWatcher> logger)
         {
             _logger = logger;
         }
 
-        public async Task StartWatch(IKubernetes client)
+        public void StartWatch(IKubernetes client)
         {
-            var nodeWatcher = await client.ListNodeWithHttpMessagesAsync(watch: true);
-            nodeWatcher.Watch<V1Node, V1NodeList>(EventAction,OnError,OnClosed);
+            var nodeWatcher = client.ListNodeWithHttpMessagesAsync(watch: true);
+            nodeWatcher.Watch<V1Node, V1NodeList>(EventAction, OnError, OnClosed);
             _logger.LogInformation("Watch started");
         }
 
         private void OnClosed()
         {
+            _logger.LogError("监听结束");
         }
 
         private void OnError(Exception err)
@@ -37,10 +34,26 @@ namespace server.Service.K8s
 
         private void EventAction(WatchEventType type, V1Node item)
         {
-            Console.WriteLine("==on NodeWatcher watch event==");
-            Console.WriteLine(type);
-            Console.WriteLine(item.Metadata.Name);
-            Console.WriteLine("==on NodeWatcher watch event==");
+            _logger.LogInformation($"WatchEvent {type}  {item.Metadata.Name}");
+
+            switch (type)
+            {
+                case WatchEventType.Added:
+                    NodeService.Instance.AddNode(item);
+                    break;
+                case WatchEventType.Modified:
+                    NodeService.Instance.ModifyNode(item);
+                    break;
+                case WatchEventType.Deleted:
+                    NodeService.Instance.RemoveNode(item);
+                    break;
+                case WatchEventType.Error:
+                    break;
+                case WatchEventType.Bookmark:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
         }
     }
 }

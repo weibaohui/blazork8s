@@ -1,21 +1,38 @@
 using System;
 using k8s;
 using k8s.Models;
+using Microsoft.Extensions.Logging;
 
 namespace server.Service.K8s
 {
     public class PodWatcher
     {
+        private readonly ILogger<PodWatcher> _logger;
+        public PodWatcher(ILogger<PodWatcher> logger)
+        {
+            _logger = logger;
+        }
+
         public void StartWatch(IKubernetes client)
         {
-            var podlistResp = client.ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
-            podlistResp.Watch<V1Pod, V1PodList>((type, item) =>
-            {
-                Console.WriteLine("==on watch event==");
-                Console.WriteLine(type);
-                Console.WriteLine(item.Metadata.Name);
-                Console.WriteLine("==on watch event==");
-            });
+            var podWatcher = client.ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
+            podWatcher.Watch<V1Pod, V1PodList>(EventAction, OnError, OnClosed);
+            _logger.LogInformation("Watch started");
+        }
+
+        private void OnClosed()
+        {
+            _logger.LogError("监听结束");
+        }
+
+        private void OnError(Exception err)
+        {
+            _logger.LogError(err.ToString());
+        }
+
+        private void EventAction(WatchEventType type, V1Pod item)
+        {
+            _logger.LogInformation($"WatchEvent {type}  {item.Metadata.Name}");
         }
     }
 }
