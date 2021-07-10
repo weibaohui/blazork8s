@@ -16,7 +16,8 @@ namespace ui.Pages
     public partial class BlogData : ComponentBase
     {
         [Inject] private HttpClient     Http          { get; set; }
-        [Inject] private IConfiguration Configuration { get; set; }
+       
+        [Inject] private IBlogService BlogService { get; set; }
  
         List<Blog>                       blogs;
         private        IEnumerable<Blog> SelectedRows = new List<Blog>();
@@ -24,8 +25,7 @@ namespace ui.Pages
 
         protected override async Task OnInitializedAsync()
         {
-           
-            blogs = await Http.GetFromJsonAsync<List<Blog>>("https://localhost:4001/Blog/GetBlogs");
+            blogs = await BlogService.GetBlogList();
         }
 
         
