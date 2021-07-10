@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using server.Service.K8s;
 
 namespace server
 {
@@ -56,6 +57,7 @@ namespace server
             });
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "server", Version = "v1"}); });
+            services.AddSingleton<NodeWatcher>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

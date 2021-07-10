@@ -22,7 +22,7 @@ namespace server.Controllers
     public class BlogController : ControllerBase
     {
         private readonly ILogger<BlogController> _logger;
-        private IFreeSql fsql;
+        private readonly IFreeSql                fsql;
 
         public BlogController(ILogger<BlogController> logger, IFreeSql fsql)
         {
