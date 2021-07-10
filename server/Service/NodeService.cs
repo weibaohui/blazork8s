@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Entity;
 using k8s.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using server.Model;
 using server.Utils;
-using YamlDotNet.Core.Events;
 
 namespace server.Service
 {
@@ -26,6 +26,11 @@ namespace server.Service
                 //不存在
                 var item = new Node {Name = node.Name(), OriginNode = node};
                 nodeList.Add(item);
+                foreach (var kv in node.Status.Capacity)
+                {
+                    _logger.LogInformation(kv.ToString());
+                }
+
             }
             else
             {

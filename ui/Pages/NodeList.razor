@@ -1,0 +1,46 @@
+@page "/NodeList"
+@if (_nodes == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    foreach (var node in _nodes)
+    {
+        <Card style="width: 18rem;">
+            <CardBody>
+                <h5 class="card-title">@node.Name</h5>
+                <p class="card-text">@node.Architecture</p>
+                <p class="card-text">@node.KubeletVersion</p>
+                @foreach (var x in node.Addresses)
+                {
+                    <p class="card-text"> @x.Type - @x.Address </p>
+                }
+
+                @foreach (var kv in node.OriginNode.Status.Allocatable)
+                {
+                    <p class="card-text">
+                        @kv.Key -- @kv.Value
+                    </p>
+                }
+
+                @foreach (var kv in node.OriginNode.Status.Capacity)
+                {
+                    <p class="card-text">
+                        @kv.ToString()
+                    </p>
+                }
+
+                @foreach (var condition in node.OriginNode.Status.Conditions)
+                {
+                    if (condition.Type == "Ready")
+                    {
+                        <Tag Icon="fa fa-check-circle" Color="Color.Success">@condition.Type</Tag>
+                    }
+                }
+            </CardBody>
+        </Card>
+    }
+}

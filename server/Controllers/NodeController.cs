@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
