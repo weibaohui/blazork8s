@@ -28,7 +28,6 @@ namespace ui.Service
         private String GetBaseApiURL()
         {
             var url =Configuration.GetSection("ClientAppSettings").GetValue<String>("BaseApiUrl");
-            Console.WriteLine(url + "Inject GetBaseApiURL");
             return url;
         }
 
