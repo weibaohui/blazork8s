@@ -1,7 +1,7 @@
 @page "/Blog"
 @using Entity
 <h3>Blog</h3>
-@if (blogs == null)
+@if (_blogs == null)
 {
     <p>
         <em>Loading...</em>
@@ -9,9 +9,9 @@
 }
 else
 {
-    <Table TItem="Blog" Items="@blogs" IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
+    <Table TItem="Blog" Items="@_blogs" IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
            ShowToolbar="true"
-           IsBordered="true" ShowSearch="true" IsMultipleSelect="true"
+           IsBordered="true" ShowSearch="true" ClickToSelect="true"
            ShowSkeleton="true" @bind-SelectedRows="@SelectedRows"
            OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync">
         <TableColumns>

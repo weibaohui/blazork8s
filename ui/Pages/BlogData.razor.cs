@@ -15,42 +15,35 @@ namespace ui.Pages
 {
     public partial class BlogData : ComponentBase
     {
-        [Inject] private HttpClient     Http          { get; set; }
-       
         [Inject] private IBlogService BlogService { get; set; }
- 
-        List<Blog>                       blogs;
+
+        private        List<Blog>        _blogs;
         private        IEnumerable<Blog> SelectedRows = new List<Blog>();
         private static IEnumerable<int>  PageItemsSource => new int[] {4, 10, 20};
 
         protected override async Task OnInitializedAsync()
         {
-            blogs = await BlogService.GetBlogList();
+            _blogs = await BlogService.GetBlogList();
         }
 
-        
 
         private async Task<QueryData<Blog>> OnQueryAsync(QueryPageOptions options)
         {
-             return  await BlogService.Query(options);
+            return await BlogService.Query(options);
         }
 
         private static Task<Blog> OnAddAsync() => Task.FromResult(new Blog() {Name = DateTime.Now.ToShortDateString()});
 
         private async Task<bool> OnSaveAsync(Blog item)
         {
-            var oldItem = blogs.FirstOrDefault(i => i.BlogId == item.BlogId) ?? new Blog();
-            oldItem = item;
-            var resp   = await Http.PostAsJsonAsync("https://localhost:4001/Blog/SaveBlog", oldItem);
-            var result = await resp.Content.ReadFromJsonAsync<bool>();
+            var result  = await BlogService.Save(item);
             return await Task.FromResult(result);
         }
 
         private async Task<bool> OnDeleteAsync(IEnumerable<Blog> items)
         {
             var ids    = items.Select(w => w.BlogId).ToList();
-            var resp   = await Http.PostAsJsonAsync("https://localhost:4001/Blog/DeleteBlog", ids);
-            var result = await resp.Content.ReadFromJsonAsync<bool>();
+            var result = await BlogService.Delete(ids);
             return await Task.FromResult(result);
         }
     }

@@ -50,5 +50,19 @@ namespace ui.Service.impl
             var resp=  await Http.PostAsJsonAsync(B("/Blog/ListBlogs"), options);
            return await resp.Content.ReadFromJsonAsync<QueryData<Blog>>();
         }
+
+        public async Task<bool> Delete(List<int> ids)
+        {
+            var resp   = await Http.PostAsJsonAsync(B("/Blog/DeleteBlog"), ids);
+            var result = await resp.Content.ReadFromJsonAsync<bool>();
+            return result;
+        }
+
+        public async Task<bool> Save(Blog? oldItem)
+        {
+            var resp   = await Http.PostAsJsonAsync(B("/Blog/SaveBlog"), oldItem);
+            var result = await resp.Content.ReadFromJsonAsync<bool>();
+            return result;
+        }
     }
 }
