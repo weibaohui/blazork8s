@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using server.Service;
+using server.Service.K8s;
 
 namespace server
 {
@@ -24,29 +26,20 @@ namespace server
 
         private static void LinkK8s()
         {
-            var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
-
-            IKubernetes client = new Kubernetes(config);
-
-            var podlistResp = client.ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
-            podlistResp.Watch<V1Pod, V1PodList>((type, item) =>
-            {
-                Console.WriteLine("==on watch event==");
-                Console.WriteLine(type);
-                Console.WriteLine(item.Metadata.Name);
-                Console.WriteLine("==on watch event==");
-            });
+            var cli = Kubectl.Instance.Client();
+            new PodWatcher().StartWatch(cli);
+            new NodeWatcher().StartWatch(cli);
         }
 
 
         public static void Exec()
         {
             Process cmd = new Process();
-            cmd.StartInfo.FileName = "bash";
-            cmd.StartInfo.RedirectStandardInput = true;
+            cmd.StartInfo.FileName               = "bash";
+            cmd.StartInfo.RedirectStandardInput  = true;
             cmd.StartInfo.RedirectStandardOutput = true;
-            cmd.StartInfo.CreateNoWindow = true;
-            cmd.StartInfo.UseShellExecute = false;
+            cmd.StartInfo.CreateNoWindow         = true;
+            cmd.StartInfo.UseShellExecute        = false;
             cmd.Start();
 
             cmd.StandardInput.WriteLine("kubectl version");
@@ -55,7 +48,7 @@ namespace server
             cmd.WaitForExit();
             Console.WriteLine(cmd.StandardOutput.ReadToEnd());
         }
-        
+
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
