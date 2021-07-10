@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 using BootstrapBlazor.Components;
 using Entity;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
-using Console = System.Console;
 
-namespace ui.Service
+namespace ui.Service.impl
 {
     public class BlogService : IBlogService
     {
@@ -25,9 +23,9 @@ namespace ui.Service
 
          
         
-        private String GetBaseApiURL()
+        private string GetBaseApiUrl()
         {
-            var url =Configuration.GetSection("ClientAppSettings").GetValue<String>("BaseApiUrl");
+            var url =Configuration.GetSection("ClientAppSettings").GetValue<string>("BaseApiUrl");
             return url;
         }
 
@@ -36,20 +34,20 @@ namespace ui.Service
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        private String BE(String url)
+        private string B(string url)
         {
-            return $"{GetBaseApiURL()}{url}";
+            return $"{GetBaseApiUrl()}{url}";
         }
 
 
         public async Task<List<Blog>> GetBlogList()
         {
-            return await Http.GetFromJsonAsync<List<Blog>>(BE("/Blog/GetBlogs"));
+            return await Http.GetFromJsonAsync<List<Blog>>(B("/Blog/GetBlogs"));
         }
 
         public async Task<QueryData<Blog>> Query(QueryPageOptions options)
         {
-            var resp=  await Http.PostAsJsonAsync(BE("/Blog/ListBlogs"), options);
+            var resp=  await Http.PostAsJsonAsync(B("/Blog/ListBlogs"), options);
            return await resp.Content.ReadFromJsonAsync<QueryData<Blog>>();
         }
     }
