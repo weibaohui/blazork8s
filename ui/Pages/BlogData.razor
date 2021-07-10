@@ -9,8 +9,8 @@
 }
 else
 {
-    <Table TItem="Blog" Items="@_blogs" IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
-           ShowToolbar="true"
+    <Table TItem="Blog"  IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
+           ShowToolbar="true" IsStriped="true" IsMultipleSelect="true"
            IsBordered="true" ShowSearch="true" ClickToSelect="true"
            ShowSkeleton="true" @bind-SelectedRows="@SelectedRows"
            OnQueryAsync="@OnQueryAsync" OnAddAsync="@OnAddAsync" OnSaveAsync="@OnSaveAsync" OnDeleteAsync="@OnDeleteAsync">
