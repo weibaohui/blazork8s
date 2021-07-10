@@ -19,19 +19,18 @@ else
                     <p class="card-text"> @x.Type - @x.Address </p>
                 }
 
-                @foreach (var kv in node.OriginNode.Status.Allocatable)
-                {
-                    <p class="card-text">
-                        @kv.Key -- @kv.Value
-                    </p>
-                }
-
-                @foreach (var kv in node.OriginNode.Status.Capacity)
+                @foreach (var kv in node.Capacity)
                 {
                     <p class="card-text">
                         @kv.ToString()
                     </p>
                 }
+                 @foreach (var kv in node.Allocatable)
+                                {
+                                    <p class="card-text">
+                                        @kv.ToString()
+                                    </p>
+                                }
 
                 @foreach (var condition in node.OriginNode.Status.Conditions)
                 {

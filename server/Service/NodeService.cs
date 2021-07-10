@@ -25,12 +25,22 @@ namespace server.Service
             {
                 //不存在
                 var item = new Node {Name = node.Name(), OriginNode = node};
-                nodeList.Add(item);
+
                 foreach (var kv in node.Status.Capacity)
                 {
-                    _logger.LogInformation(kv.ToString());
+                    if (kv.Key=="cpu"||kv.Key=="memory"||kv.Key=="pods")
+                    {
+                        item.Capacity.Add(kv.Key,kv.Value.ToString());
+                    }
                 }
-
+                foreach (var kv in node.Status.Allocatable)
+                {
+                    if (kv.Key=="cpu"||kv.Key=="memory"||kv.Key=="pods")
+                    {
+                        item.Allocatable.Add(kv.Key,kv.Value.ToString());
+                    }
+                }
+                nodeList.Add(item);
             }
             else
             {

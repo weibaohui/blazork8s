@@ -7,8 +7,10 @@ namespace server.Model
 {
     public class Node
     {
-        public              string Name       { get; set; }
-        public V1Node OriginNode { get; set; }
+        public string                      Name        { get; set; }
+        public V1Node                      OriginNode  { get; set; }
+        public IDictionary<string, string> Capacity    { get; set; } = new Dictionary<string, string>();
+        public IDictionary<string, string> Allocatable { get; set; } = new Dictionary<string, string>();
 
         public string HostName =>
             OriginNode.Metadata.Labels.AsEnumerable().FirstOrDefault(r => r.Key == "kubernetes.io/hostname").Value;
