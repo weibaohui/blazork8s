@@ -14,7 +14,6 @@ namespace server.Service.K8s
         public void StartWatch()
         {
             var cli = Kubectl.Instance.Client();
-             Kubectl.Instance.getNodes();
             _nodeWatcher.StartWatch(cli);
             _podWatcher.StartWatch(cli);
         }
