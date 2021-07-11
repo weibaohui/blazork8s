@@ -23,6 +23,7 @@ namespace server.Controllers
         [Route("[action]")]
         public IEnumerable<Node> GetNodes()
         {
+
             return NodeService.Instance.GetList();
         }
         [HttpGet]

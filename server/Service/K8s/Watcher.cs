@@ -2,7 +2,7 @@ namespace server.Service.K8s
 {
     public class Watcher
     {
-        private readonly PodWatcher _podWatcher;
+        private readonly PodWatcher  _podWatcher;
         private readonly NodeWatcher _nodeWatcher;
 
         public Watcher(PodWatcher podWatcher, NodeWatcher nodeWatcher)
@@ -14,6 +14,7 @@ namespace server.Service.K8s
         public void StartWatch()
         {
             var cli = Kubectl.Instance.Client();
+             Kubectl.Instance.getNodes();
             _nodeWatcher.StartWatch(cli);
             _podWatcher.StartWatch(cli);
         }
