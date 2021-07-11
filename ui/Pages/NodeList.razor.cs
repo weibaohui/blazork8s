@@ -24,6 +24,13 @@ namespace ui.Pages
             {
                 Console.WriteLine(node.Name);
             }
+
+           var jn= await Http.GetFromJsonAsync<JsonNode>("https://localhost:4001/KubeApi/api/v1/nodes/docker-desktop");
+           var capacity = jn.Status.Capacity;
+           foreach (var kv in capacity)
+           {
+               Console.WriteLine($"{kv.Key}-{kv.Value}");
+           }
         }
     }
 }
