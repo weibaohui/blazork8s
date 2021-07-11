@@ -12,34 +12,31 @@ namespace server.Service
 
         public static Kubectl Instance => Lazy.Value;
 
-        private IKubernetes _client = null;
+        private IKubernetes                   _client = null;
+        private KubernetesClientConfiguration _config = null;
 
         public IKubernetes Client()
         {
             if (_client == null)
             {
-                var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
-
-                _client = new Kubernetes(config);
+                _config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
+                _client = new Kubernetes(_config);
             }
+
             return _client;
         }
 
         public async Task getNodes()
         {
-            Console.WriteLine("getNodes");
-            try
-            {
-                var y=  await Client().HttpClient.GetStringAsync("https://kubernetes.docker.internal:6443/api/v1/nodes/docker-desktop");
-                // var x= await  Client().HttpClient.GetFromJsonAsync<V1NodeList>("https://kubernetes.docker.internal:6443/api/v1/nodes");
-                Console.WriteLine($"xxxxxxx---{y}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            var url          = "/api/v1/nodes";
+            var json = GetResourceJson(url);
+            Console.WriteLine($"xxxxxxx---{json.Result}");
+        }
+
+        public async Task<string> GetResourceJson(string url)
+        {
+            var s = await Client().HttpClient.GetStringAsync($"{_config.Host}{url}");
+            return s;
         }
     }
-
 }
