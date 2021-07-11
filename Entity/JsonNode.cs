@@ -28,9 +28,14 @@ namespace Entity
         [JsonProperty(PropertyName = "addresses")]
         public IList<V1NodeAddress> Addresses { get; set; }
 
+        /// <summary>
+        /// 微调为JSON可转换的结构
+        /// </summary>
         [JsonProperty(PropertyName = "allocatable")]
         public IDictionary<string, String> Allocatable { get; set; }
-
+        /// <summary>
+        /// 微调为JSON可转换的结构
+        /// </summary>
         [JsonProperty(PropertyName = "capacity")]
         public IDictionary<string, String> Capacity { get; set; }
 
