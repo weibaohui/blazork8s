@@ -32,7 +32,7 @@ else
                     </p>
                 }
 
-                @foreach (var condition in node.OriginNode.Status.Conditions)
+                @foreach (var condition in node.Conditions)
                 {
                     if (condition.Type == "Ready")
                     {

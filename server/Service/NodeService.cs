@@ -40,6 +40,7 @@ namespace server.Service
                         item.Allocatable.Add(kv.Key,kv.Value.ToString());
                     }
                 }
+
                 nodeList.Add(item);
             }
             else

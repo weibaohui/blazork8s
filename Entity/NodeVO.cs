@@ -3,13 +3,12 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using k8s.Models;
 
-namespace ui.Pages
+namespace Entity
 {
-    public class Node
+    public class NodeVO
     {
         public string                      Name            { get; set; }
         public string                      HostName        { get; set; }
-        public V1Node                      OriginNode      { get; set; }
         public IDictionary<string, string> Capacity        { get; set; }
         public IDictionary<string, string> Allocatable     { get; set; }
         public string                      ClusterName     { get; set; }
@@ -17,5 +16,6 @@ namespace ui.Pages
         public string                      OperatingSystem { get; set; }
         public string                      Architecture    { get; set; }
         public IList<V1NodeAddress>        Addresses       { get; set; }
+        public IList<V1NodeCondition>      Conditions      { get; set; }
     }
 }

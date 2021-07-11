@@ -3,12 +3,15 @@ using System.Linq;
 using System.Text.Json.Serialization;
 using k8s.Models;
 
-namespace server.Model
+namespace Entity
 {
     public class Node
     {
-        public string                      Name        { get; set; }
-        public V1Node                      OriginNode  { get; set; }
+        public string Name { get; set; }
+
+        [JsonIgnore]
+        public V1Node OriginNode { get; set; }
+
         public IDictionary<string, string> Capacity    { get; set; } = new Dictionary<string, string>();
         public IDictionary<string, string> Allocatable { get; set; } = new Dictionary<string, string>();
 
@@ -19,7 +22,7 @@ namespace server.Model
         public string                 KubeletVersion  => OriginNode.Status.NodeInfo.KubeletVersion;
         public string                 OperatingSystem => OriginNode.Status.NodeInfo.OperatingSystem;
         public string                 Architecture    => OriginNode.Status.NodeInfo.Architecture;
-        public IList<V1NodeCondition> Condition       => OriginNode.Status.Conditions;
+        public IList<V1NodeCondition> Conditions       => OriginNode.Status.Conditions;
         public IList<V1NodeAddress>   Addresses       => OriginNode.Status.Addresses;
-    }
+     }
 }
