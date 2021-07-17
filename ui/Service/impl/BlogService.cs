@@ -58,7 +58,7 @@ namespace ui.Service.impl
             return result;
         }
 
-        public async Task<bool> Save(Blog? oldItem)
+        public async Task<bool> Save(Blog oldItem)
         {
             var resp   = await Http.PostAsJsonAsync(B("/Blog/SaveBlog"), oldItem);
             var result = await resp.Content.ReadFromJsonAsync<bool>();

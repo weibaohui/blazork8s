@@ -10,6 +10,6 @@ namespace ui.Service
         Task<List<Blog>>      GetBlogList();
         Task<QueryData<Blog>> Query(QueryPageOptions options);
         Task<bool>            Delete(List<int>       ids);
-        Task<bool>            Save(Blog?             oldItem);
+        Task<bool>            Save(Blog             oldItem);
     }
 }

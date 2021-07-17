@@ -1,5 +1,6 @@
 @page "/NodeList"
 @using Extension
+@using Extension.k8s
 @if (_nodes == null)
 {
     <p>
@@ -16,7 +17,13 @@ else
                 <p class="card-text">@node.Architecture</p>
                 <p class="card-text">@node.KubeletVersion</p>
                 <p class="card-text">@_jsonNode.Metadata.CreationTimestamp?.Age()</p>
-                 @foreach (var x in node.Addresses)
+                <p class="card-text">
+                     @if (_jsonNode.Status.Conditions.IsReady())
+                    {
+                        <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
+                    }
+                </p>
+                @foreach (var x in node.Addresses)
                 {
                     <p class="card-text"> @x.Type - @x.Address </p>
                 }
@@ -34,13 +41,8 @@ else
                     </p>
                 }
 
-                @foreach (var condition in node.Conditions)
-                {
-                    if (condition.Type == "Ready")
-                    {
-                        <Tag Icon="fa fa-check-circle" Color="Color.Success">@condition.Type</Tag>
-                    }
-                }
+
+
 
             </CardBody>
         </Card>

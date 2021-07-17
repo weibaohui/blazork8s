@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Entity;
 using Extension;
+using Extension.k8s;
 
 namespace ui.Pages
 {
@@ -33,6 +34,8 @@ namespace ui.Pages
             {
                 Console.WriteLine($"{kv.Key}-{kv.Value}");
             }
+
+
 
         }
 
