@@ -17,7 +17,7 @@ namespace ui.Pages
 
         private IEnumerable<NodeVO> _nodes;
         private JsonNode            _jsonNode;
-
+         
         protected override async Task OnInitializedAsync()
         {
             Console.WriteLine(_nodes);

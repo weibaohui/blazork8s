@@ -11,40 +11,30 @@ else
 {
     foreach (var node in _nodes)
     {
-        <Card style="width: 18rem;">
+        bool isReady=_jsonNode.Status.Conditions.IsReady();
+        var color=isReady?Color.Success:Color.Danger ;
+        <Card style="width: 18rem;" Color="color" >
             <CardBody>
-                <h5 class="card-title">@node.Name</h5>
-                <p class="card-text">@node.Architecture</p>
-                <p class="card-text">@node.KubeletVersion</p>
-                <p class="card-text">@_jsonNode.Metadata.CreationTimestamp?.Age()</p>
-                <p class="card-text">
-                     @if (_jsonNode.Status.Conditions.IsReady())
-                    {
-                        <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
-                    }
-                </p>
-                @foreach (var x in node.Addresses)
-                {
-                    <p class="card-text"> @x.Type - @x.Address </p>
-                }
+                <h5 class="card-title">@_jsonNode.Metadata.Name
+                 @if (isReady)
+                                    {
+                                        <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
+                                    }
+                </h5>
+                <p class="card-text"> </p>
+<GroupBox Title="Pod状态">
+        <p>
 
-                @foreach (var kv in node.Capacity)
-                {
-                    <p class="card-text">
-                        @kv.ToString()
-                    </p>
-                }
-                @foreach (var kv in node.Allocatable)
-                {
-                    <p class="card-text">
-                        @kv.ToString()
-                    </p>
-                }
-
-
-
-
+@for(int i=0;i<110;i++){
+<Badge Color="Color.Success" style="padding: 2px;"> <span style="padding: 0 2px;"><i class="fa fa-tv"></i></span>
+</Badge>
+}
+</p>
+    </GroupBox>
             </CardBody>
+        <CardFooter>
+         <Tag Color="Color.Primary">@node.Architecture</Tag> @node.KubeletVersion @_jsonNode.Metadata.CreationTimestamp?.Age()
+        </CardFooter>
         </Card>
     }
 }
