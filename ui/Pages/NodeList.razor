@@ -14,7 +14,8 @@ else
                 <h5 class="card-title">@node.Name</h5>
                 <p class="card-text">@node.Architecture</p>
                 <p class="card-text">@node.KubeletVersion</p>
-                @foreach (var x in node.Addresses)
+                <p class="card-text">@_jsonNode.Metadata.CreationTimestamp</p>
+                 @foreach (var x in node.Addresses)
                 {
                     <p class="card-text"> @x.Type - @x.Address </p>
                 }
@@ -39,6 +40,7 @@ else
                         <Tag Icon="fa fa-check-circle" Color="Color.Success">@condition.Type</Tag>
                     }
                 }
+
             </CardBody>
         </Card>
     }

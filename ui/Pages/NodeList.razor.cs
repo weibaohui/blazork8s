@@ -5,32 +5,42 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Entity;
+using Extension;
 
 namespace ui.Pages
 {
-    public partial class NodeList: ComponentBase
+    public partial class NodeList : ComponentBase
     {
         [Inject]
         private HttpClient Http { get; set; }
 
         private IEnumerable<NodeVO> _nodes;
-
+        private JsonNode            _jsonNode;
 
         protected override async Task OnInitializedAsync()
         {
             Console.WriteLine(_nodes);
-             _nodes = await Http.GetFromJsonAsync<IEnumerable<NodeVO>>("https://localhost:4001/Node/GetNodes");
+            _nodes = await Http.GetFromJsonAsync<IEnumerable<NodeVO>>("https://localhost:4001/Node/GetNodes");
             foreach (var node in _nodes)
             {
-                Console.WriteLine(node.Name);
+                Console.WriteLine(node);
             }
 
-           var jn= await Http.GetFromJsonAsync<JsonNode>("https://localhost:4001/KubeApi/api/v1/nodes/docker-desktop");
-           var capacity = jn.Status.Capacity;
-           foreach (var kv in capacity)
-           {
-               Console.WriteLine($"{kv.Key}-{kv.Value}");
-           }
+            _jsonNode = await Http.GetFromJsonAsync<JsonNode>(
+                "https://localhost:4001/KubeApi/api/v1/nodes/docker-desktop");
+            var capacity = _jsonNode.Status.Capacity;
+            foreach (var kv in capacity)
+            {
+                Console.WriteLine($"{kv.Key}-{kv.Value}");
+            }
+
+            Console.WriteLine($"xxx{_jsonNode.Status.Phase}");
+            var days = DateTime.Now.Subtract(_jsonNode.Metadata.CreationTimestamp.Value).Days;
+            Console.WriteLine($"xx{days}");
+            var age = _jsonNode.Metadata.CreationTimestamp.Value.Age();
+            Console.WriteLine($"yyy{age}");
+
         }
+
     }
 }
