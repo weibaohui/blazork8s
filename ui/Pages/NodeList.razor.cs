@@ -34,12 +34,6 @@ namespace ui.Pages
                 Console.WriteLine($"{kv.Key}-{kv.Value}");
             }
 
-            Console.WriteLine($"xxx{_jsonNode.Status.Phase}");
-            var days = DateTime.Now.Subtract(_jsonNode.Metadata.CreationTimestamp.Value).Days;
-            Console.WriteLine($"xx{days}");
-            var age = _jsonNode.Metadata.CreationTimestamp.Value.Age();
-            Console.WriteLine($"yyy{age}");
-
         }
 
     }

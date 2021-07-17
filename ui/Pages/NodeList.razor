@@ -1,4 +1,5 @@
 @page "/NodeList"
+@using Extension
 @if (_nodes == null)
 {
     <p>
@@ -14,7 +15,7 @@ else
                 <h5 class="card-title">@node.Name</h5>
                 <p class="card-text">@node.Architecture</p>
                 <p class="card-text">@node.KubeletVersion</p>
-                <p class="card-text">@_jsonNode.Metadata.CreationTimestamp</p>
+                <p class="card-text">@_jsonNode.Metadata.CreationTimestamp?.Age()</p>
                  @foreach (var x in node.Addresses)
                 {
                     <p class="card-text"> @x.Type - @x.Address </p>
