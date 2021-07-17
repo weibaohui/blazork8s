@@ -8,11 +8,10 @@
     <ItemGroup>
         <PackageReference Include="BootstrapBlazor" Version="5.1.4" />
         <PackageReference Include="FreeSql" Version="2.5.200" />
-        <PackageReference Include="FreeSql.Provider.Sqlite" Version="2.5.200" />
+        <PackageReference Include="FreeSql.Provider.PostgreSQL" Version="2.5.200" />
         <PackageReference Include="KubernetesClient" Version="5.0.13" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     </ItemGroup>
-
     <ItemGroup>
       <ProjectReference Include="..\Entity\Entity.csproj" />
     </ItemGroup>
