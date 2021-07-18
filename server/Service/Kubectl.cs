@@ -36,8 +36,6 @@ namespace server.Service
         public async Task getNodes()
         {
             var url = "/api/v1/nodes/docker-desktop";
-            // var json = GetResourceJson(url);
-            // Console.WriteLine($"xxxxxxx---{json.Result}");
             var nodeList = await GetResource<JsonNode>(url);
             var capacity = nodeList.Status.Capacity;
             foreach (var kv in capacity)
@@ -52,7 +50,7 @@ namespace server.Service
             return s;
         }
 
-        public async Task<T> GetResource<T>(string url)
+        private async Task<T> GetResource<T>(string url)
         {
             try
             {
