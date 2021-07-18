@@ -23,8 +23,8 @@ namespace server
         {
             var host    = CreateHostBuilder(args).Build();
             ServiceHelper.Services = host.Services;
-            var watcher = ServiceHelper.Services.GetService<Watcher>();
-            if (watcher != null) watcher.StartWatch();
+            // var watcher = ServiceHelper.Services.GetService<Watcher>();
+            // if (watcher != null) watcher.StartWatch();
             host.Run();
         }
 

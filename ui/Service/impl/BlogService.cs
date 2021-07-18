@@ -12,57 +12,37 @@ namespace ui.Service.impl
 {
     public class BlogService : IBlogService
     {
-        [Inject] private IConfiguration Configuration { get; set; }
-        [Inject] private HttpClient     Http          { get; set; }
+        [Inject]
+        private IBaseService BaseService { get; set; }
+        [Inject]
+        private HttpClient Http { get; set; }
 
-         public BlogService(IConfiguration configuration,HttpClient http)
-         {
-             Configuration = configuration;
-             Http          = http;
-         }
 
-         
-        
-        private string GetBaseApiUrl()
+        public BlogService(IBaseService baseService, HttpClient http)
         {
-            var url =Configuration.GetSection("ClientAppSettings").GetValue<string>("BaseApiUrl");
-            return url;
-        }
-
-        /// <summary>
-        /// 后端访问地址
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
-        private string B(string url)
-        {
-            return $"{GetBaseApiUrl()}{url}";
+            BaseService = baseService;
+            Http        = http;
         }
 
 
         public async Task<List<Blog>> GetBlogList()
         {
-            return await Http.GetFromJsonAsync<List<Blog>>(B("/Blog/GetBlogs"));
+            return await BaseService.GetFromJsonAsync<List<Blog>>("/Blog/GetBlogs");
         }
 
         public async Task<QueryData<Blog>> Query(QueryPageOptions options)
         {
-            var resp=  await Http.PostAsJsonAsync(B("/Blog/ListBlogs"), options);
-           return await resp.Content.ReadFromJsonAsync<QueryData<Blog>>();
+            return  await BaseService.PostAsJsonAsync<QueryPageOptions,QueryData<Blog>>("/Blog/ListBlogs", options);
         }
 
         public async Task<bool> Delete(List<int> ids)
         {
-            var resp   = await Http.PostAsJsonAsync(B("/Blog/DeleteBlog"), ids);
-            var result = await resp.Content.ReadFromJsonAsync<bool>();
-            return result;
+            return await BaseService.PostAsJsonAsync<List<int>,bool>("/Blog/DeleteBlog", ids);
         }
 
         public async Task<bool> Save(Blog oldItem)
         {
-            var resp   = await Http.PostAsJsonAsync(B("/Blog/SaveBlog"), oldItem);
-            var result = await resp.Content.ReadFromJsonAsync<bool>();
-            return result;
+             return await BaseService.PostAsJsonAsync<Blog,bool>("/Blog/SaveBlog", oldItem);
         }
     }
 }

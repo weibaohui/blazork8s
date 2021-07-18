@@ -15,7 +15,8 @@ namespace ui.Pages
 {
     public partial class BlogData : ComponentBase
     {
-        [Inject] private IBlogService BlogService { get; set; }
+        [Inject]
+        private IBlogService BlogService { get; set; }
 
         private        List<Blog>        _blogs;
         private        IEnumerable<Blog> SelectedRows = new List<Blog>();
@@ -36,7 +37,7 @@ namespace ui.Pages
 
         private async Task<bool> OnSaveAsync(Blog item)
         {
-            var result  = await BlogService.Save(item);
+            var result = await BlogService.Save(item);
             return await Task.FromResult(result);
         }
 

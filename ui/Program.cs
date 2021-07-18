@@ -19,7 +19,9 @@ namespace ui
             //
             builder.Services.AddScoped(
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
+            builder.Services.AddSingleton<IBaseService,BaseService>();
             builder.Services.AddSingleton<IBlogService,BlogService>();
+            builder.Services.AddSingleton<INodeService,NodeService>();
             builder.Services.AddSingleton<HttpClient>();
             await builder.Build().RunAsync();
         }
