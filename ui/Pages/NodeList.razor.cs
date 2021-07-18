@@ -6,8 +6,7 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using Entity;
-using Extension;
-using Extension.k8s;
+using Extensions;
 using Newtonsoft.Json;
 
 namespace ui.Pages
