@@ -9,13 +9,13 @@
 }
 else
 {
-    foreach (var node in _nodes)
+    foreach (var node in _nodes.Items)
     {
-        bool isReady=_jsonNode.Status.Conditions.IsReady();
+        bool isReady=node.Status.Conditions.IsReady();
         var color=isReady?Color.Success:Color.Danger ;
         <Card style="width: 18rem;" Color="color" >
             <CardBody>
-                <h5 class="card-title">@_jsonNode.Metadata.Name
+                <h5 class="card-title">@node.Metadata.Name
                  @if (isReady)
                                     {
                                         <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
@@ -32,7 +32,8 @@ else
     </GroupBox>
             </CardBody>
         <CardFooter>
-         <Tag Color="Color.Primary">@node.Architecture</Tag> @node.KubeletVersion @_jsonNode.Metadata.CreationTimestamp?.Age()
+            <Tag Color="Color.Primary">@node.Status.NodeInfo.Architecture</Tag>
+            @node.Status.NodeInfo.KubeletVersion @node.Metadata.CreationTimestamp?.AgeFromUtc()
         </CardFooter>
         </Card>
     }
