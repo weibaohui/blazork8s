@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using k8s.Models;
 
-namespace Extension.k8s
+namespace Extensions.k8s
 {
     public static class ReadyExtension
     {
