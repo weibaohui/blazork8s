@@ -9,17 +9,16 @@ namespace ui.Service.impl
     public class NodeService : INodeService
     {
 
-        [Inject]
-        private IBaseService BaseService { get; set; }
+        private readonly IBaseService _baseService;
 
         public NodeService(IBaseService baseService)
         {
-            BaseService = baseService;
+            _baseService = baseService;
         }
 
         public async Task<JsonNodeList> List()
         {
-            return await BaseService.GetFromJsonAsync<JsonNodeList>("/KubeApi/api/v1/nodes/");
+            return await _baseService.GetFromJsonAsync<JsonNodeList>("/KubeApi/api/v1/nodes/");
          }
     }
 }

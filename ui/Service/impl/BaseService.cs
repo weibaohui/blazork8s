@@ -9,22 +9,21 @@ namespace ui.Service.impl
 {
     public class BaseService : IBaseService
     {
-        [Inject]
-        private HttpClient Http { get; set; }
 
-        [Inject]
-        private IConfiguration Configuration { get; set; }
+        private readonly HttpClient _http;
+
+        private readonly IConfiguration _configuration;
 
         public BaseService(HttpClient http, IConfiguration configuration)
         {
-            Http          = http;
-            Configuration = configuration;
+            _http          = http;
+            _configuration = configuration;
         }
 
 
         private string GetBaseApiUrl()
         {
-            var url = Configuration.GetSection("ClientAppSettings").GetValue<string>("BaseApiUrl");
+            var url = _configuration.GetSection("ClientAppSettings").GetValue<string>("BaseApiUrl");
             return url;
         }
 
@@ -40,12 +39,12 @@ namespace ui.Service.impl
 
         public async Task<T> GetFromJsonAsync<T>(string url)
         {
-            return await Http.GetFromJsonAsync<T>(Url(url));
+            return await _http.GetFromJsonAsync<T>(Url(url));
         }
 
         public async Task<R> PostAsJsonAsync<T, R>(string url, T t)
         {
-            var resp   = await Http.PostAsJsonAsync(Url(url), t);
+            var resp   = await _http.PostAsJsonAsync(Url(url), t);
             var result = await resp.Content.ReadFromJsonAsync<R>();
             return result;
         }

@@ -12,37 +12,33 @@ namespace ui.Service.impl
 {
     public class BlogService : IBlogService
     {
-        [Inject]
-        private IBaseService BaseService { get; set; }
-        [Inject]
-        private HttpClient Http { get; set; }
+        private readonly IBaseService _baseService;
 
 
-        public BlogService(IBaseService baseService, HttpClient http)
+        public BlogService(IBaseService baseService)
         {
-            BaseService = baseService;
-            Http        = http;
+            _baseService = baseService;
         }
 
 
         public async Task<List<Blog>> GetBlogList()
         {
-            return await BaseService.GetFromJsonAsync<List<Blog>>("/Blog/GetBlogs");
+            return await _baseService.GetFromJsonAsync<List<Blog>>("/Blog/GetBlogs");
         }
 
         public async Task<QueryData<Blog>> Query(QueryPageOptions options)
         {
-            return  await BaseService.PostAsJsonAsync<QueryPageOptions,QueryData<Blog>>("/Blog/ListBlogs", options);
+            return  await _baseService.PostAsJsonAsync<QueryPageOptions,QueryData<Blog>>("/Blog/ListBlogs", options);
         }
 
         public async Task<bool> Delete(List<int> ids)
         {
-            return await BaseService.PostAsJsonAsync<List<int>,bool>("/Blog/DeleteBlog", ids);
+            return await _baseService.PostAsJsonAsync<List<int>,bool>("/Blog/DeleteBlog", ids);
         }
 
         public async Task<bool> Save(Blog oldItem)
         {
-             return await BaseService.PostAsJsonAsync<Blog,bool>("/Blog/SaveBlog", oldItem);
+             return await _baseService.PostAsJsonAsync<Blog,bool>("/Blog/SaveBlog", oldItem);
         }
     }
 }
