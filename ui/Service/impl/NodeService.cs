@@ -19,6 +19,6 @@ namespace ui.Service.impl
         public async Task<JsonNodeList> List()
         {
             return await _baseService.GetFromJsonAsync<JsonNodeList>("/KubeApi/api/v1/nodes/");
-         }
+        }
     }
 }

@@ -11,30 +11,40 @@ else
 {
     foreach (var node in _nodes.Items)
     {
-        bool isReady=node.Status.Conditions.IsReady();
-        var color=isReady?Color.Success:Color.Danger ;
-        <Card style="width: 18rem;" Color="color" >
+        bool isReady = node.Status.Conditions.IsReady();
+        var color = isReady ? Color.Success : Color.Danger;
+        <Card style="width: 18rem;" Color="color">
+            <CardHeader>
+                <div>
+                    <p class="card-text"> @node.Metadata.Name</p>
+                    @foreach (var role in node.Metadata.NodeRoles())
+                    {
+                        <Tag ShowBar="true" >@role</Tag>
+                    }
+                </div>
+            </CardHeader>
             <CardBody>
-                <h5 class="card-title">@node.Metadata.Name
-                 @if (isReady)
-                                    {
-                                        <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
-                                    }
-                </h5>
-                <p class="card-text"> </p>
-<GroupBox Title="Pod状态">
-        <p>
-@for(int i=0;i<110;i++){
-<Badge Color="Color.Success" style="padding: 2px;"> <span style="padding: 0 2px;"><i class="fa fa-tv"></i></span>
-</Badge>
-}
-</p>
-    </GroupBox>
+                <GroupBox Title="Pod状态">
+                    <p>
+                        @for (int i = 0; i < 110; i++)
+                        {
+                            <Badge Color="Color.Success" style="padding: 2px;">
+                                <span style="padding: 0 2px;">
+                                    <i class="fa fa-tv"></i>
+                                </span>
+                            </Badge>
+                        }
+                    </p>
+                </GroupBox>
             </CardBody>
-        <CardFooter>
-            <Tag Color="Color.Primary">@node.Status.NodeInfo.Architecture</Tag>
-            @node.Status.NodeInfo.KubeletVersion @node.Metadata.CreationTimestamp?.AgeFromUtc()
-        </CardFooter>
+            <CardFooter>
+                @if (isReady)
+                {
+                    <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
+                }
+                <Tag Color="Color.Primary">@node.Status.NodeInfo.Architecture</Tag>
+                @node.Status.NodeInfo.KubeletVersion @node.Metadata.CreationTimestamp?.AgeFromUtc()
+            </CardFooter>
         </Card>
     }
 }
