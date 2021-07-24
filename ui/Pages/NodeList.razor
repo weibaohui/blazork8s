@@ -1,6 +1,7 @@
 @page "/NodeList"
 @using Extensions
 @using Extensions.k8s
+@using k8s.Models
 @if (_nodes == null)
 {
     <p>
@@ -24,16 +25,21 @@ else
                 </div>
             </CardHeader>
             <CardBody>
-                <GroupBox Title="Pod状态">
+
+                <GroupBox Title="Pod状态 ">
                     <p>
-                        @for (int i = 0; i < 110; i++)
+                        @_pods.CountsOfPodInNode(node.Name())
+                        @foreach (var pod in _pods.PodListInNode(node.Name()))
                         {
                             <Badge Color="Color.Success" style="padding: 2px;">
                                 <span style="padding: 0 2px;">
-                                    <i class="fa fa-tv"></i>
+                                    <i class="fa fa-tv">
+                                        @pod.Name()
+                                    </i>
                                 </span>
                             </Badge>
                         }
+
                     </p>
                 </GroupBox>
             </CardBody>

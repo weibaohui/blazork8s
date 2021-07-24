@@ -2,6 +2,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Entity;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace ui.Service.impl
@@ -16,9 +17,9 @@ namespace ui.Service.impl
             _baseService = baseService;
         }
 
-        public async Task<JsonNodeList> List()
+        public async Task<V1NodeList> List()
         {
-            return await _baseService.GetFromJsonAsync<JsonNodeList>("/KubeApi/api/v1/nodes/");
+            return await _baseService.GetFromJsonAsync<V1NodeList>("/KubeApi/api/v1/nodes/");
         }
     }
 }

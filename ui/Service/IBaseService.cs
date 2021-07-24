@@ -17,5 +17,7 @@ namespace ui.Service
         /// <typeparam name="R">返回参数类型</typeparam>
         /// <returns></returns>
         Task<R> PostAsJsonAsync<T, R>(string url, T t);
-    }
+
+        Task<string> GetStringAsync(string       url);
+     }
 }
