@@ -51,7 +51,7 @@ else
                             }
                             var icon = pod.isReady() ? "fa fa-fw fa-check-circle" : "fa fa-fw fa-warning";
                             <Tag Color="@color" Icon="@icon" style="box-sizing: border-box">
-                                        @pod.Name()
+                                        @pod.Name() @pod.readySummary()
                             </Tag>
                         }
 
