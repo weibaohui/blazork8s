@@ -19,7 +19,7 @@ namespace ui.Pages
         private INodeService NodeService { get; set; }
 
         [Inject]
-        private IPodService _podService { get; set; }
+        private IPodService PodService { get; set; }
 
         private V1NodeList _nodes;
         private V1PodList  _pods;
@@ -27,7 +27,7 @@ namespace ui.Pages
         protected override async Task OnInitializedAsync()
         {
             _nodes = await NodeService.List();
-            _pods  = await _podService.List();
+            _pods  = await PodService.List();
         }
     }
 }
