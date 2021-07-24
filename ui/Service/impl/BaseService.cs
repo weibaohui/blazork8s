@@ -2,14 +2,15 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BootstrapBlazor.Components;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 
 namespace ui.Service.impl
 {
     public class BaseService : IBaseService
     {
-
         private readonly HttpClient _http;
 
         private readonly IConfiguration _configuration;
@@ -37,7 +38,7 @@ namespace ui.Service.impl
             return $"{GetBaseApiUrl()}{url}";
         }
 
-        public async Task<T> GetFromJsonAsync<T>(string url)
+        public async Task<T> GetFromJsonAsyncN<T>(string url)
         {
             return await _http.GetFromJsonAsync<T>(Url(url));
         }
@@ -47,6 +48,17 @@ namespace ui.Service.impl
             var resp   = await _http.PostAsJsonAsync(Url(url), t);
             var result = await resp.Content.ReadFromJsonAsync<R>();
             return result;
+        }
+
+        public async Task<string> GetStringAsync(string url)
+        {
+            return await _http.GetStringAsync(Url(url));
+        }
+
+        public async Task<T> GetFromJsonAsync<T>(string url)
+        {
+            var json = await GetStringAsync(url);
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }
