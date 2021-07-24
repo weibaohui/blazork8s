@@ -20,9 +20,9 @@ else
                     <p class="card-text"> @node.Metadata.Name</p>
                     @foreach (var role in node.Metadata.NodeRoles())
                     {
-                        <Tag ShowBar="true" >@role</Tag>
+                        <Tag ShowBar="true">@role</Tag>
                     }
-                   Pods:@_pods.CountsOfPodInNode(node.Name())
+                    Pods:@_pods.CountsOfPodInNode(node.Name())
                 </div>
             </CardHeader>
             <CardBody>
@@ -32,13 +32,27 @@ else
 
                         @foreach (var pod in _pods.PodListInNode(node.Name()))
                         {
-                            <Badge Color="Color.Success" style="padding: 2px;">
-                                <span style="padding: 0 2px;">
-                                    <i class="fa fa-tv">
+                            var color = Color.Warning;
+                            if (pod.Status() == "Running")
+                            {
+                                color = Color.Success;
+                            }
+                            if (pod.Status() == "Succeeded")
+                            {
+                                color = Color.Dark;
+                            }
+                            if (pod.Status() == "Terminating")
+                            {
+                                color = Color.Danger;
+                            }
+                            if (pod.Status() == "Failed")
+                            {
+                                color = Color.Danger;
+                            }
+                            var icon = pod.isReady() ? "fa fa-fw fa-check-circle" : "fa fa-fw fa-warning";
+                            <Tag Color="@color" Icon="@icon" style="box-sizing: border-box">
                                         @pod.Name()
-                                    </i>
-                                </span>
-                            </Badge>
+                            </Tag>
                         }
 
                     </p>
