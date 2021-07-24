@@ -45,6 +45,12 @@ namespace Extensions.k8s
             return pods.Items.Where(w => w.Spec.NodeName == nodeName).ToList();
         }
 
+        public static string readySummary(this IList<V1Pod> pods)
+        {
+            var count      = pods.Count;
+            var readyCount = pods.Count(w => isReady(w));
+            return $"{readyCount}/{count}";
+        }
         public static bool isReady(this V1Pod pod)
         {
             foreach (var condition in pod.Status.Conditions)
@@ -115,5 +121,6 @@ namespace Extensions.k8s
                 .Where(w => w.Ready).Count() ?? 0;
             return $"{readyCount}/{count}";
         }
+
     }
 }

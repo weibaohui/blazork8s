@@ -22,7 +22,7 @@ else
                     {
                         <Tag ShowBar="true">@role</Tag>
                     }
-                    Pods:@_pods.CountsOfPodInNode(node.Name())
+                    Pods:@_pods.PodListInNode(node.Name()).readySummary()
                 </div>
             </CardHeader>
             <CardBody>
@@ -51,7 +51,8 @@ else
                             }
                             var icon = pod.isReady() ? "fa fa-fw fa-check-circle" : "fa fa-fw fa-warning";
                             <Tag Color="@color" Icon="@icon" style="box-sizing: border-box">
-                                        @pod.Name() @pod.readySummary()
+                                @* @pod.Name() @pod.readySummary() *@
+                                &nbsp;
                             </Tag>
                         }
 

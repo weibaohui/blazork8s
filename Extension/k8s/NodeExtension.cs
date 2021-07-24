@@ -32,5 +32,6 @@ namespace Extensions.k8s
                 .Select(d => d.Key.Replace("node-role.kubernetes.io/", ""))
                 .ToList();
         }
+
     }
 }
