@@ -6,7 +6,7 @@ using Microsoft.VisualBasic;
 
 namespace Extensions.k8s
 {
-    public static class ReadyExtension
+    public static class Extension
     {
         public static bool IsReady(this IList<V1NodeCondition> conditions)
         {
@@ -20,21 +20,17 @@ namespace Extensions.k8s
             return false;
         }
 
+        /// <summary>
+        /// 获取节点角色
+        /// </summary>
+        /// <param name="meta"></param>
+        /// <returns></returns>
         public static IList<string> NodeRoles(this V1ObjectMeta meta)
         {
-            // "items[0].metadata.labels["node-role.kubernetes.io/master"]"
-            // items[0].metadata.labels["node-role.kubernetes.io/control-plane"]
-            IList<string> roles=new List<string>();
-            if (meta.Labels.ContainsKey("node-role.kubernetes.io/master"))
-            {
-                roles.Add("Master");
-            }
-            if (meta.Labels.ContainsKey("node-role.kubernetes.io/control-plane"))
-            {
-                roles.Add("ControlPlane");
-            }
-
-            return roles;
+            return meta.Labels
+                .Where(w => w.Key.StartsWith("node-role.kubernetes.io/"))
+                .Select(d => d.Key.Replace("node-role.kubernetes.io/", ""))
+                .ToList();
         }
     }
 }
