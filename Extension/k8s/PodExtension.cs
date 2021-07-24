@@ -71,10 +71,11 @@ namespace Extensions.k8s
         {
             var phase = pod.Status.Phase;
 
-            if (pod.Status.ContainerStatuses==null)
+            if (pod.Status.ContainerStatuses == null)
             {
                 return phase;
             }
+
             var phaseList = pod.Status.ContainerStatuses
                 .Select(s => s.State)
                 .Select(s =>
@@ -83,10 +84,12 @@ namespace Extensions.k8s
                     {
                         return "Terminating";
                     }
+
                     if (s.Waiting != null)
                     {
                         return s.Waiting.Reason;
                     }
+
                     return string.Empty;
                 }).Where(w => !string.IsNullOrWhiteSpace(w)).ToList();
 
@@ -98,6 +101,19 @@ namespace Extensions.k8s
             {
                 return phaseList.First();
             }
+        }
+
+        /// <summary>
+        /// 获得Pod中Ready容器数量
+        /// </summary>
+        /// <param name="pod"></param>
+        /// <returns></returns>
+        public static string readySummary(this V1Pod pod)
+        {
+            var count = pod.Spec.Containers.Count;
+            var readyCount = pod.Status.ContainerStatuses?
+                .Where(w => w.Ready).Count() ?? 0;
+            return $"{readyCount}/{count}";
         }
     }
 }
