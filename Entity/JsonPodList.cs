@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Entity
 {
-    public class JsonNodeList
+    public class JsonPodList
     {
         [JsonProperty(PropertyName = "apiVersion")]
         public string ApiVersion { get; set; }
@@ -17,7 +17,7 @@ namespace Entity
         public V1ObjectMeta Metadata { get; set; }
 
         [JsonProperty(PropertyName = "items")]
-        public IList<JsonNode> Items { get; set; }
+        public IList<JsonPod> Items { get; set; }
 
     }
 
