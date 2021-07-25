@@ -15,6 +15,8 @@ namespace ui.Pages
 {
     public partial class NodeList : ComponentBase
     {
+
+
         [Inject]
         private INodeService NodeService { get; set; }
 

@@ -16,11 +16,11 @@ namespace server.Service
         private static readonly Lazy<NodeService>    Lazy    = new Lazy<NodeService>(() => new NodeService());
         public static           NodeService          Instance => Lazy.Value;
 
-        private List<Node> nodeList = new();
+        private readonly List<Node> _nodeList = new();
 
         public void AddNode(V1Node node)
         {
-            var exist = nodeList.Any(r => r.Name == node.Metadata.Name);
+            var exist = _nodeList.Any(r => r.Name == node.Metadata.Name);
             if (!exist)
             {
                 //不存在
@@ -41,7 +41,7 @@ namespace server.Service
                     }
                 }
 
-                nodeList.Add(item);
+                _nodeList.Add(item);
             }
             else
             {
@@ -53,13 +53,13 @@ namespace server.Service
         public void ModifyNode(V1Node node)
         {
             _logger.LogInformation("更新1");
-            nodeList.First(r => r.Name == node.Metadata.Name).OriginNode = node;
+            _nodeList.First(r => r.Name == node.Metadata.Name).OriginNode = node;
         }
 
         public void RemoveNode(V1Node node)
         {
-            var i = nodeList.FindIndex(r => r.Name == node.Metadata.Name);
-            nodeList.RemoveAt(i);
+            var i = _nodeList.FindIndex(r => r.Name == node.Metadata.Name);
+            _nodeList.RemoveAt(i);
         }
 
         public IEnumerable<Node> GetList()
@@ -67,11 +67,11 @@ namespace server.Service
             // var result = from node in nodeList
             //     select new Node {Name = node.Metadata.Name};
             // return result;
-            return nodeList;
+            return _nodeList;
         }
         public IEnumerable<V1Node> GetOriginNodesList()
         {
-            var result = from node in nodeList
+            var result = from node in _nodeList
                 select node.OriginNode;
             return result.AsEnumerable();
         }
