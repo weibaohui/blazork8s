@@ -5,8 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="FreeSql" Version="2.5.200" />
-      <PackageReference Include="KubernetesClient" Version="5.0.13" />
+        <PackageReference Include="KubernetesClient" Version="5.0.15" />
     </ItemGroup>
 
 </Project>

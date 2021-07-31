@@ -60,12 +60,16 @@ else
                 </GroupBox>
             </CardBody>
             <CardFooter>
-                @if (isReady)
+            @if (isReady)
                 {
                     <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
                 }
+<Tag Icon="fa fa-clock-o" >@node.Metadata.CreationTimestamp?.AgeFromUtc()</Tag>
+
+
                 <Tag Color="Color.Primary">@node.Status.NodeInfo.Architecture</Tag>
-                @node.Status.NodeInfo.KubeletVersion @node.Metadata.CreationTimestamp?.AgeFromUtc()
+                @node.Status.NodeInfo.KubeletVersion
+
             </CardFooter>
         </Card>
     }

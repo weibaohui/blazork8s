@@ -52,7 +52,6 @@ namespace ui.Shared
                 new MenuItem() { Text = "Index", Icon = "fa fa-fw fa-fa", Url = "/" , Match = NavLinkMatch.All},
                 new MenuItem() { Text = "Counter", Icon = "fa fa-fw fa-check-square-o", Url = "/counter" },
                 new MenuItem() { Text = "FetchData", Icon = "fa fa-fw fa-database", Url = "fetchdata" },
-                new MenuItem() { Text = "Blog", Icon = "fa fa-fw fa-table", Url = "Blog" },
                 new MenuItem() { Text = "NodeList", Icon = "fa fa-fw fa-table", Url = "NodeList" }
             };
 
