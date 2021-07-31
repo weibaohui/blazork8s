@@ -13,15 +13,12 @@ else
     foreach (var node in _nodes.Items)
     {
         bool isReady = node.Status.Conditions.IsReady();
-        var color = isReady ? "success" : "error";
-        <Card  Title=@node.Metadata.Name>
-
+         <Card   Hoverable Title=@node.Metadata.Name>
 <CardTabs>
             <Tabs DefaultActiveKey="1">
                 <TabPane Key="1">
                     <TabTemplate>基本信息</TabTemplate>
- <ChildContent>
-
+                <ChildContent>
                 <div>
 @if (isReady)
                             {
@@ -67,12 +64,19 @@ else
                                 color = "error";
                             }
                             var icon = pod.isReady() ? "check-circle" : "clock-circle";
-                            <Tag Color="@color" Icon="@icon" style="box-sizing: border-box">
-                                @* @pod.Name() @pod.readySummary() *@
-                                &nbsp;
-                            </Tag>
-                        }
 
+<Popover   Title=@pod.Name()
+ Trigger="@(new AntDesign.TriggerType[] { AntDesign.TriggerType.Hover})">
+            <ContentTemplate>
+                    <div>@pod.readySummary()</div>
+            </ContentTemplate>
+            <ChildContent>
+               <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
+            </ChildContent>
+    </Popover>
+
+
+                        }
                     </p>
 </ChildContent>
                 </TabPane>
