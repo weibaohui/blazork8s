@@ -21,6 +21,8 @@ namespace ui.Pages
         private INodeService NodeService { get; set; }
 
         [Inject]
+        private INodeApi _nodeApi { get; set; }
+        [Inject]
         private IPodService PodService { get; set; }
 
         private V1NodeList _nodes;
