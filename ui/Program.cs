@@ -1,13 +1,12 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AutoMapper;
+using AntDesign.ProLayout;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using ui.Service;
 using ui.Service.impl;
-using WebApiClientCore.Serialization.JsonConverters;
 
 namespace ui
 {
@@ -18,9 +17,8 @@ namespace ui
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            builder.Services.AddBootstrapBlazor();
-
-            //
+            builder.Services.AddAntDesign();
+            builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
             builder.Services.AddScoped(
                 sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
             builder.Services.AddScoped<IBaseService,BaseService>();

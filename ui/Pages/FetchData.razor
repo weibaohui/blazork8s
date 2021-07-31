@@ -1,6 +1,6 @@
 ﻿@page "/fetchdata"
 @using Entity
- 
+
 
 <h1>Weather forecast</h1>
 
@@ -8,7 +8,9 @@
 <p>ok33</p>
 @if (forecasts == null)
 {
-    <p><em>Loading...</em></p>
+    <p>
+        <em>Loading...</em>
+    </p>
 }
 else
 {
@@ -35,41 +37,46 @@ else
         }
         </tbody>
     </table>
-    <ListView TItem="WeatherForecast" Items="@forecasts" >
-        <HeaderTemplate>
-            <div>产品列表</div>
-        </HeaderTemplate>
-        <BodyTemplate>
-         <Card Color="Color.Dark" Class="ml-3  mt-2" IsCenter="true" style="width: 18rem;">
-                    <CardHeader>
-                        @context.Summary
-                    </CardHeader>
-                    <CardBody>
-                        <h5 class="card-title">@context.X</h5>
-                        <p class="card-text">  @context.Date.ToShortDateString() 
-                                               @context.TemperatureC 
-                                               @context.TemperatureF 
-                                               @context.Summary 
-                                               @context.X 
-                        </p>
-                    </CardBody>
-                </Card>
-        </BodyTemplate>
-    </ListView>
-     
-<Block Title="基础表格" Introduction="基础的表格展示用法。" >
-
-  <Table TItem="WeatherForecast"  Items="@forecasts"  IsPagination="true" PageItemsSource="@PageItemsSource" ShowLineNo="true"
-                                                       IsStriped="true" IsBordered="true" IsMultipleSelect="true"
-                                                       ShowToolbar="true" ShowExtendButtons="true" ShowSkeleton="true">
-        <TableColumns>
-            <TableColumn @bind-Field="@context.X" />
-            <TableColumn @bind-Field="@context.Summary" />
-            <TableColumn @bind-Field="@context.TemperatureC" />
-            <TableColumn @bind-Field="@context.TemperatureC" />
-            <TableColumn @bind-Field="@context.Date" />
-        </TableColumns>
-    </Table>
-</Block>
+    <AntList DataSource="@forecasts" TItem="WeatherForecast">
+        <ListItem >
+            <Card Bordered Title="@context.Summary">
+                <Body>
+                <h5 class="card-title">@context.X</h5>
+                <p class="card-text">
+                    @context.Date.ToShortDateString()
+                    @context.TemperatureC
+                    @context.TemperatureF
+                    @context.Summary
+                    @context.X
+                </p>
+                </Body>
+            </Card>
+        </ListItem>
+    </AntList>
+    @* *@
+    @* <Table @ref="table" *@
+    @*        TItem="WeatherForecast" *@
+    @*        DataSource="@forecasts" *@
+    @*        Total="_total" *@
+    @*        @bind-PageIndex="_pageIndex" *@
+    @*        @bind-PageSize="_pageSize" *@
+    @*        @bind-SelectedRows="selectedRows" *@
+    @*        OnChange="OnChange"> *@
+    @*     <Selection Key="@(context.X.ToString())"/> *@
+    @*     <Column @bind-Field="@context.Id" Sortable/> *@
+    @*     <Column @bind-Field="@context.Date" Format="yyyy-MM-dd" Sortable/> *@
+    @*     <Column @bind-Field="@context.TemperatureC" Sortable/> *@
+    @*     <Column Title="Temp. (F)" Field="@context.TemperatureF"/> *@
+    @*     <Column Title="Hot" Field="@context.Hot"> *@
+    @*         <Switch @bind-Value="@context.Hot"></Switch> *@
+    @*     </Column> *@
+    @*     <Column @bind-Field="@context.Summary" Sortable/> *@
+    @*     <ActionColumn> *@
+    @*         <Space> *@
+    @*             <SpaceItem> *@
+    @*                 <Button Danger OnClick="() => Delete(context.Id)">Delete</Button> *@
+    @*             </SpaceItem> *@
+    @*         </Space> *@
+    @*     </ActionColumn> *@
+    @* </Table> *@
 }
- 

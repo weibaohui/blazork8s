@@ -1,27 +1,36 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using BootstrapBlazor.Components;
+using AntDesign;
+using AntDesign.TableModels;
 using Entity;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Localization;
+using Newtonsoft.Json;
 
 namespace ui.Pages
 {
-    public partial class FetchData:ComponentBase
+    public partial class FetchData : ComponentBase
     {
-         WeatherForecast[] forecasts;
-        [Inject]
-        private HttpClient Http  { get; set; }
+        WeatherForecast[] forecasts;
 
-        protected override async Task  OnInitializedAsync()
+        [Inject]
+        private HttpClient Http { get; set; }
+
+        int                          _pageIndex = 1;
+        int                          _pageSize  = 10;
+        int                          _total     = 0;
+        IEnumerable<WeatherForecast> selectedRows;
+        ITable                       table;
+        protected override async Task OnInitializedAsync()
         {
+            _total    = 50;
             forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("https://localhost:4001/WeatherForecast");
         }
+
         public class Data
         {
             [DisplayName("Key")]
@@ -44,32 +53,45 @@ namespace ui.Pages
         {
             new()
             {
-                Key = "1",
-                Name = "John Brown",
-                Age = 32,
+                Key     = "1",
+                Name    = "John Brown",
+                Age     = 32,
                 Address = "New York No. 1 Lake Park",
-                Tags = new[] {"nice", "developer"}
+                Tags    = new[] {"nice", "developer"}
             },
             new()
             {
-                Key = "2",
-                Name = "Jim Green",
-                Age = 42,
+                Key     = "2",
+                Name    = "Jim Green",
+                Age     = 42,
                 Address = "London No. 1 Lake Park",
-                Tags = new[] { "loser"}
+                Tags    = new[] {"loser"}
             },
             new()
             {
-                Key = "3",
-                Name = "Joe Black",
-                Age = 32,
+                Key     = "3",
+                Name    = "Joe Black",
+                Age     = 32,
                 Address = "Sidney No. 1 Lake Park",
-                Tags = new[] { "cool", "teacher" }
+                Tags    = new[] {"cool", "teacher"}
             }
         }.ToList();
 
-        private static IEnumerable<int> PageItemsSource => new int[] { 4, 10, 20 };
+        private static IEnumerable<int> PageItemsSource => new int[] {4, 10, 20};
+        public async Task OnChange(QueryModel<WeatherForecast> queryModel)
+        {
+            Console.WriteLine(JsonConvert.SerializeObject(queryModel));
+        }
+        public void RemoveSelection(int id)
+        {
+            var selected = selectedRows.Where(x => x.Id != id);
+            selectedRows = selected;
+        }
 
-
+        private void Delete(int id)
+        {
+            forecasts = forecasts.Where(x => x.Id != id).ToArray();
+            _total    = forecasts.Length;
+        }
     }
 }

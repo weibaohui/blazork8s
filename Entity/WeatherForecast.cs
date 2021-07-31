@@ -5,6 +5,8 @@ namespace Entity
 {
     public class WeatherForecast
     {
+        public int Id { get; set; }
+
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }
@@ -13,6 +15,8 @@ namespace Entity
 
         [Display(Name = "Summary")]
         public string Summary { get; set; }
-        public string X { get; set; }
+
+        public string X   { get; set; }
+        public bool   Hot { get; set; }
     }
 }

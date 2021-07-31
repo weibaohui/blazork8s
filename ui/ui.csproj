@@ -6,7 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="5.4.2" />
+        <PackageReference Include="AntDesign" Version="0.9.0" />
+        <PackageReference Include="AntDesign.Charts" Version="0.2.1" />
+        <PackageReference Include="AntDesign.ProLayout" Version="0.1.3" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.6.21355.2" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.6.21355.2" PrivateAssets="all" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -22,11 +24,29 @@
     </ItemGroup>
 
     
+ 
+ 
 
-    <ItemGroup>
-      <Content Update="wwwroot\appsettings.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </Content>
-    </ItemGroup>
+    <PropertyGroup Condition=" '$(SolutionDir)'==''">
+        <SolutionDir>./</SolutionDir>
+    </PropertyGroup>
 
+    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SolutionDir)node_modules') ">
+        <!-- Ensure Node.js is installed -->
+        <Exec Command="node --version" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+        </Exec>
+        <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+        <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+        <Exec WorkingDirectory="$(SolutionDir)" Command="npm install" />
+    </Target>
+
+    <Target Name="DebugRunGulp" BeforeTargets="DebugEnsureNodeEnv" Condition=" '$(Configuration)' == 'Debug' And Exists('$(SolutionDir)node_modules') ">
+        <Exec WorkingDirectory="$(SolutionDir)" Command="npm run gulp:pro" />
+    </Target>
+
+    <Target Name="PublishRunGulp" AfterTargets="ComputeFilesToPublish">
+        <Exec WorkingDirectory="$(SolutionDir)" Command="npm install" />
+        <Exec WorkingDirectory="$(SolutionDir)" Command="npm run gulp:pro" />
+    </Target>
 </Project>

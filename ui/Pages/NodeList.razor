@@ -13,43 +13,60 @@ else
     foreach (var node in _nodes.Items)
     {
         bool isReady = node.Status.Conditions.IsReady();
-        var color = isReady ? Color.Success : Color.Danger;
-        <Card style="width: 18rem;" Color="color">
-            <CardHeader>
+        var color = isReady ? "success" : "error";
+        <Card  Title=@node.Metadata.Name>
+
+<CardTabs>
+            <Tabs DefaultActiveKey="1">
+                <TabPane Key="1">
+                    <TabTemplate>基本信息</TabTemplate>
+ <ChildContent>
+
                 <div>
-                    <p class="card-text"> @node.Metadata.Name</p>
+@if (isReady)
+                            {
+                                <Tag Icon="check-circle" Color="success">Ready</Tag>
+                            }
                     @foreach (var role in node.Metadata.NodeRoles())
                     {
-                        <Tag ShowBar="true">@role</Tag>
+                        <Tag >@role</Tag>
                     }
-                    Pods:@_pods.PodListInNode(node.Name()).readySummary()
                 </div>
-            </CardHeader>
-            <CardBody>
 
-                <GroupBox Title="Pod状态 ">
+
+
+                            <Tag Icon="clock-circle" >@node.Metadata.CreationTimestamp?.AgeFromUtc()</Tag>
+                            <Tag Color="processing">@node.Status.NodeInfo.Architecture</Tag>
+                            @node.Status.NodeInfo.KubeletVersion
+
+
+          </ChildContent>
+
+                </TabPane>
+                <TabPane Key="2">
+                    <TabTemplate>Pod状态@_pods.PodListInNode(node.Name()).readySummary()</TabTemplate>
+                    <ChildContent>
                     <p>
-
                         @foreach (var pod in _pods.PodListInNode(node.Name()))
                         {
-                            var color = Color.Warning;
+                            var color = "processing";
                             if (pod.Status() == "Running")
                             {
-                                color = Color.Success;
+                                color = "success";
                             }
                             if (pod.Status() == "Succeeded")
                             {
-                                color = Color.Dark;
+                                color = "success";
                             }
                             if (pod.Status() == "Terminating")
                             {
-                                color = Color.Danger;
+                                color = "warning";
                             }
                             if (pod.Status() == "Failed")
                             {
-                                color = Color.Danger;
+                                color = "error";
                             }
-                            var icon = pod.isReady() ? "fa fa-fw fa-check-circle" : "fa fa-fw fa-warning";
+                            var icon = pod.isReady() ? "check-circle" : "clock-circle";
                             <Tag Color="@color" Icon="@icon" style="box-sizing: border-box">
                                 @* @pod.Name() @pod.readySummary() *@
                                 &nbsp;
@@ -57,20 +74,20 @@ else
                         }
 
                     </p>
-                </GroupBox>
-            </CardBody>
-            <CardFooter>
-            @if (isReady)
-                {
-                    <Tag Icon="fa fa-check-circle" Color="Color.Success">Ready</Tag>
-                }
-<Tag Icon="fa fa-clock-o" >@node.Metadata.CreationTimestamp?.AgeFromUtc()</Tag>
+</ChildContent>
+                </TabPane>
+                <TabPane Key="3">
+                    <TabTemplate>Tab 3</TabTemplate>
+                    <ChildContent>Content of Tab Pane 3</ChildContent>
+                </TabPane>
+            </Tabs>
+        </CardTabs>
 
-
-                <Tag Color="Color.Primary">@node.Status.NodeInfo.Architecture</Tag>
-                @node.Status.NodeInfo.KubeletVersion
-
-            </CardFooter>
+<ActionTemplate>
+                <CardAction><Icon Type="setting"  /></CardAction>
+                <CardAction><Icon Type="edit"   /></CardAction>
+                <CardAction><Icon Type="ellipsis"   /></CardAction>
+            </ActionTemplate>
         </Card>
     }
 }
