@@ -5,3 +5,5 @@ riderModule.iml
 /_ReSharper.Caches/
 .idea/
 .vscode/
+ui/node_modules
+ui/package-lock.json
