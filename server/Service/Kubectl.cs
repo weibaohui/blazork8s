@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Entity;
 using k8s;
-using k8s.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using server.Utils;
@@ -15,7 +13,7 @@ namespace server.Service
     {
         private readonly ILogger<Kubectl> _logger = ServiceHelper.Services.GetService<ILogger<Kubectl>>();
 
-        private static readonly Lazy<Kubectl> Lazy = new Lazy<Kubectl>(() => new Kubectl());
+        private static readonly Lazy<Kubectl> Lazy = new(() => new Kubectl());
 
         public static Kubectl Instance => Lazy.Value;
 
@@ -35,7 +33,7 @@ namespace server.Service
 
         public async Task getNodes()
         {
-            var url = "/api/v1/nodes/docker-desktop";
+            var url      = "/api/v1/nodes/docker-desktop";
             var nodeList = await GetResource<JsonNode>(url);
             var capacity = nodeList.Status.Capacity;
             foreach (var kv in capacity)

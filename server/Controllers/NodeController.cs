@@ -3,7 +3,6 @@ using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using server.Model;
 using server.Service;
 
 namespace server.Controllers
@@ -23,9 +22,9 @@ namespace server.Controllers
         [Route("[action]")]
         public IEnumerable<Node> GetNodes()
         {
-
             return NodeService.Instance.GetList();
         }
+
         [HttpGet]
         [Route("[action]")]
         public IEnumerable<V1Node> GetOriginNodes()

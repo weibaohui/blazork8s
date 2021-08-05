@@ -1,5 +1,3 @@
-using System;
-using System.Data.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,17 +14,14 @@ namespace server
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-
         }
 
-        public IConfiguration Configuration { get; }
-        public ILoggerFactory Factory       { get; set; }
+        private IConfiguration Configuration { get; }
+        public  ILoggerFactory Factory       { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
             #region CORS
 
             services.AddCors(options =>
@@ -38,11 +33,10 @@ namespace server
             #endregion
 
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "server", Version = "v1"}); });
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "server", Version = "v1" }); });
             services.AddSingleton<Watcher>();
             services.AddSingleton<PodWatcher>();
             services.AddSingleton<NodeWatcher>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +56,6 @@ namespace server
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
         }
     }
 }

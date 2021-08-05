@@ -1,9 +1,6 @@
-using System;
 using System.Threading.Tasks;
 using System.Web;
-using k8s;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.Logging;
 using server.Service;
 
@@ -11,7 +8,7 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class KubeApiController:ControllerBase
+    public class KubeApiController : ControllerBase
     {
         private readonly ILogger<KubeApiController> _logger;
 
@@ -30,7 +27,7 @@ namespace server.Controllers
         public Task<string> GetResourceJson(string api)
         {
             //默认增加/根路径
-            api=HttpUtility.UrlDecode(api);
+            api = HttpUtility.UrlDecode(api);
             return Kubectl.Instance.GetResourceJson($"/{api}");
         }
     }

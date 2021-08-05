@@ -1,18 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using k8s;
-using k8s.Models;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using server.Service;
-using server.Service.K8s;
 using server.Utils;
 
 namespace server
@@ -21,14 +10,12 @@ namespace server
     {
         public static void Main(string[] args)
         {
-            var host    = CreateHostBuilder(args).Build();
+            var host = CreateHostBuilder(args).Build();
             ServiceHelper.Services = host.Services;
             // var watcher = ServiceHelper.Services.GetService<Watcher>();
             // if (watcher != null) watcher.StartWatch();
             host.Run();
         }
-
-
 
 
         public static void Exec()

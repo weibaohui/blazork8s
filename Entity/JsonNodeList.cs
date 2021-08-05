@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using k8s.Models;
 using Newtonsoft.Json;
@@ -18,8 +17,5 @@ namespace Entity
 
         [JsonProperty(PropertyName = "items")]
         public IList<JsonNode> Items { get; set; }
-
     }
-
-    
 }

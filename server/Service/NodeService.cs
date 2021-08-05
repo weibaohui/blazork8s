@@ -5,16 +5,15 @@ using Entity;
 using k8s.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using server.Model;
 using server.Utils;
 
 namespace server.Service
 {
     public class NodeService
     {
-        private readonly        ILogger<NodeService> _logger =ServiceHelper.Services.GetService<ILogger<NodeService>>();
-        private static readonly Lazy<NodeService>    Lazy    = new Lazy<NodeService>(() => new NodeService());
-        public static           NodeService          Instance => Lazy.Value;
+        private readonly ILogger<NodeService> _logger = ServiceHelper.Services.GetService<ILogger<NodeService>>();
+        private static readonly Lazy<NodeService> Lazy = new(() => new NodeService());
+        public static NodeService Instance => Lazy.Value;
 
         private readonly List<Node> _nodeList = new();
 
@@ -24,20 +23,21 @@ namespace server.Service
             if (!exist)
             {
                 //不存在
-                var item = new Node {Name = node.Name(), OriginNode = node};
+                var item = new Node { Name = node.Name(), OriginNode = node };
 
                 foreach (var kv in node.Status.Capacity)
                 {
-                    if (kv.Key=="cpu"||kv.Key=="memory"||kv.Key=="pods")
+                    if (kv.Key == "cpu" || kv.Key == "memory" || kv.Key == "pods")
                     {
-                        item.Capacity.Add(kv.Key,kv.Value.ToString());
+                        item.Capacity.Add(kv.Key, kv.Value.ToString());
                     }
                 }
+
                 foreach (var kv in node.Status.Allocatable)
                 {
-                    if (kv.Key=="cpu"||kv.Key=="memory"||kv.Key=="pods")
+                    if (kv.Key == "cpu" || kv.Key == "memory" || kv.Key == "pods")
                     {
-                        item.Allocatable.Add(kv.Key,kv.Value.ToString());
+                        item.Allocatable.Add(kv.Key, kv.Value.ToString());
                     }
                 }
 
@@ -69,6 +69,7 @@ namespace server.Service
             // return result;
             return _nodeList;
         }
+
         public IEnumerable<V1Node> GetOriginNodesList()
         {
             var result = from node in _nodeList
