@@ -12,7 +12,6 @@ namespace ui
 {
     public class Program
     {
-
         public static async Task Main(string[] args)
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
@@ -20,10 +19,11 @@ namespace ui
             builder.Services.AddAntDesign();
             builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
             builder.Services.AddScoped(
-                sp => new HttpClient {BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)});
-            builder.Services.AddScoped<IBaseService,BaseService>();
-            builder.Services.AddScoped<INodeService,NodeService>();
-            builder.Services.AddScoped<IPodService,PodService>();
+                sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<IBaseService, BaseService>();
+            builder.Services.AddScoped<INodeService, NodeService>();
+            builder.Services.AddScoped<IPodService, PodService>();
+            builder.Services.AddScoped<IK8s, K8sService>();
 
             //webapi
             builder.Services.AddHttpApi<INodeApi>()
@@ -31,7 +31,8 @@ namespace ui
                 {
                     o.JsonSerializeOptions.NullValueHandling   = NullValueHandling.Ignore;
                     o.JsonDeserializeOptions.NullValueHandling = NullValueHandling.Ignore;
-                });;
+                });
+            ;
             await builder.Build().RunAsync();
         }
     }
