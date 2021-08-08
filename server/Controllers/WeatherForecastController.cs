@@ -11,7 +11,7 @@ namespace server.Controllers
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
+        private static readonly string[] Summaries =
         {
             "xx", "yy", "zz", "hh", "nn", "mm", "vv", "bb", "ss", "kk"
         };
@@ -29,10 +29,10 @@ namespace server.Controllers
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
                 {
-                    Date = DateTime.Now.AddDays(index),
+                    Date         = DateTime.Now.AddDays(index),
                     TemperatureC = rng.Next(-8, 8),
-                    Summary = Summaries[rng.Next(Summaries.Length)],
-                    X="xx"
+                    Summary      = Summaries[rng.Next(Summaries.Length)],
+                    X            = "xx"
                 })
                 .ToArray();
         }
