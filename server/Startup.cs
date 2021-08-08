@@ -1,10 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using server.Middleware;
 using server.Service.K8s;
 
 namespace server
@@ -17,7 +18,6 @@ namespace server
         }
 
         private IConfiguration Configuration { get; }
-        public  ILoggerFactory Factory       { get; set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,6 +37,18 @@ namespace server
             services.AddSingleton<Watcher>();
             services.AddSingleton<PodWatcher>();
             services.AddSingleton<NodeWatcher>();
+            services.AddSingleton<RequestLoggingMiddleware>();
+
+            services.AddHttpLogging(logging =>
+            {
+                // Customize HTTP logging here.
+                logging.LoggingFields = HttpLoggingFields.All;
+                logging.RequestHeaders.Add("My-Request-Header");
+                logging.ResponseHeaders.Add("My-Response-Header");
+                logging.MediaTypeOptions.AddText("application/javascript");
+                logging.RequestBodyLogLimit  = 4096;
+                logging.ResponseBodyLogLimit = 4096;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,10 +62,13 @@ namespace server
             }
 
             app.UseHttpsRedirection();
-
+            app.UseHttpLogging();
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
+
+            // app.UseMiddleware<RequestLoggingMiddleware>();
+
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
