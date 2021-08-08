@@ -1,10 +1,10 @@
 using System;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Entity;
 using k8s;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using server.Utils;
 
 namespace server.Service
@@ -31,16 +31,6 @@ namespace server.Service
             return _client;
         }
 
-        public async Task getNodes()
-        {
-            var url      = "/api/v1/nodes/docker-desktop";
-            var nodeList = await GetResource<JsonNode>(url);
-            var capacity = nodeList.Status.Capacity;
-            foreach (var kv in capacity)
-            {
-                Console.WriteLine($"{kv.Key}-{kv.Value}");
-            }
-        }
 
         public async Task<string> GetResourceJson(string url)
         {
@@ -60,6 +50,13 @@ namespace server.Service
                 _logger.LogError(e.Message);
                 throw;
             }
+        }
+
+
+        public async Task<T> GetFromJsonAsync<T>(string url)
+        {
+            var json = await GetResourceJson(url);
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }
