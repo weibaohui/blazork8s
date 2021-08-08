@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using server.Middleware;
 using server.Service.K8s;
 
 namespace server
@@ -37,7 +36,7 @@ namespace server
             services.AddSingleton<Watcher>();
             services.AddSingleton<PodWatcher>();
             services.AddSingleton<NodeWatcher>();
-            services.AddSingleton<RequestLoggingMiddleware>();
+            // services.AddSingleton<RequestLoggingMiddleware>();
 
             services.AddHttpLogging(logging =>
             {
