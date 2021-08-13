@@ -6,9 +6,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="BootstrapBlazor" Version="5.4.2" />
-        <PackageReference Include="KubernetesClient" Version="5.0.15" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
+        <PackageReference Include="KubernetesClient" Version="5.0.20"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.5"/>
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Entity\Entity.csproj" />

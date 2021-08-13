@@ -38,8 +38,7 @@ Response Body:{}
                 context.Request.ContentType,
                 context.Request.ContentLength,
                 startTime,
-                watch.ElapsedMilliseconds,
-                context.Response.Body);
+                watch.ElapsedMilliseconds);
 
             return result;
         }
