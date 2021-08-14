@@ -1,0 +1,19 @@
+@using Extensions.k8s
+@using Extensions
+<div>
+    @if (Node.Status.Conditions.IsReady())
+    {
+        <Tag Icon="check-circle" Color="success">Ready</Tag>
+    }
+    @foreach (var role in Node.Metadata.NodeRoles())
+    {
+        <Tag >@role</Tag>
+    }
+</div>
+
+<Tag Icon="clock-circle">@Node.Metadata.CreationTimestamp?.AgeFromUtc()</Tag>
+<Tag Color="processing">@Node.Status.NodeInfo.Architecture</Tag>
+<Tag Color="processing">kubelet:@Node.Status.NodeInfo.KubeletVersion</Tag>
+<Tag Color="processing">kubeProxy:@Node.Status.NodeInfo.KubeProxyVersion</Tag>
+<Tag Color="processing">OS:@Node.Status.NodeInfo.OsImage</Tag>
+<Tag Color="processing">CRV:@Node.Status.NodeInfo.ContainerRuntimeVersion</Tag>

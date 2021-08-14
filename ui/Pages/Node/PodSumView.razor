@@ -1,0 +1,38 @@
+@using Extensions.k8s
+@using k8s.Models
+<h3>PodSumView</h3>
+@if (_pods != null)
+{
+    <p>@NodeName @_pods.PodListInNode(NodeName).readySummary()</p>
+@foreach (var pod in _pods.PodListInNode(NodeName))
+{
+    var color = "processing";
+    if (pod.Status() == "Running")
+    {
+        color = "success";
+    }
+    if (pod.Status() == "Succeeded")
+    {
+        color = "success";
+    }
+    if (pod.Status() == "Terminating")
+    {
+        color = "warning";
+    }
+    if (pod.Status() == "Failed")
+    {
+        color = "error";
+    }
+    var icon = pod.isReady() ? "check-circle" : "clock-circle";
+
+    <Popover Title=@pod.Name()
+             Trigger="@(new[] { TriggerType.Hover })">
+        <ContentTemplate>
+            @pod.readySummary()
+        </ContentTemplate>
+        <ChildContent>
+            <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
+        </ChildContent>
+    </Popover>
+}
+}

@@ -1,7 +1,5 @@
 @page "/NodeList"
-@using Extensions.k8s
 @using k8s.Models
-@using Extensions
 @if (_nodes == null)
 {
     <p>
@@ -12,69 +10,19 @@ else
 {
     foreach (var node in _nodes.Items)
     {
-        bool isReady = node.Status.Conditions.IsReady();
         <Card Hoverable Title=@node.Metadata.Name>
             <CardTabs>
                 <Tabs DefaultActiveKey="1">
                     <TabPane Key="1">
                         <TabTemplate>基本信息</TabTemplate>
                         <ChildContent>
-                            <div>
-                                @if (isReady)
-                                {
-                                    <Tag Icon="check-circle" Color="success">Ready</Tag>
-                                }
-                                @foreach (var role in node.Metadata.NodeRoles())
-                                {
-                                    <Tag >@role</Tag>
-                                }
-                            </div>
-                            <Tag Icon="clock-circle">@node.Metadata.CreationTimestamp?.AgeFromUtc()</Tag>
-                            <Tag Color="processing">@node.Status.NodeInfo.Architecture</Tag>
-                            <Tag Color="processing">kubelet:@node.Status.NodeInfo.KubeletVersion</Tag>
-                            <Tag Color="processing">kubeProxy:@node.Status.NodeInfo.KubeProxyVersion</Tag>
-                            <Tag Color="processing">OS:@node.Status.NodeInfo.OsImage</Tag>
-                            <Tag Color="processing">CRV:@node.Status.NodeInfo.ContainerRuntimeVersion</Tag>
-
+                            <NodeSumView Node=@node></NodeSumView>
                         </ChildContent>
-
                     </TabPane>
                     <TabPane Key="2">
-                        <TabTemplate>Pod状态@_pods.PodListInNode(node.Name()).readySummary()</TabTemplate>
+                        <TabTemplate>Pod状态</TabTemplate>
                         <ChildContent>
-                            <p>
-                                @foreach (var pod in _pods.PodListInNode(node.Name()))
-                                {
-                                    var color = "processing";
-                                    if (pod.Status() == "Running")
-                                    {
-                                        color = "success";
-                                    }
-                                    if (pod.Status() == "Succeeded")
-                                    {
-                                        color = "success";
-                                    }
-                                    if (pod.Status() == "Terminating")
-                                    {
-                                        color = "warning";
-                                    }
-                                    if (pod.Status() == "Failed")
-                                    {
-                                        color = "error";
-                                    }
-                                    var icon = pod.isReady() ? "check-circle" : "clock-circle";
-
-                                    <Popover Title=@pod.Name()
-                                             Trigger="@(new[] { TriggerType.Hover })">
-                                        <ContentTemplate>
-                                            @pod.readySummary()
-                                        </ContentTemplate>
-                                        <ChildContent>
-                                            <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
-                                        </ChildContent>
-                                    </Popover>
-                                }
-                            </p>
+                            <PodSumView NodeName=@node.Name()></PodSumView>
                         </ChildContent>
                     </TabPane>
                     <TabPane Key="3">
