@@ -22,21 +22,11 @@ namespace server.Middleware
             var watch     = Stopwatch.StartNew();
             var result    = next.Invoke(context);
             watch.Stop();
-            var logTemplate = @" 
-Client IP: {clientIP} 
-Request path: {requestPath} 
-Request content type: {requestContentType} 
-Request content length: {requestContentLength} 
-Start time: {startTime} 
-Duration: {duration}
------------
-Response Body:{}
-";
+            var logTemplate =
+                @"Client IP: {clientIP} , Request path: {requestPath} ,Start time: {startTime} ,Duration: {duration}";
             _logger.LogInformation(logTemplate,
                 context.Connection.RemoteIpAddress?.ToString(),
                 context.Request.Path,
-                context.Request.ContentType,
-                context.Request.ContentLength,
                 startTime,
                 watch.ElapsedMilliseconds);
 
