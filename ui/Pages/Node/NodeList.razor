@@ -11,6 +11,9 @@ else
     foreach (var node in _nodes.Items)
     {
         <Card Hoverable Title=@node.Metadata.Name>
+            <Extra>
+                <Button OnClick="@(() => OpenComponent(node))" Type="primary">详细</Button>
+            </Extra>
             <CardTabs>
                 <Tabs DefaultActiveKey="1">
                     <TabPane Key="1">
@@ -48,3 +51,8 @@ else
         </Card>
     }
 }
+<Drawer Closable="true" Placement="right" Title='"Basic Drawer"'>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+    <p>Some contents...</p>
+</Drawer>

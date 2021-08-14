@@ -1,0 +1,8 @@
+@inherits FeedbackComponent<k8s.Models.V1Node, k8s.Models.V1Node>
+@if (node != null)
+{
+    <div>
+        <NodeSumView Node=@node></NodeSumView>
+        <Button Type="primary" OnClick="OnClose">Confirm</Button>
+    </div>
+}
