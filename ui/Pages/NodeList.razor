@@ -31,8 +31,10 @@ else
                             </div>
                             <Tag Icon="clock-circle">@node.Metadata.CreationTimestamp?.AgeFromUtc()</Tag>
                             <Tag Color="processing">@node.Status.NodeInfo.Architecture</Tag>
-                            @node.Status.NodeInfo.KubeletVersion
-
+                            <Tag Color="processing">kubelet:@node.Status.NodeInfo.KubeletVersion</Tag>
+                            <Tag Color="processing">kubeProxy:@node.Status.NodeInfo.KubeProxyVersion</Tag>
+                            <Tag Color="processing">OS:@node.Status.NodeInfo.OsImage</Tag>
+                            <Tag Color="processing">CRV:@node.Status.NodeInfo.ContainerRuntimeVersion</Tag>
 
                         </ChildContent>
 
@@ -76,8 +78,10 @@ else
                         </ChildContent>
                     </TabPane>
                     <TabPane Key="3">
-                        <TabTemplate>Tab 3</TabTemplate>
-                        <ChildContent>Content of Tab Pane 3</ChildContent>
+                        <TabTemplate>实时状态</TabTemplate>
+                        <ChildContent>
+                            cpu\内存\存储
+                        </ChildContent>
                     </TabPane>
                 </Tabs>
             </CardTabs>
