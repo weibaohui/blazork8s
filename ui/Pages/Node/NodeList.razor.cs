@@ -1,27 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components;
-using Entity;
-using Extensions;
 using k8s.Models;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Components;
 using ui.Service;
 
-namespace ui.Pages
+namespace ui.Pages.Node
 {
     public partial class NodeList : ComponentBase
     {
-
-
         [Inject]
         private INodeService NodeService { get; set; }
 
         [Inject]
         private INodeApi _nodeApi { get; set; }
+
         [Inject]
         private IPodService PodService { get; set; }
 

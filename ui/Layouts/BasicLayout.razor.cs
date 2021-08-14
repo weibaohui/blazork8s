@@ -1,13 +1,13 @@
-using System.Threading.Tasks;
 using AntDesign.ProLayout;
+
 namespace ui
 {
     public partial class BasicLayout
     {
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-        }
+        // protected override async Task OnInitializedAsync()
+        // {
+        //     await base.OnInitializedAsync();
+        // }
 
         public readonly MenuDataItem[] _menuData =
         {
@@ -24,13 +24,8 @@ namespace ui
                 Name = "NodeList",
                 Key  = "NodeList",
                 Icon = "smile",
-            }, new MenuDataItem
-            {
-                Path = "/fetchdata",
-                Name = "fetchdata",
-                Key  = "fetchdata",
-                Icon = "smile",
-            }, new MenuDataItem
+            },
+            new MenuDataItem
             {
                 Path = "/counter",
                 Name = "Counter",
@@ -63,6 +58,5 @@ namespace ui
                 BlankTarget = true,
             }
         };
-
     }
 }
