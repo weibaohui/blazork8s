@@ -1,5 +1,16 @@
 @using k8s.Models
-@foreach (var x in Pods)
+@using Extensions.k8s
+@if (Pods.Count > 0)
 {
-    @x.Name()
+    <Table TItem="V1Pod" DataSource="@Pods"
+           HidePagination="true" PageSize="5000"
+           Size=@TableSize.Small Bordered="true"
+           OnRowClick="OnRowClick">
+        <ChildContent Context="data">
+            <AntDesign.Column TData="string" Title="Name" Field="@data.Name()"/>
+            <AntDesign.Column TData="string" Title="NameSpace" Field="@data.Namespace()"/>
+            <AntDesign.Column TData="string" Title="Ready">@data.readySummary()</AntDesign.Column>
+            <AntDesign.Column TData="string" Title="Status">@data.Status()</AntDesign.Column>
+        </ChildContent>
+    </Table>
 }

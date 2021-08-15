@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using k8s.Models;
@@ -51,6 +50,7 @@ namespace Extensions.k8s
             var readyCount = pods.Count(w => isReady(w));
             return $"{readyCount}/{count}";
         }
+
         public static bool isReady(this V1Pod pod)
         {
             foreach (var condition in pod.Status.Conditions)
@@ -121,6 +121,5 @@ namespace Extensions.k8s
                 .Where(w => w.Ready).Count() ?? 0;
             return $"{readyCount}/{count}";
         }
-
     }
 }
