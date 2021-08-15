@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using AntDesign;
 using k8s.Models;
@@ -25,7 +24,6 @@ namespace ui.Pages.Node
 
         public async Task OpenComponent(V1Node node)
         {
-            Console.WriteLine(node.Name());
             var options = new DrawerOptions
             {
                 Title = node.Name(),
@@ -33,11 +31,11 @@ namespace ui.Pages.Node
             };
 
             var drawerRef = await DrawerService.CreateAsync<NodeDetailView, V1Node, V1Node>(options, node);
-            drawerRef.OnClosed = async result =>
-            {
-                Console.WriteLine("OnAfterClosed:" + result.Name());
-                await InvokeAsync(StateHasChanged);
-            };
+            // drawerRef.OnClosed = async result =>
+            // {
+            //     Console.WriteLine("OnAfterClosed:" + result.Name());
+            //     await InvokeAsync(StateHasChanged);
+            // };
         }
     }
 }
