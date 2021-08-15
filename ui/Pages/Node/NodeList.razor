@@ -1,5 +1,6 @@
 @page "/NodeList"
 @using k8s.Models
+@using Extensions.k8s
 @if (_nodes == null)
 {
     <p>
@@ -12,7 +13,7 @@ else
     {
         <Card Hoverable Title=@node.Metadata.Name>
             <Extra>
-                <Button OnClick="@(() => OpenComponent(node))" Type="primary">详细</Button>
+                <Button OnClick="@(() => OpenComponent(node, _pods.PodListInNode(node.Name())))" Type="primary">详细</Button>
             </Extra>
             <CardTabs>
                 <Tabs DefaultActiveKey="1">
@@ -25,7 +26,7 @@ else
                     <TabPane Key="2">
                         <TabTemplate>Pod状态</TabTemplate>
                         <ChildContent>
-                            <PodSumView NodeName=@node.Name()></PodSumView>
+                            <PodSumView NodeName=@node.Name() Pods=@_pods.PodListInNode(node.Name())></PodSumView>
                         </ChildContent>
                     </TabPane>
                     <TabPane Key="3">

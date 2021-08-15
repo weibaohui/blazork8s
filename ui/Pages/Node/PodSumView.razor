@@ -1,10 +1,10 @@
 @using Extensions.k8s
 @using k8s.Models
 <h3>PodSumView</h3>
-@if (_pods != null)
+@if (Pods != null)
 {
-    <p>@NodeName @_pods.PodListInNode(NodeName).readySummary()</p>
-@foreach (var pod in _pods.PodListInNode(NodeName))
+    <p>@NodeName @Pods.readySummary()</p>
+@foreach (var pod in Pods)
 {
     var color = "processing";
     if (pod.Status() == "Running")

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using ui.Service;
@@ -14,15 +16,21 @@ namespace ui.Pages.Node
         private INodeService NodeService { get; set; }
 
         [Inject]
+        private IPodService PodService { get; set; }
+
+        private V1PodList _pods;
+
+        [Inject]
         private DrawerService DrawerService { get; set; }
 
 
         protected override async Task OnInitializedAsync()
         {
             _nodes = await NodeService.List();
+            _pods  = await PodService.List();
         }
 
-        public async Task OpenComponent(V1Node node)
+        public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
         {
             var options = new DrawerOptions
             {
@@ -30,7 +38,10 @@ namespace ui.Pages.Node
                 Width = 800
             };
 
-            var drawerRef = await DrawerService.CreateAsync<NodeDetailView, V1Node, V1Node>(options, node);
+
+            var drawerRef =
+                await DrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+                    new NodeVO { Node = node, Pods = pods });
             // drawerRef.OnClosed = async result =>
             // {
             //     Console.WriteLine("OnAfterClosed:" + result.Name());

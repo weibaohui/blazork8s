@@ -16,7 +16,7 @@ namespace ui.Service.impl
 
         public async Task<V1PodList> List()
         {
-            return await _baseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods/");
+            return await _baseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
         }
 
 
