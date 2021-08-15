@@ -1,4 +1,5 @@
 @using Extensions
+@using Extensions.k8s
 @using k8s.Models
 @inherits FeedbackComponent<V1Node, V1Node>
 @if (Node != null)
@@ -12,13 +13,25 @@
             (@Node.Metadata.CreationTimestamp)
         </DescriptionsItem>
         <DescriptionsItem Title="Name">@Node.Name()</DescriptionsItem>
+        <DescriptionsItem Title="Conditions">
+            @if (Node.Status.Conditions.IsReady())
+            {
+                <Tag Icon="check-circle" Color="success">Ready</Tag>
+            }
+            else
+            {
+                <Tag Icon="close-circle" Color="error">@Node.Status.Conditions.NotReadyReason()</Tag>
+            }
+        </DescriptionsItem>
         <DescriptionsItem Title="Address">
             @foreach (var addr in Node.Status.Addresses)
             {
                 <div>@addr.Type : @addr.Address</div>
             }
         </DescriptionsItem>
-        <DescriptionsItem Title="OS">@Node.Status.NodeInfo.OperatingSystem (@Node.Status.NodeInfo.Architecture)</DescriptionsItem>
+        <DescriptionsItem Title="OS">
+            @Node.Status.NodeInfo.OperatingSystem (@Node.Status.NodeInfo.Architecture)
+        </DescriptionsItem>
         <DescriptionsItem Title="KernelVersion">@Node.Status.NodeInfo.KernelVersion</DescriptionsItem>
         <DescriptionsItem Title="KubeletVersion">@Node.Status.NodeInfo.KubeletVersion</DescriptionsItem>
         <DescriptionsItem Title="ContainerRuntime">@Node.Status.NodeInfo.ContainerRuntimeVersion</DescriptionsItem>
