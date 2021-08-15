@@ -1,0 +1,17 @@
+﻿@using k8s.Models
+<Descriptions Title=@BlockTitle Bordered Size="small" Layout="@DescriptionsLayout.Vertical">
+    <DescriptionsItem Style="width:20px" Title="CPU">@Dict["cpu"].ToString()</DescriptionsItem>
+    <DescriptionsItem Title="Memory">
+        @Dict["memory"].CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI)
+    </DescriptionsItem>
+    <DescriptionsItem Title="Ephemeral Storage">
+        @Dict["ephemeral-storage"].CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI)
+    </DescriptionsItem>
+    <DescriptionsItem Title="Hugepages-1Gi">
+        @Dict["hugepages-1Gi"].CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI)
+    </DescriptionsItem>
+    <DescriptionsItem Title="Hugepages-2Mi">
+        @Dict["hugepages-2Mi"].CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI)
+    </DescriptionsItem>
+    <DescriptionsItem Title="Pods">@Dict["pods"].ToString()</DescriptionsItem>
+</Descriptions>

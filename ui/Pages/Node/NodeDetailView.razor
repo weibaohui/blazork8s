@@ -5,8 +5,8 @@
 @if (Node != null)
 {
     <div>
-        <Button Type="primary" OnClick="OnClose">Confirm</Button>
-    </div>
+    <Button Type="primary" OnClick="OnClose">Confirm</Button>
+</div>
     <Descriptions Title="节点详细信息" Bordered Column="1">
         <DescriptionsItem Title="创建时间">
             @Node.Metadata.CreationTimestamp?.AgeFromUtc()
@@ -48,4 +48,8 @@
             }
         </DescriptionsItem>
     </Descriptions>
+    <NodeResourceQuantityView BlockTitle="Capacity" Dict=@Node.Status.Capacity>
+    </NodeResourceQuantityView>
+    <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
+    </NodeResourceQuantityView>
 }

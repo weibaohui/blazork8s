@@ -27,7 +27,7 @@ namespace ui.Pages.Node
             var options = new DrawerOptions
             {
                 Title = node.Name(),
-                Width = 600
+                Width = 800
             };
 
             var drawerRef = await DrawerService.CreateAsync<NodeDetailView, V1Node, V1Node>(options, node);
