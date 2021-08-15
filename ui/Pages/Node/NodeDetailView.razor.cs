@@ -5,11 +5,11 @@ namespace ui.Pages.Node
 {
     public partial class NodeDetailView : FeedbackComponent<V1Node, V1Node>
     {
-        public V1Node node;
+        public V1Node Node;
 
         protected override void OnInitialized()
         {
-            node = Options;
+            Node = Options;
             base.OnInitialized();
         }
 
@@ -17,7 +17,7 @@ namespace ui.Pages.Node
         private async void OnClose()
         {
             var drawerRef = FeedbackRef as DrawerRef<V1Node>;
-            await drawerRef!.CloseAsync(node);
+            await drawerRef!.CloseAsync(Node);
         }
     }
 }
