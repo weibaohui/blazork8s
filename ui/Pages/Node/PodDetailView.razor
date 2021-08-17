@@ -1,0 +1,31 @@
+@using k8s.Models;
+@using Extensions
+@using Extensions.k8s
+@inherits FeedbackComponent<V1Pod, bool>
+@if(Pod!=null){
+<Descriptions Title="POD详细信息" Bordered Column="1">
+    <DescriptionsItem Title="创建时间">
+        @Pod.Metadata.CreationTimestamp?.AgeFromUtc()
+        (@Pod.Metadata.CreationTimestamp)
+    </DescriptionsItem>
+    <DescriptionsItem Title="Name">@Pod.Name()</DescriptionsItem>
+    <DescriptionsItem Title="Name">@Pod.Status()</DescriptionsItem>
+    <DescriptionsItem Title="Labels">
+        @foreach (var label in Pod.Labels())
+        {
+            <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
+        }
+    </DescriptionsItem>
+    <DescriptionsItem Title="Annotations">
+        @if (Pod.Metadata.Annotations!=null)
+        {
+            @foreach (var label in Pod.Annotations())
+        {
+            <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
+        }
+
+        }
+
+    </DescriptionsItem>
+</Descriptions>
+}

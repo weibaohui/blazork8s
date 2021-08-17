@@ -7,6 +7,7 @@ namespace ui.Pages.Node
 {
     public partial class NodeDetailView : FeedbackComponent<NodeVO, bool>
     {
+        
         public V1Node       Node;
         public IList<V1Pod> Pods;
 

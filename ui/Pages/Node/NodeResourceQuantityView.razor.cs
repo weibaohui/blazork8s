@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -11,5 +12,11 @@ namespace ui.Pages.Node
 
         [Parameter]
         public IDictionary<string, ResourceQuantity> Dict { get; set; }
+
+        public string Echo(string key)
+        {
+            return Dict.FirstOrDefault(w => w.Key == key).Value
+                ?.CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI);
+        }
     }
 }

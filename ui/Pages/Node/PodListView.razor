@@ -6,11 +6,11 @@
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true"
            OnRowClick="OnRowClick">
-        <ChildContent Context="data">
-            <AntDesign.Column TData="string" Title="Name" Field="@data.Name()"/>
-            <AntDesign.Column TData="string" Title="NameSpace" Field="@data.Namespace()"/>
-            <AntDesign.Column TData="string" Title="Ready">@data.readySummary()</AntDesign.Column>
-            <AntDesign.Column TData="string" Title="Status">@data.Status()</AntDesign.Column>
-        </ChildContent>
+            <AntDesign.Column Sortable="true"  TData="string" Title="Name"
+                              SorterCompare="@((a,b)=> a.Length - b.Length)"
+                              Field="@context.Name()"/>
+            <AntDesign.Column  Sortable="true" TData="string" Title="NameSpace" Field="@context.Namespace()"/>
+            <AntDesign.Column Sortable="true" TData="string" Title="Ready">@context.readySummary()</AntDesign.Column>
+            <AntDesign.Column Sortable="true" TData="string" Title="Status">@context.Status()</AntDesign.Column>
     </Table>
 }

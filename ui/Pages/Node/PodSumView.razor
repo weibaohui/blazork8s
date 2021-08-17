@@ -4,8 +4,8 @@
 @if (Pods != null)
 {
     <p>@NodeName @Pods.readySummary()</p>
-@foreach (var pod in Pods)
-{
+    @foreach (var pod in Pods)
+    {
     var color = "processing";
     if (pod.Status() == "Running")
     {
