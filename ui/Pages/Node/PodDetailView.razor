@@ -9,21 +9,65 @@
         (@Pod.Metadata.CreationTimestamp)
     </DescriptionsItem>
     <DescriptionsItem Title="Name">@Pod.Name()</DescriptionsItem>
-    <DescriptionsItem Title="Name">@Pod.Status()</DescriptionsItem>
+    <DescriptionsItem Title="Namespace">@Pod.Namespace()</DescriptionsItem>
+    <DescriptionsItem Title="状态">@Pod.Status()</DescriptionsItem>
+
+    <DescriptionsItem Title="Controlled By">
+        @if (Pod.Metadata.OwnerReferences != null) {
+
+        @foreach (var owner in Pod.Metadata.OwnerReferences)
+        {
+            @owner.Kind @(" ") @owner.Name
+        }
+        }
+    </DescriptionsItem>
+    <DescriptionsItem Title="Node">@Pod.Spec.NodeName</DescriptionsItem>
+    <DescriptionsItem Title="Pod IP">@Pod.Status.PodIP</DescriptionsItem>
+    <DescriptionsItem Title="Pod IPs">
+        @foreach (var ip in Pod.Status.PodIPs)
+        {
+            <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
+        }
+    </DescriptionsItem>
+
+    <DescriptionsItem Title="Priority Class">@Pod.Spec.PriorityClassName</DescriptionsItem>
+    <DescriptionsItem Title="QoS Class">@Pod.Status.QosClass</DescriptionsItem>
     <DescriptionsItem Title="Labels">
         @foreach (var label in Pod.Labels())
         {
             <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
         }
     </DescriptionsItem>
+    <DescriptionsItem Title="NodeSelector">
+        @if (Pod.Spec.NodeSelector != null)
+        {
+            @foreach (var ns in Pod.Spec.NodeSelector)
+            {
+                <Tag PresetColor=@PresetColor.Volcano>@ns.Key = @ns.Value</Tag>
+            }
+        }
+        </DescriptionsItem>
+    <DescriptionsItem Title="Conditions">
+        @foreach (var ns in Pod.Status.Conditions)
+        {
+            if (ns.Status == "True")
+            {
+                <Tag PresetColor=@PresetColor.Blue>@ns.Type</Tag>
+            }
+            else
+            {
+                <Tag PresetColor=@PresetColor.Red>@ns.Type</Tag>
+            }
+
+        }
+    </DescriptionsItem>
     <DescriptionsItem Title="Annotations">
-        @if (Pod.Metadata.Annotations!=null)
+        @if (Pod.Metadata.Annotations != null)
         {
             @foreach (var label in Pod.Annotations())
-        {
-            <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
-        }
-
+            {
+                <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
+            } 
         }
 
     </DescriptionsItem>
