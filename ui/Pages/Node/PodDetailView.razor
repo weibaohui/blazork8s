@@ -13,12 +13,13 @@
     <DescriptionsItem Title="状态">@Pod.Status()</DescriptionsItem>
 
     <DescriptionsItem Title="Controlled By">
-        @if (Pod.Metadata.OwnerReferences != null) {
-
-        @foreach (var owner in Pod.Metadata.OwnerReferences)
+        @if (Pod.Metadata.OwnerReferences != null)
         {
-            @owner.Kind @(" ") @owner.Name
-        }
+
+            @foreach (var owner in Pod.Metadata.OwnerReferences)
+            {
+                @owner.Kind @(" ") @owner.Name
+            }
         }
     </DescriptionsItem>
     <DescriptionsItem Title="Node">@Pod.Spec.NodeName</DescriptionsItem>
@@ -46,7 +47,7 @@
                 <Tag PresetColor=@PresetColor.Volcano>@ns.Key = @ns.Value</Tag>
             }
         }
-        </DescriptionsItem>
+    </DescriptionsItem>
     <DescriptionsItem Title="Conditions">
         @foreach (var ns in Pod.Status.Conditions)
         {
@@ -67,7 +68,30 @@
             @foreach (var label in Pod.Annotations())
             {
                 <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
-            } 
+            }
+        }
+
+    </DescriptionsItem>
+    <DescriptionsItem Title="Tolerations">
+        @if (Pod.Spec.Tolerations != null)
+        {
+            @foreach (var t in Pod.Spec.Tolerations)
+            {
+                <Tag PresetColor=@PresetColor.Lime>@t.Key  @t.OperatorProperty   @t.Value    @t.Effect @t.TolerationSeconds</Tag>
+            }
+
+
+    <Table TItem="V1Toleration" DataSource="Pod.Spec.Tolerations"
+           HidePagination="true" PageSize="5000"
+           Size=@TableSize.Small Bordered="true">
+        <AntDesign.Column Sortable="true" TData="string" Title="Key"
+                          SorterCompare="@((a,b)=> a.Length - b.Length)"
+                          Field="@context.Key" />
+        <AntDesign.Column Sortable="true" TData="string" Title="Operator" Field="@context.OperatorProperty" />
+        <AntDesign.Column Sortable="true" TData="string" Title="Value">@context.Value</AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title="Effect">@context.Effect</AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
+    </Table>
         }
 
     </DescriptionsItem>
