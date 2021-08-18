@@ -75,25 +75,20 @@
     <DescriptionsItem Title="Tolerations">
         @if (Pod.Spec.Tolerations != null)
         {
-            @foreach (var t in Pod.Spec.Tolerations)
-            {
-                <Tag PresetColor=@PresetColor.Lime>@t.Key  @t.OperatorProperty   @t.Value    @t.Effect @t.TolerationSeconds</Tag>
-            }
-
-
-    <Table TItem="V1Toleration" DataSource="Pod.Spec.Tolerations"
-           HidePagination="true" PageSize="5000"
-           Size=@TableSize.Small Bordered="true">
-        <AntDesign.Column Sortable="true" TData="string" Title="Key"
-                          SorterCompare="@((a,b)=> a.Length - b.Length)"
-                          Field="@context.Key" />
-        <AntDesign.Column Sortable="true" TData="string" Title="Operator" Field="@context.OperatorProperty" />
-        <AntDesign.Column Sortable="true" TData="string" Title="Value">@context.Value</AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="Effect">@context.Effect</AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
-    </Table>
+            <Collapse   >
+                <Panel Header="@Pod.Spec.Tolerations.Count.ToString()" Key="1">
+                    <Table TItem="V1Toleration" DataSource="Pod.Spec.Tolerations"
+                           HidePagination="true" PageSize="5000"
+                           Size=@TableSize.Small Bordered="true">
+                        <AntDesign.Column TData="string" Title="Key" Field="@context.Key" />
+                        <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty" />
+                        <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
+                    </Table>
+                </Panel>
+            </Collapse>
         }
-
     </DescriptionsItem>
 </Descriptions>
 }
