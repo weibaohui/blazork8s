@@ -1,15 +1,15 @@
 using AntDesign;
 using k8s.Models;
 
-namespace ui.Pages.Node
+namespace ui.Pages.Pod
 {
     public partial class PodDetailView : FeedbackComponent<V1Pod, bool>
     {
-        public V1Pod Pod;
+        public V1Pod PodItem;
 
         protected override void OnInitialized()
         {
-            Pod = base.Options;
+            PodItem = base.Options;
             base.OnInitialized();
         }
     }

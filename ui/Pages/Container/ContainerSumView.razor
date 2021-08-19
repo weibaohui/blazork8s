@@ -1,0 +1,62 @@
+﻿@using Extensions.k8s
+@foreach (var c in Containers)
+{
+<Descriptions Title="@c.Name" Bordered Column="1">
+    <DescriptionsItem Title="Name">@c.Name</DescriptionsItem>
+    <DescriptionsItem Title="Status">
+        @{
+            var (sum, msg) = ContainerStatuses.ReadySummaryWithMsg(c.Name);
+            if (sum == "Ready")
+            {
+                <Tag Color="Green">Ready</Tag>
+            }
+            else
+            {
+                <Tag Color="orange-inverse">@sum</Tag>
+                <p >@msg</p>
+
+            }
+        }
+    </DescriptionsItem>
+
+    <DescriptionsItem Title="Image">@c.Image</DescriptionsItem>
+    <DescriptionsItem Title="ImagePullPolicy">@c.ImagePullPolicy</DescriptionsItem>
+    <DescriptionsItem Title="Env">@c.Env</DescriptionsItem>
+    @if (c.Command != null)
+    {
+        <DescriptionsItem Title="Command">
+            @foreach (var cc in c.Command)
+            {
+                @cc <br />
+            }
+        </DescriptionsItem>
+    }
+    @if (c.Args != null)
+    {
+        <DescriptionsItem Title="Args">
+            @foreach (var cc in c.Args)
+            {
+                @cc <br />
+            }
+        </DescriptionsItem>
+    }
+    <ProbeView Probe="@c.LivenessProbe"></ProbeView>
+    <ProbeView Probe="@c.ReadinessProbe"></ProbeView>
+    <ProbeView Probe="@c.StartupProbe"></ProbeView>
+
+    <DescriptionsItem Title="VolumeMounts">
+        @foreach (var vm in c.VolumeMounts)
+        {
+
+            @if (vm.ReadOnlyProperty != null && vm.ReadOnlyProperty == true)
+            {
+                <Tag PresetColor="@PresetColor.Gold">RO</Tag>
+            }
+            <Tag>@vm.Name</Tag>
+            <Tag Color="#87d068">@vm.MountPath</Tag>
+            <br />
+        }
+    </DescriptionsItem>
+</Descriptions>
+}
+

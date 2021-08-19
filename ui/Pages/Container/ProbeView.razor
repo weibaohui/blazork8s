@@ -1,0 +1,26 @@
+﻿@if (Probe != null)
+{
+    <DescriptionsItem Title="Liveness">
+        @if (Probe.HttpGet != null)
+        {
+            <Tag>HttpGet</Tag>
+            <Tag>@($"{Probe.HttpGet.Scheme}://{Probe.HttpGet.Host}:{Probe.HttpGet.Port.Value}{Probe.HttpGet.Path}")</Tag>
+        }
+        @if (Probe.Exec != null)
+        {
+            <Tag>Exec</Tag>
+            <Tag>@($"{Probe.Exec.Command}")</Tag>
+        }
+        @if (Probe.TcpSocket != null)
+        {
+            <Tag>TcpSocket</Tag>
+            <Tag>@($"{Probe.TcpSocket.Host}:{Probe.TcpSocket.Port.Value}")</Tag>
+        }
+        <br />
+        <Tag>delay=@Probe.InitialDelaySeconds</Tag>
+        <Tag>timeout=@Probe.TimeoutSeconds</Tag>
+        <Tag>period=@Probe.PeriodSeconds</Tag>
+        <Tag>#success=@Probe.SuccessThreshold</Tag>
+        <Tag>#failure=@Probe.FailureThreshold</Tag>
+    </DescriptionsItem>
+}

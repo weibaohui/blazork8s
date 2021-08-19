@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace ui.Pages.Node
+namespace ui.Pages.Pod
 {
     public partial class PodSumView : ComponentBase
     {

@@ -46,7 +46,7 @@ namespace Extensions.k8s
 
         public static string readySummary(this IList<V1Pod> pods)
         {
-            var count      = pods.Count;
+            var count = pods.Count;
             var readyCount = pods.Count(w => isReady(w));
             return $"{readyCount}/{count}";
         }
@@ -121,5 +121,7 @@ namespace Extensions.k8s
                 .Where(w => w.Ready).Count() ?? 0;
             return $"{readyCount}/{count}";
         }
+
+       
     }
 }
