@@ -22,7 +22,6 @@ namespace ui.Pages.Pod
                 Title = "POD:" + row.Data.Name(),
                 Width = 800
             };
-
             var drawerRef =
                 await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options,
                     row.Data);

@@ -50,7 +50,10 @@
 
             @if (vm.ReadOnlyProperty != null && vm.ReadOnlyProperty == true)
             {
-                <Tag PresetColor="@PresetColor.Gold">RO</Tag>
+                <Tag PresetColor="@PresetColor.Gold">RO</Tag> }
+            else
+            {
+                <Tag PresetColor="@PresetColor.Lime">RW</Tag>
             }
             <Tag>@vm.Name</Tag>
             <Tag Color="#87d068">@vm.MountPath</Tag>
