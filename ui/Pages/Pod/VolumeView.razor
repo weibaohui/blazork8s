@@ -1,0 +1,21 @@
+﻿<Descriptions Title="Volumes" Bordered Column="1">
+    @foreach (var v in PodItem.Spec.Volumes)
+    {
+    <DescriptionsItem Title="@v.Name">
+        @if (v.HostPath != null)
+        {
+            <Tag Icon="hdd">@v.HostPath.Type</Tag>
+            <Tag> @v.HostPath.Path</Tag>
+        }
+        if (v.Projected!=null) {
+        <Tag Icon="hdd">Projected</Tag>
+        <Tag>@v.Projected.DefaultMode</Tag>
+        @foreach(var s in v.Projected.Sources)
+                    {
+                       
+                    }
+        }
+
+    </DescriptionsItem>
+    }
+</Descriptions>
