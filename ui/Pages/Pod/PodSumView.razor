@@ -5,33 +5,33 @@
     <p>@NodeName @Pods.ReadySummary()</p>
     @foreach (var pod in Pods)
     {
-    var color = "processing";
-    if (pod.Status() == "Running")
-    {
-        color = "success";
-    }
-    if (pod.Status() == "Succeeded")
-    {
-        color = "success";
-    }
-    if (pod.Status() == "Terminating")
-    {
-        color = "warning";
-    }
-    if (pod.Status() == "Failed")
-    {
-        color = "error";
-    }
-    var icon = pod.IsReady() ? "check-circle" : "clock-circle";
+        var color = "processing";
+        if (pod.Status() == "Running")
+        {
+            color = "success";
+        }
+        if (pod.Status() == "Succeeded")
+        {
+            color = "success";
+        }
+        if (pod.Status() == "Terminating")
+        {
+            color = "warning";
+        }
+        if (pod.Status() == "Failed")
+        {
+            color = "error";
+        }
+        var icon = pod.IsReady() ? "check-circle" : "clock-circle";
 
-    <Popover Title=@pod.Name()
-             Trigger="@(new[] { TriggerType.Hover })">
-        <ContentTemplate>
-            @pod.ReadySummary()
-        </ContentTemplate>
-        <ChildContent>
-            <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
-        </ChildContent>
-    </Popover>
-}
+        <Popover Title=@pod.Name()
+                 Trigger="@(new[] { TriggerType.Hover })">
+            <ContentTemplate>
+                @pod.ReadySummary()
+            </ContentTemplate>
+            <ChildContent>
+                <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
+            </ChildContent>
+        </Popover>
+    }
 }
