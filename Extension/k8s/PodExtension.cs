@@ -44,14 +44,14 @@ namespace Extensions.k8s
             return pods.Items.Where(w => w.Spec.NodeName == nodeName).ToList();
         }
 
-        public static string readySummary(this IList<V1Pod> pods)
+        public static string ReadySummary(this IList<V1Pod> pods)
         {
-            var count = pods.Count;
-            var readyCount = pods.Count(w => isReady(w));
+            var count      = pods.Count;
+            var readyCount = pods.Count(w => IsReady(w));
             return $"{readyCount}/{count}";
         }
 
-        public static bool isReady(this V1Pod pod)
+        public static bool IsReady(this V1Pod pod)
         {
             foreach (var condition in pod.Status.Conditions)
             {
@@ -114,14 +114,12 @@ namespace Extensions.k8s
         /// </summary>
         /// <param name="pod"></param>
         /// <returns></returns>
-        public static string readySummary(this V1Pod pod)
+        public static string ReadySummary(this V1Pod pod)
         {
             var count = pod.Spec.Containers.Count;
             var readyCount = pod.Status.ContainerStatuses?
                 .Where(w => w.Ready).Count() ?? 0;
             return $"{readyCount}/{count}";
         }
-
-       
     }
 }

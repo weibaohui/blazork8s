@@ -1,9 +1,8 @@
 @using Extensions.k8s
 @using k8s.Models
-<h3>PodSumView</h3>
 @if (Pods != null)
 {
-    <p>@NodeName @Pods.readySummary()</p>
+    <p>@NodeName @Pods.ReadySummary()</p>
     @foreach (var pod in Pods)
     {
     var color = "processing";
@@ -23,12 +22,12 @@
     {
         color = "error";
     }
-    var icon = pod.isReady() ? "check-circle" : "clock-circle";
+    var icon = pod.IsReady() ? "check-circle" : "clock-circle";
 
     <Popover Title=@pod.Name()
              Trigger="@(new[] { TriggerType.Hover })">
         <ContentTemplate>
-            @pod.readySummary()
+            @pod.ReadySummary()
         </ContentTemplate>
         <ChildContent>
             <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
