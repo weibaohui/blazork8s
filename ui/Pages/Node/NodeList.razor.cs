@@ -21,7 +21,7 @@ namespace ui.Pages.Node
         private IEventService EventService { get; set; }
         private V1NodeList _nodes;
         private V1PodList _pods;
-        public V1beta1EventList events;
+        public Corev1EventList events;
         [Inject]
         private DrawerService DrawerService { get; set; }
 
@@ -33,7 +33,7 @@ namespace ui.Pages.Node
             events = await EventService.List();
         }
 
-        public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
+        public async Task OpenComponent(V1Node node, IList<V1Pod> pods,IList<Corev1Event> events)
         {
             var options = new DrawerOptions
             {
@@ -44,7 +44,7 @@ namespace ui.Pages.Node
 
             var drawerRef =
                 await DrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
-                    new NodeVO { Node = node, Pods = pods });
+                    new NodeVO { Node = node, Pods = pods ,Events=events});
             // drawerRef.OnClosed = async result =>
             // {
             //     Console.WriteLine("OnAfterClosed:" + result.Name());

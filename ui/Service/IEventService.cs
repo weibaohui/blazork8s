@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
 using k8s.Models;
 
 namespace ui.Service
 {
     public interface IEventService
     {
-        Task<V1beta1EventList> List();
+        Task<Corev1EventList> List();
     }
 }

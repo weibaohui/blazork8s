@@ -18,9 +18,9 @@ namespace ui.Service.impl
             _baseService = baseService;
         }
 
-        public async Task<V1beta1EventList> List()
+        public async Task<Corev1EventList> List()
         {
-            return await _baseService.GetFromJsonAsync<V1beta1EventList>("/KubeApi/api/v1/events?limit=1000");
+            return await _baseService.GetFromJsonAsync<Corev1EventList>("/KubeApi/api/v1/events?limit=1000");
         }
     }
 }
