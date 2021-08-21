@@ -23,6 +23,7 @@ namespace ui
             builder.Services.AddScoped<IBaseService, BaseService>();
             builder.Services.AddScoped<INodeService, NodeService>();
             builder.Services.AddScoped<IPodService, PodService>();
+            builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<IK8s, K8sService>();
 
             //webapi
