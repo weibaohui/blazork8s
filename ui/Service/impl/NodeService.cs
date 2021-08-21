@@ -7,19 +7,19 @@ using Microsoft.AspNetCore.Components;
 
 namespace ui.Service.impl
 {
-    public class EventService : IEventService
+    public class NodeService : INodeService
     {
 
         private readonly IBaseService _baseService;
 
-        public EventService(IBaseService baseService)
+        public NodeService(IBaseService baseService)
         {
             _baseService = baseService;
         }
 
-        public async Task<V1beta1EventList> List()
+        public async Task<V1NodeList> List()
         {
-            return await _baseService.GetFromJsonAsync<V1beta1EventList>("/KubeApi/api/v1/events?limit=1000");
+            return await _baseService.GetFromJsonAsync<V1NodeList>("/KubeApi/api/v1/nodes/");
         }
     }
 }
