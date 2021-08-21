@@ -14,7 +14,7 @@ else
     {
         <Card Hoverable Title=@node.Metadata.Name>
             <Extra>
-                <Button OnClick="@(() => OpenComponent(node, _pods.PodListInNode(node.Name())))" Type="primary">详细</Button>
+                <Button OnClick="@(() => OpenComponent(node, _pods.PodListInNode(node.Name()),events.Items))" Type="primary">详细</Button>
             </Extra>
             <CardTabs>
                 <Tabs DefaultActiveKey="1">

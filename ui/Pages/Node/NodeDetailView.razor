@@ -2,11 +2,12 @@
 @using Extensions.k8s
 @using k8s.Models
 @using ui.Pages.Pod
+@using ui.Pages.Event
 @inherits FeedbackComponent<Entity.NodeVO, bool>
 @if (Node != null)
 {
-<Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
-    <Descriptions  Bordered Column="1">
+    <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
+    <Descriptions Bordered Column="1">
         <DescriptionsItem Title="创建时间">
             @Node.Metadata.CreationTimestamp?.AgeFromUtc()
             (@Node.Metadata.CreationTimestamp)
@@ -52,5 +53,5 @@
     <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
     </NodeResourceQuantityView>
     <PodListView Pods="Pods"></PodListView>
-
+    <EventListView Events="Events"></EventListView>
 }
