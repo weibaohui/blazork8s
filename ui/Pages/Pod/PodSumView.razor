@@ -23,15 +23,6 @@
             color = "error";
         }
         var icon = pod.IsReady() ? "check-circle" : "clock-circle";
-
-        <Popover Title=@pod.Name()
-                 Trigger="@(new[] { TriggerType.Hover })">
-            <ContentTemplate>
-                @pod.ReadySummary()
-            </ContentTemplate>
-            <ChildContent>
-                <Tag Color="@color" Icon="@icon">@pod.Name()</Tag>
-            </ChildContent>
-        </Popover>
+        <Tag Color="@color" OnClick="(()=>OnPodClick(pod))" Icon="@icon">@pod.Name()</Tag>
     }
 }
