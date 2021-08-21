@@ -34,7 +34,7 @@ namespace ui.Pages.Node
         {
             var options = new DrawerOptions
             {
-                Title ="POD:" + node.Name(),
+                Title ="Node:" + node.Name(),
                 Width = 800
             };
 

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace ui.Pages.Container
 {
-    public partial class ContainerSumView : ComponentBase
+    public partial class ContainerListView : ComponentBase
     {
          
         public IList<V1Container> Containers { get; set; }

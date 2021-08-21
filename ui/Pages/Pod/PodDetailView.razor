@@ -5,7 +5,7 @@
 @inherits FeedbackComponent<V1Pod, bool>
 @if (PodItem != null)
 {
-    <Descriptions Title="pod详细信息" Bordered Column="1">
+    <Descriptions  Bordered Column="1">
         <DescriptionsItem Title="创建时间">
             @PodItem.Metadata.CreationTimestamp?.AgeFromUtc()
             (@PodItem.Metadata.CreationTimestamp)
@@ -13,7 +13,6 @@
         <DescriptionsItem Title="Name">@PodItem.Name()</DescriptionsItem>
         <DescriptionsItem Title="Namespace">@PodItem.Namespace()</DescriptionsItem>
         <DescriptionsItem Title="状态">@PodItem.Status()</DescriptionsItem>
-
         <DescriptionsItem Title="Controlled By">
             @if (PodItem.Metadata.OwnerReferences != null)
             {
@@ -32,7 +31,6 @@
                 <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
             }
         </DescriptionsItem>
-
         <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>
         <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
         <DescriptionsItem Title="Labels">
@@ -61,7 +59,6 @@
                 {
                     <Tag PresetColor=@PresetColor.Red>@ns.Type</Tag>
                 }
-
             }
         </DescriptionsItem>
         <DescriptionsItem Title="Annotations">
@@ -72,7 +69,6 @@
                     <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
                 }
             }
-
         </DescriptionsItem>
         <DescriptionsItem Title="Tolerations">
             @if (PodItem.Spec.Tolerations != null)
@@ -92,10 +88,7 @@
                 </Collapse>
             }
         </DescriptionsItem>
-        
     </Descriptions>
-    <Divider Orientation="left" Style="font-weight:bold">容器</Divider>
-    <ContainerSumView Pod="@PodItem"></ContainerSumView>
+    <ContainerListView Pod="@PodItem"></ContainerListView>
     <VolumeView PodItem="@PodItem"></VolumeView>
-
 }

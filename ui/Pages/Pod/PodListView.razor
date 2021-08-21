@@ -2,6 +2,7 @@
 @using Extensions.k8s
 @if (Pods.Count > 0)
 {
+    <Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
     <Table TItem="V1Pod" DataSource="@Pods"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true"

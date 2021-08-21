@@ -5,10 +5,8 @@
 @inherits FeedbackComponent<Entity.NodeVO, bool>
 @if (Node != null)
 {
-    <div>
-        <Button Type="primary" OnClick="OnClose">Confirm</Button>
-    </div>
-    <Descriptions Title="节点详细信息" Bordered Column="1">
+<Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
+    <Descriptions  Bordered Column="1">
         <DescriptionsItem Title="创建时间">
             @Node.Metadata.CreationTimestamp?.AgeFromUtc()
             (@Node.Metadata.CreationTimestamp)
