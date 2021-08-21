@@ -13,7 +13,7 @@
             else
             {
                 <Tag Color="orange-inverse">@sum</Tag>
-                <p >@msg</p>
+                <p>@msg</p>
 
             }
         }
@@ -22,12 +22,23 @@
     <DescriptionsItem Title="Image">@c.Image</DescriptionsItem>
     <DescriptionsItem Title="ImagePullPolicy">@c.ImagePullPolicy</DescriptionsItem>
     <DescriptionsItem Title="Env">@c.Env</DescriptionsItem>
+    @if (c.Ports != null)
+    {
+        <DescriptionsItem Title="Ports">
+            @foreach (var p in c.Ports)
+            {
+                @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
+                <br />
+            }
+        </DescriptionsItem>
+    }
     @if (c.Command != null)
     {
         <DescriptionsItem Title="Command">
             @foreach (var cc in c.Command)
             {
-                @cc <br />
+                @cc
+                <br />
             }
         </DescriptionsItem>
     }
@@ -36,7 +47,8 @@
         <DescriptionsItem Title="Args">
             @foreach (var cc in c.Args)
             {
-                @cc <br />
+                @cc
+                <br />
             }
         </DescriptionsItem>
     }
