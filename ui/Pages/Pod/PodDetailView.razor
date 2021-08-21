@@ -74,16 +74,21 @@
             @if (PodItem.Spec.Tolerations != null)
             {
                 <Collapse>
-                    <Panel Header="@PodItem.Spec.Tolerations.Count.ToString()" Key="1">
-                        <Table TItem="V1Toleration" DataSource="PodItem.Spec.Tolerations"
-                               HidePagination="true" PageSize="5000"
-                               Size=@TableSize.Small Bordered="true">
-                            <AntDesign.Column TData="string" Title="Key" Field="@context.Key" />
-                            <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty" />
-                            <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
-                            <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
-                            <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
-                        </Table>
+                    <Panel  Key="1">
+                        <HeaderTemplate>
+                            <Badge Count="@PodItem.Spec.Tolerations.Count" />
+                        </HeaderTemplate>
+                        <ChildContent>
+                            <Table TItem="V1Toleration" DataSource="PodItem.Spec.Tolerations"
+                                   HidePagination="true" PageSize="5000"
+                                   Size=@TableSize.Small Bordered="true">
+                                <AntDesign.Column TData="string" Title="Key" Field="@context.Key" />
+                                <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty" />
+                                <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
+                                <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
+                                <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
+                            </Table>
+                        </ChildContent>
                     </Panel>
                 </Collapse>
             }
