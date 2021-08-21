@@ -1,0 +1,28 @@
+﻿@using Extensions
+<Divider Orientation="left" Style="font-weight:bold">Events</Divider>
+@if (Events != null)
+{
+    foreach (var xx in Events)
+    {
+        <Descriptions Title="@xx.Message" Bordered Column="1">
+            <DescriptionsItem Title="事件源">
+                <Tag PresetColor="PresetColor.Lime">@xx.Source.Host</Tag>
+                <Tag PresetColor="PresetColor.Volcano">@xx.Source.Component</Tag>
+                
+            </DescriptionsItem>
+            <DescriptionsItem Title="出现次数">
+               <Badge Count="@xx.Count" ></Badge> 
+            </DescriptionsItem>
+            <DescriptionsItem Title="最后出现">
+                @xx.LastTimestamp?.ToFriendlyDisplay()
+                ( @xx.LastTimestamp)
+            </DescriptionsItem>
+            <DescriptionsItem Title="起因">
+                <Tag PresetColor="PresetColor.Blue">@xx.InvolvedObject.NamespaceProperty</Tag>
+                <Tag PresetColor="PresetColor.Purple">@xx.InvolvedObject.Kind</Tag>
+                <Tag PresetColor="PresetColor.Orange">@xx.InvolvedObject.Name</Tag>
+                <Tag PresetColor="PresetColor.Green">@xx.InvolvedObject.FieldPath</Tag>
+            </DescriptionsItem>
+        </Descriptions>
+    }
+}
