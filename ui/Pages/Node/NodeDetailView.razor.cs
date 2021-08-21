@@ -10,11 +10,13 @@ namespace ui.Pages.Node
         
         public V1Node       Node;
         public IList<V1Pod> Pods;
+        public IList<Corev1Event> Events;
 
         protected override void OnInitialized()
         {
             Node = Options.Node;
             Pods = Options.Pods;
+            Events = Options.Events;
             base.OnInitialized();
         }
 
