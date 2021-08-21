@@ -10,7 +10,6 @@ namespace ui.Pages.Node
 {
     public partial class NodeList : ComponentBase
     {
-        private V1NodeList _nodes;
 
         [Inject]
         private INodeService NodeService { get; set; }
@@ -18,8 +17,11 @@ namespace ui.Pages.Node
         [Inject]
         private IPodService PodService { get; set; }
 
+        [Inject]
+        private IEventService EventService { get; set; }
+        private V1NodeList _nodes;
         private V1PodList _pods;
-
+        public V1beta1EventList events;
         [Inject]
         private DrawerService DrawerService { get; set; }
 
@@ -28,6 +30,7 @@ namespace ui.Pages.Node
         {
             _nodes = await NodeService.List();
             _pods  = await PodService.List();
+            events = await EventService.List();
         }
 
         public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
