@@ -9,5 +9,7 @@ namespace ui.Pages.Container
 
         [Parameter]
         public V1Probe Probe { get; set; }
+        [Parameter]
+        public string ProbeType { get; set; }
     }
 }
