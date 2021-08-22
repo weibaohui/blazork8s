@@ -53,5 +53,5 @@
     <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
     </NodeResourceQuantityView>
     <PodListView Pods="Pods"></PodListView>
-    <EventListView Events="Events"></EventListView>
+    <EventListView   Uid="@Node.Metadata.Uid" ></EventListView>
 }

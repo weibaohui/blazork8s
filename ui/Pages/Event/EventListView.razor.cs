@@ -4,16 +4,29 @@ using System.Linq;
 using System.Threading.Tasks;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using ui.Service;
+
 namespace ui.Pages.Event
 {
     public partial class EventListView : ComponentBase
     {
-        [Parameter]
+        [Inject]
+        private IEventService EventService { get; set; }
+       
         public IList<Corev1Event> Events { get; set; }
-        protected override void OnInitialized()
+
+      
+        [Parameter]
+        public string Uid { get; set; }
+        protected override async Task OnInitializedAsync()
         {
-            Events = Events.OrderByDescending(w=>w.Type).OrderByDescending(e => e.LastTimestamp).ToList();
-            this.StateHasChanged();
+            var coreEventList = await EventService.List();
+            if (!string.IsNullOrEmpty(Uid))
+            {
+                Events = coreEventList.Items.Where(w => w.InvolvedObject.Uid == Uid)
+                   .OrderByDescending(w => w.Type).OrderByDescending(e => e.LastTimestamp)
+                   .ToList();
+            }
         }
     }
 }
