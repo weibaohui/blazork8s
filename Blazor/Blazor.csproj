@@ -23,16 +23,6 @@
     </ItemGroup>
 
 
-    <ItemGroup>
-      <None Remove="Pages\Pod\" />
-      <None Remove="Pages\Container\" />
-      <None Remove="Pages\Event\" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Pages\Pod\" />
-      <Folder Include="Pages\Container\" />
-      <Folder Include="Pages\Event\" />
-    </ItemGroup>
     <PropertyGroup Condition=" '$(SolutionDir)'==''">
         <SolutionDir>./</SolutionDir>
     </PropertyGroup>
