@@ -23,6 +23,12 @@
     </ItemGroup>
 
 
+    <ItemGroup>
+      <None Remove="Pages\Namespace\" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Pages\Namespace\" />
+    </ItemGroup>
     <PropertyGroup Condition=" '$(SolutionDir)'==''">
         <SolutionDir>./</SolutionDir>
     </PropertyGroup>

@@ -32,7 +32,7 @@ namespace Blazor.Service.impl
 
         public async Task<V1NamespaceList> List()
         {
-           var list=  await _baseService.GetFromJsonAsync<V1NamespaceList>("/KubeApi/api/v1/namespace");
+           var list=  await _baseService.GetFromJsonAsync<V1NamespaceList>("/KubeApi/api/v1/namespaces");
             //缓存当前获取到的NS，每次获取都做强制更新
             ns = list.Items.ToList();
             return list;
