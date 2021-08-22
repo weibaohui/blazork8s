@@ -23,7 +23,7 @@ namespace Blazor.Pages.Pod
             await base.OnInitializedAsync();
         }
 
-        async Task OnPodClick(V1Pod pod)
+        private async Task OnPodClick(V1Pod pod)
         {
             var options = new DrawerOptions
             {

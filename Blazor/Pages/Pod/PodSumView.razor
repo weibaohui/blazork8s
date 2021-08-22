@@ -1,3 +1,5 @@
+@using Extensions.k8s
+@using k8s.Models
 @if (Pods != null)
 {
     <p>@NodeName @Pods.ReadySummary()</p>
