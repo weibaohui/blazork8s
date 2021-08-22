@@ -1,0 +1,14 @@
+﻿@using k8s.Models
+<SimpleSelect DefaultValue=""  Style="width:200px;" OnSelectedItemChanged="handleChange">
+    <SelectOptions>
+        <SimpleSelectOption Value="" Label="All Namespace" ></SimpleSelectOption>
+        @if (ns != null)
+        {
+            foreach (var n in ns)
+            {
+                <SimpleSelectOption Value="@n.Name()" Label="@(n.Name())"></SimpleSelectOption>
+            }
+        }
+    </SelectOptions>
+</SimpleSelect>
+
