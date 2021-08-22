@@ -6,5 +6,5 @@ riderModule.iml
 .idea/
 .vscode/
 Blazor/node_modules
-ui/package-lock.json
+Blazor/package-lock.json
 .vs
