@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
 using AntDesign.TableModels;
@@ -15,7 +16,13 @@ namespace ui.Pages.Pod
         [Parameter]
         public IList<V1Pod> Pods { get; set; }
 
-        async Task OnRowClick(RowData<V1Pod> row)
+        protected override void OnInitialized()
+        {
+            base.OnInitialized();
+        }
+  
+
+    async Task OnRowClick(RowData<V1Pod> row)
         {
             var options = new DrawerOptions
             {

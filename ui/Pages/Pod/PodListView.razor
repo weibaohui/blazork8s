@@ -5,7 +5,7 @@
     <Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
     <Table TItem="V1Pod" DataSource="@Pods"
            HidePagination="true" PageSize="5000"
-           Size=@TableSize.Small Bordered="true"
+           Size=@TableSize.Small Bordered="true" 
            OnRowClick="OnRowClick">
         <AntDesign.Column Sortable="true" TData="string" Title="Name"
                           SorterCompare="@((a, b) => a.Length - b.Length)"
