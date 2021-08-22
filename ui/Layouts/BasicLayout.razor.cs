@@ -1,17 +1,18 @@
+using System.Threading.Tasks;
 using AntDesign.ProLayout;
+using Microsoft.AspNetCore.Components;
 
 namespace ui
 {
-    public partial class BasicLayout
+    public partial class BasicLayout: LayoutComponentBase
     {
-        // protected override async Task OnInitializedAsync()
-        // {
-        //     await base.OnInitializedAsync();
-        // }
 
-        public readonly MenuDataItem[] _menuData =
+        public MenuDataItem[] MenuData;
+        protected override async Task OnInitializedAsync()
         {
-            new MenuDataItem
+            MenuData = new MenuDataItem[]
+            {
+                new MenuDataItem
             {
                 Path = "/",
                 Name = "welcome",
@@ -21,9 +22,16 @@ namespace ui
             new MenuDataItem
             {
                 Path = "/NodeList",
-                Name = "NodeList",
-                Key  = "NodeList",
+                Name = "Nodes",
+                Key  = "Nodes",
                 Icon = "smile",
+            },
+            new MenuDataItem
+            {
+                Name="Workloads",
+                Key="Workloads",
+                Icon="smile",
+                Children= WorkloadsMenu(),
             },
             new MenuDataItem
             {
@@ -32,31 +40,36 @@ namespace ui
                 Key  = "Counter",
                 Icon = "smile",
             }
-        };
+            };
+            await base.OnInitializedAsync();
+        }
 
-        public LinkItem[] Links { get; set; } =
+        
+        private MenuDataItem[] WorkloadsMenu()
         {
-            new LinkItem
-            {
-                Key         = "Ant Design Blazor",
-                Title       = "Ant Design Blazor",
-                Href        = "https://antblazor.com",
-                BlankTarget = true,
-            },
-            new LinkItem
-            {
-                Key         = "github",
-                Title       = "github",
-                Href        = "https://github.com/ant-design-blazor/ant-design-pro-blazor",
-                BlankTarget = true,
-            },
-            new LinkItem
-            {
-                Key         = "Blazor",
-                Title       = "Blazor",
-                Href        = "https://dotnet.microsoft.com/apps/aspnet/web-apps/blazor?WT.mc_id=DT-MVP-5003987",
-                BlankTarget = true,
-            }
-        };
+            return new MenuDataItem[]{
+                    new MenuDataItem
+                    {
+                        Path = "/Pods",
+                Name = "Pods",
+                Key  = "Pods",
+                Icon = "smile",
+                    },
+                    new MenuDataItem
+                    {
+                        Path = "/Deployments",
+                Name = "Deployments",
+                Key  = "Deployments",
+                Icon = "smile",
+                    },
+                     new MenuDataItem
+                    {
+                        Path = "/ReplicaSets",
+                Name = "ReplicaSets",
+                Key  = "ReplicaSets",
+                Icon = "smile",
+                    },
+                };
+        }
     }
 }
