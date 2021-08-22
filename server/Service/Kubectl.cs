@@ -5,9 +5,9 @@ using k8s;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using server.Utils;
+using Server.Utils;
 
-namespace server.Service
+namespace Server.Service
 {
     public class Kubectl
     {

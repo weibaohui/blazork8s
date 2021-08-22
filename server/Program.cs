@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using server.Utils;
+using Server.Utils;
 
 namespace server
 {

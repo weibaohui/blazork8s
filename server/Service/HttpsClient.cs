@@ -2,7 +2,7 @@ using System.Net.Http;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
-namespace server.Service
+namespace Server.Service
 {
     public class HttpsClient
     {

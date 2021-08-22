@@ -3,9 +3,9 @@ using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using server.Service;
+using Server.Service;
 
-namespace server.Controllers
+namespace Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]

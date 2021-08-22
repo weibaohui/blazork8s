@@ -1,0 +1,106 @@
+@using Extensions
+@using Extensions.k8s
+@using k8s.Models
+@inherits FeedbackComponent<V1Pod, bool>
+@if (PodItem != null)
+{
+    <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="创建时间">
+            @PodItem.Metadata.CreationTimestamp?.AgeFromUtc()
+            (@PodItem.Metadata.CreationTimestamp)
+        </DescriptionsItem>
+        <DescriptionsItem Title="Name">@PodItem.Name()</DescriptionsItem>
+        <DescriptionsItem Title="Namespace">@PodItem.Namespace()</DescriptionsItem>
+        <DescriptionsItem Title="状态">@PodItem.Status()</DescriptionsItem>
+        <DescriptionsItem Title="Controlled By">
+            @if (PodItem.Metadata.OwnerReferences != null)
+            {
+                @foreach (var owner in PodItem.Metadata.OwnerReferences)
+                {
+                    @owner.Kind
+                    @(" ")
+                    @owner.Name
+                }
+            }
+        </DescriptionsItem>
+        <DescriptionsItem Title="Node">@PodItem.Spec.NodeName</DescriptionsItem>
+        <DescriptionsItem Title="pod IP">@PodItem.Status.PodIP</DescriptionsItem>
+        <DescriptionsItem Title="pod IPs">
+            @foreach (var ip in PodItem.Status.PodIPs)
+            {
+                <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
+            }
+        </DescriptionsItem>
+        <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>
+        <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
+        @if (PodItem.Labels() != null)
+        {
+            <DescriptionsItem Title="Labels">
+                @foreach (var label in PodItem.Labels())
+                {
+                    <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
+                }
+            </DescriptionsItem>
+        }
+        <DescriptionsItem Title="NodeSelector">
+            @if (PodItem.Spec.NodeSelector != null)
+            {
+                @foreach (var ns in PodItem.Spec.NodeSelector)
+                {
+                    <Tag PresetColor=@PresetColor.Volcano>@ns.Key = @ns.Value</Tag>
+                }
+            }
+        </DescriptionsItem>
+        <DescriptionsItem Title="Conditions">
+            @foreach (var ns in PodItem.Status.Conditions)
+            {
+                if (ns.Status == "True")
+                {
+                    <Tag PresetColor=@PresetColor.Blue>@ns.Type</Tag>
+                }
+                else
+                {
+                    <Tag PresetColor=@PresetColor.Red>@ns.Type</Tag>
+                }
+            }
+        </DescriptionsItem>
+        @if (PodItem.Metadata.Annotations != null)
+        {
+            <DescriptionsItem Title="Annotations">
+                @foreach (var label in PodItem.Annotations())
+                {
+                    <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
+                }
+            </DescriptionsItem>
+        }
+
+        @if (PodItem.Spec.Tolerations != null)
+        {
+            <DescriptionsItem Title="Tolerations">
+
+                <Collapse>
+                    <Panel Key="1">
+                        <HeaderTemplate>
+                            <Badge Count="@PodItem.Spec.Tolerations.Count"/>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            <Table TItem="V1Toleration" DataSource="PodItem.Spec.Tolerations"
+                                   HidePagination="true" PageSize="5000"
+                                   Size=@TableSize.Small Bordered="true">
+                                <AntDesign.Column TData="string" Title="Key" Field="@context.Key"/>
+                                <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty"/>
+                                <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
+                                <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
+                                <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
+                            </Table>
+                        </ChildContent>
+                    </Panel>
+                </Collapse>
+            </DescriptionsItem>
+        }
+
+    </Descriptions>
+    <ContainerListView Pod="@PodItem"></ContainerListView>
+    <VolumeView PodItem="@PodItem"></VolumeView>
+    <EventListView Uid="@PodItem.Metadata.Uid"></EventListView>
+}

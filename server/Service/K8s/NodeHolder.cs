@@ -1,4 +1,4 @@
-namespace server.Service.K8s
+namespace Server.Service.K8s
 {
     public class NodeHolder
     {

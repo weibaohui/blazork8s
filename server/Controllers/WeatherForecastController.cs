@@ -5,7 +5,7 @@ using Entity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace server.Controllers
+namespace Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]

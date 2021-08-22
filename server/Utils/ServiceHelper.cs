@@ -1,6 +1,6 @@
 using System;
 
-namespace server.Utils
+namespace Server.Utils
 {
     public static class ServiceHelper
     {

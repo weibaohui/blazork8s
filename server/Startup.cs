@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using server.Middleware;
-using server.Service.K8s;
+using Server.Middleware;
+using Server.Service.K8s;
 
 namespace server
 {

@@ -3,7 +3,7 @@ using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
 
-namespace server.Service.K8s
+namespace Server.Service.K8s
 {
     public class PodWatcher
     {

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Entity;
 
-namespace server.Model
+namespace Server.Model
 {
     public class Cluster
     {
