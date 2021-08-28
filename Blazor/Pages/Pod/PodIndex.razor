@@ -1,2 +1,14 @@
 ﻿@page "/Pods"
-<SearchToolBar Title="Pods" Count="88" OnNsSelected="@OnNsSelectedHandler"></SearchToolBar>
+<Card Bordered="false">
+    <TitleTemplate>
+        <SearchToolBar Title="Pods" Count="88" OnNsSelected="@OnNsSelectedHandler"></SearchToolBar>
+    </TitleTemplate>
+    <ChildContent Hoverable>
+        <Body>
+        <p>Card content</p>
+        <p>Card content</p>
+        <p>Card content</p>
+        </Body>
+    </ChildContent>
+
+</Card>
