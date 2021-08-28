@@ -1,13 +1,51 @@
 ﻿@page "/Pods"
-<Card Bordered="false">
+@using k8s.Models
+
+<Card Bordered="false" Hoverable="true">
     <TitleTemplate>
         <SearchToolBar Title="Pods" Count="88" OnNsSelected="@OnNsSelectedHandler"></SearchToolBar>
     </TitleTemplate>
-    <ChildContent Hoverable>
-        <Body>
+    <ChildContent>
+        <Body >
         <p>Card content</p>
         <p>Card content</p>
         <p>Card content</p>
+        @if (Pods != null)
+        {
+            <Table @ref="table"
+                   TItem="V1Pod"
+                   DataSource="@Pods"
+                   HidePagination="true" PageSize="5000"
+                   Size=@TableSize.Small Bordered="true"
+                   OnChange="OnChange">
+                <Selection Key="@(context.Name())"/>
+                <AntDesign.Column Field="@context.Name()" Sortable/>
+                <ActionColumn>
+                    <Space>
+                        <SpaceItem>
+                            <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
+                        </SpaceItem>
+                    </Space>
+                </ActionColumn>
+            </Table>
+        @*     *@
+        @*      *@
+        @*     <p>PageIndex: @_pageIndex | PageSize: @_pageSize | Total: @_total</p> *@
+        @*     <h5>selections:</h5> *@
+        @*     @if (selectedRows != null && selectedRows.Any()) *@
+        @*     { *@
+        @*         <Button Danger Size="small" OnClick="@(e => { selectedRows = null; })">Clear</Button> *@
+        @* *@
+        @*         @foreach (var selected in selectedRows) *@
+        @*         { *@
+        @*             <Tag @key="selected.Metadata.Uid" Closable OnClose="e => RemoveSelection(selected.Metadata.Uid)">@selected.Metadata.Uid </Tag> *@
+        @*         } *@
+        @*     } *@
+        @* *@
+        @*     <Button OnClick="() => { _pageIndex--; }">Previous page</Button> *@
+        @*     <Button OnClick="() => { _pageIndex++; }">Next Page</Button> *@
+        @*      *@
+        }
         </Body>
     </ChildContent>
 

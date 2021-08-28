@@ -19,6 +19,16 @@ namespace Blazor.Service.impl
             return await _baseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
         }
 
+        public async Task<V1PodList> ListByNamespace(string ns)
+        {
+            if (string.IsNullOrEmpty(ns))
+            {
+                return await List();
+            }
+
+            return await _baseService.GetFromJsonAsync<V1PodList>(@$"/KubeApi/api/v1/namespaces/{ns}/pods");
+        }
+
 
         public async Task<int> NodePodsNum()
         {
