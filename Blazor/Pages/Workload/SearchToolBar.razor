@@ -1,3 +1,4 @@
+@using Blazor.Pages.Namespace
 <Row Gutter="@gutter">
     <AntDesign.Col Class="gutter-row" Span="6">
         <div style="@style">@Title</div>
@@ -7,7 +8,7 @@
     </AntDesign.Col>
     <AntDesign.Col Class="gutter-row" Span="6">
         <div style="@style">
-            <NamespaceSelect OnNsSelected="@OnNsSelectedHandler"></NamespaceSelect>
+            <NamespaceSelect OnNsSelected="OnNsSelectedHandler"></NamespaceSelect>
         </div>
     </AntDesign.Col>
     <AntDesign.Col Class="gutter-row" Span="6">

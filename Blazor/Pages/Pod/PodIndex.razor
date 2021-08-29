@@ -1,9 +1,9 @@
 ﻿@page "/Pods"
 @using k8s.Models
-
+@using Blazor.Pages.Workload
 <Card Bordered="false" Hoverable="true">
     <TitleTemplate>
-        <SearchToolBar Title="Pods" Count="88" OnNsSelected="@OnNsSelectedHandler"></SearchToolBar>
+        <SearchToolBar Title="Pods" Count="88" OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
     </TitleTemplate>
     <ChildContent>
         <Body >
