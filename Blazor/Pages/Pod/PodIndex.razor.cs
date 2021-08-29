@@ -57,7 +57,7 @@ namespace Blazor.Pages.Pod
         {
         }
 
-        public async Task OnChange(QueryModel<V1Pod> queryModel)
+        public void OnChange(QueryModel<V1Pod> queryModel)
         {
             Console.WriteLine("OnChange");
             Console.WriteLine(JsonConvert.SerializeObject(queryModel.SortModel));
@@ -72,23 +72,24 @@ namespace Blazor.Pages.Pod
                 Console.WriteLine("OnAsc");
                 Pods = Pods.OrderBy(pod => pod.Metadata.CreationTimestamp).ToList();
             }
-
-            queryModel.SortModel
-                .Where(w => !string.IsNullOrEmpty(w.Sort))
-                .ForEach(s =>
-                {
-                    if (s.Sort == "descend")
-                    {
-                        Console.WriteLine("OnDescending");
-                        Pods = Pods.OrderByDescending(pod => pod.Metadata.CreationTimestamp).ToList();
-                    }
-                    else
-                    {
-                        Console.WriteLine("OnAsc");
-                        Pods = Pods.OrderBy(pod => pod.Metadata.CreationTimestamp).ToList();
-                    }
-                });
+            //
+            // queryModel.SortModel
+            //     .Where(w => !string.IsNullOrEmpty(w.Sort))
+            //     .ForEach(s =>
+            //     {
+            //         if (s.Sort == "descend")
+            //         {
+            //             Console.WriteLine("OnDescending");
+            //             Pods = Pods.OrderByDescending(pod => pod.Metadata.CreationTimestamp).ToList();
+            //         }
+            //         else
+            //         {
+            //             Console.WriteLine("OnAsc");
+            //             Pods = Pods.OrderBy(pod => pod.Metadata.CreationTimestamp).ToList();
+            //         }
+            //     });
             this.StateHasChanged();
+
         }
     }
 }
