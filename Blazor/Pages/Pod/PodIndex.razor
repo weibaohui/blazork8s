@@ -7,19 +7,21 @@
     </TitleTemplate>
     <ChildContent>
         <Body >
-        <p>Card content</p>
-        <p>Card content</p>
-        <p>Card content</p>
         @if (Pods != null)
         {
             <Table @ref="table"
                    TItem="V1Pod"
                    DataSource="@Pods"
-                   HidePagination="true" PageSize="5000"
                    Size=@TableSize.Small Bordered="true"
+                   Total="_total"
+                   @bind-PageIndex="_pageIndex"
+                   @bind-PageSize="_pageSize"
+                   @bind-SelectedRows="selectedRows"
+                   Loading="_loading"
                    OnChange="OnChange">
-                <Selection Key="@(context.Name())"/>
-                <AntDesign.Column Field="@context.Name()" Sortable  />
+                <Selection Key="@(context.Name())" />
+                <AntDesign.Column Field="@context.Name()" Sortable />
+                <AntDesign.Column Field="@context.Namespace()" Sortable />
                 <ActionColumn>
                     <Space>
                         <SpaceItem>

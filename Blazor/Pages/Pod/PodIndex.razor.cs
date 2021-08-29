@@ -24,26 +24,39 @@ namespace Blazor.Pages.Pod
         ITable             table;
 
         int _pageIndex = 1;
-        int _pageSize  = 10;
+        int _pageSize  = 5;
         int _total     = 100;
+        bool _loading = false;
 
         protected override async Task OnInitializedAsync()
         {
             Console.WriteLine("OnInitializedAsync");
-            var podList = await PodService.ListByNamespace(selectedNs);
-            Pods   = podList.Items;
-            _total = Pods.Count;
+            await GetData(selectedNs);
+
             await base.OnInitializedAsync();
         }
+        void ChangePageSize(int pageSize)
+        {
+            if (_pageSize != pageSize)
+            {
+                _pageSize = pageSize;
+                _pageIndex = 1;
+            }
+        }
 
-
+        public async Task GetData(string ns)
+        {
+            _loading = true;
+            var podList = await PodService.ListByNamespace(ns);
+            Pods = podList.Items;
+            _total = Pods.Count;
+            _loading = false;
+            await this.InvokeAsync(StateHasChanged);
+        }
         public async void OnNsSelectedHandler(string ns)
         {
             selectedNs = ns;
-            var podList = await PodService.ListByNamespace(selectedNs);
-            Pods   = podList.Items;
-            _total = Pods.Count;
-
+            await GetData(ns);
             Console.WriteLine($"POD index receive ns:{ns}");
         }
 
@@ -57,10 +70,17 @@ namespace Blazor.Pages.Pod
         {
         }
 
-        public void OnChange(QueryModel<V1Pod> queryModel)
+        public async Task OnChange(QueryModel<V1Pod> queryModel)
         {
+              //.Skip((_pageIndex - 1) * _pageSize)
+              //          .Take(_pageSize).ToArray();
+            _loading = true;
+
             Console.WriteLine("OnChange");
-            Console.WriteLine(JsonConvert.SerializeObject(queryModel.SortModel));
+            Console.WriteLine(JsonConvert.SerializeObject(queryModel));
+            queryModel.SortModel.Where(x => x.Sort != null).ForEach(x=> {
+                Console.WriteLine(x.FieldName, x.Sort);
+            });
             var next = new Random().Next(10);
             if (next % 2 == 0)
             {
@@ -72,24 +92,9 @@ namespace Blazor.Pages.Pod
                 Console.WriteLine("OnAsc");
                 Pods = Pods.OrderBy(pod => pod.Metadata.CreationTimestamp).ToList();
             }
-            //
-            // queryModel.SortModel
-            //     .Where(w => !string.IsNullOrEmpty(w.Sort))
-            //     .ForEach(s =>
-            //     {
-            //         if (s.Sort == "descend")
-            //         {
-            //             Console.WriteLine("OnDescending");
-            //             Pods = Pods.OrderByDescending(pod => pod.Metadata.CreationTimestamp).ToList();
-            //         }
-            //         else
-            //         {
-            //             Console.WriteLine("OnAsc");
-            //             Pods = Pods.OrderBy(pod => pod.Metadata.CreationTimestamp).ToList();
-            //         }
-            //     });
-            this.StateHasChanged();
-
+           
+             _loading = false;
+            await this.InvokeAsync(StateHasChanged);
         }
     }
 }
