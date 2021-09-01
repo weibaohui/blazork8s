@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Extensions
+namespace Extension
 {
     public static class AgeExtensions
     {

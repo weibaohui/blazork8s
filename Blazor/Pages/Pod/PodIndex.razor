@@ -22,7 +22,7 @@
                 <Selection Key="@(context.Name())" />
                 <AntDesign.Column Field="@context.Name()" Sortable />
                 <AntDesign.Column Field="@context.Namespace()" Sortable />
-                <ActionColumn>
+                 <ActionColumn>
                     <Space>
                         <SpaceItem>
                             <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>

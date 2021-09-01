@@ -1,9 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using k8s.Models;
 
-namespace Extensions.k8s
+namespace Extension.k8s
 {
     public static class ContainerExtension
     {
