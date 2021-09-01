@@ -75,9 +75,9 @@ namespace Extension.k8s
         /// <returns></returns>
         public static string Status(this V1Pod pod)
         {
-            var phase = pod.Status.Phase;
+            var phase = pod?.Status.Phase;
 
-            if (pod.Status.ContainerStatuses == null)
+            if (pod?.Status.ContainerStatuses == null)
             {
                 return phase;
             }
@@ -121,5 +121,16 @@ namespace Extension.k8s
                 .Where(w => w.Ready).Count() ?? 0;
             return $"{readyCount}/{count}";
         }
+
+        public static string? StatusX(this V1Pod pod)
+        {
+            if (pod==null)
+            {
+                return "null";
+            }
+
+            return pod?.Spec?.NodeName;
+        }
+
     }
 }

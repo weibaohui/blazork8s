@@ -23,7 +23,6 @@ namespace Blazor.Pages.Pod
         private string _selectedNs = "";
 
         IEnumerable<V1Pod> selectedRows;
-        ITable             table;
 
         int  _pageIndex = 1;
         int  _pageSize  = 2;
@@ -32,7 +31,7 @@ namespace Blazor.Pages.Pod
 
         protected override async Task OnInitializedAsync()
         {
-            Console.WriteLine("OnInitializedAsync");
+             Console.WriteLine("OnInitializedAsync");
             await GetData(_selectedNs);
 
             await base.OnInitializedAsync();

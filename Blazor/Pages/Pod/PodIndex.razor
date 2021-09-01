@@ -1,6 +1,8 @@
 ﻿@page "/Pods"
 @using k8s.Models
 @using Blazor.Pages.Workload
+@using Extension
+@using Extension.k8s
 <Card Bordered="false" Hoverable="true">
     <TitleTemplate>
         <SearchToolBar Title="Pods" Count="88" OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
@@ -9,7 +11,7 @@
         <Body >
         @if (Pods != null)
         {
-            <Table @ref="table"
+            <Table
                    TItem="V1Pod"
                    DataSource="@Pods"
                    Size=@TableSize.Small Bordered="true"
@@ -19,10 +21,17 @@
                    @bind-SelectedRows="selectedRows"
                    Loading="_loading"
                    OnChange="OnChange">
-                <Selection Key="@(context.Name())" />
-                <AntDesign.Column Field="@context.Name()" Title="name" />
-                <AntDesign.Column Field="@context.Namespace()" Title="namespace" />
-                 <ActionColumn>
+                <Selection Key="@(context.Name())"/>
+                <AntDesign.Column Field="@context.Name()" Title="Name"/>
+                <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                @* <AntDesign.Column Field="@context.Spec.NodeName" Title="Containers"/> *@
+                @* <AntDesign.Column Field="@context.Spec.NodeName" Title="Restart"/> *@
+                @* <AntDesign.Column Field="@context.OwnerReferences().Count" Title="ControllerBy"/> *@
+                @* <AntDesign.Column Field="@context.Spec.NodeName" Title="Node"/> *@
+                @* <AntDesign.Column Field="@context.Status.QosClass" Title="QoS"/> *@
+                <AntDesign.Column Field="@context.CreationTimestamp()?.AgeFromUtc()" Title="Age"/>
+                @* <AntDesign.Column Field="@context.Status()" Title="status"/> *@
+                <ActionColumn>
                     <Space>
                         <SpaceItem>
                             <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
