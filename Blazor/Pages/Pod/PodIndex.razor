@@ -20,8 +20,8 @@
                    Loading="_loading"
                    OnChange="OnChange">
                 <Selection Key="@(context.Name())" />
-                <AntDesign.Column Field="@context.Name()" Sortable />
-                <AntDesign.Column Field="@context.Namespace()" Sortable />
+                <AntDesign.Column Field="@context.Name()" Title="name" />
+                <AntDesign.Column Field="@context.Namespace()" Title="namespace" />
                  <ActionColumn>
                     <Space>
                         <SpaceItem>
@@ -30,23 +30,6 @@
                     </Space>
                 </ActionColumn>
             </Table>
-        @*     *@
-        @*      *@
-        @*     <p>PageIndex: @_pageIndex | PageSize: @_pageSize | Total: @_total</p> *@
-        @*     <h5>selections:</h5> *@
-        @*     @if (selectedRows != null && selectedRows.Any()) *@
-        @*     { *@
-        @*         <Button Danger Size="small" OnClick="@(e => { selectedRows = null; })">Clear</Button> *@
-        @* *@
-        @*         @foreach (var selected in selectedRows) *@
-        @*         { *@
-        @*             <Tag @key="selected.Metadata.Uid" Closable OnClose="e => RemoveSelection(selected.Metadata.Uid)">@selected.Metadata.Uid </Tag> *@
-        @*         } *@
-        @*     } *@
-        @* *@
-        @*     <Button OnClick="() => { _pageIndex--; }">Previous page</Button> *@
-        @*     <Button OnClick="() => { _pageIndex++; }">Next Page</Button> *@
-        @*      *@
         }
         </Body>
     </ChildContent>

@@ -62,7 +62,6 @@ namespace Blazor.Pages.Pod
         {
             _selectedNs = ns;
             await GetData(ns);
-            Console.WriteLine($"POD index receive ns:{ns}");
         }
 
         public void RemoveSelection(string uid)
@@ -77,24 +76,8 @@ namespace Blazor.Pages.Pod
 
         public async Task OnChange(QueryModel<V1Pod> queryModel)
         {
-
-
             _loading = true;
-
             Console.WriteLine(JsonSerializer.Serialize(queryModel));
-            queryModel.SortModel.Where(x => x.Sort != null).ForEach(x => { Console.WriteLine(x.FieldName, x.Sort); });
-            // var next = new Random().Next(10);
-            // if (next % 2 == 0)
-            // {
-            //     var linq = Pods.OrderByDescending(pod => pod.Metadata.CreationTimestamp);
-            //     Console.WriteLine("OnDescending");
-            //     Pods = linq.ToList();
-            // }
-            // else
-            // {
-            //     Console.WriteLine("OnAsc");
-            //     Pods = Pods.OrderBy(pod => pod.Metadata.CreationTimestamp).ToList();
-            // }
             Pods = _originPods.GetPagedTableData(queryModel);
             _loading = false;
             await this.InvokeAsync(StateHasChanged);
