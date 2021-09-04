@@ -60,6 +60,8 @@ namespace Blazor.Pages.Pod
         public async void OnNsSelectedHandler(string ns)
         {
             _selectedNs = ns;
+            //重置分页
+            _pageIndex = 1;
             await GetData(ns);
         }
 

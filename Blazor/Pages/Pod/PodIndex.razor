@@ -3,44 +3,60 @@
 @using Blazor.Pages.Workload
 @using Extension
 @using Extension.k8s
-<Card Bordered="false" Hoverable="true">
-    <TitleTemplate>
-        <SearchToolBar Title="Pods" Count="88" OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
-    </TitleTemplate>
-    <ChildContent>
-        <Body >
-        @if (Pods != null)
-        {
-            <Table
-                   TItem="V1Pod"
-                   DataSource="@Pods"
-                   Size=@TableSize.Small Bordered="true"
-                   Total="_total"
-                   @bind-PageIndex="_pageIndex"
-                   @bind-PageSize="_pageSize"
-                   @bind-SelectedRows="selectedRows"
-                   Loading="_loading"
-                   OnChange="OnChange">
-                <Selection Key="@(context.Name())"/>
-                <AntDesign.Column Field="@context.Name()" Title="Name"/>
-                <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
-                @* <AntDesign.Column Field="@context.Spec.NodeName" Title="Containers"/> *@
-                @* <AntDesign.Column Field="@context.Spec.NodeName" Title="Restart"/> *@
-                @* <AntDesign.Column Field="@context.OwnerReferences().Count" Title="ControllerBy"/> *@
-                @* <AntDesign.Column Field="@context.Spec.NodeName" Title="Node"/> *@
-                @* <AntDesign.Column Field="@context.Status.QosClass" Title="QoS"/> *@
-                <AntDesign.Column Field="@context.CreationTimestamp()?.AgeFromUtc()" Title="Age"/>
-                @* <AntDesign.Column Field="@context.Status()" Title="status"/> *@
-                <ActionColumn>
-                    <Space>
-                        <SpaceItem>
-                            <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
-                        </SpaceItem>
-                    </Space>
-                </ActionColumn>
-            </Table>
-        }
-        </Body>
-    </ChildContent>
+@if (Pods != null)
+{
+    <Card Bordered="false" Hoverable="true">
+        <TitleTemplate>
+            <SearchToolBar Title="Pods" Count="@_total" OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
+        </TitleTemplate>
+        <ChildContent>
+            <Body>
 
-</Card>
+                <Table TItem="V1Pod"
+                       DataSource="@Pods"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="_total"
+                       @bind-PageIndex="_pageIndex"
+                       @bind-PageSize="_pageSize"
+                       @bind-SelectedRows="selectedRows"
+                       Loading="_loading"
+                       OnChange="OnChange">
+                    <Selection Key="@(context.Name())" />
+                    <AntDesign.Column Field="@context.Name()" Title="Name" />
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" />
+                    <AntDesign.Column Title="Containers" TData="string">
+                        @context.Spec.NodeName
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Restart" TData="string">
+                        @context.Spec.NodeName
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="ControllerBy" TData="string">
+                        @context.Spec.NodeName
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Node" TData="string">
+                        @context.Spec.NodeName
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="QoS" TData="string">
+                        @context.Status.QosClass
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Age" TData="string">
+                        @context.CreationTimestamp()?.AgeFromUtc()
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Status" TData="string">
+                        @context.Status()
+                    </AntDesign.Column>
+                    <ActionColumn>
+                        <Space>
+                            <SpaceItem>
+                                <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
+                            </SpaceItem>
+                        </Space>
+                    </ActionColumn>
+                </Table>
+
+            </Body>
+        </ChildContent>
+
+    </Card>
+
+}
