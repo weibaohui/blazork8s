@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using k8s.Models;
 
 namespace Blazor.Service.impl
 {
-    public class PodService : IPodService
+    public class PodService: IPodService
     {
         private readonly IBaseService _baseService;
 
@@ -29,6 +30,11 @@ namespace Blazor.Service.impl
             return await _baseService.GetFromJsonAsync<V1PodList>(@$"/KubeApi/api/v1/namespaces/{ns}/pods");
         }
 
+        public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)
+        {
+            var ls = await ListByNamespace(ns);
+            return ls.Items;
+        }
 
         public async Task<int> NodePodsNum()
         {

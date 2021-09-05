@@ -4,7 +4,9 @@
         <TargetFramework>net6.0</TargetFramework>
     </PropertyGroup>
 
-    <PropertyGroup Condition=" '$(RunConfiguration)' == 'ui' " />
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'ui' ">
+      <ExternalConsole>true</ExternalConsole>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="AntDesign" Version="0.9.3" />
         <PackageReference Include="AntDesign.Charts" Version="0.2.1" />
