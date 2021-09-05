@@ -10,28 +10,29 @@ namespace Blazor.Service
     {
         private readonly INamespaceAction<T> ListService;
 
-        public  TablePagedService(INamespaceAction<T> listService)
+        public TablePagedService(INamespaceAction<T> listService)
         {
             ListService = listService;
         }
 
-        //public TablePagedService(IPodService podService)
-        //{
-        //    this.podService = podService;
-        //}
 
+        /// <summary>
+        /// 页面显示的条目
+        /// </summary>
         public IList<T> PagedItems;
+        /// <summary>
+        /// 获取的原始条目
+        /// </summary>
         private IList<T> _originItems;
 
-        private string _selectedNs = "";
+        private string _selectedNs;
 
-        IEnumerable<T> selectedRows;
+        public IEnumerable<T> SelectedRows;
 
         public int PageIndex = 1;
-        public int PageSize = 5;
+        public int PageSize = 10;
         public int Total = 100;
         public bool Loading = false;
-        private IPodService podService;
 
         void ChangePageSize(int pageSize)
         {
@@ -51,24 +52,36 @@ namespace Blazor.Service
             Loading = false;
         }
 
-        public async void OnNsSelectedHandler(string ns)
+        /// <summary>
+        /// 命名空间切换事件
+        /// </summary>
+        /// <param name="ns"></param>
+        /// <returns></returns>
+        public async Task OnNsSelectedHandler(string ns)
         {
+            if (_selectedNs == ns)
+            {
+                return;
+            }
             Loading = true;
-            _selectedNs = ns;
-            //重置分页
             PageIndex = 1;
+            _selectedNs = ns;
             await GetData(ns);
             Loading = false;
         }
 
-       
 
-        public async Task OnChange(QueryModel<T> queryModel)
+        /// <summary>
+        /// 变更事件
+        /// </summary>
+        /// <param name="queryModel"></param>
+        public void OnChange(QueryModel<T> queryModel)
         {
             Loading = true;
-            PagedItems = _originItems.GetPagedTableData(queryModel);
+            var query = _originItems.Skip((queryModel.PageIndex - 1) * queryModel.PageSize).Take(queryModel.PageSize);
+
+            PagedItems = query.ToList();
             Loading = false;
         }
-
     }
 }

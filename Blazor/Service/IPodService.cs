@@ -9,7 +9,5 @@ namespace Blazor.Service
         Task<V1PodList> List();
         Task<V1PodList> ListByNamespace(string ns);
         Task<int>       NodePodsNum();
-        Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns);
-
     }
 }

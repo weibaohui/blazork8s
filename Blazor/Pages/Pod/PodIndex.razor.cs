@@ -24,27 +24,25 @@ namespace Blazor.Pages.Pod
 
         private string _selectedNs = "";
 
-        IEnumerable<V1Pod> selectedRows;
  
         protected override async Task OnInitializedAsync()
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
-
         }
 
 
  
-        public async void OnNsSelectedHandler(string ns)
+        public async Task OnNsSelectedHandler(string ns)
         {
-            tps.OnNsSelectedHandler(ns);
-            await this.InvokeAsync(StateHasChanged);
+            _selectedNs = ns;
+            await tps.OnNsSelectedHandler(ns);
+            await InvokeAsync(StateHasChanged);
         }
 
         public void RemoveSelection(string uid)
         {
-            var selected = selectedRows.Where(x => x.Metadata.Uid != uid);
-            selectedRows = selected;
+            tps.SelectedRows = tps.SelectedRows.Where(x => x.Metadata.Uid != uid);
         }
 
         private void Delete(string uid)
@@ -53,8 +51,8 @@ namespace Blazor.Pages.Pod
 
         public async Task OnChange(QueryModel<V1Pod> queryModel)
         {
-           await tps.OnChange(queryModel);
-           await this.InvokeAsync(StateHasChanged);
+           tps.OnChange(queryModel);
+           await InvokeAsync(StateHasChanged);
         }
 
 
