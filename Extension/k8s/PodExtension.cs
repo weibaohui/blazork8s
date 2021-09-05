@@ -75,9 +75,9 @@ namespace Extension.k8s
         /// <returns></returns>
         public static string Status(this V1Pod pod)
         {
-            var phase = pod?.Status.Phase;
+            var phase = pod.Status.Phase;
 
-            if (pod?.Status.ContainerStatuses == null)
+            if (pod.Status.ContainerStatuses == null)
             {
                 return phase;
             }
