@@ -1,6 +1,5 @@
 using System;
 using Extension;
-using Extensions;
 using Xunit;
 using Xunit.Abstractions;
 
