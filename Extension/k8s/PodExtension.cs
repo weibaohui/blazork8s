@@ -22,6 +22,17 @@ namespace Extension.k8s
         }
 
         /// <summary>
+        /// 计算POD重启次数
+        /// </summary>
+        /// <param name="pod"></param>
+        /// <returns></returns>
+        public static int RestartCount(this V1Pod pod)
+        {
+            var sum = pod.Status.ContainerStatuses.Sum(x => x.RestartCount);
+            return sum;
+        }
+
+        /// <summary>
         /// 计算当前节点包含多少个POD
         /// </summary>
         /// <param name="pods"></param>
@@ -124,13 +135,12 @@ namespace Extension.k8s
 
         public static string? StatusX(this V1Pod pod)
         {
-            if (pod==null)
+            if (pod == null)
             {
                 return "null";
             }
 
             return pod?.Spec?.NodeName;
         }
-
     }
 }

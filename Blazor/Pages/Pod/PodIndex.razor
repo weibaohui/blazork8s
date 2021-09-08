@@ -1,8 +1,7 @@
 ﻿@page "/Pods"
 @using k8s.Models
-@using Blazor.Pages.Workload
-@using Extension
 @using Extension.k8s
+@using Extension
 @if (tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -12,51 +11,50 @@
         <ChildContent>
             <Body>
 
-                <Table TItem="V1Pod"
-                       DataSource="@tps.PagedItems"
-                       Size=@TableSize.Small Bordered="true"
-                       Total="tps.Total"
-                       @bind-PageIndex="tps.PageIndex"
-                       @bind-PageSize="tps.PageSize"
-                       @bind-SelectedRows="tps.SelectedRows"
-                       Loading="tps.Loading"
-                       OnChange="OnChange">
-                    <Selection Key="@(context.Name())" />
-                    <AntDesign.Column Field="@context.Name()" Title="Name" />
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" />
-                    <AntDesign.Column Title="Containers" TData="string">
-                        @context.Spec.NodeName
-                    </AntDesign.Column>
-                    <AntDesign.Column Title="Restart" TData="string">
-                        @context.Spec.NodeName
-                    </AntDesign.Column>
-                    <AntDesign.Column Title="ControllerBy" TData="string">
-                        @context.Spec.NodeName
-                    </AntDesign.Column>
-                    <AntDesign.Column Title="Node" TData="string">
-                        @context.Spec.NodeName
-                    </AntDesign.Column>
-                    <AntDesign.Column Title="QoS" TData="string">
-                        @context.Status.QosClass
-                    </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string">
-                        @context.CreationTimestamp()?.AgeFromUtc()
-                    </AntDesign.Column>
-                    <AntDesign.Column Title="Status" TData="string">
-                        @context.Status()
-                    </AntDesign.Column>
-                    <ActionColumn>
-                        <Space>
-                            <SpaceItem>
-                                <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
-                            </SpaceItem>
-                        </Space>
-                    </ActionColumn>
-                </Table>
+            <Table TItem="V1Pod"
+                   DataSource="@tps.PagedItems"
+                   Size=@TableSize.Small Bordered="true"
+                   Total="tps.Total"
+                   @bind-PageIndex="tps.PageIndex"
+                   @bind-PageSize="tps.PageSize"
+                   @bind-SelectedRows="tps.SelectedRows"
+                   Loading="tps.Loading"
+                   OnChange="OnChange">
+                <Selection Key="@(context.Name())"/>
+                <AntDesign.Column Field="@context.Name()" Title="Name"/>
+                <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="Containers" TData="string">
+                    @context.Spec.NodeName
+                </AntDesign.Column>
+                <AntDesign.Column Title="Restart" TData="string">
+                    @context.RestartCount()
+                </AntDesign.Column>
+                <AntDesign.Column Title="ControllerBy" TData="string">
+                    @context.Spec.NodeName
+                </AntDesign.Column>
+                <AntDesign.Column Title="Node" TData="string">
+                    @context.Spec.NodeName
+                </AntDesign.Column>
+                <AntDesign.Column Title="QoS" TData="string">
+                    @context.Status.QosClass
+                </AntDesign.Column>
+                <AntDesign.Column Title="Age" TData="string">
+                    @context.CreationTimestamp()?.AgeFromUtc()
+                </AntDesign.Column>
+                <AntDesign.Column Title="Status" TData="string">
+                    @context.Status()
+                </AntDesign.Column>
+                <ActionColumn>
+                    <Space>
+                        <SpaceItem>
+                            <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
+                        </SpaceItem>
+                    </Space>
+                </ActionColumn>
+            </Table>
 
             </Body>
         </ChildContent>
 
     </Card>
-
 }
