@@ -18,13 +18,15 @@ namespace Blazor.Pages.Pod
         [Inject]
         private IPodService PodService { get; set; }
 
-       public  TablePagedService<V1Pod> tps;
+        [Inject]
+        private DrawerService DrawerService { get; set; }
 
-        
+        public TablePagedService<V1Pod> tps;
+
 
         private string _selectedNs = "";
 
- 
+
         protected override async Task OnInitializedAsync()
         {
             tps = new TablePagedService<V1Pod>(PodService);
@@ -32,7 +34,6 @@ namespace Blazor.Pages.Pod
         }
 
 
- 
         public async Task OnNsSelectedHandler(string ns)
         {
             _selectedNs = ns;
@@ -51,10 +52,20 @@ namespace Blazor.Pages.Pod
 
         public async Task OnChange(QueryModel<V1Pod> queryModel)
         {
-           tps.OnChange(queryModel);
-           await InvokeAsync(StateHasChanged);
+            tps.OnChange(queryModel);
+            await InvokeAsync(StateHasChanged);
         }
 
-
+        async Task OnRowClick(RowData<V1Pod> row)
+        {
+            var options = new DrawerOptions
+            {
+                Title = "POD:" + row.Data.Name(),
+                Width = 800
+            };
+            var drawerRef =
+                await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options,
+                    row.Data);
+        }
     }
 }

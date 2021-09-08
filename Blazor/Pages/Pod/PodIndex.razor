@@ -2,6 +2,7 @@
 @using k8s.Models
 @using Extension.k8s
 @using Extension
+@using Blazor.Pages.Container
 @if (tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -19,7 +20,8 @@
                    @bind-PageSize="tps.PageSize"
                    @bind-SelectedRows="tps.SelectedRows"
                    Loading="tps.Loading"
-                   OnChange="OnChange">
+                   OnChange="OnChange"
+                   OnRowClick="OnRowClick">
                 <Selection Key="@(context.Name())"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name"/>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
