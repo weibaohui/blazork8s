@@ -3,6 +3,7 @@
 @using Extension.k8s
 @using Extension
 @using Blazor.Pages.Container
+@using Blazor.Pages.Workload
 @if (tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -22,7 +23,6 @@
                    Loading="tps.Loading"
                    OnChange="OnChange"
                    OnRowClick="OnRowClick">
-                <Selection Key="@(context.Name())"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name"/>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">
