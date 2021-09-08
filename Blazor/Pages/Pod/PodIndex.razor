@@ -24,7 +24,7 @@
                 <AntDesign.Column Field="@context.Name()" Title="Name"/>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">
-                    @context.Spec.NodeName
+                    <ContainerStatus Pod="@context"></ContainerStatus>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Restart" TData="string">
                     @context.RestartCount()

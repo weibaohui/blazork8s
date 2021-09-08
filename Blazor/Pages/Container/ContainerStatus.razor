@@ -1,0 +1,17 @@
+@using Extension.k8s
+@if (Pod != null)
+{
+    foreach (var cs in Pod.Status.ContainerStatuses)
+    {
+        <Tooltip Placement="PlacementType.TopLeft" Title="@(cs.ReadySummary())">
+            @if (cs.Ready)
+            {
+                <Tag Color="#87d068">&nbsp;</Tag>
+            }
+            else
+            {
+                <Tag Color="#f50">&nbsp;</Tag>
+            }
+        </Tooltip>
+    }
+}
