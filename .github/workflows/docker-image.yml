@@ -19,6 +19,6 @@ jobs:
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: |
-           docker build . --file Server/Dockerfile --tag blzaork8s-server:$(date +%s)
+           docker build . --file Server/Dockerfile --tag ghcr.io/weibaohui/blzaork8s-server:latest
            docker push ghcr.io/weibaohui/blzaork8s-server:latest
       
