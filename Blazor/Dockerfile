@@ -10,10 +10,10 @@ FROM build AS publish
 RUN dotnet publish "Blazor.csproj" -c Release -o /app/publish
 
 
-FROM fholzer/nginx-brotli AS final
+FROM  nginx:alpine AS final
 WORKDIR /usr/share/nginx/html
 COPY --from=publish /app/publish/wwwroot .
-COPY Blazor/nginx.conf /etc/nginx/nginx.conf
+COPY Blazor/nginx/default.conf /etc/nginx/conf.d/default.conf
 RUN ls /usr/share/nginx/html
 EXPOSE 80
 EXPOSE 443
