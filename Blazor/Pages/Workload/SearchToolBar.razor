@@ -13,13 +13,16 @@
     </AntDesign.Col>
     <AntDesign.Col Class="gutter-row" Span="6">
         <div style="@style">
-            <Search Placeholder="@($"Search {Title}")" ClassicSearchIcon/>
+            <Search Loading="@loading" Placeholder="@($"Search {Title}")"   OnSearch="OnSearch" @bind-Value="@txtValue" ClassicSearchIcon />
         </div>
     </AntDesign.Col>
 </Row>
 
 @code {
     string style = " padding: 8px 0;";
+    private bool loading;
+    @inject MessageService message;
+        private string txtValue { get; set; }
 
     Dictionary<string, int> gutter = new()
     {
@@ -30,5 +33,10 @@
         ["xl"] = 48,
         ["xxl"] = 64
     };
+    public async Task OnSearch()
+    {
+        await message.Loading($"searching {txtValue}", 2);
+    }
+
 
 }
