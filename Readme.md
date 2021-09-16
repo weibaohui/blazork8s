@@ -6,7 +6,7 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 ```
 #ui
 ```docker
-docker run -d --name blazork8s-ui -p 6088:80  ghcr.io/weibaohui/blazork8s:ui
+docker run -d --name blazork8s-ui -p 6088:80  ghcr.io/weibaohui/blazork8s-ui:latest
 ```
 #web
 [web ui](http://localhost:6088)
