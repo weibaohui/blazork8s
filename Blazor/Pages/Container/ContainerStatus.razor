@@ -3,7 +3,7 @@
 {
     foreach (var cs in Pod.Status.ContainerStatuses)
     {
-        <Tooltip Placement="PlacementType.TopLeft" Title="@(cs.ReadySummary())">
+        <Tooltip  Title="@(cs.ReadySummary())">
             @if (cs.Ready)
             {
                 <Tag Color="#87d068">&nbsp;</Tag>

@@ -26,7 +26,7 @@ namespace server
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
-                    builder => { builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader(); });
+                    builder => { builder.AllowCredentials().AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader(); });
             });
 
             #endregion
@@ -61,7 +61,7 @@ namespace server
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "server v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "api"));
             }
 
             app.UseHttpsRedirection();
