@@ -26,7 +26,7 @@ namespace server
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
-                    builder => { builder.AllowCredentials().AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader(); });
+                    builder => { builder.AllowAnyMethod().AllowAnyOrigin().AllowAnyHeader(); });
             });
 
             #endregion
