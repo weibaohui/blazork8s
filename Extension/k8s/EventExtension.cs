@@ -18,5 +18,18 @@ namespace Extension.k8s
             return events.Items.Where(x => x.InvolvedObject.Kind == "Node" && x.InvolvedObject.Name == nodeName)
                 .ToList();
         }
+
+        public static IList<Corev1Event>? FilterByUID(this Corev1EventList eventList, string uid)
+        {
+            if (!string.IsNullOrEmpty(uid))
+            {
+                return eventList.Items.Where(w => w.InvolvedObject.Uid == uid)
+                    .OrderByDescending(w => w.Type)
+                    .OrderByDescending(e => e.LastTimestamp)
+                    .ToList();
+            }
+
+            return null;
+        }
     }
 }

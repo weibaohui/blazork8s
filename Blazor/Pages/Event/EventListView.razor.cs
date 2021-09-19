@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Blazor.Service;
+using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -12,7 +13,7 @@ namespace Blazor.Pages.Event
         [Inject]
         private IEventService EventService { get; set; }
 
-        public IList<Corev1Event> Events { get; set; }
+        private IList<Corev1Event> Events { get; set; }
 
 
         [Parameter]
@@ -21,12 +22,7 @@ namespace Blazor.Pages.Event
         protected override async Task OnInitializedAsync()
         {
             var coreEventList = await EventService.List();
-            if (!string.IsNullOrEmpty(Uid))
-            {
-                Events = coreEventList.Items.Where(w => w.InvolvedObject.Uid == Uid)
-                    .OrderByDescending(w => w.Type).OrderByDescending(e => e.LastTimestamp)
-                    .ToList();
-            }
+            Events = coreEventList.FilterByUID(Uid);
         }
     }
 }
