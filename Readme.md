@@ -5,14 +5,14 @@
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
-#体验
-##start server
+# 体验
+## start server
 ```docker
 docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 ghcr.io/weibaohui/blazork8s:latest
 ```
-##ui
+## ui
 ```docker
 docker run -d --name blazork8s-ui -p 6088:80  ghcr.io/weibaohui/blazork8s-ui:latest
 ```
-##web
+## web
 [web ui](http://localhost:6088)
