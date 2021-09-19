@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using Blazor.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -16,7 +17,7 @@ namespace Blazor.Pages.Pod
 
 
         [Inject]
-        private DrawerService DrawerService { get; set; }
+        private IPodService PodService { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -25,14 +26,7 @@ namespace Blazor.Pages.Pod
 
         private async Task OnPodClick(V1Pod pod)
         {
-            var options = new DrawerOptions
-            {
-                Title = "POD:" + pod.Name(),
-                Width = 800
-            };
-            var drawerRef =
-                await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options,
-                    pod);
+            await PodService.ShowPodDrawer(pod);
         }
     }
 }

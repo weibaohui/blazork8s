@@ -19,9 +19,6 @@ namespace Blazor.Pages.Workload
         [Parameter]
         public EventCallback<string> OnSearch { get; set; }
 
-        private bool Loading;
-
-
         private string TxtValue { get; set; }
 
         private void OnNsSelectedHandler(string ns)

@@ -19,8 +19,6 @@ namespace Blazor.Pages.Pod
         [Inject]
         private INodeService NodeService { get; set; }
 
-        [Inject]
-        private DrawerService DrawerService { get; set; }
 
         public TablePagedService<V1Pod> tps;
 

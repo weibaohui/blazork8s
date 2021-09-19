@@ -7,9 +7,8 @@ namespace Blazor.Pages.Node
 {
     public partial class NodeDetailView : FeedbackComponent<NodeVO, bool>
     {
-        public V1Node             Node;
-        public IList<V1Pod>       Pods;
-        public IList<Corev1Event> Events;
+        public V1Node       Node;
+        public IList<V1Pod> Pods;
 
         protected override void OnInitialized()
         {

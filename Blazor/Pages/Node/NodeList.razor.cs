@@ -19,9 +19,6 @@ namespace Blazor.Pages.Node
         private V1NodeList _nodes;
         private V1PodList  _pods;
 
-        [Inject]
-        private DrawerService DrawerService { get; set; }
-
 
         protected override async Task OnInitializedAsync()
         {
