@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using AntDesign;
 using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.Workload
@@ -12,12 +14,24 @@ namespace Blazor.Pages.Workload
         public int Count { get; set; }
 
         [Parameter]
-        public EventCallback<String> OnNsSelected { get; set; }
+        public EventCallback<string> OnNsSelected { get; set; }
 
-        public void OnNsSelectedHandler(string ns)
+        [Parameter]
+        public EventCallback<string> OnSearch { get; set; }
+
+        private bool Loading;
+
+
+        private string TxtValue { get; set; }
+
+        private void OnNsSelectedHandler(string ns)
         {
             OnNsSelected.InvokeAsync(ns);
-            // Console.WriteLine($"SearchToolBar index receive ns:{ns}");
+        }
+
+        private async Task OnSearchHandler()
+        {
+            await OnSearch.InvokeAsync(TxtValue);
         }
     }
 }

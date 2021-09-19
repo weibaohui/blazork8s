@@ -50,9 +50,23 @@ namespace Blazor.Pages.Pod
         {
         }
 
-        public async Task OnChange(QueryModel<V1Pod> queryModel)
+        private async Task OnChange(QueryModel<V1Pod> queryModel)
         {
             tps.OnChange(queryModel);
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task OnSearchHandler(string key)
+        {
+            if (String.IsNullOrEmpty(key))
+            {
+                await tps.GetData(_selectedNs);
+            }
+            else
+            {
+                tps.OnSearch(tps.OriginItems.Where(w => w.Name().Contains(key)).ToList());
+            }
+
             await InvokeAsync(StateHasChanged);
         }
 

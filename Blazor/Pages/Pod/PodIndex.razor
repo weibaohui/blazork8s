@@ -8,7 +8,9 @@
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="Pods" Count="@tps.Total" OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
+            <SearchToolBar Title="Pods" Count="@tps.Total"
+OnSearch="OnSearchHandler"
+OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
         </TitleTemplate>
         <ChildContent>
             <Body>
@@ -23,6 +25,7 @@
                    Loading="tps.Loading"
                    OnChange="OnChange"
                    OnRowClick="OnRowClick">
+                <Selection Key="@(context.Name())" />
                 <AntDesign.Column Field="@context.Name()" Title="Name"/>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">

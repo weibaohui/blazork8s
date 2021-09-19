@@ -26,8 +26,8 @@
             }
         </DescriptionsItem>
         <DescriptionsItem Title="Node">@PodItem.Spec.NodeName</DescriptionsItem>
-        <DescriptionsItem Title="pod IP">@PodItem.Status.PodIP</DescriptionsItem>
-        <DescriptionsItem Title="pod IPs">
+        <DescriptionsItem Title="Pod IP">@PodItem.Status.PodIP</DescriptionsItem>
+        <DescriptionsItem Title="Pod IPs">
             @foreach (var ip in PodItem.Status.PodIPs)
             {
                 <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
