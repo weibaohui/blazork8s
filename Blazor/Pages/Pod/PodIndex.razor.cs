@@ -70,16 +70,25 @@ namespace Blazor.Pages.Pod
             await InvokeAsync(StateHasChanged);
         }
 
-        async Task OnRowClick(RowData<V1Pod> row)
+
+        private async Task OnNodeNameClick(V1Pod pod)
         {
             var options = new DrawerOptions
             {
-                Title = "POD:" + row.Data.Name(),
+                Title = "POD:" + pod.Name(),
                 Width = 800
             };
-            var drawerRef =
-                await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options,
-                    row.Data);
+            await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
+        }
+
+        private async Task OnPodClick(V1Pod pod)
+        {
+            var options = new DrawerOptions
+            {
+                Title = "POD:" + pod.Name(),
+                Width = 800
+            };
+            await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
     }
 }

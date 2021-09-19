@@ -9,8 +9,9 @@
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
             <SearchToolBar Title="Pods" Count="@tps.Total"
-OnSearch="OnSearchHandler"
-OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
+                           OnSearch="OnSearchHandler"
+                           OnNsSelected="OnNsSelectedHandler">
+            </SearchToolBar>
         </TitleTemplate>
         <ChildContent>
             <Body>
@@ -24,9 +25,12 @@ OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
                    @bind-SelectedRows="tps.SelectedRows"
                    Loading="tps.Loading"
                    OnChange="OnChange"
-                   OnRowClick="OnRowClick">
-                <Selection Key="@(context.Name())" />
-                <AntDesign.Column Field="@context.Name()" Title="Name"/>
+
+                  >
+                <Selection Key="@(context.Name())"/>
+                <AntDesign.Column  Field="@context.Name()" Title="Name">
+                    <Button OnClick="@(()=>OnPodClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">
                     <ContainerStatus Pod="@context"></ContainerStatus>
@@ -35,10 +39,10 @@ OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
                     @context.RestartCount()
                 </AntDesign.Column>
                 <AntDesign.Column Title="ControllerBy" TData="string">
-                    @context.Spec.NodeName
+                    <Button OnClick="@(()=>OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Node" TData="string">
-                    @context.Spec.NodeName
+                    <Button OnClick="@(()=>OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Title="QoS" TData="string">
                     @context.Status.QosClass
@@ -49,15 +53,7 @@ OnNsSelected="OnNsSelectedHandler"></SearchToolBar>
                 <AntDesign.Column Title="Status" TData="string">
                     @context.Status()
                 </AntDesign.Column>
-                <ActionColumn>
-                    <Space>
-                        <SpaceItem>
-                            <Button Danger OnClick="() => Delete(context.Metadata.Uid)">Delete</Button>
-                        </SpaceItem>
-                    </Space>
-                </ActionColumn>
             </Table>
-
             </Body>
         </ChildContent>
 
