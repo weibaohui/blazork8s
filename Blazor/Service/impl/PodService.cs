@@ -2,22 +2,36 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AntDesign;
+using Blazor.Pages.Pod;
 using k8s.Models;
 
 namespace Blazor.Service.impl
 {
-    public class PodService: IPodService
+    public class PodService : IPodService
     {
-        private readonly IBaseService _baseService;
+        private readonly IBaseService  BaseService;
+        private readonly DrawerService DrawerService;
 
-        public PodService(IBaseService baseService)
+        public PodService(IBaseService baseService, DrawerService drawerService)
         {
-            _baseService = baseService;
+            BaseService   = baseService;
+            DrawerService = drawerService;
+        }
+
+        public async Task ShowPodDrawer(V1Pod pod)
+        {
+            var options = new DrawerOptions
+            {
+                Title = "POD:" + pod.Name(),
+                Width = 800
+            };
+            await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
 
         public async Task<V1PodList> List()
         {
-            return await _baseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
+            return await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
         }
 
         public async Task<V1PodList> ListByNamespace(string ns)
@@ -27,7 +41,7 @@ namespace Blazor.Service.impl
                 return await List();
             }
 
-            return await _baseService.GetFromJsonAsync<V1PodList>(@$"/KubeApi/api/v1/namespaces/{ns}/pods");
+            return await BaseService.GetFromJsonAsync<V1PodList>(@$"/KubeApi/api/v1/namespaces/{ns}/pods");
         }
 
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)

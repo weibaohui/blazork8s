@@ -40,7 +40,7 @@
                     <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Node" TData="string">
-                    <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
+                    <Button OnClick="@(() => OnNodeNameClick(context.Spec.NodeName))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Title="QoS" TData="string">
                     @context.Status.QosClass

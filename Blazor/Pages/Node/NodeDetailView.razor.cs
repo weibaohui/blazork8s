@@ -13,9 +13,8 @@ namespace Blazor.Pages.Node
 
         protected override void OnInitialized()
         {
-            Node   = Options.Node;
-            Pods   = Options.Pods;
-            Events = Options.Events;
+            Node = Options.Node;
+            Pods = Options.Pods;
             base.OnInitialized();
         }
 

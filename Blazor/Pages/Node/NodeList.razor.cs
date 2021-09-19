@@ -16,12 +16,8 @@ namespace Blazor.Pages.Node
         [Inject]
         private IPodService PodService { get; set; }
 
-        [Inject]
-        private IEventService EventService { get; set; }
-
-        private V1NodeList      _nodes;
-        private V1PodList       _pods;
-        public  Corev1EventList events;
+        private V1NodeList _nodes;
+        private V1PodList  _pods;
 
         [Inject]
         private DrawerService DrawerService { get; set; }
@@ -31,26 +27,11 @@ namespace Blazor.Pages.Node
         {
             _nodes = await NodeService.List();
             _pods  = await PodService.List();
-            events = await EventService.List();
         }
 
-        public async Task OpenComponent(V1Node node, IList<V1Pod> pods, IList<Corev1Event> events)
+        public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
         {
-            var options = new DrawerOptions
-            {
-                Title = "Node:" + node.Name(),
-                Width = 800
-            };
-
-
-            var drawerRef =
-                await DrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
-                    new NodeVO { Node = node, Pods = pods, Events = events });
-            // drawerRef.OnClosed = async result =>
-            // {
-            //     Console.WriteLine("OnAfterClosed:" + result.Name());
-            //     await InvokeAsync(StateHasChanged);
-            // };
+            await NodeService.ShowNodeDrawer(node, pods);
         }
     }
 }

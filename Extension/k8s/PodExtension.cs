@@ -45,12 +45,23 @@ namespace Extension.k8s
         }
 
         /// <summary>
-        /// 返回当前节点包含的POD
+        ///  返回指定名称的节点包含的POD
         /// </summary>
         /// <param name="pods"></param>
         /// <param name="nodeName"></param>
         /// <returns></returns>
         public static IList<V1Pod> PodListInNode(this V1PodList pods, string nodeName)
+        {
+            return pods.Items.Where(w => w.Spec.NodeName == nodeName).ToList();
+        }
+
+        /// <summary>
+        /// 返回指定名称的节点包含的POD
+        /// </summary>
+        /// <param name="pods"></param>
+        /// <param name="nodeName"></param>
+        /// <returns></returns>
+        public static IList<V1Pod> FilterByNodeName(this V1PodList pods, string nodeName)
         {
             return pods.Items.Where(w => w.Spec.NodeName == nodeName).ToList();
         }

@@ -5,8 +5,10 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AntDesign;
 using AntDesign.TableModels;
+using Blazor.Pages.Node;
 using Blazor.Service;
 using Blazor.Service.impl;
+using Entity;
 using Extension;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -17,6 +19,9 @@ namespace Blazor.Pages.Pod
     {
         [Inject]
         private IPodService PodService { get; set; }
+
+        [Inject]
+        private INodeService NodeService { get; set; }
 
         [Inject]
         private DrawerService DrawerService { get; set; }
@@ -71,24 +76,15 @@ namespace Blazor.Pages.Pod
         }
 
 
-        private async Task OnNodeNameClick(V1Pod pod)
+        private async Task OnNodeNameClick(string nodeName)
         {
-            var options = new DrawerOptions
-            {
-                Title = "POD:" + pod.Name(),
-                Width = 800
-            };
-            await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
+            var nodeDetail = await NodeService.DrawerNodeDetail(nodeName);
+            await NodeService.ShowNodeDrawer(nodeDetail.node, nodeDetail.pods);
         }
 
         private async Task OnPodClick(V1Pod pod)
         {
-            var options = new DrawerOptions
-            {
-                Title = "POD:" + pod.Name(),
-                Width = 800
-            };
-            await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
+            await PodService.ShowPodDrawer(pod);
         }
     }
 }

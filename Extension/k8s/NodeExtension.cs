@@ -36,5 +36,16 @@ namespace Extension.k8s
                 .Select(d => d.Key.Replace("node-role.kubernetes.io/", ""))
                 .ToList();
         }
+
+        /// <summary>
+        ///  按节点名称找到节点
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static V1Node FilterByNodeName(this V1NodeList list, string name)
+        {
+            return list.Items.First(x => x.Name() == name);
+        }
     }
 }

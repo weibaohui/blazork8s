@@ -8,9 +8,15 @@ namespace Extension.k8s
 {
     public static class EventExtension
     {
-        public static IList<Corev1Event> EventsInTypePod(this Corev1EventList events )
+        public static IList<Corev1Event> EventsInTypePod(this Corev1EventList events)
         {
             return events.Items.Where(w => w.InvolvedObject.Kind == "Pod").ToList();
+        }
+
+        public static IList<Corev1Event> FilterByNodeName(this Corev1EventList events, string nodeName)
+        {
+            return events.Items.Where(x => x.InvolvedObject.Kind == "Node" && x.InvolvedObject.Name == nodeName)
+                .ToList();
         }
     }
 }
