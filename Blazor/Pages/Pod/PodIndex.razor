@@ -24,12 +24,10 @@
                    @bind-PageSize="tps.PageSize"
                    @bind-SelectedRows="tps.SelectedRows"
                    Loading="tps.Loading"
-                   OnChange="OnChange"
-
-                  >
+                   OnChange="OnChange">
                 <Selection Key="@(context.Name())"/>
-                <AntDesign.Column  Field="@context.Name()" Title="Name">
-                    <Button OnClick="@(()=>OnPodClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">
@@ -39,10 +37,10 @@
                     @context.RestartCount()
                 </AntDesign.Column>
                 <AntDesign.Column Title="ControllerBy" TData="string">
-                    <Button OnClick="@(()=>OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
+                    <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Node" TData="string">
-                    <Button OnClick="@(()=>OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
+                    <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Title="QoS" TData="string">
                     @context.Status.QosClass
