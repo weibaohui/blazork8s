@@ -1,0 +1,19 @@
+@if (Owner != null)
+{
+    @foreach (var o in Owner)
+    {
+
+        switch (o.Kind)
+        {
+            case "ReplicaSet":
+                <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                break;
+            case "Node":
+                <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                break;
+            case "DaemonSet":
+               @o.Kind
+                break;
+        }
+    }
+}
