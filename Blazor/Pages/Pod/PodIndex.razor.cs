@@ -72,13 +72,13 @@ namespace Blazor.Pages.Pod
 
         private async Task OnNodeNameClick(string nodeName)
         {
-            var nodeDetail = await NodeService.DrawerNodeDetail(nodeName);
-            await NodeService.ShowNodeDrawer(nodeDetail.node, nodeDetail.pods);
+            await NodeService.ShowNodeDrawer(nodeName);
         }
 
         private async Task OnPodClick(V1Pod pod)
         {
             await PodService.ShowPodDrawer(pod);
         }
+
     }
 }
