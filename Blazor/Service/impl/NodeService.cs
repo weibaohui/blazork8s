@@ -31,6 +31,12 @@ namespace Blazor.Service.impl
             return (node, pods);
         }
 
+        public async Task ShowNodeDrawer(string nodeName)
+        {
+            var nodeDetail = await DrawerNodeDetail(nodeName);
+            await ShowNodeDrawer(nodeDetail.node, nodeDetail.pods);
+        }
+
         public async Task ShowNodeDrawer(V1Node node, IList<V1Pod> pods)
         {
             var options = new DrawerOptions

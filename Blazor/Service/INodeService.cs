@@ -10,5 +10,6 @@ namespace Blazor.Service
         Task<V1Node>                           FilterByNodeName(string name);
         Task<(V1Node node, IList<V1Pod> pods)> DrawerNodeDetail(string nodeName);
         Task                                   ShowNodeDrawer(V1Node   node, IList<V1Pod> pods);
+        Task                                   ShowNodeDrawer(string nodeName);
     }
 }
