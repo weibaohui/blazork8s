@@ -1,0 +1,7 @@
+﻿@using k8s.Models
+@using Blazor.Pages.Event
+@inherits FeedbackComponent<V1ReplicaSet, bool>
+@if (RsItem != null) {
+    @RsItem.Name()
+}
+    <EventListView Uid="@RsItem.Metadata.Uid"></EventListView>

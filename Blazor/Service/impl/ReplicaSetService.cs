@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
 using Blazor.Pages.Pod;
+using Blazor.Pages.ReplicaSet;
 using k8s.Models;
 
 namespace Blazor.Service.impl
@@ -19,6 +20,11 @@ namespace Blazor.Service.impl
             DrawerService = drawerService;
         }
 
+        public async Task ShowReplicaSetDrawer(string  rsName)
+        {
+            var rs = await FilterByName(rsName);
+            await ShowReplicaSetDrawer(rs);
+        }
         public async Task ShowReplicaSetDrawer(V1ReplicaSet rs)
         {
             var options = new DrawerOptions
@@ -26,7 +32,13 @@ namespace Blazor.Service.impl
                 Title = "ReplicaSet:" + rs.Name(),
                 Width = 800
             };
-            //await DrawerService.CreateAsync<ReplicaSetDetailView, V1Pod, bool>(options, rs);
+            await DrawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
+        }
+
+        public async Task<V1ReplicaSet> FilterByName(string name)
+        {
+            var list = await List();
+            return list.Items.First(x => x.Name() == name);
         }
 
         public async Task<V1ReplicaSetList> List()

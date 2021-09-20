@@ -1,14 +1,12 @@
 ﻿@page "/ReplicaSets"
 @using k8s.Models
-@using Extension.k8s
 @using Extension
-@using Blazor.Pages.Container
 @using Blazor.Pages.Workload
 @if (tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="Pods" Count="@tps.Total"
+            <SearchToolBar Title="ReplicaSet" Count="@tps.Total"
                            OnSearch="OnSearchHandler"
                            OnNsSelected="OnNsSelectedHandler">
             </SearchToolBar>
@@ -30,7 +28,6 @@
                     <Button OnClick="@(() => OnRsClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
-
 
                 <AntDesign.Column Title="ControllerBy" TData="string">
                 </AntDesign.Column>

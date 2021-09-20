@@ -8,5 +8,8 @@ namespace Blazor.Service
         Task<V1ReplicaSetList> List();
         Task<V1ReplicaSetList> ListByNamespace(string            ns);
         Task                   ShowReplicaSetDrawer(V1ReplicaSet rs);
+        Task                   ShowReplicaSetDrawer(string  rsName);
+        Task<V1ReplicaSet>     FilterByName(string               name);
+
     }
 }
