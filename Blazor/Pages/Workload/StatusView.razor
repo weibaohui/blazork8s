@@ -1,0 +1,11 @@
+@if (Status != null)
+{
+    if (Status.ToLower()=="running")
+    {
+        <AntDesign.Text Type="success">@Status</AntDesign.Text>
+    }
+    else
+    {
+        <AntDesign.Text Keyboard>@Status</AntDesign.Text>
+    }
+}

@@ -49,7 +49,7 @@
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>
                 <AntDesign.Column Title="Status" TData="string">
-                    @context.Status()
+                    <StatusView Status="@context.Status()"></StatusView>
                 </AntDesign.Column>
             </Table>
             </Body>
