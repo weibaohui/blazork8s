@@ -20,7 +20,9 @@
         <DescriptionsItem Title="Controlled By">
         <ControllerBy Owner=@PodItem.OwnerReferences()></ControllerBy>
         </DescriptionsItem>
-        <DescriptionsItem Title="Node">@PodItem.Spec.NodeName</DescriptionsItem>
+        <DescriptionsItem Title="Node">
+                    <Button OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))" Type="@ButtonType.Link">@PodItem.Spec.NodeName</Button>
+    </DescriptionsItem>
         <DescriptionsItem Title="Pod IP">@PodItem.Status.PodIP</DescriptionsItem>
         <DescriptionsItem Title="Pod IPs">
             @foreach (var ip in PodItem.Status.PodIPs)
