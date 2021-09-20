@@ -1,7 +1,43 @@
 ﻿@using k8s.Models
+@using Blazor.Pages.Container
 @using Blazor.Pages.Event
+@using Blazor.Pages.Workload
+@using Extension
+@using Extension.k8s
 @inherits FeedbackComponent<V1ReplicaSet, bool>
 @if (RsItem != null) {
-    @RsItem.Name()
-}
+ <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="创建时间">
+            @RsItem.Metadata.CreationTimestamp?.AgeFromUtc()
+            (@RsItem.Metadata.CreationTimestamp)
+        </DescriptionsItem>
+        <DescriptionsItem Title="Name">@RsItem.Name()</DescriptionsItem>
+        <DescriptionsItem Title="Namespace">@RsItem.Namespace()</DescriptionsItem>
+
+        <DescriptionsItem Title="Controlled By">
+        <ControllerBy Owner=@RsItem.OwnerReferences()></ControllerBy>
+        </DescriptionsItem>
+        @if (RsItem.Labels() != null)
+        {
+            <DescriptionsItem Title="Labels">
+                @foreach (var label in RsItem.Labels())
+                {
+                    <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
+                }
+            </DescriptionsItem>
+        }
+
+        
+        @if (RsItem.Metadata.Annotations != null)
+        {
+            <DescriptionsItem Title="Annotations">
+                @foreach (var label in RsItem.Annotations())
+                {
+                    <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
+                }
+            </DescriptionsItem>
+        }
+
+    </Descriptions>
     <EventListView Uid="@RsItem.Metadata.Uid"></EventListView>
+}
