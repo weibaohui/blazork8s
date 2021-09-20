@@ -1,5 +1,6 @@
 @using k8s.Models
 @using Extension.k8s
+@using Blazor.Pages.Workload
 @if (Pods.Count > 0)
 {
     <Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
@@ -12,6 +13,8 @@
                           Field="@context.Name()"/>
         <AntDesign.Column Sortable="true" TData="string" Title="NameSpace" Field="@context.Namespace()"/>
         <AntDesign.Column Sortable="true" TData="string" Title="Ready">@context.ReadySummary()</AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="Status">@context.Status()</AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title="Status">
+             <StatusView Status=@context.Status()></StatusView>
+        </AntDesign.Column>
     </Table>
 }
