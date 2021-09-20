@@ -1,3 +1,48 @@
 ﻿@page "/ReplicaSets"
-<h3>ReplicaSet</h3>
- 
+@using k8s.Models
+@using Extension.k8s
+@using Extension
+@using Blazor.Pages.Container
+@using Blazor.Pages.Workload
+@if (tps.PagedItems != null)
+{
+    <Card Bordered="false" Hoverable="true">
+        <TitleTemplate>
+            <SearchToolBar Title="Pods" Count="@tps.Total"
+                           OnSearch="OnSearchHandler"
+                           OnNsSelected="OnNsSelectedHandler">
+            </SearchToolBar>
+        </TitleTemplate>
+        <ChildContent>
+            <Body>
+
+            <Table TItem="V1ReplicaSet"
+                   DataSource="@tps.PagedItems"
+                   Size=@TableSize.Small Bordered="true"
+                   Total="tps.Total"
+                   @bind-PageIndex="tps.PageIndex"
+                   @bind-PageSize="tps.PageSize"
+                   @bind-SelectedRows="tps.SelectedRows"
+                   Loading="tps.Loading"
+                   OnChange="OnChange">
+                <Selection Key="@(context.Name())"/>
+                <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <Button OnClick="@(() => OnRsClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                </AntDesign.Column>
+                <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+
+
+                <AntDesign.Column Title="ControllerBy" TData="string">
+                </AntDesign.Column>
+
+
+                <AntDesign.Column Title="Age" TData="string">
+                    @context.CreationTimestamp()?.AgeFromUtc()
+                </AntDesign.Column>
+
+            </Table>
+            </Body>
+        </ChildContent>
+
+    </Card>
+}

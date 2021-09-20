@@ -23,9 +23,9 @@ namespace Blazor
             builder.Services.AddScoped<IBaseService, BaseService>();
             builder.Services.AddScoped<INodeService, NodeService>();
             builder.Services.AddScoped<IPodService, PodService>();
+            builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
             builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<INamespaceService, NamespaceService>();
-            builder.Services.AddScoped<IK8s, K8sService>();
 
             //webapi
             builder.Services.AddHttpApi<INodeApi>()

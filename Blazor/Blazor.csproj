@@ -7,14 +7,19 @@
       <ExternalConsole>true</ExternalConsole>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="AntDesign" Version="0.10.0" />
-        <PackageReference Include="AntDesign.Charts" Version="0.2.1" />
-        <PackageReference Include="AntDesign.ProLayout" Version="0.1.7" />
-        <PackageReference Include="KubernetesClient" Version="6.0.6" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.1.21452.15" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.1.21452.15" PrivateAssets="all" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="WebApiClientCore" Version="2.0.2" />
-        <PackageReference Include="WebApiClientCore.Extensions.NewtonsoftJson" Version="2.0.2" />
+        <PackageReference Include="AntDesign" Version="0.10.0"/>
+        <PackageReference Include="AntDesign.Charts" Version="0.2.1"/>
+        <PackageReference Include="AntDesign.ProLayout" Version="0.1.7"/>
+        <PackageReference Include="KubernetesClient" Version="6.0.6"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.1.21452.15"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.1.21452.15" PrivateAssets="all"/>
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
+        <PackageReference Include="WebApiClientCore" Version="2.0.2"/>
+        <PackageReference Include="WebApiClientCore.Extensions.NewtonsoftJson" Version="2.0.2"/>
     </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Entity\Entity.csproj"/>
+        <ProjectReference Include="..\Extension\Extension.csproj"/>
+    </ItemGroup>
+
 </Project>
