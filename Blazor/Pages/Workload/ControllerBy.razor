@@ -2,17 +2,20 @@
 {
     @foreach (var o in Owner)
     {
-
         switch (o.Kind)
         {
             case "ReplicaSet":
-                <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                <Tooltip Title="@o.Name">
+                    <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                </Tooltip>
                 break;
             case "Node":
-                <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                <Tooltip Title="@o.Name">
+                    <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link" >@o.Kind</Button>
+                </Tooltip>
                 break;
             case "DaemonSet":
-               @o.Kind
+                @o.Kind
                 break;
         }
     }
