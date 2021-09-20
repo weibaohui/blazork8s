@@ -2,7 +2,9 @@
 <Divider Orientation="left" Style="font-weight:bold">容器</Divider>
 @foreach (var c in Containers)
 {
-    <Descriptions Title="@c.Name" Bordered Column="1">
+<BadgeRibbon Text="@c.Name" Placement="start">
+ <Card Bordered>
+    <Descriptions Title=""   Bordered Column="1">
         <DescriptionsItem Title="Name">@c.Name</DescriptionsItem>
         <DescriptionsItem Title="Status">
             @{
@@ -108,4 +110,6 @@
             }
         </DescriptionsItem>
     </Descriptions>
+    </Card>
+</BadgeRibbon>
 }

@@ -1,6 +1,7 @@
 @using k8s.Models
 @using Blazor.Pages.Pod
 @using Blazor.Pages.Event
+@using Blazor.Pages.Workload
 @using Extension
 @using Extension.k8s
 @inherits FeedbackComponent<Entity.NodeVO, bool>
@@ -12,7 +13,9 @@
             @Node.Metadata.CreationTimestamp?.AgeFromUtc()
             (@Node.Metadata.CreationTimestamp)
         </DescriptionsItem>
-        <DescriptionsItem Title="Name">@Node.Name()</DescriptionsItem>
+        <DescriptionsItem Title="Name">
+            <Text Copyable> @Node.Name()</Text>
+        </DescriptionsItem>
         <DescriptionsItem Title="Conditions">
             @if (Node.Status.Conditions.IsReady())
             {
@@ -35,18 +38,8 @@
         <DescriptionsItem Title="KernelVersion">@Node.Status.NodeInfo.KernelVersion</DescriptionsItem>
         <DescriptionsItem Title="KubeletVersion">@Node.Status.NodeInfo.KubeletVersion</DescriptionsItem>
         <DescriptionsItem Title="ContainerRuntime">@Node.Status.NodeInfo.ContainerRuntimeVersion</DescriptionsItem>
-        <DescriptionsItem Title="Labels">
-            @foreach (var label in Node.Labels())
-            {
-                <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
-            }
-        </DescriptionsItem>
-        <DescriptionsItem Title="Annotations">
-            @foreach (var label in Node.Annotations())
-            {
-                <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
-            }
-        </DescriptionsItem>
+        <LabelsView Labels="@Node.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@Node.Annotations()"></AnnotationsView>
     </Descriptions>
     <NodeResourceQuantityView BlockTitle="Capacity" Dict=@Node.Status.Capacity>
     </NodeResourceQuantityView>

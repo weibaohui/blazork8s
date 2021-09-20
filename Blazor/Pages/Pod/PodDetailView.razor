@@ -12,17 +12,19 @@
             @PodItem.Metadata.CreationTimestamp?.AgeFromUtc()
             (@PodItem.Metadata.CreationTimestamp)
         </DescriptionsItem>
-        <DescriptionsItem Title="Name">@PodItem.Name()</DescriptionsItem>
+        <DescriptionsItem Title="Name">
+            <Text Copyable>@PodItem.Name()</Text>
+        </DescriptionsItem>
         <DescriptionsItem Title="Namespace">@PodItem.Namespace()</DescriptionsItem>
         <DescriptionsItem Title="状态">
-        <StatusView Status=@PodItem.Status()></StatusView>
-</DescriptionsItem>
+            <StatusView Status=@PodItem.Status()></StatusView>
+        </DescriptionsItem>
         <DescriptionsItem Title="Controlled By">
-        <ControllerBy Owner=@PodItem.OwnerReferences()></ControllerBy>
+            <ControllerBy Owner=@PodItem.OwnerReferences()></ControllerBy>
         </DescriptionsItem>
         <DescriptionsItem Title="Node">
-                    <Button OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))" Type="@ButtonType.Link">@PodItem.Spec.NodeName</Button>
-    </DescriptionsItem>
+            <Button OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))" Type="@ButtonType.Link">@PodItem.Spec.NodeName</Button>
+        </DescriptionsItem>
         <DescriptionsItem Title="Pod IP">@PodItem.Status.PodIP</DescriptionsItem>
         <DescriptionsItem Title="Pod IPs">
             @foreach (var ip in PodItem.Status.PodIPs)
@@ -32,15 +34,6 @@
         </DescriptionsItem>
         <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>
         <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
-        @if (PodItem.Labels() != null)
-        {
-            <DescriptionsItem Title="Labels">
-                @foreach (var label in PodItem.Labels())
-                {
-                    <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
-                }
-            </DescriptionsItem>
-        }
         <DescriptionsItem Title="NodeSelector">
             @if (PodItem.Spec.NodeSelector != null)
             {
@@ -63,16 +56,8 @@
                 }
             }
         </DescriptionsItem>
-        @if (PodItem.Metadata.Annotations != null)
-        {
-            <DescriptionsItem Title="Annotations">
-                @foreach (var label in PodItem.Annotations())
-                {
-                    <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
-                }
-            </DescriptionsItem>
-        }
-
+        <LabelsView Labels="PodItem.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@PodItem.Annotations()"></AnnotationsView>
         @if (PodItem.Spec.Tolerations != null)
         {
             <DescriptionsItem Title="Tolerations">

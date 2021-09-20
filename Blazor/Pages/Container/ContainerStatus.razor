@@ -1,17 +1,21 @@
 @using Extension.k8s
 @if (Pod != null)
 {
-    foreach (var cs in Pod.Status.ContainerStatuses)
-    {
-        <Tooltip Title="@(cs.ReadySummary())">
-            @if (cs.Ready)
-            {
-                <Tag Color="#87d068">&nbsp;</Tag>
-            }
-            else
-            {
-                <Tag Color="#f50">&nbsp;</Tag>
-            }
-        </Tooltip>
-    }
+    <Space>
+        @foreach (var cs in Pod.Status.ContainerStatuses)
+        {
+            <SpaceItem>
+                <Tooltip Title="@(cs.ReadySummary())">
+                    @if (cs.Ready)
+                    {
+                        <Badge Status="success" />
+                    }
+                    else
+                    {
+                        <Badge Status="error" />
+                    }
+                </Tooltip>
+            </SpaceItem>
+        }
+    </Space>
 }

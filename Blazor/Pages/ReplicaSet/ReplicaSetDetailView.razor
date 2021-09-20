@@ -12,32 +12,16 @@
             @RsItem.Metadata.CreationTimestamp?.AgeFromUtc()
             (@RsItem.Metadata.CreationTimestamp)
         </DescriptionsItem>
-        <DescriptionsItem Title="Name">@RsItem.Name()</DescriptionsItem>
+        <DescriptionsItem Title="Name">
+            <Text Copyable>@RsItem.Name()</Text>
+        </DescriptionsItem>
         <DescriptionsItem Title="Namespace">@RsItem.Namespace()</DescriptionsItem>
 
         <DescriptionsItem Title="Controlled By">
             <ControllerBy Owner=@RsItem.OwnerReferences()></ControllerBy>
         </DescriptionsItem>
-        @if (RsItem.Labels() != null)
-        {
-            <DescriptionsItem Title="Labels">
-                @foreach (var label in RsItem.Labels())
-                {
-                    <Tag PresetColor=@PresetColor.Green>@label.Key = @label.Value</Tag>
-                }
-            </DescriptionsItem>
-        }
-
-
-        @if (RsItem.Metadata.Annotations != null)
-        {
-            <DescriptionsItem Title="Annotations">
-                @foreach (var label in RsItem.Annotations())
-                {
-                    <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
-                }
-            </DescriptionsItem>
-        }
+        <LabelsView Labels="@RsItem.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@RsItem.Annotations()"></AnnotationsView>
 
     </Descriptions>
     <EventListView Uid="@RsItem.Metadata.Uid"></EventListView>

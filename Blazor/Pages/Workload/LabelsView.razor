@@ -1,0 +1,11 @@
+@if (Labels != null)
+{
+    <DescriptionsItem Title="Labels">
+        @foreach (var label in Labels)
+        {
+            <Paragraph Copyable>
+                <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
+            </Paragraph>
+        }
+    </DescriptionsItem>
+}
