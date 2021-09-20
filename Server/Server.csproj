@@ -5,9 +5,10 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'server' " />
     <ItemGroup>
-        <PackageReference Include="KubernetesClient" Version="6.0.3"/>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1"/>
+        <PackageReference Include="KubernetesClient" Version="6.0.6" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
     </ItemGroup>
     <ItemGroup>
       <ProjectReference Include="..\Entity\Entity.csproj" />
