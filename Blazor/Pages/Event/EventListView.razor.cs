@@ -5,6 +5,7 @@ using Blazor.Service;
 using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.VisualBasic;
 
 namespace Blazor.Pages.Event
 {
@@ -18,11 +19,20 @@ namespace Blazor.Pages.Event
 
         [Parameter]
         public string Uid { get; set; }
+        [Parameter]
+        public string Host { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
             var coreEventList = await EventService.List();
-            Events = coreEventList.FilterByUID(Uid);
+            if (string.IsNullOrEmpty(Uid))
+            {
+                Events = coreEventList.FilterBySourceHost(Host);
+            }
+            else
+            {
+                Events = coreEventList.FilterByUID(Uid);
+            }
         }
     }
 }

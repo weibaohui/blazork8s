@@ -13,9 +13,9 @@ namespace Extension.k8s
             return events.Items.Where(w => w.InvolvedObject.Kind == "Pod").ToList();
         }
 
-        public static IList<Corev1Event> FilterByNodeName(this Corev1EventList events, string nodeName)
+        public static IList<Corev1Event> FilterBySourceHost(this Corev1EventList events, string nodeName)
         {
-            return events.Items.Where(x => x.InvolvedObject.Kind == "Node" && x.InvolvedObject.Name == nodeName)
+            return events.Items.Where(x => x.Source.Host == nodeName)
                 .ToList();
         }
 
