@@ -1,6 +1,7 @@
 @using k8s.Models
 @using Blazor.Pages.Container
 @using Blazor.Pages.Event
+@using Blazor.Pages.Workload
 @using Extension
 @using Extension.k8s
 @inherits FeedbackComponent<V1Pod, bool>
@@ -13,17 +14,11 @@
         </DescriptionsItem>
         <DescriptionsItem Title="Name">@PodItem.Name()</DescriptionsItem>
         <DescriptionsItem Title="Namespace">@PodItem.Namespace()</DescriptionsItem>
-        <DescriptionsItem Title="状态">@PodItem.Status()</DescriptionsItem>
+        <DescriptionsItem Title="状态">
+        <StatusView Status=@PodItem.Status()></StatusView>
+</DescriptionsItem>
         <DescriptionsItem Title="Controlled By">
-            @if (PodItem.Metadata.OwnerReferences != null)
-            {
-                @foreach (var owner in PodItem.Metadata.OwnerReferences)
-                {
-                    @owner.Kind
-                    @(" ")
-                    @owner.Name
-                }
-            }
+        <ControllerBy Owner=@PodItem.OwnerReferences()></ControllerBy>
         </DescriptionsItem>
         <DescriptionsItem Title="Node">@PodItem.Spec.NodeName</DescriptionsItem>
         <DescriptionsItem Title="Pod IP">@PodItem.Status.PodIP</DescriptionsItem>

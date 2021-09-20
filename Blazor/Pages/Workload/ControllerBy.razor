@@ -6,12 +6,12 @@
         {
             case "ReplicaSet":
                 <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
                 </Tooltip>
                 break;
             case "Node":
                 <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link" >@o.Kind</Button>
+                <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link" >@o.Kind</Button>
                 </Tooltip>
                 break;
             case "DaemonSet":
