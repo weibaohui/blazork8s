@@ -25,11 +25,19 @@
         <DescriptionsItem Title="Node">
             <Button OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))" Type="@ButtonType.Link">@PodItem.Spec.NodeName</Button>
         </DescriptionsItem>
-        <DescriptionsItem Title="Pod IP">@PodItem.Status.PodIP</DescriptionsItem>
-        <DescriptionsItem Title="Pod IPs">
-            @foreach (var ip in PodItem.Status.PodIPs)
+        <DescriptionsItem Title="Pod IP">
+            @if (PodItem.Status.PodIP != null)
             {
-                <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
+                @PodItem.Status.PodIP
+            }
+        </DescriptionsItem>
+        <DescriptionsItem Title="Pod IPs">
+            @if (PodItem.Status.PodIPs != null)
+            {
+                @foreach (var ip in PodItem.Status.PodIPs)
+                {
+                    <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
+                }
             }
         </DescriptionsItem>
         <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>

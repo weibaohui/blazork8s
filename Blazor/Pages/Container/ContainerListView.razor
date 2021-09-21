@@ -1,120 +1,15 @@
 ﻿@using Extension.k8s
 <Divider Orientation="left" Style="font-weight:bold">容器</Divider>
-@foreach (var c in Containers)
-{
-<BadgeRibbon Text="@c.Name" Placement="start">
- <Card Bordered>
-    <Descriptions Title=""   Bordered Column="1">
-        <DescriptionsItem Title="Name">
-            <Tag PresetColor=@PresetColor.Magenta>
-                                                <Icon Type="container" Theme="outline"/>
-                                            </Tag>
-            @c.Name
-        </DescriptionsItem>
-        <DescriptionsItem Title="Status">
-            @{
-                var (sum, msg) = ContainerStatuses.ReadySummaryWithMsg(c.Name);
-                if (sum == "Ready")
-                {
-                    <Tag Color="Green">Ready</Tag>
-                }
-                else
-                {
-                    <Tag Color="orange-inverse">@sum</Tag>
-                    <p>@msg</p>
-                }
-            }
-        </DescriptionsItem>
-
-        <DescriptionsItem Title="Image">@c.Image</DescriptionsItem>
-        <DescriptionsItem Title="ImagePullPolicy">@c.ImagePullPolicy</DescriptionsItem>
-        @if (c.Env != null)
-        {
-            <DescriptionsItem Title="Env">
-                @foreach (var ce in c.Env)
-                {
-                    if (ce.ValueFrom != null)
-                    {
-                        if (ce.ValueFrom.FieldRef != null)
-                        {
-                            var vf = ce.ValueFrom.FieldRef;
-                            @($"{ce.Name}:FieldRef({vf.ApiVersion}:{vf.FieldPath})")
-                        }
-                        if (ce.ValueFrom.ConfigMapKeyRef != null)
-                        {
-                            var vf = ce.ValueFrom.ConfigMapKeyRef;
-                            @($"{ce.Name}:ConfigMapKeyRef({vf.Key}:{vf.Name})")
-                        }
-                        if (ce.ValueFrom.SecretKeyRef != null)
-                        {
-                            var vf = ce.ValueFrom.SecretKeyRef;
-                            @($"{ce.Name}:SecretKeyRef({vf.Key}:{vf.Name})")
-                        }
-                        if (ce.ValueFrom.ResourceFieldRef != null)
-                        {
-                            var vf = ce.ValueFrom.ResourceFieldRef;
-                            @($"{ce.Name}:ResourceFieldRef({vf.ContainerName}:{vf.Resource})")
-                        }
-                    }
-                    else
-                    {
-                        @($"{ce.Name}:{ce.Value}")
-                    }
-                    <br/>
-                }
-            </DescriptionsItem>
-        }
-        @if (c.Ports != null)
-        {
-            <DescriptionsItem Title="Ports">
-                @foreach (var p in c.Ports)
-                {
-                    @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
-                    <br/>
-                }
-            </DescriptionsItem>
-        }
-        @if (c.Command != null)
-        {
-            <DescriptionsItem Title="Command">
-                @foreach (var cc in c.Command)
-                {
-                    @cc
-                    <br/>
-                }
-            </DescriptionsItem>
-        }
-        @if (c.Args != null)
-        {
-            <DescriptionsItem Title="Args">
-                @foreach (var cc in c.Args)
-                {
-                    @cc
-                    <br/>
-                }
-            </DescriptionsItem>
-        }
-        <ProbeView Probe="@c.LivenessProbe" ProbeType="LivenessProbe"></ProbeView>
-        <ProbeView Probe="@c.ReadinessProbe" ProbeType="ReadinessProbe"></ProbeView>
-        <ProbeView Probe="@c.StartupProbe" ProbeType="StartupProbe"></ProbeView>
-
-        <DescriptionsItem Title="VolumeMounts">
-            @foreach (var vm in c.VolumeMounts)
-            {
-                @if (vm.ReadOnlyProperty != null && vm.ReadOnlyProperty == true)
-                {
-                    <Tag PresetColor="@PresetColor.Gold">RO</Tag>
-                }
-                else
-                {
-                    <Tag PresetColor="@PresetColor.Lime">RW</Tag>
-                }
-                <Tag>@vm.Name</Tag>
-                <Tag Color="#87d068">@vm.MountPath</Tag>
-                <br/>
-            }
-        </DescriptionsItem>
-    </Descriptions>
-    </Card>
-</BadgeRibbon>
-}
+<ContainerView Containers="@Pod.Spec.Containers"
+               ContainerStatuses="@Pod.Status.ContainerStatuses"
+               Type="Main">
+</ContainerView>
+<ContainerView Containers="@Pod.Spec.InitContainers"
+               ContainerStatuses="@Pod.Status.InitContainerStatuses"
+               Type="Init">
+</ContainerView>
+@* TODO *@
+@* <ContainerView Containers="@Pod.Spec.EphemeralContainers" *@
+@*                ContainerStatuses="@Pod.Status.ContainerStatuses" *@
+@*                Type="Ephemeral"> *@
+@* </ContainerView> *@

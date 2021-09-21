@@ -1,0 +1,26 @@
+﻿@if (Type == "Main")
+{
+    <Tooltip Title="@($"Main Container")">
+        <Tag PresetColor=@PresetColor.Magenta>
+            <Icon Type="container" Theme="outline"/>
+        </Tag>
+    </Tooltip>
+}
+@if (Type == "Init")
+{
+    <Tooltip Title="@($"Init Container")">
+
+        <Tag PresetColor=@PresetColor.Gold>
+            <Icon Type="setting" Theme="outline"/>
+        </Tag>
+    </Tooltip>
+}
+@if (Type == "Ephemeral")
+{
+    <Tooltip Title="@($"Ephemeral Container")">
+
+        <Tag PresetColor=@PresetColor.Blue>
+            <Icon Type="setting" Theme="outline"/>
+        </Tag>
+    </Tooltip>
+}

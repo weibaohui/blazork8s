@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages.Container
 {
-    public partial class ContainerListView : ComponentBase
+    public partial class EnvView : ComponentBase
     {
+
+
         [Parameter]
-        public V1Pod Pod { get; set; }
+        public IList<V1EnvVar> Env { get; set; }
+
     }
 }
