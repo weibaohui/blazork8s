@@ -52,31 +52,7 @@
         <LabelsView Labels="PodItem.Labels()"></LabelsView>
         <AnnotationsView Annotations="@PodItem.Annotations()"></AnnotationsView>
         <ImagesView PodSpec="@PodItem.Spec"></ImagesView>
-        @if (PodItem.Spec.Tolerations != null)
-        {
-            <DescriptionsItem Title="Tolerations">
-
-                <Collapse>
-                    <Panel Key="1">
-                        <HeaderTemplate>
-                            <Badge Count="@PodItem.Spec.Tolerations.Count"/>
-                        </HeaderTemplate>
-                        <ChildContent>
-                            <Table TItem="V1Toleration" DataSource="PodItem.Spec.Tolerations"
-                                   HidePagination="true" PageSize="5000"
-                                   Size=@TableSize.Small Bordered="true">
-                                <AntDesign.Column TData="string" Title="Key" Field="@context.Key"/>
-                                <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty"/>
-                                <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
-                                <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
-                                <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
-                            </Table>
-                        </ChildContent>
-                    </Panel>
-                </Collapse>
-            </DescriptionsItem>
-        }
-
+        <TolerationsView Tolerations="@PodItem.Spec.Tolerations"></TolerationsView>
     </Descriptions>
     <ContainerListView Pod="@PodItem"></ContainerListView>
     <VolumeView PodItem="@PodItem"></VolumeView>

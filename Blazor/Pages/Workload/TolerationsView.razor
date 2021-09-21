@@ -1,0 +1,25 @@
+@using k8s.Models;
+@if (Tolerations != null)
+{
+    <DescriptionsItem Title="Tolerations">
+
+        <Collapse>
+            <Panel Key="1">
+                <HeaderTemplate>
+                    <Badge Count="@Tolerations.Count"/>
+                </HeaderTemplate>
+                <ChildContent>
+                    <Table TItem="V1Toleration" DataSource="Tolerations"
+                           HidePagination="true" PageSize="5000"
+                           Size=@TableSize.Small Bordered="true">
+                        <AntDesign.Column TData="string" Title="Key" Field="@context.Key"/>
+                        <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty"/>
+                        <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
+                    </Table>
+                </ChildContent>
+            </Panel>
+        </Collapse>
+    </DescriptionsItem>
+}
