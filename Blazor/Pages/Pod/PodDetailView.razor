@@ -19,9 +19,7 @@
         <DescriptionsItem Title="状态">
             <StatusView Status=@PodItem.Status()></StatusView>
         </DescriptionsItem>
-        <DescriptionsItem Title="Controlled By">
-            <ControllerBy Owner=@PodItem.OwnerReferences()></ControllerBy>
-        </DescriptionsItem>
+        <ControllerByView Owner=@PodItem.OwnerReferences()></ControllerByView>
         <DescriptionsItem Title="Node">
             <Button OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))" Type="@ButtonType.Link">@PodItem.Spec.NodeName</Button>
         </DescriptionsItem>

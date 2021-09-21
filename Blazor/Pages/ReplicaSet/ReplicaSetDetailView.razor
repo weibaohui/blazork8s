@@ -17,9 +17,7 @@
         </DescriptionsItem>
         <DescriptionsItem Title="Namespace">@RsItem.Namespace()</DescriptionsItem>
 
-        <DescriptionsItem Title="Controlled By">
-            <ControllerBy Owner=@RsItem.OwnerReferences()></ControllerBy>
-        </DescriptionsItem>
+        <ControllerByView Owner=@RsItem.OwnerReferences()></ControllerByView>
         <LabelsView Labels="@RsItem.Labels()"></LabelsView>
         <AnnotationsView Annotations="@RsItem.Annotations()"></AnnotationsView>
         <SelectorView Title="Selector" Selector="@RsItem.Spec.Selector.MatchLabels"></SelectorView>
