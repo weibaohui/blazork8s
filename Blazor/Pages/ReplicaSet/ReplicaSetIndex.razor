@@ -30,6 +30,16 @@
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
 
                 <AntDesign.Column Title="ControllerBy" TData="string">
+                    <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
+                </AntDesign.Column>
+                <AntDesign.Column Title="Desired" TData="int">
+                    @context.Status.Replicas
+                </AntDesign.Column>
+                <AntDesign.Column Title="Current" TData="int">
+                    @(context.Status.AvailableReplicas??0)
+                </AntDesign.Column>
+                <AntDesign.Column Title="Ready" TData="int">
+                    @(context.Status.ReadyReplicas??0)
                 </AntDesign.Column>
 
 
