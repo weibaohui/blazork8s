@@ -34,15 +34,8 @@
         </DescriptionsItem>
         <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>
         <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
-        <DescriptionsItem Title="NodeSelector">
-            @if (PodItem.Spec.NodeSelector != null)
-            {
-                @foreach (var ns in PodItem.Spec.NodeSelector)
-                {
-                    <Tag PresetColor=@PresetColor.Volcano>@ns.Key = @ns.Value</Tag>
-                }
-            }
-        </DescriptionsItem>
+
+        <SelectorView Title="Node Selector" Selector="@PodItem.Spec.NodeSelector"></SelectorView>
         <DescriptionsItem Title="Conditions">
             @foreach (var ns in PodItem.Status.Conditions)
             {
@@ -58,6 +51,7 @@
         </DescriptionsItem>
         <LabelsView Labels="PodItem.Labels()"></LabelsView>
         <AnnotationsView Annotations="@PodItem.Annotations()"></AnnotationsView>
+        <ImagesView PodSpec="@PodItem.Spec"></ImagesView>
         @if (PodItem.Spec.Tolerations != null)
         {
             <DescriptionsItem Title="Tolerations">

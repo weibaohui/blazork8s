@@ -1,0 +1,51 @@
+@using AntDesign;
+@if (PodSpec != null)
+{
+    <DescriptionsItem Title="Images">
+        @if (PodSpec.Containers != null)
+        {
+            @foreach (var c in PodSpec.Containers)
+            {
+                <Paragraph >
+                    <Tooltip Title="@($"Main Container")">
+                        <Tag PresetColor=@PresetColor.Magenta>
+                            <Icon Type="container" Theme="outline"/>
+                        </Tag>
+                        <Text Copyable>@c.Image</Text>
+                    </Tooltip>
+                </Paragraph>
+            }
+        }
+        @if (PodSpec.InitContainers != null)
+        {
+            @foreach (var c in PodSpec.InitContainers)
+            {
+                <Paragraph >
+                    <Tooltip Title="@($"Init Container")">
+                        <Tag PresetColor=@PresetColor.Gold>
+                            <Icon Type="setting" Theme="outline"/>
+                        </Tag>
+                        <Text Copyable>@c.Image</Text>
+                    </Tooltip>
+
+                </Paragraph>
+            }
+        }
+        @if (PodSpec.EphemeralContainers != null)
+        {
+            @foreach (var c in PodSpec.EphemeralContainers)
+            {
+                <Paragraph >
+                    <Tooltip Title="@($"Ephemeral Container")">
+
+                        <Tag PresetColor=@PresetColor.Blue>
+                            <Icon Type="setting" Theme="outline"/>
+                        </Tag>
+                        <Text Copyable>@c.Image</Text>
+                    </Tooltip>
+
+                </Paragraph>
+            }
+        }
+    </DescriptionsItem>
+}

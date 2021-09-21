@@ -22,7 +22,12 @@
         </DescriptionsItem>
         <LabelsView Labels="@RsItem.Labels()"></LabelsView>
         <AnnotationsView Annotations="@RsItem.Annotations()"></AnnotationsView>
-
+        <SelectorView Title="Selector" Selector="@RsItem.Spec.Selector.MatchLabels"></SelectorView>
+        <SelectorView Title="Node Selector" Selector="@RsItem.Spec.Template.Spec.NodeSelector"></SelectorView>
+        <DescriptionsItem Title="Replicas">
+            @($"{RsItem.Status.AvailableReplicas??0} current / {RsItem.Status.Replicas} desired")
+        </DescriptionsItem>
+        <ImagesView PodSpec="@RsItem.Spec.Template.Spec"></ImagesView>
     </Descriptions>
     <EventListView Uid="@RsItem.Metadata.Uid"></EventListView>
 }

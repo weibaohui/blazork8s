@@ -5,7 +5,12 @@
 <BadgeRibbon Text="@c.Name" Placement="start">
  <Card Bordered>
     <Descriptions Title=""   Bordered Column="1">
-        <DescriptionsItem Title="Name">@c.Name</DescriptionsItem>
+        <DescriptionsItem Title="Name">
+            <Tag PresetColor=@PresetColor.Magenta>
+                                                <Icon Type="container" Theme="outline"/>
+                                            </Tag>
+            @c.Name
+        </DescriptionsItem>
         <DescriptionsItem Title="Status">
             @{
                 var (sum, msg) = ContainerStatuses.ReadySummaryWithMsg(c.Name);
