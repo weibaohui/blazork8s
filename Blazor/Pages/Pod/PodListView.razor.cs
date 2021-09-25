@@ -17,9 +17,18 @@ namespace Blazor.Pages.Pod
         [Parameter]
         public IList<V1Pod> Pods { get; set; }
 
-        protected override void OnInitialized()
+
+        [Parameter]
+        public string ControllerByUid { get; set; }
+
+
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            if (!string.IsNullOrEmpty(ControllerByUid))
+            {
+                Pods = await PodService.ListByOwnerUid(ControllerByUid);
+            }
+            await base.OnInitializedAsync();
         }
 
 

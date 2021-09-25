@@ -29,6 +29,13 @@ namespace Blazor.Service.impl
             await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
 
+        public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
+        {
+            var list = await List();
+            return list.Items.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
+                .ToList();
+        }
+
         public async Task<V1PodList> List()
         {
             return await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
