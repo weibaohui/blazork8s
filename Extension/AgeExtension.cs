@@ -73,7 +73,15 @@ namespace Extension
             var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
             return dateTime.Age();
         }
-
+        public static string AgeFromUtc(this DateTime? time)
+        {
+            if (time==null)
+            {
+                return "";
+            }
+            var dateTime = DateTime.Parse(time?.ToString("yyyy-MM-dd'T'HH:mm:ssZ")!);
+            return dateTime.Age();
+        }
 
         public static string Age(this DateTime time, DateTime burnTime)
         {
