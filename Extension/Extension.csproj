@@ -7,7 +7,7 @@
 
     <ItemGroup>
         <PackageReference Include="AntDesign" Version="0.10.0" />
-        <PackageReference Include="KubernetesClient" Version="6.0.6" />
+        <PackageReference Include="KubernetesClient" Version="6.0.8" />
     </ItemGroup>
 
 </Project>
