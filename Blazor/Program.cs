@@ -23,6 +23,7 @@ namespace Blazor
             builder.Services.AddScoped<IBaseService, BaseService>();
             builder.Services.AddScoped<INodeService, NodeService>();
             builder.Services.AddScoped<IPodService, PodService>();
+            builder.Services.AddScoped<IDeploymentService, DeploymentService>();
             builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
             builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<INamespaceService, NamespaceService>();
