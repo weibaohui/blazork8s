@@ -1,0 +1,18 @@
+@using k8s.Models
+@using Extension.k8s
+@if (Conditions != null)
+{
+    <DescriptionsItem Title="Conditions">
+        @foreach (var ns in Conditions)
+        {
+            if (ns.Status == "True")
+            {
+                <Tag Icon="check" PresetColor=@PresetColor.Blue>@ns.Type</Tag>
+            }
+            else
+            {
+                <Tag Icon="close" PresetColor=@PresetColor.Red>@ns.Type</Tag>
+            }
+        }
+    </DescriptionsItem>
+}

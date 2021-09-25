@@ -42,19 +42,7 @@
         <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
 
         <SelectorView Title="Node Selector" Selector="@PodItem.Spec.NodeSelector"></SelectorView>
-        <DescriptionsItem Title="Conditions">
-            @foreach (var ns in PodItem.Status.Conditions)
-            {
-                if (ns.Status == "True")
-                {
-                    <Tag PresetColor=@PresetColor.Blue>@ns.Type</Tag>
-                }
-                else
-                {
-                    <Tag PresetColor=@PresetColor.Red>@ns.Type</Tag>
-                }
-            }
-        </DescriptionsItem>
+        <PodConditionView Conditions="@PodItem.Status.Conditions"></PodConditionView>
         <LabelsView Labels="PodItem.Labels()"></LabelsView>
         <AnnotationsView Annotations="@PodItem.Annotations()"></AnnotationsView>
         <ImagesView PodSpec="@PodItem.Spec"></ImagesView>
