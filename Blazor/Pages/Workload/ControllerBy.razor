@@ -5,20 +5,43 @@
         switch (o.Kind)
         {
             case "ReplicaSet":
-                <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
-                </Tooltip>
+<Tooltip Title="@o.Name">
+     
+            <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">
+                @o.Kind &nbsp;
+                @if (ShowOwnerName)
+                {
+                    @o.Name
+                }
+            </Button>
+        
+       
+</Tooltip>
                 break;
             case "Node":
                 <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link">@o.Kind</Button>
+                    <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link">
+                        @o.Kind &nbsp;
+                        @if (ShowOwnerName)
+                        {
+                            @o.Name
+                        }
+                    </Button>
                 </Tooltip>
                 break;
             case "DaemonSet":
                 @o.Kind
                 break;
             case "Deployment":
-                @o.Kind
+                <Tooltip Title="@o.Name">
+                    <Button OnClick="@(() => OnDeploymentNameClick(o.Name))" Type="@ButtonType.Link">
+                        @o.Kind &nbsp;
+                        @if (ShowOwnerName)
+                        {
+                            @o.Name
+                        }
+                    </Button>
+                </Tooltip>
                 break;
             default:
                 @o.Kind
