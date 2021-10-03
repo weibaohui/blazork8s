@@ -5,18 +5,15 @@
         switch (o.Kind)
         {
             case "ReplicaSet":
-<Tooltip Title="@o.Name">
-     
-            <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">
-                @o.Kind &nbsp;
-                @if (ShowOwnerName)
-                {
-                    @o.Name
-                }
-            </Button>
-        
-       
-</Tooltip>
+                <Tooltip Title="@o.Name">
+                    <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">
+                        @o.Kind &nbsp;
+                        @if (ShowOwnerName)
+                        {
+                            @o.Name
+                        }
+                    </Button>
+                </Tooltip>
                 break;
             case "Node":
                 <Tooltip Title="@o.Name">
