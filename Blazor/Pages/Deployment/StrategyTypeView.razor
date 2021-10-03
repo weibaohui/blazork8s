@@ -1,6 +1,16 @@
 @if (Strategy != null)
 {
     <DescriptionsItem Title="Strategy Type">
-    @Strategy.Type
+        @if (Strategy.RollingUpdate != null)
+        {
+            <Tooltip Title="@($"max Surge{Strategy.RollingUpdate?.MaxSurge.Value},maxUnavailable{Strategy.RollingUpdate?.MaxUnavailable.Value}")">
+                @Strategy.Type
+            </Tooltip>
+        }
+        else
+        {
+            @Strategy.Type
+        }
+
     </DescriptionsItem>
 }
