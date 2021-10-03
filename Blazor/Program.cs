@@ -34,7 +34,7 @@ namespace Blazor
                     o.JsonSerializeOptions.NullValueHandling   = NullValueHandling.Ignore;
                     o.JsonDeserializeOptions.NullValueHandling = NullValueHandling.Ignore;
                 });
-            ;
+            builder.Services.AddMemoryCache();
             await builder.Build().RunAsync();
         }
     }

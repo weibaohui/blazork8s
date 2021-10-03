@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AntDesign;
 using Blazor.Pages.Pod;
 using k8s.Models;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Blazor.Service.impl
 {
@@ -12,11 +13,13 @@ namespace Blazor.Service.impl
     {
         private readonly IBaseService  BaseService;
         private readonly DrawerService DrawerService;
+        private readonly IMemoryCache  MemoryCache;
 
-        public PodService(IBaseService baseService, DrawerService drawerService)
+        public PodService(IBaseService baseService, DrawerService drawerService, IMemoryCache memoryCache)
         {
             BaseService   = baseService;
             DrawerService = drawerService;
+            MemoryCache   = memoryCache;
         }
 
         public async Task ShowPodDrawer(V1Pod pod)
@@ -40,7 +43,7 @@ namespace Blazor.Service.impl
 
         public async Task<V1PodList> List()
         {
-            return await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
+            return  await MemoryCache.GetOrCreateAsync<V1PodList>("CachePodList", r => BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods"));
         }
 
         public async Task<V1PodList> ListByNamespace(string ns)
