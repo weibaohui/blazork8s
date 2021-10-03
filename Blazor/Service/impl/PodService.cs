@@ -15,6 +15,8 @@ namespace Blazor.Service.impl
         private readonly DrawerService DrawerService;
         private readonly IMemoryCache  MemoryCache;
 
+        private const string CachePodList = "cache_pod_list";
+
         public PodService(IBaseService baseService, DrawerService drawerService, IMemoryCache memoryCache)
         {
             BaseService   = baseService;
@@ -43,7 +45,8 @@ namespace Blazor.Service.impl
 
         public async Task<V1PodList> List()
         {
-            return  await MemoryCache.GetOrCreateAsync<V1PodList>("CachePodList", r => BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods"));
+
+            return  await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, r => BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods"));
         }
 
         public async Task<V1PodList> ListByNamespace(string ns)
