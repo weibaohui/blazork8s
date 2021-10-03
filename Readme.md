@@ -19,4 +19,4 @@ docker run -d --name blazork8s-ui -p 6088:80  ghcr.io/weibaohui/blazork8s-ui:lat
 
 ## 🙏 鸣谢
 
-感谢 [JetBrains 公司](https://www.jetbrains.com/?from=mesh) 为本开源项目提供的免费正版 Intellij Rider 的 License 支持。
+感谢 [JetBrains 公司](https://www.jetbrains.com/?from=mesh) 为本开源项目提供的免费正版 JetBrains Rider  的 License 支持。
