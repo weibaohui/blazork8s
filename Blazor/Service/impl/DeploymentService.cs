@@ -1,10 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
-using Blazor.Pages.Deployment;
-using Blazor.Pages.Pod;
 using Blazor.Pages.Deployment;
 using k8s.Models;
 

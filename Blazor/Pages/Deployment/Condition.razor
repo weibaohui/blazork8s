@@ -1,0 +1,16 @@
+@if (ConditionList != null)
+{
+    foreach (var c in ConditionList)
+    {
+        <Tooltip Title="@($"{c.Reason}:{c.Message}")">
+            @if (c.Status=="True")
+            {
+                <Tag PresetColor=@PresetColor.Green>@c.Type</Tag>
+            }
+            else
+            {
+                <Tag PresetColor=@PresetColor.Red>@c.Type</Tag>
+            }
+        </Tooltip>
+    }
+}

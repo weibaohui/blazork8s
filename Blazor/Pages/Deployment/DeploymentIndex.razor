@@ -29,11 +29,8 @@
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
 
-                <AntDesign.Column Title="ControllerBy" TData="string">
-                    <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
-                </AntDesign.Column>
                 <AntDesign.Column Title="Desired" TData="int">
-                    @context.Status.Replicas
+                    @(context.Spec.Replicas??0)
                 </AntDesign.Column>
                 <AntDesign.Column Title="Current" TData="int">
                     @(context.Status.AvailableReplicas??0)
@@ -41,12 +38,12 @@
                 <AntDesign.Column Title="Ready" TData="int">
                     @(context.Status.ReadyReplicas??0)
                 </AntDesign.Column>
-
-
                 <AntDesign.Column Title="Age" TData="string">
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>
-
+            <AntDesign.Column Title="Condition" TData="string">
+                    <Condition ConditionList="@context.Status.Conditions" ></Condition>
+                </AntDesign.Column>
             </Table>
             </Body>
         </ChildContent>

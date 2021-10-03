@@ -17,19 +17,18 @@
             <Text Copyable>@Item.Name()</Text>
         </DescriptionsItem>
         <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
-
         <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
         <LabelsView Labels="@Item.Labels()"></LabelsView>
         <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Item.Spec.Template.Spec.NodeSelector"></SelectorView>
         <DescriptionsItem Title="Replicas">
-            @($"{Item.Status.AvailableReplicas ?? 0} current / {Item.Status.Replicas} desired")
+            @($"{Item.Spec.Replicas ?? 0} desired, {Item.Status.UpdatedReplicas ?? 0} updated, {Item.Status.Replicas ?? 0} total, {Item.Status.AvailableReplicas ?? 0} available, {Item.Status.UnavailableReplicas ?? 0} unavailable")
         </DescriptionsItem>
         <ImagesView PodSpec="@Item.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@Item.Spec.Template.Spec.Tolerations"></TolerationsView>
+        <StrategyTypeView Strategy="@Item.Spec.Strategy"></StrategyTypeView>
+        <ConditionView ConditionList="@Item.Status.Conditions"></ConditionView>
     </Descriptions>
-
-
     <EventListView Uid="@Item.Metadata.Uid"></EventListView>
 }
