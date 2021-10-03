@@ -62,5 +62,12 @@ namespace Blazor.Service.impl
             var ls = await ListByNamespace(ns);
             return ls.Items;
         }
+
+        public async Task<IList<V1ReplicaSet>> ListByOwnerUid(string controllerByUid)
+        {
+            var list = await List();
+            return list.Items.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
+                .ToList();
+        }
     }
 }

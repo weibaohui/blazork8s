@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using k8s.Models;
 
@@ -11,5 +12,7 @@ namespace Blazor.Service
         Task                   ShowReplicaSetDrawer(string  rsName);
         Task<V1ReplicaSet>     FilterByName(string               name);
 
+
+        Task<IList<V1ReplicaSet>> ListByOwnerUid(string controllerByUid);
     }
 }

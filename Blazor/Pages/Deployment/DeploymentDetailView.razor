@@ -2,7 +2,7 @@
 @using Blazor.Pages.Container
 @using Blazor.Pages.Event
 @using Blazor.Pages.Workload
-@using Blazor.Pages.Pod
+@using Blazor.Pages.ReplicaSet
 @using Extension
 @using Extension.k8s
 @inherits FeedbackComponent<V1Deployment, bool>
@@ -30,5 +30,6 @@
         <StrategyTypeView Strategy="@Item.Spec.Strategy"></StrategyTypeView>
         <ConditionView ConditionList="@Item.Status.Conditions"></ConditionView>
     </Descriptions>
+    <ReplicaSetListView ControllerByUid="@Item.Metadata.Uid"></ReplicaSetListView>
     <EventListView Uid="@Item.Metadata.Uid"></EventListView>
 }
