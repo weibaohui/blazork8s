@@ -1,6 +1,6 @@
 @if (ConditionList != null)
 {
-    foreach (var c in ConditionList)
+    foreach (var c in ConditionList.OrderBy(x=>x.Type))
     {
         <Tooltip Title="@($"{c.Reason}:{c.Message}")">
             @if (c.Status=="True")
