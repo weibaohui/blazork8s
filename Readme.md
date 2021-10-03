@@ -1,6 +1,14 @@
 [![Server Build](https://github.com/weibaohui/blazork8s/actions/workflows/server.yml/badge.svg)](https://github.com/weibaohui/blazork8s/actions/workflows/server.yml)
 [![UI Build](https://github.com/weibaohui/blazork8s/actions/workflows/ui.yaml/badge.svg)](https://github.com/weibaohui/blazork8s/actions/workflows/ui.yaml)
 
+<p align="center">
+  <a href="https://github.com/weibaohui/blazork8s">
+    <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/Blazor/wwwroot/pro_icon.svg">
+  </a>
+</p>
+
+<h1 align="center"> Blazor k8s </h1>
+
 ## ☀️ 授权协议
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
