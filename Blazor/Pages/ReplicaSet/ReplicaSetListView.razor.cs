@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
 using AntDesign.TableModels;
@@ -15,9 +16,11 @@ namespace Blazor.Pages.ReplicaSet
 
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
+        [Inject]
+        private IPodService PodService { get; set; }
 
-        [Parameter]
-        public IList<V1ReplicaSet> Items { get; set; }
+        private V1PodList           PodList { get; set; }
+        public  IList<V1ReplicaSet> Items   { get; set; }
         [Parameter]
         public string ControllerByUid { get; set; }
 
@@ -27,6 +30,7 @@ namespace Blazor.Pages.ReplicaSet
             {
                 Items = await ReplicaSetService.ListByOwnerUid(ControllerByUid);
             }
+            PodList = await PodService.List();
             await base.OnInitializedAsync();
         }
 
@@ -34,6 +38,12 @@ namespace Blazor.Pages.ReplicaSet
         async Task OnRowClick(RowData<V1ReplicaSet> row)
         {
             await ReplicaSetService.ShowReplicaSetDrawer(row.Data);
+        }
+
+        int CountPodsByOwner(string uid)
+        {
+            return PodList.Items
+                .Count(x => x.GetController() != null && x.GetController().Uid == uid);
         }
     }
 }

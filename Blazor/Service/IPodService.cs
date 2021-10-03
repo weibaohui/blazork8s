@@ -11,5 +11,5 @@ namespace Blazor.Service
         Task<int>          NodePodsNum();
         Task               ShowPodDrawer(V1Pod   pod);
         Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid);
-    }
+     }
 }

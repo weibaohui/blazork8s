@@ -3,6 +3,7 @@
 @using Blazor.Pages.Event
 @using Blazor.Pages.Workload
 @using Blazor.Pages.ReplicaSet
+@using Blazor.Pages.Pod
 @using Extension
 @using Extension.k8s
 @inherits FeedbackComponent<V1Deployment, bool>
@@ -31,5 +32,6 @@
         <ConditionView ConditionList="@Item.Status.Conditions"></ConditionView>
     </Descriptions>
     <ReplicaSetListView ControllerByUid="@Item.Metadata.Uid"></ReplicaSetListView>
+    <PodListView Pods="@Pods"></PodListView>
     <EventListView Uid="@Item.Metadata.Uid"></EventListView>
 }

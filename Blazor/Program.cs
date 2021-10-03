@@ -27,7 +27,6 @@ namespace Blazor
             builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
             builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<INamespaceService, NamespaceService>();
-
             //webapi
             builder.Services.AddHttpApi<INodeApi>()
                 .ConfigureNewtonsoftJson(o =>

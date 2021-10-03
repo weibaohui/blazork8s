@@ -36,6 +36,8 @@ namespace Blazor.Service.impl
                 .ToList();
         }
 
+
+
         public async Task<V1PodList> List()
         {
             return await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
