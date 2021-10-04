@@ -1,15 +1,15 @@
 @if (ConditionList != null)
 {
-    foreach (var c in ConditionList.OrderBy(x=>x.Type))
+    foreach (var c in ConditionList.OrderBy(x => x.Type))
     {
         <Tooltip Title="@($"{c.Reason}:{c.Message}")">
-            @if (c.Status=="True")
+            @if (c.Status == "True")
             {
-                <Tag PresetColor=@PresetColor.Green>@c.Type</Tag>
+                <Tag Icon="check" PresetColor=@PresetColor.Blue>@c.Type</Tag>
             }
             else
             {
-                <Tag PresetColor=@PresetColor.Red>@c.Type</Tag>
+                <Tag Icon="close" PresetColor=@PresetColor.Red>@c.Type</Tag>
             }
         </Tooltip>
     }
