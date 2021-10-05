@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Server.Service.K8s;
 using Server.Utils;
 
 namespace server
@@ -10,8 +12,8 @@ namespace server
         {
             var host = CreateHostBuilder(args).Build();
             ServiceHelper.Services = host.Services;
-            // var watcher = ServiceHelper.Services.GetService<Watcher>();
-            // if (watcher != null) watcher.StartWatch();
+            var watcher = host.Services.GetRequiredService<IWatcher>();
+            watcher?.StartWatch();
             host.Run();
         }
 

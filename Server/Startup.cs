@@ -1,10 +1,14 @@
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Server.Controllers;
 using Server.Middleware;
+using Server.Service;
 using Server.Service.K8s;
 
 namespace server
@@ -33,7 +37,7 @@ namespace server
 
             services.AddControllers();
             services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "server", Version = "v1" }); });
-            services.AddSingleton<Watcher>();
+            services.AddSingleton<IWatcher,Watcher>();
             services.AddSingleton<PodWatcher>();
             services.AddSingleton<NodeWatcher>();
             services.AddSingleton<RequestLoggingMiddleware>();
@@ -52,11 +56,23 @@ namespace server
             // });
 
             #endregion
+
+            #region SignalR
+            services.AddSignalR();
+            services.AddResponseCompression(opts =>
+            {
+                opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+                    new[] { "application/octet-stream" });
+            });
+            #endregion
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseResponseCompression();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -73,7 +89,11 @@ namespace server
             app.UseMiddleware<RequestLoggingMiddleware>();
 
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapHub<ChatHub>("/chathub");
+                endpoints.MapControllers();
+            });
         }
     }
 }

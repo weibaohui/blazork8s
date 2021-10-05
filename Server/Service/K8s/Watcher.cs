@@ -1,19 +1,22 @@
+using Entity;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
 namespace Server.Service.K8s
 {
-    public class Watcher
+    public class Watcher:IWatcher
     {
-        private readonly ILogger<Watcher> _logger;
-        private readonly PodWatcher       _podWatcher;
-        private readonly NodeWatcher      _nodeWatcher;
+        private readonly ILogger<Watcher>                  _logger;
+        private readonly PodWatcher                        _podWatcher;
+        private readonly NodeWatcher                       _nodeWatcher;
+        private readonly IHubContext<ChatHub, IChatClient> _strongChatHubContext;
 
-        public Watcher(PodWatcher podWatcher, NodeWatcher nodeWatcher, ILogger<Watcher> logger)
+        public Watcher(ILogger<Watcher> logger, PodWatcher podWatcher, NodeWatcher nodeWatcher, IHubContext<ChatHub, IChatClient> strongChatHubContext)
         {
-            _podWatcher  = podWatcher;
-            _nodeWatcher = nodeWatcher;
-            _logger      = logger;
-            logger.LogInformation("Watcher 实例化");
+            _logger               = logger;
+            _podWatcher           = podWatcher;
+            _nodeWatcher          = nodeWatcher;
+            _strongChatHubContext = strongChatHubContext;
         }
 
         public void StartWatch()
@@ -22,5 +25,10 @@ namespace Server.Service.K8s
             _nodeWatcher.StartWatch(cli);
             _podWatcher.StartWatch(cli);
         }
+    }
+
+    public interface IWatcher
+    {
+        void StartWatch();
     }
 }
