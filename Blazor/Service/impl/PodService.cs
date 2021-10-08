@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
 using Blazor.Pages.Pod;
+using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -15,7 +16,8 @@ namespace Blazor.Service.impl
         private readonly DrawerService DrawerService;
         private readonly IMemoryCache  MemoryCache;
 
-        private const string CachePodList = "cache_pod_list";
+        private const string       CachePodList = "cache_pod_list";
+        private       List<V1Pod> SharedPods   = new List<V1Pod>();
 
         public PodService(IBaseService baseService, DrawerService drawerService, IMemoryCache memoryCache)
         {
@@ -42,11 +44,44 @@ namespace Blazor.Service.impl
         }
 
 
+        public void UpdateSharePods(WatchEventType type, V1Pod item)
+        {
+            switch (type)
+            {
+                case WatchEventType.Added:
+                    SharedPods.Add(item);
+                    break;
+                case WatchEventType.Modified:
+                     for (var i = 0; i < SharedPods.Count; i++)
+                     {
+                         if (SharedPods[i].Uid()==item.Uid())
+                         {
+                             SharedPods[i] = item;
+                         }
+                     }
+                     break;
+                case WatchEventType.Deleted:
+                    SharedPods.RemoveAll(w=>w.Uid() == item.Uid());
+                    break;
+                case WatchEventType.Error:
+                    break;
+                case WatchEventType.Bookmark:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            }
+           
+        }
 
         public async Task<V1PodList> List()
         {
 
-            return  await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, r => BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods"));
+            return  await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, async r =>
+            {
+                var pods = await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
+                foreach (var podsItem in pods.Items) SharedPods.Append<V1Pod>(podsItem);
+                return pods;
+            });
         }
 
         public async Task<V1PodList> ListByNamespace(string ns)

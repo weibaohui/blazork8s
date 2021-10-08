@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blazor.Service;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Blazor.Pages
 {
@@ -12,7 +14,8 @@ namespace Blazor.Pages
     {
         [Inject]
         private NavigationManager NavigationManager { get; set; }
-
+        [Inject]
+        private IPodService PodService { get; set; }
         private HubConnection hubConnection;
         private List<string>  messages = new List<string>();
         private string        userInput;
@@ -22,6 +25,7 @@ namespace Blazor.Pages
         {
             hubConnection = new HubConnectionBuilder()
                 .WithUrl(NavigationManager.ToAbsoluteUri("http://localhost:4000/chathub"))
+                .AddNewtonsoftJsonProtocol()
                 .WithAutomaticReconnect()
                 .Build();
 
@@ -35,6 +39,7 @@ namespace Blazor.Pages
             hubConnection.On<WatchEventType, V1Pod>("PodWatch",(type, pod)=>{
                 var encodedMsg = $"PodWatch {type}:  {pod.Metadata.Name}";
                 messages.Add(encodedMsg);
+                PodService.UpdateSharePods(type,pod);
                 StateHasChanged();
             });
 

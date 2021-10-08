@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using Server.Controllers;
 using Server.Middleware;
 using Server.Service;
@@ -58,7 +59,8 @@ namespace server
             #endregion
 
             #region SignalR
-            services.AddSignalR();
+
+            services.AddSignalR().AddNewtonsoftJsonProtocol();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(

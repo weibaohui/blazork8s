@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using k8s;
 using k8s.Models;
 
 namespace Blazor.Service
@@ -11,5 +12,7 @@ namespace Blazor.Service
         Task<int>          NodePodsNum();
         Task               ShowPodDrawer(V1Pod   pod);
         Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid);
-     }
+        //更新Pod
+        void UpdateSharePods(WatchEventType           type, V1Pod item);
+    }
 }

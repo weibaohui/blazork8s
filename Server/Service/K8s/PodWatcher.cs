@@ -38,7 +38,6 @@ namespace Server.Service.K8s
 
         private void EventAction(WatchEventType type, V1Pod item)
         {
-            _strongChatHubContext.Clients.All.ReceiveMessage($"WatchEvent {type}", item.Metadata.Name);
             _strongChatHubContext.Clients.All.PodWatch(type,item);
             _logger.LogInformation($"WatchEvent {type}  {item.Metadata.Name}");
         }
