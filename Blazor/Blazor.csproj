@@ -7,17 +7,17 @@
       <ExternalConsole>true</ExternalConsole>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="AntDesign" Version="0.10.1"/>
-        <PackageReference Include="AntDesign.Charts" Version="0.2.1"/>
-        <PackageReference Include="AntDesign.ProLayout" Version="0.1.7"/>
-        <PackageReference Include="KubernetesClient" Version="6.0.15"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.2.21480.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.2.21480.10" PrivateAssets="all"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0-rc.2.21480.10"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.0-rc.2.21480.10"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1"/>
-        <PackageReference Include="WebApiClientCore" Version="2.0.2"/>
-        <PackageReference Include="WebApiClientCore.Extensions.NewtonsoftJson" Version="2.0.2"/>
+        <PackageReference Include="AntDesign" Version="0.10.2" />
+        <PackageReference Include="AntDesign.Charts" Version="0.2.2" />
+        <PackageReference Include="AntDesign.ProLayout" Version="0.1.9" />
+        <PackageReference Include="KubernetesClient" Version="6.0.24" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+        <PackageReference Include="WebApiClientCore" Version="2.0.2" />
+        <PackageReference Include="WebApiClientCore.Extensions.NewtonsoftJson" Version="2.0.2" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />
