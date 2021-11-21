@@ -16,8 +16,10 @@ namespace Blazor.Service.impl
         private readonly DrawerService DrawerService;
         private readonly IMemoryCache  MemoryCache;
 
-        private const string      CachePodList = "cache_pod_list";
-        private       List<V1Pod> SharedPods   = new List<V1Pod>();
+        private const string CachePodList = "cache_pod_list";
+
+        //TODO 作为一个能够独立更新的服务，获取POD的数据，都从这里获取，不再去转发请求
+        private List<V1Pod> SharedPods = new List<V1Pod>();
 
         public PodService(IBaseService baseService, DrawerService drawerService, IMemoryCache memoryCache)
         {

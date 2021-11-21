@@ -2,6 +2,7 @@ using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using AntDesign.ProLayout;
+using Blazor.MetaEvent;
 using Blazor.Service;
 using Blazor.Service.impl;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +28,7 @@ namespace Blazor
             builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
             builder.Services.AddScoped<IEventService, EventService>();
             builder.Services.AddScoped<INamespaceService, NamespaceService>();
+
             //webapi
             builder.Services.AddHttpApi<INodeApi>()
                 .ConfigureNewtonsoftJson(o =>

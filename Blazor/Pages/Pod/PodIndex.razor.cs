@@ -1,13 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using AntDesign;
 using AntDesign.TableModels;
+using Blazor.Pages.Workload;
 using Blazor.Service;
+using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Blazor.Pages.Pod
 {
@@ -30,6 +31,22 @@ namespace Blazor.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
+
+
+            HubConnection hubConnection = new HubConnectionBuilder()
+                .WithUrl("http://localhost:4000/chathub")
+                .AddNewtonsoftJsonProtocol()
+                .WithAutomaticReconnect()
+                .Build();
+            hubConnection.On<WatchEventType, V1Pod>("PodWatch", async (type, pod) =>
+            {
+                var encodedMsg = $"PodWatch {type}:  {pod.Metadata.Name}";
+                Console.WriteLine($"{encodedMsg}");
+                PodService.UpdateSharePods(type, pod);
+                await tps.GetData(_selectedNs);
+                StateHasChanged();
+            });
+            await hubConnection.StartAsync();
         }
 
 
@@ -79,6 +96,5 @@ namespace Blazor.Pages.Pod
         {
             await PodService.ShowPodDrawer(pod);
         }
-
     }
 }
