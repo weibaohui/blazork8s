@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using k8s;
@@ -38,10 +39,10 @@ namespace Server.Service
             return s;
         }
 
-        public async Task<string> DeleteResourceJson(string url)
+        public async Task<bool> DeleteResourceJson(string url)
         {
             var s = await Client().HttpClient.DeleteAsync($"{_config.Host}{url}");
-            return s.ToString();
+            return s.StatusCode == HttpStatusCode.OK;
         }
 
         private async Task<T> GetResource<T>(string url)

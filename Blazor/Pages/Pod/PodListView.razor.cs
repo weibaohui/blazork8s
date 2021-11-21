@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
@@ -28,13 +29,14 @@ namespace Blazor.Pages.Pod
             {
                 Pods = await PodService.ListByOwnerUid(ControllerByUid);
             }
+
             await base.OnInitializedAsync();
         }
 
 
-        async Task OnRowClick(RowData<V1Pod> row)
+        async Task OnPodNameClick(V1Pod pod)
         {
-            await PodService.ShowPodDrawer(row.Data);
+            await PodService.ShowPodDrawer(pod);
         }
     }
 }

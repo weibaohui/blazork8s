@@ -52,10 +52,21 @@ namespace Blazor.Service.impl
             return await _http.GetStringAsync(Url(url));
         }
 
+        private async Task<HttpResponseMessage> DeleteStringAsync(string url)
+        {
+            return await _http.DeleteAsync(Url(url));
+        }
+
         public async Task<T> GetFromJsonAsync<T>(string url)
         {
             var json = await GetStringAsync(url);
             return JsonConvert.DeserializeObject<T>(json);
+        }
+
+        public async Task<bool> DeleteAsync<T>(string url)
+        {
+            var msg = await DeleteStringAsync(url);
+            return "true" == msg.Content.ToString();
         }
     }
 }

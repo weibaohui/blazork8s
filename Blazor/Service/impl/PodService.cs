@@ -16,7 +16,7 @@ namespace Blazor.Service.impl
         private readonly DrawerService DrawerService;
         private readonly IMemoryCache  MemoryCache;
 
-        private const string       CachePodList = "cache_pod_list";
+        private const string      CachePodList = "cache_pod_list";
         private       List<V1Pod> SharedPods   = new List<V1Pod>();
 
         public PodService(IBaseService baseService, DrawerService drawerService, IMemoryCache memoryCache)
@@ -52,16 +52,17 @@ namespace Blazor.Service.impl
                     SharedPods.Add(item);
                     break;
                 case WatchEventType.Modified:
-                     for (var i = 0; i < SharedPods.Count; i++)
-                     {
-                         if (SharedPods[i].Uid()==item.Uid())
-                         {
-                             SharedPods[i] = item;
-                         }
-                     }
-                     break;
+                    for (var i = 0; i < SharedPods.Count; i++)
+                    {
+                        if (SharedPods[i].Uid() == item.Uid())
+                        {
+                            SharedPods[i] = item;
+                        }
+                    }
+
+                    break;
                 case WatchEventType.Deleted:
-                    SharedPods.RemoveAll(w=>w.Uid() == item.Uid());
+                    SharedPods.RemoveAll(w => w.Uid() == item.Uid());
                     break;
                 case WatchEventType.Error:
                     break;
@@ -70,13 +71,11 @@ namespace Blazor.Service.impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
-           
         }
 
         public async Task<V1PodList> List()
         {
-
-            return  await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, async r =>
+            return await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, async r =>
             {
                 var pods = await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
                 foreach (var podsItem in pods.Items) SharedPods.Append<V1Pod>(podsItem);
@@ -92,6 +91,12 @@ namespace Blazor.Service.impl
             }
 
             return await BaseService.GetFromJsonAsync<V1PodList>(@$"/KubeApi/api/v1/namespaces/{ns}/pods");
+        }
+
+        //
+        public async Task<bool> DeletePod(string ns, string name)
+        {
+            return await BaseService.DeleteAsync<bool>(@$"/KubeApi/api/v1/namespaces/{ns}/pods/{name}");
         }
 
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)

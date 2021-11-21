@@ -34,7 +34,7 @@ namespace Server.Controllers
 
         [HttpDelete]
         [Route("{*api}")]
-        public Task<string> DeleteResourceJson(string api)
+        public Task<bool> DeleteResourceJson(string api)
         {
             //默认增加/根路径
             api = HttpUtility.UrlDecode(api);

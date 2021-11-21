@@ -51,6 +51,9 @@
                 <AntDesign.Column Title="Status" TData="string">
                     <StatusView Status="@context.Status()"></StatusView>
                 </AntDesign.Column>
+                <ActionColumn Title="Action">
+                    <PodAction PodItem="@context"></PodAction>
+                </ActionColumn>
             </Table>
             </Body>
         </ChildContent>

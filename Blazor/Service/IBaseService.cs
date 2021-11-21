@@ -17,5 +17,6 @@ namespace Blazor.Service
         Task<R> PostAsJsonAsync<T, R>(string url, T t);
 
         Task<string> GetStringAsync(string url);
+        Task<bool>   DeleteAsync<T>(string url);
     }
 }
