@@ -7,7 +7,7 @@
 
     <PropertyGroup Condition=" '$(RunConfiguration)' == 'server' " />
     <ItemGroup>
-        <PackageReference Include="KubernetesClient" Version="6.0.24" />
+        <PackageReference Include="KubernetesClient" Version="6.0.25"/>
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="6.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
