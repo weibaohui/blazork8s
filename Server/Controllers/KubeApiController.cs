@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,17 @@ namespace Server.Controllers
             //默认增加/根路径
             api = HttpUtility.UrlDecode(api);
             return Kubectl.Instance.GetResourceJson($"/{api}");
+        }
+
+        [HttpDelete]
+        [Route("{*api}")]
+        public Task<string> DeleteResourceJson(string api)
+        {
+            //默认增加/根路径
+            api = HttpUtility.UrlDecode(api);
+            Console.WriteLine(api);
+            _logger.LogInformation(api);
+            return Kubectl.Instance.DeleteResourceJson($"/{api}");
         }
     }
 }

@@ -38,6 +38,12 @@ namespace Server.Service
             return s;
         }
 
+        public async Task<string> DeleteResourceJson(string url)
+        {
+            var s = await Client().HttpClient.DeleteAsync($"{_config.Host}{url}");
+            return s.ToString();
+        }
+
         private async Task<T> GetResource<T>(string url)
         {
             try
