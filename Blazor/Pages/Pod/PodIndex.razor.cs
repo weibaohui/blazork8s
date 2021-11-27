@@ -31,22 +31,6 @@ namespace Blazor.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
-
-
-            HubConnection hubConnection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:4000/chathub")
-                .AddNewtonsoftJsonProtocol()
-                .WithAutomaticReconnect()
-                .Build();
-            hubConnection.On<WatchEventType, V1Pod>("PodWatch", async (type, pod) =>
-            {
-                var encodedMsg = $"PodWatch {type}:  {pod.Metadata.Name}";
-                Console.WriteLine($"{encodedMsg}");
-                PodService.UpdateSharePods(type, pod);
-                await tps.GetData(_selectedNs);
-                StateHasChanged();
-            });
-            await hubConnection.StartAsync();
         }
 
 
@@ -96,6 +80,12 @@ namespace Blazor.Pages.Pod
 
         private async Task PodDeleteHandler(V1Pod pod)
         {
+            await InvokeAsync(StateHasChanged);
+        }
+
+        private async Task OnPodChanged(string obj)
+        {
+            await tps.GetData(_selectedNs);
             await InvokeAsync(StateHasChanged);
         }
     }

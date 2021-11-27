@@ -1,5 +1,5 @@
 @using Extension.k8s
-@if (Pod != null && Pod.Status.ContainerStatuses!=null)
+@if (Pod != null && Pod.Status.ContainerStatuses != null)
 {
     <Space>
         @foreach (var cs in Pod.Status.ContainerStatuses)
@@ -8,11 +8,11 @@
                 <Tooltip Title="@(cs.ReadySummary())">
                     @if (cs.Ready)
                     {
-                        <Badge Status="success" />
+                        <Badge Status="success"/>
                     }
                     else
                     {
-                        <Badge Status="error" />
+                        <Badge Status="error"/>
                     }
                 </Tooltip>
             </SpaceItem>

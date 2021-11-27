@@ -17,33 +17,34 @@ namespace Blazor.Pages.Workload
         [Inject]
         private IPodService PodService { get; set; }
 
-        private HubConnection hubConnection;
+        private HubConnection _hubConnection;
 
+        [Parameter]
+        public EventCallback<String> OnPodChanged { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            hubConnection = new HubConnectionBuilder()
+            _hubConnection = new HubConnectionBuilder()
                 .WithUrl("http://localhost:4000/chathub")
                 .AddNewtonsoftJsonProtocol()
                 .WithAutomaticReconnect()
                 .Build();
-            hubConnection.On<WatchEventType, V1Pod>("PodWatch", (type, pod) =>
+            _hubConnection.On<WatchEventType, V1Pod>("PodWatch", (type, pod) =>
             {
-                var encodedMsg = $"PodWatch {type}:  {pod.Metadata.Name}";
-                Console.WriteLine(encodedMsg);
+                var encodedMsg = $"PodWatch {type}: {pod.Metadata.Name}";
                 PodService.UpdateSharePods(type, pod);
-                StateHasChanged();
+                OnPodChanged.InvokeAsync(encodedMsg);
             });
 
-            await hubConnection.StartAsync();
+            await _hubConnection.StartAsync();
         }
 
         public bool IsConnected =>
-            hubConnection.State == HubConnectionState.Connected;
+            _hubConnection.State == HubConnectionState.Connected;
 
         public void Dispose()
         {
-            _ = hubConnection?.DisposeAsync();
+            _ = _hubConnection?.DisposeAsync();
         }
     }
 }
