@@ -26,9 +26,9 @@ namespace Extension.k8s
         /// </summary>
         /// <param name="pod"></param>
         /// <returns></returns>
-        public static int RestartCount(this V1Pod pod)
+        public static int? RestartCount(this V1Pod pod)
         {
-            var sum = pod.Status.ContainerStatuses.Sum(x => x.RestartCount);
+            var sum = pod.Status?.ContainerStatuses?.Sum(x => x.RestartCount);
             return sum;
         }
 
@@ -97,6 +97,11 @@ namespace Extension.k8s
         /// <returns></returns>
         public static string Status(this V1Pod pod)
         {
+            if (pod.Metadata?.DeletionTimestamp != null)
+            {
+                return "Terminating";
+            }
+
             var phase = pod.Status.Phase;
 
             if (pod.Status.ContainerStatuses == null)
