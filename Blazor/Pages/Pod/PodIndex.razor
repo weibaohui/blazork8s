@@ -52,7 +52,7 @@
                     <StatusView Status="@context.Status()"></StatusView>
                 </AntDesign.Column>
                 <ActionColumn Title="Action">
-                    <PodAction PodItem="@context"></PodAction>
+                    <PodAction PodItem="@context" OnPodDelete="PodDeleteHandler"></PodAction>
                 </ActionColumn>
             </Table>
             </Body>

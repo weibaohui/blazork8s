@@ -21,7 +21,7 @@ namespace Blazor.Pages.Pod
         private INodeService NodeService { get; set; }
 
 
-        public TablePagedService<V1Pod> tps;
+        private TablePagedService<V1Pod> tps;
 
 
         private string _selectedNs = "";
@@ -62,9 +62,6 @@ namespace Blazor.Pages.Pod
             tps.SelectedRows = tps.SelectedRows.Where(x => x.Metadata.Uid != uid);
         }
 
-        private void Delete(string uid)
-        {
-        }
 
         private async Task OnChange(QueryModel<V1Pod> queryModel)
         {
@@ -95,6 +92,11 @@ namespace Blazor.Pages.Pod
         private async Task OnPodClick(V1Pod pod)
         {
             await PodService.ShowPodDrawer(pod);
+        }
+
+        private async Task PodDeleteHandler(V1Pod pod)
+        {
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

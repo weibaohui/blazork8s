@@ -1,5 +1,5 @@
 @using Extension.k8s
-@if (Pod != null)
+@if (Pod != null && Pod.Status.ContainerStatuses!=null)
 {
     <Space>
         @foreach (var cs in Pod.Status.ContainerStatuses)

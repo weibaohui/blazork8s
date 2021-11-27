@@ -13,9 +13,13 @@ namespace Blazor.Pages.Pod
         [Inject]
         private IPodService PodService { get; set; }
 
-        async Task DeletePod(V1Pod pod)
+        [Parameter]
+        public EventCallback<V1Pod> OnPodDelete { get; set; }
+
+        private async Task DeletePod(V1Pod pod)
         {
             await PodService.DeletePod(pod.Namespace(), pod.Name());
+            await OnPodDelete.InvokeAsync(pod);
         }
     }
 }
