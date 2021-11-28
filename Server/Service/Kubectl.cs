@@ -1,5 +1,8 @@
 using System;
+using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using k8s;
@@ -42,6 +45,15 @@ namespace Server.Service
         public async Task<bool> DeleteResourceJson(string url)
         {
             var s = await Client().HttpClient.DeleteAsync($"{_config.Host}{url}");
+            return s.StatusCode == HttpStatusCode.OK;
+        }
+
+        public async Task<bool> PatchResourceJson(string url, string body)
+        {
+            var content = new StringContent(body);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/strategic-merge-patch+json");
+            var s = await Client().HttpClient.PatchAsync($"{_config.Host}{url}", content);
+            // _logger.LogInformation(s.Content.ReadAsStringAsync().GetAwaiter().GetResult());
             return s.StatusCode == HttpStatusCode.OK;
         }
 
