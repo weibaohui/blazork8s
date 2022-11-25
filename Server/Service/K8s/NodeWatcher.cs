@@ -17,7 +17,7 @@ namespace Server.Service.K8s
 
         public void StartWatch(IKubernetes client)
         {
-            var nodeWatcher = client.ListNodeWithHttpMessagesAsync(watch: true);
+            var nodeWatcher = client.NodeV1.ListNodeWithHttpMessagesAsync(watch: true);
             nodeWatcher.Watch<V1Node, V1NodeList>(EventAction, OnError, OnClosed);
             _logger.LogInformation("Watch started");
         }

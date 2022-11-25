@@ -18,11 +18,11 @@ namespace Entity
         public string HostName =>
             OriginNode.Metadata.Labels.AsEnumerable().FirstOrDefault(r => r.Key == "kubernetes.io/hostname").Value;
 
-        public string                 ClusterName     => OriginNode.Metadata.ClusterName;
+        public string                 ClusterName     => OriginNode.Metadata.Name;
         public string                 KubeletVersion  => OriginNode.Status.NodeInfo.KubeletVersion;
         public string                 OperatingSystem => OriginNode.Status.NodeInfo.OperatingSystem;
         public string                 Architecture    => OriginNode.Status.NodeInfo.Architecture;
-        public IList<V1NodeCondition> Conditions       => OriginNode.Status.Conditions;
+        public IList<V1NodeCondition> Conditions      => OriginNode.Status.Conditions;
         public IList<V1NodeAddress>   Addresses       => OriginNode.Status.Addresses;
-     }
+    }
 }
