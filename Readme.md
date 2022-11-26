@@ -2,7 +2,7 @@
 
 <p align="center">
   <a href="https://github.com/weibaohui/blazork8s">
-    <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/Blazor/wwwroot/pro_icon.svg">
+    <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/BlazorApp/wwwroot/pro_icon.svg">
   </a>
 </p>
 
