@@ -10,11 +10,9 @@
     <PackageReference Include="AntDesign.ProLayout" Version="0.13.0" />
     <PackageReference Include="KubernetesClient" Version="9.0.38" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Shared\MainLayout.razor" />
-    <_ContentIncludedByDefault Remove="Shared\NavMenu.razor" />
-  </ItemGroup>
+ 
   
 </Project>

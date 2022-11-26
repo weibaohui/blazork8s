@@ -1,7 +1,5 @@
 using System;
 using AntDesign.ProLayout;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using BlazorApp.Data;
 using k8s;
 using Microsoft.AspNetCore.Builder;
@@ -16,7 +14,6 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
-
 builder.Services.AddSingleton<WeatherForecastService>();
 
 var app = builder.Build();
@@ -27,6 +24,10 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Error");
 }
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
 
 // Load from the default kubeconfig on the machine.
 var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
