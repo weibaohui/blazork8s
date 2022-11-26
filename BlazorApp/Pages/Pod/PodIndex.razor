@@ -2,8 +2,8 @@
 @using k8s.Models
 @using Extension.k8s
 @using Extension
-@using  BlazorApp.Pages.Container
-@using  BlazorApp.Pages.Workload
+@using BlazorApp.Pages.Container
+@using BlazorApp.Pages.Workload
 @if (tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -24,9 +24,11 @@
                    @bind-PageSize="tps.PageSize"
                    @bind-SelectedRows="tps.SelectedRows"
                    Loading="tps.Loading"
-                   OnChange="OnChange">
-                <Selection Key="@(context.Name())"/>
-                <AntDesign.Column Field="@context.Name()" Title="Name">
+                   OnChange="OnChange"
+                   ScrollX="1500"
+                   >
+                <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
+                <AntDesign.Column Field="@context.Name()" Title="Name"   Ellipsis>
                     <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
@@ -51,13 +53,11 @@
                 <AntDesign.Column Title="Status" TData="string">
                     <StatusView Status="@context.Status()"></StatusView>
                 </AntDesign.Column>
-                <ActionColumn Title="Action">
+                <ActionColumn Title="Action" Width="100" Fixed="right">
                     <PodAction PodItem="@context" OnPodDelete="PodDeleteHandler"></PodAction>
                 </ActionColumn>
             </Table>
             </Body>
         </ChildContent>
-
     </Card>
-    <Signal OnPodChanged="OnPodChanged"></Signal>
 }
