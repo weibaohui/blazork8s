@@ -1,6 +1,5 @@
 using System;
 using AntDesign.ProLayout;
-using BlazorApp.Data;
 using BlazorApp.Service;
 using BlazorApp.Service.impl;
 using k8s;
@@ -16,7 +15,6 @@ builder.Services.AddServerSideBlazor();
 
 builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
-builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<IKubeService,KubeService>();
 builder.Services.AddHttpClient();
 
