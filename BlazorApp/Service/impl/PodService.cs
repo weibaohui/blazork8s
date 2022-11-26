@@ -26,7 +26,7 @@ namespace BlazorApp.Service.impl
             BaseService   = baseService;
             MemoryCache   = memoryCache;
             DrawerService = drawerService;
-            Console.WriteLine("PodService 初始化");
+            // Console.WriteLine("PodService 初始化");
         }
 
         public async Task ShowPodDrawer(V1Pod pod)
