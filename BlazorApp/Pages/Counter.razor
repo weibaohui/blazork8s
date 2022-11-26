@@ -8,8 +8,13 @@
 <p>Current version: @KubeService.Version()</p>
 <p>Current count: @currentCount</p>
 
-@foreach (var ns in KubeService.ListNs())
+@if (podList != null)
 {
-    <li>@ns</li>
+    @foreach (var n in podList)
+    {
+        <li>@n</li>
+    }
 }
+
 <Button Type="primary" OnClick="IncrementCount">Click me</Button>
+<Button Type="primary" OnClick="PodList">Load List</Button>

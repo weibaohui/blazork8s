@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
 using BlazorApp.Service;
-using k8s;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages
@@ -13,30 +15,21 @@ namespace BlazorApp.Pages
 
         private int currentCount = 0;
 
-        private void IncrementCount()
+        private List<string> podList;
+        private async Task IncrementCount()
         {
+
             currentCount += 1;
 
-            Console.WriteLine( new HttpClient().GetStringAsync("http://www.baidu.com").Result);
-            var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
-// Use the config object to create a client.
-            Console.WriteLine(config.CurrentContext);
-            var client     = new Kubernetes(config);
-            try
-            {
-                var namespaces = client.CoreV1.ListNode();
-                Console.WriteLine(namespaces.Items.Count);
-                foreach (var ns in namespaces.Items)
-                {
-                    Console.WriteLine(ns.Metadata.Name);
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw;
-            }
-
         }
+
+        private async Task<List<string>> PodList()
+        {
+            var list = await KubeService.ListPodByNs();
+            list.ForEach(Console.WriteLine);
+            podList = list;
+            return list;
+        }
+        //
     }
 }
