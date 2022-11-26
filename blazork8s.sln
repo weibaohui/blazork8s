@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{F27ABDB3-D51B-43C8-B40D-F76C532B23EC}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity", "Entity\Entity.csproj", "{F7467E2A-7F99-4BA8-8836-FC71CA76FE9D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extension", "Extension\Extension.csproj", "{8F3AD469-2A79-4A68-9796-9671D5F961B7}"
@@ -17,10 +15,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F27ABDB3-D51B-43C8-B40D-F76C532B23EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F27ABDB3-D51B-43C8-B40D-F76C532B23EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F27ABDB3-D51B-43C8-B40D-F76C532B23EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F27ABDB3-D51B-43C8-B40D-F76C532B23EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F7467E2A-7F99-4BA8-8836-FC71CA76FE9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7467E2A-7F99-4BA8-8836-FC71CA76FE9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7467E2A-7F99-4BA8-8836-FC71CA76FE9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
