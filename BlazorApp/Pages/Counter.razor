@@ -4,5 +4,12 @@
 
 <h1>Counter</h1>
 
+<p>Current Name: @KubeService.Name()</p>
+<p>Current version: @KubeService.Version()</p>
 <p>Current count: @currentCount</p>
+
+@foreach (var ns in KubeService.ListNs())
+{
+    <li>@ns</li>
+}
 <Button Type="primary" OnClick="IncrementCount">Click me</Button>

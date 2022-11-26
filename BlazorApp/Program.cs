@@ -1,6 +1,7 @@
 using System;
 using AntDesign.ProLayout;
 using BlazorApp.Data;
+using BlazorApp.Service;
 using k8s;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +16,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<IKubeService,KubeService>();
 
 var app = builder.Build();
 
