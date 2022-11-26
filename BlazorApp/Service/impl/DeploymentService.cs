@@ -10,13 +10,13 @@ namespace BlazorApp.Service.impl
 {
     public class DeploymentService : IDeploymentService
     {
-        private readonly IBaseService  BaseService;
-        private readonly DrawerService DrawerService;
+        private readonly IBaseService  _baseService;
+        private readonly DrawerService _drawerService;
 
         public DeploymentService(IBaseService baseService, DrawerService drawerService)
         {
-            BaseService   = baseService;
-            DrawerService = drawerService;
+            _baseService   = baseService;
+            _drawerService = drawerService;
         }
 
         public async Task ShowDeploymentDrawer(string  name)
@@ -31,7 +31,7 @@ namespace BlazorApp.Service.impl
                 Title = "Deployment:" + deploy.Name(),
                 Width = 800
             };
-            await DrawerService.CreateAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
+            await _drawerService.CreateAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
         }
 
         public async Task<V1Deployment> FilterByName(string name)
@@ -42,7 +42,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<V1DeploymentList> List()
         {
-            return await BaseService.Client().ListDeploymentForAllNamespacesAsync();
+            return await _baseService.Client().ListDeploymentForAllNamespacesAsync();
         }
 
         public async Task<V1DeploymentList> ListByNamespace(string ns)
@@ -52,7 +52,7 @@ namespace BlazorApp.Service.impl
                 return await List();
             }
 
-            return await BaseService.Client().ListNamespacedDeploymentAsync(ns);
+            return await _baseService.Client().ListNamespacedDeploymentAsync(ns);
         }
 
         public async Task<IList<V1Deployment>> ListItemsByNamespaceAsync(string ns)

@@ -12,9 +12,9 @@ namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
-        private readonly IBaseService  BaseService;
-        private readonly DrawerService DrawerService;
-        private readonly IMemoryCache  MemoryCache;
+        private readonly IBaseService  _baseService;
+        private readonly DrawerService _drawerService;
+        private readonly IMemoryCache  _memoryCache;
 
         private const string CachePodList = "cache_pod_list";
 
@@ -23,9 +23,9 @@ namespace BlazorApp.Service.impl
 
         public PodService(IBaseService baseService, IMemoryCache memoryCache, DrawerService drawerService)
         {
-            BaseService   = baseService;
-            MemoryCache   = memoryCache;
-            DrawerService = drawerService;
+            _baseService   = baseService;
+            _memoryCache   = memoryCache;
+            _drawerService = drawerService;
             // Console.WriteLine("PodService 初始化");
         }
 
@@ -36,7 +36,7 @@ namespace BlazorApp.Service.impl
                 Title = "POD:" + pod.Name(),
                 Width = 800
             };
-            await DrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
+            await _drawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
 
         public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
@@ -87,7 +87,7 @@ namespace BlazorApp.Service.impl
             if (_sharedPods.Count == 0)
             {
                 // Console.WriteLine($"Task<V1PodList> List()空，初始化获取,{_sharedPods.Count}");
-                var pods = await BaseService.Client().ListPodForAllNamespacesAsync();
+                var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
                 foreach (var podsItem in pods.Items)
                 {
                     // Console.WriteLine($"pod ={podsItem.Name()}");
@@ -114,7 +114,7 @@ namespace BlazorApp.Service.impl
             // });
             if (_sharedPods.Count == 0)
             {
-                var pods = await BaseService.Client().ListPodForAllNamespacesAsync();
+                var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
                 foreach (var item in pods.Items)
                 {
                     _sharedPods.Add(item);
@@ -141,13 +141,13 @@ namespace BlazorApp.Service.impl
                 return await List();
             }
 
-            return await BaseService.Client().ListNamespacedPodAsync(ns);
+            return await _baseService.Client().ListNamespacedPodAsync(ns);
         }
 
         //
         public async Task<bool> DeletePod(string ns, string name)
         {
-            return await BaseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
+            return await _baseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
         }
 
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)

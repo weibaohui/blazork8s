@@ -11,8 +11,6 @@ namespace BlazorApp.Service
         Task                   ShowReplicaSetDrawer(V1ReplicaSet rs);
         Task                   ShowReplicaSetDrawer(string  rsName);
         Task<V1ReplicaSet>     FilterByName(string               name);
-
-
         Task<IList<V1ReplicaSet>> ListByOwnerUid(string controllerByUid);
     }
 }

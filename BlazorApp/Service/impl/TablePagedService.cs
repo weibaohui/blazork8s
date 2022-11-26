@@ -7,11 +7,11 @@ namespace BlazorApp.Service
 {
     public class TablePagedService<T>
     {
-        private readonly INamespaceAction<T> ListService;
+        private readonly INamespaceAction<T> _listService;
 
         public TablePagedService(INamespaceAction<T> listService)
         {
-            ListService = listService;
+            _listService = listService;
         }
 
 
@@ -46,7 +46,7 @@ namespace BlazorApp.Service
         public async Task GetData(string ns)
         {
             Loading     = true;
-            OriginItems = await ListService.ListItemsByNamespaceAsync(ns);
+            OriginItems = await _listService.ListItemsByNamespaceAsync(ns);
             PagedItems  = OriginItems;
             Total       = OriginItems.Count;
             PageIndex   = 1;

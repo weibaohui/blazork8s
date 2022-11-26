@@ -12,20 +12,21 @@ namespace BlazorApp.Service.impl
 {
     public class ReplicaSetService : IReplicaSetService
     {
-        private readonly IBaseService  BaseService;
-        private readonly DrawerService DrawerService;
+        private readonly IBaseService  _baseService;
+        private readonly DrawerService _drawerService;
 
         public ReplicaSetService(IBaseService baseService, DrawerService drawerService)
         {
-            BaseService   = baseService;
-            DrawerService = drawerService;
+            _baseService   = baseService;
+            _drawerService = drawerService;
         }
 
-        public async Task ShowReplicaSetDrawer(string  rsName)
+        public async Task ShowReplicaSetDrawer(string rsName)
         {
             var rs = await FilterByName(rsName);
             await ShowReplicaSetDrawer(rs);
         }
+
         public async Task ShowReplicaSetDrawer(V1ReplicaSet rs)
         {
             var options = new DrawerOptions
@@ -33,7 +34,7 @@ namespace BlazorApp.Service.impl
                 Title = "ReplicaSet:" + rs.Name(),
                 Width = 800
             };
-            await DrawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
+            await _drawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
 
         public async Task<V1ReplicaSet> FilterByName(string name)
@@ -44,8 +45,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<V1ReplicaSetList> ListAllReplicaSet()
         {
-            return await BaseService.Client().ListReplicaSetForAllNamespacesAsync();
-
+            return await _baseService.Client().ListReplicaSetForAllNamespacesAsync();
         }
 
         public async Task<V1ReplicaSetList> ListByNamespace(string ns)
@@ -55,8 +55,7 @@ namespace BlazorApp.Service.impl
                 return await ListAllReplicaSet();
             }
 
-            return await BaseService.Client().ListNamespacedReplicaSetAsync(ns);
-
+            return await _baseService.Client().ListNamespacedReplicaSetAsync(ns);
         }
 
         public async Task<IList<V1ReplicaSet>> ListItemsByNamespaceAsync(string ns)
