@@ -38,11 +38,11 @@ namespace BlazorApp.Service.impl
 
         public async Task<V1ReplicaSet> FilterByName(string name)
         {
-            var list = await List();
+            var list = await ListAllReplicaSet();
             return list.Items.First(x => x.Name() == name);
         }
 
-        public async Task<V1ReplicaSetList> List()
+        public async Task<V1ReplicaSetList> ListAllReplicaSet()
         {
             return await BaseService.Client().ListReplicaSetForAllNamespacesAsync();
 
@@ -52,7 +52,7 @@ namespace BlazorApp.Service.impl
         {
             if (string.IsNullOrEmpty(ns))
             {
-                return await List();
+                return await ListAllReplicaSet();
             }
 
             return await BaseService.Client().ListNamespacedReplicaSetAsync(ns);
@@ -67,7 +67,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<IList<V1ReplicaSet>> ListByOwnerUid(string controllerByUid)
         {
-            var list = await List();
+            var list = await ListAllReplicaSet();
             return list.Items.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
                 .ToList();
         }
