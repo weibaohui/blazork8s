@@ -38,6 +38,7 @@ namespace Server.Service
 
         public async Task<string> GetResourceJson(string url)
         {
+
             var s = await Client().HttpClient.GetStringAsync($"{_config.Host}{url}");
             return s;
         }
