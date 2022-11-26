@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 
-namespace Blazor.Pages
+namespace BlazorApp.Pages
 {
     public partial class Counter : ComponentBase
     {

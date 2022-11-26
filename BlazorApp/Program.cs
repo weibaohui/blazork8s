@@ -2,6 +2,7 @@ using System;
 using AntDesign.ProLayout;
 using BlazorApp.Data;
 using BlazorApp.Service;
+using BlazorApp.Service.impl;
 using k8s;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,17 @@ builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSet
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<IKubeService,KubeService>();
 builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<IBaseService, BaseService>();
+builder.Services.AddScoped<INodeService, NodeService>();
+builder.Services.AddScoped<IPodService, PodService>();
+builder.Services.AddScoped<IDeploymentService, DeploymentService>();
+builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
+builder.Services.AddScoped<IEventService, EventService>();
+builder.Services.AddScoped<INamespaceService, NamespaceService>();
+
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -7,21 +7,59 @@
         <ExternalConsole>true</ExternalConsole>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="AntDesign" Version="0.13.0"/>
-        <PackageReference Include="AntDesign.Charts" Version="0.2.3"/>
-        <PackageReference Include="AntDesign.ProLayout" Version="0.13.0"/>
-        <PackageReference Include="KubernetesClient" Version="9.0.38"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0"/>
-        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="7.0.0"/>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.2"/>
-        <PackageReference Include="WebApiClientCore" Version="2.0.3"/>
-        <PackageReference Include="WebApiClientCore.Extensions.NewtonsoftJson" Version="2.0.3"/>
+        <PackageReference Include="AntDesign" Version="0.13.0" />
+        <PackageReference Include="AntDesign.Charts" Version="0.2.3" />
+        <PackageReference Include="AntDesign.ProLayout" Version="0.13.0" />
+        <PackageReference Include="KubernetesClient" Version="9.0.38" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.NewtonsoftJson" Version="7.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="WebApiClientCore" Version="2.0.3" />
+        <PackageReference Include="WebApiClientCore.Extensions.NewtonsoftJson" Version="2.0.3" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />
         <ProjectReference Include="..\Extension\Extension.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Pages\Container\ContainerListView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Container\ContainerStatus.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Container\ContainerType.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Container\ContainerView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Container\EnvView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Container\ProbeView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Deployment\Condition.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Deployment\ConditionView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Deployment\DeploymentDetailView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Deployment\DeploymentIndex.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Deployment\StrategyTypeView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Event\EventListView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Namespace\NamespaceSelect.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\PodAction.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\PodConditionView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\PodDetailView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\PodIndex.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\PodListView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\PodSumView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Pod\VolumeView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\ReplicaSet\ReplicaSetDetailView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\ReplicaSet\ReplicaSetIndex.razor" />
+      <_ContentIncludedByDefault Remove="Pages\ReplicaSet\ReplicaSetListView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\AnnotationsView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\ControllerBy.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\ControllerByView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\ImagesView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\LabelsView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\SearchToolBar.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\SelectorView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\Signal.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\StatusView.razor" />
+      <_ContentIncludedByDefault Remove="Pages\Workload\TolerationsView.razor" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Service\impl" />
     </ItemGroup>
 
 </Project>
