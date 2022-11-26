@@ -1,0 +1,20 @@
+@page "/Counter"
+<h3>Counter</h3>
+
+
+<h1>Counter</h1>
+
+<p>Current Name: @KubeService.Name()</p>
+<p>Current version: @KubeService.Version()</p>
+<p>Current count: @currentCount</p>
+
+@if (podList != null)
+{
+    @foreach (var n in podList)
+    {
+        <li>@n</li>
+    }
+}
+
+<Button Type="primary" OnClick="IncrementCount">Click me</Button>
+<Button Type="primary" OnClick="PodList">Load List</Button>

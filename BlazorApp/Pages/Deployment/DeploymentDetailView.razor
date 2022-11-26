@@ -1,0 +1,37 @@
+﻿@using k8s.Models
+@using BlazorApp.Pages.Container
+@using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Workload
+@using BlazorApp.Pages.ReplicaSet
+@using BlazorApp.Pages.Pod
+@using Extension
+@using Extension.k8s
+@inherits FeedbackComponent<V1Deployment, bool>
+@if (Item != null)
+{
+    <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="创建时间">
+            @Item.Metadata.CreationTimestamp?.AgeFromUtc()
+            (@Item.Metadata.CreationTimestamp)
+        </DescriptionsItem>
+        <DescriptionsItem Title="Name">
+            <Text Copyable>@Item.Name()</Text>
+        </DescriptionsItem>
+        <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
+        <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
+        <LabelsView Labels="@Item.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
+        <SelectorView Title="Selector" Selector="@Item.Spec.Selector.MatchLabels"></SelectorView>
+        <SelectorView Title="Node Selector" Selector="@Item.Spec.Template.Spec.NodeSelector"></SelectorView>
+        <DescriptionsItem Title="Replicas">
+            @($"{Item.Spec.Replicas ?? 0} desired, {Item.Status.UpdatedReplicas ?? 0} updated, {Item.Status.Replicas ?? 0} total, {Item.Status.AvailableReplicas ?? 0} available, {Item.Status.UnavailableReplicas ?? 0} unavailable")
+        </DescriptionsItem>
+        <ImagesView PodSpec="@Item.Spec.Template.Spec"></ImagesView>
+        <TolerationsView Tolerations="@Item.Spec.Template.Spec.Tolerations"></TolerationsView>
+        <StrategyTypeView Strategy="@Item.Spec.Strategy"></StrategyTypeView>
+        <ConditionView ConditionList="@Item.Status.Conditions"></ConditionView>
+    </Descriptions>
+    <ReplicaSetListView ControllerByUid="@Item.Metadata.Uid"></ReplicaSetListView>
+    <PodListView Pods="@Pods"></PodListView>
+    <EventListView Uid="@Item.Metadata.Uid"></EventListView>
+}

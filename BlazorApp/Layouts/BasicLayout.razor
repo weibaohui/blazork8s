@@ -1,0 +1,16 @@
+﻿@inherits LayoutComponentBase
+@namespace BlazorApp
+
+<AntDesign.ProLayout.BasicLayout
+    Logo="@("./pro_icon.svg")"
+    MenuData="@MenuData" Title="Blazor K8S">
+    <RightContentRender>
+    </RightContentRender>
+    <ChildContent>
+        @Body
+    </ChildContent>
+    <FooterRender>
+        <FooterView Links="null" Copyright="2021 Blazor k8s"></FooterView>
+    </FooterRender>
+</AntDesign.ProLayout.BasicLayout>
+<SettingDrawer/>
