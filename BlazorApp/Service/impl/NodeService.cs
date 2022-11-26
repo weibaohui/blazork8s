@@ -5,6 +5,7 @@ using AntDesign;
 using BlazorApp.Pages.Node;
 using Entity;
 using Extension.k8s;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.impl
@@ -50,7 +51,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<V1NodeList> List()
         {
-            return await BaseService.GetFromJsonAsync<V1NodeList>("/KubeApi/api/v1/nodes/");
+            return await BaseService.Client().ListNodeAsync();
         }
 
         public async Task<V1Node> FilterByNodeName(string name)

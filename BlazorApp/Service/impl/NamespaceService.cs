@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.impl
@@ -32,7 +33,8 @@ namespace BlazorApp.Service.impl
 
         public async Task<V1NamespaceList> List()
         {
-           var list=  await _baseService.GetFromJsonAsync<V1NamespaceList>("/KubeApi/api/v1/namespaces");
+
+           var list = await _baseService.Client().ListNamespaceAsync();
             //缓存当前获取到的NS，每次获取都做强制更新
             ns = list.Items.ToList();
             return list;

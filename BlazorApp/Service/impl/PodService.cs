@@ -87,7 +87,7 @@ namespace BlazorApp.Service.impl
             if (_sharedPods.Count == 0)
             {
                 // Console.WriteLine($"Task<V1PodList> List()空，初始化获取,{_sharedPods.Count}");
-                var pods = await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
+                var pods = await BaseService.Client().ListPodForAllNamespacesAsync();
                 foreach (var podsItem in pods.Items)
                 {
                     // Console.WriteLine($"pod ={podsItem.Name()}");
@@ -114,7 +114,7 @@ namespace BlazorApp.Service.impl
             // });
             if (_sharedPods.Count == 0)
             {
-                var pods = await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
+                var pods = await BaseService.Client().ListPodForAllNamespacesAsync();
                 foreach (var item in pods.Items)
                 {
                     _sharedPods.Add(item);
@@ -141,13 +141,13 @@ namespace BlazorApp.Service.impl
                 return await List();
             }
 
-            return await BaseService.GetFromJsonAsync<V1PodList>(@$"/KubeApi/api/v1/namespaces/{ns}/pods");
+            return await BaseService.Client().ListNamespacedPodAsync(ns);
         }
 
         //
         public async Task<bool> DeletePod(string ns, string name)
         {
-            return await BaseService.DeleteAsync<bool>(@$"/KubeApi/api/v1/namespaces/{ns}/pods/{name}");
+            return await BaseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
         }
 
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)

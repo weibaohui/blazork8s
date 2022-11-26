@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Pod;
 using BlazorApp.Pages.ReplicaSet;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.impl
@@ -43,7 +44,8 @@ namespace BlazorApp.Service.impl
 
         public async Task<V1ReplicaSetList> List()
         {
-            return await BaseService.GetFromJsonAsync<V1ReplicaSetList>("/KubeApi/apis/apps/v1/replicasets");
+            return await BaseService.Client().ListReplicaSetForAllNamespacesAsync();
+
         }
 
         public async Task<V1ReplicaSetList> ListByNamespace(string ns)
@@ -53,8 +55,8 @@ namespace BlazorApp.Service.impl
                 return await List();
             }
 
-            return await BaseService.GetFromJsonAsync<V1ReplicaSetList>(
-                @$"/KubeApi/apis/apps/v1/namespaces/{ns}/replicasets");
+            return await BaseService.Client().ListNamespacedReplicaSetAsync(ns);
+
         }
 
         public async Task<IList<V1ReplicaSet>> ListItemsByNamespaceAsync(string ns)
