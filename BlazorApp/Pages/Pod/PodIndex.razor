@@ -35,7 +35,7 @@
                 <AntDesign.Column Title="Containers" TData="string">
                     <ContainerStatus Pod="@context"></ContainerStatus>
                 </AntDesign.Column>
-                <AntDesign.Column Title="Restart" TData="string">
+                <AntDesign.Column Title="重启" TData="string" Width="50">
                     @context.RestartCount()
                 </AntDesign.Column>
                 <AntDesign.Column Title="ControllerBy" TData="string">
@@ -47,7 +47,7 @@
                 <AntDesign.Column Title="QoS" TData="string">
                     @context.Status.QosClass
                 </AntDesign.Column>
-                <AntDesign.Column Title="Age" TData="string">
+                <AntDesign.Column Title="存活" TData="string">
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>
                 <AntDesign.Column Title="Status" TData="string">
