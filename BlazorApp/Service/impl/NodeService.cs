@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Entity;
 using Extension.k8s;
 using k8s;
 using k8s.Models;
@@ -27,6 +28,11 @@ namespace BlazorApp.Service.impl
         }
 
 
+        public async Task<NodeVO> GetNodeVOWithPodListByNodeName(string nodeName)
+        {
+            var (node, pods) = await GetNodeWithPodListByNodeName( nodeName);
+            return new NodeVO { Node = node, Pods = pods };
+        }
 
         public async Task<V1NodeList> List()
         {
