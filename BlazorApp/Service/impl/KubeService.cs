@@ -12,9 +12,9 @@ public class KubeService : IKubeService
 {
     private readonly HttpClient _http;
 
-    private string     _name    { get; set; }
-    private string     _version { get; set; }
-    private Kubernetes _client { get; set; }
+    private string      _name    { get; set; }
+    private string      _version { get; set; }
+    private Kubernetes? _client  { get; set; }
 
     public KubeService(HttpClient http)
     {
@@ -46,7 +46,8 @@ public class KubeService : IKubeService
             return _client;
         }
 
-        var config = KubernetesClientConfiguration.BuildConfigFromConfigFile();
+        // Load from in-cluster configuration:
+        var config = KubernetesClientConfiguration.BuildConfigFromConfigFile() ?? KubernetesClientConfiguration.InClusterConfig();
         _client = new Kubernetes(config);
         Console.WriteLine("KubeService initialized.");
         return _client;
