@@ -69,7 +69,7 @@ namespace  BlazorApp.Pages.Deployment
         private async Task OnDeployClick(V1Deployment deploy)
         {
             var options = PageDrawerService.DefaultOptions("Deployment:" + deploy.Name());
-            await  PageDrawerService.CreateAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
+            await  PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
 
         }
     }

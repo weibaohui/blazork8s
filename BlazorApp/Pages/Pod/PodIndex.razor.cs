@@ -73,14 +73,14 @@ namespace BlazorApp.Pages.Pod
         {
             var (node, pods) = await NodeService.GetNodeWithPodListByNodeName( nodeName);
             var options = PageDrawerService.DefaultOptions("Node:" + node.Name());
-            await PageDrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options,
                 new NodeVO { Node = node, Pods = pods });
         }
 
         private async Task OnPodClick(V1Pod pod)
         {
             var options = PageDrawerService.DefaultOptions("POD:" + pod.Name());
-            await PageDrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
+            await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
 
         private async Task PodDeleteHandler(V1Pod pod)

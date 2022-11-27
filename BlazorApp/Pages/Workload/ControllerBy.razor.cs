@@ -37,14 +37,14 @@ namespace BlazorApp.Pages.Workload
         {
             var rs      = await ReplicaSetService.FindByName(rsName);
             var options = PageDrawerService.DefaultOptions("ReplicaSet:" + rs.Name());
-            await PageDrawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
+            await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
 
         private async Task OnNodeNameClick(string nodeName)
         {
             var (node, pods) = await NodeService.GetNodeWithPodListByNodeName( nodeName);
             var options          = PageDrawerService.DefaultOptions("Node:" + node.Name());
-            await PageDrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options,
                 new NodeVO { Node = node, Pods = pods });
         }
 
@@ -52,7 +52,7 @@ namespace BlazorApp.Pages.Workload
         {
             var deploy  = await DeploymentService.FindByName(name);
             var options = PageDrawerService.DefaultOptions("Deployment:" + deploy.Name());
-            await PageDrawerService.CreateAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
+            await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
         }
     }
 }

@@ -6,13 +6,13 @@ using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.Pod
+namespace BlazorApp.Pages.Pod
 {
     public partial class PodDetailView : FeedbackComponent<V1Pod, bool>
     {
-
         [Inject]
         private INodeService NodeService { get; set; }
+
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
@@ -23,11 +23,12 @@ namespace  BlazorApp.Pages.Pod
             PodItem = base.Options;
             base.OnInitialized();
         }
+
         private async Task OnNodeNameClick(string nodeName)
         {
-            var (node, pods) = await NodeService.GetNodeWithPodListByNodeName( nodeName);
+            var (node, pods) = await NodeService.GetNodeWithPodListByNodeName(nodeName);
             var options = PageDrawerService.DefaultOptions("Node:" + node.Name());
-            await PageDrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options,
                 new NodeVO { Node = node, Pods = pods });
         }
     }

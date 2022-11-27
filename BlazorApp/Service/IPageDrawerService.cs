@@ -17,6 +17,6 @@ public interface IPageDrawerService
     /// <param name="config"></param>
     /// <param name="options"></param>
     /// <returns>The reference of drawer</returns>
-    Task<DrawerRef<TResult>> CreateAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options,
+    Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options,
         TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>;
 }

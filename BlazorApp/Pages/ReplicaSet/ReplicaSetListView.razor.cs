@@ -41,7 +41,7 @@ namespace  BlazorApp.Pages.ReplicaSet
         {
             var rs = row.Data;
             var options      = PageDrawerService.DefaultOptions("ReplicaSet:" + rs.Name());
-            await PageDrawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
+            await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
 
         int CountPodsByOwner(string uid)

@@ -35,7 +35,7 @@ namespace BlazorApp.Pages.Node
         public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
         {
             var options = PageDrawerService.DefaultOptions("Node:" + node.Name());
-            await PageDrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options,
                 new NodeVO { Node = node, Pods = pods });
         }
     }

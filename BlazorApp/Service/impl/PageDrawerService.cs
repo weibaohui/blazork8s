@@ -24,7 +24,7 @@ public class PageDrawerService : IPageDrawerService
         return options;
     }
 
-    public Task<DrawerRef<TResult>> CreateAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options, TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>
+    public Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options, TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>
     {
         return _drawerService.CreateAsync<TComponent, TComponentOptions, TResult>(options, component);
     }
