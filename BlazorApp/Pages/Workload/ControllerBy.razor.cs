@@ -25,8 +25,10 @@ namespace BlazorApp.Pages.Workload
 
         [Inject]
         private INodeService NodeService { get; set; }
+
         [Inject]
         private IPodService PodService { get; set; }
+
         [Inject]
         private IDeploymentService DeploymentService { get; set; }
 
@@ -50,7 +52,7 @@ namespace BlazorApp.Pages.Workload
         private async Task OnDeploymentNameClick(string name)
         {
             var deploy  = await DeploymentService.FindByName(name);
-            var options = PageDrawerService.DefaultOptions("Deployment:" + deploy.Name());
+            var options = PageDrawerService.DefaultOptions($"Deployment:{deploy.Name()}");
             await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
         }
     }
