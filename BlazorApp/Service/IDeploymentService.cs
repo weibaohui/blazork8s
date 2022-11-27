@@ -7,9 +7,6 @@ namespace BlazorApp.Service
     {
         Task<V1DeploymentList> List();
         Task<V1DeploymentList> ListByNamespace(string            ns);
-        Task                   ShowDeploymentDrawer(V1Deployment deploy);
-        Task                   ShowDeploymentDrawer(string       deployName);
-        Task<V1Deployment>     FilterByName(string               name);
-
+        Task<V1Deployment>     FindByName(string               name);
     }
 }

@@ -23,6 +23,7 @@ builder.Services.AddScoped<IDeploymentService, DeploymentService>();
 builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<INamespaceService, NamespaceService>();
+builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 
 
 

@@ -12,7 +12,8 @@ namespace  BlazorApp.Pages.ReplicaSet
     {
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
-
+        [Inject]
+        private IPageDrawerService PageDrawerService { get; set; }
 
         public TablePagedService<V1ReplicaSet> tps;
 
@@ -66,7 +67,8 @@ namespace  BlazorApp.Pages.ReplicaSet
 
         private async Task OnRsClick(V1ReplicaSet rs)
         {
-            await ReplicaSetService.ShowReplicaSetDrawer(rs);
+            var options = PageDrawerService.DefaultOptions("ReplicaSet:" + rs.Name());
+            await PageDrawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
     }
 }

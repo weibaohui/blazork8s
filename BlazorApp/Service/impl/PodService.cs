@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Pages.Pod;
 using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Caching.Memory;
@@ -13,7 +11,6 @@ namespace BlazorApp.Service.impl
     public class PodService : IPodService
     {
         private readonly IBaseService  _baseService;
-        private readonly DrawerService _drawerService;
         private readonly IMemoryCache  _memoryCache;
 
         private const string CachePodList = "cache_pod_list";
@@ -21,23 +18,14 @@ namespace BlazorApp.Service.impl
         //TODO 作为一个能够独立更新的服务，获取POD的数据，都从这里获取，不再去转发请求
         private readonly List<V1Pod> _sharedPods = new();
 
-        public PodService(IBaseService baseService, IMemoryCache memoryCache, DrawerService drawerService)
+        public PodService(IBaseService baseService, IMemoryCache memoryCache)
         {
             _baseService   = baseService;
             _memoryCache   = memoryCache;
-            _drawerService = drawerService;
             // Console.WriteLine("PodService 初始化");
         }
 
-        public async Task ShowPodDrawer(V1Pod pod)
-        {
-            var options = new DrawerOptions
-            {
-                Title = "POD:" + pod.Name(),
-                Width = 800
-            };
-            await _drawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
-        }
+
 
         public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
         {
@@ -148,6 +136,19 @@ namespace BlazorApp.Service.impl
         public async Task<bool> DeletePod(string ns, string name)
         {
             return await _baseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
+        }
+
+        public async Task Logs(V1Pod pod, bool follow = false, bool previous = false)
+        {
+            var response = await _baseService.Client().CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
+                pod.Metadata.Name,
+                pod.Metadata.NamespaceProperty,
+                container: pod.Spec.Containers[0].Name,
+                tailLines: 1,
+                previous: previous,
+                follow: follow).ConfigureAwait(false);
+            var stream = response.Body;
+            await stream.CopyToAsync(Console.OpenStandardOutput());
         }
 
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)

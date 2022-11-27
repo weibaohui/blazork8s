@@ -2,11 +2,13 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AntDesign.TableModels;
+using BlazorApp.Pages.Node;
 using BlazorApp.Service;
+using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.Pod
+namespace BlazorApp.Pages.Pod
 {
     public partial class PodIndex : ComponentBase
     {
@@ -15,6 +17,9 @@ namespace  BlazorApp.Pages.Pod
 
         [Inject]
         private INodeService NodeService { get; set; }
+
+        [Inject]
+        private IPageDrawerService PageDrawerService { get; set; }
 
 
         private TablePagedService<V1Pod> tps;
@@ -66,12 +71,16 @@ namespace  BlazorApp.Pages.Pod
 
         private async Task OnNodeNameClick(string nodeName)
         {
-            await NodeService.ShowNodeDrawer(nodeName);
+            var (node, pods) = await NodeService.GetNodeWithPodListByNodeName( nodeName);
+            var options = PageDrawerService.DefaultOptions("Node:" + node.Name());
+            await PageDrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+                new NodeVO { Node = node, Pods = pods });
         }
 
         private async Task OnPodClick(V1Pod pod)
         {
-            await PodService.ShowPodDrawer(pod);
+            var options = PageDrawerService.DefaultOptions("POD:" + pod.Name());
+            await PageDrawerService.CreateAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
 
         private async Task PodDeleteHandler(V1Pod pod)

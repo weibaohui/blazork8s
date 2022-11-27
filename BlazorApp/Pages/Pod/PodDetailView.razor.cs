@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Node;
 using BlazorApp.Service;
+using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -11,7 +13,8 @@ namespace  BlazorApp.Pages.Pod
 
         [Inject]
         private INodeService NodeService { get; set; }
-
+        [Inject]
+        private IPageDrawerService PageDrawerService { get; set; }
 
         public V1Pod PodItem;
 
@@ -22,7 +25,10 @@ namespace  BlazorApp.Pages.Pod
         }
         private async Task OnNodeNameClick(string nodeName)
         {
-            await NodeService.ShowNodeDrawer(nodeName);
+            var (node, pods) = await NodeService.GetNodeWithPodListByNodeName( nodeName);
+            var options = PageDrawerService.DefaultOptions("Node:" + node.Name());
+            await PageDrawerService.CreateAsync<NodeDetailView, NodeVO, bool>(options,
+                new NodeVO { Node = node, Pods = pods });
         }
     }
 }

@@ -18,9 +18,11 @@ namespace  BlazorApp.Pages.ReplicaSet
         private IReplicaSetService ReplicaSetService { get; set; }
         [Inject]
         private IPodService PodService { get; set; }
+        [Inject]
+        private IPageDrawerService PageDrawerService { get; set; }
 
-        private V1PodList           PodList { get; set; }
-        public  IList<V1ReplicaSet> Items   { get; set; }
+        private V1PodList           PodList { get;          set; }
+        public  IList<V1ReplicaSet> Items   { get;          set; }
         [Parameter]
         public string ControllerByUid { get; set; }
 
@@ -37,7 +39,9 @@ namespace  BlazorApp.Pages.ReplicaSet
 
         async Task OnRowClick(RowData<V1ReplicaSet> row)
         {
-            await ReplicaSetService.ShowReplicaSetDrawer(row.Data);
+            var rs = row.Data;
+            var options      = PageDrawerService.DefaultOptions("ReplicaSet:" + rs.Name());
+            await PageDrawerService.CreateAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
 
         int CountPodsByOwner(string uid)

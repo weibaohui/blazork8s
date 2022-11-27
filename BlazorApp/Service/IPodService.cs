@@ -10,7 +10,6 @@ namespace BlazorApp.Service
         Task<V1PodList> List();
         Task<V1PodList> ListByNamespace(string ns);
         Task<int>       NodePodsNum();
-        Task            ShowPodDrawer(V1Pod pod);
 
         Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid);
 
@@ -19,5 +18,8 @@ namespace BlazorApp.Service
 
         //删除POD
         Task<bool> DeletePod(string ns, string name);
+
+        Task Logs(V1Pod pod, bool follow = false, bool previous = false);
+
     }
 }

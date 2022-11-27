@@ -8,9 +8,7 @@ namespace BlazorApp.Service
     {
         Task<V1ReplicaSetList> ListAllReplicaSet();
         Task<V1ReplicaSetList> ListByNamespace(string            ns);
-        Task                   ShowReplicaSetDrawer(V1ReplicaSet rs);
-        Task                   ShowReplicaSetDrawer(string  rsName);
-        Task<V1ReplicaSet>     FilterByName(string               name);
+        Task<V1ReplicaSet>     FindByName(string               name);
         Task<IList<V1ReplicaSet>> ListByOwnerUid(string controllerByUid);
     }
 }

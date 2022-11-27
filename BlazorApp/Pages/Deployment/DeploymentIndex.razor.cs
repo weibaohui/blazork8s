@@ -13,6 +13,8 @@ namespace  BlazorApp.Pages.Deployment
         [Inject]
         private IDeploymentService DeploymentService { get; set; }
 
+        [Inject]
+        private IPageDrawerService PageDrawerService { get; set; }
 
         public TablePagedService<V1Deployment> tps;
 
@@ -66,7 +68,9 @@ namespace  BlazorApp.Pages.Deployment
 
         private async Task OnDeployClick(V1Deployment deploy)
         {
-            await DeploymentService.ShowDeploymentDrawer(deploy);
+            var options = PageDrawerService.DefaultOptions("Deployment:" + deploy.Name());
+            await  PageDrawerService.CreateAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
+
         }
     }
 }
