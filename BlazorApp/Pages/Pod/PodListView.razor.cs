@@ -38,7 +38,7 @@ namespace BlazorApp.Pages.Pod
 
         async Task OnPodNameClick(V1Pod pod)
         {
-            var options = PageDrawerService.DefaultOptions("POD:" + pod.Name());
+            var options = PageDrawerService.DefaultOptions($"{pod.Kind}:{pod.Name()}");
             await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
     }

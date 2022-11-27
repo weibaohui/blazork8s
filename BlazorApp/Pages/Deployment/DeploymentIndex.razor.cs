@@ -6,7 +6,7 @@ using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.Deployment
+namespace BlazorApp.Pages.Deployment
 {
     public partial class DeploymentIndex : ComponentBase
     {
@@ -68,9 +68,8 @@ namespace  BlazorApp.Pages.Deployment
 
         private async Task OnDeployClick(V1Deployment deploy)
         {
-            var options = PageDrawerService.DefaultOptions("Deployment:" + deploy.Name());
-            await  PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
-
+            var options = PageDrawerService.DefaultOptions($"{deploy.Kind}:{deploy.Name()}");
+            await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
         }
     }
 }

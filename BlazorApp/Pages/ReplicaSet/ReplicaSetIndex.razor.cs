@@ -67,7 +67,7 @@ namespace  BlazorApp.Pages.ReplicaSet
 
         private async Task OnRsClick(V1ReplicaSet rs)
         {
-            var options = PageDrawerService.DefaultOptions("ReplicaSet:" + rs.Name());
+            var options = PageDrawerService.DefaultOptions($"{rs.Kind}:{rs.Name()}");
             await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
     }

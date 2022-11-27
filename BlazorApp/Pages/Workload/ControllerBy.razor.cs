@@ -38,21 +38,21 @@ namespace BlazorApp.Pages.Workload
         private async Task OnRsNameClick(string rsName)
         {
             var rs      = await ReplicaSetService.FindByName(rsName);
-            var options = PageDrawerService.DefaultOptions("ReplicaSet:" + rs.Name());
+            var options = PageDrawerService.DefaultOptions($"{rs.Kind}:{rs.Name()}");
             await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
 
         private async Task OnNodeNameClick(string nodeName)
         {
             var nodeVo  = await NodeService.GetNodeVOWithPodListByNodeName(nodeName);
-            var options = PageDrawerService.DefaultOptions("Node:" + nodeName);
+            var options = PageDrawerService.DefaultOptions($"Node:{nodeName}");
             await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options, nodeVo);
         }
 
         private async Task OnDeploymentNameClick(string name)
         {
             var deploy  = await DeploymentService.FindByName(name);
-            var options = PageDrawerService.DefaultOptions($"Deployment:{deploy.Name()}");
+            var options = PageDrawerService.DefaultOptions($"{deploy.Kind}:{deploy.Name()}");
             await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
         }
     }
