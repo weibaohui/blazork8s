@@ -32,8 +32,18 @@ namespace BlazorApp.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
+            PodService.watchAllPod();
+            var timer = new System.Timers.Timer(1000);
+            timer.Enabled =  true;
+            timer.Elapsed += refreshPods;
         }
 
+        protected async void refreshPods(object? source, System.Timers.ElapsedEventArgs e)
+        {
+            await tps.GetData(_selectedNs);
+            await InvokeAsync(StateHasChanged);
+            Console.WriteLine("refreshPods");
+        }
 
         public async Task OnNsSelectedHandler(string ns)
         {

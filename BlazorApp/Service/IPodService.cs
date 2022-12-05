@@ -21,5 +21,8 @@ namespace BlazorApp.Service
 
         Task Logs(V1Pod pod, bool follow = false, bool previous = false);
 
+        public  Task watchAllPod();
+
+
     }
 }

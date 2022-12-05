@@ -10,8 +10,8 @@ namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
-        private readonly IBaseService  _baseService;
-        private readonly IMemoryCache  _memoryCache;
+        private readonly IBaseService _baseService;
+        private readonly IMemoryCache _memoryCache;
 
         private const string CachePodList = "cache_pod_list";
 
@@ -20,11 +20,10 @@ namespace BlazorApp.Service.impl
 
         public PodService(IBaseService baseService, IMemoryCache memoryCache)
         {
-            _baseService   = baseService;
-            _memoryCache   = memoryCache;
+            _baseService = baseService;
+            _memoryCache = memoryCache;
             // Console.WriteLine("PodService 初始化");
         }
-
 
 
         public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
@@ -169,6 +168,20 @@ namespace BlazorApp.Service.impl
             }
 
             return await Task.FromResult(0);
+        }
+
+        public async Task watchAllPod()
+        {
+            var podlistResp = _baseService.Client().CoreV1
+                .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
+            await foreach (var (type, item) in podlistResp.WatchAsync<V1Pod, V1PodList>())
+            {
+                Console.WriteLine("==on watch event==");
+                Console.WriteLine(type);
+                Console.WriteLine(item.Metadata.Name);
+                UpdateSharePods(type, item);
+                Console.WriteLine("==on watch event==");
+            }
         }
     }
 }
