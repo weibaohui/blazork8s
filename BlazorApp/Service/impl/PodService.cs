@@ -135,6 +135,7 @@ namespace BlazorApp.Service.impl
         //
         public async Task<bool> DeletePod(string ns, string name)
         {
+            // Console.WriteLine($"DeletePod,{ns},{name}");
             return await _baseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
         }
 
