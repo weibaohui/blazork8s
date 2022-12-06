@@ -12,6 +12,7 @@ namespace BlazorApp.Service.impl
     {
         private readonly IBaseService _baseService;
         private readonly IMemoryCache _memoryCache;
+        private          bool         _podListChangedByWatch;
 
         private const string CachePodList = "cache_pod_list";
 
@@ -29,7 +30,7 @@ namespace BlazorApp.Service.impl
         public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
         {
             var list = await List();
-            return list.Items.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
+            return list.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
                 .ToList();
         }
 
@@ -61,44 +62,33 @@ namespace BlazorApp.Service.impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
+
+            _podListChangedByWatch = true;
         }
 
-        public async Task<V1PodList> List()
+        public async Task<List<V1Pod>> List()
         {
-            // return await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, async r =>
-            // {
-            //     var pods = await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
-            //     foreach (var podsItem in pods.Items) SharedPods.Append<V1Pod>(podsItem);
-            //     return pods;
-            // });
             if (_sharedPods.Count == 0)
             {
                 // Console.WriteLine($"Task<V1PodList> List()空，初始化获取,{_sharedPods.Count}");
                 var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
                 foreach (var podsItem in pods.Items)
                 {
-                    // Console.WriteLine($"pod ={podsItem.Name()}");
                     _sharedPods.Add(podsItem);
-                    // Console.WriteLine($"SharedPods.Add(podsItem),{_sharedPods.Count}");
                 }
             }
-            // Console.WriteLine($"Task<V1PodList> List(),{_sharedPods.Count}");
 
-            var list = new V1PodList
-            {
-                Items = new List<V1Pod>(_sharedPods)
-            };
-            return list;
+            _podListChangedByWatch = false;
+            return _sharedPods;
+        }
+
+        public bool PodListChangedByWatch()
+        {
+            return _podListChangedByWatch;
         }
 
         public async Task<IList<V1Pod>> ListPods()
         {
-            // return await MemoryCache.GetOrCreateAsync<V1PodList>(CachePodList, async r =>
-            // {
-            //     var pods = await BaseService.GetFromJsonAsync<V1PodList>("/KubeApi/api/v1/pods");
-            //     foreach (var podsItem in pods.Items) SharedPods.Append<V1Pod>(podsItem);
-            //     return pods;
-            // });
             if (_sharedPods.Count == 0)
             {
                 var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
@@ -108,6 +98,7 @@ namespace BlazorApp.Service.impl
                 }
             }
 
+            _podListChangedByWatch = false;
             return _sharedPods;
         }
 
@@ -121,15 +112,6 @@ namespace BlazorApp.Service.impl
             return _sharedPods.Where(x => x.Namespace() == ns).ToList();
         }
 
-        public async Task<V1PodList> ListByNamespace(string ns)
-        {
-            if (string.IsNullOrEmpty(ns))
-            {
-                return await List();
-            }
-
-            return await _baseService.Client().ListNamespacedPodAsync(ns);
-        }
 
         //
         public async Task<bool> DeletePod(string ns, string name)
@@ -159,7 +141,7 @@ namespace BlazorApp.Service.impl
         public async Task<int> NodePodsNum()
         {
             var pods = await List();
-            var tuples = pods.Items.GroupBy(s => s.Spec.NodeName)
+            var tuples = pods.GroupBy(s => s.Spec.NodeName)
                 .OrderBy(g => g.Key)
                 .Select(g => Tuple.Create(g.Key, g.Count()));
             foreach (var tuple in tuples)
@@ -170,7 +152,7 @@ namespace BlazorApp.Service.impl
             return await Task.FromResult(0);
         }
 
-        public async Task watchAllPod()
+        public async Task WatchAllPod()
         {
             var podlistResp = _baseService.Client().CoreV1
                 .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);

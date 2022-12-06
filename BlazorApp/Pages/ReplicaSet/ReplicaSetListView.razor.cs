@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AntDesign;
 using AntDesign.TableModels;
-using  BlazorApp.Service;
-using  BlazorApp.Service.impl;
+using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.ReplicaSet
+namespace BlazorApp.Pages.ReplicaSet
 {
-    public  partial class ReplicaSetListView :ComponentBase
+    public partial class ReplicaSetListView : ComponentBase
     {
-
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
+
         [Inject]
         private IPodService PodService { get; set; }
+
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
-        private V1PodList           PodList { get;          set; }
-        public  IList<V1ReplicaSet> Items   { get;          set; }
+        private IList<V1Pod>        PodList { get; set; }
+        public  IList<V1ReplicaSet> Items   { get; set; }
+
         [Parameter]
         public string ControllerByUid { get; set; }
 
@@ -32,6 +31,7 @@ namespace  BlazorApp.Pages.ReplicaSet
             {
                 Items = await ReplicaSetService.ListByOwnerUid(ControllerByUid);
             }
+
             PodList = await PodService.List();
             await base.OnInitializedAsync();
         }
@@ -46,7 +46,7 @@ namespace  BlazorApp.Pages.ReplicaSet
 
         int CountPodsByOwner(string uid)
         {
-            return PodList.Items
+            return PodList
                 .Count(x => x.GetController() != null && x.GetController().Uid == uid);
         }
     }

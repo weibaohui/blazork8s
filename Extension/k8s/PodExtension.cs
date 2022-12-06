@@ -61,9 +61,9 @@ namespace Extension.k8s
         /// <param name="pods"></param>
         /// <param name="nodeName"></param>
         /// <returns></returns>
-        public static IList<V1Pod> FilterByNodeName(this V1PodList pods, string nodeName)
+        public static IList<V1Pod> FilterByNodeName(this IList<V1Pod> pods, string nodeName)
         {
-            return pods.Items.Where(w => w.Spec.NodeName == nodeName).ToList();
+            return pods.Where(w => w.Spec.NodeName == nodeName).ToList();
         }
 
         public static string ReadySummary(this IList<V1Pod> pods)

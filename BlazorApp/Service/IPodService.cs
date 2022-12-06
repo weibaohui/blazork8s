@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using k8s;
@@ -7,9 +8,8 @@ namespace BlazorApp.Service
 {
     public interface IPodService : INamespaceAction<V1Pod>
     {
-        Task<V1PodList> List();
-        Task<V1PodList> ListByNamespace(string ns);
-        Task<int>       NodePodsNum();
+        Task<List<V1Pod>> List();
+        Task<int>         NodePodsNum();
 
         Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid);
 
@@ -21,8 +21,12 @@ namespace BlazorApp.Service
 
         Task Logs(V1Pod pod, bool follow = false, bool previous = false);
 
-        public  Task watchAllPod();
+        Task WatchAllPod();
 
-
+        /// <summary>
+        /// Pod列表是否发生变更
+        /// </summary>
+        /// <returns></returns>
+        Boolean PodListChangedByWatch();
     }
 }
