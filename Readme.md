@@ -16,7 +16,7 @@
 # k8s部署体验
 
 ```docker
-kubectl apply -f deploy/
+kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
 
 ```
 
