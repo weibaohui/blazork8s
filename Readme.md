@@ -19,7 +19,8 @@
 kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
 ```
 ## 访问
-[NodePort 31999](http://NoderPort IP:31999)
+默认使用了nodePort开放，请访问31999端口
+[http://NodePortIP:31999](http://127.0.0.1:31999)
 
 # docker 体验
 ## start server
