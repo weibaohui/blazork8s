@@ -12,14 +12,23 @@
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
-# 体验
+
+# k8s部署体验
+
+```docker
+kubectl apply -f deploy/
+
+```
+
+# 集群外体验
 ## start server
 ```docker
 docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 ghcr.io/weibaohui/blazork8s:latest
 ```
-
 ## web
 [web ui](http://localhost:4000)
+
+
 
 #预览
 <p align="left">

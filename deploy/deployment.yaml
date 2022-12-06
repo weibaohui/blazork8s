@@ -1,0 +1,138 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blazork8s
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: blazork8s
+  name: blazork8s
+  namespace: blazork8s
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app: blazork8s
+  name: blazork8s
+  namespace: blazork8s
+rules:
+  - verbs:
+      - "*"
+    apiGroups:
+      - "*"
+    resources:
+      - "*"
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  labels:
+    app: blazork8s
+  name: blazork8s
+rules:
+  - verbs:
+      - "*"
+    apiGroups:
+      - "*"
+    resources:
+      - "*"
+  - verbs:
+      - "*"
+    nonResourceURLs:
+      - "*"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: blazork8s
+  name: blazork8s
+  namespace: blazork8s
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: blazork8s
+subjects:
+  - kind: ServiceAccount
+    name: blazork8s
+    namespace: blazork8s
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: blazork8s
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: blazork8s
+subjects:
+  - kind: ServiceAccount
+    name: blazork8s
+    namespace: blazork8s
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blazork8s
+  namespace: blazork8s
+  labels:
+    app: blazork8s
+spec:
+  ports:
+    - name: http-blazork8s
+      protocol: TCP
+      port: 4000
+      targetPort: 80
+  selector:
+    app: blazork8s
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: blazork8s-nodeport
+  namespace: blazork8s
+  labels:
+    app: blazork8s
+spec:
+  ports:
+    - name: http-blazork8s
+      protocol: TCP
+      port: 4000
+      targetPort: 80
+      nodePort: 31999
+  selector:
+    app: blazork8s
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blazork8s
+  namespace: blazork8s
+  labels:
+    app: blazork8s
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blazork8s
+  template:
+    metadata:
+      labels:
+        app: blazork8s
+    spec:
+      containers:
+        - name: blazork8s
+          image: ghcr.io/weibaohui/blazork8s:latest
+          ports:
+            - containerPort: 80
+              protocol: TCP
+              name: http-blazork8s
+          imagePullPolicy: Always
+      restartPolicy: Always
+      serviceAccountName: blazork8s
