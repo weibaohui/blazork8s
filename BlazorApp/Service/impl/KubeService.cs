@@ -41,9 +41,12 @@ public class KubeService : IKubeService
             return _client;
         }
 
+        KubernetesClientConfiguration config = null;
         // Load from in-cluster configuration:
-        var config = KubernetesClientConfiguration.InClusterConfig() ??
-                     KubernetesClientConfiguration.BuildConfigFromConfigFile();
+        config = KubernetesClientConfiguration.IsInCluster()
+            ? KubernetesClientConfiguration.InClusterConfig()
+            : KubernetesClientConfiguration.BuildConfigFromConfigFile();
+
         _client = new Kubernetes(config);
         Console.WriteLine("KubeService initialized.");
         return _client;

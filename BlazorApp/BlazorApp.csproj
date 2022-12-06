@@ -9,7 +9,7 @@
     <PackageReference Include="AntDesign.Charts" Version="0.2.3" />
     <PackageReference Include="AntDesign.ProLayout" Version="0.13.0" />
     <PackageReference Include="KubernetesClient" Version="9.0.38" />
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="7.0.0"/>
 
   </ItemGroup>
 
