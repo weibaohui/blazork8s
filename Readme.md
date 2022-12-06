@@ -13,14 +13,15 @@
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
 
-# k8s部署体验
-
+# 1 k8s部署体验
+## 一键安装
 ```docker
 kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
-
 ```
+## 访问
+[NodePort 31999](http://NoderPort IP:31999)
 
-# 集群外体验
+# docker 体验
 ## start server
 ```docker
 docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 ghcr.io/weibaohui/blazork8s:latest
@@ -40,6 +41,9 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod-1.png">
  </p>
+
+
+
 ## 🙏 鸣谢
 
 感谢 [JetBrains 公司](https://www.jetbrains.com/?from=mesh) 为本开源项目提供的免费正版 JetBrains Rider  的 License 支持。
