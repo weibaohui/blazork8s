@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using AntDesign;
 using k8s;
 
 namespace BlazorApp.Service;
@@ -18,14 +17,10 @@ public class KubeService : IKubeService
 
     public KubeService(HttpClient http)
     {
-        _http   = http;
+        _http    = http;
         _name    = "AutoName";
         _version = "AutoVersion";
     }
-
-
-
-
 
 
     public string Name()
@@ -47,7 +42,8 @@ public class KubeService : IKubeService
         }
 
         // Load from in-cluster configuration:
-        var config = KubernetesClientConfiguration.BuildConfigFromConfigFile() ?? KubernetesClientConfiguration.InClusterConfig();
+        var config = KubernetesClientConfiguration.InClusterConfig() ??
+                     KubernetesClientConfiguration.BuildConfigFromConfigFile();
         _client = new Kubernetes(config);
         Console.WriteLine("KubeService initialized.");
         return _client;
