@@ -88,7 +88,7 @@ public class WatchService : IWatchService
             var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
             foreach (var item in pods.Items)
             {
-                _sharedPods.Add(item);
+                UpdateSharePods(WatchEventType.Added, item);
             }
         }
 

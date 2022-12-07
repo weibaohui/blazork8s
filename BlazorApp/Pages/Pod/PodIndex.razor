@@ -28,7 +28,7 @@
                    ScrollX="1500">
                 <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name">
-                    <div onclick="@(() => OnPodClick(context))">@context.Name()</div>
+                    <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">
