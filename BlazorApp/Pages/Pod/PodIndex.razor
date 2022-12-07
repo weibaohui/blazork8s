@@ -2,8 +2,8 @@
 @using k8s.Models
 @using Extension.k8s
 @using Extension
-@using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Workload
+@using BlazorApp.Pages.Container
 @if (tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -25,11 +25,10 @@
                    @bind-SelectedRows="tps.SelectedRows"
                    Loading="tps.Loading"
                    OnChange="OnChange"
-                   ScrollX="1500"
-                   >
+                   ScrollX="1500">
                 <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
-                <AntDesign.Column Field="@context.Name()" Title="Name"   Ellipsis>
-                    <Button OnClick="@(() => OnPodClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <div onclick="@(() => OnPodClick(context))">@context.Name()</div>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Containers" TData="string">
@@ -42,7 +41,7 @@
                     <ControllerBy Owner="context.OwnerReferences()"></ControllerBy>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Node" TData="string">
-                    <Button OnClick="@(() => OnNodeNameClick(context.Spec.NodeName))" Type="@ButtonType.Link">@context.Spec.NodeName</Button>
+                    <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
                 </AntDesign.Column>
                 <AntDesign.Column Title="QoS" TData="string">
                     @context.Status.QosClass
