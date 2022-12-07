@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using AntDesign.TableModels;
 using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +15,7 @@ namespace BlazorApp.Pages.Pod
         private IPageDrawerService PageDrawerService { get; set; }
 
         [Parameter]
-        public IList<V1Pod> Pods { get; set; }
+        public IList<V1Pod> Pods { get; set; } = new List<V1Pod>();
 
 
         [Parameter]

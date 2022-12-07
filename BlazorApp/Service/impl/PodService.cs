@@ -37,30 +37,36 @@ namespace BlazorApp.Service.impl
 
         public void UpdateSharePods(WatchEventType type, V1Pod item)
         {
+            var index = _sharedPods.FindIndex(0, r => r.Uid() == item.Uid());
+            // Console.WriteLine($"{index}:{item.Name()}");
             switch (type)
             {
                 case WatchEventType.Added:
-
-                    for (var i = 0; i < _sharedPods.Count; i++)
+                    if (index == -1)
                     {
-                        if (_sharedPods[i].Uid() == item.Uid()) continue;
+                        //不存在
                         _sharedPods.Insert(0, item);
+                        _podListChangedByWatch = true;
                     }
 
                     break;
                 case WatchEventType.Modified:
-                    for (var i = 0; i < _sharedPods.Count; i++)
+                    if (index > -1)
                     {
-                        if (_sharedPods[i].Uid() == item.Uid())
-                        {
-                            _sharedPods[i] = item;
-                            break;
-                        }
+                        //已存在
+                        _sharedPods[index]     = item;
+                        _podListChangedByWatch = true;
                     }
 
                     break;
                 case WatchEventType.Deleted:
-                    _sharedPods.RemoveAll(w => w.Uid() == item.Uid());
+                    if (index > -1)
+                    {
+                        //已存在
+                        _sharedPods.RemoveAt(index);
+                        _podListChangedByWatch = true;
+                    }
+
                     break;
                 case WatchEventType.Error:
                     break;
@@ -69,8 +75,6 @@ namespace BlazorApp.Service.impl
                 default:
                     throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
-
-            _podListChangedByWatch = true;
         }
 
 
@@ -145,10 +149,10 @@ namespace BlazorApp.Service.impl
                 .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
             await foreach (var (type, item) in podlistResp.WatchAsync<V1Pod, V1PodList>())
             {
-                Console.WriteLine("==on watch event==");
+                // Console.WriteLine("==on watch event start ==");
                 Console.WriteLine($"{type}:{item.Metadata.Name}");
                 UpdateSharePods(type, item);
-                Console.WriteLine("==on watch event==");
+                // Console.WriteLine("==on watch event end ==");
             }
         }
 
