@@ -6,12 +6,13 @@ using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.ReplicaSet
+namespace BlazorApp.Pages.ReplicaSet
 {
     public partial class ReplicaSetIndex : ComponentBase
     {
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
+
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
@@ -67,7 +68,7 @@ namespace  BlazorApp.Pages.ReplicaSet
 
         private async Task OnRsClick(V1ReplicaSet rs)
         {
-            var options = PageDrawerService.DefaultOptions($"{rs.Kind}:{rs.Name()}");
+            var options = PageDrawerService.DefaultOptions($"{rs.Kind ?? "ReplicaSet"}:{rs.Name()}");
             await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
     }

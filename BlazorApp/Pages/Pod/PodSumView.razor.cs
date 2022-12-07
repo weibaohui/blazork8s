@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
 using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -28,7 +27,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnPodClick(V1Pod pod)
         {
-            var options = PageDrawerService.DefaultOptions($"{pod.Kind}:{pod.Name()}");
+            var options = PageDrawerService.DefaultOptions($"{pod.Kind ?? "Pod"}:{pod.Name()}");
             await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
     }
