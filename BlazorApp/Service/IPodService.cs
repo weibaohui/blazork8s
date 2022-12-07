@@ -8,8 +8,8 @@ namespace BlazorApp.Service
 {
     public interface IPodService : INamespaceAction<V1Pod>
     {
-        Task<List<V1Pod>> List();
-        Task<int>         NodePodsNum();
+        Task<IList<V1Pod>> ListPods();
+        Task<int>          NodePodsNum();
 
         Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid);
 

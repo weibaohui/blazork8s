@@ -29,7 +29,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
         {
-            var list = await List();
+            var list = await ListPods();
             return list.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
                 .ToList();
         }
@@ -40,7 +40,13 @@ namespace BlazorApp.Service.impl
             switch (type)
             {
                 case WatchEventType.Added:
-                    _sharedPods.Insert(0, item);
+
+                    for (var i = 0; i < _sharedPods.Count; i++)
+                    {
+                        if (_sharedPods[i].Uid() == item.Uid()) continue;
+                        _sharedPods.Insert(0, item);
+                    }
+
                     break;
                 case WatchEventType.Modified:
                     for (var i = 0; i < _sharedPods.Count; i++)
@@ -48,6 +54,7 @@ namespace BlazorApp.Service.impl
                         if (_sharedPods[i].Uid() == item.Uid())
                         {
                             _sharedPods[i] = item;
+                            break;
                         }
                     }
 
@@ -66,26 +73,6 @@ namespace BlazorApp.Service.impl
             _podListChangedByWatch = true;
         }
 
-        public async Task<List<V1Pod>> List()
-        {
-            if (_sharedPods.Count == 0)
-            {
-                // Console.WriteLine($"Task<V1PodList> List()空，初始化获取,{_sharedPods.Count}");
-                var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
-                foreach (var podsItem in pods.Items)
-                {
-                    _sharedPods.Add(podsItem);
-                }
-            }
-
-            _podListChangedByWatch = false;
-            return _sharedPods;
-        }
-
-        public bool PodListChangedByWatch()
-        {
-            return _podListChangedByWatch;
-        }
 
         public async Task<IList<V1Pod>> ListPods()
         {
@@ -140,7 +127,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<int> NodePodsNum()
         {
-            var pods = await List();
+            var pods = await ListPods();
             var tuples = pods.GroupBy(s => s.Spec.NodeName)
                 .OrderBy(g => g.Key)
                 .Select(g => Tuple.Create(g.Key, g.Count()));
@@ -159,11 +146,15 @@ namespace BlazorApp.Service.impl
             await foreach (var (type, item) in podlistResp.WatchAsync<V1Pod, V1PodList>())
             {
                 Console.WriteLine("==on watch event==");
-                Console.WriteLine(type);
-                Console.WriteLine(item.Metadata.Name);
+                Console.WriteLine($"{type}:{item.Metadata.Name}");
                 UpdateSharePods(type, item);
                 Console.WriteLine("==on watch event==");
             }
+        }
+
+        public bool PodListChangedByWatch()
+        {
+            return _podListChangedByWatch;
         }
     }
 }

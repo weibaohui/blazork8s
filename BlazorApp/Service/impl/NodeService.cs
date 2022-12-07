@@ -9,20 +9,20 @@ namespace BlazorApp.Service.impl
 {
     public class NodeService : INodeService
     {
-        private readonly IBaseService  _baseService;
-        private readonly IPodService   _podService;
+        private readonly IBaseService _baseService;
+        private readonly IPodService  _podService;
 
         public NodeService(IBaseService baseService, IPodService podService)
         {
-            _baseService   = baseService;
-            _podService    = podService;
+            _baseService = baseService;
+            _podService  = podService;
         }
 
         public async Task<(V1Node node, IList<V1Pod> pods)> GetNodeWithPodListByNodeName(string nodeName)
         {
             var nodeList = await List();
             var node     = nodeList.FilterByNodeName(nodeName);
-            var podList  = await _podService.List();
+            var podList  = await _podService.ListPods();
             var pods     = podList.FilterByNodeName(nodeName);
             return (node, pods);
         }
@@ -30,7 +30,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<NodeVO> GetNodeVOWithPodListByNodeName(string nodeName)
         {
-            var (node, pods) = await GetNodeWithPodListByNodeName( nodeName);
+            var (node, pods) = await GetNodeWithPodListByNodeName(nodeName);
             return new NodeVO { Node = node, Pods = pods };
         }
 
