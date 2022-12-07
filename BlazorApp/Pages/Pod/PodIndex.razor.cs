@@ -21,6 +21,9 @@ namespace BlazorApp.Pages.Pod
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
+        [Inject]
+        private IWatchService WatchServicee { get; set; }
+
 
         private TablePagedService<V1Pod> tps;
 
@@ -32,7 +35,7 @@ namespace BlazorApp.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
-            PodService.WatchAllPod();
+            WatchServicee.WatchAllPod();
             var timer = new System.Timers.Timer(1000);
             timer.Enabled =  true;
             timer.Elapsed += refreshPods;
@@ -40,7 +43,7 @@ namespace BlazorApp.Pages.Pod
 
         private async void refreshPods(object? source, System.Timers.ElapsedEventArgs e)
         {
-            if (PodService.PodListChangedByWatch())
+            if (WatchServicee.PodListChangedByWatch())
             {
                 await tps.GetData(_selectedNs);
                 await InvokeAsync(StateHasChanged);
@@ -48,7 +51,7 @@ namespace BlazorApp.Pages.Pod
             }
         }
 
-        public async Task OnNsSelectedHandler(string ns)
+        private async Task OnNsSelectedHandler(string ns)
         {
             _selectedNs = ns;
             await tps.OnNsSelectedHandler(ns);
