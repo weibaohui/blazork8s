@@ -5,40 +5,40 @@
         switch (o.Kind)
         {
             case "ReplicaSet":
-                <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnRsNameClick(o.Name))" Type="@ButtonType.Link">
-                        @o.Kind &nbsp;
-                        @if (ShowOwnerName)
-                        {
-                            @o.Name
-                        }
-                    </Button>
-                </Tooltip>
+                <Tag PresetColor=@PresetColor.Green
+                     OnClick="@(() => OnRsNameClick(o.Name))"
+                     Style="cursor: pointer">
+                    @o.Kind &nbsp;
+                    @if (ShowOwnerName)
+                    {
+                        @o.Name
+                    }
+                </Tag>
                 break;
             case "Node":
-                <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnNodeNameClick(o.Name))" Type="@ButtonType.Link">
-                        @o.Kind &nbsp;
-                        @if (ShowOwnerName)
-                        {
-                            @o.Name
-                        }
-                    </Button>
-                </Tooltip>
+                <Tag PresetColor=@PresetColor.Green
+                     OnClick="@(() => OnNodeNameClick(o.Name))"
+                     Style="cursor: pointer">
+                    @o.Kind &nbsp;
+                    @if (ShowOwnerName)
+                    {
+                        @o.Name
+                    }
+                </Tag>
                 break;
             case "DaemonSet":
                 @o.Kind
                 break;
             case "Deployment":
-                <Tooltip Title="@o.Name">
-                    <Button OnClick="@(() => OnDeploymentNameClick(o.Name))" Type="@ButtonType.Link">
-                        @o.Kind &nbsp;
-                        @if (ShowOwnerName)
-                        {
-                            @o.Name
-                        }
-                    </Button>
-                </Tooltip>
+                <Tag PresetColor=@PresetColor.Green
+                     OnClick="@(() => OnDeploymentNameClick(o.Name))"
+                     Style="cursor: pointer">
+                    @o.Kind &nbsp;
+                    @if (ShowOwnerName)
+                    {
+                        @o.Name
+                    }
+                </Tag>
                 break;
             default:
                 @o.Kind

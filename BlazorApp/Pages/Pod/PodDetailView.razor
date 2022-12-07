@@ -1,9 +1,9 @@
-@using k8s.Models
-@using  BlazorApp.Pages.Container
-@using  BlazorApp.Pages.Event
-@using  BlazorApp.Pages.Workload
 @using Extension
 @using Extension.k8s
+@using k8s.Models
+@using BlazorApp.Pages.Workload
+@using BlazorApp.Pages.Container
+@using BlazorApp.Pages.Event
 @inherits FeedbackComponent<V1Pod, bool>
 @if (PodItem != null)
 {
@@ -21,7 +21,11 @@
         </DescriptionsItem>
         <ControllerByView Owner=@PodItem.OwnerReferences()></ControllerByView>
         <DescriptionsItem Title="Node">
-            <Button OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))" Type="@ButtonType.Link">@PodItem.Spec.NodeName</Button>
+            <Tag PresetColor=@PresetColor.Green
+                 OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))"
+                 Style="cursor: pointer">
+                @PodItem.Spec.NodeName
+            </Tag>
         </DescriptionsItem>
         <DescriptionsItem Title="Pod IP">
             @if (PodItem.Status.PodIP != null)
@@ -40,7 +44,6 @@
         </DescriptionsItem>
         <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>
         <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
-
         <SelectorView Title="Node Selector" Selector="@PodItem.Spec.NodeSelector"></SelectorView>
         <PodConditionView Conditions="@PodItem.Status.Conditions"></PodConditionView>
         <LabelsView Labels="PodItem.Labels()"></LabelsView>

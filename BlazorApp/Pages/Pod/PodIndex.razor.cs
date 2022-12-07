@@ -38,7 +38,7 @@ namespace BlazorApp.Pages.Pod
             timer.Elapsed += refreshPods;
         }
 
-        protected async void refreshPods(object? source, System.Timers.ElapsedEventArgs e)
+        private async void refreshPods(object? source, System.Timers.ElapsedEventArgs e)
         {
             if (PodService.PodListChangedByWatch())
             {
@@ -91,7 +91,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnPodClick(V1Pod pod)
         {
-            var options = PageDrawerService.DefaultOptions($"{pod.Kind}:{pod.Name()}");
+            var options = PageDrawerService.DefaultOptions($"{pod.Kind ?? "POD"}:{pod.Name()}");
             await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
         }
 
