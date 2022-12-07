@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using AntDesign.TableModels;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service;
@@ -35,20 +36,17 @@ namespace BlazorApp.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
-            var timer = new System.Timers.Timer(1000);
-            timer.Enabled =  true;
-            timer.Elapsed += refreshPods;
-        }
-
-        private async void refreshPods(object? source, System.Timers.ElapsedEventArgs e)
-        {
-            if (WatchServicee.PodListChangedByWatch())
+            var timer = new Timer(1000);
+            timer.Enabled = true;
+            timer.Elapsed += async (o, args) =>
             {
+                if (!WatchServicee.PodListChangedByWatch()) return;
                 await tps.GetData(_selectedNs);
                 await InvokeAsync(StateHasChanged);
                 Console.WriteLine("refreshPods");
-            }
+            };
         }
+
 
         private async Task OnNsSelectedHandler(string ns)
         {
