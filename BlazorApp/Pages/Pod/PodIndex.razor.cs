@@ -72,7 +72,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnSearchHandler(string key)
         {
-            if (String.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(key))
             {
                 await tps.GetData(_selectedNs);
             }
