@@ -4,25 +4,18 @@ using System.Linq;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
         private readonly IBaseService _baseService;
-        private readonly IMemoryCache _memoryCache;
         private          bool         _podListChangedByWatch;
+        private readonly List<V1Pod>  _sharedPods = new();
 
-        private const string CachePodList = "cache_pod_list";
-
-        //TODO 作为一个能够独立更新的服务，获取POD的数据，都从这里获取，不再去转发请求
-        private readonly List<V1Pod> _sharedPods = new();
-
-        public PodService(IBaseService baseService, IMemoryCache memoryCache)
+        public PodService(IBaseService baseService)
         {
             _baseService = baseService;
-            _memoryCache = memoryCache;
             // Console.WriteLine("PodService 初始化");
         }
 
@@ -93,7 +86,7 @@ namespace BlazorApp.Service.impl
             return _sharedPods;
         }
 
-        public async Task<IList<V1Pod>> ListPodByNamespace(string ns)
+        private async Task<IList<V1Pod>> ListPodByNamespace(string ns)
         {
             if (string.IsNullOrEmpty(ns))
             {
