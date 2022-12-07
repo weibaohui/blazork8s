@@ -35,7 +35,6 @@ namespace BlazorApp.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
-            WatchServicee.WatchAllPod();
             var timer = new System.Timers.Timer(1000);
             timer.Enabled =  true;
             timer.Elapsed += refreshPods;

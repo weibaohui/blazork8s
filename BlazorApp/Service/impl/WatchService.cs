@@ -16,6 +16,8 @@ public class WatchService : IWatchService
     public WatchService(IBaseService baseService)
     {
         _baseService = baseService;
+        //初始化时启动
+        WatchAllPod();
     }
 
     public void UpdateSharePods(WatchEventType type, V1Pod item)
