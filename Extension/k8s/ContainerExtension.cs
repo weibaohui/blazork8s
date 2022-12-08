@@ -70,9 +70,14 @@ namespace Extension.k8s
             return ss.First(w => w.Name == containerName);
         }
 
-        public static (string ReadySummary, string Msg) ReadySummaryWithMsg(this IList<V1ContainerStatus> ss,
-            string                                                                                        ContainerName)
+        public static (string ReadySummary, string Msg) ReadySummaryWithMsg(this IList<V1ContainerStatus>? ss,
+            string ContainerName)
         {
+            if (ss == null)
+            {
+                return ("", "");
+            }
+
             var cc = ss.First(w => w.Name == ContainerName);
             if (cc.State.Waiting != null)
             {
