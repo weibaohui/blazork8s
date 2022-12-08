@@ -1,9 +1,9 @@
-@using k8s.Models
-@using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Workload
 @using Extension
 @using Extension.k8s
+@using k8s.Models
+@using BlazorApp.Pages.Workload
+@using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Event
 @inherits FeedbackComponent<Entity.NodeVO, bool>
 @if (Node != null)
 {
@@ -45,6 +45,6 @@
     </NodeResourceQuantityView>
     <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
     </NodeResourceQuantityView>
-    <PodListView Pods="Pods"></PodListView>
+    <PodListView Pods="Pods" HideAction="true"></PodListView>
     <EventListView Host="@Node.Name()"></EventListView>
 }

@@ -21,6 +21,9 @@ namespace BlazorApp.Pages.Pod
         [Parameter]
         public string ControllerByUid { get; set; }
 
+        [Parameter]
+        public bool HideAction { get; set; }
+
 
         protected override async Task OnInitializedAsync()
         {

@@ -75,15 +75,12 @@ namespace Extension.k8s
 
         public static bool IsReady(this V1Pod pod)
         {
-            foreach (var condition in pod.Status.Conditions)
+            if (pod.Status?.Conditions == null)
             {
-                if (condition.Type == "Ready" && condition.Status == "True")
-                {
-                    return true;
-                }
+                return false;
             }
 
-            return false;
+            return pod.Status.Conditions.Any(condition => condition.Type == "Ready" && condition.Status == "True");
         }
 
         /// <summary>
