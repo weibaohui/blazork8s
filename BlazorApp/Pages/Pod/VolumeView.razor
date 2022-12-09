@@ -17,10 +17,10 @@
                 <Tag Icon="hdd" PresetColor="@PresetColor.Orange">ConfigMap @v.ConfigMap.Name</Tag>
                 @if (v.ConfigMap.Items != null)
                 {
-@foreach (var p in v.ConfigMap.Items)
-{
-    <Tag>@p.Key @p.Path</Tag>
-}
+                    @foreach (var p in v.ConfigMap.Items)
+                    {
+                        <Tag>@p.Key @p.Path</Tag>
+                    }
                 }
             }
             @if (v.EmptyDir != null)
