@@ -1,14 +1,29 @@
 using System;
 using System.Text.Json;
 using System.Threading.Tasks;
+using AntDesign;
+using BlazorApp.Service;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using XtermBlazor;
 
 namespace BlazorApp.Pages.Pod;
 
-public partial class PodLogs : ComponentBase
+public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 {
+    [Inject]
+    private IPodService PodService { get; set; }
+
+
+    public V1Pod PodItem;
+
+    protected override void OnInitialized()
+    {
+        PodItem = base.Options;
+        base.OnInitialized();
+    }
+
     private Xterm _terminal, _terminalEvent;
 
     private TerminalOptions _options = new TerminalOptions
@@ -38,8 +53,11 @@ public partial class PodLogs : ComponentBase
     private int    _eventId     = 0,  _columns, _rows;
     private string _searchInput = "", _input = "Hello World";
 
+
     private async Task OnFirstRender()
     {
+        var logs = PodService.Logs(PodItem);
+
         await _terminalEvent.WriteLine($"({++_eventId}) OnFirstRender()");
 
 

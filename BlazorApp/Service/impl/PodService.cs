@@ -65,6 +65,20 @@ namespace BlazorApp.Service.impl
             await stream.CopyToAsync(Console.OpenStandardOutput());
         }
 
+        public async Task Logs(string podNs, string podName, string containerName, bool follow = false,
+            bool                      previous = false)
+        {
+            var response = await _baseService.Client().CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
+                podName,
+                podNs,
+                container: containerName,
+                tailLines: 10,
+                previous: previous,
+                follow: follow).ConfigureAwait(false);
+            var stream = response.Body;
+            await stream.CopyToAsync(Console.OpenStandardOutput());
+        }
+
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)
         {
             return await ListPodByNamespace(ns);
