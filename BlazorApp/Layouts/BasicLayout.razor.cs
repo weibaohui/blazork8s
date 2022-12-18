@@ -39,6 +39,13 @@ namespace BlazorApp
                     Name = "Counter",
                     Key  = "Counter",
                     Icon = "smile",
+                },
+                new MenuDataItem
+                {
+                    Path = "/PodLogs",
+                    Name = "PodLogs",
+                    Key  = "PodLogs",
+                    Icon = "smile",
                 }
             };
             await base.OnInitializedAsync();
