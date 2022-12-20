@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Service;
+using BlazorApp.Service.impl;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -56,7 +57,13 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 
     private async Task OnFirstRender()
     {
-        var logs = PodService.Logs(PodItem);
+        var logs = await PodService.Logs(PodItem, true);
+
+        await using (var xs = new XtermStream(_terminal))
+        {
+            await logs.CopyToAsync(xs);
+        }
+
 
         await _terminalEvent.WriteLine($"({++_eventId}) OnFirstRender()");
 

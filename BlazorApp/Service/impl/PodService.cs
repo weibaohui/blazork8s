@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using k8s;
@@ -52,7 +53,7 @@ namespace BlazorApp.Service.impl
             return await _baseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
         }
 
-        public async Task Logs(V1Pod pod, bool follow = false, bool previous = false)
+        public async Task<Stream> Logs(V1Pod pod, bool follow = false, bool previous = false)
         {
             var response = await _baseService.Client().CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
                 pod.Metadata.Name,
@@ -62,21 +63,22 @@ namespace BlazorApp.Service.impl
                 previous: previous,
                 follow: follow).ConfigureAwait(false);
             var stream = response.Body;
-            await stream.CopyToAsync(Console.OpenStandardOutput());
+            return stream;
+            // await stream.CopyToAsync(Console.OpenStandardOutput());
         }
 
-        public async Task Logs(string podNs, string podName, string containerName, bool follow = false,
-            bool                      previous = false)
+        public async Task<Stream> Logs(string podNs, string podName, string containerName, bool follow = false,
+            bool                              previous = false)
         {
             var response = await _baseService.Client().CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
                 podName,
                 podNs,
                 container: containerName,
-                tailLines: 10,
                 previous: previous,
                 follow: follow).ConfigureAwait(false);
             var stream = response.Body;
-            await stream.CopyToAsync(Console.OpenStandardOutput());
+            return stream;
+            // await stream.CopyToAsync(Console.OpenStandardOutput());
         }
 
         public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)
