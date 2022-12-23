@@ -1,0 +1,58 @@
+@inherits FeedbackComponent<k8s.Models.V1Pod, bool>
+
+<h1>Hello, world!</h1>
+
+<p>Welcome to XtermBlazor Demo.</p>
+
+<div class="mb-2">
+    <input type="button" @onclick="HasSelection" value="HasSelection()"/>
+    <input type="button" @onclick="GetSelection" value="GetSelection()"/>
+    <input type="button" @onclick="GetSelectionPosition" value="GetSelectionPosition()"/>
+    <input type="button" @onclick="ClearSelection" value="ClearSelection()"/>
+    <input type="button" @onclick="SelectAll" value="SelectAll()"/>
+    <input type="button" @onclick="ScrollToTop" value="ScrollToTop()"/>
+    <input type="button" @onclick="ScrollToBottom" value="ScrollToBottom()"/>
+    <input type="button" @onclick="Reset" value="Reset()"/>
+    <input type="button" @onclick="GetRows" value="GetRows()"/>
+    <input type="button" @onclick="GetColumns" value="GetColumns()"/>
+    <input type="button" @onclick="GetOptions" value="GetOptions()"/>
+    <input type="button" @onclick="SetOptions" value="SetOptions()"/>
+</div>
+
+<div class="mb-2">
+    <input type="text" @bind-value="_input">
+    <input type="button" @onclick="Write" value="Write()"/>
+    <input type="button" @onclick="WriteLine" value="WriteLine()"/>
+
+    Cols: <input type="number" maxlength="4" size="4" @bind-value="_columns">
+    Rows: <input type="number" maxlength="4" size="4" @bind-value="_rows">
+    <input type="button" @onclick="Resize" value="Resize()"/>
+
+    <input type="text" @bind-value="_searchInput">
+    <input type="button" @onclick="Search" value="Search()"/>
+</div>
+
+<Xterm
+    @ref="_terminal"
+    Options="_options"
+    AddonIds="_addonIds"
+    OnFirstRender="@OnFirstRender"
+    OnBinary="@OnBinary"
+    OnCursorMove="@OnCursorMove"
+    OnData="@OnData"
+    OnKey="@OnKey"
+    OnLineFeed="@OnLineFeed"
+    OnScroll="@OnScroll"
+    OnSelectionChange="@OnSelectionChange"
+    OnRender="@OnRender"
+    OnResize="@OnResize"
+    OnTitleChange="@OnTitleChange"
+    OnBell="@OnBell"/>
+
+<br/>
+
+EventCallback Logs:
+<br/>
+<input type="checkbox" @onchange="@((e) => showAttachCustomKeyEventHandlerLog = !showAttachCustomKeyEventHandlerLog)"> Show AttachCustomKeyEventHandler() Log
+
+<Xterm @ref="_terminalEvent" Options="_options2" AddonIds="_addonIds"/>

@@ -30,7 +30,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnPodLogClick(V1Pod pod)
         {
-            var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}");
+            var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
             await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
         }
     }
