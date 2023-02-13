@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="KubernetesClient" Version="9.0.38" />
+        <PackageReference Include="KubernetesClient" Version="10.0.31"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     </ItemGroup>
 
