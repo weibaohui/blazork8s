@@ -92,6 +92,11 @@ namespace Extension
             var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
             return dateTime.Age();
         }
+        public static string AddAgeFromUtc(this DateTime time)
+        {
+            var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
+            return dateTime.Age();
+        }
 
         public static string AgeFromUtc(this DateTime? time)
         {
