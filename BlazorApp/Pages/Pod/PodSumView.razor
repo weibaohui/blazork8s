@@ -1,5 +1,5 @@
-@using k8s.Models
 @using Extension.k8s
+@using k8s.Models
 @if (Pods != null)
 {
     <p>@NodeName @Pods.ReadySummary()</p>
@@ -23,6 +23,6 @@
             color = "error";
         }
         var icon = pod.IsReady() ? "check-circle" : "clock-circle";
-        <Tag Color="@color" OnClick="(() => OnPodClick(pod))" Icon="@icon">@pod.Name()</Tag>
+        <Tag Color="@color" OnClick="() => OnPodClick(pod)" Icon="@icon">@pod.Name()</Tag>
     }
 }
