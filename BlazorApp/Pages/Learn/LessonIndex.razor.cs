@@ -1,57 +1,84 @@
+using System;
+using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Service;
+using BlazorApp.Service.impl;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using XtermBlazor;
 
-namespace BlazorApp.Pages.Learn
+namespace BlazorApp.Pages.Learn;
+
+public partial class LessonIndex : ComponentBase
 {
-    public partial class LessonIndex : ComponentBase
+    [Inject]
+    private IPodService PodService { get; set; }
+
+    private Xterm _terminal;
+
+    private TerminalOptions _options = new TerminalOptions
     {
-        private Xterm _terminal;
-
-        private TerminalOptions _options = new TerminalOptions
+        CursorBlink = true,
+        CursorStyle = CursorStyle.Bar,
+        Columns     = 100,
+        Rows        = 50,
+        Theme =
         {
-            CursorBlink = true,
-            CursorStyle = CursorStyle.Bar,
-            Columns     = 100,
-            Rows        = 50,
-            Theme =
-            {
-                Background = "#17615e",
-            },
-        };
+            Background = "#17615e",
+        },
+    };
 
 
-        private int _columns, _rows;
+    private int _columns, _rows;
+
+    private string[] _addonIds = new string[]
+    {
+        "xterm-addon-attach",
+    };
+
+    private async Task OnFirstRender()
+    {
+        var pods    = await PodService.ListPods();
+        var podItem = pods.First(x => x.Namespace() == "default" && x.Name() == "nginx-ff6774dc6-vb6rx");
+        Console.WriteLine("podItem.Name");
+        Console.WriteLine(podItem.Name());
+        var logs = await PodService.Logs(
+            podItem, true);
+
+        var x = await PodService.ExecInPod(podItem, "ls");
 
 
-        private async Task OnFirstRender()
+        await using (var xs = new XtermStream(_terminal))
         {
-            _columns = await _terminal.GetColumns();
-            _rows    = await _terminal.GetRows();
+            // await x.CopyToAsync(xs);
         }
 
 
-        private async Task ScrollToTop(MouseEventArgs args)
-        {
-            await _terminal.ScrollToTop();
-        }
-
-        private async Task ScrollToBottom(MouseEventArgs args)
-        {
-            await _terminal.ScrollToBottom();
-        }
+        _columns = await _terminal.GetColumns();
+        _rows    = await _terminal.GetRows();
+    }
 
 
-        private async Task Resize(MouseEventArgs args)
-        {
-            await _terminal.Resize(_columns, _rows);
-        }
+    private async Task ScrollToTop(MouseEventArgs args)
+    {
+        await _terminal.ScrollToTop();
+    }
+
+    private async Task ScrollToBottom(MouseEventArgs args)
+    {
+        await _terminal.ScrollToBottom();
+    }
 
 
-        private async Task AddCommand(string ct)
-        {
-            await _terminal.WriteLine(ct);
-        }
+    private async Task Resize(MouseEventArgs args)
+    {
+        await _terminal.Resize(_columns, _rows);
+    }
+
+
+    private async Task AddCommand(string ct)
+    {
+        await _terminal.WriteLine(ct);
     }
 }

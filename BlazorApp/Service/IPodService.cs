@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 using k8s.Models;
 
@@ -16,6 +17,7 @@ namespace BlazorApp.Service
         //删除POD
         Task<bool> DeletePod(string ns, string name);
 
-        Task<Stream> Logs(V1Pod pod, bool follow = false, bool previous = false);
+        Task<Stream>    Logs(V1Pod      pod, bool   follow = false, bool previous = false);
+        Task<WebSocket> ExecInPod(V1Pod pod, string command);
     }
 }
