@@ -1,0 +1,12 @@
+@page "/LessonIndex"
+
+<div class="mb-2">
+    <a style="cursor: pointer" @onclick="@(() => AddCommand("kubectl get pods "))">kubectl get pods </a>
+    <br>
+
+</div>
+
+<Xterm
+    @ref="_terminal"
+    Options="_options"
+    OnFirstRender="@OnFirstRender"/>

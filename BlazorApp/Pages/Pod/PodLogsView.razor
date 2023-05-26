@@ -1,9 +1,6 @@
 @inherits FeedbackComponent<k8s.Models.V1Pod, bool>
 
 <div class="mb-2">
-    <a href="#" @onclick="@(() => AddCommand("kubectl get pods "))">kubectl get pods </a>
-    <br>
-    <Button Type="@ButtonType.Primary" OnClick="@(() => AddCommand("ct"))">ADD</Button>
     <Button Type="@ButtonType.Primary" OnClick="ScrollToTop">顶端</Button>
     <Button Type="@ButtonType.Primary" OnClick="ScrollToBottom">底端</Button>
     <input type="text" @bind-value="_searchInput">

@@ -42,9 +42,9 @@ namespace BlazorApp
                 },
                 new MenuDataItem
                 {
-                    Path = "/PodLogs",
-                    Name = "PodLogs",
-                    Key  = "PodLogs",
+                    Path = "/LessonIndex",
+                    Name = "试一试",
+                    Key  = "LessonIndex",
                     Icon = "smile",
                 }
             };

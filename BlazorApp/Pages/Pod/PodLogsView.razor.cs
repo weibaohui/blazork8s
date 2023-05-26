@@ -15,8 +15,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     private IPodService PodService { get; set; }
 
 
-    public V1Pod  PodItem;
-    public string CommandText = "xxxxiuyiui";
+    public V1Pod PodItem;
 
 
     protected override void OnInitialized()
@@ -89,11 +88,5 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     private async Task Resize(MouseEventArgs args)
     {
         await _terminal.Resize(_columns, _rows);
-    }
-
-
-    private async Task AddCommand(string ct)
-    {
-        await _terminal.WriteLine(ct);
     }
 }
