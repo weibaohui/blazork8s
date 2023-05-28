@@ -29,16 +29,18 @@ public partial class LessonIndex : ComponentBase
         },
     };
 
-
-    private int _columns, _rows;
-
-    private string[] _addonIds = new string[]
+    private string[] _addonIds =
     {
         "xterm-addon-attach",
     };
 
+
+    private int _columns, _rows;
+
     private async Task OnFirstRender()
     {
+        // await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-attach", "attach");
+
         var pods    = await PodService.ListPods();
         var podItem = pods.First(x => x.Namespace() == "default" && x.Name() == "nginx-ff6774dc6-vb6rx");
         Console.WriteLine("podItem.Name");
