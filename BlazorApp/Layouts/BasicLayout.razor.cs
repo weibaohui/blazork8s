@@ -33,20 +33,7 @@ namespace BlazorApp
                     Icon     = "smile",
                     Children = WorkloadsMenu(),
                 },
-                new MenuDataItem
-                {
-                    Path = "/counter",
-                    Name = "Counter",
-                    Key  = "Counter",
-                    Icon = "smile",
-                },
-                new MenuDataItem
-                {
-                    Path = "/LessonIndex",
-                    Name = "试一试",
-                    Key  = "LessonIndex",
-                    Icon = "smile",
-                }
+
             };
             await base.OnInitializedAsync();
         }
