@@ -33,16 +33,11 @@
                     <Tag PresetColor="PresetColor.Green">@xx.InvolvedObject.FieldPath</Tag>
                 </DescriptionsItem>
             </ChildContent>
-
         </Descriptions>
     }
-
-    <div>
-
-    </div>
-    if (!string.IsNullOrEmpty(Advice))
+    if (!String.IsNullOrEmpty(Advice))
     {
-        <Card Bordered="false" Title="智能分析">
+        <Card Title="智能诊断">
             <Body>
             @Advice
             </Body>

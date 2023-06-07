@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Service;
@@ -39,7 +40,10 @@ namespace BlazorApp.Pages.Event
                 Events = coreEventList.FilterByUID(Uid);
             }
 
-            Advice = await OpenAi.Explain(JsonSerializer.Serialize(Events));
+            if (Events!.Any(x => x.Type == "Warning"))
+            {
+                Advice = await OpenAi.Explain(JsonSerializer.Serialize(Events));
+            }
         }
     }
 }
