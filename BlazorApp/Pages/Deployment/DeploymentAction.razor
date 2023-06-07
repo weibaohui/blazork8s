@@ -1,0 +1,10 @@
+<Popconfirm Title="Sure to delete?"
+            OnConfirm="() => DeletePod(Item)"
+            OkText="Yes"
+            CancelText="No">
+    <a>删除</a>
+</Popconfirm>
+@if (Enable)
+{
+    <a onclick="@(() => OnAnalyzeClick(Item))">分析</a>
+}

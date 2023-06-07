@@ -49,7 +49,10 @@ public class OpenAiService : IOpenAiService
         {
             var ss = res.Choices.FirstOrDefault()?.Message.Content;
             // Console.WriteLine(ss);
-            return ss;
+            
+            return ss?
+                .Replace("\n","<br/>")
+                .Replace("\r","<br/>") ?? string.Empty;
         }
 
         return string.Empty;
