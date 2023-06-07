@@ -69,7 +69,7 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/rs-1.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod-1.png">
-基于Events进行只能诊断
+基于Events进行智能诊断
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/events-advice.png">
 
 </p>
