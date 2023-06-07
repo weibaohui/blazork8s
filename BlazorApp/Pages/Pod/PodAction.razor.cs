@@ -18,7 +18,7 @@ public partial class PodAction : ComponentBase
     private IPageDrawerService PageDrawerService { get; set; }
 
     [Inject]
-    private IConfigService ConfigService { get; set; }
+    private IOpenAiService OpenAi { get; set; }
 
     [Parameter]
     public EventCallback<V1Pod> OnPodDelete { get; set; }
@@ -27,7 +27,7 @@ public partial class PodAction : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        Enable = ConfigService.GetBool("OpenAI","Enable");
+        Enable = OpenAi.Enabled();
         await base.OnInitializedAsync();
     }
 

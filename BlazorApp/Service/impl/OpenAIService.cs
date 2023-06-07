@@ -18,6 +18,11 @@ public class OpenAiService : IOpenAiService
         _configService = configService;
     }
 
+    public bool Enabled()
+    {
+       return _configService.GetBool("OpenAI","Enable");
+    }
+
     public async Task<string> Explain(string text)
     {
         // Console.WriteLine(text);

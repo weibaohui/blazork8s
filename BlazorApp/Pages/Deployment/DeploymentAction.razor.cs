@@ -5,18 +5,17 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Deployment;
 
-public partial class DeploymentAction:ComponentBase
+public partial class DeploymentAction : ComponentBase
 {
     [Parameter]
     public V1Deployment Item { get; set; }
-
 
 
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
     [Inject]
-    private IConfigService ConfigService { get; set; }
+    private IOpenAiService OpenAi { get; set; }
 
     [Parameter]
     public EventCallback<V1Deployment> OnDeploymentDelete { get; set; }
@@ -25,15 +24,14 @@ public partial class DeploymentAction:ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        Enable = ConfigService.GetBool("OpenAI","Enable");
+        Enable = OpenAi.Enabled();
         await base.OnInitializedAsync();
     }
 
     private async Task DeletePod(V1Deployment pod)
     {
-         await OnDeploymentDelete.InvokeAsync(pod);
+        await OnDeploymentDelete.InvokeAsync(pod);
     }
-
 
 
     private async Task OnAnalyzeClick(V1Deployment item)
