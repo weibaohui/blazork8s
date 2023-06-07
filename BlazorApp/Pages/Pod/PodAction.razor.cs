@@ -33,5 +33,11 @@ namespace BlazorApp.Pages.Pod
             var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
             await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
         }
+
+        private async Task OnPodAnalyzeClick(V1Pod pod)
+        {
+            var options = PageDrawerService.DefaultOptions($"分析:{pod.Name()}", width: 1000);
+            await PageDrawerService.ShowDrawerAsync<PodAnalyzeView, V1Pod, bool>(options, pod);
+        }
     }
 }
