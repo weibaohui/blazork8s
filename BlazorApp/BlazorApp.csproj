@@ -8,6 +8,7 @@
   <ItemGroup>
     <PackageReference Include="AntDesign.Charts" Version="0.3.1"/>
     <PackageReference Include="AntDesign.ProLayout" Version="0.14.4.1"/>
+    <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4"/>
     <PackageReference Include="KubernetesClient" Version="11.0.21"/>
     <PackageReference Include="XtermBlazor" Version="1.8.1"/>
   </ItemGroup>
