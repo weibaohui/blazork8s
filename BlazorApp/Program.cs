@@ -15,6 +15,7 @@ builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSet
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddHttpClient();
 
+builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddScoped<IBaseService, BaseService>();
 builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IPodService, PodService>();
@@ -24,6 +25,7 @@ builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<INamespaceService, NamespaceService>();
 builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddScoped<IWatchService, WatchService>();
+builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 
 
 var app = builder.Build();
