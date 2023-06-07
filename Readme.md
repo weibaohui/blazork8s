@@ -1,6 +1,6 @@
 [![Build](https://github.com/weibaohui/blazork8s/actions/workflows/BlazorApp.yml/badge.svg)](https://github.com/weibaohui/blazork8s/actions/workflows/server.yml)
 
-
+使用C# Blazor 编写的kubernetes管理工具，集成了ChatGPT智能检测能力，用简单易用的操作界面，提升k8s管理效率。
 
 <p align="center">
   <a href="https://github.com/weibaohui/blazork8s">
@@ -40,7 +40,9 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 [web ui](http://localhost:4000)
 
 ## OpenAI 智能诊断 配置
+
 修改BlazorApp目录下的appsettings.json
+
 ```
   "OpenAI": {
     "Enable": true, //是否开启
@@ -50,6 +52,7 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
     }
   }
 ```
+
 #预览
 <p align="left">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/node.png">
@@ -67,3 +70,5 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 #功能特性
 
 * 新增 openAI gpt 问题诊断功能
+    * Event 分析
+    * Pod 分析
