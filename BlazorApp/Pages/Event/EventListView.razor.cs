@@ -1,26 +1,31 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Service;
 using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.VisualBasic;
 
-namespace  BlazorApp.Pages.Event
+namespace BlazorApp.Pages.Event
 {
     public partial class EventListView : ComponentBase
     {
         [Inject]
         private IEventService EventService { get; set; }
 
+        [Inject]
+        private IOpenAiService OpenAi { get; set; }
+
         private IList<Corev1Event> Events { get; set; }
 
 
         [Parameter]
         public string Uid { get; set; }
+
         [Parameter]
         public string Host { get; set; }
+
+        public string Advice { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -33,6 +38,8 @@ namespace  BlazorApp.Pages.Event
             {
                 Events = coreEventList.FilterByUID(Uid);
             }
+
+            Advice = await OpenAi.Explain(JsonSerializer.Serialize(Events));
         }
     }
 }
