@@ -34,10 +34,17 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 ```docker
 docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 ghcr.io/weibaohui/blazork8s:latest
 ```
-
 ## web
 
 [web ui](http://localhost:4000)
+
+# DEBUG 调试
+```
+ git clone git@github.com:weibaohui/blazork8s.git
+ cd blazork8s
+ cd BlazorApp
+ dotnet watch run
+```
 
 ## OpenAI 智能诊断 配置
 
