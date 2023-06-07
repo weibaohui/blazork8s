@@ -17,9 +17,19 @@ namespace BlazorApp.Pages.Pod
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
+        [Inject]
+        private IConfigService ConfigService { get; set; }
 
         [Parameter]
         public EventCallback<V1Pod> OnPodDelete { get; set; }
+
+        public bool Enable;
+
+        protected override async Task OnInitializedAsync()
+        {
+            Enable = ConfigService.GetBool("OpenAI","Enable");
+            await base.OnInitializedAsync();
+        }
 
         private async Task DeletePod(V1Pod pod)
         {

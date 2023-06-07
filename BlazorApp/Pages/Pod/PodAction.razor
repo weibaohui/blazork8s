@@ -5,4 +5,7 @@
     <a>删除</a>
 </Popconfirm>
 <a onclick="@(() => OnPodLogClick(PodItem))">日志</a>
-<a onclick="@(() => OnPodAnalyzeClick(PodItem))">分析</a>
+@if (Enable)
+{
+     <a onclick="@(() => OnPodAnalyzeClick(PodItem))">分析</a>
+}

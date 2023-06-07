@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,7 +20,7 @@ public class OpenAiService : IOpenAiService
 
     public async Task<string> Explain(string text)
     {
-        Console.WriteLine(text);
+        // Console.WriteLine(text);
         var enable = _configService.GetBool("OpenAI", "Enable");
         if (!enable)
         {
@@ -30,7 +29,7 @@ public class OpenAiService : IOpenAiService
 
         var openapiToken = _configService.GetString("OpenAI", "Token");
         var prompt       = _configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("error");
-        Console.WriteLine(prompt);
+        // Console.WriteLine(prompt);
         OpenAIService service     = new OpenAIService(new OpenAiOptions() { ApiKey = openapiToken });
         var           chatMessage = new ChatMessage(StaticValues.ChatMessageRoles.User, $"{prompt} \n {text}");
         ChatCompletionCreateRequest createRequest = new ChatCompletionCreateRequest()
@@ -44,12 +43,12 @@ public class OpenAiService : IOpenAiService
         var res = await service.ChatCompletion
             .CreateCompletion(createRequest, Models.ChatGpt3_5Turbo);
 
-        Console.WriteLine(res.Successful);
-        Console.WriteLine(res.ToString());
+        // Console.WriteLine(res.Successful);
+        // Console.WriteLine(res.ToString());
         if (res.Successful)
         {
             var ss = res.Choices.FirstOrDefault()?.Message.Content;
-            Console.WriteLine(ss);
+            // Console.WriteLine(ss);
             return ss;
         }
 
