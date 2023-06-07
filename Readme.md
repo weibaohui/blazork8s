@@ -79,3 +79,4 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 * 新增 openAI gpt 问题诊断功能
     * Event 分析
     * Pod 分析
+    * Deployment 分析
