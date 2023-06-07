@@ -14,9 +14,9 @@
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
-# 1 k8s部署体验
+# 1 k8s 体验
 
-## 一键安装
+## 一键安装部署
 
 ```docker
 kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
@@ -29,8 +29,8 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 
 # docker 体验
 
-## start server
-
+## 启动服务
+使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
 ```docker
 docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 ghcr.io/weibaohui/blazork8s:latest
 ```
