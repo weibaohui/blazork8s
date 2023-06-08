@@ -25,21 +25,27 @@ public partial class ChatDeployment : ComponentBase
 
     public List<string> data = new List<string>
     {
-        "部署一个nginx应用",
+        "部署一个k8s nginx应用",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问，域名为www.nginx.com，并使用```yaml ```包裹起来",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问",
     };
 
     bool visible = false;
 
-    void open()
+    private async Task open()
     {
         this.visible = true;
     }
 
-    void close()
+    private async Task close()
     {
         this.visible = false;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await InvokeAsync(StateHasChanged);
+        await base.OnAfterRenderAsync(firstRender);
     }
 
     private async Task ChatBtnClicked()
