@@ -62,6 +62,9 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 
 #预览
 <p align="left">
+对POD进行智能诊断
+<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
+
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/node.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy-1.png">
