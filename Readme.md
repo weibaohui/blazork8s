@@ -30,15 +30,19 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 # docker 体验
 
 ## 启动服务
+
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
+
 ```docker
 docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 ghcr.io/weibaohui/blazork8s:latest
 ```
+
 ## web
 
 [web ui](http://localhost:4000)
 
 # DEBUG 调试
+
 ```
  git clone git@github.com:weibaohui/blazork8s.git
  cd blazork8s
@@ -64,7 +68,9 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 <p align="left">
 对POD进行智能诊断<br>
  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
-
+通过提示词获得k8s部署yaml，并执行<br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-k8s-yaml.gif">
+<br>
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/node.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy-1.png">
