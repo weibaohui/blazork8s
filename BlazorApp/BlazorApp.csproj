@@ -19,11 +19,5 @@
     <ProjectReference Include="..\Entity\Entity.csproj" />
     <ProjectReference Include="..\Extension\Extension.csproj" />
   </ItemGroup>
-
- 
-
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="Pages\Learn\LessonIndex.razor" />
-  </ItemGroup>
-
+  
 </Project>
