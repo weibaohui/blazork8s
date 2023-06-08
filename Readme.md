@@ -69,7 +69,7 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 对POD进行智能诊断<br>
  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
 通过提示词获得k8s部署yaml，并执行<br>
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-k8s-yaml.gif">
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
 <br>
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/node.png">
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy.png">
