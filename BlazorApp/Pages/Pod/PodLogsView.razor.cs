@@ -40,9 +40,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 
     private string[] _addonIds = new string[]
     {
-        "xterm-addon-fit",
-        "xterm-addon-search",
-        "xterm-addon-web-links",
+        "xterm-addon-attach",
     };
 
 

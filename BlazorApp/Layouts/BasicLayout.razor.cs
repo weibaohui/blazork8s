@@ -14,7 +14,7 @@ namespace BlazorApp
             {
                 new MenuDataItem
                 {
-                    Path = "/",
+                    Path = "/ai/chatDeploy",
                     Name = "welcome",
                     Key  = "welcome",
                     Icon = "smile",
@@ -33,7 +33,6 @@ namespace BlazorApp
                     Icon     = "smile",
                     Children = WorkloadsMenu(),
                 },
-
             };
             await base.OnInitializedAsync();
         }
