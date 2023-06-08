@@ -1,4 +1,5 @@
 @page "/ai/chatDeploy"
+@using Extension
 <GridRow>
     <GridCol Span="6" Style="padding-left: 10px">
 
@@ -15,6 +16,16 @@
         <Skeleton Active="true" Loading="@_loading">
             <TextArea Bordered AutoSize MinRows="20" Value=@YamlAdvice></TextArea>
             <Button OnClick="BtnApplyClicked">应用</Button>
+            <Button OnClick="BtnDeleteClicked">删除</Button>
+            @if (!string.IsNullOrEmpty(ExecResult))
+            {
+                <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                <div>
+                    <p>
+                        @((MarkupString)ExecResult.ToHtmlDisplay())
+                    </p>
+                </div>
+            }
         </Skeleton>
     </GridCol>
 </GridRow>
