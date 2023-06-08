@@ -2,7 +2,6 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorApp.Service;
-using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.ai;
@@ -12,6 +11,7 @@ public partial class ChatDeployment : ComponentBase
     public string txtValue;
     public string Advice;
     public string YamlAdvice;
+    bool          _loading = false;
 
     [Inject]
     private IOpenAiService OpenAi { get; set; }
@@ -23,8 +23,10 @@ public partial class ChatDeployment : ComponentBase
 
         if (!string.IsNullOrEmpty(txtValue))
         {
+            _loading   = true;
             Advice     = await OpenAi.Chat(txtValue);
             YamlAdvice = getRegexYaml(Advice);
+            _loading   = false;
         }
     }
 
@@ -112,7 +114,7 @@ spec:
 
         if (string.IsNullOrEmpty(tmp))
         {
-            if (Advice.StartsWith("---"))
+            if (Advice.StartsWith("---") || Advice.StartsWith("apiVersion"))
             {
                 return Advice;
             }
