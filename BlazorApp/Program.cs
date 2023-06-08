@@ -26,6 +26,7 @@ builder.Services.AddScoped<INamespaceService, NamespaceService>();
 builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddScoped<IWatchService, WatchService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
+builder.Services.AddScoped<IKubectlService, KubectlService>();
 
 
 var app = builder.Build();

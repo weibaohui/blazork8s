@@ -7,7 +7,8 @@ namespace BlazorApp.Service;
 
 public interface IKubeService
 {
-    public Kubernetes         Client();
-    public String             Name();
-    public String             Version();
+    public Kubernetes Client();
+    public String     Name();
+
+    public String Version();
 }

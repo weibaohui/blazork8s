@@ -2,6 +2,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorApp.Service;
+using BlazorApp.Service.impl;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.ai;
@@ -15,6 +16,9 @@ public partial class ChatDeployment : ComponentBase
 
     [Inject]
     private IOpenAiService OpenAi { get; set; }
+
+    [Inject]
+    private IKubectlService kubectl { get; set; }
 
     private async Task ChatBtnClicked()
     {
@@ -133,5 +137,10 @@ spec:
         }
 
         return string.Empty;
+    }
+
+    private void BtnApplyClicked()
+    {
+        kubectl.Apply(YamlAdvice);
     }
 }
