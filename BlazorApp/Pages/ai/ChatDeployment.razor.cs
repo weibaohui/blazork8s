@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorApp.Service;
@@ -20,6 +21,26 @@ public partial class ChatDeployment : ComponentBase
 
     [Inject]
     private IKubectlService kubectl { get; set; }
+
+
+    public List<string> data = new List<string>
+    {
+        "部署一个nginx应用",
+        "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问，域名为www.nginx.com，并使用```yaml ```包裹起来",
+        "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问",
+    };
+
+    bool visible = false;
+
+    void open()
+    {
+        this.visible = true;
+    }
+
+    void close()
+    {
+        this.visible = false;
+    }
 
     private async Task ChatBtnClicked()
     {

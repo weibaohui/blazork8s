@@ -2,9 +2,11 @@ namespace Extension;
 
 public static class StringExtensions
 {
-    public static string ToHtmlDisplay(this string str)
+    public static string ToHtmlDisplay(this string? str)
     {
-        return str.Replace("\n", "<br/>")
-            .Replace("\r", "<br/>");
+        return str?.Replace("\n", "<br/>")
+                   .Replace("\r", "<br/>")
+                   .Replace(" ", "&nbsp;&nbsp;")
+               ?? string.Empty;
     }
 }

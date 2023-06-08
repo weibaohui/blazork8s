@@ -3,10 +3,18 @@
 <GridRow>
     <GridCol Span="6" Style="padding-left: 10px">
 
-        <p> 部署一个nginx应用 </p>
-        <p> 请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问，域名为www.nginx.com，并使用```yaml ```包裹起来 </p>
-        <p>请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问 </p>
-
+        <Card>
+            <Body>
+            <AntList Bordered DataSource="@data" Size="small">
+                <Header>提示词</Header>
+                <ChildContent Context="item">
+                    <ListItem>
+                        <Text Copyable>@item</Text>
+                    </ListItem>
+                </ChildContent>
+            </AntList>
+            </Body>
+        </Card>
     </GridCol>
     <GridCol Span="6" Style="padding-left: 10px">
         <TextArea Bordered AutoSize MinRows="20" @bind-Value="@txtValue"  ></TextArea>
@@ -14,29 +22,36 @@
     </GridCol>
     <GridCol Span="12" Style="padding-left: 10px">
         <Skeleton Active="true" Loading="@_loading">
-            <TextArea Bordered AutoSize MinRows="20" Value=@YamlAdvice @bind-Value="@YamlAdvice"></TextArea>
-            <Button OnClick="BtnApplyClicked">应用</Button>
-            <Button OnClick="BtnDeleteClicked">删除</Button>
-            @if (!string.IsNullOrEmpty(ExecResult))
-            {
-                <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
-                <div>
-                    <p>
-                        @((MarkupString)ExecResult.ToHtmlDisplay())
-                    </p>
-                </div>
-            }
+            <Card>
+                <Body>
+                <Alert Type="@AlertType.Info">
+                    生成的Yaml可以按需编辑,确认后请点击应用生效。
+                    <Button Icon=@IconType.Fill.Eye OnClick="open"></Button>
+                </Alert>
+                <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@YamlAdvice"></TextArea>
+                <Button OnClick="BtnApplyClicked">应用</Button>
+                <Button OnClick="BtnDeleteClicked">删除</Button>
+                @if (!string.IsNullOrEmpty(ExecResult))
+                {
+                    <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                    <div>
+                        <p>
+                            @((MarkupString)ExecResult.ToHtmlDisplay())
+                        </p>
+                    </div>
+                }
+                </Body>
+            </Card>
+
         </Skeleton>
     </GridCol>
 </GridRow>
-<GridRow>
-    <GridCol Span="24">
-        <Card Title="原始返回">
-            <Skeleton Active="true" Loading="@_loading">
-                <TextArea Bordered AutoSize ReadOnly  Value=@Advice></TextArea>
-            </Skeleton>
-        </Card>
 
-    </GridCol>
-</GridRow>
-@* <Button OnClick="async () => await ChatBtnClicked()">提交</Button> *@
+
+<Drawer Closable="true" Visible="visible" Placement="right" Title='("原始回答信息")' MaskClosable OnClose="close" Width="800">
+    <Skeleton Active="true" Loading="@_loading">
+        <Body>
+        @((MarkupString)Advice.ToHtmlDisplay())
+        </Body>
+    </Skeleton>
+</Drawer>
