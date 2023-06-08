@@ -25,6 +25,7 @@ public partial class ChatDeployment : ComponentBase
     {
         Advice     = "";
         YamlAdvice = "";
+        ExecResult = "";
 
         if (!string.IsNullOrEmpty(txtValue))
         {
