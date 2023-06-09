@@ -71,14 +71,14 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:80 
 通过提示词获得k8s部署yaml，并执行<br>
      <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
 <br>
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/node.png">
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy.png">
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy-1.png">
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/rs.png">
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/rs-1.png">
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod.png">
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod-1.png">
-基于Events进行智能诊断
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/node.png"><br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy.png"><br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/deploy-1.png"><br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/rs.png"><br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/rs-1.png"><br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod.png"><br>
+     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/pod-1.png"><br>
+基于Events进行智能诊断<br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/events-advice.png">
 
 </p>
