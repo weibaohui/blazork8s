@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -36,7 +38,21 @@ public partial class DeploymentAction : ComponentBase
 
     private async Task OnAnalyzeClick(V1Deployment item)
     {
-        var options = PageDrawerService.DefaultOptions($"分析Deployment:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DeploymentAnalyzeView, V1Deployment, bool>(options, item);
+        var options = PageDrawerService.DefaultOptions($"AI智能分析:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
+        {
+            data  = item,
+            style = "error"
+        });
+    }
+
+    private async Task OnSecurityClick(V1Deployment item)
+    {
+        var options = PageDrawerService.DefaultOptions($"AI安全检测:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
+        {
+            data  = item,
+            style = "security"
+        });
     }
 }

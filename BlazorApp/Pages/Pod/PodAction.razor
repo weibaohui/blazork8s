@@ -4,8 +4,19 @@
             CancelText="No">
     <a>删除</a>
 </Popconfirm>
-<a onclick="@(() => OnPodLogClick(PodItem))">日志</a>
+<a OnClick="@(() => OnPodLogClick(PodItem))">日志</a>
+
 @if (Enable)
 {
-     <a onclick="@(() => OnPodAnalyzeClick(PodItem))">分析</a>
+    <DropdownButton>
+        <Overlay>
+            <Menu>
+                <MenuItem Key="1" OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
+                <MenuItem Key="2" OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
+            </Menu>
+        </Overlay>
+        <Unbound>
+            AI智能
+        </Unbound>
+    </DropdownButton>
 }

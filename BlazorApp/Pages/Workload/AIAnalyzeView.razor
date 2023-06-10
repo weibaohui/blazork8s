@@ -1,8 +1,10 @@
 @using Extension
-@inherits FeedbackComponent<k8s.Models.V1Deployment, bool>
+@inherits FeedbackComponent<Object, bool>
+
 <Skeleton Active="true" Loading="@_loading">
     <Card >
         <Body>
+        @_item.style
         @((MarkupString)Advice.ToHtmlDisplay())
         </Body>
     </Card>

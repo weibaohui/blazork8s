@@ -4,7 +4,18 @@
             CancelText="No">
     <a>删除</a>
 </Popconfirm>
+
 @if (Enable)
 {
-    <a onclick="@(() => OnAnalyzeClick(Item))">分析</a>
+    <DropdownButton>
+        <Overlay>
+            <Menu>
+                <MenuItem Key="1" OnClick="@(() => OnAnalyzeClick(Item))">故障分析</MenuItem>
+                <MenuItem Key="2" OnClick="@(() => OnSecurityClick(Item))">安全检测</MenuItem>
+            </Menu>
+        </Overlay>
+        <Unbound>
+            AI智能
+        </Unbound>
+    </DropdownButton>
 }

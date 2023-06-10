@@ -14,8 +14,8 @@ public interface IPageDrawerService
     /// <typeparam name="TComponent">The type of DrawerTemplate implement</typeparam>
     /// <typeparam name="TComponentOptions">The </typeparam>
     /// <typeparam name="TResult">The type of return value</typeparam>
-    /// <param name="config"></param>
     /// <param name="options"></param>
+    /// <param name="component"></param>
     /// <returns>The reference of drawer</returns>
     Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options,
         TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>;

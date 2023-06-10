@@ -42,7 +42,7 @@ namespace BlazorApp.Pages.Event
 
             if (Events!.Any(x => x.Type == "Warning"))
             {
-                Advice = await OpenAi.Explain(JsonSerializer.Serialize(Events));
+                Advice = await OpenAi.ExplainError(JsonSerializer.Serialize(Events));
             }
         }
     }

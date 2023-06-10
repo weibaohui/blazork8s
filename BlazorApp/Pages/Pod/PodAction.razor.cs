@@ -1,4 +1,6 @@
+using System;
 using System.Threading.Tasks;
+using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -44,9 +46,23 @@ public partial class PodAction : ComponentBase
         await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
     }
 
-    private async Task OnPodAnalyzeClick(V1Pod pod)
+    private async Task OnAnalyzeClick(V1Pod pod)
     {
-        var options = PageDrawerService.DefaultOptions($"分析:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<PodAnalyzeView, V1Pod, bool>(options, pod);
+        var options = PageDrawerService.DefaultOptions($"AI智能分析:{pod.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
+        {
+            data  = pod,
+            style = "error"
+        });
+    }
+
+    private async Task OnSecurityClick(V1Pod pod)
+    {
+        var options = PageDrawerService.DefaultOptions($"AI安全检测:{pod.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
+        {
+            data  = pod,
+            style = "security"
+        });
     }
 }

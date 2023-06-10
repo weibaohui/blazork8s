@@ -21,12 +21,12 @@ public class OpenAiService : IOpenAiService
 
     public bool Enabled()
     {
-        return _configService.GetBool("OpenAI", "Enable");
+        return IsOpenAiEnabled();
     }
 
-    private string? GetOpenAiToken()
+    private string GetOpenAiToken()
     {
-        return _configService.GetString("OpenAI", "Token");
+        return _configService.GetString("OpenAI", "Token") ?? string.Empty;
     }
 
     public async Task<string> Chat(string prompt)
@@ -36,6 +36,11 @@ public class OpenAiService : IOpenAiService
             return string.Empty;
         }
 
+        return await Query(prompt);
+    }
+
+    private async Task<string> Query(string prompt)
+    {
         Console.WriteLine($"OpenAI:prompt{prompt}");
         OpenAIService service     = new OpenAIService(new OpenAiOptions() { ApiKey = GetOpenAiToken() });
         var           chatMessage = new ChatMessage(StaticValues.ChatMessageRoles.User, prompt);
@@ -48,7 +53,7 @@ public class OpenAiService : IOpenAiService
         };
 
         var res = await service.ChatCompletion
-            .CreateCompletion(createRequest, Models.ChatGpt3_5Turbo);
+            .CreateCompletion(createRequest, Models.ChatGpt3_5Turbo0301);
 
         Console.WriteLine(res.Successful);
         Console.WriteLine(res.ToString());
@@ -68,40 +73,27 @@ public class OpenAiService : IOpenAiService
         return _configService.GetBool("OpenAI", "Enable");
     }
 
-    public async Task<string> Explain(string text)
+    public async Task<string> ExplainError(string text)
     {
-        // Console.WriteLine(text);
         if (!IsOpenAiEnabled())
         {
             return string.Empty;
         }
 
-        var openapiToken = GetOpenAiToken();
-        var prompt       = _configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("error");
-        // Console.WriteLine(prompt);
-        OpenAIService service     = new OpenAIService(new OpenAiOptions() { ApiKey = openapiToken });
-        var           chatMessage = new ChatMessage(StaticValues.ChatMessageRoles.User, $"{prompt} \n {text}");
-        ChatCompletionCreateRequest createRequest = new ChatCompletionCreateRequest()
+        var prompt  = _configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("error");
+        var content = $"{prompt} \n {text}";
+        return await Query(content);
+    }
+
+    public async Task<string> ExplainSecurity(string text)
+    {
+        if (!IsOpenAiEnabled())
         {
-            Messages = new List<ChatMessage>
-            {
-                chatMessage
-            }
-        };
-
-        var res = await service.ChatCompletion
-            .CreateCompletion(createRequest, Models.ChatGpt3_5Turbo);
-
-        // Console.WriteLine(res.Successful);
-        // Console.WriteLine(res.ToString());
-        if (res.Successful)
-        {
-            var ss = res.Choices.FirstOrDefault()?.Message.Content;
-            // Console.WriteLine(ss);
-
-            return ss ?? string.Empty;
+            return string.Empty;
         }
 
-        return string.Empty;
+        var prompt  = _configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("security");
+        var content = $"{prompt} \n {text}";
+        return await Query(content);
     }
 }

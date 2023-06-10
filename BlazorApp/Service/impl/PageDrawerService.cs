@@ -5,7 +5,6 @@ namespace BlazorApp.Service.impl;
 
 public class PageDrawerService : IPageDrawerService
 {
-
     private readonly DrawerService _drawerService;
 
     public PageDrawerService(DrawerService drawerService)
@@ -19,12 +18,12 @@ public class PageDrawerService : IPageDrawerService
         {
             Title = title,
             Width = width,
-
         };
         return options;
     }
 
-    public Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options, TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>
+    public Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options,
+        TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>
     {
         return _drawerService.CreateAsync<TComponent, TComponentOptions, TResult>(options, component);
     }
