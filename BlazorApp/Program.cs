@@ -27,6 +27,7 @@ builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddScoped<IWatchService, WatchService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
+builder.Services.AddScoped<IRockAiService, RockAiService>();
 
 
 var app = builder.Build();
