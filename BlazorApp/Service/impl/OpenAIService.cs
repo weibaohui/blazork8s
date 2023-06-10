@@ -36,6 +36,7 @@ public class OpenAiService : IOpenAiService
             return string.Empty;
         }
 
+        Console.WriteLine($"OpenAI:prompt{prompt}");
         OpenAIService service     = new OpenAIService(new OpenAiOptions() { ApiKey = GetOpenAiToken() });
         var           chatMessage = new ChatMessage(StaticValues.ChatMessageRoles.User, prompt);
         ChatCompletionCreateRequest createRequest = new ChatCompletionCreateRequest()
@@ -98,9 +99,7 @@ public class OpenAiService : IOpenAiService
             var ss = res.Choices.FirstOrDefault()?.Message.Content;
             // Console.WriteLine(ss);
 
-            return ss?
-                .Replace("\n", "<br/>")
-                .Replace("\r", "<br/>") ?? string.Empty;
+            return ss ?? string.Empty;
         }
 
         return string.Empty;

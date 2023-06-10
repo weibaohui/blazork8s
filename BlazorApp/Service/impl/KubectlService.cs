@@ -49,13 +49,20 @@ public class KubectlService : IKubectlService
     private static async Task<string> kubectl(string command)
     {
         Process process = new Process();
-        process.StartInfo.FileName               = "kubectl";          // 设置要执行的 kubectl 命令
-        process.StartInfo.Arguments              = command;            // 设置命令参数
-        process.StartInfo.UseShellExecute        = false;              // 不使用操作系统的 shell
-        process.StartInfo.RedirectStandardOutput = true;               // 重定向输出
-        process.Start();                                               // 启动进程
-        string output = await process.StandardOutput.ReadToEndAsync(); // 读取输出
+        process.StartInfo.FileName               = "kubectl";             // 设置要执行的 kubectl 命令
+        process.StartInfo.Arguments              = command;               // 设置命令参数
+        process.StartInfo.UseShellExecute        = false;                 // 不使用操作系统的 shell
+        process.StartInfo.RedirectStandardOutput = true;                  // 重定向输出
+        process.StartInfo.RedirectStandardError  = true;                  // 重定向输出
+        process.Start();                                                  // 启动进程
+        string output    = await process.StandardOutput.ReadToEndAsync(); // 读取输出
+        string errOutput = await process.StandardError.ReadToEndAsync();
         await process.WaitForExitAsync();
+        if (!string.IsNullOrEmpty(errOutput))
+        {
+            output = output + "\r\n" + errOutput;
+        }
+
         return output;
     }
 }

@@ -26,7 +26,7 @@
                 <Body>
                 <Alert Type="@AlertType.Info">
                     生成的Yaml可以按需编辑,确认后请点击应用生效。
-                    <Button Icon=@IconType.Fill.Eye OnClick="open"></Button>
+                    <Button Icon=@IconType.Fill.Eye OnClick="Open"></Button>
                 </Alert>
                 <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@YamlAdvice"></TextArea>
                 <Button OnClick="BtnApplyClicked">应用</Button>
@@ -48,7 +48,7 @@
 </GridRow>
 
 
-<Drawer Closable="true" Visible="visible" Placement="right" Title='("原始回答信息")' MaskClosable OnClose="close" Width="800">
+<Drawer Closable="true" Visible="_visible" Placement="right" Title='("原始回答信息")' MaskClosable OnClose="Close" Width="800">
     <Skeleton Active="true" Loading="@_loading">
         <Body>
         @((MarkupString)Advice.ToHtmlDisplay())

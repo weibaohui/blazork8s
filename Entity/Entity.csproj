@@ -8,5 +8,4 @@
         <PackageReference Include="KubernetesClient" Version="11.0.21"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
     </ItemGroup>
-
 </Project>

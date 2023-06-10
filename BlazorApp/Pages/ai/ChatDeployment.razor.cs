@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorApp.Service;
@@ -22,30 +23,34 @@ public partial class ChatDeployment : ComponentBase
     [Inject]
     private IKubectlService kubectl { get; set; }
 
+    [Inject]
+    private IRockAiService RockAi { get; set; }
 
     public List<string> data = new List<string>
     {
         "部署一个k8s nginx应用",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问，域名为www.nginx.com，并使用```yaml ```包裹起来",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问",
+        "请给出一套部署2048小游戏的k8s yaml",
     };
 
-    bool visible = false;
+    bool _visible = false;
 
-    private async Task open()
+    private Task Open()
     {
-        this.visible = true;
+        this._visible = true;
+        return Task.CompletedTask;
     }
 
-    private async Task close()
+    private Task Close()
     {
-        this.visible = false;
+        this._visible = false;
+        return Task.CompletedTask;
     }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnInitializedAsync()
     {
-        await InvokeAsync(StateHasChanged);
-        await base.OnAfterRenderAsync(firstRender);
+        await base.OnInitializedAsync();
     }
 
     private async Task ChatBtnClicked()
@@ -56,8 +61,9 @@ public partial class ChatDeployment : ComponentBase
 
         if (!string.IsNullOrEmpty(txtValue))
         {
-            _loading   = true;
-            Advice     = await OpenAi.Chat(txtValue);
+            _loading = true;
+            Advice   = await OpenAi.Chat(txtValue);
+            // Advice     = await RockAi.Chat(txtValue);
             YamlAdvice = GetRegexYaml(Advice);
             _loading   = false;
         }
@@ -85,14 +91,17 @@ public partial class ChatDeployment : ComponentBase
 
     private static string RegexYaml(string input, string pattern)
     {
-        Match match = Regex.Match(input, pattern);
-        if (match.Success)
+        var             result  = string.Empty;
+        MatchCollection matches = Regex.Matches(input, pattern);
+        foreach (Match match in matches)
         {
-            string code = match.Groups[1].Value;
-            return code;
+            if (match.Success)
+            {
+                result += match.Groups[1].Value;
+            }
         }
 
-        return string.Empty;
+        return result;
     }
 
     private async Task BtnApplyClicked()
