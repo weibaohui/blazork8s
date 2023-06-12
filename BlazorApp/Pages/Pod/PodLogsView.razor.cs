@@ -59,7 +59,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 
 
         // Blazor Server
-        await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");
+        // await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-attach", "new AttachAddon()");
+        // await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");
 
         _columns = await _terminal.GetColumns();
         _rows    = await _terminal.GetRows();
