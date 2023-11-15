@@ -30,9 +30,9 @@ public partial class DeploymentAction : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task DeletePod(V1Deployment pod)
+    private async Task Delete(V1Deployment item)
     {
-        await OnDeploymentDelete.InvokeAsync(pod);
+        await OnDeploymentDelete.InvokeAsync(item);
     }
 
 

@@ -42,7 +42,6 @@ public partial class PodAction : ComponentBase
 
     private async Task OnPodLogClick(V1Pod pod)
     {
-        Console.WriteLine(" OnPodLogClick");
         var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
     }

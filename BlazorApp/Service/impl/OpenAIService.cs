@@ -53,7 +53,7 @@ public class OpenAiService : IOpenAiService
         };
 
         var res = await service.ChatCompletion
-            .CreateCompletion(createRequest, Models.ChatGpt3_5Turbo0301);
+            .CreateCompletion(createRequest, Models.ChatGpt3_5Turbo);
 
         Console.WriteLine(res.Successful);
         Console.WriteLine(res.ToString());
