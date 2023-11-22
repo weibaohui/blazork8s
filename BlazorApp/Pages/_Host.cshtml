@@ -32,11 +32,20 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
-<script src="_content/XtermBlazor/XtermBlazor.min.js"></script>
-@* <script src="https://cdn.jsdelivr.net/npm/xterm-addon-attach@0.8.0/lib/xterm-addon-attach.min.js"></script> *@
-@* <script> *@
-@*         window.XtermBlazor.registerAddons({"xterm-addon-attach":  window.AttachAddon.AttachAddon}); *@
-@*     </script> *@
+
 <script src="_framework/blazor.server.js"></script>
+<script src="_content/XtermBlazor/XtermBlazor.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit@0.7.0/lib/xterm-addon-fit.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-search@0.11.0/lib/xterm-addon-search.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xterm-addon-web-links@0.8.0/lib/xterm-addon-web-links.min.js"></script>
+
+<script>
+        XtermBlazor.registerAddons({
+            "xterm-addon-fit": new FitAddon.FitAddon(),
+            "xterm-addon-search": new SearchAddon.SearchAddon(),
+            "xterm-addon-web-links": new WebLinksAddon.WebLinksAddon(),
+        });
+    </script>
 </body>
 </html>

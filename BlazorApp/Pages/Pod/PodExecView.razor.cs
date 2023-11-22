@@ -7,6 +7,7 @@ using BlazorApp.Service.impl;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.JSInterop;
 using XtermBlazor;
 
 namespace BlazorApp.Pages.Pod;
@@ -24,6 +25,9 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         PodItem = base.Options;
         base.OnInitialized();
     }
+
+    [Inject]
+    protected IJSRuntime JSRuntime { get; set; }
 
     private Xterm _terminal, _terminalEvent;
 
@@ -54,35 +58,43 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     private int    _eventId     = 0,  _columns, _rows;
     private string _searchInput = "", _input = "Hello World";
 
-
     private async Task OnFirstRender()
     {
-        var logs = await PodService.Logs(PodItem, true);
-
-        await using (var xs = new XtermStream(_terminal))
-        {
-            await logs.CopyToAsync(xs);
-        }
-
-
         await _terminalEvent.WriteLine($"({++_eventId}) OnFirstRender()");
 
+        bool isWebAssembly = JSRuntime is IJSInProcessRuntime;
 
-        // Blazor Server
-        await _terminal.AttachCustomKeyEventHandlerEvaluate("(event) => true");
-
-        _terminal.AttachCustomKeyEventHandler((args) =>
+        if (isWebAssembly)
         {
-            if (showAttachCustomKeyEventHandlerLog)
+            // Blazor WebAssembly
+            _terminal.AttachCustomKeyEventHandler((args) =>
             {
-                _terminalEvent.WriteLine(
-                    $"({++_eventId}) AttachCustomKeyEventHandler(): Key: {args.Key}, Ctrl: {args.CtrlKey} {JsonSerializer.Serialize(args)}");
-            }
+                if (showAttachCustomKeyEventHandlerLog)
+                {
+                    _terminalEvent.WriteLine(
+                        $"({++_eventId}) AttachCustomKeyEventHandler(): Key: {args.Key}, Ctrl: {args.CtrlKey} {JsonSerializer.Serialize(args)}");
+                }
 
-            // The return value is ignored on Blazor Server, AttachCustomKeyEventHandlerEvaluate is used for handling that
-            return true;
-        });
+                return true;
+            });
+        }
+        else
+        {
+            // Blazor Server
+            await _terminal.AttachCustomKeyEventHandlerEvaluate("(event) => true");
 
+            _terminal.AttachCustomKeyEventHandler((args) =>
+            {
+                if (showAttachCustomKeyEventHandlerLog)
+                {
+                    _terminalEvent.WriteLine(
+                        $"({++_eventId}) AttachCustomKeyEventHandler(): Key: {args.Key}, Ctrl: {args.CtrlKey} {JsonSerializer.Serialize(args)}");
+                }
+
+                // The return value is ignored on Blazor Server, AttachCustomKeyEventHandlerEvaluate is used for handling that
+                return true;
+            });
+        }
 
         await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");
         await _terminalEvent.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");

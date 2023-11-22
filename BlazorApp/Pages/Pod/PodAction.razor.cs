@@ -46,6 +46,12 @@ public partial class PodAction : ComponentBase
         await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
     }
 
+    private async Task OnPodExecClick(V1Pod pod)
+    {
+        var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<PodExecView, V1Pod, bool>(options, pod);
+    }
+
     private async Task OnAnalyzeClick(V1Pod pod)
     {
         var options = PageDrawerService.DefaultOptions($"AI智能分析:{pod.Name()}", width: 1000);
