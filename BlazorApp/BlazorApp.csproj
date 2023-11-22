@@ -1,16 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AntDesign.Charts" Version="0.3.1" />
-    <PackageReference Include="AntDesign.ProLayout" Version="0.14.4.1" />
-    <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4" />
-    <PackageReference Include="KubernetesClient" Version="11.0.21" />
-    <PackageReference Include="XtermBlazor" Version="1.8.1" />
+    <PackageReference Include="AntDesign.Charts" Version="0.4.0"/>
+    <PackageReference Include="AntDesign.ProLayout" Version="0.16.2"/>
+    <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4"/>
+    <PackageReference Include="KubernetesClient" Version="12.1.1"/>
+    <PackageReference Include="XtermBlazor" Version="1.10.0"/>
   </ItemGroup>
 
  

@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AntDesign" Version="0.15.0"/>
-        <PackageReference Include="KubernetesClient" Version="11.0.21"/>
+        <PackageReference Include="AntDesign" Version="0.16.2"/>
+        <PackageReference Include="KubernetesClient" Version="12.1.1"/>
     </ItemGroup>
 
 </Project>
