@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
+using BlazorApp.Chat;
 using k8s;
 using k8s.Models;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Hosting;
 
 namespace BlazorApp.Service.impl;
 
@@ -10,15 +14,19 @@ public class WatchService : IWatchService
 {
     private readonly IBaseService _baseService;
 
-    private readonly List<V1Pod> _sharedPods = new();
-    private          bool        _podListChangedByWatch;
+    private readonly List<V1Pod>          _sharedPods = new();
+    private          bool                 _podListChangedByWatch;
+    private readonly IHubContext<ChatHub> _ctx;
 
-    public WatchService(IBaseService baseService)
+
+    public WatchService(IBaseService baseService, IHubContext<ChatHub> ctx)
     {
+        Console.WriteLine("WatchService 初始化" + DateTime.Now);
         _baseService = baseService;
-        //初始化时启动
+        _ctx         = ctx;
         WatchAllPod();
     }
+
 
     public void UpdateSharePods(WatchEventType type, V1Pod item)
     {
@@ -69,10 +77,13 @@ public class WatchService : IWatchService
             .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
         await foreach (var (type, item) in podListResp.WatchAsync<V1Pod, V1PodList>())
         {
-            // Console.WriteLine("==on watch event start ==");
+            Console.WriteLine("==on watch event start ==");
             Console.WriteLine($"{type}:{item.Metadata.Name}");
-            UpdateSharePods(type, item);
-            // Console.WriteLine("==on watch event end ==");
+            // UpdateSharePods(type, item);
+            Console.WriteLine("==on watch event end ==");
+            Console.WriteLine("==on SendAsync event start ==");
+            await _ctx.Clients.All.SendAsync("ReceiveMessage", $"{type}:{item.Metadata.Name}");
+            Console.WriteLine("==on SendAsync event end ==");
         }
     }
 

@@ -1,0 +1,12 @@
+@page "/ChatHubPage"
+<h3>ChatHubPage</h3>
+
+<div class="row">
+    <Input Placeholder="Basic usage" @bind-Value="@_messageToSend"/>
+    <Button Type="primary" OnClick="@Send">
+        Send
+    </Button>
+    <span >
+        @_messageRecived
+    </span>
+</div>

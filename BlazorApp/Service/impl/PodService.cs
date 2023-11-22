@@ -6,18 +6,22 @@ using System.Net.WebSockets;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
-        private readonly IBaseService  _baseService;
-        private readonly IWatchService _watchService;
+        private readonly IBaseService   _baseService;
+        private readonly IWatchService  _watchService;
+        private readonly IServiceScope? _scope;
 
-        public PodService(IBaseService baseService, IWatchService watchService)
+        public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
         {
             _baseService  = baseService;
-            _watchService = watchService;
+            _scope        = serviceScopeFactory.CreateScope();
+            _watchService = _scope.ServiceProvider.GetService<IWatchService>();
+
             // Console.WriteLine("PodService 初始化");
         }
 
