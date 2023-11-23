@@ -3,25 +3,25 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AntDesign.Charts" Version="0.4.0"/>
-    <PackageReference Include="AntDesign.ProLayout" Version="0.16.2"/>
-    <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4"/>
-    <PackageReference Include="KubernetesClient" Version="12.1.1"/>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0"/>
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.0"/>
-    <PackageReference Include="XtermBlazor" Version="1.10.0"/>
+      <PackageReference Include="AntDesign.Charts" Version="0.4.0"/>
+      <PackageReference Include="AntDesign.ProLayout" Version="0.16.2"/>
+      <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4"/>
+      <PackageReference Include="KubernetesClient" Version="12.1.1"/>
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0"/>
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.0"/>
+      <PackageReference Include="XtermBlazor" Version="1.10.0"/>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Entity\Entity.csproj"/>
-    <ProjectReference Include="..\Extension\Extension.csproj"/>
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Entity\Entity.csproj"/>
+        <ProjectReference Include="..\Extension\Extension.csproj"/>
+    </ItemGroup>
   <ItemGroup>
     <Content Update="electron.manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Remove="Pages\ChatHubPage.cshtml"/>
+      <Content Remove="Pages\ChatHubPage.cshtml"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Pages\ChatHubPage.cshtml.cs"/>
+      <Compile Remove="Pages\ChatHubPage.cshtml.cs"/>
   </ItemGroup>
 </Project>

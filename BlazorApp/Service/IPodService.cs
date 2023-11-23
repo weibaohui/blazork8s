@@ -19,5 +19,11 @@ namespace BlazorApp.Service
 
         Task<Stream>    Logs(V1Pod      pod, bool   follow = false, bool previous = false);
         Task<WebSocket> ExecInPod(V1Pod pod, string command);
+
+        /// <summary>
+        /// Pod列表是否发生变更
+        /// </summary>
+        /// <returns></returns>
+        bool Changed();
     }
 }

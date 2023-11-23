@@ -40,7 +40,7 @@ namespace BlazorApp.Pages.Pod
             timer.Enabled = true;
             timer.Elapsed += async (o, args) =>
             {
-                if (!WatchServicee.PodListChangedByWatch()) return;
+                if (!PodService.Changed()) return;
                 await tps.GetData(_selectedNs);
                 await InvokeAsync(StateHasChanged);
                 Console.WriteLine("refreshPods");

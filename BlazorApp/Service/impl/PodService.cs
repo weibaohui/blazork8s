@@ -12,9 +12,10 @@ namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
-        private readonly IBaseService   _baseService;
-        private readonly IWatchService  _watchService;
-        private readonly IServiceScope? _scope;
+        private readonly IBaseService         _baseService;
+        private readonly IWatchService        _watchService;
+        private readonly IServiceScope?       _scope;
+        private          ResourceCache<V1Pod> _cache = ResourceCache<V1Pod>.Instance();
 
         public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
         {
@@ -25,6 +26,10 @@ namespace BlazorApp.Service.impl
             // Console.WriteLine("PodService 初始化");
         }
 
+        public bool Changed()
+        {
+            return _cache.Changed();
+        }
 
         public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
         {
@@ -36,12 +41,19 @@ namespace BlazorApp.Service.impl
 
         public async Task<IList<V1Pod>> ListPods()
         {
-            return await _watchService.ListPods();
+            if (_cache.Count() != 0) return _cache.Get();
+            var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
+            foreach (var item in pods.Items)
+            {
+                _cache.Update(WatchEventType.Added, item);
+            }
+
+            return _cache.Get();
         }
 
         private async Task<IList<V1Pod>> ListPodByNamespace(string ns)
         {
-            var pods = await _watchService.ListPods();
+            var pods = await ListPods();
             if (string.IsNullOrEmpty(ns))
             {
                 return pods;
