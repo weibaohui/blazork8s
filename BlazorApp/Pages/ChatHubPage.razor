@@ -2,11 +2,11 @@
 <h3>ChatHubPage</h3>
 
 <div class="row">
-    <Input Placeholder="Basic usage" @bind-Value="@_messageToSend"/>
+    <Input Placeholder="Basic usage" @bind-Value="@MessageToSend"/>
     <Button Type="primary" OnClick="@Send">
         Send
     </Button>
     <span >
-        @_messageRecived
+        @MessageReceived
     </span>
 </div>

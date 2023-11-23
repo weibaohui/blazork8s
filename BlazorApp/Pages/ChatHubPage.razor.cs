@@ -10,35 +10,35 @@ public partial class ChatHubPage : ComponentBase
     [Inject]
     protected NavigationManager MyUriHelper { get; set; } //to get current Uri
 
-    public string _messageToSend  { get; set; } //to bind on textbox
-    public string _messageRecived { get; set; } //to bind on a label or so...
+    private string MessageToSend   { get; set; } //to bind on textbox
+    private string MessageReceived { get; set; } //to bind on a label or so...
 
-    private HubConnection hubConnection;
+    private HubConnection _hubConnection;
 
     protected override async Task OnInitializedAsync()
     {
-        hubConnection = new HubConnectionBuilder()
+        _hubConnection = new HubConnectionBuilder()
             .WithUrl(MyUriHelper.ToAbsoluteUri("/chathub"))
             .Build();
 
         //receive event
-        hubConnection.On<string>("ReceiveMessage", (message) =>
+        _hubConnection.On<string>("ReceiveMessage", async (message) =>
         {
             Console.WriteLine("page收到消息" + message);
-            _messageRecived += message;
-            StateHasChanged();
+            MessageReceived += message;
+            await InvokeAsync(StateHasChanged);
         });
 
-        await hubConnection.StartAsync();
+        await _hubConnection.StartAsync();
     }
 
     //send message
     //call Send method from button click
-    public async Task Send()
+    private async Task Send()
     {
-        if (hubConnection is not null)
+        if (_hubConnection is not null)
         {
-            await hubConnection.SendAsync("SendMessage", _messageToSend);
+            await _hubConnection.SendAsync("SendMessage", MessageToSend);
         }
 
         StateHasChanged();
