@@ -101,6 +101,7 @@ public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
 
     public async Task SearchName(string key)
     {
+        //TODO key 作为一个变量，类似ns处理
         await OnNsSelectedHandler(_selectedNs);
         Loading   = true;
         PageIndex = 1;
