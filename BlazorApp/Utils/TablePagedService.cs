@@ -3,16 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using AntDesign.TableModels;
 using BlazorApp.Service;
+using k8s;
+using k8s.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorApp.Utils;
 
-public class TablePagedService<T>
+public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private readonly INamespaceAction<T> _listService;
-
-    public TablePagedService(INamespaceAction<T> listService)
+    public TablePagedService()
     {
-        _listService = listService;
     }
 
 
@@ -31,7 +31,7 @@ public class TablePagedService<T>
     public IEnumerable<T> SelectedRows;
 
     public int  PageIndex = 1;
-    public int  PageSize  = 10;
+    public int  PageSize  = 5;
     public int  Total     = 100;
     public bool Loading   = false;
 
@@ -44,12 +44,22 @@ public class TablePagedService<T>
 
     public async Task GetData(string ns)
     {
+        Loading    = true;
+        PagedItems = OriginItems;
+        Total      = OriginItems.Count;
+        PageIndex  = 1;
+        Loading    = false;
+    }
+
+    public async Task CopyData(ResourceCache<T> data)
+    {
         Loading     = true;
-        OriginItems = await _listService.ListItemsByNamespaceAsync(ns);
+        OriginItems = data.Get();
         PagedItems  = OriginItems;
-        Total       = OriginItems.Count;
+        Total       = PagedItems.Count;
         PageIndex   = 1;
-        Loading     = false;
+        await OnNsSelectedHandler(_selectedNs);
+        Loading = false;
     }
 
     /// <summary>
@@ -59,15 +69,17 @@ public class TablePagedService<T>
     /// <returns></returns>
     public async Task OnNsSelectedHandler(string ns)
     {
-        if (_selectedNs == ns)
-        {
-            return;
-        }
-
         Loading     = true;
         PageIndex   = 1;
         _selectedNs = ns;
-        await GetData(ns);
+        PagedItems  = OriginItems;
+
+        if (!ns.IsNullOrEmpty())
+        {
+            PagedItems = PagedItems.Where(x => x.Namespace() == ns).ToList();
+        }
+
+        Total   = PagedItems.Count;
         Loading = false;
     }
 
@@ -76,23 +88,29 @@ public class TablePagedService<T>
     /// 变更事件
     /// </summary>
     /// <param name="queryModel"></param>
-    public void OnChange(QueryModel<T> queryModel)
+    public async Task OnChange(QueryModel<T> queryModel)
     {
+        await OnNsSelectedHandler(_selectedNs);
         PageIndex = queryModel.PageIndex;
         PageSize  = queryModel.PageSize;
         Loading   = true;
-        var query = OriginItems.Skip((PageIndex - 1) * PageSize).Take(PageSize);
+        var query = PagedItems.Skip((PageIndex - 1) * PageSize).Take(PageSize);
         PagedItems = query.ToList();
         Loading    = false;
     }
 
-    public void OnSearch(IList<T> predicate)
+    public async Task SearchName(string key)
     {
-        Loading     = true;
-        PageIndex   = 1;
-        OriginItems = predicate;
-        PagedItems  = OriginItems.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-        Total       = OriginItems.Count();
-        Loading     = false;
+        await OnNsSelectedHandler(_selectedNs);
+        Loading   = true;
+        PageIndex = 1;
+
+        if (!key.IsNullOrEmpty())
+        {
+            PagedItems = PagedItems.Where(w => w.Name().Contains(key)).ToList();
+        }
+
+        Total   = PagedItems.Count();
+        Loading = false;
     }
 }

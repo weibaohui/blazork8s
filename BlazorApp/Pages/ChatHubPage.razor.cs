@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlazorApp.Utils;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -10,13 +11,11 @@ namespace BlazorApp.Pages;
 
 public partial class ChatHubPage : ComponentBase
 {
-    private readonly List<V1Pod> Pods = new();
-    private          string      MessageReceived { get; set; } //to bind on a label or so...
+    private ResourceCache<V1Pod> _itemList = ResourceCache<V1Pod>.Instance();
 
-    private async Task OnChanged(ResourceWatchEntity<V1Pod> data)
+    private async Task OnResourceChanged(ResourceCache<V1Pod> data)
     {
-        Pods.Add(data.Item);
-        MessageReceived += data.Item.Name() + data.Item.Metadata.CreationTimestamp;
+        _itemList = data;
         await InvokeAsync(StateHasChanged);
     }
 }

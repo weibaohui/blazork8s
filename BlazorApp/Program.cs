@@ -3,7 +3,6 @@ using BlazorApp.Chat;
 using BlazorApp.Service;
 using BlazorApp.Service.impl;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -12,9 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
-
 builder.Services.AddAntDesign();
-builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
+builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddSingleton<IBaseService, BaseService>();
 builder.Services.AddSingleton<IWatchService, WatchService>();
@@ -29,7 +27,7 @@ builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
-builder.Services.AddHttpClient();
+builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -46,9 +44,8 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.MapHub<ChatHub>("/chathub");
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
-app.UseEndpoints(endpoints => { endpoints.MapHub<ChatHub>("/chathub"); });
 
 app.Run();

@@ -18,15 +18,20 @@ public partial class DeploymentIndex : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    public TablePagedService<V1Deployment> tps;
+    public TablePagedService<V1Deployment> tps = new();
 
 
-    private string _selectedNs = "";
+    private string                      _selectedNs = "";
+    private ResourceCache<V1Deployment> _itemList   = ResourceCache<V1Deployment>.Instance();
 
+    private async Task OnResourceChanged(ResourceCache<V1Deployment> data)
+    {
+        _itemList = data;
+        await InvokeAsync(StateHasChanged);
+    }
 
     protected override async Task OnInitializedAsync()
     {
-        tps = new TablePagedService<V1Deployment>(DeploymentService);
         await tps.GetData(_selectedNs);
     }
 
@@ -55,14 +60,7 @@ public partial class DeploymentIndex : ComponentBase
 
     private async Task OnSearchHandler(string key)
     {
-        if (String.IsNullOrEmpty(key))
-        {
-            await tps.GetData(_selectedNs);
-        }
-        else
-        {
-            tps.OnSearch(tps.OriginItems.Where(w => w.Name().Contains(key)).ToList());
-        }
+        tps.SearchName(key);
 
         await InvokeAsync(StateHasChanged);
     }

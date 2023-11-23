@@ -4,7 +4,7 @@
 @using Extension
 @using BlazorApp.Pages.Workload
 @using BlazorApp.Pages.Container
-@if (_tps.PagedItems != null)
+@if (_itemList != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
@@ -23,7 +23,6 @@
                    @bind-PageIndex="_tps.PageIndex"
                    @bind-PageSize="_tps.PageSize"
                    @bind-SelectedRows="_tps.SelectedRows"
-                   Loading="_tps.Loading"
                    OnChange="OnChange"
                    ScrollX="1500">
                 <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
@@ -59,4 +58,6 @@
             </Body>
         </ChildContent>
     </Card>
+
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1Pod"></ResourceWatcher>
 }

@@ -28,26 +28,22 @@ namespace BlazorApp.Pages.Pod
         private IWatchService WatchService { get; set; }
 
 
-        private TablePagedService<V1Pod> _tps;
+        private TablePagedService<V1Pod> _tps = new();
 
 
-        private string _selectedNs = "";
+        private string               _selectedNs = "";
+        private ResourceCache<V1Pod> _itemList   = ResourceCache<V1Pod>.Instance();
 
+        private async Task OnResourceChanged(ResourceCache<V1Pod> data)
+        {
+            _itemList = data;
+            await _tps.CopyData(_itemList);
+            await InvokeAsync(StateHasChanged);
+        }
 
         protected override async Task OnInitializedAsync()
         {
-            _tps = new TablePagedService<V1Pod>(PodService);
-            await _tps.GetData(_selectedNs);
-            //TODO 改为接收watch
-            var timer = new Timer(1000);
-            timer.Enabled = true;
-            timer.Elapsed += async (o, args) =>
-            {
-                if (!PodService.Changed()) return;
-                await _tps.GetData(_selectedNs);
-                await InvokeAsync(StateHasChanged);
-                // Console.WriteLine("refreshPods");
-            };
+            await _tps.CopyData(_itemList);
         }
 
 
@@ -72,14 +68,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnSearchHandler(string key)
         {
-            if (string.IsNullOrEmpty(key))
-            {
-                await _tps.GetData(_selectedNs);
-            }
-            else
-            {
-                _tps.OnSearch(_tps.OriginItems.Where(w => w.Name().Contains(key)).ToList());
-            }
+            _tps.SearchName(key);
 
             await InvokeAsync(StateHasChanged);
         }

@@ -3,23 +3,20 @@
 <h3>ChatHubPage</h3>
 
 <div class="row">
-
-    <span >
-        @MessageReceived
-    </span>
-    @if (Pods.Count > 0)
+    @if (_itemList.Count > 0)
     {
-        foreach (var p in Pods)
+        foreach (var p in _itemList.Get())
         {
             <hr/>
-            @p.Metadata.Name
-            <br/>
             @p.Metadata.Namespace()
+            <span>/</span>
+            @p.Metadata.Name
             <br/>
             @p.Metadata.CreationTimestamp
             <br/>
+            @p.Spec.Containers[0].Image
         }
     }
 
-    <ItemList OnChanged="OnChanged" T="V1Pod"></ItemList>
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1Pod"></ResourceWatcher>
 </div>

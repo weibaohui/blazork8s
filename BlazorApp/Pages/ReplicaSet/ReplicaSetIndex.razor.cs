@@ -18,7 +18,7 @@ namespace BlazorApp.Pages.ReplicaSet
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
-        public TablePagedService<V1ReplicaSet> tps;
+        private TablePagedService<V1ReplicaSet> tps = new();
 
 
         private string _selectedNs = "";
@@ -26,7 +26,6 @@ namespace BlazorApp.Pages.ReplicaSet
 
         protected override async Task OnInitializedAsync()
         {
-            tps = new TablePagedService<V1ReplicaSet>(ReplicaSetService);
             await tps.GetData(_selectedNs);
         }
 
@@ -55,15 +54,7 @@ namespace BlazorApp.Pages.ReplicaSet
 
         private async Task OnSearchHandler(string key)
         {
-            if (String.IsNullOrEmpty(key))
-            {
-                await tps.GetData(_selectedNs);
-            }
-            else
-            {
-                tps.OnSearch(tps.OriginItems.Where(w => w.Name().Contains(key)).ToList());
-            }
-
+            tps.SearchName(key);
             await InvokeAsync(StateHasChanged);
         }
 

@@ -10,10 +10,11 @@ namespace BlazorApp.Pages
 {
     public partial class Counter : ComponentBase
     {
-        private int currentCount = 0;
-        private async Task IncrementCount()
+        private int _currentCount = 0;
+
+        private void IncrementCount()
         {
-            currentCount += 1;
+            _currentCount += 1;
         }
     }
 }

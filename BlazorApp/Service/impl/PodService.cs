@@ -45,7 +45,7 @@ namespace BlazorApp.Service.impl
 
         public async Task<IList<V1Pod>> ListPods()
         {
-            if (_cache.Count() != 0) return _cache.Get();
+            if (_cache.Count != 0) return _cache.Get();
             var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
             foreach (var item in pods.Items)
             {
