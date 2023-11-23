@@ -15,13 +15,4 @@
         <ProjectReference Include="..\Entity\Entity.csproj"/>
         <ProjectReference Include="..\Extension\Extension.csproj"/>
     </ItemGroup>
-  <ItemGroup>
-    <Content Update="electron.manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-      <Content Remove="Pages\ChatHubPage.cshtml"/>
-  </ItemGroup>
-  <ItemGroup>
-      <Compile Remove="Pages\ChatHubPage.cshtml.cs"/>
-  </ItemGroup>
 </Project>
