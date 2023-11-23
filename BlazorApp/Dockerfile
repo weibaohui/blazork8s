@@ -16,17 +16,13 @@ FROM build AS publish
 RUN dotnet publish "BlazorApp.csproj" -c Release -o /app/publish
 
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS  kubectl
-RUN apt-get update && apt-get install -y apt-transport-https curl gnupg \
-&& curl https://mirrors.aliyun.com/kubernetes/apt/doc/apt-key.gpg | apt-key add - \
-&& echo "deb https://mirrors.aliyun.com/kubernetes/apt/ kubernetes-xenial main"  >/etc/apt/sources.list.d/kubernetes.list \
-&& apt-get update \
-&& apt-get install -y  kubectl
+FROM bitnami/kubectl:latest as kubectl
 
 
 FROM base AS final
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT Production
 COPY --from=publish /app/publish .
-COPY --from=kubectl /usr/bin/kubectl  /usr/bin/kubectl
+COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/kubectl
+
 ENTRYPOINT ["dotnet", "BlazorApp.dll"]
