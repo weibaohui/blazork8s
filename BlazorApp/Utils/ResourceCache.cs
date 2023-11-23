@@ -30,16 +30,15 @@ public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
 
     public List<T> Get()
     {
-        PrintReferenceTypeObjectAddress(_cache);
         return _cache;
     }
-
-    public void PrintReferenceTypeObjectAddress(object o)
-    {
-        GCHandle h    = GCHandle.Alloc(o, GCHandleType.Normal);
-        IntPtr   addr = h.GetHashCode();
-        Logger.LogError("0x" + addr.ToString("X"));
-    }
+    //
+    // public void PrintReferenceTypeObjectAddress(object o)
+    // {
+    //     GCHandle h    = GCHandle.Alloc(o, GCHandleType.Normal);
+    //     IntPtr   addr = h.GetHashCode();
+    //     Logger.LogError("0x" + addr.ToString("X"));
+    // }
 
     public void Update(WatchEventType type, T item)
     {
