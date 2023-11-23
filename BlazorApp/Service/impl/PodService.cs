@@ -4,8 +4,12 @@ using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
+using BlazorApp.Chat;
+using BlazorApp.Utils;
+using Entity;
 using k8s;
 using k8s.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorApp.Service.impl
@@ -14,7 +18,7 @@ namespace BlazorApp.Service.impl
     {
         private readonly IBaseService         _baseService;
         private readonly IWatchService        _watchService;
-        private readonly IServiceScope?       _scope;
+        private readonly IServiceScope        _scope;
         private          ResourceCache<V1Pod> _cache = ResourceCache<V1Pod>.Instance();
 
         public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
@@ -22,9 +26,9 @@ namespace BlazorApp.Service.impl
             _baseService  = baseService;
             _scope        = serviceScopeFactory.CreateScope();
             _watchService = _scope.ServiceProvider.GetService<IWatchService>();
-
             // Console.WriteLine("PodService 初始化");
         }
+
 
         public bool Changed()
         {

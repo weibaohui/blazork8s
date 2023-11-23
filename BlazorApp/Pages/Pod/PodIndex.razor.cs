@@ -5,6 +5,8 @@ using System.Timers;
 using AntDesign.TableModels;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service;
+using BlazorApp.Service.impl;
+using BlazorApp.Utils;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -23,10 +25,10 @@ namespace BlazorApp.Pages.Pod
         private IPageDrawerService PageDrawerService { get; set; }
 
         [Inject]
-        private IWatchService WatchServicee { get; set; }
+        private IWatchService WatchService { get; set; }
 
 
-        private TablePagedService<V1Pod> tps;
+        private TablePagedService<V1Pod> _tps;
 
 
         private string _selectedNs = "";
@@ -34,15 +36,15 @@ namespace BlazorApp.Pages.Pod
 
         protected override async Task OnInitializedAsync()
         {
-            tps = new TablePagedService<V1Pod>(PodService);
-            await tps.GetData(_selectedNs);
+            _tps = new TablePagedService<V1Pod>(PodService);
+            await _tps.GetData(_selectedNs);
             //TODO 改为接收watch
             var timer = new Timer(1000);
             timer.Enabled = true;
             timer.Elapsed += async (o, args) =>
             {
                 if (!PodService.Changed()) return;
-                await tps.GetData(_selectedNs);
+                await _tps.GetData(_selectedNs);
                 await InvokeAsync(StateHasChanged);
                 // Console.WriteLine("refreshPods");
             };
@@ -52,19 +54,19 @@ namespace BlazorApp.Pages.Pod
         private async Task OnNsSelectedHandler(string ns)
         {
             _selectedNs = ns;
-            await tps.OnNsSelectedHandler(ns);
+            await _tps.OnNsSelectedHandler(ns);
             await InvokeAsync(StateHasChanged);
         }
 
         public void RemoveSelection(string uid)
         {
-            tps.SelectedRows = tps.SelectedRows.Where(x => x.Metadata.Uid != uid);
+            _tps.SelectedRows = _tps.SelectedRows.Where(x => x.Metadata.Uid != uid);
         }
 
 
         private async Task OnChange(QueryModel<V1Pod> queryModel)
         {
-            tps.OnChange(queryModel);
+            _tps.OnChange(queryModel);
             await InvokeAsync(StateHasChanged);
         }
 
@@ -72,11 +74,11 @@ namespace BlazorApp.Pages.Pod
         {
             if (string.IsNullOrEmpty(key))
             {
-                await tps.GetData(_selectedNs);
+                await _tps.GetData(_selectedNs);
             }
             else
             {
-                tps.OnSearch(tps.OriginItems.Where(w => w.Name().Contains(key)).ToList());
+                _tps.OnSearch(_tps.OriginItems.Where(w => w.Name().Contains(key)).ToList());
             }
 
             await InvokeAsync(StateHasChanged);
@@ -103,7 +105,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnPodChanged(string obj)
         {
-            await tps.GetData(_selectedNs);
+            await _tps.GetData(_selectedNs);
             await InvokeAsync(StateHasChanged);
         }
     }

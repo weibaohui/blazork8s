@@ -16,10 +16,9 @@ builder.Services.AddSignalR();
 builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 builder.Services.AddSingleton<IKubeService, KubeService>();
-builder.Services.AddHttpClient();
-
-builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddSingleton<IBaseService, BaseService>();
+builder.Services.AddSingleton<IWatchService, WatchService>();
+builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IPodService, PodService>();
 builder.Services.AddScoped<IDeploymentService, DeploymentService>();
@@ -27,10 +26,10 @@ builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<INamespaceService, NamespaceService>();
 builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
-builder.Services.AddSingleton<IWatchService, WatchService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

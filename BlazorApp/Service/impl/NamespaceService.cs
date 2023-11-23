@@ -19,24 +19,24 @@ namespace BlazorApp.Service.impl
         /// <summary>
         /// 缓存当前NS列表
         /// </summary>
-        private IList<V1Namespace> ns;
+        private IList<V1Namespace> _ns;
+
         public async Task<IList<V1Namespace>> GetNamespaces()
         {
-            if (ns != null)
+            if (_ns != null)
             {
-                return ns;
+                return _ns;
             }
 
             _ = await List();
-            return ns;
+            return _ns;
         }
 
         public async Task<V1NamespaceList> List()
         {
-
-           var list = await _baseService.Client().ListNamespaceAsync();
+            var list = await _baseService.Client().ListNamespaceAsync();
             //缓存当前获取到的NS，每次获取都做强制更新
-            ns = list.Items.ToList();
+            _ns = list.Items.ToList();
             return list;
         }
     }

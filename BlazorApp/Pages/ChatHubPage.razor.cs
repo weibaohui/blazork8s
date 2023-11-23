@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Entity;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
@@ -22,10 +24,11 @@ public partial class ChatHubPage : ComponentBase
             .Build();
 
         //receive event
-        _hubConnection.On<string>("ReceiveMessage", async (message) =>
+        _hubConnection.On<ResourceWatchEntity<V1Pod>>("ReceiveMessage", async (data) =>
         {
-            Console.WriteLine("page收到消息" + message);
-            MessageReceived += message;
+            Console.WriteLine("page收到消息" + data.Message);
+            Console.WriteLine("page收到消息" + data.Item.Metadata.Name);
+            MessageReceived += data.Item.Metadata.Name;
             await InvokeAsync(StateHasChanged);
         });
 

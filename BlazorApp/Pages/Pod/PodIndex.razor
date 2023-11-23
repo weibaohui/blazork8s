@@ -4,11 +4,11 @@
 @using Extension
 @using BlazorApp.Pages.Workload
 @using BlazorApp.Pages.Container
-@if (tps.PagedItems != null)
+@if (_tps.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="Pods" Count="@tps.Total"
+            <SearchToolBar Title="Pods" Count="@_tps.Total"
                            OnSearch="OnSearchHandler"
                            OnNsSelected="OnNsSelectedHandler">
             </SearchToolBar>
@@ -17,13 +17,13 @@
             <Body>
 
             <Table TItem="V1Pod"
-                   DataSource="@tps.PagedItems"
+                   DataSource="@_tps.PagedItems"
                    Size=@TableSize.Small Bordered="true"
-                   Total="tps.Total"
-                   @bind-PageIndex="tps.PageIndex"
-                   @bind-PageSize="tps.PageSize"
-                   @bind-SelectedRows="tps.SelectedRows"
-                   Loading="tps.Loading"
+                   Total="_tps.Total"
+                   @bind-PageIndex="_tps.PageIndex"
+                   @bind-PageSize="_tps.PageSize"
+                   @bind-SelectedRows="_tps.SelectedRows"
+                   Loading="_tps.Loading"
                    OnChange="OnChange"
                    ScrollX="1500">
                 <Selection Key="@(context.Name())" Width="40" Fixed="left"/>

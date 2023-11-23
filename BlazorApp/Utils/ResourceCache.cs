@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Utils;
 
 public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
 {
