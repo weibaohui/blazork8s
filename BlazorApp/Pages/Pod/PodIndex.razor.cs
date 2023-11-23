@@ -36,6 +36,7 @@ namespace BlazorApp.Pages.Pod
         {
             tps = new TablePagedService<V1Pod>(PodService);
             await tps.GetData(_selectedNs);
+            //TODO 改为接收watch
             var timer = new Timer(1000);
             timer.Enabled = true;
             timer.Elapsed += async (o, args) =>
@@ -43,7 +44,7 @@ namespace BlazorApp.Pages.Pod
                 if (!PodService.Changed()) return;
                 await tps.GetData(_selectedNs);
                 await InvokeAsync(StateHasChanged);
-                Console.WriteLine("refreshPods");
+                // Console.WriteLine("refreshPods");
             };
         }
 
