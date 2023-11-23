@@ -1,12 +1,25 @@
 @page "/ChatHubPage"
+@using k8s.Models
 <h3>ChatHubPage</h3>
 
 <div class="row">
-    <Input Placeholder="Basic usage" @bind-Value="@MessageToSend"/>
-    <Button Type="primary" OnClick="@Send">
-        Send
-    </Button>
+
     <span >
         @MessageReceived
     </span>
+    @if (Pods.Count > 0)
+    {
+        foreach (var p in Pods)
+        {
+            <hr/>
+            @p.Metadata.Name
+            <br/>
+            @p.Metadata.Namespace()
+            <br/>
+            @p.Metadata.CreationTimestamp
+            <br/>
+        }
+    }
+
+    <ItemList OnChanged="OnChanged" T="V1Pod"></ItemList>
 </div>
