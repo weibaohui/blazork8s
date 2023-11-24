@@ -10,20 +10,20 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service;
 
-public class Watcher<T, L> where T : IKubernetesObject<V1ObjectMeta>
+public class Watcher<T, TL> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private readonly        IHubContext<ChatHub>   _ctx;
-    private static readonly ILogger<Watcher<T, L>> Logger = LoggingHelper<Watcher<T, L>>.Logger();
+    private readonly        IHubContext<ChatHub>    _ctx;
+    private static readonly ILogger<Watcher<T, TL>> Logger = LoggingHelper<Watcher<T, TL>>.Logger();
 
     public Watcher(IHubContext<ChatHub> ctx)
     {
         _ctx = ctx;
     }
 
-    public async Task Watch(Task<HttpOperationResponse<L>> listResp)
+    public async Task Watch(Task<HttpOperationResponse<TL>> listResp)
     {
         var cache = ResourceCacheHelper<T>.Instance.Build();
-        await foreach (var (type, item) in listResp.WatchAsync<T, L>())
+        await foreach (var (type, item) in listResp.WatchAsync<T, TL>())
         {
             var data = new ResourceWatchEntity<T>
             {
