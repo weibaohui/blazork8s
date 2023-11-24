@@ -1,10 +1,6 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using AntDesign.TableModels;
+﻿using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service;
-using BlazorApp.Service.impl;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -20,17 +16,17 @@ namespace BlazorApp.Pages.ReplicaSet
         private IPageDrawerService PageDrawerService { get; set; }
 
 
-        private async Task OnResourceChanged(ResourceCacheHelper<V1ReplicaSet> data)
+        private async Task OnResourceChanged(ResourceCache<V1ReplicaSet> data)
         {
             ItemList = data;
-            TableDataHelper.CopyData(ItemList);
+            TableData.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            TableDataHelper.CopyData(ItemList);
+            TableData.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 

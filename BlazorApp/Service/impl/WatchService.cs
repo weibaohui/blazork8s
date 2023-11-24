@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using BlazorApp.Chat;
 using BlazorApp.Utils;
@@ -8,7 +6,6 @@ using Entity;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Hosting;
 
 namespace BlazorApp.Service.impl;
 
@@ -29,7 +26,7 @@ public class WatchService : IWatchService
 
     public async Task WatchAllPod()
     {
-        var cache = ResourceCacheHelper<V1Pod>.Instance();
+        var cache = ResourceCacheHelper<V1Pod>.Instance.Build();
         var podListResp = _baseService.Client().CoreV1
             .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
 
@@ -49,7 +46,7 @@ public class WatchService : IWatchService
 
     public async Task WatchAllDeployment()
     {
-        var cache    = ResourceCacheHelper<V1Deployment>.Instance();
+        var cache    = ResourceCacheHelper<V1Deployment>.Instance.Build();
         var listResp = _baseService.Client().AppsV1.ListDeploymentForAllNamespacesWithHttpMessagesAsync(watch: true);
         await foreach (var (type, item) in listResp.WatchAsync<V1Deployment, V1DeploymentList>())
         {

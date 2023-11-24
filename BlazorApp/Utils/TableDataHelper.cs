@@ -1,113 +1,45 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AntDesign.TableModels;
-using BlazorApp.Service;
+﻿using System;
+using System.Collections.Generic;
 using k8s;
 using k8s.Models;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils;
 
 public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    /// <summary>
-    /// 页面显示的条目
-    /// </summary>
-    public IList<T> PagedItems;
+    private static readonly ILogger<TableDataHelper<T>>      Logger = LoggingHelper<TableDataHelper<T>>.Logger();
+    private static          Dictionary<string, TableData<T>> map    = new();
+    private static readonly string                           Key    = $"{typeof(T)}";
 
-    /// <summary>
-    /// 获取的原始条目
-    /// </summary>
-    private IList<T> _originItems;
+    public static TableDataHelper<T> Instance => Nested.Instance;
 
-    private string _selectedNs;
-    private string _searchKey;
-
-    public IEnumerable<T> SelectedRows;
-
-    public int  PageIndex = 1;
-    public int  PageSize  = 5;
-    public int  Total     = 100;
-    public bool Loading   = false;
-
-    void ChangePageSize(int pageSize)
+    private class Nested
     {
-        if (PageSize == pageSize) return;
-        PageSize  = pageSize;
-        PageIndex = 1;
-    }
-
-    public void CopyData(ResourceCacheHelper<T> data)
-    {
-        _originItems = data.Get();
-        PagedItems   = _originItems;
-        PageIndex    = 1;
-        FilterNsAndKey();
-    }
-
-    /// <summary>
-    /// 命名空间切换事件
-    /// </summary>
-    /// <param name="ns"></param>
-    /// <returns></returns>
-    public void OnNsSelectedHandler(string ns)
-    {
-        _selectedNs = ns;
-        FilterNsAndKey();
-    }
-
-
-    /// <summary>
-    /// 变更事件
-    /// </summary>
-    /// <param name="queryModel"></param>
-    public void OnPageChange(QueryModel<T> queryModel)
-    {
-        FilterNsAndKey();
-        PageIndex  = queryModel.PageIndex;
-        PageSize   = queryModel.PageSize;
-        Loading    = true;
-        PagedItems = PagedItems.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
-        Loading    = false;
-    }
-
-    public void OnSearchKeyChanged(string key)
-    {
-        _searchKey = key;
-        FilterNsAndKey();
-    }
-
-    private void FilterNsAndKey()
-    {
-        Loading    = true;
-        PagedItems = _originItems;
-        FilterSearchKey();
-        FilterNs();
-        Total   = PagedItems.Count;
-        Loading = false;
-    }
-
-
-    /// <summary>
-    /// 过滤Namespace
-    /// </summary>
-    private void FilterNs()
-    {
-        if (!_selectedNs.IsNullOrEmpty())
+        // Explicit static constructor to tell C# compiler
+        // not to mark type as beforefieldinit
+        static Nested()
         {
-            PagedItems = PagedItems.Where(x => x.Namespace() == _selectedNs).ToList();
         }
+
+        internal static readonly TableDataHelper<T> Instance = new TableDataHelper<T>();
     }
 
-    /// <summary>
-    /// 过滤Namespace
-    /// </summary>
-    private void FilterSearchKey()
+    public TableDataHelper()
     {
-        if (!_searchKey.IsNullOrEmpty())
+        Console.WriteLine($"TableData<T> Created,{typeof(T)}");
+    }
+
+
+    public TableData<T> Build()
+    {
+        if (map.TryGetValue(Key, out var data))
         {
-            PagedItems = PagedItems.Where(w => w.Name().Contains(_searchKey)).ToList();
+            return data;
         }
+
+        data = new TableData<T>();
+        var result = map.TryAdd(Key, data);
+        return data;
     }
 }

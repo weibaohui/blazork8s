@@ -15,16 +15,22 @@ public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1
     [Inject]
     protected IPageDrawerService PageDrawerService { get; set; }
 
-    protected ResourceCacheHelper<T> ItemList = ResourceCacheHelper<T>.Instance();
+    protected ResourceCache<T> ItemList = ResourceCacheHelper<T>.Instance.Build();
 
-    protected readonly        TableDataHelper<T>    TableDataHelper = new();
-    protected static readonly ILogger<TableBase<T>> Logger          = LoggingHelper<TableBase<T>>.Logger();
-    private                   string                _selectedNs     = "";
+    protected readonly        TableData<T>          TableData   = TableDataHelper<T>.Instance.Build();
+    protected static readonly ILogger<TableBase<T>> Logger      = LoggingHelper<TableBase<T>>.Logger();
+    private                   string                _selectedNs = "";
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
 
 
     protected async Task OnSearchHandler(string key)
     {
-        TableDataHelper.OnSearchKeyChanged(key);
+        TableData.OnSearchKeyChanged(key);
 
         await InvokeAsync(StateHasChanged);
     }
@@ -33,20 +39,20 @@ public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1
     protected async Task OnNsSelectedHandler(string ns)
     {
         _selectedNs = ns;
-        TableDataHelper.OnNsSelectedHandler(_selectedNs);
+        TableData.OnNsSelectedHandler(_selectedNs);
         await InvokeAsync(StateHasChanged);
     }
 
 
     protected async Task OnPageChangeHandler(QueryModel<T> queryModel)
     {
-        TableDataHelper.OnPageChange(queryModel);
+        TableData.OnPageChange(queryModel);
         await InvokeAsync(StateHasChanged);
     }
 
 
     public void RemoveSelection(string uid)
     {
-        TableDataHelper.SelectedRows = TableDataHelper.SelectedRows.Where(x => x.Metadata.Uid != uid);
+        TableData.SelectedRows = TableData.SelectedRows.Where(x => x.Metadata.Uid != uid);
     }
 }

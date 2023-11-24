@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Runtime.InteropServices;
 using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
@@ -10,80 +8,38 @@ namespace BlazorApp.Utils;
 
 public class ResourceCacheHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private static readonly ResourceCacheHelper<T>          Helper = new();
-    private readonly        List<T>                         _cache = new();
-    private                 bool                            _changed;
     private static readonly ILogger<ResourceCacheHelper<T>> Logger = LoggingHelper<ResourceCacheHelper<T>>.Logger();
+    private static          Dictionary<string, ResourceCache<T>> map = new();
+    private static readonly string key = $"{typeof(T)}";
+
+    public static ResourceCacheHelper<T> Instance => Nested.Instance;
+
+    private class Nested
+    {
+        // Explicit static constructor to tell C# compiler
+        // not to mark type as beforefieldinit
+        static Nested()
+        {
+        }
+
+        internal static readonly ResourceCacheHelper<T> Instance = new ResourceCacheHelper<T>();
+    }
 
     public ResourceCacheHelper()
     {
         Console.WriteLine($"ResourceCache<T> Created,{typeof(T)}");
     }
 
-    public static ResourceCacheHelper<T> Instance()
+
+    public ResourceCache<T> Build()
     {
-        return Helper;
-    }
-
-
-    public Int32 Count => _cache.Count;
-
-    public List<T> Get()
-    {
-        return _cache;
-    }
-    //
-    // public void PrintReferenceTypeObjectAddress(object o)
-    // {
-    //     GCHandle h    = GCHandle.Alloc(o, GCHandleType.Normal);
-    //     IntPtr   addr = h.GetHashCode();
-    //     Logger.LogError("0x" + addr.ToString("X"));
-    // }
-
-    public void Update(WatchEventType type, T item)
-    {
-        var index = _cache.FindIndex(0, r => r.Uid() == item.Uid());
-        // Console.WriteLine($"{index}:{item.Name()}");
-        switch (type)
+        if (map.TryGetValue(key, out var cache))
         {
-            case WatchEventType.Added:
-                if (index == -1)
-                {
-                    //不存在
-                    _cache.Insert(0, item);
-                    _changed = true;
-                }
-
-                break;
-            case WatchEventType.Modified:
-                if (index > -1)
-                {
-                    //已存在
-                    _cache[index] = item;
-                    _changed      = true;
-                }
-
-                break;
-            case WatchEventType.Deleted:
-                if (index > -1)
-                {
-                    //已存在
-                    _cache.RemoveAt(index);
-                    _changed = true;
-                }
-
-                break;
-            case WatchEventType.Error:
-                break;
-            case WatchEventType.Bookmark:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(type), type, null);
+            return cache;
         }
-    }
 
-    public bool Changed()
-    {
-        return _changed;
+        cache = new ResourceCache<T>();
+        var result = map.TryAdd(key, cache);
+        return cache;
     }
 }

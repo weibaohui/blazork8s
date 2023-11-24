@@ -4,22 +4,19 @@ using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
-using BlazorApp.Chat;
 using BlazorApp.Utils;
-using Entity;
 using k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
-        private readonly IBaseService               _baseService;
-        private readonly IWatchService              _watchService;
-        private readonly IServiceScope              _scope;
-        private readonly ResourceCacheHelper<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance();
+        private readonly IBaseService         _baseService;
+        private readonly IWatchService        _watchService;
+        private readonly IServiceScope        _scope;
+        private readonly ResourceCache<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance.Build();
 
         public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
         {

@@ -15,14 +15,13 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
     protected NavigationManager MyUriHelper { get; set; }
 
     [Parameter]
-    public EventCallback<ResourceCacheHelper<T>> OnResourceChanged { get; set; }
+    public EventCallback<ResourceCache<T>> OnResourceChanged { get; set; }
 
-    private ResourceCacheHelper<T> _cache = ResourceCacheHelper<T>.Instance();
+    private ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
 
     private async Task UpdateMessage(ResourceWatchEntity<T> data)
     {
         Console.WriteLine("page收到消息" + data.Message);
-        _cache.Update(data.Type, data.Item);
         await OnResourceChanged.InvokeAsync(_cache);
     }
 

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service;
@@ -7,7 +6,6 @@ using BlazorApp.Utils;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Pod
 {
@@ -20,17 +18,17 @@ namespace BlazorApp.Pages.Pod
         private INodeService NodeService { get; set; }
 
 
-        private async Task OnResourceChanged(ResourceCacheHelper<V1Pod> data)
+        private async Task OnResourceChanged(ResourceCache<V1Pod> data)
         {
             ItemList = data;
-            TableDataHelper.CopyData(ItemList);
+            TableData.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            TableDataHelper.CopyData(ItemList);
+            TableData.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 
