@@ -23,14 +23,14 @@ namespace BlazorApp.Pages.Pod
         private async Task OnResourceChanged(ResourceCacheHelper<V1Pod> data)
         {
             ItemList = data;
-            await TableDataHelper.CopyData(ItemList);
+            TableDataHelper.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 
         protected override async Task OnInitializedAsync()
         {
             await base.OnInitializedAsync();
-            await TableDataHelper.CopyData(ItemList);
+            TableDataHelper.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 

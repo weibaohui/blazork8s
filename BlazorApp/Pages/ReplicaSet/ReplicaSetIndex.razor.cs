@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AntDesign.TableModels;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service;
 using BlazorApp.Service.impl;
 using BlazorApp.Utils;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.ReplicaSet
 {
-    public partial class ReplicaSetIndex : ComponentBase
+    public partial class ReplicaSetIndex : TableBase<V1ReplicaSet>
     {
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
@@ -18,43 +19,18 @@ namespace BlazorApp.Pages.ReplicaSet
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
-        private TableDataHelper<V1ReplicaSet> tps = new();
 
-
-        private string _selectedNs = "";
-
+        private async Task OnResourceChanged(ResourceCacheHelper<V1ReplicaSet> data)
+        {
+            ItemList = data;
+            TableDataHelper.CopyData(ItemList);
+            await InvokeAsync(StateHasChanged);
+        }
 
         protected override async Task OnInitializedAsync()
         {
-            await tps.GetData(_selectedNs);
-        }
-
-
-        public async Task OnNsSelectedHandler(string ns)
-        {
-            _selectedNs = ns;
-            await tps.OnNsSelectedHandler(ns);
-            await InvokeAsync(StateHasChanged);
-        }
-
-        public void RemoveSelection(string uid)
-        {
-            tps.SelectedRows = tps.SelectedRows.Where(x => x.Metadata.Uid != uid);
-        }
-
-        private void Delete(string uid)
-        {
-        }
-
-        private async Task OnChange(QueryModel<V1ReplicaSet> queryModel)
-        {
-            tps.OnChange(queryModel);
-            await InvokeAsync(StateHasChanged);
-        }
-
-        private async Task OnSearchHandler(string key)
-        {
-            tps.SearchName(key);
+            await base.OnInitializedAsync();
+            TableDataHelper.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 

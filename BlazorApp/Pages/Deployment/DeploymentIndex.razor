@@ -3,11 +3,12 @@
 @using Extension
 @using BlazorApp.Pages.Workload
 @using BlazorApp.Pages.Common
-@if (tps.PagedItems != null)
+@inherits TableBase<V1Deployment>
+@if (TableDataHelper.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="Deployments" Count="@tps.Total"
+            <SearchToolBar Title="Deployments" Count="@TableDataHelper.Total"
                            OnSearch="OnSearchHandler"
                            OnNsSelected="OnNsSelectedHandler">
             </SearchToolBar>
@@ -16,14 +17,14 @@
             <Body>
 
             <Table TItem="V1Deployment"
-                   DataSource="@tps.PagedItems"
+                   DataSource="@TableDataHelper.PagedItems"
                    Size=@TableSize.Small Bordered="true"
-                   Total="tps.Total"
-                   @bind-PageIndex="tps.PageIndex"
-                   @bind-PageSize="tps.PageSize"
-                   @bind-SelectedRows="tps.SelectedRows"
-                   Loading="tps.Loading"
-                   OnChange="OnChange">
+                   Total="TableDataHelper.Total"
+                   @bind-PageIndex="TableDataHelper.PageIndex"
+                   @bind-PageSize="TableDataHelper.PageSize"
+                   @bind-SelectedRows="TableDataHelper.SelectedRows"
+                   Loading="TableDataHelper.Loading"
+                   OnChange="OnPageChangeHandler">
                 <Selection Key="@(context.Name())"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnDeployClick(context))" Type="@ButtonType.Link">@context.Name()</Button>

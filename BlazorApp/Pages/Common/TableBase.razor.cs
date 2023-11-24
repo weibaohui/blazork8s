@@ -24,7 +24,7 @@ public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1
 
     protected async Task OnSearchHandler(string key)
     {
-        await TableDataHelper.SearchName(key);
+        TableDataHelper.OnSearchKeyChanged(key);
 
         await InvokeAsync(StateHasChanged);
     }
@@ -33,14 +33,14 @@ public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1
     protected async Task OnNsSelectedHandler(string ns)
     {
         _selectedNs = ns;
-        await TableDataHelper.OnNsSelectedHandler(_selectedNs);
+        TableDataHelper.OnNsSelectedHandler(_selectedNs);
         await InvokeAsync(StateHasChanged);
     }
 
 
     protected async Task OnPageChangeHandler(QueryModel<T> queryModel)
     {
-        await TableDataHelper.OnChange(queryModel);
+        TableDataHelper.OnPageChange(queryModel);
         await InvokeAsync(StateHasChanged);
     }
 

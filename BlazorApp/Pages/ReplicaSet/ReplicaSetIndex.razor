@@ -1,12 +1,14 @@
 ﻿@page "/ReplicaSets"
 @using k8s.Models
 @using Extension
-@using  BlazorApp.Pages.Workload
-@if (tps.PagedItems != null)
+@using BlazorApp.Pages.Workload
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.TableBase<V1ReplicaSet>
+@if (TableDataHelper.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="Replica Sets" Count="@tps.Total"
+            <SearchToolBar Title="Replica Sets" Count="@TableDataHelper.Total"
                            OnSearch="OnSearchHandler"
                            OnNsSelected="OnNsSelectedHandler">
             </SearchToolBar>
@@ -15,14 +17,14 @@
             <Body>
 
             <Table TItem="V1ReplicaSet"
-                   DataSource="@tps.PagedItems"
+                   DataSource="@TableDataHelper.PagedItems"
                    Size=@TableSize.Small Bordered="true"
-                   Total="tps.Total"
-                   @bind-PageIndex="tps.PageIndex"
-                   @bind-PageSize="tps.PageSize"
-                   @bind-SelectedRows="tps.SelectedRows"
-                   Loading="tps.Loading"
-                   OnChange="OnChange">
+                   Total="TableDataHelper.Total"
+                   @bind-PageIndex="TableDataHelper.PageIndex"
+                   @bind-PageSize="TableDataHelper.PageSize"
+                   @bind-SelectedRows="TableDataHelper.SelectedRows"
+                   Loading="TableDataHelper.Loading"
+                   OnChange="OnPageChangeHandler">
                 <Selection Key="@(context.Name())"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnRsClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
@@ -36,10 +38,10 @@
                     @context.Status.Replicas
                 </AntDesign.Column>
                 <AntDesign.Column Title="Current" TData="int">
-                    @(context.Status.AvailableReplicas??0)
+                    @(context.Status.AvailableReplicas ?? 0)
                 </AntDesign.Column>
                 <AntDesign.Column Title="Ready" TData="int">
-                    @(context.Status.ReadyReplicas??0)
+                    @(context.Status.ReadyReplicas ?? 0)
                 </AntDesign.Column>
 
 
@@ -52,4 +54,5 @@
         </ChildContent>
 
     </Card>
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1ReplicaSet"></ResourceWatcher>
 }

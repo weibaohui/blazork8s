@@ -11,11 +11,6 @@ namespace BlazorApp.Utils;
 
 public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    public TableDataHelper()
-    {
-    }
-
-
     /// <summary>
     /// 页面显示的条目
     /// </summary>
@@ -27,6 +22,7 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
     private IList<T> _originItems;
 
     private string _selectedNs;
+    private string _searchKey;
 
     public IEnumerable<T> SelectedRows;
 
@@ -42,7 +38,7 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
         PageIndex = 1;
     }
 
-    public async Task GetData(string ns)
+    public void GetData(string ns)
     {
         Loading    = true;
         PagedItems = _originItems;
@@ -51,15 +47,12 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
         Loading    = false;
     }
 
-    public async Task CopyData(ResourceCacheHelper<T> data)
+    public void CopyData(ResourceCacheHelper<T> data)
     {
-        Loading      = true;
         _originItems = data.Get();
         PagedItems   = _originItems;
-        Total        = PagedItems.Count;
         PageIndex    = 1;
-        await OnNsSelectedHandler(_selectedNs);
-        Loading = false;
+        FilterNsAndKey();
     }
 
     /// <summary>
@@ -67,20 +60,10 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
     /// </summary>
     /// <param name="ns"></param>
     /// <returns></returns>
-    public async Task OnNsSelectedHandler(string ns)
+    public void OnNsSelectedHandler(string ns)
     {
-        Loading     = true;
-        PageIndex   = 1;
         _selectedNs = ns;
-        PagedItems  = _originItems;
-
-        if (!ns.IsNullOrEmpty())
-        {
-            PagedItems = PagedItems.Where(x => x.Namespace() == ns).ToList();
-        }
-
-        Total   = PagedItems.Count;
-        Loading = false;
+        FilterNsAndKey();
     }
 
 
@@ -88,9 +71,9 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
     /// 变更事件
     /// </summary>
     /// <param name="queryModel"></param>
-    public async Task OnChange(QueryModel<T> queryModel)
+    public void OnPageChange(QueryModel<T> queryModel)
     {
-        await OnNsSelectedHandler(_selectedNs);
+        FilterNsAndKey();
         PageIndex  = queryModel.PageIndex;
         PageSize   = queryModel.PageSize;
         Loading    = true;
@@ -98,19 +81,42 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
         Loading    = false;
     }
 
-    public async Task SearchName(string key)
+    public void OnSearchKeyChanged(string key)
     {
-        //TODO key 作为一个变量，类似ns处理
-        await OnNsSelectedHandler(_selectedNs);
-        Loading   = true;
-        PageIndex = 1;
+        _searchKey = key;
+        FilterNsAndKey();
+    }
 
-        if (!key.IsNullOrEmpty())
-        {
-            PagedItems = PagedItems.Where(w => w.Name().Contains(key)).ToList();
-        }
-
-        Total   = PagedItems.Count();
+    private void FilterNsAndKey()
+    {
+        Loading    = true;
+        PagedItems = _originItems;
+        FilterSearchKey();
+        FilterNs();
+        Total   = PagedItems.Count;
         Loading = false;
+    }
+
+
+    /// <summary>
+    /// 过滤Namespace
+    /// </summary>
+    private void FilterNs()
+    {
+        if (!_selectedNs.IsNullOrEmpty())
+        {
+            PagedItems = PagedItems.Where(x => x.Namespace() == _selectedNs).ToList();
+        }
+    }
+
+    /// <summary>
+    /// 过滤Namespace
+    /// </summary>
+    private void FilterSearchKey()
+    {
+        if (!_searchKey.IsNullOrEmpty())
+        {
+            PagedItems = PagedItems.Where(w => w.Name().Contains(_searchKey)).ToList();
+        }
     }
 }
