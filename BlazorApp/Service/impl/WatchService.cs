@@ -16,8 +16,7 @@ public class WatchService : IWatchService
 {
     private readonly IBaseService _baseService;
 
-    private readonly ResourceCacheHelper<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance();
-    private readonly IHubContext<ChatHub>       _ctx;
+    private readonly IHubContext<ChatHub> _ctx;
 
     public WatchService(IBaseService baseService, IHubContext<ChatHub> ctx)
     {
@@ -25,10 +24,12 @@ public class WatchService : IWatchService
         _baseService = baseService;
         _ctx         = ctx;
         WatchAllPod();
+        WatchAllDeployment();
     }
 
     public async Task WatchAllPod()
     {
+        var cache = ResourceCacheHelper<V1Pod>.Instance();
         var podListResp = _baseService.Client().CoreV1
             .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
 
@@ -36,17 +37,31 @@ public class WatchService : IWatchService
         {
             var data = new ResourceWatchEntity<V1Pod>
             {
-                Message = $"{type}:{item.Metadata.Name}",
+                Message = $"{type}:{item.Kind}:{item.Metadata.Name}",
                 Type    = type,
                 Item    = item
             };
-            Console.WriteLine("==on watch event start ==");
             Console.WriteLine($"{type}:{item.Kind}:{item.Metadata.Name}");
-            _cache.Update(type, item);
-            Console.WriteLine("==on watch event end ==");
-            Console.WriteLine("==on SendAsync event start ==");
+            cache.Update(type, item);
             await _ctx.Clients.All.SendAsync("ReceiveMessage", data);
-            Console.WriteLine("==on SendAsync event end ==");
+        }
+    }
+
+    public async Task WatchAllDeployment()
+    {
+        var cache    = ResourceCacheHelper<V1Deployment>.Instance();
+        var listResp = _baseService.Client().AppsV1.ListDeploymentForAllNamespacesWithHttpMessagesAsync(watch: true);
+        await foreach (var (type, item) in listResp.WatchAsync<V1Deployment, V1DeploymentList>())
+        {
+            var data = new ResourceWatchEntity<V1Deployment>
+            {
+                Message = $"{type}:{item.Kind}:{item.Metadata.Name}",
+                Type    = type,
+                Item    = item
+            };
+            Console.WriteLine($"{type}:{item.Kind}:{item.Metadata.Name}");
+            cache.Update(type, item);
+            await _ctx.Clients.All.SendAsync("ReceiveMessage", data);
         }
     }
 }

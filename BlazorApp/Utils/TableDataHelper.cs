@@ -38,15 +38,6 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
         PageIndex = 1;
     }
 
-    public void GetData(string ns)
-    {
-        Loading    = true;
-        PagedItems = _originItems;
-        Total      = _originItems.Count;
-        PageIndex  = 1;
-        Loading    = false;
-    }
-
     public void CopyData(ResourceCacheHelper<T> data)
     {
         _originItems = data.Get();
