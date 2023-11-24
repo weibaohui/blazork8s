@@ -16,10 +16,10 @@ namespace BlazorApp.Service.impl
 {
     public class PodService : IPodService
     {
-        private readonly IBaseService         _baseService;
-        private readonly IWatchService        _watchService;
-        private readonly IServiceScope        _scope;
-        private          ResourceCache<V1Pod> _cache = ResourceCache<V1Pod>.Instance();
+        private readonly IBaseService               _baseService;
+        private readonly IWatchService              _watchService;
+        private readonly IServiceScope              _scope;
+        private readonly ResourceCacheHelper<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance();
 
         public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
         {

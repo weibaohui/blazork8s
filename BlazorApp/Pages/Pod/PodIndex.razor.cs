@@ -1,19 +1,17 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
-using AntDesign.TableModels;
+using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service;
-using BlazorApp.Service.impl;
 using BlazorApp.Utils;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Pod
 {
-    public partial class PodIndex : ComponentBase
+    public partial class PodIndex : TableBase<V1Pod>
     {
         [Inject]
         private IPodService PodService { get; set; }
@@ -21,55 +19,18 @@ namespace BlazorApp.Pages.Pod
         [Inject]
         private INodeService NodeService { get; set; }
 
-        [Inject]
-        private IPageDrawerService PageDrawerService { get; set; }
 
-        [Inject]
-        private IWatchService WatchService { get; set; }
-
-
-        private TablePagedService<V1Pod> _tps = new();
-
-
-        private string               _selectedNs = "";
-        private ResourceCache<V1Pod> _itemList   = ResourceCache<V1Pod>.Instance();
-
-        private async Task OnResourceChanged(ResourceCache<V1Pod> data)
+        private async Task OnResourceChanged(ResourceCacheHelper<V1Pod> data)
         {
-            _itemList = data;
-            await _tps.CopyData(_itemList);
+            ItemList = data;
+            await TableDataHelper.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 
         protected override async Task OnInitializedAsync()
         {
-            await _tps.CopyData(_itemList);
-        }
-
-
-        private async Task OnNsSelectedHandler(string ns)
-        {
-            _selectedNs = ns;
-            await _tps.OnNsSelectedHandler(ns);
-            await InvokeAsync(StateHasChanged);
-        }
-
-        public void RemoveSelection(string uid)
-        {
-            _tps.SelectedRows = _tps.SelectedRows.Where(x => x.Metadata.Uid != uid);
-        }
-
-
-        private async Task OnChange(QueryModel<V1Pod> queryModel)
-        {
-            _tps.OnChange(queryModel);
-            await InvokeAsync(StateHasChanged);
-        }
-
-        private async Task OnSearchHandler(string key)
-        {
-            _tps.SearchName(key);
-
+            await base.OnInitializedAsync();
+            await TableDataHelper.CopyData(ItemList);
             await InvokeAsync(StateHasChanged);
         }
 
@@ -89,12 +50,6 @@ namespace BlazorApp.Pages.Pod
 
         private async Task PodDeleteHandler(V1Pod pod)
         {
-            await InvokeAsync(StateHasChanged);
-        }
-
-        private async Task OnPodChanged(string obj)
-        {
-            await _tps.GetData(_selectedNs);
             await InvokeAsync(StateHasChanged);
         }
     }

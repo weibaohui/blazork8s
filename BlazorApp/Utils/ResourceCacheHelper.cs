@@ -8,21 +8,21 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils;
 
-public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
+public class ResourceCacheHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private static readonly ResourceCache<T>          Rc     = new ResourceCache<T>();
-    private readonly        List<T>                   _cache = new();
-    private                 bool                      _listChangedByWatch;
-    private static readonly ILogger<ResourceCache<T>> Logger = LoggingUtils<ResourceCache<T>>.Logger();
+    private static readonly ResourceCacheHelper<T>          Helper = new();
+    private readonly        List<T>                         _cache = new();
+    private                 bool                            _changed;
+    private static readonly ILogger<ResourceCacheHelper<T>> Logger = LoggingHelper<ResourceCacheHelper<T>>.Logger();
 
-    private ResourceCache()
+    public ResourceCacheHelper()
     {
         Console.WriteLine($"ResourceCache<T> Created,{typeof(T)}");
     }
 
-    public static ResourceCache<T> Instance()
+    public static ResourceCacheHelper<T> Instance()
     {
-        return Rc;
+        return Helper;
     }
 
 
@@ -51,7 +51,7 @@ public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
                 {
                     //不存在
                     _cache.Insert(0, item);
-                    _listChangedByWatch = true;
+                    _changed = true;
                 }
 
                 break;
@@ -59,8 +59,8 @@ public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
                 if (index > -1)
                 {
                     //已存在
-                    _cache[index]       = item;
-                    _listChangedByWatch = true;
+                    _cache[index] = item;
+                    _changed      = true;
                 }
 
                 break;
@@ -69,7 +69,7 @@ public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
                 {
                     //已存在
                     _cache.RemoveAt(index);
-                    _listChangedByWatch = true;
+                    _changed = true;
                 }
 
                 break;
@@ -84,6 +84,6 @@ public class ResourceCache<T> where T : IKubernetesObject<V1ObjectMeta>
 
     public bool Changed()
     {
-        return _listChangedByWatch;
+        return _changed;
     }
 }

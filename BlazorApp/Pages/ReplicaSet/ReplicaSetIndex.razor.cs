@@ -18,7 +18,7 @@ namespace BlazorApp.Pages.ReplicaSet
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
-        private TablePagedService<V1ReplicaSet> tps = new();
+        private TableDataHelper<V1ReplicaSet> tps = new();
 
 
         private string _selectedNs = "";

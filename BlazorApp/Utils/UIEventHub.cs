@@ -7,9 +7,9 @@ namespace BlazorApp.Utils;
 
 public class UIEventHub
 {
-    private static          UIEventHub          _uiEventHub = new UIEventHub();
+    private static readonly UIEventHub          _uiEventHub = new();
     private static          HubConnection       _hubConnection;
-    private static readonly ILogger<UIEventHub> Logger = LoggingUtils<UIEventHub>.Logger();
+    private static readonly ILogger<UIEventHub> Logger = LoggingHelper<UIEventHub>.Logger();
 
     public static UIEventHub Instance()
     {

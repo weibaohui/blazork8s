@@ -11,9 +11,9 @@ namespace BlazorApp.Pages;
 
 public partial class ChatHubPage : ComponentBase
 {
-    private ResourceCache<V1Pod> _itemList = ResourceCache<V1Pod>.Instance();
+    private ResourceCacheHelper<V1Pod> _itemList = ResourceCacheHelper<V1Pod>.Instance();
 
-    private async Task OnResourceChanged(ResourceCache<V1Pod> data)
+    private async Task OnResourceChanged(ResourceCacheHelper<V1Pod> data)
     {
         _itemList = data;
         await InvokeAsync(StateHasChanged);

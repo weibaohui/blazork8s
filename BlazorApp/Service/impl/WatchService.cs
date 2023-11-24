@@ -16,8 +16,8 @@ public class WatchService : IWatchService
 {
     private readonly IBaseService _baseService;
 
-    private          ResourceCache<V1Pod> _cache = ResourceCache<V1Pod>.Instance();
-    private readonly IHubContext<ChatHub> _ctx;
+    private readonly ResourceCacheHelper<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance();
+    private readonly IHubContext<ChatHub>       _ctx;
 
     public WatchService(IBaseService baseService, IHubContext<ChatHub> ctx)
     {

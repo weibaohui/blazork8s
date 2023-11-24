@@ -18,13 +18,13 @@ public partial class DeploymentIndex : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    public TablePagedService<V1Deployment> tps = new();
+    public TableDataHelper<V1Deployment> tps = new();
 
 
-    private string                      _selectedNs = "";
-    private ResourceCache<V1Deployment> _itemList   = ResourceCache<V1Deployment>.Instance();
+    private string                            _selectedNs = "";
+    private ResourceCacheHelper<V1Deployment> _itemList   = ResourceCacheHelper<V1Deployment>.Instance();
 
-    private async Task OnResourceChanged(ResourceCache<V1Deployment> data)
+    private async Task OnResourceChanged(ResourceCacheHelper<V1Deployment> data)
     {
         _itemList = data;
         await InvokeAsync(StateHasChanged);

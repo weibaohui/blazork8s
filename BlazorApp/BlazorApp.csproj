@@ -15,4 +15,7 @@
         <ProjectReference Include="..\Entity\Entity.csproj"/>
         <ProjectReference Include="..\Extension\Extension.csproj"/>
     </ItemGroup>
+    <ItemGroup>
+        <AdditionalFiles Include="Pages\Common\ResourceWatcher.razor"/>
+    </ItemGroup>
 </Project>

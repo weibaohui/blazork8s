@@ -9,9 +9,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorApp.Utils;
 
-public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
+public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    public TablePagedService()
+    public TableDataHelper()
     {
     }
 
@@ -24,7 +24,7 @@ public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
     /// <summary>
     /// 获取的原始条目
     /// </summary>
-    public IList<T> OriginItems;
+    private IList<T> _originItems;
 
     private string _selectedNs;
 
@@ -45,19 +45,19 @@ public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
     public async Task GetData(string ns)
     {
         Loading    = true;
-        PagedItems = OriginItems;
-        Total      = OriginItems.Count;
+        PagedItems = _originItems;
+        Total      = _originItems.Count;
         PageIndex  = 1;
         Loading    = false;
     }
 
-    public async Task CopyData(ResourceCache<T> data)
+    public async Task CopyData(ResourceCacheHelper<T> data)
     {
-        Loading     = true;
-        OriginItems = data.Get();
-        PagedItems  = OriginItems;
-        Total       = PagedItems.Count;
-        PageIndex   = 1;
+        Loading      = true;
+        _originItems = data.Get();
+        PagedItems   = _originItems;
+        Total        = PagedItems.Count;
+        PageIndex    = 1;
         await OnNsSelectedHandler(_selectedNs);
         Loading = false;
     }
@@ -72,7 +72,7 @@ public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
         Loading     = true;
         PageIndex   = 1;
         _selectedNs = ns;
-        PagedItems  = OriginItems;
+        PagedItems  = _originItems;
 
         if (!ns.IsNullOrEmpty())
         {
@@ -91,11 +91,10 @@ public class TablePagedService<T> where T : IKubernetesObject<V1ObjectMeta>
     public async Task OnChange(QueryModel<T> queryModel)
     {
         await OnNsSelectedHandler(_selectedNs);
-        PageIndex = queryModel.PageIndex;
-        PageSize  = queryModel.PageSize;
-        Loading   = true;
-        var query = PagedItems.Skip((PageIndex - 1) * PageSize).Take(PageSize);
-        PagedItems = query.ToList();
+        PageIndex  = queryModel.PageIndex;
+        PageSize   = queryModel.PageSize;
+        Loading    = true;
+        PagedItems = PagedItems.Skip((PageIndex - 1) * PageSize).Take(PageSize).ToList();
         Loading    = false;
     }
 

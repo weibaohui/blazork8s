@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils;
 
-public class LoggingUtils<T>
+public class LoggingHelper<T>
 {
     public static ILogger<T> Logger()
     {

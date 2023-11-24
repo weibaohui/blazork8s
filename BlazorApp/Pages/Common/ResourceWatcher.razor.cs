@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.impl;
 using BlazorApp.Utils;
 using Entity;
 using k8s;
@@ -9,7 +7,7 @@ using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
-namespace BlazorApp.Pages;
+namespace BlazorApp.Pages.Common;
 
 public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObject<V1ObjectMeta>
 {
@@ -17,9 +15,9 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
     protected NavigationManager MyUriHelper { get; set; }
 
     [Parameter]
-    public EventCallback<ResourceCache<T>> OnResourceChanged { get; set; }
+    public EventCallback<ResourceCacheHelper<T>> OnResourceChanged { get; set; }
 
-    private ResourceCache<T> _cache = ResourceCache<T>.Instance();
+    private ResourceCacheHelper<T> _cache = ResourceCacheHelper<T>.Instance();
 
     private async Task UpdateMessage(ResourceWatchEntity<T> data)
     {
