@@ -1,13 +1,12 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using k8s;
 
-namespace BlazorApp.Service;
+namespace BlazorApp.Service.impl;
 
 public class KubeService : IKubeService
 {
@@ -43,7 +42,7 @@ public class KubeService : IKubeService
             return _client;
         }
 
-        KubernetesClientConfiguration config = null;
+        KubernetesClientConfiguration config;
         // Load from in-cluster configuration:
         config = KubernetesClientConfiguration.IsInCluster()
             ? KubernetesClientConfiguration.InClusterConfig()
