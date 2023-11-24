@@ -12,9 +12,6 @@ public partial class DeploymentIndex : TableBase<V1Deployment>
     [Inject]
     private IDeploymentService DeploymentService { get; set; }
 
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
-
 
     private async Task OnResourceChanged(ResourceCache<V1Deployment> data)
     {

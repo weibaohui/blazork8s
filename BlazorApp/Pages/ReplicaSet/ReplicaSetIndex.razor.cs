@@ -12,9 +12,6 @@ namespace BlazorApp.Pages.ReplicaSet
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
 
-        [Inject]
-        private IPageDrawerService PageDrawerService { get; set; }
-
 
         private async Task OnResourceChanged(ResourceCache<V1ReplicaSet> data)
         {
