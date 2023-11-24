@@ -14,15 +14,14 @@ namespace BlazorApp.Service.impl
     public class PodService : IPodService
     {
         private readonly IBaseService         _baseService;
-        private readonly IWatchService        _watchService;
         private readonly IServiceScope        _scope;
         private readonly ResourceCache<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance.Build();
 
         public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
         {
-            _baseService  = baseService;
-            _scope        = serviceScopeFactory.CreateScope();
-            _watchService = _scope.ServiceProvider.GetService<IWatchService>();
+            _baseService = baseService;
+            _scope       = serviceScopeFactory.CreateScope();
+            // _watchService = _scope.ServiceProvider.GetService<IWatchService>();
             // Console.WriteLine("PodService 初始化");
         }
 

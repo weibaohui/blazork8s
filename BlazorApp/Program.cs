@@ -15,7 +15,6 @@ builder.Services.AddAntDesign();
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddSingleton<IBaseService, BaseService>();
-builder.Services.AddSingleton<IWatchService, WatchService>();
 builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IPodService, PodService>();
@@ -28,6 +27,9 @@ builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
+
+builder.Services.AddHostedService<ListWatchService>();
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
