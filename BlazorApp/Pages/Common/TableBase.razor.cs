@@ -15,8 +15,7 @@ public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1
     [Inject]
     protected IPageDrawerService PageDrawerService { get; set; }
 
-    protected ResourceCache<T> ItemList = ResourceCacheHelper<T>.Instance.Build();
-
+    protected                 ResourceCache<T>      ItemList    = ResourceCacheHelper<T>.Instance.Build();
     protected readonly        TableData<T>          TableData   = TableDataHelper<T>.Instance.Build();
     protected static readonly ILogger<TableBase<T>> Logger      = LoggingHelper<TableBase<T>>.Logger();
     private                   string                _selectedNs = "";
