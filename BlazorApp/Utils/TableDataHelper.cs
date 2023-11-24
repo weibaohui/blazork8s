@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
@@ -24,12 +23,6 @@ public class TableDataHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 
         internal static readonly TableDataHelper<T> Instance = new TableDataHelper<T>();
     }
-
-    public TableDataHelper()
-    {
-        Console.WriteLine($"TableData<T> Created,{typeof(T)}");
-    }
-
 
     public TableData<T> Build()
     {

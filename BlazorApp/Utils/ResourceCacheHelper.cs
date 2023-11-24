@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using k8s;
 using k8s.Models;
@@ -23,11 +22,6 @@ public class ResourceCacheHelper<T> where T : IKubernetesObject<V1ObjectMeta>
         }
 
         internal static readonly ResourceCacheHelper<T> Instance = new ResourceCacheHelper<T>();
-    }
-
-    public ResourceCacheHelper()
-    {
-        Console.WriteLine($"ResourceCache<T> Created,{typeof(T)}");
     }
 
 
