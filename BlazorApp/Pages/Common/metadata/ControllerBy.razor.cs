@@ -4,6 +4,7 @@ using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Service;
+using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 

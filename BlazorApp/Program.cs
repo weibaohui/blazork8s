@@ -2,6 +2,8 @@ using AntDesign.ProLayout;
 using BlazorApp.Chat;
 using BlazorApp.Service;
 using BlazorApp.Service.impl;
+using BlazorApp.Service.k8s;
+using BlazorApp.Service.k8s.impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

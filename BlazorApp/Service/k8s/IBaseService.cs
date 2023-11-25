@@ -1,7 +1,6 @@
-using System.Threading.Tasks;
 using k8s;
 
-namespace BlazorApp.Service
+namespace BlazorApp.Service.k8s
 {
     public interface IBaseService
     {

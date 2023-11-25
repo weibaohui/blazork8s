@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
-using BlazorApp.Service;
+using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;

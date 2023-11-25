@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
 
-namespace BlazorApp.Service.impl
+namespace BlazorApp.Service.k8s.impl
 {
     public class PodService : CommonAction<V1Pod>, IPodService
     {

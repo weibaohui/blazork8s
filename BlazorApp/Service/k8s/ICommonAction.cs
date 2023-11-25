@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using k8s;
 using k8s.Models;
 
-namespace BlazorApp.Service;
+namespace BlazorApp.Service.k8s;
 
 public interface ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {

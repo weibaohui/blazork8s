@@ -1,6 +1,6 @@
 using k8s.Models;
 
-namespace BlazorApp.Service.impl
+namespace BlazorApp.Service.k8s.impl
 {
     public class EventService : CommonAction<Corev1Event>, IEventService
     {

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Service;
+using BlazorApp.Service.k8s;
 using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;

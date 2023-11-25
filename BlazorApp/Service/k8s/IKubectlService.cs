@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Service.k8s;
 
 public interface IKubectlService
 {

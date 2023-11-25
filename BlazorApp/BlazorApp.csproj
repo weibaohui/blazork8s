@@ -15,16 +15,4 @@
         <ProjectReference Include="..\Entity\Entity.csproj"/>
         <ProjectReference Include="..\Extension\Extension.csproj"/>
     </ItemGroup>
-    <ItemGroup>
-        <AdditionalFiles Include="Pages\Common\metadata\AnnotationsView.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\ControllerBy.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\ControllerByView.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\ImagesView.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\LabelsView.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\SelectorView.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\StatusView.razor"/>
-        <AdditionalFiles Include="Pages\Common\metadata\TolerationsView.razor"/>
-        <AdditionalFiles Include="Pages\Common\ResourceWatcher.razor"/>
-        <AdditionalFiles Include="Pages\Common\SearchToolBar.razor"/>
-    </ItemGroup>
 </Project>

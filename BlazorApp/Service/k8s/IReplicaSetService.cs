@@ -1,6 +1,6 @@
 using k8s.Models;
 
-namespace BlazorApp.Service
+namespace BlazorApp.Service.k8s
 {
     public interface IReplicaSetService : ICommonAction<V1ReplicaSet>
     {

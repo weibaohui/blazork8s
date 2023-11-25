@@ -5,7 +5,7 @@ using k8s;
 using k8s.Models;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Service.k8s.impl;
 
 public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {

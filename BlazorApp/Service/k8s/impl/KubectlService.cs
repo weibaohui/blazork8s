@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Service.k8s.impl;
 
 public class KubectlService : IKubectlService
 {

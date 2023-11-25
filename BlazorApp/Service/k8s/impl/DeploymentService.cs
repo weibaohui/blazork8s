@@ -1,7 +1,7 @@
 using BlazorApp.Utils;
 using k8s.Models;
 
-namespace BlazorApp.Service.impl
+namespace BlazorApp.Service.k8s.impl
 {
     public class DeploymentService : CommonAction<V1Deployment>, IDeploymentService
     {

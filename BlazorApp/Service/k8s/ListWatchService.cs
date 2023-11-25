@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace BlazorApp.Service;
+namespace BlazorApp.Service.k8s;
 
 public class ListWatchService : IHostedService, IDisposable
 {
@@ -34,6 +34,7 @@ public class ListWatchService : IHostedService, IDisposable
         WatchReplicaSet();
         WatchNode();
         WatchEvent();
+        WatchNamespace();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
@@ -69,6 +70,12 @@ public class ListWatchService : IHostedService, IDisposable
     {
         var listResp = _baseService.Client().CoreV1.ListNodeWithHttpMessagesAsync(watch: true);
         await new Watcher<V1Node, V1NodeList>(_ctx).Watch(listResp);
+    }
+
+    private async Task WatchNamespace()
+    {
+        var listResp = _baseService.Client().CoreV1.ListNamespaceWithHttpMessagesAsync(watch: true);
+        await new Watcher<V1Namespace, V1NamespaceList>(_ctx).Watch(listResp);
     }
 
     public Task StopAsync(CancellationToken stoppingToken)

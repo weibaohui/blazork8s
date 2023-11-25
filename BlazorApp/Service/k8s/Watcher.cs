@@ -8,7 +8,7 @@ using k8s.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 
-namespace BlazorApp.Service;
+namespace BlazorApp.Service.k8s;
 
 public class Watcher<T, TL> where T : IKubernetesObject<V1ObjectMeta>
 {

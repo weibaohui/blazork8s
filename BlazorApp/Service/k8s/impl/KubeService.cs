@@ -6,7 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using k8s;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Service.k8s.impl;
 
 public class KubeService : IKubeService
 {

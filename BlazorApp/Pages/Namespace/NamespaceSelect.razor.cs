@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using BlazorApp.Service;
+using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -17,9 +16,10 @@ namespace BlazorApp.Pages.Namespace
 
         private IList<V1Namespace> _ns;
 
-        protected override async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
             _ns = NamespaceService.List();
+            base.OnInitialized();
         }
 
         private void HandleChange(string value)

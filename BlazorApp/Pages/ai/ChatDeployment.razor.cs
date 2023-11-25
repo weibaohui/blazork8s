@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorApp.Service;
-using BlazorApp.Service.impl;
+using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.ai;
