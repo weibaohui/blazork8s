@@ -1,10 +1,8 @@
-﻿@using k8s.Models
-@using  BlazorApp.Pages.Container
-@using  BlazorApp.Pages.Event
-@using  BlazorApp.Pages.Workload
-@using  BlazorApp.Pages.Pod
-@using Extension
-@using Extension.k8s
+﻿@using Extension
+@using k8s.Models
+@using BlazorApp.Pages.Common.metadata
+@using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod
 @inherits FeedbackComponent<V1ReplicaSet, bool>
 @if (RsItem != null)
 {
@@ -28,7 +26,7 @@
         <ImagesView PodSpec="@RsItem.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@RsItem.Spec.Template.Spec.Tolerations"></TolerationsView>
     </Descriptions>
-    <PodListView ControllerByUid="@RsItem.Metadata.Uid" ></PodListView>
+    <PodListView ControllerByUid="@RsItem.Metadata.Uid"></PodListView>
 
     <EventListView Uid="@RsItem.Metadata.Uid"></EventListView>
 }
