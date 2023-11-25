@@ -26,14 +26,6 @@ namespace BlazorApp.Service.impl
                 .ToList();
         }
 
-        private IList<V1Pod> ListPodByNamespace(string ns)
-        {
-            var pods = List();
-
-
-            return pods.Where(x => x.Namespace() == ns).ToList();
-        }
-
 
         //
         public async Task<bool> DeletePod(string ns, string name)
@@ -90,10 +82,6 @@ namespace BlazorApp.Service.impl
             // await stream.CopyToAsync(Console.OpenStandardOutput());
         }
 
-        public Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)
-        {
-            return Task.FromResult<IList<V1Pod>>(ListPodByNamespace(ns));
-        }
 
         public IEnumerable<Tuple<string, int>> NodePodsNum()
         {
