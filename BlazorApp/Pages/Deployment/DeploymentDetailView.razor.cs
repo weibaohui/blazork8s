@@ -25,7 +25,7 @@ namespace BlazorApp.Pages.Deployment
             Item = base.Options;
 
             var rs = ReplicaSetService.ListByOwnerUid(Item.Uid());
-            rs.ForEach(async r =>
+            rs.ForEach(r =>
             {
                 var pods = PodService.ListByOwnerUid(r.Uid());
                 pods.ForEach(p => Pods.Add(p));
