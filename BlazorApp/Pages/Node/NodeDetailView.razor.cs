@@ -19,7 +19,7 @@ namespace BlazorApp.Pages.Node
         protected override async Task OnInitializedAsync()
         {
             _node = Options;
-            _pods = PodService.List();
+            _pods = PodService.ListByNodeName(_node.Name());
             await base.OnInitializedAsync();
         }
 
