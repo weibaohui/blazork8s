@@ -3,6 +3,7 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
+using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -15,7 +16,8 @@ namespace BlazorApp.Pages.Pod
 
         [Inject]
         private INodeService NodeService { get; set; }
-
+        [Inject]
+        private IKubeService KubeService { get; set; }
 
         private async Task OnResourceChanged(ResourceCache<V1Pod> data)
         {
@@ -47,6 +49,7 @@ namespace BlazorApp.Pages.Pod
 
         private async Task PodDeleteHandler(V1Pod pod)
         {
+            await KubeService.Client().CoreV1.DeleteNamespacedPodAsync(pod.Name(), pod.Namespace());
             await InvokeAsync(StateHasChanged);
         }
     }

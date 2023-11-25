@@ -25,7 +25,7 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
     public IEnumerable<T> SelectedRows;
 
     public int  PageIndex = 1;
-    public int  PageSize  = 5;
+    public int  PageSize  = 10;
     public int  Total     = 100;
     public bool Loading   = false;
 

@@ -16,11 +16,11 @@ namespace BlazorApp.Pages.Pod
         [Inject]
         private IPageDrawerService PageDrawerService { get; set; }
 
-        public V1Pod PodItem;
+        private V1Pod _podItem;
 
         protected override void OnInitialized()
         {
-            PodItem = base.Options;
+            _podItem = base.Options;
             base.OnInitialized();
         }
 

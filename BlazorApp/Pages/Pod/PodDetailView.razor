@@ -5,45 +5,45 @@
 @using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
 @inherits FeedbackComponent<V1Pod, bool>
-@if (PodItem != null)
+@if (_podItem != null)
 {
     <Descriptions Bordered Column="1">
-        <MetadataView Item="PodItem" T="V1Pod"></MetadataView>
+        <MetadataView Item="_podItem" T="V1Pod"></MetadataView>
         <DescriptionsItem Title="状态">
-            <StatusView Status=@PodItem.Status()></StatusView>
+            <StatusView Status=@_podItem.Status()></StatusView>
         </DescriptionsItem>
         <DescriptionsItem Title="Node">
             <Tag PresetColor=@PresetColor.Green
-                 OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))"
+                 OnClick="@(() => OnNodeNameClick(_podItem.Spec.NodeName))"
                  Style="cursor: pointer">
-                @PodItem.Spec.NodeName
+                @_podItem.Spec.NodeName
             </Tag>
         </DescriptionsItem>
         <DescriptionsItem Title="Pod IP">
-            @if (PodItem.Status.PodIP != null)
+            @if (_podItem.Status.PodIP != null)
             {
-                @PodItem.Status.PodIP
+                @_podItem.Status.PodIP
             }
         </DescriptionsItem>
         <DescriptionsItem Title="Pod IPs">
-            @if (PodItem.Status.PodIPs != null)
+            @if (_podItem.Status.PodIPs != null)
             {
-                @foreach (var ip in PodItem.Status.PodIPs)
+                @foreach (var ip in _podItem.Status.PodIPs)
                 {
                     <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
                 }
             }
         </DescriptionsItem>
-        <DescriptionsItem Title="Priority Class">@PodItem.Spec.PriorityClassName</DescriptionsItem>
-        <DescriptionsItem Title="QoS Class">@PodItem.Status.QosClass</DescriptionsItem>
-        <SelectorView Title="Node Selector" Selector="@PodItem.Spec.NodeSelector"></SelectorView>
-        <PodConditionView Conditions="@PodItem.Status.Conditions"></PodConditionView>
-        <LabelsView Labels="PodItem.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@PodItem.Annotations()"></AnnotationsView>
-        <ImagesView PodSpec="@PodItem.Spec"></ImagesView>
-        <TolerationsView Tolerations="@PodItem.Spec.Tolerations"></TolerationsView>
+        <DescriptionsItem Title="Priority Class">@_podItem.Spec.PriorityClassName</DescriptionsItem>
+        <DescriptionsItem Title="QoS Class">@_podItem.Status.QosClass</DescriptionsItem>
+        <SelectorView Title="Node Selector" Selector="@_podItem.Spec.NodeSelector"></SelectorView>
+        <PodConditionView Conditions="@_podItem.Status.Conditions"></PodConditionView>
+        <LabelsView Labels="_podItem.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@_podItem.Annotations()"></AnnotationsView>
+        <ImagesView PodSpec="@_podItem.Spec"></ImagesView>
+        <TolerationsView Tolerations="@_podItem.Spec.Tolerations"></TolerationsView>
     </Descriptions>
-    <ContainerListView Pod="@PodItem"></ContainerListView>
-    <VolumeView PodItem="@PodItem"></VolumeView>
-    <MiniEventListView Uid="@PodItem.Metadata.Uid"></MiniEventListView>
+    <ContainerListView Pod="@_podItem"></ContainerListView>
+    <VolumeView PodItem="@_podItem"></VolumeView>
+    <MiniEventListView Uid="@_podItem.Metadata.Uid"></MiniEventListView>
 }
