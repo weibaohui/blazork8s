@@ -35,9 +35,9 @@ public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1Ob
             .ToList();
     }
 
-    public IList<T> ListByUid(string uid)
+    public T GetByUid(string uid)
     {
-        return List().Where(x => x.Uid() == uid).ToList();
+        return List().First(x => x.Uid() == uid);
     }
 
     public IList<T> ListByNamespace(string ns)
