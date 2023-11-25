@@ -29,7 +29,7 @@ namespace BlazorApp.Pages.Pod
         {
             if (!string.IsNullOrEmpty(ControllerByUid))
             {
-                Pods = await PodService.ListByOwnerUid(ControllerByUid);
+                Pods = PodService.ListByOwnerUid(ControllerByUid);
             }
 
             await base.OnInitializedAsync();

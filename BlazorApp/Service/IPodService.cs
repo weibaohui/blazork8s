@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.WebSockets;
@@ -6,12 +7,11 @@ using k8s.Models;
 
 namespace BlazorApp.Service
 {
-    public interface IPodService : INamespaceAction<V1Pod>
+    public interface IPodService : ICommonAction<V1Pod>
     {
-        Task<IList<V1Pod>> ListPods();
-        Task<int>          NodePodsNum();
+        IEnumerable<Tuple<string, int>> NodePodsNum();
 
-        Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid);
+        IList<V1Pod> ListByNodeName(string nodeName);
 
 
         //删除POD
@@ -19,11 +19,5 @@ namespace BlazorApp.Service
 
         Task<Stream>    Logs(V1Pod      pod, bool   follow = false, bool previous = false);
         Task<WebSocket> ExecInPod(V1Pod pod, string command);
-
-        /// <summary>
-        /// Pod列表是否发生变更
-        /// </summary>
-        /// <returns></returns>
-        bool Changed();
     }
 }

@@ -1,22 +1,32 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AntDesign;
-using Entity;
+using BlazorApp.Service;
+using BlazorApp.Utils;
 using k8s.Models;
+using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Node
 {
-    public partial class NodeDetailView : FeedbackComponent<NodeVO, bool>
+    public partial class NodeDetailView : FeedbackComponent<V1Node, bool>
     {
-        public V1Node       Node;
-        public IList<V1Pod> Pods;
+        private V1Node       _node;
+        private IList<V1Pod> _pods;
 
-        protected override void OnInitialized()
+        [Inject]
+        private IPodService PodService { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            Node = Options.Node;
-            Pods = Options.Pods;
-            base.OnInitialized();
+            _node = Options;
+            _pods = PodService.List();
+            await base.OnInitializedAsync();
         }
 
+        private async Task OnResourceChanged(ResourceCache<V1Pod> data)
+        {
+            await InvokeAsync(StateHasChanged);
+        }
 
         private async void OnClose()
         {

@@ -1,47 +1,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using k8s;
+using BlazorApp.Utils;
 using k8s.Models;
 
 namespace BlazorApp.Service.impl
 {
     public class DeploymentService : IDeploymentService
     {
-        private readonly IBaseService  _baseService;
+        private readonly IBaseService                _baseService;
+        private readonly ResourceCache<V1Deployment> _cache = ResourceCacheHelper<V1Deployment>.Instance.Build();
 
         public DeploymentService(IBaseService baseService)
         {
-            _baseService   = baseService;
+            _baseService = baseService;
         }
 
 
-
-        public async Task<V1Deployment> FindByName(string name)
+        public V1Deployment FindByName(string name)
         {
-            var list = await List();
-            return list.Items.First(x => x.Name() == name);
+            var list = List();
+            return list.First(x => x.Name() == name);
         }
 
-        public async Task<V1DeploymentList> List()
+        public List<V1Deployment> List()
         {
-            return await _baseService.Client().ListDeploymentForAllNamespacesAsync();
+            return _cache.Get();
         }
 
-        public async Task<V1DeploymentList> ListByNamespace(string ns)
+        public List<V1Deployment> ListByNamespace(string ns)
         {
             if (string.IsNullOrEmpty(ns))
             {
-                return await List();
+                return List();
             }
 
-            return await _baseService.Client().ListNamespacedDeploymentAsync(ns);
+            return List().Where(x => x.Namespace() == ns).ToList();
         }
 
-        public async Task<IList<V1Deployment>> ListItemsByNamespaceAsync(string ns)
+
+        public Task<IList<V1Deployment>> ListItemsByNamespaceAsync(string ns)
         {
-            var ls = await ListByNamespace(ns);
-            return ls.Items;
+            throw new System.NotImplementedException();
         }
     }
 }

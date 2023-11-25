@@ -32,7 +32,7 @@ namespace BlazorApp.Pages.ReplicaSet
                 Items = await ReplicaSetService.ListByOwnerUid(ControllerByUid);
             }
 
-            PodList = await PodService.ListPods();
+            PodList = PodService.List();
             await base.OnInitializedAsync();
         }
 

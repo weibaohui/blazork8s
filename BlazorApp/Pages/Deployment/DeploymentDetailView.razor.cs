@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.Deployment
+namespace BlazorApp.Pages.Deployment
 {
     public partial class DeploymentDetailView : FeedbackComponent<V1Deployment, bool>
     {
@@ -18,7 +17,7 @@ namespace  BlazorApp.Pages.Deployment
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
 
-        public IList<V1Pod> Pods  { get; set; }
+        public IList<V1Pod> Pods { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
@@ -28,7 +27,7 @@ namespace  BlazorApp.Pages.Deployment
             var rs = await ReplicaSetService.ListByOwnerUid(Item.Uid());
             rs.ForEach(async r =>
             {
-                var pods = await PodService.ListByOwnerUid(r.Uid());
+                var pods = PodService.ListByOwnerUid(r.Uid());
                 pods.ForEach(p => Pods.Add(p));
             });
             await base.OnInitializedAsync();

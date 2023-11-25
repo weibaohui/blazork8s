@@ -8,11 +8,11 @@ namespace BlazorApp.Service.impl
 {
     public class ReplicaSetService : IReplicaSetService
     {
-        private readonly IBaseService  _baseService;
+        private readonly IBaseService _baseService;
 
         public ReplicaSetService(IBaseService baseService)
         {
-            _baseService   = baseService;
+            _baseService = baseService;
         }
 
 

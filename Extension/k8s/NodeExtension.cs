@@ -43,9 +43,9 @@ namespace Extension.k8s
         /// <param name="list"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static V1Node FilterByNodeName(this V1NodeList list, string name)
+        public static V1Node FilterByNodeName(this IList<V1Node> list, string name)
         {
-            return list.Items.First(x => x.Name() == name);
+            return list.First(x => x.Name() == name);
         }
     }
 }

@@ -3,7 +3,6 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service;
 using BlazorApp.Utils;
-using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -35,9 +34,9 @@ namespace BlazorApp.Pages.Pod
 
         private async Task OnNodeNameClick(string nodeName)
         {
-            var nodeVo  = await NodeService.GetNodeVOWithPodListByNodeName(nodeName);
+            var node    = NodeService.GetByName(nodeName);
             var options = PageDrawerService.DefaultOptions($"Node:{nodeName}");
-            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options, nodeVo);
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, V1Node, bool>(options, node);
         }
 
         private async Task OnPodClick(V1Pod pod)

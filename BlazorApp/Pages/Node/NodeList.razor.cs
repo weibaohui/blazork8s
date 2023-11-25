@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Service;
-using Entity;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -35,8 +34,7 @@ namespace BlazorApp.Pages.Node
         public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
         {
             var options = PageDrawerService.DefaultOptions($"{node.Kind ?? "Node"}:{node.Name()}");
-            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options,
-                new NodeVO { Node = node, Pods = pods });
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, V1Node, bool>(options, node);
         }
     }
 }

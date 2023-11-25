@@ -1,13 +1,11 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Entity;
 using Extension.k8s;
-using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.impl
 {
-    public class NodeService : INodeService
+    public class NodeService : CommonAction<V1Node>, INodeService
     {
         private readonly IBaseService _baseService;
         private readonly IPodService  _podService;
@@ -18,31 +16,26 @@ namespace BlazorApp.Service.impl
             _podService  = podService;
         }
 
-        public async Task<(V1Node node, IList<V1Pod> pods)> GetNodeWithPodListByNodeName(string nodeName)
+        public (V1Node node, IList<V1Pod> pods) GetNodeWithPodListByNodeName(string nodeName)
         {
-            var nodeList = await List();
+            var nodeList = List();
             var node     = nodeList.FilterByNodeName(nodeName);
-            var podList  = await _podService.ListPods();
+            var podList  = _podService.List();
             var pods     = podList.FilterByNodeName(nodeName);
             return (node, pods);
         }
 
 
-        public async Task<NodeVO> GetNodeVOWithPodListByNodeName(string nodeName)
+        public NodeVO GetNodeVOWithPodListByNodeName(string nodeName)
         {
-            var (node, pods) = await GetNodeWithPodListByNodeName(nodeName);
+            var (node, pods) = GetNodeWithPodListByNodeName(nodeName);
             return new NodeVO { Node = node, Pods = pods };
         }
 
-        public async Task<V1NodeList> List()
-        {
-            return await _baseService.Client().ListNodeAsync();
-        }
 
-        public async Task<V1Node> FilterByNodeName(string name)
+        public V1Node FilterByNodeName(string name)
         {
-            var list = await List();
-            return list.FilterByNodeName(name);
+            return List().FilterByNodeName(name);
         }
     }
 }

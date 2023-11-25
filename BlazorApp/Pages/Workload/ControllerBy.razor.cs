@@ -4,7 +4,6 @@ using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Service;
-using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -42,14 +41,14 @@ namespace BlazorApp.Pages.Workload
 
         private async Task OnNodeNameClick(string nodeName)
         {
-            var nodeVo  = await NodeService.GetNodeVOWithPodListByNodeName(nodeName);
+            var node    = NodeService.GetByName(nodeName);
             var options = PageDrawerService.DefaultOptions($"Node:{nodeName}");
-            await PageDrawerService.ShowDrawerAsync<NodeDetailView, NodeVO, bool>(options, nodeVo);
+            await PageDrawerService.ShowDrawerAsync<NodeDetailView, V1Node, bool>(options, node);
         }
 
         private async Task OnDeploymentNameClick(string name)
         {
-            var deploy  = await DeploymentService.FindByName(name);
+            var deploy  = DeploymentService.FindByName(name);
             var options = PageDrawerService.DefaultOptions($"{deploy.Kind ?? "Deployment"}:{deploy.Name()}");
 
             await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);

@@ -4,60 +4,32 @@ using System.IO;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Threading.Tasks;
-using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace BlazorApp.Service.impl
 {
-    public class PodService : IPodService
+    public class PodService : CommonAction<V1Pod>, IPodService
     {
-        private readonly IBaseService         _baseService;
-        private readonly IServiceScope        _scope;
-        private readonly ResourceCache<V1Pod> _cache = ResourceCacheHelper<V1Pod>.Instance.Build();
+        private readonly IBaseService _baseService;
 
-        public PodService(IBaseService baseService, IServiceScopeFactory serviceScopeFactory)
+        public PodService(IBaseService baseService)
         {
             _baseService = baseService;
-            _scope       = serviceScopeFactory.CreateScope();
-            // _watchService = _scope.ServiceProvider.GetService<IWatchService>();
-            // Console.WriteLine("PodService 初始化");
         }
 
 
-        public bool Changed()
+        public IList<V1Pod> ListByNodeName(string nodeName)
         {
-            return _cache.Changed();
-        }
-
-        public async Task<IList<V1Pod>> ListByOwnerUid(string controllerByUid)
-        {
-            var list = await ListPods();
-            return list.Where(x => x.GetController() != null && x.GetController().Uid == controllerByUid)
+            var list = List();
+            return list.Where(x => x.Spec.NodeName == nodeName)
                 .ToList();
         }
 
-
-        public async Task<IList<V1Pod>> ListPods()
+        private IList<V1Pod> ListPodByNamespace(string ns)
         {
-            if (_cache.Count != 0) return _cache.Get();
-            var pods = await _baseService.Client().ListPodForAllNamespacesAsync();
-            foreach (var item in pods.Items)
-            {
-                _cache.Update(WatchEventType.Added, item);
-            }
+            var pods = List();
 
-            return _cache.Get();
-        }
-
-        private async Task<IList<V1Pod>> ListPodByNamespace(string ns)
-        {
-            var pods = await ListPods();
-            if (string.IsNullOrEmpty(ns))
-            {
-                return pods;
-            }
 
             return pods.Where(x => x.Namespace() == ns).ToList();
         }
@@ -118,14 +90,14 @@ namespace BlazorApp.Service.impl
             // await stream.CopyToAsync(Console.OpenStandardOutput());
         }
 
-        public async Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)
+        public Task<IList<V1Pod>> ListItemsByNamespaceAsync(string ns)
         {
-            return await ListPodByNamespace(ns);
+            return Task.FromResult<IList<V1Pod>>(ListPodByNamespace(ns));
         }
 
-        public async Task<int> NodePodsNum()
+        public IEnumerable<Tuple<string, int>> NodePodsNum()
         {
-            var pods = await ListPods();
+            var pods = List();
             var tuples = pods.GroupBy(s => s.Spec.NodeName)
                 .OrderBy(g => g.Key)
                 .Select(g => Tuple.Create(g.Key, g.Count()));
@@ -134,7 +106,7 @@ namespace BlazorApp.Service.impl
                 Console.WriteLine($"{tuple.Item1}={tuple.Item2}");
             }
 
-            return await Task.FromResult(0);
+            return tuples;
         }
     }
 }

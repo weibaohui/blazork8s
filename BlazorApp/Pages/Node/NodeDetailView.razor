@@ -4,47 +4,47 @@
 @using BlazorApp.Pages.Workload
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<Entity.NodeVO, bool>
-@if (Node != null)
+@inherits FeedbackComponent<V1Node, bool>
+@if (_node != null)
 {
     <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="创建时间">
-            @Node.Metadata.CreationTimestamp?.AgeFromUtc()
-            (@Node.Metadata.CreationTimestamp)
+            @_node.Metadata.CreationTimestamp?.AgeFromUtc()
+            (@_node.Metadata.CreationTimestamp)
         </DescriptionsItem>
         <DescriptionsItem Title="Name">
-            <Text Copyable> @Node.Name()</Text>
+            <Text Copyable> @_node.Name()</Text>
         </DescriptionsItem>
         <DescriptionsItem Title="Conditions">
-            @if (Node.Status.Conditions.IsReady())
+            @if (_node.Status.Conditions.IsReady())
             {
                 <Tag Icon="check-circle" Color="success">Ready</Tag>
             }
             else
             {
-                <Tag Icon="close-circle" Color="error">@Node.Status.Conditions.NotReadyReason()</Tag>
+                <Tag Icon="close-circle" Color="error">@_node.Status.Conditions.NotReadyReason()</Tag>
             }
         </DescriptionsItem>
         <DescriptionsItem Title="Address">
-            @foreach (var addr in Node.Status.Addresses)
+            @foreach (var addr in _node.Status.Addresses)
             {
                 <div>@addr.Type : @addr.Address</div>
             }
         </DescriptionsItem>
         <DescriptionsItem Title="OS">
-            @Node.Status.NodeInfo.OperatingSystem (@Node.Status.NodeInfo.Architecture)
+            @_node.Status.NodeInfo.OperatingSystem (@_node.Status.NodeInfo.Architecture)
         </DescriptionsItem>
-        <DescriptionsItem Title="KernelVersion">@Node.Status.NodeInfo.KernelVersion</DescriptionsItem>
-        <DescriptionsItem Title="KubeletVersion">@Node.Status.NodeInfo.KubeletVersion</DescriptionsItem>
-        <DescriptionsItem Title="ContainerRuntime">@Node.Status.NodeInfo.ContainerRuntimeVersion</DescriptionsItem>
-        <LabelsView Labels="@Node.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@Node.Annotations()"></AnnotationsView>
+        <DescriptionsItem Title="KernelVersion">@_node.Status.NodeInfo.KernelVersion</DescriptionsItem>
+        <DescriptionsItem Title="KubeletVersion">@_node.Status.NodeInfo.KubeletVersion</DescriptionsItem>
+        <DescriptionsItem Title="ContainerRuntime">@_node.Status.NodeInfo.ContainerRuntimeVersion</DescriptionsItem>
+        <LabelsView Labels="@_node.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@_node.Annotations()"></AnnotationsView>
     </Descriptions>
-    <NodeResourceQuantityView BlockTitle="Capacity" Dict=@Node.Status.Capacity>
+    <NodeResourceQuantityView BlockTitle="Capacity" Dict=@_node.Status.Capacity>
     </NodeResourceQuantityView>
-    <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
+    <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@_node.Status.Allocatable>
     </NodeResourceQuantityView>
-    <PodListView Pods="Pods" HideAction="true"></PodListView>
-    <EventListView Host="@Node.Name()"></EventListView>
+    <PodListView Pods="_pods" HideAction="true"></PodListView>
+    <EventListView Host="@_node.Name()"></EventListView>
 }
