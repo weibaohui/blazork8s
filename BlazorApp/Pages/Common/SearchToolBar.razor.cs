@@ -1,9 +1,7 @@
-using System;
 using System.Threading.Tasks;
-using AntDesign;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.Workload
+namespace BlazorApp.Pages.Common
 {
     public partial class SearchToolBar : ComponentBase
     {

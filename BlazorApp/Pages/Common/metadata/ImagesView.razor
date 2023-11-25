@@ -1,5 +1,4 @@
-@using AntDesign;
-@using  BlazorApp.Pages.Container
+@using BlazorApp.Pages.Container
 @if (PodSpec != null)
 {
     <DescriptionsItem Title="Images">
@@ -8,8 +7,8 @@
             @foreach (var c in PodSpec.Containers)
             {
                 <Paragraph >
-                        <ContainerType Type="Main"></ContainerType>
-                        <Text Copyable>@c.Image</Text>
+                    <ContainerType Type="Main"></ContainerType>
+                    <Text Copyable>@c.Image</Text>
                 </Paragraph>
             }
         }
@@ -18,8 +17,8 @@
             @foreach (var c in PodSpec.InitContainers)
             {
                 <Paragraph >
-                        <ContainerType Type="Init"></ContainerType>
-                        <Text Copyable>@c.Image</Text>
+                    <ContainerType Type="Init"></ContainerType>
+                    <Text Copyable>@c.Image</Text>
                 </Paragraph>
             }
         }
@@ -28,8 +27,8 @@
             @foreach (var c in PodSpec.EphemeralContainers)
             {
                 <Paragraph >
-                        <ContainerType Type="Ephemeral"></ContainerType>
-                        <Text Copyable>@c.Image</Text>
+                    <ContainerType Type="Ephemeral"></ContainerType>
+                    <Text Copyable>@c.Image</Text>
                 </Paragraph>
             }
         }

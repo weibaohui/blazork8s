@@ -25,5 +25,6 @@
         <AdditionalFiles Include="Pages\Common\metadata\StatusView.razor"/>
         <AdditionalFiles Include="Pages\Common\metadata\TolerationsView.razor"/>
         <AdditionalFiles Include="Pages\Common\ResourceWatcher.razor"/>
+        <AdditionalFiles Include="Pages\Common\SearchToolBar.razor"/>
     </ItemGroup>
 </Project>
