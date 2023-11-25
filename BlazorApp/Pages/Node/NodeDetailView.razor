@@ -9,13 +9,8 @@
 {
     <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="创建时间">
-            @_node.Metadata.CreationTimestamp?.AgeFromUtc()
-            (@_node.Metadata.CreationTimestamp)
-        </DescriptionsItem>
-        <DescriptionsItem Title="Name">
-            <Text Copyable> @_node.Name()</Text>
-        </DescriptionsItem>
+        <MetadataView Item="_node" T="V1Node"></MetadataView>
+
         <DescriptionsItem Title="Conditions">
             @if (_node.Status.Conditions.IsReady())
             {
@@ -38,13 +33,11 @@
         <DescriptionsItem Title="KernelVersion">@_node.Status.NodeInfo.KernelVersion</DescriptionsItem>
         <DescriptionsItem Title="KubeletVersion">@_node.Status.NodeInfo.KubeletVersion</DescriptionsItem>
         <DescriptionsItem Title="ContainerRuntime">@_node.Status.NodeInfo.ContainerRuntimeVersion</DescriptionsItem>
-        <LabelsView Labels="@_node.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@_node.Annotations()"></AnnotationsView>
     </Descriptions>
     <NodeResourceQuantityView BlockTitle="Capacity" Dict=@_node.Status.Capacity>
     </NodeResourceQuantityView>
     <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@_node.Status.Allocatable>
     </NodeResourceQuantityView>
-    <PodListView Pods="_pods" HideAction="true"></PodListView>
-    <EventListView Host="@_node.Name()"></EventListView>
+    <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
+    <MiniEventListView Host="@_node.Name()"></MiniEventListView>
 }

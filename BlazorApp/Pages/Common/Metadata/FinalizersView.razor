@@ -1,0 +1,10 @@
+@if(Finalizers!=null){
+<DescriptionsItem Title="Finalizers">
+    @foreach (var label in Finalizers)
+    {
+        <Paragraph Copyable>
+            <Tag PresetColor=@PresetColor.Blue>@label</Tag>
+        </Paragraph>
+    }
+</DescriptionsItem>
+}

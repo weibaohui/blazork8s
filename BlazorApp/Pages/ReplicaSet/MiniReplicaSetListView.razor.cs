@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.ReplicaSet
 {
-    public partial class ReplicaSetListView : ComponentBase
+    public partial class MiniReplicaSetListView : ComponentBase
     {
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }

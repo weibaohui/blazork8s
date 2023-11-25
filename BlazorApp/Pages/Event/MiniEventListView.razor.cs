@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Event
 {
-    public partial class EventListView : ComponentBase
+    public partial class MiniEventListView : ComponentBase
     {
         [Inject]
         private IEventService EventService { get; set; }

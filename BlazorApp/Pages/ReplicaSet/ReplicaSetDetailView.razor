@@ -1,5 +1,4 @@
-﻿@using Extension
-@using k8s.Models
+﻿@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
@@ -7,17 +6,7 @@
 @if (RsItem != null)
 {
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="创建时间">
-            @RsItem.Metadata.CreationTimestamp?.AgeFromUtc()
-            (@RsItem.Metadata.CreationTimestamp)
-        </DescriptionsItem>
-        <DescriptionsItem Title="Name">
-            <Text Copyable>@RsItem.Name()</Text>
-        </DescriptionsItem>
-        <DescriptionsItem Title="Namespace">@RsItem.Namespace()</DescriptionsItem>
-        <ControllerByView Owner=@RsItem.OwnerReferences()></ControllerByView>
-        <LabelsView Labels="@RsItem.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@RsItem.Annotations()"></AnnotationsView>
+        <MetadataView Item="RsItem" T="V1ReplicaSet"></MetadataView>
         <SelectorView Title="Selector" Selector="@RsItem.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@RsItem.Spec.Template.Spec.NodeSelector"></SelectorView>
         <DescriptionsItem Title="Replicas">
@@ -26,7 +15,6 @@
         <ImagesView PodSpec="@RsItem.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@RsItem.Spec.Template.Spec.Tolerations"></TolerationsView>
     </Descriptions>
-    <PodListView ControllerByUid="@RsItem.Metadata.Uid"></PodListView>
-
-    <EventListView Uid="@RsItem.Metadata.Uid"></EventListView>
+    <MiniPodListView ControllerByUid="@RsItem.Metadata.Uid"></MiniPodListView>
+    <MiniEventListView Uid="@RsItem.Metadata.Uid"></MiniEventListView>
 }

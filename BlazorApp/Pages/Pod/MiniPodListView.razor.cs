@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Pod
 {
-    public partial class PodListView : ComponentBase
+    public partial class MiniPodListView : ComponentBase
     {
         [Inject]
         private IPodService PodService { get; set; }

@@ -8,18 +8,10 @@
 @if (PodItem != null)
 {
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="创建时间">
-            @PodItem.Metadata.CreationTimestamp?.AgeFromUtc()
-            (@PodItem.Metadata.CreationTimestamp)
-        </DescriptionsItem>
-        <DescriptionsItem Title="Name">
-            <Text Copyable>@PodItem.Name()</Text>
-        </DescriptionsItem>
-        <DescriptionsItem Title="Namespace">@PodItem.Namespace()</DescriptionsItem>
+        <MetadataView Item="PodItem" T="V1Pod"></MetadataView>
         <DescriptionsItem Title="状态">
             <StatusView Status=@PodItem.Status()></StatusView>
         </DescriptionsItem>
-        <ControllerByView Owner=@PodItem.OwnerReferences()></ControllerByView>
         <DescriptionsItem Title="Node">
             <Tag PresetColor=@PresetColor.Green
                  OnClick="@(() => OnNodeNameClick(PodItem.Spec.NodeName))"
@@ -53,5 +45,5 @@
     </Descriptions>
     <ContainerListView Pod="@PodItem"></ContainerListView>
     <VolumeView PodItem="@PodItem"></VolumeView>
-    <EventListView Uid="@PodItem.Metadata.Uid"></EventListView>
+    <MiniEventListView Uid="@PodItem.Metadata.Uid"></MiniEventListView>
 }

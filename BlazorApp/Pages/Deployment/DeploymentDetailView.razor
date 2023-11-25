@@ -8,17 +8,7 @@
 @if (Item != null)
 {
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="创建时间">
-            @Item.Metadata.CreationTimestamp?.AgeFromUtc()
-            (@Item.Metadata.CreationTimestamp)
-        </DescriptionsItem>
-        <DescriptionsItem Title="Name">
-            <Text Copyable>@Item.Name()</Text>
-        </DescriptionsItem>
-        <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
-        <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
-        <LabelsView Labels="@Item.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
+        <MetadataView Item="Item" T="V1Deployment"></MetadataView>
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Item.Spec.Template.Spec.NodeSelector"></SelectorView>
         <DescriptionsItem Title="Replicas">
@@ -29,7 +19,7 @@
         <StrategyTypeView Strategy="@Item.Spec.Strategy"></StrategyTypeView>
         <ConditionView ConditionList="@Item.Status.Conditions"></ConditionView>
     </Descriptions>
-    <ReplicaSetListView ControllerByUid="@Item.Metadata.Uid"></ReplicaSetListView>
-    <PodListView Pods="@Pods"></PodListView>
-    <EventListView Uid="@Item.Metadata.Uid"></EventListView>
+    <MiniReplicaSetListView ControllerByUid="@Item.Metadata.Uid"></MiniReplicaSetListView>
+    <MiniPodListView Pods="@Pods"></MiniPodListView>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }
