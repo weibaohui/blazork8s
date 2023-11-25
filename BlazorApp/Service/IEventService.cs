@@ -1,10 +1,8 @@
-﻿using System.Threading.Tasks;
-using k8s.Models;
+﻿using k8s.Models;
 
 namespace BlazorApp.Service
 {
-    public interface IEventService
+    public interface IEventService : ICommonAction<Corev1Event>
     {
-        Task<Corev1EventList> List();
     }
 }

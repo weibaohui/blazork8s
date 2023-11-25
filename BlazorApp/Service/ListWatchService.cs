@@ -29,35 +29,43 @@ public class ListWatchService : IHostedService, IDisposable
         _logger.LogInformation("Timed Hosted Service running.");
 
 #pragma warning disable CS4014
-        WatchAllPod();
-        WatchAllDeployment();
-        WatchAllReplicaSet();
-        WatchAllNode();
+        WatchPod();
+        WatchDeployment();
+        WatchReplicaSet();
+        WatchNode();
+        WatchEvent();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
 
 
-    private async Task WatchAllPod()
+    private async Task WatchPod()
     {
         var listResp = _baseService.Client().CoreV1
             .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
         await new Watcher<V1Pod, V1PodList>(_ctx).Watch(listResp);
     }
 
-    private async Task WatchAllDeployment()
+    private async Task WatchEvent()
+    {
+        var listResp = _baseService.Client().CoreV1
+            .ListEventForAllNamespacesWithHttpMessagesAsync(watch: true);
+        await new Watcher<Corev1Event, Corev1EventList>(_ctx).Watch(listResp);
+    }
+
+    private async Task WatchDeployment()
     {
         var listResp = _baseService.Client().AppsV1.ListDeploymentForAllNamespacesWithHttpMessagesAsync(watch: true);
         await new Watcher<V1Deployment, V1DeploymentList>(_ctx).Watch(listResp);
     }
 
-    private async Task WatchAllReplicaSet()
+    private async Task WatchReplicaSet()
     {
         var listResp = _baseService.Client().AppsV1.ListReplicaSetForAllNamespacesWithHttpMessagesAsync(watch: true);
         await new Watcher<V1ReplicaSet, V1ReplicaSetList>(_ctx).Watch(listResp);
     }
 
-    private async Task WatchAllNode()
+    private async Task WatchNode()
     {
         var listResp = _baseService.Client().CoreV1.ListNodeWithHttpMessagesAsync(watch: true);
         await new Watcher<V1Node, V1NodeList>(_ctx).Watch(listResp);

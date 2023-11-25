@@ -26,23 +26,21 @@ namespace BlazorApp.Pages.Event
         [Parameter]
         public string Host { get; set; }
 
-        public string Advice { get; set; }
+        private string Advice { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            var coreEventList = await EventService.List();
-            if (string.IsNullOrEmpty(Uid))
-            {
-                Events = coreEventList.FilterBySourceHost(Host);
-            }
-            else
-            {
-                Events = coreEventList.FilterByUID(Uid);
-            }
+            var coreEventList = EventService.List();
+            Events = string.IsNullOrEmpty(Uid)
+                ? coreEventList.FilterBySourceHost(Host)
+                : coreEventList.FilterByUID(Uid);
 
-            if (Events!.Any(x => x.Type == "Warning"))
+            if (OpenAi.Enabled())
             {
-                Advice = await OpenAi.ExplainError(JsonSerializer.Serialize(Events));
+                if (Events!.Any(x => x.Type == "Warning"))
+                {
+                    Advice = await OpenAi.ExplainError(JsonSerializer.Serialize(Events));
+                }
             }
         }
     }
