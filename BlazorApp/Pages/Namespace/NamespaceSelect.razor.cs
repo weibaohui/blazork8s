@@ -5,7 +5,7 @@ using BlazorApp.Service;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace  BlazorApp.Pages.Namespace
+namespace BlazorApp.Pages.Namespace
 {
     public partial class NamespaceSelect : ComponentBase
     {
@@ -15,22 +15,16 @@ namespace  BlazorApp.Pages.Namespace
         [Inject]
         private INamespaceService NamespaceService { get; set; }
 
-        private IList<V1Namespace> ns;
+        private IList<V1Namespace> _ns;
 
         protected override async Task OnInitializedAsync()
         {
-            ns = await NamespaceService.GetNamespaces();
+            _ns = NamespaceService.List();
         }
 
-        void handleChange(string value)
+        private void HandleChange(string value)
         {
             OnNsSelected.InvokeAsync(value);
-            // Console.WriteLine(value);
-        }
-
-        void handleItemsChange(IEnumerable<string> value)
-        {
-            Console.WriteLine(value);
         }
     }
 }

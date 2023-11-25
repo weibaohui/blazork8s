@@ -29,7 +29,7 @@ namespace BlazorApp.Pages.ReplicaSet
         {
             if (!string.IsNullOrEmpty(ControllerByUid))
             {
-                Items = await ReplicaSetService.ListByOwnerUid(ControllerByUid);
+                Items = ReplicaSetService.ListByOwnerUid(ControllerByUid);
             }
 
             PodList = PodService.List();

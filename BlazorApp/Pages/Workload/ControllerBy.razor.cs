@@ -34,7 +34,7 @@ namespace BlazorApp.Pages.Workload
 
         private async Task OnRsNameClick(string rsName)
         {
-            var rs      = await ReplicaSetService.FindByName(rsName);
+            var rs      = ReplicaSetService.GetByName(rsName);
             var options = PageDrawerService.DefaultOptions($"{rs.Kind ?? "ReplicaSet"}:{rs.Name()}");
             await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
         }
@@ -48,7 +48,7 @@ namespace BlazorApp.Pages.Workload
 
         private async Task OnDeploymentNameClick(string name)
         {
-            var deploy  = DeploymentService.FindByName(name);
+            var deploy  = DeploymentService.GetByName(name);
             var options = PageDrawerService.DefaultOptions($"{deploy.Kind ?? "Deployment"}:{deploy.Name()}");
 
             await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
