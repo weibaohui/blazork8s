@@ -7,14 +7,12 @@
 @inherits FeedbackComponent<V1Pod, bool>
 @if (_podItem != null)
 {
+
     <Descriptions Bordered Column="1">
         <MetadataView Item="_podItem" T="V1Pod"></MetadataView>
-
-        <DescriptionsItem Title="status">
+        <DescriptionsItem Title="status" LabelStyle="width:120px">
             <StatusView Status=@_podItem.Status()></StatusView>
         </DescriptionsItem>
-
-
         <DescriptionsItem Title="Node">
             <Tag PresetColor=@PresetColor.Green
                  OnClick="@(() => OnNodeNameClick(_podItem.Spec.NodeName))"

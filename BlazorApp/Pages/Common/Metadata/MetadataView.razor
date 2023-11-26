@@ -4,20 +4,23 @@
 @typeparam            T
 @if (Item != null)
 {
-    <DescriptionsItem Title="Name">
-        <Text Copyable>@Item.Name()</Text>
-    </DescriptionsItem>
-    <DescriptionsItem Title="创建时间">
-        <AgeView Age="@Item.CreationTimestamp()"></AgeView>
-        (@Item.Metadata.CreationTimestamp.GetValueOrDefault().ToLocalTime())
-    </DescriptionsItem>
+    <Descriptions Bordered Column="1">
 
-    @if (!Item.Namespace().IsNullOrEmpty())
-    {
-        <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
-    }
-    <LabelsView Labels="Item.Labels()"></LabelsView>
-    <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
-    <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
-    <FinalizersView Finalizers="@Item.Finalizers()"></FinalizersView>
+        <DescriptionsItem Title="Name" LabelStyle="width:120px">
+            <Text Copyable>@Item.Name()</Text>
+        </DescriptionsItem>
+        <DescriptionsItem Title="创建时间">
+            <AgeView Age="@Item.CreationTimestamp()"></AgeView>
+            (@Item.Metadata.CreationTimestamp.GetValueOrDefault().ToLocalTime())
+        </DescriptionsItem>
+
+        @if (!Item.Namespace().IsNullOrEmpty())
+        {
+            <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
+        }
+        <LabelsView Labels="Item.Labels()"></LabelsView>
+        <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
+        <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
+        <FinalizersView Finalizers="@Item.Finalizers()"></FinalizersView>
+    </Descriptions>
 }
