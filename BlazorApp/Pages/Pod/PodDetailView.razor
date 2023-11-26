@@ -9,9 +9,12 @@
 {
     <Descriptions Bordered Column="1">
         <MetadataView Item="_podItem" T="V1Pod"></MetadataView>
-        <DescriptionsItem Title="状态">
+
+        <DescriptionsItem Title="status">
             <StatusView Status=@_podItem.Status()></StatusView>
         </DescriptionsItem>
+
+
         <DescriptionsItem Title="Node">
             <Tag PresetColor=@PresetColor.Green
                  OnClick="@(() => OnNodeNameClick(_podItem.Spec.NodeName))"
@@ -34,6 +37,7 @@
                 }
             }
         </DescriptionsItem>
+
         <DescriptionsItem Title="Priority Class">@_podItem.Spec.PriorityClassName</DescriptionsItem>
         <DescriptionsItem Title="QoS Class">@_podItem.Status.QosClass</DescriptionsItem>
         <SelectorView Title="Node Selector" Selector="@_podItem.Spec.NodeSelector"></SelectorView>
@@ -42,6 +46,7 @@
         <AnnotationsView Annotations="@_podItem.Annotations()"></AnnotationsView>
         <ImagesView PodSpec="@_podItem.Spec"></ImagesView>
         <TolerationsView Tolerations="@_podItem.Spec.Tolerations"></TolerationsView>
+
     </Descriptions>
     <ContainerListView Pod="@_podItem"></ContainerListView>
     <VolumeView PodItem="@_podItem"></VolumeView>
