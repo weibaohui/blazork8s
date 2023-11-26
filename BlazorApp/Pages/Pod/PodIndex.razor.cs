@@ -16,8 +16,6 @@ namespace BlazorApp.Pages.Pod
 
         [Inject]
         private INodeService NodeService { get; set; }
-        [Inject]
-        private IKubeService KubeService { get; set; }
 
         private async Task OnResourceChanged(ResourceCache<V1Pod> data)
         {
@@ -45,12 +43,6 @@ namespace BlazorApp.Pages.Pod
         {
             var options = PageDrawerService.DefaultOptions($"{pod.Kind ?? "Pod"}:{pod.Name()}");
             await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
-        }
-
-        private async Task PodDeleteHandler(V1Pod pod)
-        {
-            await KubeService.Client().CoreV1.DeleteNamespacedPodAsync(pod.Name(), pod.Namespace());
-            await InvokeAsync(StateHasChanged);
         }
     }
 }

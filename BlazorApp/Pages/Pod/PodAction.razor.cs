@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using AntDesign;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
@@ -13,6 +14,9 @@ public partial class PodAction : ComponentBase
     [Parameter]
     public V1Pod PodItem { get; set; }
 
+    [Parameter]
+    public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+
     [Inject]
     private IPodService PodService { get; set; }
 
@@ -23,10 +27,9 @@ public partial class PodAction : ComponentBase
     [Inject]
     private IOpenAiService OpenAi { get; set; }
 
-    [Parameter]
-    public EventCallback<V1Pod> OnPodDelete { get; set; }
 
     public bool Enable;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,10 +37,9 @@ public partial class PodAction : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task DeletePod(V1Pod pod)
+    private async Task OnPodDeleteClick(V1Pod pod)
     {
         await PodService.DeletePod(pod.Namespace(), pod.Name());
-        await OnPodDelete.InvokeAsync(pod);
     }
 
 

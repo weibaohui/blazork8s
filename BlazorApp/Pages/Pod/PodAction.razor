@@ -1,23 +1,41 @@
-<Popconfirm Title="Sure to delete?"
-            OnConfirm="() => DeletePod(PodItem)"
-            OkText="Yes"
-            CancelText="No">
-    <a>删除</a>
-</Popconfirm>
-<a onclick="@(() => OnPodLogClick(PodItem))">日志</a>
-<a onclick="@(() => OnPodExecClick(PodItem))">Exec</a>
-
-@if (Enable)
+@if (MenuMode == MenuMode.Vertical)
 {
-    <DropdownButton>
-        <Overlay>
-            <Menu>
-                <MenuItem Key="1" OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
-                <MenuItem Key="2" OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
+    <Dropdown >
+        <Overlay >
+            <Menu >
+                <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
+                <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
+                <MenuItem >
+                    <Popconfirm Title="确定删除吗"
+                                OnConfirm="() => OnPodDeleteClick(PodItem)"
+                                OkText="Yes"
+                                CancelText="No">
+                        删除
+                    </Popconfirm>
+                </MenuItem>
+                <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
+                <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
             </Menu>
         </Overlay>
-        <Unbound>
-            AI智能
-        </Unbound>
-    </DropdownButton>
+        <ChildContent>
+            <Button>操作 <Icon Type="down"/></Button>
+        </ChildContent>
+    </Dropdown>
+}
+@if (MenuMode == MenuMode.Horizontal)
+{
+    <Menu Mode=MenuMode.Horizontal>
+        <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
+        <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
+        <MenuItem >
+            <Popconfirm Title="确定删除吗"
+                        OnConfirm="() => OnPodDeleteClick(PodItem)"
+                        OkText="Yes"
+                        CancelText="No">
+                删除
+            </Popconfirm>
+        </MenuItem>
+        <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
+        <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
+    </Menu>
 }
