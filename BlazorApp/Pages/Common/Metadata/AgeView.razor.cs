@@ -7,16 +7,16 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class AgeView : ComponentBase
+public partial class AgeView : ComponentBase,IDisposable
 {
     [Parameter]
     public DateTime? Age { get; set; }
 
     [Inject]
-    private ILogger<AgeView> _logger { get; set; }
+    private ILogger<AgeView> Logger { get; set; }
 
-    public string kubeAge;
-    private Timer _timer;
+    private string _kubeAge;
+    private Timer  _timer;
 
     protected override async Task OnInitializedAsync()
     {
@@ -28,7 +28,11 @@ public partial class AgeView : ComponentBase
 
     private void OnTimerCallback()
     {
-         kubeAge = Age.AgeFromUtc();
+         _kubeAge = Age.AgeFromUtc();
          InvokeAsync(StateHasChanged);
+    }
+    public void Dispose()
+    {
+        _timer.Dispose();
     }
 }
