@@ -50,7 +50,7 @@
                     @context.Status.QosClass
                 </AntDesign.Column>
                 <AntDesign.Column Title="存活" TData="string">
-                    @context.CreationTimestamp()?.AgeFromUtc()
+                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Status" TData="string">
                     <StatusView Status="@context.Status()"></StatusView>

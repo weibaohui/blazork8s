@@ -3,16 +3,16 @@
 @typeparam            T
 @if (Item != null)
 {
-        <DescriptionsItem Title="创建时间">
-            @Item.Metadata.CreationTimestamp?.AgeFromUtc()
-            (@Item.Metadata.CreationTimestamp)
-        </DescriptionsItem>
-        <DescriptionsItem Title="Name">
-            <Text Copyable>@Item.Name()</Text>
-        </DescriptionsItem>
-        <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
-        <LabelsView Labels="Item.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
-        <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
-        <FinalizersView Finalizers="@Item.Finalizers()"></FinalizersView>
+    <DescriptionsItem Title="创建时间">
+        <AgeView Age="@Item.CreationTimestamp()"></AgeView>
+        (@Item.Metadata.CreationTimestamp)
+    </DescriptionsItem>
+    <DescriptionsItem Title="Name">
+        <Text Copyable>@Item.Name()</Text>
+    </DescriptionsItem>
+    <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
+    <LabelsView Labels="Item.Labels()"></LabelsView>
+    <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
+    <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
+    <FinalizersView Finalizers="@Item.Finalizers()"></FinalizersView>
 }
