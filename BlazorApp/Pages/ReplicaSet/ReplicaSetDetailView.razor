@@ -3,18 +3,18 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @inherits FeedbackComponent<V1ReplicaSet, bool>
-@if (RsItem != null)
+@if (Item != null)
 {
+    <MetadataView Item="Item" T="V1ReplicaSet"></MetadataView>
     <Descriptions Bordered Column="1">
-        <MetadataView Item="RsItem" T="V1ReplicaSet"></MetadataView>
-        <SelectorView Title="Selector" Selector="@RsItem.Spec.Selector.MatchLabels"></SelectorView>
-        <SelectorView Title="Node Selector" Selector="@RsItem.Spec.Template.Spec.NodeSelector"></SelectorView>
-        <DescriptionsItem Title="Replicas">
-            @($"{RsItem.Status.AvailableReplicas ?? 0} current / {RsItem.Status.Replicas} desired")
+        <SelectorView Title="Selector" Selector="@Item.Spec.Selector.MatchLabels"></SelectorView>
+        <SelectorView Title="Node Selector" Selector="@Item.Spec.Template.Spec.NodeSelector"></SelectorView>
+        <DescriptionsItem Title="Replicas"  LabelStyle="width:120px">
+            @($"{Item.Status.AvailableReplicas ?? 0} current / {Item.Status.Replicas} desired")
         </DescriptionsItem>
-        <ImagesView PodSpec="@RsItem.Spec.Template.Spec"></ImagesView>
-        <TolerationsView Tolerations="@RsItem.Spec.Template.Spec.Tolerations"></TolerationsView>
+        <ImagesView PodSpec="@Item.Spec.Template.Spec"></ImagesView>
+        <TolerationsView Tolerations="@Item.Spec.Template.Spec.Tolerations"></TolerationsView>
     </Descriptions>
-    <MiniPodListView ControllerByUid="@RsItem.Metadata.Uid"></MiniPodListView>
-    <MiniEventListView Uid="@RsItem.Metadata.Uid"></MiniEventListView>
+    <MiniPodListView ControllerByUid="@Item.Metadata.Uid"></MiniPodListView>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }

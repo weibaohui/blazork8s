@@ -6,11 +6,11 @@ namespace  BlazorApp.Pages.ReplicaSet
 {
     public  partial class ReplicaSetDetailView : FeedbackComponent<V1ReplicaSet, bool>
     {
-        public V1ReplicaSet RsItem;
+        private V1ReplicaSet Item { get; set; }
 
         protected override void OnInitialized()
         {
-            RsItem = base.Options;
+            Item = base.Options;
             base.OnInitialized();
         }
     }

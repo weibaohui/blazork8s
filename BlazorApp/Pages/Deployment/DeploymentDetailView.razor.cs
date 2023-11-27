@@ -9,7 +9,7 @@ namespace BlazorApp.Pages.Deployment
 {
     public partial class DeploymentDetailView : FeedbackComponent<V1Deployment, bool>
     {
-        public V1Deployment Item;
+        private V1Deployment Item { get; set; }
 
         [Inject]
         private IPodService PodService { get; set; }

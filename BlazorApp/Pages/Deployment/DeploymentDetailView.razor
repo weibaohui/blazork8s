@@ -7,11 +7,12 @@
 @inherits FeedbackComponent<V1Deployment, bool>
 @if (Item != null)
 {
+    <MetadataView Item="Item" T="V1Deployment"></MetadataView>
+
     <Descriptions Bordered Column="1">
-        <MetadataView Item="Item" T="V1Deployment"></MetadataView>
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Item.Spec.Template.Spec.NodeSelector"></SelectorView>
-        <DescriptionsItem Title="Replicas">
+        <DescriptionsItem Title="Replicas"  LabelStyle="width:120px">
             @($"{Item.Spec.Replicas ?? 0} desired, {Item.Status.UpdatedReplicas ?? 0} updated, {Item.Status.Replicas ?? 0} total, {Item.Status.AvailableReplicas ?? 0} available, {Item.Status.UnavailableReplicas ?? 0} unavailable")
         </DescriptionsItem>
         <ImagesView PodSpec="@Item.Spec.Template.Spec"></ImagesView>
