@@ -1,30 +1,21 @@
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity;
-using k8s;
-using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObject<V1ObjectMeta>
+public partial class PodLogWatcher : ComponentBase
 {
     [Inject]
     protected NavigationManager MyUriHelper { get; set; }
 
-    [Parameter]
-    public EventCallback<ResourceCache<T>> OnResourceChanged { get; set; }
+
     [Parameter]
     public EventCallback<PodLogEntity> OnPodLogChanged { get; set; }
 
-    private ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
 
-    private async Task UpdateMessage(ResourceWatchEntity<T> data)
-    {
-        // Console.WriteLine("page收到消息" + data.Message);
-        await OnResourceChanged.InvokeAsync(_cache);
-    }
     private async Task UpdatePodLog(PodLogEntity data)
     {
         // Console.WriteLine("page收到日志" + data.LogLineContent);
@@ -34,7 +25,6 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
     protected override async Task OnInitializedAsync()
     {
         var conn = await UIEventHub.Instance().Build(MyUriHelper.ToAbsoluteUri("/chathub"));
-        conn.On<ResourceWatchEntity<T>>("ReceiveMessage", UpdateMessage);
         conn.On<PodLogEntity>("PodLog", UpdatePodLog);
     }
 }

@@ -1,10 +1,13 @@
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Service.impl;
+using BlazorApp.Chat;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
+using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.SignalR;
 using XtermBlazor;
 
 namespace BlazorApp.Pages.Pod;
@@ -14,15 +17,24 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     [Inject]
     private IPodService PodService { get; set; }
 
+    [Inject]
+    private IHubContext<ChatHub> _ctx { get; set; }
+
 
     public V1Pod PodItem;
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+        await base.OnInitializedAsync();
         PodItem = base.Options;
-        base.OnInitialized();
+        await new PodLogHelper()
+            .Create(PodItem).SetHubContext(_ctx)
+            .BuildCommand()
+            .Exec();
     }
+
+
 
     private Xterm _terminal;
 
@@ -51,12 +63,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 
     private async Task OnFirstRender()
     {
-        var logs = await PodService.Logs(PodItem, true);
-
-        await using (var xs = new XtermStream(_terminal))
-        {
-            await logs.CopyToAsync(xs);
-        }
 
 
         // Blazor Server
@@ -85,8 +91,13 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
             await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", _searchInput);
     }
 
-    private async Task Resize(MouseEventArgs args)
+
+
+    private async Task OnPodLogChanged(PodLogEntity obj)
     {
-        await _terminal.Resize(_columns, _rows);
+        if (obj.Namespace==PodItem.Namespace()&&obj.Name==PodItem.Name())
+        {
+            await _terminal.WriteLine(obj.LogLineContent);
+        }
     }
 }

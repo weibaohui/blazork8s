@@ -1,5 +1,5 @@
+@using BlazorApp.Pages.Common
 @inherits FeedbackComponent<k8s.Models.V1Pod, bool>
-
 <div class="mb-2">
     <Button Type="@ButtonType.Primary" OnClick="ScrollToTop">顶端</Button>
     <Button Type="@ButtonType.Primary" OnClick="ScrollToBottom">底端</Button>
@@ -7,9 +7,9 @@
     <Button Shape="@ButtonShape.Circle" Icon="@IconType.Outline.Search"/>
     <Search Placeholder="input search text" AllowClear OnClick="Search" Size="large" @bind-value="_searchInput"/>
 </div>
-
 <Xterm
     @ref="_terminal"
     Options="_options"
     AddonIds="_addonIds"
     OnFirstRender="@OnFirstRender"/>
+<PodLogWatcher OnPodLogChanged="OnPodLogChanged"  ></PodLogWatcher>

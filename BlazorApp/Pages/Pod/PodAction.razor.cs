@@ -6,6 +6,7 @@ using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Pod;
 
@@ -28,6 +29,8 @@ public partial class PodAction : ComponentBase
     private IOpenAiService OpenAi { get; set; }
 
 
+    [Inject]
+    private ILogger<PodAction> Logger { get; set; }
     public bool Enable;
 
 
