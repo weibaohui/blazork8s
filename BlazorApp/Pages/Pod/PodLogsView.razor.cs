@@ -28,9 +28,12 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     {
         await base.OnInitializedAsync();
         PodItem = base.Options;
-        await new PodLogHelper()
+        var logHelper = new PodLogHelper()
             .Create(PodItem).SetHubContext(_ctx)
-            .BuildCommand()
+            .SetColumns(await _terminal.GetColumns())
+            .SetRows(await _terminal.GetRows())
+            .BuildCommand();
+        await logHelper
             .Exec();
     }
 

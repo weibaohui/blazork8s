@@ -95,4 +95,15 @@ public class PodLogHelper
         };
         await executor.ExecuteCommandAsync("kubectl", @Command);
     }
+
+    public PodLogHelper SetColumns(int columns)
+    {
+        Columns = columns;
+        return this;
+    }
+    public PodLogHelper SetRows(int rows)
+    {
+        Rows = rows;
+        return this;
+    }
 }

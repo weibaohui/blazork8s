@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.WebSockets;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
@@ -27,60 +25,12 @@ namespace BlazorApp.Service.k8s.impl
         }
 
 
-        //
         public async Task<bool> DeletePod(string ns, string name)
         {
             // Console.WriteLine($"DeletePod,{ns},{name}");
             return await _baseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
         }
 
-        public async Task<WebSocket> ExecInPod(V1Pod pod, string command)
-        {
-            // var x = await _baseService.Client().ConnectPostNamespacedPodExecAsync(pod.Metadata.Name,
-            //     pod.Metadata.NamespaceProperty,
-            //     container: pod.Spec.Containers[0].Name,
-            //     command: command
-            // );
-            // return x;
-
-            var webSocket =
-                await _baseService.Client()
-                    .WebSocketNamespacedPodExecAsync(pod.Metadata.Name,
-                        pod.Namespace(),
-                        command,
-                        pod.Spec.Containers[0].Name).ConfigureAwait(false);
-
-            // var demux = new StreamDemuxer(webSocket);
-            return webSocket;
-        }
-
-        public async Task<Stream> Logs(V1Pod pod, bool follow = false, bool previous = false)
-        {
-            var response = await _baseService.Client().CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
-                pod.Metadata.Name,
-                pod.Metadata.NamespaceProperty,
-                container: pod.Spec.Containers[0].Name,
-                tailLines: 1,
-                previous: previous,
-                follow: follow).ConfigureAwait(false);
-            var stream = response.Body;
-            return stream;
-            // await stream.CopyToAsync(Console.OpenStandardOutput());
-        }
-
-        public async Task<Stream> Logs(string podNs, string podName, string containerName, bool follow = false,
-            bool                              previous = false)
-        {
-            var response = await _baseService.Client().CoreV1.ReadNamespacedPodLogWithHttpMessagesAsync(
-                podName,
-                podNs,
-                container: containerName,
-                previous: previous,
-                follow: follow).ConfigureAwait(false);
-            var stream = response.Body;
-            return stream;
-            // await stream.CopyToAsync(Console.OpenStandardOutput());
-        }
 
 
         public IEnumerable<Tuple<string, int>> NodePodsNum()
