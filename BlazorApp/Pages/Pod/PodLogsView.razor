@@ -18,12 +18,12 @@
 
         <Button Type="@ButtonType.Primary" OnClick="ScrollToTop">顶端</Button>
         <Button Type="@ButtonType.Primary" OnClick="ScrollToBottom">底端</Button>
-        <Search Placeholder="input search text"    @bind-value="_searchInput"/>
+        <Search Placeholder="input search text"    @bind-value="@_searchInput"/>
     </div>
     <Xterm
         @ref="_terminal"
         Options="_options"
         AddonIds="_addonIds"
         OnFirstRender="@OnFirstRender"/>
-    <PodLogWatcher OnPodLogChanged="OnPodLogChanged" PodItem="_podItem"></PodLogWatcher>
+    <PodLogWatcher OnPodLogChanged="@OnPodLogChanged" PodItem="@_podItem" ContainerName="@_containerName"></PodLogWatcher>
 }

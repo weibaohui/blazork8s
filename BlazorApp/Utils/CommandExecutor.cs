@@ -52,8 +52,7 @@ public sealed class CommandExecutor
             process.BeginOutputReadLine();
             process.BeginErrorReadLine();
             CurrentProcess = process;
-            // await process.WaitForExitAsync();
-
+            await process.WaitForExitAsync();
             // Wait for the command to finish executing
             await tcs.Task;
 

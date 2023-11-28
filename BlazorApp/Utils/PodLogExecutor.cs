@@ -73,6 +73,7 @@ public class PodLogExecutor
         }
 
         //log 每次获取前都杀死一次
+        Logger.LogInformation($"{Key} killed before exec");
         CommandExecutorHelper.Instance.Kill(Key);
         var executor = CommandExecutorHelper.Instance.Create(Key);
 

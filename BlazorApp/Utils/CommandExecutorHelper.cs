@@ -37,6 +37,9 @@ public class CommandExecutorHelper
             return;
         }
         map.Remove(key);
-        executor.CurrentProcess?.Kill();
+        executor.CurrentProcess?.Close();
+        executor.CurrentProcess?.Dispose();
+        // executor.CurrentProcess?.Kill();
+
     }
 }
