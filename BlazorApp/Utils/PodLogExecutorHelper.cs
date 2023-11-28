@@ -4,12 +4,12 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils;
 
-public class PodLogHelper
+public class PodLogExecutorHelper
 {
-    private static readonly ILogger<PodLogHelper>              Logger = LoggingHelper<PodLogHelper>.Logger();
+    private static readonly ILogger<PodLogExecutorHelper>              Logger = LoggingHelper<PodLogExecutorHelper>.Logger();
     private static          Dictionary<string, PodLogExecutor> map    = new();
 
-    public static PodLogHelper Instance => Nested.Instance;
+    public static PodLogExecutorHelper Instance => Nested.Instance;
 
     private class Nested
     {
@@ -19,10 +19,10 @@ public class PodLogHelper
         {
         }
 
-        internal static readonly PodLogHelper Instance = new PodLogHelper();
+        internal static readonly PodLogExecutorHelper Instance = new PodLogExecutorHelper();
     }
 
-    public PodLogHelper()
+    public PodLogExecutorHelper()
     {
 
     }
