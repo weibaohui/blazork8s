@@ -1,12 +1,14 @@
+using System;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class PodLogWatcher : ComponentBase
+public partial class PodLogWatcher : ComponentBase, IDisposable
 {
     [Inject]
     protected NavigationManager MyUriHelper { get; set; }
@@ -14,6 +16,12 @@ public partial class PodLogWatcher : ComponentBase
 
     [Parameter]
     public EventCallback<PodLogEntity> OnPodLogChanged { get; set; }
+
+    [Parameter]
+    public V1Pod PodItem { get; set; }
+
+    [Parameter]
+    public string ContainerName { get; set; }
 
 
     private async Task UpdatePodLog(PodLogEntity data)
@@ -26,5 +34,10 @@ public partial class PodLogWatcher : ComponentBase
     {
         var conn = await UIEventHub.Instance().Build(MyUriHelper.ToAbsoluteUri("/chathub"));
         conn.On<PodLogEntity>("PodLog", UpdatePodLog);
+    }
+
+    public void Dispose()
+    {
+        PodLogHelper.Instance.Create(PodItem.Namespace(), PodItem.Name(), ContainerName).Kill();
     }
 }

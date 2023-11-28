@@ -1,109 +1,45 @@
 #nullable enable
-using System.Threading.Tasks;
-using BlazorApp.Chat;
-using Entity;
-using k8s.Models;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils;
 
 public class PodLogHelper
 {
-    public string Namespace;
-    public string Name;
-    public string ContainerName;
-    public string Command;
-    public bool   ShowTimestamp;
-    public bool   Follow = true;
-    public string SinceTimestamp;
-    public bool   ShowAll;
+    private static readonly ILogger<PodLogHelper>              Logger = LoggingHelper<PodLogHelper>.Logger();
+    private static          Dictionary<string, PodLogExecutor> map    = new();
 
-    public string LastHeartBeatTime;
-    public int    Columns;
-    public int    Rows;
+    public static PodLogHelper Instance => Nested.Instance;
 
-    //返回的日志内容
-    private IHubContext<ChatHub>? _ctx;
-
-
-    public PodLogHelper Create()
+    private class Nested
     {
-        return this;
-    }
-
-    public PodLogHelper SetHubContext(IHubContext<ChatHub> ctx)
-    {
-        _ctx = ctx;
-        return this;
-    }
-
-    public PodLogHelper Create(V1Pod pod)
-    {
-        Namespace     = pod.Namespace();
-        Name          = pod.Name();
-        ContainerName = pod.Spec.Containers[0].Name;
-        return this;
-    }
-
-    public PodLogHelper Create(V1Pod pod, string containerName)
-    {
-        Namespace     = pod.Namespace();
-        Name          = pod.Name();
-        ContainerName = containerName;
-        return this;
-    }
-
-
-    public PodLogHelper BuildCommand()
-    {
-        Command = "";
-        var extCmd = "";
-        if (Follow)
-            extCmd += " --follow ";
-        if (ShowTimestamp)
-            extCmd += " --timestamps ";
-        if (ShowAll && !SinceTimestamp.IsNullOrEmpty())
-            extCmd += $" --since-time='{SinceTimestamp}' ";
-
-        Command = $"logs -n {Namespace} {Name} -c {ContainerName} {extCmd}";
-        return this;
-    }
-
-    public async Task Exec()
-    {
-        if (Command.IsNullOrEmpty())
+        // Explicit static constructor to tell C# compiler
+        // not to mark type as beforefieldinit
+        static Nested()
         {
-            return;
         }
 
-        //log 每次获取前都杀死一次
-        CommandExecutorHelper.Instance.Kill(Command);
-        var executor = CommandExecutorHelper.Instance.Create(Command);
+        internal static readonly PodLogHelper Instance = new PodLogHelper();
+    }
 
-        executor.CommandExecuted += (sender, e) =>
+    public PodLogHelper()
+    {
+
+    }
+
+
+    public PodLogExecutor Create(string ns, string name, string containerName)
+    {
+        var key = $"{ns}/{name}/{containerName}";
+        if (map.TryGetValue(key, out var executor))
         {
-            var entity = new PodLogEntity
-            {
-                Namespace      = Namespace,
-                Name           = Name,
-                ContainerName  = ContainerName,
-                LogLineContent = e.Output,
-            };
-            //TODO PodLog更换为枚举值
-            _ctx?.Clients.All.SendAsync("PodLog", entity);
-        };
-        await executor.ExecuteCommandAsync("kubectl", @Command);
+            return executor;
+        }
+
+        executor = new PodLogExecutor(ns, name, containerName);
+        var result = map.TryAdd(key, executor);
+        return executor;
     }
 
-    public PodLogHelper SetColumns(int columns)
-    {
-        Columns = columns;
-        return this;
-    }
-    public PodLogHelper SetRows(int rows)
-    {
-        Rows = rows;
-        return this;
-    }
+
 }

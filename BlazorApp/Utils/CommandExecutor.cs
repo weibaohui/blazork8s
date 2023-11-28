@@ -17,7 +17,7 @@ public sealed class CommandExecutor
     /// </summary>
     /// <param name="command">The command to execute.</param>
     /// <param name="arguments">The arguments for the command.</param>
-    public async Task ExecuteCommandAsync(string command, string arguments)
+    public async Task ExecuteCommandAsync(string command, string? arguments)
     {
         try
         {

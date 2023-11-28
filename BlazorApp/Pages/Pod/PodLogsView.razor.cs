@@ -20,26 +20,37 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     [Inject]
     private IHubContext<ChatHub> _ctx { get; set; }
 
+    private Xterm _terminal;
 
-    public V1Pod PodItem;
+    private int    _columns, _rows;
+    private string _searchInput = "";
 
+    private V1Pod          _podItem;
+    private string         _containerName;
+    private PodLogExecutor _logHelper;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        PodItem = base.Options;
-        var logHelper = new PodLogHelper()
-            .Create(PodItem).SetHubContext(_ctx)
-            .SetColumns(await _terminal.GetColumns())
-            .SetRows(await _terminal.GetRows())
-            .BuildCommand();
-        await logHelper
-            .Exec();
+        _podItem       = base.Options;
+        _containerName = _podItem.Spec.Containers[0].Name;
+        _logHelper = new PodLogHelper().Create(_podItem.Namespace(), _podItem.Name(), _containerName)
+            .SetHubContext(_ctx);
     }
 
+    private async Task OnOkBtnClicked()
+    {
+        await OnContainerSelectChanged(_containerName);
+    }
 
-
-    private Xterm _terminal;
+    private async Task OnContainerSelectChanged(string name)
+    {
+        _containerName = name;
+        await _terminal.Clear();
+        _logHelper.SetContainerName(_containerName);
+        _logHelper.BuildCommand();
+        await _logHelper.Exec();
+    }
 
     private TerminalOptions _options = new TerminalOptions
     {
@@ -60,14 +71,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     };
 
 
-    private int    _columns, _rows;
-    private string _searchInput = "";
-
-
     private async Task OnFirstRender()
     {
-
-
         // Blazor Server
         // await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-attach", "new AttachAddon()");
         await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");
@@ -88,17 +93,20 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     }
 
 
-    private async Task Search(MouseEventArgs args)
+    private async Task OnSearchClicked(MouseEventArgs args)
     {
         bool searchSuccess =
             await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", _searchInput);
     }
 
 
-
+    /// <summary>
+    /// 接收到SignalR后端发送过来的日志，回显到Xterm
+    /// </summary>
+    /// <param name="obj"></param>
     private async Task OnPodLogChanged(PodLogEntity obj)
     {
-        if (obj.Namespace==PodItem.Namespace()&&obj.Name==PodItem.Name())
+        if (obj.Namespace == _podItem.Namespace() && obj.Name == _podItem.Name())
         {
             await _terminal.WriteLine(obj.LogLineContent);
         }
