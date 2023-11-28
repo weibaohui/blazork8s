@@ -34,7 +34,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         await base.OnInitializedAsync();
         _podItem       = base.Options;
         _containerName = _podItem.Spec.Containers[0].Name;
-        _logHelper = new PodLogExecutorHelper().Create(_podItem.Namespace(), _podItem.Name(), _containerName)
+        _logHelper = new PodLogExecutorHelper().GetOrCreate(_podItem.Namespace(), _podItem.Name(), _containerName)
             .SetHubContext(_ctx);
     }
 

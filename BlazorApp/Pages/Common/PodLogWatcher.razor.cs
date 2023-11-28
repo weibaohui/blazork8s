@@ -38,6 +38,6 @@ public partial class PodLogWatcher : ComponentBase, IDisposable
 
     public void Dispose()
     {
-        PodLogExecutorHelper.Instance.Create(PodItem.Namespace(), PodItem.Name(), ContainerName).Kill();
+        PodLogExecutorHelper.Instance.GetOrCreate(PodItem.Namespace(), PodItem.Name(), ContainerName).Kill();
     }
 }

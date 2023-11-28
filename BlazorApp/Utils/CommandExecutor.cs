@@ -26,6 +26,7 @@ public sealed class CommandExecutor
             process.StartInfo.Arguments              = arguments;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError  = true;
+            process.StartInfo.RedirectStandardInput  = true;
             process.StartInfo.UseShellExecute        = false;
             process.StartInfo.CreateNoWindow         = true;
             var tcs = new TaskCompletionSource<bool>();

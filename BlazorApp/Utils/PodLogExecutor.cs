@@ -65,6 +65,10 @@ public class PodLogExecutor
         Logger.LogInformation($"{Key} killed");
     }
 
+    public void Write(string content)
+    {
+        CommandExecutorHelper.Instance.Write(Key, content);
+    }
     public async Task Exec()
     {
         if (_command.IsNullOrEmpty())

@@ -28,7 +28,7 @@ public class PodLogExecutorHelper
     }
 
 
-    public PodLogExecutor Create(string ns, string name, string containerName)
+    public PodLogExecutor GetOrCreate(string ns, string name, string containerName)
     {
         var key = $"{ns}/{name}/{containerName}";
         if (map.TryGetValue(key, out var executor))

@@ -42,4 +42,12 @@ public class CommandExecutorHelper
         // executor.CurrentProcess?.Kill();
 
     }
+    public void Write(string key, string content)
+    {
+        if (!map.TryGetValue(key, out var executor))
+        {
+            return;
+        }
+        executor.CurrentProcess?.StandardInput.WriteAsync(content);
+    }
 }
