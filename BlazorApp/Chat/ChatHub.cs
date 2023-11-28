@@ -8,10 +8,11 @@ namespace BlazorApp.Chat;
 
 public class ChatHub : Hub
 {
-    public async Task PodLogHeartBeat(V1Pod pod, string containerName)
+    public Task PodLogHeartBeat(V1Pod pod, string containerName)
     {
         var message = $"{pod.Namespace()}/{pod.Name()}/{containerName}";
         Console.WriteLine(message);
+        return Task.CompletedTask;
     }
 
     public Task SendWatchEvent(string message)

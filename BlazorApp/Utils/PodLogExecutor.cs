@@ -12,26 +12,26 @@ public class PodLogExecutor
 {
     private static readonly ILogger<PodLogExecutor> Logger = LoggingHelper<PodLogExecutor>.Logger();
 
-    public string  Namespace;
-    public string  Name;
-    public string  ContainerName;
-    public string? Command;
-    public bool    ShowTimestamp = true;
-    public bool    Follow        = true;
-    public string? SinceTimestamp;
-    public bool    ShowAll = true;
+    private string  _namespace;
+    private string  _name;
+    private string  _containerName;
+    private string? _command;
+    private bool    _showTimestamp = true;
+    private bool    _follow        = true;
+    private string? _sinceTimestamp;
+    private bool    _showAll = true;
 
-    public int     Columns;
-    public int     Rows;
+    private int _columns;
+    private int _rows;
 
     //返回的日志内容
     private IHubContext<ChatHub>? _ctx;
 
     public PodLogExecutor(string ns, string name, string containerName)
     {
-        Namespace     = ns;
-        Name          = name;
-        ContainerName = containerName;
+        _namespace     = ns;
+        _name          = name;
+        _containerName = containerName;
     }
 
 
@@ -44,20 +44,20 @@ public class PodLogExecutor
 
     public PodLogExecutor BuildCommand()
     {
-        Command = "";
+        _command = "";
         var extCmd = "";
-        if (Follow)
+        if (_follow)
             extCmd += " --follow ";
-        if (ShowTimestamp)
+        if (_showTimestamp)
             extCmd += " --timestamps ";
-        if (ShowAll && !SinceTimestamp.IsNullOrEmpty())
-            extCmd += $" --since-time='{SinceTimestamp}' ";
+        if (_showAll && !_sinceTimestamp.IsNullOrEmpty())
+            extCmd += $" --since-time='{_sinceTimestamp}' ";
 
-        Command = $"logs -n {Namespace} {Name} -c {ContainerName} {extCmd}";
+        _command = $"logs -n {_namespace} {_name} -c {_containerName} {extCmd}";
         return this;
     }
 
-    public string Key => $"{Namespace}/{Name}/{ContainerName}";
+    public string Key => $"{_namespace}/{_name}/{_containerName}";
 
     public void Kill()
     {
@@ -67,7 +67,7 @@ public class PodLogExecutor
 
     public async Task Exec()
     {
-        if (Command.IsNullOrEmpty())
+        if (_command.IsNullOrEmpty())
         {
             return;
         }
@@ -76,36 +76,36 @@ public class PodLogExecutor
         CommandExecutorHelper.Instance.Kill(Key);
         var executor = CommandExecutorHelper.Instance.Create(Key);
 
-        executor.CommandExecuted += (sender, e) =>
+        executor.CommandExecuted += (_, e) =>
         {
             var entity = new PodLogEntity
             {
-                Namespace      = Namespace,
-                Name           = Name,
-                ContainerName  = ContainerName,
+                Namespace      = _namespace,
+                Name           = _name,
+                ContainerName  = _containerName,
                 LogLineContent = e.Output,
             };
             //TODO PodLog更换为枚举值
             _ctx?.Clients.All.SendAsync("PodLog", entity);
         };
-        await executor.ExecuteCommandAsync("kubectl", @Command);
+        await executor.ExecuteCommandAsync("kubectl", _command);
     }
 
     public PodLogExecutor SetColumns(int columns)
     {
-        Columns = columns;
+        _columns = columns;
         return this;
     }
 
     public PodLogExecutor SetRows(int rows)
     {
-        Rows = rows;
+        _rows = rows;
         return this;
     }
 
     public PodLogExecutor SetContainerName(string containerName)
     {
-        ContainerName = containerName;
+        _containerName = containerName;
         return this;
     }
 }
