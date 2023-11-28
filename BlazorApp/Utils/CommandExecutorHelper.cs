@@ -36,7 +36,7 @@ public class CommandExecutorHelper
         {
             return;
         }
-        executor.CurrentProcess?.Kill();
         map.Remove(key);
+        executor.CurrentProcess?.Kill();
     }
 }
