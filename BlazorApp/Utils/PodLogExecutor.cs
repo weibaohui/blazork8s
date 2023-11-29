@@ -1,6 +1,7 @@
 #nullable enable
 using System.Threading.Tasks;
 using BlazorApp.Chat;
+using BlazorApp.Utils.Terminal;
 using Entity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
@@ -42,7 +43,7 @@ public class PodLogExecutor
     }
 
 
-    public PodLogExecutor BuildCommand()
+    public PodLogExecutor BuildLogCommand()
     {
         _command = "";
         var extCmd = "";
@@ -57,6 +58,12 @@ public class PodLogExecutor
         return this;
     }
 
+    public PodLogExecutor BuildExecCommand()
+    {
+        _command = $"""exec -i -t -n {_namespace} {_name} -c {_containerName} -- sh -c "clear; (bash  || sh)" """;
+        return this;
+    }
+
     public string Key => $"{_namespace}/{_name}/{_containerName}";
 
     public void Kill()
@@ -65,11 +72,8 @@ public class PodLogExecutor
         Logger.LogInformation($"{Key} killed");
     }
 
-    public void Write(string content)
-    {
-        CommandExecutorHelper.Instance.Write(Key, content);
-    }
-    public async Task Exec()
+
+    public async Task StartLog()
     {
         if (_command.IsNullOrEmpty())
         {
@@ -77,23 +81,77 @@ public class PodLogExecutor
         }
 
         //log 每次获取前都杀死一次
-        Logger.LogInformation($"{Key} killed before exec");
-        CommandExecutorHelper.Instance.Kill(Key);
-        var executor = CommandExecutorHelper.Instance.Create(Key);
+        Logger.LogInformation($"{Key} killed before log");
 
-        executor.CommandExecuted += (_, e) =>
+        TerminalHelper.Instance.Kill(Key);
+        Logger.LogInformation("Log " + _command);
+
+        var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
+        if (!terminalService.IsStandardOutPutSet)
         {
-            var entity = new PodLogEntity
+            terminalService.StandardOutput += (_, e) =>
             {
-                Namespace      = _namespace,
-                Name           = _name,
-                ContainerName  = _containerName,
-                LogLineContent = e.Output,
+                var entity = new PodLogEntity
+                {
+                    Namespace      = _namespace,
+                    Name           = _name,
+                    ContainerName  = _containerName,
+                    LogLineContent = e,
+                };
+                //TODO PodLog更换为枚举值
+                _ctx?.Clients.All.SendAsync("PodLog", entity);
             };
-            //TODO PodLog更换为枚举值
-            _ctx?.Clients.All.SendAsync("PodLog", entity);
-        };
-        await executor.ExecuteCommandAsync("kubectl", _command);
+        }
+
+        if (!terminalService.IsRunning)
+        {
+            await terminalService.Start();
+        }
+        await terminalService.Write($"kubectl {_command} \r");
+    }
+
+    public async Task StartExec()
+    {
+        if (_command.IsNullOrEmpty())
+        {
+            return;
+        }
+
+        Logger.LogInformation("Exec " + _command);
+        Logger.LogInformation($"{Key} killed before exec");
+
+        TerminalHelper.Instance.Kill(Key);
+
+        var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
+        if (!terminalService.IsStandardOutPutSet)
+        {
+            terminalService.StandardOutput += (_, e) =>
+            {
+                var entity = new PodLogEntity
+                {
+                    Namespace      = _namespace,
+                    Name           = _name,
+                    ContainerName  = _containerName,
+                    LogLineContent = e,
+                };
+                //TODO PodLog更换为枚举值
+                _ctx?.Clients.All.SendAsync("PodLog", entity);
+            };
+        }
+
+
+        if (!terminalService.IsRunning)
+        {
+            await terminalService.Start();
+        }
+        await terminalService.Write($"kubectl {_command} \r");
+    }
+
+    public async void Write(string content)
+    {
+        var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
+        await terminalService.Write(content);
+        await terminalService.Write('\r');
     }
 
     public PodLogExecutor SetColumns(int columns)

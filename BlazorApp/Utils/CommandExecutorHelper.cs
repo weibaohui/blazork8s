@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils;
 
 public class CommandExecutorHelper
 {
+    private readonly ILogger<CommandExecutorHelper> _logger = LoggingHelper<CommandExecutorHelper>.Logger();
+
     public static  CommandExecutorHelper               Instance => Nested.Instance;
     private static Dictionary<string, CommandExecutor> map = new();
 
@@ -18,7 +21,7 @@ public class CommandExecutorHelper
         internal static readonly CommandExecutorHelper Instance = new CommandExecutorHelper();
     }
 
-    public CommandExecutor Create(string key)
+    public CommandExecutor GetOrCreate(string key)
     {
         if (map.TryGetValue(key, out var executor))
         {
@@ -36,18 +39,10 @@ public class CommandExecutorHelper
         {
             return;
         }
+
         map.Remove(key);
         executor.CurrentProcess?.Close();
         executor.CurrentProcess?.Dispose();
         // executor.CurrentProcess?.Kill();
-
-    }
-    public void Write(string key, string content)
-    {
-        if (!map.TryGetValue(key, out var executor))
-        {
-            return;
-        }
-        executor.CurrentProcess?.StandardInput.WriteAsync(content);
     }
 }

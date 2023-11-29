@@ -48,8 +48,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         _containerName = name;
         await _terminal.Clear();
         _logHelper.SetContainerName(_containerName);
-        _logHelper.BuildCommand();
-        await _logHelper.Exec();
+        _logHelper.BuildLogCommand();
+        await _logHelper.StartLog();
     }
 
     private TerminalOptions _options = new TerminalOptions

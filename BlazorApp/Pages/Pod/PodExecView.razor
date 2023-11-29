@@ -1,9 +1,20 @@
+@using BlazorApp.Pages.Common
 @inherits FeedbackComponent<k8s.Models.V1Pod, bool>
 
-<h1>Hello, world!</h1>
+@if(_podItem!=null)
+{
+    <div>
+        <SimpleSelect Style="width:120px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
+            <SelectOptions>
+                @foreach (var c in _podItem.Spec.Containers)
+                {
+                    <SimpleSelectOption Value="@c.Name" Label="@c.Name"></SimpleSelectOption>
+                }
+            </SelectOptions>
+        </SimpleSelect>
+        <Button Type="@ButtonType.Primary" OnClick="OnOkBtnClicked">确定</Button>
 
-<p>Welcome to XtermBlazor Demo.</p>
-
+    </div>
 <div class="mb-2">
     <input type="button" @onclick="HasSelection" value="HasSelection()"/>
     <input type="button" @onclick="GetSelection" value="GetSelection()"/>
@@ -35,7 +46,6 @@
 <Xterm
     @ref="_terminal"
     Options="_options"
-    AddonIds="_addonIds"
     OnFirstRender="@OnFirstRender"
     OnBinary="@OnBinary"
     OnCursorMove="@OnCursorMove"
@@ -51,8 +61,9 @@
 
 <br/>
 
-EventCallback Logs:
-<br/>
-<input type="checkbox" @onchange="@((e) => showAttachCustomKeyEventHandlerLog = !showAttachCustomKeyEventHandlerLog)"> Show AttachCustomKeyEventHandler() Log
+    <input type="checkbox" @onchange="@((e) => showAttachCustomKeyEventHandlerLog = !showAttachCustomKeyEventHandlerLog)" />
 
-<Xterm @ref="_terminalEvent" Options="_options2" AddonIds="_addonIds"/>
+<Xterm @ref="_terminalEvent" Options="_options2" />
+    <PodLogWatcher OnPodLogChanged="@OnPodLogChanged" PodItem="@_podItem" ContainerName="@_containerName"></PodLogWatcher>
+
+}

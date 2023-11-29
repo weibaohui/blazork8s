@@ -3,6 +3,7 @@ using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Pty.Net;
 
 namespace BlazorApp.Utils;
 
@@ -11,6 +12,7 @@ public sealed class CommandExecutor
     private  readonly ILogger<CommandExecutor>           _logger = LoggingHelper<CommandExecutor>.Logger();
     public event EventHandler<CommandExecutedEventArgs>? CommandExecuted;
     public Process?                                      CurrentProcess;
+    public IPtyConnection?                               Terminal { get; private set; }
 
     /// <summary>
     /// Executes a command asynchronously.
@@ -29,6 +31,7 @@ public sealed class CommandExecutor
             process.StartInfo.RedirectStandardInput  = true;
             process.StartInfo.UseShellExecute        = false;
             process.StartInfo.CreateNoWindow         = true;
+            process.StartInfo.WindowStyle            = ProcessWindowStyle.Hidden;
             var tcs = new TaskCompletionSource<bool>();
 
             process.ErrorDataReceived += (sender, e) =>
