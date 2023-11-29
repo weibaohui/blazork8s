@@ -90,7 +90,11 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     private bool   showAttachCustomKeyEventHandlerLog;
     private int    _eventId     = 0,  _columns, _rows;
     private string _searchInput = "", _input = "Hello World";
-
+    private string[] _addonIds = new string[]
+    {
+        // "xterm-addon-attach",
+        "xterm-addon-fit"
+    };
     private async Task OnFirstRender()
     {
         await _terminalEvent.WriteLine($"({++_eventId}) OnFirstRender()");
@@ -129,7 +133,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
             });
         }
 
-
+        await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");
         _columns = await _terminal.GetColumns();
         _rows    = await _terminal.GetRows();
     }
