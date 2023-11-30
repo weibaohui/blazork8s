@@ -56,10 +56,7 @@ public class TerminalService
                 throw new Exception("Terminal is running, can not change options");
             }
 
-            if (value == null)
-            {
-                value = new TerminalOptions();
-            }
+            value ??= new TerminalOptions();
 
             _options = new PtyOptions
             {

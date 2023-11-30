@@ -14,6 +14,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
 builder.Services.AddAntDesign();
+builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddSingleton<IBaseService, BaseService>();
@@ -28,7 +29,6 @@ builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
-builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 
 builder.Services.AddHostedService<ListWatchService>();
 
