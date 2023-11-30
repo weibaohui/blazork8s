@@ -80,8 +80,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     };
 
 
-    private int    _eventId     = 0,  _columns, _rows;
-    private string _searchInput = "", _input = "Hello World";
+    private int      _columns, _rows;
     private string[] _addonIds = new string[]
     {
         // "xterm-addon-attach",
@@ -120,7 +119,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     private async Task Search(MouseEventArgs args)
     {
         bool searchSuccess =
-            await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", _searchInput);
+            await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", "");
     }
 
     private async Task Resize(MouseEventArgs args)

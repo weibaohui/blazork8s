@@ -2,47 +2,14 @@
 {
     @foreach (var o in Owner)
     {
-        switch (o.Kind)
-        {
-            case "ReplicaSet":
-                <Tag PresetColor=@PresetColor.Green
-                     OnClick="@(() => OnRsNameClick(o.Name))"
-                     Style="cursor: pointer">
-                    @o.Kind &nbsp;
-                    @if (ShowOwnerName)
-                    {
-                        @o.Name
-                    }
-                </Tag>
-                break;
-            case "Node":
-                <Tag PresetColor=@PresetColor.Green
-                     OnClick="@(() => OnNodeNameClick(o.Name))"
-                     Style="cursor: pointer">
-                    @o.Kind &nbsp;
-                    @if (ShowOwnerName)
-                    {
-                        @o.Name
-                    }
-                </Tag>
-                break;
-            case "DaemonSet":
-                @o.Kind
-                break;
-            case "Deployment":
-                <Tag PresetColor=@PresetColor.Green
-                     OnClick="@(() => OnDeploymentNameClick(o.Name))"
-                     Style="cursor: pointer">
-                    @o.Kind &nbsp;
-                    @if (ShowOwnerName)
-                    {
-                        @o.Name
-                    }
-                </Tag>
-                break;
-            default:
-                @o.Kind
-                break;
-        }
+        <Tag PresetColor=@PresetColor.Green
+             OnClick="@(() => OnObjClick(o))"
+             Style="cursor: pointer">
+            @o.Kind &nbsp;
+            @if (ShowOwnerName)
+            {
+                @o.Name
+            }
+        </Tag>
     }
 }

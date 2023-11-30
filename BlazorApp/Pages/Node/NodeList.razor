@@ -1,7 +1,7 @@
 @page "/NodeList"
 @using k8s.Models
-@using BlazorApp.Pages.Pod
 @using Extension.k8s
+@using BlazorApp.Pages.Pod
 @if (_nodes == null)
 {
     <p>
@@ -14,7 +14,7 @@ else
     {
         <Card Hoverable Title=@node.Metadata.Name>
             <Extra>
-                <Button OnClick="@(() => OpenComponent(node, _pods.PodListInNode(node.Name())))" Type="primary">详细</Button>
+                <Button OnClick="@(() => OpenComponent(node))" Type="primary">详细</Button>
             </Extra>
             <CardTabs>
                 <Tabs DefaultActiveKey="1">

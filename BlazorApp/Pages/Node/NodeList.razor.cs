@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorApp.Service;
+using AntDesign;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -20,7 +20,7 @@ namespace BlazorApp.Pages.Node
         private IKubeService KubeService { get; set; }
 
         [Inject]
-        private IPageDrawerService PageDrawerService { get; set; }
+        private DrawerService DrawerService { get; set; }
 
         private V1NodeList _nodes;
         private V1PodList  _pods;
@@ -32,10 +32,12 @@ namespace BlazorApp.Pages.Node
             _pods  = await KubeService.Client().ListPodForAllNamespacesAsync();
         }
 
-        public async Task OpenComponent(V1Node node, IList<V1Pod> pods)
+        public async Task OpenComponent(V1Node node)
         {
-            var options = PageDrawerService.DefaultOptions($"{node.Kind ?? "Node"}:{node.Name()}");
-            await PageDrawerService.ShowDrawerAsync<NodeDetailView, V1Node, bool>(options, node);
+
+            await PageDrawerHelper<V1Node>.Instance
+                .SetDrawerService(DrawerService)
+                .ShowDrawerAsync<NodeDetailView, V1Node, bool>(node);
         }
     }
 }

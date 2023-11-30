@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AntDesign;
+using BlazorApp.Pages.Pod;
+using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 
@@ -9,11 +12,13 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class PodService : CommonAction<V1Pod>, IPodService
     {
-        private readonly IBaseService _baseService;
+        private readonly IBaseService  _baseService;
+        private          DrawerService _drawerService;
 
-        public PodService(IBaseService baseService)
+        public PodService(IBaseService baseService,DrawerService drawerService)
         {
-            _baseService = baseService;
+            _baseService   = baseService;
+            _drawerService = drawerService;
         }
 
 
@@ -45,6 +50,14 @@ namespace BlazorApp.Service.k8s.impl
             }
 
             return tuples;
+        }
+
+
+       public async Task ShowPodDetailViewByPod(V1Pod pod)
+        {
+            await PageDrawerHelper<V1Pod>.Instance
+                .SetDrawerService(_drawerService)
+                .ShowDrawerAsync<PodDetailView, V1Pod, bool>(pod);
         }
     }
 }

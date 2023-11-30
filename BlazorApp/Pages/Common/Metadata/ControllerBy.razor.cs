@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AntDesign;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.ReplicaSet;
-using BlazorApp.Service;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
@@ -31,27 +33,59 @@ public partial class ControllerBy : ComponentBase
     private IDeploymentService DeploymentService { get; set; }
 
     [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
+    private ILogger<ControllerBy> Logger { get; set; }
+
+    [Inject]
+    private IMessageService Message { get; set; }
+    [Inject]
+    private DrawerService DrawerService { get; set; }
 
     private async Task OnRsNameClick(string rsName)
     {
-        var rs      = ReplicaSetService.GetByName(rsName);
-        var options = PageDrawerService.DefaultOptions($"{rs.Kind ?? "ReplicaSet"}:{rs.Name()}");
-        await PageDrawerService.ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(options, rs);
+        var item = ReplicaSetService.GetByName(rsName);
+        await PageDrawerHelper<V1ReplicaSet>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(item);
     }
 
     private async Task OnNodeNameClick(string nodeName)
     {
-        var node    = NodeService.GetByName(nodeName);
-        var options = PageDrawerService.DefaultOptions($"Node:{nodeName}");
-        await PageDrawerService.ShowDrawerAsync<NodeDetailView, V1Node, bool>(options, node);
+        var item = NodeService.GetByName(nodeName);
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<NodeDetailView, V1Node, bool>(item);
+
     }
 
     private async Task OnDeploymentNameClick(string name)
     {
-        var deploy  = DeploymentService.GetByName(name);
-        var options = PageDrawerService.DefaultOptions($"{deploy.Kind ?? "Deployment"}:{deploy.Name()}");
+        var item  = DeploymentService.GetByName(name);
+        await PageDrawerHelper<V1Deployment>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(item);
+    }
 
-        await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
+    private Task OnXClick(string name)
+    {
+        Logger.LogError($"{name}点击未实现");
+        Message.Error($"{name}点击未实现");
+        return Task.CompletedTask;
+    }
+
+
+    private Task OnObjClick(V1OwnerReference owner)
+    {
+        var name = owner.Name;
+        var kind = owner.Kind;
+
+        var task = kind switch
+        {
+            "Deployment" => OnDeploymentNameClick(name),
+            "ReplicaSet" => OnRsNameClick(name),
+            "Node"       => OnNodeNameClick(name),
+            _            => OnXClick(name)
+        };
+
+        return task;
     }
 }

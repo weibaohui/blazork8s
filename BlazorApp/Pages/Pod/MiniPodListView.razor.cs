@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorApp.Service;
+using AntDesign;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -13,7 +14,7 @@ namespace BlazorApp.Pages.Pod
         private IPodService PodService { get; set; }
 
         [Inject]
-        private IPageDrawerService PageDrawerService { get; set; }
+        private DrawerService DrawerService { get; set; }
 
         [Parameter]
         public IList<V1Pod> Pods { get; set; } = new List<V1Pod>();
@@ -39,8 +40,9 @@ namespace BlazorApp.Pages.Pod
 
         async Task OnPodNameClick(V1Pod pod)
         {
-            var options = PageDrawerService.DefaultOptions($"{pod.Kind ?? "Pod"}:{pod.Name()}");
-            await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
+            await PageDrawerHelper<V1Pod>.Instance
+                .SetDrawerService(DrawerService)
+                .ShowDrawerAsync<PodDetailView, V1Pod, bool>(pod);
         }
     }
 }
