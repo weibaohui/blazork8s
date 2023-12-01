@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
-using AntDesign.TableModels;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
+using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -39,18 +38,16 @@ namespace BlazorApp.Pages.ReplicaSet
         }
 
 
-        async Task OnRowClick(RowData<V1ReplicaSet> row)
+        private async Task OnRsClick(V1ReplicaSet rs)
         {
-            var rs      = row.Data;
-            await PageDrawerHelper<V1Node>.Instance
+            await PageDrawerHelper<V1ReplicaSet>.Instance
                 .SetDrawerService(DrawerService)
                 .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(rs);
         }
 
-        int CountPodsByOwner(string uid)
+        private int CountPodsByOwner(string uid)
         {
-            return PodList
-                .Count(x => x.GetController() != null && x.GetController().Uid == uid);
+            return PodList.CountPodsByOwner(uid);
         }
     }
 }

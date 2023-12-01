@@ -1,19 +1,15 @@
 ﻿@using k8s.Models
-@using  BlazorApp.Pages.Container
-@using  BlazorApp.Pages.Event
-@using  BlazorApp.Pages.Workload
-@using  BlazorApp.Pages.Pod
 @using Extension
-@using Extension.k8s
 @if (Items!=null)
 {
     <Divider Orientation="left" Style="font-weight:bold">Deploy Revisions</Divider>
     <Table TItem="V1ReplicaSet" DataSource="@Items"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true"
-           OnRowClick="OnRowClick">
-        <AntDesign.Column TData="string" Title="Name"
-                          Field="@context.Name()"/>
+           >
+        <AntDesign.Column Title="Name" TData="string">
+                    <Button OnClick="@(() => OnRsClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title="NameSpace" Field="@context.Namespace()"/>
         <AntDesign.Column Title="Pods" TData="int">
             @CountPodsByOwner(@context.Metadata.Uid)

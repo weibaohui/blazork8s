@@ -12,9 +12,9 @@ namespace Extension.k8s
         /// </summary>
         /// <param name="pods"></param>
         /// <returns></returns>
-        public static IEnumerable<Tuple<string, int>> CountsOfPod(this V1PodList pods)
+        public static IEnumerable<Tuple<string, int>> CountsOfPod(this IList<V1Pod> pods)
         {
-            var tuples = pods.Items
+            var tuples = pods
                 .GroupBy(s => s.Spec.NodeName)
                 .OrderBy(g => g.Key)
                 .Select(g => Tuple.Create(g.Key, g.Count()));
@@ -38,9 +38,9 @@ namespace Extension.k8s
         /// <param name="pods"></param>
         /// <param name="nodeName"></param>
         /// <returns></returns>
-        public static int CountsOfPodInNode(this V1PodList pods, string nodeName)
+        public static int CountsOfPodInNode(this IList<V1Pod> pods, string nodeName)
         {
-            return pods.Items
+            return pods
                 .Count(w => w.Spec.NodeName == nodeName);
         }
 
@@ -50,9 +50,9 @@ namespace Extension.k8s
         /// <param name="pods"></param>
         /// <param name="nodeName"></param>
         /// <returns></returns>
-        public static IList<V1Pod> PodListInNode(this V1PodList pods, string nodeName)
+        public static IList<V1Pod> PodListInNode(this IList<V1Pod> pods, string nodeName)
         {
-            return pods.Items.Where(w => w.Spec.NodeName == nodeName).ToList();
+            return pods.Where(w => w.Spec.NodeName == nodeName).ToList();
         }
 
         /// <summary>
@@ -65,11 +65,16 @@ namespace Extension.k8s
         {
             return pods.Where(w => w.Spec.NodeName == nodeName).ToList();
         }
+        public static int CountPodsByOwner(this IList<V1Pod> pods, string uid)
+        {
+             return pods
+                .Count(x => x.GetController() != null && x.GetController().Uid == uid);
+        }
 
         public static string ReadySummary(this IList<V1Pod> pods)
         {
             var count      = pods.Count;
-            var readyCount = pods.Count(w => IsReady(w));
+            var readyCount = pods.Count(IsReady);
             return $"{readyCount}/{count}";
         }
 
