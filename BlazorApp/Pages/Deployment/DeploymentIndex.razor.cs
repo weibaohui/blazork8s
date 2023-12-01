@@ -30,7 +30,9 @@ public partial class DeploymentIndex : TableBase<V1Deployment>
 
     private async Task OnDeployClick(V1Deployment deploy)
     {
-        var options = PageDrawerService.DefaultOptions($"{deploy.Kind ?? "Deployment"}:{deploy.Name()}");
-        await PageDrawerService.ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(options, deploy);
+        await PageDrawerHelper<V1Deployment>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(deploy);
+
     }
 }

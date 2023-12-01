@@ -1,22 +1,10 @@
-﻿@if (Probe != null)
+﻿@using BlazorApp.Pages.Common
+@if (Probe != null)
 {
     <DescriptionsItem Title="@ProbeType">
-        @if (Probe.HttpGet != null)
-        {
-            <Tag>HttpGet</Tag>
-            <Tag>@($"{Probe.HttpGet.Scheme}://{Probe.HttpGet.Host}:{Probe.HttpGet.Port.Value}{Probe.HttpGet.Path}")</Tag>
-        }
-        @if (Probe.Exec != null)
-        {
-            <Tag>Exec</Tag>
-            <Tag>@($"{Probe.Exec.Command}")</Tag>
-        }
-        @if (Probe.TcpSocket != null)
-        {
-            <Tag>TcpSocket</Tag>
-            <Tag>@($"{Probe.TcpSocket.Host}:{Probe.TcpSocket.Port.Value}")</Tag>
-        }
-        <br/>
+        <ProbeKindStatus Probe="Probe" ></ProbeKindStatus>
+
+        <RandomColorHr Color="PresetColor.Green"></RandomColorHr>
         <Tag>delay=@Probe.InitialDelaySeconds</Tag>
         <Tag>timeout=@Probe.TimeoutSeconds</Tag>
         <Tag>period=@Probe.PeriodSeconds</Tag>

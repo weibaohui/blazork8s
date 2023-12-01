@@ -1,0 +1,31 @@
+<RadioGroup DefaultValue="@Kind" ButtonStyle="@RadioButtonStyle.Solid" Size="small">
+    <Radio RadioButton Value=@("HttpGet") Disabled=@(Kind != "HttpGet")>HttpGet</Radio>
+    <Radio RadioButton Value=@("Exec") Disabled=@(Kind != "Exec")>Exec</Radio>
+    <Radio RadioButton Value=@("TcpSocket") Disabled=@(Kind != "TcpSocket")>TcpSocket</Radio>
+    <Radio RadioButton Value=@("Grpc") Disabled=@(Kind != "Grpc")>Grpc</Radio>
+</RadioGroup>
+<br>
+@if (Probe.HttpGet != null)
+{
+    @($"{Probe.HttpGet.Scheme.ToLower()}://{Probe.HttpGet.Host ?? "127.0.0.1"}:{Probe.HttpGet.Port.Value}{Probe.HttpGet.Path}")
+    if (Probe.HttpGet.HttpHeaders != null)
+    {
+        <br>
+        foreach (var header in Probe.HttpGet.HttpHeaders)
+        {
+            <span>@($"{header.Name}={header.Value}")</span>
+        }
+    }
+}
+@if (Probe.Exec != null)
+{
+    @($"{Probe.Exec.Command}")
+}
+@if (Probe.TcpSocket != null)
+{
+    @($"{Probe.TcpSocket.Host}:{Probe.TcpSocket.Port}")
+}
+@if (Probe.Grpc != null)
+{
+    @($"{Probe.Grpc.Service}:{Probe.Grpc.Port}")
+}

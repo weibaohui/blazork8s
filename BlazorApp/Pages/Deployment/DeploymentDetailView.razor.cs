@@ -17,18 +17,17 @@ namespace BlazorApp.Pages.Deployment
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
 
-        private IList<V1Pod> Pods { get; set; }
+        private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
 
         protected override async Task OnInitializedAsync()
         {
-            Pods = new List<V1Pod>();
             Item = base.Options;
 
             var rs = ReplicaSetService.ListByOwnerUid(Item.Uid());
             rs.ForEach(r =>
             {
                 var pods = PodService.ListByOwnerUid(r.Uid());
-                pods.ForEach(p => Pods.Add(p));
+                pods.ForEach(p => PodList.Add(p));
             });
             await base.OnInitializedAsync();
         }

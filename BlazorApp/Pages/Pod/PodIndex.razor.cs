@@ -3,7 +3,6 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
-using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -35,14 +34,16 @@ namespace BlazorApp.Pages.Pod
         private async Task OnNodeNameClick(string nodeName)
         {
             var node    = NodeService.GetByName(nodeName);
-            var options = PageDrawerService.DefaultOptions($"Node:{nodeName}");
-            await PageDrawerService.ShowDrawerAsync<NodeDetailView, V1Node, bool>(options, node);
+            await PageDrawerHelper<V1Node>.Instance
+                .SetDrawerService(PageDrawerService.DrawerService)
+                .ShowDrawerAsync<NodeDetailView, V1Node, bool>(node);
         }
 
         private async Task OnPodClick(V1Pod pod)
         {
-            var options = PageDrawerService.DefaultOptions($"{pod.Kind ?? "Pod"}:{pod.Name()}");
-            await PageDrawerService.ShowDrawerAsync<PodDetailView, V1Pod, bool>(options, pod);
+            await PageDrawerHelper<V1Pod>.Instance
+                .SetDrawerService(PageDrawerService.DrawerService)
+                .ShowDrawerAsync<PodDetailView, V1Pod, bool>(pod);
         }
     }
 }
