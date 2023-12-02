@@ -35,6 +35,7 @@ public class ListWatchService : IHostedService, IDisposable
         WatchNode();
         WatchEvent();
         WatchNamespace();
+        WatchDaemonSet();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
@@ -45,6 +46,12 @@ public class ListWatchService : IHostedService, IDisposable
         var listResp = _baseService.Client().CoreV1
             .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
         await new Watcher<V1Pod, V1PodList>(_ctx).Watch(listResp);
+    }
+    private async Task WatchDaemonSet()
+    {
+        var listResp = _baseService.Client().AppsV1
+            .ListDaemonSetForAllNamespacesWithHttpMessagesAsync(watch: true);
+        await new Watcher<V1DaemonSet, V1DaemonSetList>(_ctx).Watch(listResp);
     }
 
     private async Task WatchEvent()
