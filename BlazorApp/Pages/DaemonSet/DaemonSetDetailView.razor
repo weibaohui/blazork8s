@@ -4,6 +4,7 @@
 @inherits FeedbackComponent<k8s.Models.V1DaemonSet, bool>
 @if (Item != null)
 {
+    <DaemonSetAction Item="Item" MenuMode="MenuMode.Horizontal"  ></DaemonSetAction>
     <MetadataView Item="Item" T="V1DaemonSet"></MetadataView>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name"  LabelStyle="width:120px">
