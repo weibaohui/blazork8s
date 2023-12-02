@@ -6,8 +6,9 @@ class Program
     private static readonly string GeneratorFolderPath = Directory.GetCurrentDirectory() + "/../generator/";
 
 
-    static void Main()
+    public static void Main()
     {
+
         var dictList = new DictList();
         dictList.AddItem("ReplicaSet", "V1ReplicaSet");
         dictList.AddItem("Deployment", "V1Deployment");

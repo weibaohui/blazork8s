@@ -1,7 +1,22 @@
+using k8s;
+using k8s.Models;
+
 namespace Generator;
 
-public class Item
+public class Item<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    public string key   { get; set; }
-    public string value { get; set; }
+    public T KubeObject { get; set; }
+
+    public string TypeName => typeof(T).Name;
+
+    public string ActName()
+    {
+        var ret = "";
+        if (TypeName.StartsWith("V1"))
+        {
+            ret = TypeName.Replace("V1", "");
+        }
+
+        return ret;
+    }
 }

@@ -13,4 +13,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="KubernetesClient" Version="12.1.1" />
+    </ItemGroup>
+
 </Project>
