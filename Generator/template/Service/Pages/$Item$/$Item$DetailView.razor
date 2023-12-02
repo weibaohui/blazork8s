@@ -4,6 +4,7 @@
 @inherits FeedbackComponent<k8s.Models.$ItemType$, bool>
 @if (Item != null)
 {
+    <$Item$Action Item="Item" MenuMode="MenuMode.Horizontal"  ></$Item$Action>
     <MetadataView Item="Item" T="$ItemType$"></MetadataView>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name"  LabelStyle="width:120px">
