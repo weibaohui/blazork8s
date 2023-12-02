@@ -22,6 +22,7 @@ builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IPodService, PodService>();
 builder.Services.AddScoped<IDeploymentService, DeploymentService>();
+builder.Services.AddScoped<IDaemonSetService, DaemonSetService>();
 builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<INamespaceService, NamespaceService>();
