@@ -9,7 +9,7 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    protected readonly ResourceCache<T> Cache = ResourceCacheHelper<T>.Instance.Build();
+    private readonly ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
     private readonly   IServiceScope    _scope;
 
     public CommonAction(IServiceScopeFactory serviceScopeFactory)
@@ -26,7 +26,7 @@ public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1Ob
 
     public bool Changed()
     {
-        return Cache.Changed();
+        return _cache.Changed();
     }
 
     public IList<T> ListByOwnerUid(string controllerByUid)
@@ -52,6 +52,6 @@ public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1Ob
 
     public IList<T> List()
     {
-        return Cache.Get();
+        return _cache.Get();
     }
 }

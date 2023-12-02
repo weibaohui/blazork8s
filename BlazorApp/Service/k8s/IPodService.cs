@@ -13,12 +13,5 @@ namespace BlazorApp.Service.k8s
 
         //删除POD
         Task<bool> DeletePod(string ns, string name);
-
-
-        /// <summary>
-        /// 弹窗显示pod详情
-        /// </summary>
-        /// <param name="pod"></param>
-         Task ShowPodDetailViewByPod(V1Pod pod);
     }
 }
