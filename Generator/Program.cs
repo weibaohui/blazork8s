@@ -10,8 +10,7 @@ class Program
     {
 
         var dictList = new DictList();
-        dictList.AddItem("ReplicaSet", "V1ReplicaSet");
-        dictList.AddItem("Deployment", "V1Deployment");
+        dictList.AddItem("DaemonSet", "V1DaemonSet");
 
         var fullTemplateFolderPath  = Path.GetFullPath(TemplatePath);        // 替换为要读取的文件夹路径
         var fullFolderPath          = Path.GetFullPath(TemplatePath);        // 替换为要读取的文件夹路径

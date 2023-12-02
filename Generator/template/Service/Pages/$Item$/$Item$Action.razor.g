@@ -9,7 +9,7 @@ using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-namespace BlazorApp.Pages.Pod;
+namespace BlazorApp.Pages.$Item$;
 
 public partial class $Item$Action : ComponentBase
 {
@@ -19,6 +19,8 @@ public partial class $Item$Action : ComponentBase
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
+    [Inject]
+    private I$Item$Service $Item$Service { get; set; }
 
 
     [Inject]
