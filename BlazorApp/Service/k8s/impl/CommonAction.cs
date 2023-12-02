@@ -1,20 +1,24 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.k8s.impl;
 
 public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private readonly ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
-    private readonly   IServiceScope    _scope;
+    private readonly ResourceCache<T>         _cache = ResourceCacheHelper<T>.Instance.Build();
+    private readonly IServiceScope            _scope;
+    private          ILogger<CommonAction<T>> _logger;
 
-    public CommonAction(IServiceScopeFactory serviceScopeFactory)
+    public CommonAction(IServiceScopeFactory serviceScopeFactory, ILogger<CommonAction<T>> logger)
     {
-        _scope = serviceScopeFactory.CreateScope();
+        _logger = logger;
+        _scope  = serviceScopeFactory.CreateScope();
         // _watchService = _scope.ServiceProvider.GetService<IWatchService>();
         // Console.WriteLine("PodService 初始化");
     }
@@ -53,5 +57,11 @@ public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1Ob
     public IList<T> List()
     {
         return _cache.Get();
+    }
+
+    public Task Delete(string ns, string name)
+    {
+        _logger.LogError("CommonAction Delete 方法未实现");
+        return Task.CompletedTask;
     }
 }

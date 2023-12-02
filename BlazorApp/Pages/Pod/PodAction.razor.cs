@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
@@ -42,7 +43,8 @@ public partial class PodAction : ComponentBase
 
     private async Task OnPodDeleteClick(V1Pod pod)
     {
-        await PodService.DeletePod(pod.Namespace(), pod.Name());
+        await PodService.Delete(pod.Namespace(), pod.Name());
+        StateHasChanged();
     }
 
 
@@ -76,5 +78,11 @@ public partial class PodAction : ComponentBase
             data  = pod,
             style = "security"
         });
+    }
+
+    private async Task OnYamlClick(V1Pod item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<YamlView<V1Pod>, V1Pod, bool>(options, item);
     }
 }

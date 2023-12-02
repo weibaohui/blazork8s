@@ -24,18 +24,9 @@
 }
 @if (MenuMode == MenuMode.Horizontal)
 {
-    <Menu Mode=MenuMode.Horizontal>
-        <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
-        <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
-        <MenuItem >
-            <Popconfirm Title="确定删除吗"
-                        OnConfirm="() => OnPodDeleteClick(PodItem)"
-                        OkText="Yes"
-                        CancelText="No">
-                删除
-            </Popconfirm>
-        </MenuItem>
-        <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
-        <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
-    </Menu>
+    <Alert Type="@AlertType.Success">
+        <Button OnClick="@(() => OnPodLogClick(PodItem))">日志</Button>
+        <Button OnClick="@(() => OnPodExecClick(PodItem))">Exec</Button>
+        <Button OnClick="@(() => OnYamlClick(PodItem))">Yaml</Button>
+    </Alert>
 }

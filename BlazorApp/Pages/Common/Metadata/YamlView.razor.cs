@@ -1,0 +1,60 @@
+using System.Threading.Tasks;
+using AntDesign;
+using BlazorMonaco.Editor;
+using k8s;
+using k8s.Models;
+using Microsoft.AspNetCore.Components;
+
+namespace BlazorApp.Pages.Common.Metadata;
+
+public partial class YamlView<T> : FeedbackComponent<T, bool> where T : IKubernetesObject<V1ObjectMeta>
+{
+    [Parameter]
+    public T Item { get; set; }
+
+    private StandaloneCodeEditor _editor = null!;
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout            = true,
+            Language                   = "yaml",
+            Theme                      = "vs-dark",
+            Contextmenu                = true,
+            CopyWithSyntaxHighlighting = true,
+            CursorSmoothCaretAnimation = true,
+            FoldingImportsByDefault    = true,
+            MouseWheelZoom             = true,
+            SmoothScrolling            = true,
+            WrappingIndent             = "indent",
+            AutoClosingBrackets        = "always",
+            AutoSurround               = "languageDefined",
+            FontSize                   = 16,
+            WordWrap                   = "on",
+            Minimap = new EditorMinimapOptions
+            {
+                Enabled = false
+            },
+            RenderLineHighlight  = "all",
+            ScrollBeyondLastLine = true,
+            Scrollbar = new EditorScrollbarOptions
+            {
+                AlwaysConsumeMouseWheel = true
+            },
+            BracketPairColorization = new BracketPairColorizationOptions
+            {
+                Enabled                            = true,
+                IndependentColorPoolPerBracketType = true
+            },
+            Value = KubernetesYaml.Serialize(Item)
+        };
+    }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Item = base.Options;
+        await base.OnInitializedAsync();
+    }
+}

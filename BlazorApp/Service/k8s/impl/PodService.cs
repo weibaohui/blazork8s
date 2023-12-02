@@ -46,5 +46,10 @@ namespace BlazorApp.Service.k8s.impl
 
             return tuples;
         }
+
+        public async Task Delete(string ns, string name)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

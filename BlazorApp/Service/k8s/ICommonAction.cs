@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
 
@@ -12,4 +13,5 @@ public interface ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
     public IList<T> ListByNamespace(string name);
     public IList<T> List();
     public T        GetByName(string name);
+    public Task     Delete(string    ns, string name);
 }
