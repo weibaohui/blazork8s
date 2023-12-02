@@ -63,6 +63,13 @@ public partial class BasicLayout : LayoutComponentBase
                 Key  = "ReplicaSets",
                 Icon = "smile",
             },
+            new MenuDataItem
+            {
+                Path = "/DaemonSet",
+                Name = "DaemonSet",
+                Key  = "DaemonSet",
+                Icon = "smile",
+            },
         };
     }
 }
