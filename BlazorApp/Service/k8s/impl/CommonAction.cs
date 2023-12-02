@@ -60,7 +60,7 @@ public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1Ob
 
     public Task Delete(string ns, string name)
     {
-        _logger.LogError("CommonAction Delete 方法未实现");
+        _logger.LogError("CommonAction Delete 请在继承类方法中实现");
         return Task.CompletedTask;
     }
 }
