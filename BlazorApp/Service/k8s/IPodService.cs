@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s
@@ -11,7 +10,6 @@ namespace BlazorApp.Service.k8s
 
         IList<V1Pod> ListByNodeName(string nodeName);
 
-        //删除POD
-        Task<bool> DeletePod(string ns, string name);
+
     }
 }

@@ -13,5 +13,5 @@ public interface ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
     public IList<T> ListByNamespace(string name);
     public IList<T> List();
     public T        GetByName(string name);
-    public Task     Delete(string    ns, string name);
+    public Task<T>  Delete(string    ns, string name);
 }

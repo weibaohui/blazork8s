@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
+public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {
     private readonly        ResourceCache<T>         _cache = ResourceCacheHelper<T>.Instance.Build();
     private readonly        IServiceScope            _scope;
@@ -58,9 +58,9 @@ public class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1Ob
         return _cache.Get();
     }
 
-    public Task Delete(string ns, string name)
+    public Task<T> Delete(string ns, string name)
     {
         _logger.LogError("CommonAction Delete 请在继承类方法中实现");
-        return Task.CompletedTask;
+        return (Task<T>)Task.CompletedTask;
     }
 }

@@ -47,9 +47,9 @@ namespace BlazorApp.Service.k8s.impl
             return tuples;
         }
 
-        public async Task Delete(string ns, string name)
+        public new async Task<V1Pod> Delete(string ns, string name)
         {
-            throw new NotImplementedException();
+            return await _baseService.Client().DeleteNamespacedPodAsync(name, ns);
         }
     }
 }
