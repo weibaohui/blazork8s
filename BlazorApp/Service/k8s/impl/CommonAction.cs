@@ -58,9 +58,9 @@ public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesOb
         return _cache.Get();
     }
 
-    public Task<T> Delete(string ns, string name)
+    public Task<object> Delete(string ns, string name)
     {
         _logger.LogError("CommonAction Delete 请在继承类方法中实现");
-        return (Task<T>)Task.CompletedTask;
+        return (Task<object>)Task.CompletedTask;
     }
 }
