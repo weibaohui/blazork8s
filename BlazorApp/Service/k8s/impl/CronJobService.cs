@@ -1,13 +1,12 @@
-using BlazorApp.Utils;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class $Item$Service : CommonAction<$ItemType$>, I$Item$Service
+public class CronJobService : CommonAction<V1CronJob>, ICronJobService
 {
     private readonly IBaseService                _baseService;
 
-    public $Item$Service(IBaseService baseService)
+    public CronJobService(IBaseService baseService)
     {
         _baseService = baseService;
     }

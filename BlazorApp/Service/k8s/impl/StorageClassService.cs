@@ -1,13 +1,12 @@
-using BlazorApp.Utils;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class $Item$Service : CommonAction<$ItemType$>, I$Item$Service
+public class StorageClassService : CommonAction<V1StorageClass>, IStorageClassService
 {
     private readonly IBaseService                _baseService;
 
-    public $Item$Service(IBaseService baseService)
+    public StorageClassService(IBaseService baseService)
     {
         _baseService = baseService;
     }
