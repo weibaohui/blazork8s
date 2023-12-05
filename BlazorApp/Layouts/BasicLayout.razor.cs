@@ -22,6 +22,12 @@ public partial class BasicLayout : LayoutComponentBase
             new MenuDataItem
             {
                 Path = "/NodeList",
+                Name = "NodeList",
+                Key  = "NodeList",
+                Icon = "smile",
+            }, new MenuDataItem
+            {
+                Path = "/Node",
                 Name = "Nodes",
                 Key  = "Nodes",
                 Icon = "smile",
@@ -37,6 +43,16 @@ public partial class BasicLayout : LayoutComponentBase
         await base.OnInitializedAsync();
     }
 
+    private  MenuDataItem  GetMenuItem(string item)
+    {
+        return new MenuDataItem
+        {
+            Path = item,
+            Name = item,
+            Key  = item,
+            Icon = "smile",
+        };
+    }
 
     private MenuDataItem[] WorkloadsMenu()
     {
@@ -70,6 +86,33 @@ public partial class BasicLayout : LayoutComponentBase
                 Key  = "DaemonSet",
                 Icon = "smile",
             },
+            GetMenuItem("Job"),
+            GetMenuItem("Service"),
+            GetMenuItem("ServiceAccount"),
+            GetMenuItem("ClusterRole"),
+            GetMenuItem("ClusterRoleBinding"),
+            GetMenuItem("Role"),
+            GetMenuItem("RoleBinding"),
+            GetMenuItem("Ingress"),
+            GetMenuItem("PersistentVolume"),
+            GetMenuItem("PersistentVolumeClaim"),
+            GetMenuItem("StorageClass"),
+            GetMenuItem("NetworkPolicy"),
+            GetMenuItem("IngressClass"),
+            GetMenuItem("EndpointSlice"),
+            GetMenuItem("Endpoints"),
+            GetMenuItem("Secret"),
+            GetMenuItem("PriorityClass"),
+            GetMenuItem("PodDisruptionBudget"),
+            GetMenuItem("ValidatingWebhookConfiguration"),
+            GetMenuItem("MutatingWebhookConfiguration"),
+            GetMenuItem("LimitRange"),
+            GetMenuItem("HorizontalPodAutoscaler"),
+            GetMenuItem("ResourceQuota"),
+            GetMenuItem("ConfigMap"),
+            GetMenuItem("CronJob"),
+            GetMenuItem("StatefulSet"),
+            GetMenuItem("ReplicationController"),
         };
     }
 }

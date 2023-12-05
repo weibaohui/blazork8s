@@ -1,0 +1,15 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits FeedbackComponent<k8s.Models.V1StatefulSet, bool>
+@if (Item != null)
+{
+    <StatefulSetAction Item="Item" MenuMode="MenuMode.Horizontal"  ></StatefulSetAction>
+    <MetadataView Item="Item" T="V1StatefulSet"></MetadataView>
+    <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
+            @Item.Name()
+        </DescriptionsItem>
+    </Descriptions>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+}

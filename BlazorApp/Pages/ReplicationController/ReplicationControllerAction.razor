@@ -1,0 +1,27 @@
+@if (MenuMode == MenuMode.Vertical)
+{
+    <Dropdown >
+        <Overlay >
+            <Menu >
+                <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
+                <MenuItem >
+                    <Popconfirm Title="确定删除吗"
+                                OnConfirm="() => OnReplicationControllerDeleteClick(Item)"
+                                OkText="Yes"
+                                CancelText="No">
+                        删除
+                    </Popconfirm>
+                </MenuItem>
+            </Menu>
+        </Overlay>
+        <ChildContent>
+            <Button>操作 <Icon Type="down"/></Button>
+        </ChildContent>
+    </Dropdown>
+}
+@if (MenuMode == MenuMode.Horizontal)
+{
+    <Alert Type="@AlertType.Success">
+        <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
+    </Alert>
+}

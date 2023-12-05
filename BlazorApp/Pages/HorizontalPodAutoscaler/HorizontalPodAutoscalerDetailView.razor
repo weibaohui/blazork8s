@@ -1,0 +1,15 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits FeedbackComponent<k8s.Models.V1HorizontalPodAutoscaler, bool>
+@if (Item != null)
+{
+    <HorizontalPodAutoscalerAction Item="Item" MenuMode="MenuMode.Horizontal"  ></HorizontalPodAutoscalerAction>
+    <MetadataView Item="Item" T="V1HorizontalPodAutoscaler"></MetadataView>
+    <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
+            @Item.Name()
+        </DescriptionsItem>
+    </Descriptions>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+}
