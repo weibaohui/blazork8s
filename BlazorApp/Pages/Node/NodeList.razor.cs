@@ -28,8 +28,12 @@ namespace BlazorApp.Pages.Node
 
         protected override async Task OnInitializedAsync()
         {
-            _nodes = NodeService.List();
-            _pods  =  PodService.List();
+            await Task.Run(() =>
+            {
+                _nodes = NodeService.List();
+                _pods  = PodService.List();
+
+            });
         }
 
         public async Task OpenComponent(V1Node node)
