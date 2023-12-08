@@ -1,0 +1,15 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits FeedbackComponent<k8s.Models.V1Service, bool>
+@if (Item != null)
+{
+    <ServiceAction Item="Item" MenuMode="MenuMode.Horizontal"  ></ServiceAction>
+    <MetadataView Item="Item" T="V1Service"></MetadataView>
+    <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
+            @Item.Name()
+        </DescriptionsItem>
+    </Descriptions>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+}
