@@ -1,5 +1,9 @@
 namespace BlazorApp.Utils.Swagger;
 
+/// <summary>
+/// wget https://raw.githubusercontent.com/kubernetes/kubernetes/master/api/openapi-spec/swagger.json
+/// 提取 definitions 部分
+/// </summary>
 public class SwaggerDefinition
 {
     public static string KubeSwaggerDefinition => """
