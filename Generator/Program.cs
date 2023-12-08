@@ -10,7 +10,7 @@ class Program
     {
         var dictList = new DictList();
         // dictList.AddItem("DaemonSet", "V1DaemonSet");
-        dictList.AddItem("Node", "V1Node");
+        // dictList.AddItem("Node", "V1Node");
         // dictList.AddItem("ReplicaSet", "V1ReplicaSet");
         dictList.AddItem("Job", "V1Job");
         dictList.AddItem("Service", "V1Service");
