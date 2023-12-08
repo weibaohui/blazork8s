@@ -46,4 +46,10 @@ public partial class MutatingWebhookConfigurationAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<YamlView<V1MutatingWebhookConfiguration>, V1MutatingWebhookConfiguration, bool>(options, item);
     }
+
+    private async Task OnDocClick(V1MutatingWebhookConfiguration item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1MutatingWebhookConfiguration>, V1MutatingWebhookConfiguration, bool>(options, item);
+    }
 }

@@ -48,4 +48,10 @@ public partial class $Item$Action : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<YamlView<$ItemType$>, $ItemType$, bool>(options, item);
     }
+
+    private async Task OnDocClick($ItemType$ item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<$ItemType$>, $ItemType$, bool>(options, item);
+    }
 }

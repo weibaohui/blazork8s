@@ -6,12 +6,12 @@ class Program
     private static readonly string GeneratorFolderPath = Directory.GetCurrentDirectory() + "/../generator/";
 
 
-    public static void Main()
+    public void makeTemplate()
     {
-
         var dictList = new DictList();
         // dictList.AddItem("DaemonSet", "V1DaemonSet");
-        // dictList.AddItem("Node", "V1Node");
+        dictList.AddItem("Node", "V1Node");
+        // dictList.AddItem("ReplicaSet", "V1ReplicaSet");
         dictList.AddItem("Job", "V1Job");
         dictList.AddItem("Service", "V1Service");
         dictList.AddItem("ServiceAccount", "V1ServiceAccount");
@@ -55,5 +55,11 @@ class Program
             generator.PrintGenTargetList();
             generator.GenTemplate(fullGeneratorFolderPath);
         }
+    }
+
+    public static  void Main()
+    {
+        new Program().makeTemplate();
+
     }
 }

@@ -5,6 +5,8 @@
             <Menu >
                 <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
                 <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
+                <MenuItem OnClick="@(() => OnYamlClick(PodItem))">Yaml</MenuItem>
+                <MenuItem OnClick="@(() => OnDocClick(PodItem))">Doc</MenuItem>
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
                                 OnConfirm="() => OnPodDeleteClick(PodItem)"
@@ -28,5 +30,7 @@
         <Button OnClick="@(() => OnPodLogClick(PodItem))">日志</Button>
         <Button OnClick="@(() => OnPodExecClick(PodItem))">Exec</Button>
         <Button OnClick="@(() => OnYamlClick(PodItem))">Yaml</Button>
+        <Button OnClick="@(() => OnDocClick(PodItem))">Doc</Button>
+
     </Alert>
 }

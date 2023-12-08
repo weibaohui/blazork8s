@@ -46,4 +46,10 @@ public partial class LimitRangeAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<YamlView<V1LimitRange>, V1LimitRange, bool>(options, item);
     }
+
+    private async Task OnDocClick(V1LimitRange item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1LimitRange>, V1LimitRange, bool>(options, item);
+    }
 }

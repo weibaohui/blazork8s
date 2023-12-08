@@ -7,25 +7,25 @@ using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-namespace BlazorApp.Pages.Ingress;
+namespace BlazorApp.Pages.ReplicaSet;
 
-public partial class IngressAction : ComponentBase
+public partial class ReplicaSetAction : ComponentBase
 {
     [Parameter]
-    public V1Ingress Item { get; set; }
+    public V1ReplicaSet Item { get; set; }
 
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
     [Inject]
-    private IIngressService IngressService { get; set; }
+    private IReplicaSetService ReplicaSetService { get; set; }
 
 
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
     [Inject]
-    private ILogger<IngressAction> Logger { get; set; }
+    private ILogger<ReplicaSetAction> Logger { get; set; }
 
 
     protected override async Task OnInitializedAsync()
@@ -33,23 +33,23 @@ public partial class IngressAction : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task OnIngressDeleteClick(V1Ingress item)
+    private async Task OnReplicaSetDeleteClick(V1ReplicaSet item)
     {
-        await IngressService.Delete(item.Namespace(), item.Name());
+        await ReplicaSetService.Delete(item.Namespace(), item.Name());
         StateHasChanged();
     }
 
  
 
-    private async Task OnYamlClick(V1Ingress item)
+    private async Task OnYamlClick(V1ReplicaSet item)
     {
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<V1Ingress>, V1Ingress, bool>(options, item);
+        await PageDrawerService.ShowDrawerAsync<YamlView<V1ReplicaSet>, V1ReplicaSet, bool>(options, item);
     }
 
-    private async Task OnDocClick(V1Ingress item)
+    private async Task OnDocClick(V1ReplicaSet item)
     {
         var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1Ingress>, V1Ingress, bool>(options, item);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1ReplicaSet>, V1ReplicaSet, bool>(options, item);
     }
 }

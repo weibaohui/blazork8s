@@ -46,4 +46,9 @@ public partial class DaemonSetAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<YamlView<V1DaemonSet>, V1DaemonSet, bool>(options, item);
     }
+    private async Task OnDocClick(V1DaemonSet item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1DaemonSet>, V1DaemonSet, bool>(options, item);
+    }
 }

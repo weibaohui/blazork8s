@@ -85,4 +85,11 @@ public partial class PodAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<YamlView<V1Pod>, V1Pod, bool>(options, item);
     }
+     
+
+    private async Task OnDocClick(V1Pod item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1Pod>, V1Pod, bool>(options, item);
+    }
 }

@@ -1,21 +1,31 @@
-<Popconfirm Title="Sure to delete?"
-            OnConfirm="() => Delete(Item)"
-            OkText="Yes"
-            CancelText="No">
-    <a>删除</a>
-</Popconfirm>
 
-@if (Enable)
+
+@if (MenuMode == MenuMode.Vertical)
 {
-    <DropdownButton>
-        <Overlay>
-            <Menu>
-                <MenuItem Key="1" OnClick="@(() => OnAnalyzeClick(Item))">故障分析</MenuItem>
-                <MenuItem Key="2" OnClick="@(() => OnSecurityClick(Item))">安全检测</MenuItem>
+    <Dropdown >
+        <Overlay >
+            <Menu >
+                <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
+                <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
+                <MenuItem >
+                    <Popconfirm Title="确定删除吗"
+                                OnConfirm="() => OnDeleteClick(Item)"
+                                OkText="Yes"
+                                CancelText="No">
+                        删除
+                    </Popconfirm>
+                </MenuItem>
             </Menu>
         </Overlay>
-        <Unbound>
-            AI智能
-        </Unbound>
-    </DropdownButton>
+        <ChildContent>
+            <Button>操作 <Icon Type="down"/></Button>
+        </ChildContent>
+    </Dropdown>
+}
+@if (MenuMode == MenuMode.Horizontal)
+{
+    <Alert Type="@AlertType.Success">
+        <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
+        <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
+    </Alert>
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using AntDesign;
+using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using k8s.Models;
@@ -9,6 +11,11 @@ namespace BlazorApp.Pages.Deployment;
 
 public partial class DeploymentAction : ComponentBase
 {
+
+
+    [Parameter]
+    public MenuMode MenuMode { get; set; } =MenuMode.Vertical;
+
     [Parameter]
     public V1Deployment Item { get; set; }
 
@@ -30,7 +37,7 @@ public partial class DeploymentAction : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task Delete(V1Deployment item)
+    private async Task OnDeleteClick(V1Deployment item)
     {
         await OnDeploymentDelete.InvokeAsync(item);
     }
@@ -54,5 +61,18 @@ public partial class DeploymentAction : ComponentBase
             data  = item,
             style = "security"
         });
+    }
+
+
+    private async Task OnYamlClick(V1Deployment item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<YamlView<V1Deployment>, V1Deployment, bool>(options, item);
+    }
+
+    private async Task OnDocClick(V1Deployment item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1Deployment>, V1Deployment, bool>(options, item);
     }
 }
