@@ -5,9 +5,9 @@
         <ProbeKindStatus Probe="Probe"></ProbeKindStatus>
         <Divider>探测配置</Divider>
         <Tag>@($"delay={Probe.InitialDelaySeconds}s")</Tag>
-        <Tag>@($"timeout= {Probe.TimeoutSeconds}s")</Tag>
-        <Tag>@($"period= {Probe.PeriodSeconds}s")</Tag>
-        <Tag>@($"#success= {Probe.SuccessThreshold}")</Tag>
-        <Tag>@($"#failure= {Probe.FailureThreshold}")</Tag>
+        <Tag>@($"timeout={Probe.TimeoutSeconds}s")</Tag>
+        <Tag>@($"period={Probe.PeriodSeconds}s")</Tag>
+        <Tag>@($"#success={Probe.SuccessThreshold}")</Tag>
+        <Tag>@($"#failure={Probe.FailureThreshold}")</Tag>
     </DescriptionsItem>
 }
