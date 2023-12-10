@@ -1,14 +1,13 @@
-﻿@using BlazorApp.Pages.Common
-@if (Probe != null)
+﻿@if (Probe != null)
 {
     <DescriptionsItem Title="@ProbeType">
-        <ProbeKindStatus Probe="Probe" ></ProbeKindStatus>
-
-        <RandomColorHr Color="PresetColor.Green"></RandomColorHr>
-        <Tag>delay=@Probe.InitialDelaySeconds</Tag>
-        <Tag>timeout=@Probe.TimeoutSeconds</Tag>
-        <Tag>period=@Probe.PeriodSeconds</Tag>
-        <Tag>#success=@Probe.SuccessThreshold</Tag>
-        <Tag>#failure=@Probe.FailureThreshold</Tag>
+        <Divider>探测类型</Divider>
+        <ProbeKindStatus Probe="Probe"></ProbeKindStatus>
+        <Divider>探测配置</Divider>
+        <Tag>@($"delay={Probe.InitialDelaySeconds}s")</Tag>
+        <Tag>@($"timeout= {Probe.TimeoutSeconds}s")</Tag>
+        <Tag>@($"period= {Probe.PeriodSeconds}s")</Tag>
+        <Tag>@($"#success= {Probe.SuccessThreshold}")</Tag>
+        <Tag>@($"#failure= {Probe.FailureThreshold}")</Tag>
     </DescriptionsItem>
 }
