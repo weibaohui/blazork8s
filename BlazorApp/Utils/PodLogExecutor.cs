@@ -68,7 +68,7 @@ public class PodLogExecutor
 
     public void Kill()
     {
-        CommandExecutorHelper.Instance.Kill(Key);
+        TerminalHelper.Instance.Kill(Key);
         Logger.LogInformation($"{Key} killed");
     }
 

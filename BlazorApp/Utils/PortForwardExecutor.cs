@@ -26,11 +26,11 @@ public class PortForwardExecutor
         {
             service.StandardOutput += (sender, e) =>
             {
-                Logger.LogInformation($"PortForwardExecutor StandardOutput: {e}");
+                Logger.LogInformation("PortForwardExecutor StandardOutput: {Data}", e);
             };
             service.StandardError += (sender, e) =>
             {
-                Logger.LogInformation($"PortForwardExecutor StandardError: {e.Data}");
+                Logger.LogInformation("PortForwardExecutor StandardError: {Data}", e.Data);
             };
         }
 
@@ -42,11 +42,8 @@ public class PortForwardExecutor
         var service = TerminalHelper.Instance.GetOrCreate(command);
         if (!service.IsRunning)
         {
-
             await service.Start();
         }
-
         await service.Write(command);
-        Logger.LogInformation($"PortForwardExecutor: {command}");
     }
 }
