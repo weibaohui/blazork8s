@@ -31,10 +31,15 @@
                     @if (c.Ports != null)
                     {
                         <DescriptionsItem Title="Ports">
+
                             @foreach (var p in c.Ports)
                             {
+
+                                <div>
                                 @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
-                                <br/>
+                                <Button Type="@ButtonType.Primary" OnClick="@(() => Forward(p))">Forward</Button>
+                                </div>
+
                             }
                         </DescriptionsItem>
                     }
@@ -75,6 +80,7 @@
                                 {
                                     <Tag PresetColor="@PresetColor.Lime">RW</Tag>
                                 }
+
                                 <Tag>@vm.Name</Tag>
                                 <Tag Color="#87d068">@vm.MountPath</Tag>
                                 <br/>
