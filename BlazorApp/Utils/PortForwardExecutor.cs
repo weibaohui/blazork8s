@@ -8,9 +8,9 @@ namespace BlazorApp.Utils;
 public class PortForwardExecutor
 {
     private static readonly ILogger<PortForwardExecutor> Logger = LoggingHelper<PortForwardExecutor>.Logger();
-    private                 PortForward                  PortForward { get; set; }
+    public                  PortForward                  PortForward { get; set; }
 
-    private string Command()
+    public string Command()
     {
         var command =
             $"kubectl port-forward --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.Metadata.Name} {PortForward.LocalPort}:{PortForward.KubePort} \r";
@@ -33,17 +33,22 @@ public class PortForwardExecutor
                 Logger.LogInformation("PortForwardExecutor StandardError: {Data}", e.Data);
             };
         }
-
     }
 
     public async Task Start()
     {
+        if (PortForward == null)
+        {
+            return;
+        }
+
         var command = Command();
         var service = TerminalHelper.Instance.GetOrCreate(command);
         if (!service.IsRunning)
         {
             await service.Start();
         }
+
         await service.Write(command);
     }
 }
