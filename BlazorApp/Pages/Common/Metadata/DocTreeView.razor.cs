@@ -21,8 +21,9 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
     private readonly List<TreeData> _dataList = new();
     private          Tree<TreeData> _tree;
 
-    private TreeData _currentItem    = new();
-    private string   _currentRootKey = "";
+    private          TreeData _currentItem         = new();
+    private          string   _currentRootKey      = "";
+    private readonly string[] _defaultSelectedKeys = new string[] {"apiVersion"  };
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,7 +35,6 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         _currentRootKey = key;
         var definition = SwaggerHelper.Instance.GetEntityByName(key);
         _dataList.AddRange(definition.ToTreeData().ChildList);
-
         await base.OnInitializedAsync();
     }
 
@@ -69,13 +69,19 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         }
     }
 
-    private void OnNodeClick(TreeEventArgs<TreeData> args)
-    {
-        _currentItem = args.Node.DataItem;
-    }
 
     private string OnTitleExpression(TreeNode<TreeData> arg)
     {
         return $"{arg.DataItem.Title}";
+    }
+
+    private void OnChecked(TreeEventArgs<TreeData> obj)
+    {
+        throw new NotImplementedException();
+    }
+
+    private void OnItemClick(TreeEventArgs<TreeData> arg)
+    {
+        _currentItem = arg.Node.DataItem;
     }
 }

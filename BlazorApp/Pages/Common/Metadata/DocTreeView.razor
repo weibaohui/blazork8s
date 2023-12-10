@@ -1,54 +1,63 @@
 @typeparam            T
 @using Entity
 @inherits FeedbackComponent<T, bool>
+<div>
 
-<GridRow>
-    <GridCol Flex=@("200px")>
+    <Breadcrumb>
+        <BreadcrumbItem>Doc</BreadcrumbItem>
+        <BreadcrumbItem >@_currentRootKey</BreadcrumbItem>
+    </Breadcrumb>
+    <Divider/>
+    <div>
+        <Button OnClick="ExpandAll">展开</Button>
+        <Button OnClick="CollapseAll">关闭</Button>
+    </div>
+    <Divider/>
 
-        <div>
-            <Tree DataSource="_dataList"
-                  TItem="TreeData"
-                  @ref="_tree"
-                  ShowLine="true"
-                  ShowLeafIcon="false"
-                  TitleExpression="OnTitleExpression"
-                  ChildrenExpression="x => x.DataItem.ChildList"
-                  IsLeafExpression="x => x.DataItem.RefKey == null"
-                  OnNodeLoadDelayAsync="OnNodeLoadDelayAsync"
-                  OnClick="OnNodeClick">
-            </Tree>
-        </div>
-    </GridCol>
-    <GridCol Flex=@("auto")>
+    <GridRow>
+        <GridCol Flex=@("200px") Style="border-width: 1px">
 
-        <Affix OffsetTop="60">
-            <Breadcrumb>
-                <BreadcrumbItem>Doc</BreadcrumbItem>
-                <BreadcrumbItem >@_currentRootKey</BreadcrumbItem>
-            </Breadcrumb>
-
-            <div >
-                <div>
-                    <Button OnClick="ExpandAll">展开</Button>
-                    <Button OnClick="CollapseAll">关闭</Button>
-                </div>
-
-                <Card Title=@_currentItem.Title Style="max-width:600px">
-                    <Body>
-                    <p>@_currentItem.description</p>
-                    <p>
-                        @if (_currentItem.type != null)
-                        {
-                            <Tag Color="@PresetColor.Volcano.ToString()">@_currentItem.type</Tag>
-                        }
-                        @if (_currentItem.format != null)
-                        {
-                            <Tag Color="@PresetColor.Orange.ToString()">@_currentItem.format</Tag>
-                        }
-                    </p>
-                    </Body>
-                </Card>
+            <div>
+                <Tree
+                    ChildrenExpression="x => x.DataItem.ChildList" 
+                    DataSource="_dataList" 
+                    IsLeafExpression="x => x.DataItem.RefKey == null" 
+                    KeyExpression="x => x.DataItem.Title" 
+                    OnNodeLoadDelayAsync="OnNodeLoadDelayAsync" 
+                    OnClick="OnItemClick"
+                    @ref="_tree" 
+                    ShowLeafIcon="false" 
+                    ShowLine="true" 
+                    TItem="TreeData" 
+                    TitleExpression="OnTitleExpression">
+                </Tree>
             </div>
-        </Affix>
-    </GridCol>
-</GridRow>
+        </GridCol>
+        <GridCol Flex=@("auto")>
+
+            <Affix OffsetTop="60">
+
+
+                <div >
+
+
+                    <Card Title="@_currentItem.Title" Style="max-width:600px">
+                        <Body>
+                        <p>@_currentItem.description</p>
+                        <p>
+                            @if (_currentItem.type != null)
+                            {
+                                <Tag Color="@PresetColor.Volcano.ToString()">@_currentItem.type</Tag>
+                            }
+                            @if (_currentItem.format != null)
+                            {
+                                <Tag Color="@PresetColor.Orange.ToString()">@_currentItem.format</Tag>
+                            }
+                        </p>
+                        </Body>
+                    </Card>
+                </div>
+            </Affix>
+        </GridCol>
+    </GridRow>
+</div>
