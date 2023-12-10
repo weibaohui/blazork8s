@@ -4,7 +4,7 @@ namespace BlazorApp.Pages;
 
 public partial class Counter : ComponentBase
 {
-    private int _currentCount = 0;
+    private int _currentCount;
 
     private void IncrementCount()
     {

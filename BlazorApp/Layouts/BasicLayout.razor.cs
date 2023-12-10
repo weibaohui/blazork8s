@@ -10,7 +10,7 @@ public partial class BasicLayout : LayoutComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        MenuData = new MenuDataItem[]
+        MenuData = new[]
         {
             new MenuDataItem
             {
@@ -56,7 +56,7 @@ public partial class BasicLayout : LayoutComponentBase
 
     private MenuDataItem[] WorkloadsMenu()
     {
-        return new MenuDataItem[]
+        return new[]
         {
             new MenuDataItem
             {
