@@ -14,6 +14,13 @@ public partial class BasicLayout : LayoutComponentBase
         {
             new MenuDataItem
             {
+                Path = "/PortForward",
+                Name = "PortForward",
+                Key  = "PortForward",
+                Icon = "smile",
+            },
+            new MenuDataItem
+            {
                 Path = "/ai/chatDeploy",
                 Name = "welcome",
                 Key  = "welcome",
