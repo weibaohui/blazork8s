@@ -2,6 +2,7 @@
 @using k8s.Models
 @using Extension
 @using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
 @inherits TableBase<$ItemType$>
 @if (TableData.PagedItems != null)
 {
@@ -29,7 +30,9 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
-
+                <AntDesign.Column Title="存活" TData="string">
+                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                </AntDesign.Column>
                 <ActionColumn Title="Action" Width="200" Fixed="right">
                     <$Item$Action Item="@context"></$Item$Action>
                 </ActionColumn>
