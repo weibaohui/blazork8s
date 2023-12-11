@@ -26,16 +26,12 @@ public partial class $Item$Action : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    [Inject]
-    private ILogger<$Item$Action> Logger { get; set; }
-
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
-    private async Task On$Item$DeleteClick($ItemType$ item)
+    private async Task OnDeleteClick($ItemType$ item)
     {
         await $Item$Service.Delete(item.Namespace(), item.Name());
         StateHasChanged();
