@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
+using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
@@ -24,16 +26,12 @@ public partial class SecretAction : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    [Inject]
-    private ILogger<SecretAction> Logger { get; set; }
-
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
-    private async Task OnSecretDeleteClick(V1Secret item)
+    private async Task OnDeleteClick(V1Secret item)
     {
         await SecretService.Delete(item.Namespace(), item.Name());
         StateHasChanged();

@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
+using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
@@ -24,16 +26,12 @@ public partial class PersistentVolumeClaimAction : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    [Inject]
-    private ILogger<PersistentVolumeClaimAction> Logger { get; set; }
-
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
-    private async Task OnPersistentVolumeClaimDeleteClick(V1PersistentVolumeClaim item)
+    private async Task OnDeleteClick(V1PersistentVolumeClaim item)
     {
         await PersistentVolumeClaimService.Delete(item.Namespace(), item.Name());
         StateHasChanged();

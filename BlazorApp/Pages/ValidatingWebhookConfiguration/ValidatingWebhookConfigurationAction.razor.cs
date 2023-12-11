@@ -1,6 +1,8 @@
+using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
+using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
@@ -24,16 +26,12 @@ public partial class ValidatingWebhookConfigurationAction : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    [Inject]
-    private ILogger<ValidatingWebhookConfigurationAction> Logger { get; set; }
-
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
     }
 
-    private async Task OnValidatingWebhookConfigurationDeleteClick(V1ValidatingWebhookConfiguration item)
+    private async Task OnDeleteClick(V1ValidatingWebhookConfiguration item)
     {
         await ValidatingWebhookConfigurationService.Delete(item.Namespace(), item.Name());
         StateHasChanged();
