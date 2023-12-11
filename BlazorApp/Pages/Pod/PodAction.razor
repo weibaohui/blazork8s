@@ -9,7 +9,7 @@
                 <MenuItem OnClick="@(() => OnDocClick(PodItem))">Doc</MenuItem>
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
-                                OnConfirm="() => OnPodDeleteClick(PodItem)"
+                                OnConfirm="@(() => OnPodDeleteClick(PodItem))"
                                 OkText="Yes"
                                 CancelText="No">
                         删除
