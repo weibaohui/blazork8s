@@ -47,14 +47,26 @@ public partial class YamlView<T> : FeedbackComponent<T, bool> where T : IKuberne
                 Enabled                            = true,
                 IndependentColorPoolPerBracketType = true
             },
-            Value = KubernetesYaml.Serialize(Item)
+            Value = KubernetesYaml.Serialize(Item),
         };
     }
 
 
     protected override async Task OnInitializedAsync()
     {
-        Item = base.Options;
         await base.OnInitializedAsync();
+        Item = base.Options;
+    }
+
+
+    protected override void Dispose(bool disposing)
+    {
+        _editor.Dispose();
+        base.Dispose(disposing);
+    }
+
+    private async Task OnDidInit()
+    {
+        await _editor.SetValue(KubernetesYaml.Serialize(Item));
     }
 }

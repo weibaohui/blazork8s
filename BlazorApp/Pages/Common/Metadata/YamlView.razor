@@ -2,8 +2,9 @@
 @inherits FeedbackComponent<T, bool>
 
 <div style="height: 100%;min-height: 300px">
-<StandaloneCodeEditor
-    @ref="_editor"
-    Id="yaml-editor"
-    ConstructionOptions="EditorConstructionOptions"/>
+    <StandaloneCodeEditor
+        @ref="_editor"
+        Id="yaml-editor"
+        ConstructionOptions="EditorConstructionOptions"
+        OnDidInit="OnDidInit"/>
 </div>
