@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity;
+using FluentScheduler;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +14,7 @@ public class PortForwardExecutorHelper
     private static readonly ILogger<PortForwardExecutorHelper> Logger =
         LoggingHelper<PortForwardExecutorHelper>.Logger();
 
-    private static Dictionary<string, PortForwardExecutor> map = new();
+    private static readonly Dictionary<string, PortForwardExecutor> Map = new();
 
     public static PortForwardExecutorHelper Instance => Nested.Instance;
 
@@ -28,80 +29,57 @@ public class PortForwardExecutorHelper
         internal static readonly PortForwardExecutorHelper Instance = new PortForwardExecutorHelper();
     }
 
+    public PortForwardExecutorHelper()
+    {
+        //每5秒执行一次端口探活
+        JobManager.Initialize();
+        JobManager.AddJob(NcProbe, (s) => s.ToRunEvery(5).Seconds());
+    }
+
+
     /// <summary>
     /// 探测端口是否存活
     /// </summary>
-    public void NcProbe()
+    private async void NcProbe()
     {
-        if (map.Count == 0)
+        Logger.LogInformation("开始探测");
+        if (Map.Count == 0)
         {
             return;
         }
+
         //TODO 实现出来
-        foreach (var (_, pfe) in map)
+        foreach (var (_, pfe) in Map)
         {
-            Logger.LogInformation("PortForwardExecutorHelper NcProbe {Port}", pfe.PortForward.LocalPort);
+            var pf = pfe.PortForward;
+            Logger.LogInformation(
+                "探测状态:{Port} {Status},{Time}",
+                pf.LocalPort,
+                pf.Status,
+                pf.StatusTimestamp);
+            await pfe.StartProbe();
         }
     }
 
-    public async Task ForwardDeployment(string ns, string deployName, string deployPort, int localPort)
+    public async Task ForwardPort(PortForwardType type,string ns, string resName, string kubePort, int localPort)
     {
         var pf = new PortForward
         {
-            Type      = PortForwardType.Deployment,
-            LocalPort = localPort,
-            KubePort  = deployPort,
+            Kind       = "PortForward",
+            ApiVersion = "blazorK8s.io/v1",
+            Type       = type,
+            LocalPort  = localPort,
+            KubePort   = kubePort,
             Metadata = new V1ObjectMeta
             {
-                Name              = deployName,
+                Name              = resName,
                 NamespaceProperty = ns,
                 CreationTimestamp = DateTime.Now,
             }
         };
 
         PortForwardExecutor pfe = new PortForwardExecutor(pf);
-        map.TryAdd(pfe.Command(), pfe);
-        await pfe.Start();
-    }
-
-    public async Task ForwardPod(string ns, string podName, string deployPort, int localPort)
-    {
-        var pf = new PortForward
-        {
-            Type      = PortForwardType.Pod,
-            LocalPort = localPort,
-            KubePort  = deployPort,
-            Metadata = new V1ObjectMeta
-            {
-                Name              = podName,
-                NamespaceProperty = ns,
-                CreationTimestamp = DateTime.Now,
-            }
-        };
-
-        PortForwardExecutor pfe = new PortForwardExecutor(pf);
-        map.TryAdd(pfe.Command(), pfe);
-
-        await pfe.Start();
-    }
-
-    public async Task ForwardSvc(string ns, string svcName, string deployPort, int localPort)
-    {
-        var pf = new PortForward
-        {
-            Type      = PortForwardType.Svc,
-            LocalPort = localPort,
-            KubePort  = deployPort,
-            Metadata = new V1ObjectMeta
-            {
-                Name              = svcName,
-                NamespaceProperty = ns,
-                CreationTimestamp = DateTime.Now,
-            }
-        };
-
-        PortForwardExecutor pfe = new PortForwardExecutor(pf);
-        map.TryAdd(pfe.Command(), pfe);
+        Map.TryAdd(pfe.Command(), pfe);
 
         await pfe.Start();
     }
