@@ -30,7 +30,7 @@ namespace BlazorApp.Pages.Container
 
         private async Task Forward(V1ContainerPort p)
         {
-            await PortForwardExecutorHelper.Instance.ForwardPod(Pod.Namespace(), Pod.Name(),
+            await PortForwardExecutorHelper.Instance.ForwardPort(PortForwardType.Pod,Pod.Namespace(), Pod.Name(),
                 p.ContainerPort.ToString(),
                 PortForward.RandomPort());
             await MessageService.Success("设置 转发成功 !");
