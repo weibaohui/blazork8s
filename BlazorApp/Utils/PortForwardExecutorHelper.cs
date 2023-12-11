@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity;
 using FluentScheduler;
+using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
 
@@ -15,6 +16,7 @@ public class PortForwardExecutorHelper
         LoggingHelper<PortForwardExecutorHelper>.Logger();
 
     private static readonly Dictionary<string, PortForwardExecutor> Map = new();
+    private                 ResourceCache<PortForward> cache = ResourceCacheHelper<PortForward>.Instance.Build();
 
     public static PortForwardExecutorHelper Instance => Nested.Instance;
 
@@ -57,10 +59,12 @@ public class PortForwardExecutorHelper
                 pf.Status,
                 pf.StatusTimestamp);
             await pfe.StartProbe();
+            cache.Update(WatchEventType.Modified, pf);
+
         }
     }
 
-    public async Task ForwardPort(PortForwardType type,string ns, string resName, string kubePort, int localPort)
+    public async Task ForwardPort(PortForwardType type, string ns, string resName, string kubePort, int localPort)
     {
         var pf = new PortForward
         {
@@ -71,15 +75,17 @@ public class PortForwardExecutorHelper
             KubePort   = kubePort,
             Metadata = new V1ObjectMeta
             {
-                Name              = resName,
+                Name              = $"{resName}-{kubePort}-{localPort}",
                 NamespaceProperty = ns,
-                CreationTimestamp = DateTime.Now,
+                //k8s时间
+                CreationTimestamp = DateTime.Now.ToUniversalTime(),
+                Uid = Guid.NewGuid().ToString()
             }
         };
 
         PortForwardExecutor pfe = new PortForwardExecutor(pf);
         Map.TryAdd(pfe.Command(), pfe);
-
+        cache.Update(WatchEventType.Added, pf);
         await pfe.Start();
     }
 }
