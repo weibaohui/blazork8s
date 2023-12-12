@@ -31,9 +31,14 @@
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Field="@context.KubePort" Title="KubePort"/>
-                <AntDesign.Column Field="@context.LocalPort" Title="LocalPort"/>
+                <AntDesign.Column Field="@context.LocalPort" Title="LocalPort">
+                    <div>
+                        @context.LocalPort
+                        <a href=@($"http://127.0.0.1:{context.LocalPort}") target="_blank">Http</a>
+                        <a href=@($"https://127.0.0.1:{context.LocalPort}") target="_blank">Https</a>
+                    </div>
+                </AntDesign.Column>
                 <AntDesign.Column Field="@context.Status" Title="Status"/>
-                <AntDesign.Column Field="@context.CreationTimestamp()" Title="创建"/>
                 <AntDesign.Column Field="@context.StatusTimestamp" Title="探测"/>
                 <AntDesign.Column Title="存活" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
