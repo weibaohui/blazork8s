@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity;
+using Extension;
 using FluentScheduler;
 using k8s;
 using k8s.Models;
@@ -17,6 +18,7 @@ public class PortForwardExecutorHelper
 
     private static readonly Dictionary<string, PortForwardExecutor> Map = new();
     private                 ResourceCache<PortForward> cache = ResourceCacheHelper<PortForward>.Instance.Build();
+    private                 object _lockObj = new object();
 
     public static PortForwardExecutorHelper Instance => Nested.Instance;
 
@@ -44,24 +46,31 @@ public class PortForwardExecutorHelper
     /// </summary>
     private async void NcProbe()
     {
-        Logger.LogInformation("开始探测");
+        Logger.LogInformation("开始探测{Count}端口是否存活", Map.Count);
         if (Map.Count == 0)
         {
             return;
         }
 
-        foreach (var (_, pfe) in Map)
+        lock (_lockObj)
         {
-            var pf = pfe.PortForward;
-            Logger.LogInformation(
-                "探测状态:{Port} {Status},{Time}",
-                pf.LocalPort,
-                pf.Status,
-                pf.StatusTimestamp);
-            await pfe.StartProbe();
-            cache.Update(WatchEventType.Modified, pf);
-
+            foreach (var (_, pfe) in Map)
+            {
+                var pf = pfe.PortForward;
+                if (pf.StatusTimestamp.FromNowSeconds()<10)
+                {
+                    continue;
+                }
+                pfe.StartProbe();
+                cache.Update(WatchEventType.Modified, pf);
+                Logger.LogInformation(
+                    "探测状态:{Port} {Status},{Time}",
+                    pf.LocalPort,
+                    pf.Status,
+                    pf.StatusTimestamp);
+            }
         }
+
     }
 
     public async Task ForwardPort(PortForwardType type, string ns, string kubeName, string kubePort, int localPort)
@@ -85,7 +94,10 @@ public class PortForwardExecutorHelper
         };
 
         PortForwardExecutor pfe = new PortForwardExecutor(pf);
-        Map.TryAdd(pfe.Command(), pfe);
+        lock (_lockObj)
+        {
+            Map.TryAdd(pfe.PortForward.Metadata.Name, pfe);
+        }
         cache.Update(WatchEventType.Added, pf);
         await pfe.Start();
     }

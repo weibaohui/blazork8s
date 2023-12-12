@@ -97,7 +97,16 @@ namespace Extension
             var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
             return dateTime.Age();
         }
+        public static double? FromNowSeconds(this DateTime? dateTime)
+        {
+            if (dateTime==null)
+            {
+                return 0;
+            }
+            var ts    = DateTime.Now - dateTime;
+            return  ts?.TotalSeconds;
 
+        }
         public static string AgeFromUtc(this DateTime? time)
         {
             if (time == null)
