@@ -94,4 +94,15 @@ public class PortForwardExecutor
         }
         await service.Write(command);
     }
+
+    public void Dispose()
+    {
+         if (PortForward == null)
+         {
+             return;
+         }
+         //释放探测终端、转发命令执行终端
+         TerminalHelper.Instance.GetOrCreate(GetNcProbeCommand()).Dispose();
+         TerminalHelper.Instance.GetOrCreate(Command()).Dispose();
+    }
 }

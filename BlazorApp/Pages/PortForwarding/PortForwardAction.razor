@@ -4,7 +4,6 @@
         <Overlay >
             <Menu >
                 <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
-                <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
                                 OnConfirm="@(() => OnDeleteClick(Item))"
@@ -24,6 +23,5 @@
 {
     <Alert Type="@AlertType.Success">
         <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
-        <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
     </Alert>
 }

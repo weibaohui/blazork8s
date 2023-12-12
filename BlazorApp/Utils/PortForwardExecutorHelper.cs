@@ -57,10 +57,11 @@ public class PortForwardExecutorHelper
             foreach (var (_, pfe) in Map)
             {
                 var pf = pfe.PortForward;
-                if (pf.StatusTimestamp.FromNowSeconds()<10)
+                if (pf.StatusTimestamp != null && pf.StatusTimestamp.FromNowSeconds() < 10)
                 {
                     continue;
                 }
+
                 pfe.StartProbe();
                 cache.Update(WatchEventType.Modified, pf);
                 Logger.LogInformation(
@@ -70,7 +71,6 @@ public class PortForwardExecutorHelper
                     pf.StatusTimestamp);
             }
         }
-
     }
 
     public async Task ForwardPort(PortForwardType type, string ns, string kubeName, string kubePort, int localPort)
@@ -82,14 +82,14 @@ public class PortForwardExecutorHelper
             Type       = type,
             LocalPort  = localPort,
             KubePort   = kubePort,
-            KubeName = kubeName,
+            KubeName   = kubeName,
             Metadata = new V1ObjectMeta
             {
                 Name              = $"{kubeName}-{kubePort}-{localPort}",
                 NamespaceProperty = ns,
                 //k8s时间
                 CreationTimestamp = DateTime.Now.ToUniversalTime(),
-                Uid = Guid.NewGuid().ToString()
+                Uid               = Guid.NewGuid().ToString()
             }
         };
 
@@ -98,7 +98,33 @@ public class PortForwardExecutorHelper
         {
             Map.TryAdd(pfe.PortForward.Metadata.Name, pfe);
         }
+
         cache.Update(WatchEventType.Added, pf);
         await pfe.Start();
+    }
+
+
+    /// <summary>
+    /// 关闭端口转发终端，释放资源
+    /// </summary>
+    /// <param name="pf">PortForward</param>
+    public void DisposeByItem(PortForward pf )
+    {
+        string name = pf.Metadata.Name;
+        lock (_lockObj)
+        {
+            Map.TryGetValue(name, out PortForwardExecutor? executor);
+            if (executor != null)
+            {
+                executor.Dispose();
+                lock (_lockObj)
+                {
+                    Map.Remove(name);
+                }
+                cache.Update(WatchEventType.Deleted, executor.PortForward);
+            }
+        }
+
+
     }
 }

@@ -1,8 +1,8 @@
 @page "/PortForward"
 @using k8s.Models
+@using Entity
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
-@using Entity
 @inherits BlazorApp.Pages.Common.TableBase<Entity.PortForward>
 @if (TableData.PagedItems != null)
 {
@@ -38,7 +38,9 @@
                 <AntDesign.Column Title="存活" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
-
+                <ActionColumn Title="Action" Width="200" Fixed="right">
+                    <PortForwardAction Item="@context"></PortForwardAction>
+                </ActionColumn>
             </Table>
             </Body>
         </ChildContent>
