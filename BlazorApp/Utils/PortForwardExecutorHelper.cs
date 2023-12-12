@@ -8,6 +8,7 @@ using FluentScheduler;
 using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorApp.Utils;
 
@@ -16,9 +17,9 @@ public class PortForwardExecutorHelper
     private static readonly ILogger<PortForwardExecutorHelper> Logger =
         LoggingHelper<PortForwardExecutorHelper>.Logger();
 
-    private static readonly Dictionary<string, PortForwardExecutor> Map = new();
-    private                 ResourceCache<PortForward> cache = ResourceCacheHelper<PortForward>.Instance.Build();
-    private                 object _lockObj = new object();
+    private static readonly Dictionary<string, PortForwardExecutor> Map      = new();
+    private readonly        ResourceCache<PortForward>              _cache    = ResourceCacheHelper<PortForward>.Instance.Build();
+    private readonly        object                                  _lockObj = new object();
 
     public static PortForwardExecutorHelper Instance => Nested.Instance;
 
@@ -38,6 +39,7 @@ public class PortForwardExecutorHelper
         //每5秒执行一次端口探活
         JobManager.Initialize();
         JobManager.AddJob(NcProbe, (s) => s.ToRunEvery(5).Seconds());
+        JobManager.AddJob(RemoveFailedPort, (s) => s.ToRunEvery(30).Seconds());
     }
 
 
@@ -63,12 +65,36 @@ public class PortForwardExecutorHelper
                 }
 
                 pfe.StartProbe();
-                cache.Update(WatchEventType.Modified, pf);
+                _cache.Update(WatchEventType.Modified, pf);
                 Logger.LogInformation(
                     "探测状态:{Port} {Status},{Time}",
                     pf.LocalPort,
                     pf.Status,
                     pf.StatusTimestamp);
+            }
+        }
+    }
+    private async void RemoveFailedPort()
+    {
+        Logger.LogInformation("清除失败端口");
+        if (Map.Count == 0)
+        {
+            return;
+        }
+
+        lock (_lockObj)
+        {
+            foreach (var (_, pfe) in Map)
+            {
+                var pf = pfe.PortForward;
+                if (pf.StatusTimestamp != null && pf.Status.IsNullOrEmpty())
+                {
+                     DisposeByItem(pf);
+                }
+                if (pf.Status=="failed")
+                {
+                     DisposeByItem(pf);
+                }
             }
         }
     }
@@ -99,7 +125,7 @@ public class PortForwardExecutorHelper
             Map.TryAdd(pfe.PortForward.Metadata.Name, pfe);
         }
 
-        cache.Update(WatchEventType.Added, pf);
+        _cache.Update(WatchEventType.Added, pf);
         await pfe.Start();
     }
 
@@ -121,10 +147,11 @@ public class PortForwardExecutorHelper
                 {
                     Map.Remove(name);
                 }
-                cache.Update(WatchEventType.Deleted, executor.PortForward);
+                _cache.Update(WatchEventType.Deleted, executor.PortForward);
             }
         }
 
+        Logger.LogInformation("清除失败端口{Port}", pf.LocalPort);
 
     }
 }
