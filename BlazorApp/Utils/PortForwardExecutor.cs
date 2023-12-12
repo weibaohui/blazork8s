@@ -14,7 +14,7 @@ public class PortForwardExecutor
     public string Command()
     {
         var command =
-            $"kubectl port-forward --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.Metadata.Name} {PortForward.LocalPort}:{PortForward.KubePort} \r";
+            $"kubectl port-forward --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.KubeName} {PortForward.LocalPort}:{PortForward.KubePort} \r";
         return command;
     }
 

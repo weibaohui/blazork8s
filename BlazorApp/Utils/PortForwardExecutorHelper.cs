@@ -64,7 +64,7 @@ public class PortForwardExecutorHelper
         }
     }
 
-    public async Task ForwardPort(PortForwardType type, string ns, string resName, string kubePort, int localPort)
+    public async Task ForwardPort(PortForwardType type, string ns, string kubeName, string kubePort, int localPort)
     {
         var pf = new PortForward
         {
@@ -73,9 +73,10 @@ public class PortForwardExecutorHelper
             Type       = type,
             LocalPort  = localPort,
             KubePort   = kubePort,
+            KubeName = kubeName,
             Metadata = new V1ObjectMeta
             {
-                Name              = $"{resName}-{kubePort}-{localPort}",
+                Name              = $"{kubeName}-{kubePort}-{localPort}",
                 NamespaceProperty = ns,
                 //k8s时间
                 CreationTimestamp = DateTime.Now.ToUniversalTime(),
