@@ -1,0 +1,30 @@
+@using Entity
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits FeedbackComponent<Entity.PortForward, bool>
+@if (Item != null)
+{
+    <RoleAction Item="Item" MenuMode="MenuMode.Horizontal"></RoleAction>
+    <MetadataView Item="Item" T="PortForward"></MetadataView>
+    <Descriptions Bordered Column="1">
+
+        <DescriptionsItem Title="KubePort" LabelStyle="width:120px">
+            <Tag Color="#2db7f5"> @Item.KubeName </Tag>
+            <Tag Color="#2db7f5">@Item.KubePort</Tag>
+            =>
+            <Tag Color="DarkRed">@Item.LocalPort</Tag>
+
+        </DescriptionsItem>
+
+        <DescriptionsItem Title="status">
+            @Item.Status (@Item.StatusTimestamp)
+        </DescriptionsItem>
+        <DescriptionsItem Title="访问">
+            <div>
+                <a href=@($"http://127.0.0.1:{Item.LocalPort}") target="_blank">Http</a>
+                <a href=@($"https://127.0.0.1:{Item.LocalPort}") target="_blank">Https</a>
+            </div>
+        </DescriptionsItem>
+    </Descriptions>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+}

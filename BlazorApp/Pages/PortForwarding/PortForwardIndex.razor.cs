@@ -27,6 +27,9 @@ public partial class PortForwardIndex : TableBase<PortForward>
 
     private async Task OnItemNameClick(PortForward item)
     {
+        await PageDrawerHelper<PortForward>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<PortForwardDetailView, PortForward, bool>(item);
 
 
     }
