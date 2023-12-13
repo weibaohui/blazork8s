@@ -3,8 +3,10 @@
     <DescriptionsItem Title="Annotations">
         @foreach (var label in Annotations)
         {
-            <Paragraph Copyable>
-                <Tag PresetColor=@PresetColor.Blue>@label.Key = @label.Value</Tag>
+            <Paragraph >
+                <Text Code Copyable>
+                    <span  >@label.Key = @label.Value</span>
+                </Text>
             </Paragraph>
         }
     </DescriptionsItem>
