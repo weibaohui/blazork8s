@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Utils;
+using BlazorApp.Utils.PortForwarding;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;

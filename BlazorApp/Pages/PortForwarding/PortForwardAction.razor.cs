@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Service;
-using BlazorApp.Utils;
+using BlazorApp.Utils.PortForwarding;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;

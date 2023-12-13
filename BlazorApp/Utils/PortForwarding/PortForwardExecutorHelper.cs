@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BlazorApp.Utils;
+namespace BlazorApp.Utils.PortForwarding;
 
 public class PortForwardExecutorHelper
 {
