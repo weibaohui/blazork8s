@@ -6,15 +6,15 @@ namespace BlazorApp.Utils.Swagger;
 
 public class SwaggerEntity
 {
-    public IDictionary<string, Definition> definitions { get; set; }
+    public IDictionary<string, Definition>? definitions { get; set; }
 }
 
 public class Definition
 {
-    public string                         name        { get; set; }
-    public string                         description { get; set; }
+    public string?                        name        { get; set; }
+    public string?                        description { get; set; }
     public IDictionary<string, Property>? properties  { get; set; }
-    public string                         type        { get; set; }
+    public string?                        type        { get; set; }
     public string?                        format      { get; set; }
 
 }
@@ -27,8 +27,8 @@ public class RefItem
 
 public class Property
 {
-    public string   description { get; set; }
-    public string   type        { get; set; }
+    public string?  description { get; set; }
+    public string?  type        { get; set; }
     public string?  format      { get; set; }
     public RefItem? items       { get; set; }
 

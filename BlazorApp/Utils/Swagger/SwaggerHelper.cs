@@ -34,7 +34,8 @@ public class SwaggerHelper
             return null;
         }
 
-        var b = Entity.definitions.TryGetValue(name, out Definition? d);
+        Definition? d = null;
+        var         b = Entity.definitions?.TryGetValue(name, out  d);
         if (b == false)
         {
             return null;
