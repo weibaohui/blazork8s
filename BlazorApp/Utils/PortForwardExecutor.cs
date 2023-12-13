@@ -21,19 +21,7 @@ public class PortForwardExecutor
     public PortForwardExecutor(PortForward portForward)
     {
         PortForward = portForward;
-        var command = Command();
-        var service = TerminalHelper.Instance.GetOrCreate(command);
-        // if (!service.IsStandardOutPutSet)
-        // {
-        //     service.StandardOutput += (sender, e) =>
-        //     {
-        //         Logger.LogInformation("PortForwardExecutor StandardOutput: {Data}", e);
-        //     };
-        //     service.StandardError += (sender, e) =>
-        //     {
-        //         Logger.LogInformation("PortForwardExecutor StandardError: {Data}", e.Data);
-        //     };
-        // }
+
     }
 
     public async Task Start()
@@ -77,6 +65,7 @@ public class PortForwardExecutor
         {
             service.StandardOutput += (sender, e) =>
             {
+                // Logger.LogInformation("PortForwardExecutor Probe StandardOutput:  {Command}::::{Data}", GetNcProbeCommand(),e);
                 if (e.Contains("failed"))
                 {
                     PortForward.Status = "failed";

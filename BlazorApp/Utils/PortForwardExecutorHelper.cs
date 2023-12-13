@@ -22,7 +22,11 @@ public class PortForwardExecutorHelper
     private static readonly Dictionary<string, PortForwardExecutor> Map = new();
     private readonly        ResourceCache<PortForward> _cache = ResourceCacheHelper<PortForward>.Instance.Build();
     private readonly        object _lockObj = new object();
-    private                 IHubContext<ChatHub> _ctx;
+
+    /// <summary>
+    /// 发送watch event ，使用DI获取后，赋值到本helper
+    /// </summary>
+    private                 IHubContext<ChatHub>? _ctx;
     public static           PortForwardExecutorHelper Instance => Nested.Instance;
 
     private class Nested
@@ -48,7 +52,7 @@ public class PortForwardExecutorHelper
     /// <summary>
     /// 探测端口是否存活
     /// </summary>
-    private async void NcProbe()
+    private  void NcProbe()
     {
         Logger.LogInformation("开始探测{Count}端口是否存活", Map.Count);
         if (Map.Count == 0)
@@ -130,8 +134,7 @@ public class PortForwardExecutorHelper
         }
 
         await pfe.Start();
-       await WatchUpdate(WatchEventType.Added, pf);
-
+        await WatchUpdate(WatchEventType.Added, pf);
     }
 
 
@@ -172,12 +175,8 @@ public class PortForwardExecutorHelper
     }
 
 
-    public async Task WatchUpdate(WatchEventType type,PortForward item)
+    private Task WatchUpdate(WatchEventType type, PortForward item)
     {
-        if (_ctx == null)
-        {
-            return;
-        }
         var data = new ResourceWatchEntity<PortForward>
         {
             Message = $"{type}:{item.Kind}:{item.Metadata.Name}",
@@ -186,6 +185,11 @@ public class PortForwardExecutorHelper
         };
         Logger.LogInformation("{Type}:{ItemKind}:{MetadataName}", type, item.Kind, item.Metadata.Name);
         _cache.Update(type, item);
-        await _ctx.Clients.All.SendAsync("ReceiveMessage", data);
+        if (_ctx != null)
+        {
+            return _ctx.Clients.All.SendAsync("ReceiveMessage", data);
+        }
+
+        return Task.CompletedTask;
     }
 }
