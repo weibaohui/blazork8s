@@ -11,7 +11,7 @@
         @if (Item.Spec.Type != null)
         {
             <DescriptionsItem Title="Type" LabelStyle="width:120px">
-                @Item.Spec.Type
+                <OptionsView Options='@(new[] {  "ClusterIP", "NodePort","ExternalName", "LoadBalancer" })' SelectOption="@Item.Spec.Type"></OptionsView>
             </DescriptionsItem>
         }
         @if (Item.Spec.ClusterIP != null)
@@ -36,7 +36,7 @@
         @if (Item.Spec.InternalTrafficPolicy != null)
         {
             <DescriptionsItem Title="InternalTrafficPolicy">
-                <OptionsView   Options='@(new []{"Local", "Cluster"})' SelectOption="@Item.Spec.InternalTrafficPolicy"></OptionsView>
+                <OptionsView Options='@(new[] {  "Cluster","Local" })' SelectOption="@Item.Spec.InternalTrafficPolicy"></OptionsView>
             </DescriptionsItem>
         }
 
