@@ -87,11 +87,7 @@ namespace Extension
             return DateTime.Now.Age(time);
         }
 
-        public static string AgeFromUtc(this DateTime time)
-        {
-            var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
-            return dateTime.Age();
-        }
+
         public static string AddAgeFromUtc(this DateTime time)
         {
             var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
@@ -106,6 +102,17 @@ namespace Extension
             var ts    = DateTime.Now - dateTime;
             return  ts?.TotalSeconds;
 
+        }
+        public static double FromNowSeconds(this DateTime dateTime)
+        {
+            var ts = DateTime.Now - dateTime;
+            return  ts.TotalSeconds;
+
+        }
+        public static string AgeFromUtc(this DateTime time)
+        {
+            var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
+            return dateTime.Age();
         }
         public static string AgeFromUtc(this DateTime? time)
         {

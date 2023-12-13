@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using BlazorApp.Utils.Terminal;
+using Entity;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils.PortForwarding;
@@ -8,7 +9,7 @@ namespace BlazorApp.Utils.PortForwarding;
 public class PortForwardExecutor
 {
     private static readonly ILogger<PortForwardExecutor> Logger = LoggingHelper<PortForwardExecutor>.Logger();
-    public                  Entity.PortForward           PortForward { get; set; }
+    public                  PortForward           PortForward { get; set; }
 
     public string Command()
     {
@@ -17,7 +18,7 @@ public class PortForwardExecutor
         return command;
     }
 
-    public PortForwardExecutor(Entity.PortForward portForward)
+    public PortForwardExecutor(PortForward portForward)
     {
         PortForward = portForward;
 

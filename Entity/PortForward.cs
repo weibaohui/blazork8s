@@ -21,7 +21,7 @@ public class PortForward : IKubernetesObject<V1ObjectMeta>
     public string KubeName  { get; set; }
 
     public string           Status          { get; set; }
-    public System.DateTime? StatusTimestamp { get; set; }
+    public DateTime? StatusTimestamp { get; set; }
 
     /// <summary>
     /// deployment svc pod
