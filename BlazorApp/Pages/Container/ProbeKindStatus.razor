@@ -1,9 +1,5 @@
-<RadioGroup DefaultValue="@Kind" ButtonStyle="@RadioButtonStyle.Solid" Size="small">
-    <Radio RadioButton Value=@("HttpGet") Disabled=@(Kind != "HttpGet")>HttpGet</Radio>
-    <Radio RadioButton Value=@("Exec") Disabled=@(Kind != "Exec")>Exec</Radio>
-    <Radio RadioButton Value=@("TcpSocket") Disabled=@(Kind != "TcpSocket")>TcpSocket</Radio>
-    <Radio RadioButton Value=@("Grpc") Disabled=@(Kind != "Grpc")>Grpc</Radio>
-</RadioGroup>
+@using BlazorApp.Pages.Common.Metadata
+<OptionsView Options='@(new []{ "HttpGet", "Exec", "TcpSocket", "Grpc" })' SelectOption="@Kind"></OptionsView>
 <br>
 @if (Probe.HttpGet != null)
 {

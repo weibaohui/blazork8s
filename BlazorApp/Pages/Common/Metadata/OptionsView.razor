@@ -1,0 +1,22 @@
+@foreach (var option in Options)
+{
+    <Tag
+        Icon="@(option == SelectOption ? IconType.TwoTone.CheckCircle : IconType.TwoTone.Stop)"
+        Color="@(option == SelectOption ? "blue-inverse" : "gray")"
+        OnClick="_ => Open()">
+        @option
+    </Tag>
+}
+
+<Drawer Closable="true" @bind-Visible="_visible" Placement="right" Title='("可选项")'>
+    <p>
+        @foreach (var option in Options)
+        {
+            <Tag
+                Icon="@(option == SelectOption ? IconType.TwoTone.CheckCircle : IconType.TwoTone.Stop)"
+                Color="@(option == SelectOption ? "blue-inverse" : "gray")">
+                @option
+            </Tag>
+        }
+    </p>
+</Drawer>

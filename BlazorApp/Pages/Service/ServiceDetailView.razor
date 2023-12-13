@@ -36,7 +36,7 @@
         @if (Item.Spec.InternalTrafficPolicy != null)
         {
             <DescriptionsItem Title="InternalTrafficPolicy">
-               @Item.Spec.InternalTrafficPolicy  [Local/Cluster]
+                <OptionsView   Options='@(new []{"Local", "Cluster"})' SelectOption="@Item.Spec.InternalTrafficPolicy"></OptionsView>
             </DescriptionsItem>
         }
 
