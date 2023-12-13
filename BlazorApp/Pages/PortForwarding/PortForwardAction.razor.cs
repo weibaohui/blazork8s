@@ -28,7 +28,7 @@ public partial class PortForwardAction : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task OnDeleteClick(PortForward item)
+    private void OnDeleteClick(PortForward item)
     {
         PortForwardExecutorHelper.Instance.DisposeByItem(item);
         StateHasChanged();

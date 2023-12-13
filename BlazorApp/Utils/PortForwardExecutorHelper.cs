@@ -70,7 +70,7 @@ public class PortForwardExecutorHelper
                     continue;
                 }
 
-                pfe.StartProbe();
+                pfe.StartProbe().ConfigureAwait(true);
                 WatchUpdate(WatchEventType.Modified, pf);
                 Logger.LogInformation(
                     "探测状态:{Port} {Status},{Time}",
