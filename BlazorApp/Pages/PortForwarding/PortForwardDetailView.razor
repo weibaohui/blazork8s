@@ -1,6 +1,6 @@
-@using Entity
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using Entity
 @inherits FeedbackComponent<Entity.PortForward, bool>
 @if (Item != null)
 {
@@ -9,6 +9,7 @@
     <Descriptions Bordered Column="1">
 
         <DescriptionsItem Title="KubePort" LabelStyle="width:120px">
+            <Tag Color="#2db7f5"> @Item.Type </Tag>
             <Tag Color="#2db7f5"> @Item.KubeName </Tag>
             <Tag Color="#2db7f5">@Item.KubePort</Tag>
             =>
