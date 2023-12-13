@@ -26,9 +26,6 @@ public class ListWatchService : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Timed Hosted Service running.");
-
-
 #pragma warning disable CS4014
         WatchPod();
         WatchDeployment();
@@ -309,7 +306,6 @@ public class ListWatchService : IHostedService, IDisposable
 
     public Task StopAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Timed Hosted Service is stopping.");
         return Task.CompletedTask;
     }
 

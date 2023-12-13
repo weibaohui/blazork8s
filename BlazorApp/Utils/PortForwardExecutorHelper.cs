@@ -2,11 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlazorApp.Chat;
 using Entity;
 using Extension;
 using FluentScheduler;
 using k8s;
 using k8s.Models;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
@@ -17,11 +19,11 @@ public class PortForwardExecutorHelper
     private static readonly ILogger<PortForwardExecutorHelper> Logger =
         LoggingHelper<PortForwardExecutorHelper>.Logger();
 
-    private static readonly Dictionary<string, PortForwardExecutor> Map      = new();
-    private readonly        ResourceCache<PortForward>              _cache    = ResourceCacheHelper<PortForward>.Instance.Build();
-    private readonly        object                                  _lockObj = new object();
-
-    public static PortForwardExecutorHelper Instance => Nested.Instance;
+    private static readonly Dictionary<string, PortForwardExecutor> Map = new();
+    private readonly        ResourceCache<PortForward> _cache = ResourceCacheHelper<PortForward>.Instance.Build();
+    private readonly        object _lockObj = new object();
+    private                 IHubContext<ChatHub> _ctx;
+    public static           PortForwardExecutorHelper Instance => Nested.Instance;
 
     private class Nested
     {
@@ -65,7 +67,7 @@ public class PortForwardExecutorHelper
                 }
 
                 pfe.StartProbe();
-                _cache.Update(WatchEventType.Modified, pf);
+                WatchUpdate(WatchEventType.Modified, pf);
                 Logger.LogInformation(
                     "探测状态:{Port} {Status},{Time}",
                     pf.LocalPort,
@@ -74,6 +76,7 @@ public class PortForwardExecutorHelper
             }
         }
     }
+
     private async void RemoveFailedPort()
     {
         Logger.LogInformation("清除失败端口");
@@ -89,11 +92,12 @@ public class PortForwardExecutorHelper
                 var pf = pfe.PortForward;
                 if (pf.StatusTimestamp != null && pf.Status.IsNullOrEmpty())
                 {
-                     DisposeByItem(pf);
+                    DisposeByItem(pf);
                 }
-                if (pf.Status=="failed")
+
+                if (pf.Status == "failed")
                 {
-                     DisposeByItem(pf);
+                    DisposeByItem(pf);
                 }
             }
         }
@@ -125,8 +129,9 @@ public class PortForwardExecutorHelper
             Map.TryAdd(pfe.PortForward.Metadata.Name, pfe);
         }
 
-        _cache.Update(WatchEventType.Added, pf);
         await pfe.Start();
+       await WatchUpdate(WatchEventType.Added, pf);
+
     }
 
 
@@ -134,7 +139,7 @@ public class PortForwardExecutorHelper
     /// 关闭端口转发终端，释放资源
     /// </summary>
     /// <param name="pf">PortForward</param>
-    public void DisposeByItem(PortForward pf )
+    public void DisposeByItem(PortForward pf)
     {
         string name = pf.Metadata.Name;
         lock (_lockObj)
@@ -147,11 +152,40 @@ public class PortForwardExecutorHelper
                 {
                     Map.Remove(name);
                 }
-                _cache.Update(WatchEventType.Deleted, executor.PortForward);
+
+                WatchUpdate(WatchEventType.Deleted, executor.PortForward);
             }
         }
 
         Logger.LogInformation("清除失败端口{Port}", pf.LocalPort);
+    }
 
+
+    /// <summary>
+    /// 通过PortForwardService 注入 IHubContext
+    /// 通过IHubContext 发送 即时消息
+    /// </summary>
+    /// <param name="ctx"></param>
+    public void SetIHubContext(IHubContext<ChatHub> ctx)
+    {
+        _ctx = ctx;
+    }
+
+
+    public async Task WatchUpdate(WatchEventType type,PortForward item)
+    {
+        if (_ctx == null)
+        {
+            return;
+        }
+        var data = new ResourceWatchEntity<PortForward>
+        {
+            Message = $"{type}:{item.Kind}:{item.Metadata.Name}",
+            Type    = type,
+            Item    = item
+        };
+        Logger.LogInformation("{Type}:{ItemKind}:{MetadataName}", type, item.Kind, item.Metadata.Name);
+        _cache.Update(type, item);
+        await _ctx.Clients.All.SendAsync("ReceiveMessage", data);
     }
 }

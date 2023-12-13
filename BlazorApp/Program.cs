@@ -31,6 +31,7 @@ builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
 builder.Services.AddHostedService<ListWatchService>();
+builder.Services.AddHostedService<PortForwardService>();
 
 builder.Services.AddScoped<IJobService,JobService>();
 builder.Services.AddScoped<IServiceService,ServiceService>();
