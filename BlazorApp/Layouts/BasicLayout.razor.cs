@@ -17,33 +17,33 @@ public partial class BasicLayout : LayoutComponentBase
                 Path = "/PortForward",
                 Name = "PortForward",
                 Key  = "PortForward",
-                Icon = "smile",
+                Icon = "setting",
             },
             new MenuDataItem
             {
                 Path = "/ai/chatDeploy",
                 Name = "welcome",
                 Key  = "welcome",
-                Icon = "smile",
+                Icon = "setting",
             },
             new MenuDataItem
             {
                 Path = "/NodeList",
                 Name = "NodeList",
                 Key  = "NodeList",
-                Icon = "smile",
+                Icon = "setting",
             }, new MenuDataItem
             {
                 Path = "/Node",
                 Name = "Nodes",
                 Key  = "Nodes",
-                Icon = "smile",
+                Icon = "setting",
             },
             new MenuDataItem
             {
                 Name     = "Workloads",
                 Key      = "Workloads",
-                Icon     = "smile",
+                Icon     = "setting",
                 Children = WorkloadsMenu(),
             },
         };
@@ -57,7 +57,7 @@ public partial class BasicLayout : LayoutComponentBase
             Path = item,
             Name = item,
             Key  = item,
-            Icon = "smile",
+            Icon = "setting",
         };
     }
 
@@ -70,28 +70,28 @@ public partial class BasicLayout : LayoutComponentBase
                 Path = "/Pods",
                 Name = "Pods",
                 Key  = "Pods",
-                Icon = "smile",
+                Icon = "setting",
             },
             new MenuDataItem
             {
                 Path = "/Deployments",
                 Name = "Deployments",
                 Key  = "Deployments",
-                Icon = "smile",
+                Icon = "setting",
             },
             new MenuDataItem
             {
                 Path = "/ReplicaSets",
                 Name = "ReplicaSets",
                 Key  = "ReplicaSets",
-                Icon = "smile",
+                Icon = "setting",
             },
             new MenuDataItem
             {
                 Path = "/DaemonSet",
                 Name = "DaemonSet",
                 Key  = "DaemonSet",
-                Icon = "smile",
+                Icon = "setting",
             },
             GetMenuItem("Job"),
             GetMenuItem("Service"),
