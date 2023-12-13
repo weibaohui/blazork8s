@@ -1,10 +1,11 @@
+@using BlazorApp.Utils
 @if (Selector != null)
 {
     <DescriptionsItem Title="@Title">
         @foreach (var label in Selector)
         {
             <Paragraph Copyable>
-                <Tag PresetColor=@PresetColor.Lime>@label.Key = @label.Value</Tag>
+                <Tag Color=@RandomColorHelper.RandomColor()>@label.Key = @label.Value</Tag>
             </Paragraph>
         }
     </DescriptionsItem>

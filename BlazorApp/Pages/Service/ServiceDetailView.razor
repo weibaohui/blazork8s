@@ -5,22 +5,38 @@
 @inherits FeedbackComponent<k8s.Models.V1Service, bool>
 @if (Item != null)
 {
-    <ServiceAction Item="Item" MenuMode="MenuMode.Horizontal"  ></ServiceAction>
+    <ServiceAction Item="Item" MenuMode="MenuMode.Horizontal"></ServiceAction>
     <MetadataView Item="Item" T="V1Service"></MetadataView>
     <Descriptions Bordered Column="1">
+        @if (Item.Spec.Type != null)
+        {
+            <DescriptionsItem Title="Type" LabelStyle="width:120px">
+                @Item.Spec.Type
+            </DescriptionsItem>
+        }
         @if (Item.Spec.ClusterIP != null)
         {
-            <DescriptionsItem Title="ClusterIP" LabelStyle="width:120px">
-                @Item.Spec.ClusterIP
+            <DescriptionsItem Title="ClusterIP">
+                <Tag Color=@RandomColorHelper.RandomColor()>@Item.Spec.ClusterIP</Tag>
             </DescriptionsItem>
         }
         @if (Item.Spec.ClusterIPs != null)
         {
-            <DescriptionsItem Title="ClusterIPs" LabelStyle="width:120px">
+            <DescriptionsItem Title="ClusterIPs">
                 @foreach (var p in Item.Spec.ClusterIPs)
                 {
-                    <Tag color=@RandomColorHelper.RandomColor()>@p</Tag>
+                    <Tag Color=@RandomColorHelper.RandomColor()>@p</Tag>
                 }
+            </DescriptionsItem>
+        }
+        @if (Item.Spec.Selector != null)
+        {
+            <SelectorView Selector="@Item.Spec.Selector" Title="Selector"></SelectorView>
+        }
+        @if (Item.Spec.InternalTrafficPolicy != null)
+        {
+            <DescriptionsItem Title="InternalTrafficPolicy">
+               @Item.Spec.InternalTrafficPolicy  [Local/Cluster]
             </DescriptionsItem>
         }
 
