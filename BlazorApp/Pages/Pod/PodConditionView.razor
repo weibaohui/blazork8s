@@ -1,6 +1,5 @@
-@using k8s.Models
-@using Extension.k8s
 @using Extension
+@using BlazorApp.Pages.Common.Metadata
 @if (Conditions != null)
 {
     <DescriptionsItem Title="Conditions">
@@ -17,5 +16,7 @@
                 </Tooltip>
             }
         }
+        <KubectlExplainButton Field="pod.status.conditions"></KubectlExplainButton>
+
     </DescriptionsItem>
 }
