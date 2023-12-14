@@ -1,12 +1,12 @@
-@using k8s
+@using Extension
 @using BlazorApp.Utils
-@if (Item != null && !KubernetesJson.Serialize(Item).Equals("{}"))
+@if (Item != null && !Item.ToJson().Equals("{}"))
 {
     <DescriptionsItem Title="@Title">
         @if (ShowInJson)
         {
             <p >
-                @KubernetesJson.Serialize(Item)
+                 @((MarkupString)PrettyJson())
             </p>
         }
         else
