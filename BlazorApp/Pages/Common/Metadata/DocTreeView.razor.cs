@@ -15,6 +15,8 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
     [Parameter]
     public T Item { get; set; }
 
+
+
     [Inject]
     private IMessageService MessageService { get; set; }
 
@@ -23,7 +25,7 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
 
     private          TreeData _currentItem         = new();
     private          string   _currentRootKey      = "";
-    private readonly string[] _defaultSelectedKeys = new string[] {"apiVersion"  };
+    private readonly string[] _defaultSelectedKeys = new string[] { "apiVersion" };
 
     protected override async Task OnInitializedAsync()
     {
@@ -84,4 +86,5 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
     {
         _currentItem = arg.Node.DataItem;
     }
+
 }

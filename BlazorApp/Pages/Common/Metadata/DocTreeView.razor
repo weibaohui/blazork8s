@@ -19,16 +19,16 @@
 
             <div>
                 <Tree
-                    ChildrenExpression="x => x.DataItem.ChildList" 
-                    DataSource="_dataList" 
-                    IsLeafExpression="x => x.DataItem.RefKey == null" 
-                    KeyExpression="x => x.DataItem.Title" 
-                    OnNodeLoadDelayAsync="OnNodeLoadDelayAsync" 
+                    ChildrenExpression="x => x.DataItem.ChildList"
+                    DataSource="_dataList"
+                    IsLeafExpression="x => x.DataItem.RefKey == null"
+                    KeyExpression="x => x.DataItem.Title"
+                    OnNodeLoadDelayAsync="OnNodeLoadDelayAsync"
                     OnClick="OnItemClick"
-                    @ref="_tree" 
-                    ShowLeafIcon="false" 
-                    ShowLine="true" 
-                    TItem="TreeData" 
+                    @ref="_tree"
+                    ShowLeafIcon="false"
+                    ShowLine="true"
+                    TItem="TreeData"
                     TitleExpression="OnTitleExpression">
                 </Tree>
             </div>
