@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.Secret
 {
-    public partial class SecretDetailView : FeedbackComponent<V1Secret, bool>
+    public partial class SecretDetailView :  DrawerPageBase<V1Secret>
     {
         private V1Secret Item { get; set; }
 

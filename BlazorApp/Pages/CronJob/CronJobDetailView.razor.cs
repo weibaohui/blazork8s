@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.CronJob
 {
-    public partial class CronJobDetailView : FeedbackComponent<V1CronJob, bool>
+    public partial class CronJobDetailView :  DrawerPageBase<V1CronJob>
     {
         private V1CronJob Item { get; set; }
 

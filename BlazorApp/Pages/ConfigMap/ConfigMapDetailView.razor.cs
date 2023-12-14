@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ConfigMap
 {
-    public partial class ConfigMapDetailView : FeedbackComponent<V1ConfigMap, bool>
+    public partial class ConfigMapDetailView :  DrawerPageBase<V1ConfigMap>
     {
         private V1ConfigMap Item { get; set; }
 

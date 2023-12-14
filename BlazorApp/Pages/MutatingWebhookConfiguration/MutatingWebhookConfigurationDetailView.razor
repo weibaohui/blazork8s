@@ -1,7 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<k8s.Models.V1MutatingWebhookConfiguration, bool>
+@using BlazorApp.Pages.Common;
+@inherits DrawerPageBase<V1MutatingWebhookConfiguration>
 @if (Item != null)
 {
     <MutatingWebhookConfigurationAction Item="Item" MenuMode="MenuMode.Horizontal"  ></MutatingWebhookConfigurationAction>

@@ -1,7 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<k8s.Models.V1PodDisruptionBudget, bool>
+@using BlazorApp.Pages.Common;
+@inherits DrawerPageBase<V1PodDisruptionBudget>
 @if (Item != null)
 {
     <PodDisruptionBudgetAction Item="Item" MenuMode="MenuMode.Horizontal"  ></PodDisruptionBudgetAction>

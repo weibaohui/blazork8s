@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.LimitRange
 {
-    public partial class LimitRangeDetailView : FeedbackComponent<V1LimitRange, bool>
+    public partial class LimitRangeDetailView :  DrawerPageBase<V1LimitRange>
     {
         private V1LimitRange Item { get; set; }
 

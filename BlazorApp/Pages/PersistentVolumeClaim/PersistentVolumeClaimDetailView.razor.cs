@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.PersistentVolumeClaim
 {
-    public partial class PersistentVolumeClaimDetailView : FeedbackComponent<V1PersistentVolumeClaim, bool>
+    public partial class PersistentVolumeClaimDetailView :  DrawerPageBase<V1PersistentVolumeClaim>
     {
         private V1PersistentVolumeClaim Item { get; set; }
 

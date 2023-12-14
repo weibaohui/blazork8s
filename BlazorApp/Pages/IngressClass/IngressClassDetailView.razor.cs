@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.IngressClass
 {
-    public partial class IngressClassDetailView : FeedbackComponent<V1IngressClass, bool>
+    public partial class IngressClassDetailView :  DrawerPageBase<V1IngressClass>
     {
         private V1IngressClass Item { get; set; }
 

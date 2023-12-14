@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ValidatingWebhookConfiguration
 {
-    public partial class ValidatingWebhookConfigurationDetailView : FeedbackComponent<V1ValidatingWebhookConfiguration, bool>
+    public partial class ValidatingWebhookConfigurationDetailView :  DrawerPageBase<V1ValidatingWebhookConfiguration>
     {
         private V1ValidatingWebhookConfiguration Item { get; set; }
 

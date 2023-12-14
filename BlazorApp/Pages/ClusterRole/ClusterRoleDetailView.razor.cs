@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ClusterRole
 {
-    public partial class ClusterRoleDetailView : FeedbackComponent<V1ClusterRole, bool>
+    public partial class ClusterRoleDetailView :  DrawerPageBase<V1ClusterRole>
     {
         private V1ClusterRole Item { get; set; }
 

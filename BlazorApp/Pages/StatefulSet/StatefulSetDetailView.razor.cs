@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.StatefulSet
 {
-    public partial class StatefulSetDetailView : FeedbackComponent<V1StatefulSet, bool>
+    public partial class StatefulSetDetailView :  DrawerPageBase<V1StatefulSet>
     {
         private V1StatefulSet Item { get; set; }
 

@@ -12,9 +12,5 @@ public partial class DrawerPageBase<T> : FeedbackComponent<T, bool>
     protected IPageDrawerService PageDrawerService { get; set; }
 
 
-    protected async Task KubectlExplain(string field)
-    {
-        var options = PageDrawerService.DefaultOptions("Kubectl Explain", width: 800);
-        await PageDrawerService.ShowDrawerAsync<KubectlExplainView, string, bool>(options, field);
-    }
+
 }

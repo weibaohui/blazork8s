@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.HorizontalPodAutoscaler
 {
-    public partial class HorizontalPodAutoscalerDetailView : FeedbackComponent<V1HorizontalPodAutoscaler, bool>
+    public partial class HorizontalPodAutoscalerDetailView :  DrawerPageBase<V1HorizontalPodAutoscaler>
     {
         private V1HorizontalPodAutoscaler Item { get; set; }
 

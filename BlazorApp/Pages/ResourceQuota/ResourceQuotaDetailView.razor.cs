@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ResourceQuota
 {
-    public partial class ResourceQuotaDetailView : FeedbackComponent<V1ResourceQuota, bool>
+    public partial class ResourceQuotaDetailView :  DrawerPageBase<V1ResourceQuota>
     {
         private V1ResourceQuota Item { get; set; }
 

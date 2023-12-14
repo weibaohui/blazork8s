@@ -1,7 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<k8s.Models.V1PersistentVolume, bool>
+@using BlazorApp.Pages.Common;
+@inherits DrawerPageBase<V1PersistentVolume>
 @if (Item != null)
 {
     <PersistentVolumeAction Item="Item" MenuMode="MenuMode.Horizontal"  ></PersistentVolumeAction>

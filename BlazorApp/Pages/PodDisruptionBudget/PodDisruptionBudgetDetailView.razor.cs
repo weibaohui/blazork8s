@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.PodDisruptionBudget
 {
-    public partial class PodDisruptionBudgetDetailView : FeedbackComponent<V1PodDisruptionBudget, bool>
+    public partial class PodDisruptionBudgetDetailView :  DrawerPageBase<V1PodDisruptionBudget>
     {
         private V1PodDisruptionBudget Item { get; set; }
 

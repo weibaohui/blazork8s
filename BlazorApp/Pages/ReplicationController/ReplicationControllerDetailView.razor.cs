@@ -1,13 +1,9 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
-using BlazorApp.Service.k8s;
 using k8s.Models;
-using Microsoft.AspNetCore.Components;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ReplicationController
 {
-    public partial class ReplicationControllerDetailView : FeedbackComponent<V1ReplicationController, bool>
+    public partial class ReplicationControllerDetailView :  DrawerPageBase<V1ReplicationController>
     {
         private V1ReplicationController Item { get; set; }
 

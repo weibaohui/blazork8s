@@ -18,6 +18,8 @@
         {
             <DescriptionsItem Title="ClusterIP">
                 <Tag Color=@RandomColorHelper.RandomColor()>@Item.Spec.ClusterIP</Tag>
+                <KubectlExplainButton Field="service.spec.clusterIP"></KubectlExplainButton>
+
             </DescriptionsItem>
         }
         @if (Item.Spec.ClusterIPs != null)
@@ -27,6 +29,7 @@
                 {
                     <Tag Color=@RandomColorHelper.RandomColor()>@p</Tag>
                 }
+                <KubectlExplainButton Field="service.spec.clusterIPs"></KubectlExplainButton>
             </DescriptionsItem>
         }
         @if (Item.Spec.Selector != null)
@@ -37,7 +40,7 @@
         {
             <DescriptionsItem Title="InternalTrafficPolicy">
                 <OptionsView Options='@(new[] { "Cluster", "Local" })' SelectOption="@Item.Spec.InternalTrafficPolicy"></OptionsView>
-                <Button OnClick="@(() => KubectlExplain("service.spec.internalTrafficPolicy"))" Size="small" Type="@ButtonType.Link" Shape="@ButtonShape.Circle" Icon="@IconType.Outline.Question"/>
+                <KubectlExplainButton Field="service.spec.internalTrafficPolicy"></KubectlExplainButton>
             </DescriptionsItem>
         }
 

@@ -1,7 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<k8s.Models.V1EndpointSlice, bool>
+@using BlazorApp.Pages.Common;
+@inherits DrawerPageBase<V1EndpointSlice>
 @if (Item != null)
 {
     <EndpointSliceAction Item="Item" MenuMode="MenuMode.Horizontal"  ></EndpointSliceAction>
