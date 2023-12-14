@@ -21,10 +21,20 @@ public class KubectlService : IKubectlService
         await File.WriteAllTextAsync(path, yaml);
 
 
-        var output = await kubectl($"apply -f {path}");
+        var output = await Kubectl($"apply -f {path}");
         Console.WriteLine(output);
         File.Delete(path);
         return output; // 输出命令输出结果
+    }
+
+    public async Task<string> Explain(string filed)
+    {
+        if (string.IsNullOrWhiteSpace(filed))
+        {
+            return string.Empty;
+        }
+
+        return await Kubectl($" explain {filed}");
     }
 
     public async Task<string> Delete(string yaml)
@@ -40,13 +50,13 @@ public class KubectlService : IKubectlService
         Console.WriteLine($"文件名称{path}");
         await File.WriteAllTextAsync(path, yaml);
 
-        var output = await kubectl($"delete -f {path}");
+        var output = await Kubectl($"delete -f {path}");
         Console.WriteLine(output);
         File.Delete(path);
         return output; // 输出命令输出结果
     }
 
-    private static async Task<string> kubectl(string command)
+    private static async Task<string> Kubectl(string command)
     {
         Process process = new Process();
         process.StartInfo.FileName               = "kubectl";             // 设置要执行的 kubectl 命令
