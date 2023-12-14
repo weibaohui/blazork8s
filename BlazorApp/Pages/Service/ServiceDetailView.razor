@@ -2,7 +2,7 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Utils
 @using k8s.Models
-@inherits FeedbackComponent<k8s.Models.V1Service, bool>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
     <ServiceAction Item="Item" MenuMode="MenuMode.Horizontal"></ServiceAction>
@@ -11,7 +11,7 @@
         @if (Item.Spec.Type != null)
         {
             <DescriptionsItem Title="Type" LabelStyle="width:120px">
-                <OptionsView Options='@(new[] {  "ClusterIP", "NodePort","ExternalName", "LoadBalancer" })' SelectOption="@Item.Spec.Type"></OptionsView>
+                <OptionsView Options='@(new[] { "ClusterIP", "NodePort", "ExternalName", "LoadBalancer" })' SelectOption="@Item.Spec.Type"></OptionsView>
             </DescriptionsItem>
         }
         @if (Item.Spec.ClusterIP != null)
@@ -36,7 +36,8 @@
         @if (Item.Spec.InternalTrafficPolicy != null)
         {
             <DescriptionsItem Title="InternalTrafficPolicy">
-                <OptionsView Options='@(new[] {  "Cluster","Local" })' SelectOption="@Item.Spec.InternalTrafficPolicy"></OptionsView>
+                <OptionsView Options='@(new[] { "Cluster", "Local" })' SelectOption="@Item.Spec.InternalTrafficPolicy"></OptionsView>
+                <Button OnClick="@(() => KubectlExplain("service.spec.internalTrafficPolicy"))" Size="small" Type="@ButtonType.Link" Shape="@ButtonShape.Circle" Icon="@IconType.Outline.Question"/>
             </DescriptionsItem>
         }
 

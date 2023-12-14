@@ -1,11 +1,9 @@
 @page "/KubectExplainView"
 @using Extension
+@inherits DrawerPageBase<string>
 
-<Card  Title="Kubectl Explain" Style="min-width:700px">
-    <Body>
-    <p>@Field</p>
-    <p>
-        @((MarkupString)Result.ToHtmlDisplay())
-    </p>
-    </Body>
-</Card>
+
+<Divider>@Field</Divider>
+<p>
+    @((MarkupString)Result.ToHtmlDisplay())
+</p>
