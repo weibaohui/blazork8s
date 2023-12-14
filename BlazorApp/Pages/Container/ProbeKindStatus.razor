@@ -15,11 +15,16 @@
 }
 @if (Probe.Exec != null)
 {
-    @($"{Probe.Exec.Command}")
+    <Paragraph >
+        <Text Code Copyable>
+            <span  >@String.Join(" ", Probe.Exec.Command.ToArray())</span>
+        </Text>
+    </Paragraph>
+
 }
 @if (Probe.TcpSocket != null)
 {
-    @($"{Probe.TcpSocket.Host}:{Probe.TcpSocket.Port}")
+    @($"{Probe.TcpSocket.Host}:{Probe.TcpSocket.Port.Value}")
 }
 @if (Probe.Grpc != null)
 {

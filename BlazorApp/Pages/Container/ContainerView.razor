@@ -1,4 +1,5 @@
 ﻿@using Extension.k8s
+@using BlazorApp.Pages.Common.Metadata
 @if (Containers != null)
 {
     @foreach (var c in Containers)
@@ -24,9 +25,21 @@
                             }
                         }
                     </DescriptionsItem>
+                    <PropertySimpleView Title="RestartCount" Item="@ContainerStatuses.Where(x => x.Name == c.Name).Sum(x => x.RestartCount)" ExplainField="pod.status.containerStatuses.restartCount"></PropertySimpleView>
+                    <PropertySimpleView Title="Image" Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
+                    <PropertyOptionView Title="ImagePullPolicy" ExplainField="pod.spec.containers.imagePullPolicy" Item="@c.ImagePullPolicy" Options='@(new[] { "Always", "IfNotPresent", "Never" })'></PropertyOptionView>
+                    <PropertySimpleView Title="Resources" Item="@c.Resources" ExplainField="pod.spec.containers.resources" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title="envFrom" Item="@c.EnvFrom" ExplainField="pod.spec.containers.envFrom" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title="lifecycle" Item="@c.Lifecycle" ExplainField="pod.spec.containers.lifecycle" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title="ResizePolicy" Item="@c.ResizePolicy" ExplainField="pod.spec.containers.resizePolicy" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title="securityContext" Item="@c.SecurityContext" ExplainField="pod.spec.containers.securityContext" ShowInJson="true"></PropertySimpleView>
+                    <PropertyOptionView Title="TerminationMessagePolicy" Item="@c.TerminationMessagePolicy" ExplainField="pod.spec.containers.terminationMessagePolicy"  Options='@(new[] { "FallbackToLogsOnError", "File" })'></PropertyOptionView>
+                    <PropertySimpleView Title="TerminationMessagePath" Item="@c.TerminationMessagePath" ExplainField="pod.spec.containers.terminationMessagePath"></PropertySimpleView>
+                    <PropertySimpleView Title="WorkingDir" Item="@c.WorkingDir" ExplainField="pod.spec.containers.workingDir"></PropertySimpleView>
+                    <PropertySimpleView Title="Tty" Item="@c.Tty" ExplainField="pod.spec.containers.tty"></PropertySimpleView>
+                    <PropertySimpleView Title="Stdin" Item="@c.Stdin" ExplainField="pod.spec.containers.stdin"></PropertySimpleView>
+                    <PropertySimpleView Title="StdinOnce" Item="@c.StdinOnce" ExplainField="pod.spec.containers.stdinOnce"></PropertySimpleView>
 
-                    <DescriptionsItem Title="Image">@c.Image</DescriptionsItem>
-                    <DescriptionsItem Title="ImagePullPolicy">@c.ImagePullPolicy</DescriptionsItem>
                     <EnvView Env="@c.Env"></EnvView>
                     @if (c.Ports != null)
                     {
@@ -34,12 +47,10 @@
 
                             @foreach (var p in c.Ports)
                             {
-
                                 <div>
-                                @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
-                                <Button Type="@ButtonType.Primary" OnClick="@(() => Forward(p))">Forward</Button>
+                                    @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
+                                    <Button Type="@ButtonType.Primary" OnClick="@(() => Forward(p))">Forward</Button>
                                 </div>
-
                             }
                         </DescriptionsItem>
                     }
