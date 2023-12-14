@@ -12,6 +12,7 @@
         {
             <DescriptionsItem Title="Type" LabelStyle="width:120px">
                 <OptionsView Options='@(new[] { "ClusterIP", "NodePort", "ExternalName", "LoadBalancer" })' SelectOption="@Item.Spec.Type"></OptionsView>
+                <KubectlExplainButton Field="service.spec.type"></KubectlExplainButton>
             </DescriptionsItem>
         }
         @if (Item.Spec.ClusterIP != null)
@@ -19,7 +20,6 @@
             <DescriptionsItem Title="ClusterIP">
                 <Tag Color=@RandomColorHelper.RandomColor()>@Item.Spec.ClusterIP</Tag>
                 <KubectlExplainButton Field="service.spec.clusterIP"></KubectlExplainButton>
-
             </DescriptionsItem>
         }
         @if (Item.Spec.ClusterIPs != null)
