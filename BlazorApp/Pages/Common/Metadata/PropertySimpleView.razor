@@ -1,11 +1,21 @@
-@using BlazorApp.Utils
 @using k8s
-@if (Item != null)
+@using BlazorApp.Utils
+@if (Item != null && !KubernetesJson.Serialize(Item).Equals("{}"))
 {
     <DescriptionsItem Title="@Title">
-        <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
-            @(ShowInJson ? KubernetesJson.Serialize(Item) : Item)
-        </Tag>
+        @if (ShowInJson)
+        {
+            <p >
+                @KubernetesJson.Serialize(Item)
+            </p>
+        }
+        else
+        {
+            <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
+                @Item
+            </Tag>
+        }
+
         <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
     </DescriptionsItem>
 }

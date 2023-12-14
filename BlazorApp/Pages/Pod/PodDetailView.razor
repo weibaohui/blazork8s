@@ -33,16 +33,34 @@
         <PropertySimpleView Title="EnableServiceLinks" ExplainField="pod.spec.enableServiceLinks" Item="@Item.Spec.EnableServiceLinks"></PropertySimpleView>
         <PropertySimpleView Title="DnsConfig" ExplainField="pod.spec.dnsConfig" Item="@Item.Spec.DnsConfig" ShowInJson="true"></PropertySimpleView>
         <PropertyOptionView Title="DnsPolicy" Item="@Item.Spec.DnsPolicy" Options='@(new[] { "Default", "ClusterFirst", "ClusterFirstWithHostNet", "None" })' ExplainField="pod.spec.dnsPolicy"></PropertyOptionView>
+        <PropertyOptionView Title="RestartPolicy" Item="@Item.Spec.RestartPolicy" Options='@(new[] { "Always", "Never", "OnFailure" })' ExplainField="pod.spec.restartPolicy"></PropertyOptionView>
         <PropertySimpleView Title="AutomountServiceAccountToken" ExplainField="pod.spec.automountServiceAccountToken" Item="@Item.Spec.AutomountServiceAccountToken"></PropertySimpleView>
         <PropertySimpleView Title="HostIPC" ExplainField="pod.spec.hostIPC" Item="@Item.Spec.HostIPC"></PropertySimpleView>
         <PropertySimpleView Title="HostNetwork" ExplainField="pod.spec.hostNetwork" Item="@Item.Spec.HostNetwork"></PropertySimpleView>
         <PropertySimpleView Title="HostPID" ExplainField="pod.spec.hostPID" Item="@Item.Spec.HostPID"></PropertySimpleView>
         <PropertySimpleView Title="HostUsers" ExplainField="pod.spec.hostUsers" Item="@Item.Spec.HostUsers"></PropertySimpleView>
-        <PropertySimpleView Title="Hostname" ExplainField="pod.spec.Hostname" Item="@Item.Spec.Hostname"></PropertySimpleView>
-        <PropertySimpleGenericsView Title="Os" ExplainField="pod.spec.os"   Item="@Item.Spec.Os" Key="Name"  T="V1PodOS"></PropertySimpleGenericsView>
-        <PropertySimpleView Title="NodeName" ExplainField="pod.spec.NodeName" Item="@Item.Spec.NodeName" OnClick="@(() => OnNodeNameClick(Item.Spec.NodeName))"></PropertySimpleView>
+        <PropertySimpleView Title="Hostname" ExplainField="pod.spec.hostname" Item="@Item.Spec.Hostname"></PropertySimpleView>
+        <PropertySimpleView Title="Subdomain" ExplainField="pod.spec.subdomain" Item="@Item.Spec.Subdomain"></PropertySimpleView>
+        <PropertySimpleGenericsView Title="Os" ExplainField="pod.spec.os" Item="@Item.Spec.Os" Key="Name" T="V1PodOS"></PropertySimpleGenericsView>
+        <PropertySimpleView Title="NodeName" ExplainField="pod.spec.nodeName" Item="@Item.Spec.NodeName" OnClick="@(() => OnNodeNameClick(Item.Spec.NodeName))"></PropertySimpleView>
+        <PropertySimpleView Title="SchedulerName" Item="@Item.Spec.SchedulerName" ExplainField="pod.spec.schedulerName"></PropertySimpleView>
+        <PropertyListView Title="SchedulingGates" Items="@Item.Spec.SchedulingGates" Key="Name" ExplainField="pod.spec.schedulingGates" T="V1PodSchedulingGate"></PropertyListView>
+        <PropertySimpleView Title="RuntimeClassName" Item="@Item.Spec.RuntimeClassName" ExplainField="pod.spec.runtimeClassName"></PropertySimpleView>
         <PropertySimpleView Title="PriorityClass" Item="@Item.Spec.PriorityClassName" ExplainField="pod.spec.priorityClassName"></PropertySimpleView>
+        <PropertySimpleView Title="Priority" Item="@Item.Spec.Priority" ExplainField="pod.spec.priority"></PropertySimpleView>
         <PropertyListView Title="ImagePullSecrets" Items="@Item.Spec.ImagePullSecrets" Key="Name" ExplainField="pod.spec.imagePullSecrets" T="V1LocalObjectReference"></PropertyListView>
+        <PropertyOptionView Title="PreemptionPolicy" ExplainField="pod.spec.preemptionPolicy" Item="@Item.Spec.PreemptionPolicy" Options='@(new[] { "Never", "PreemptLowerPriority" })'></PropertyOptionView>
+        <PropertySimpleView Title="Overhead" Item="@Item.Spec.Overhead" ExplainField="pod.spec.overhead" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="ResourceClaims" Item="@Item.Spec.ResourceClaims" ExplainField="pod.spec.resourceClaims" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="securityContext" Item="@Item.Spec.SecurityContext" ExplainField="pod.spec.securityContext" ShowInJson="true"></PropertySimpleView>
+        <PropertyListView Title="ReadinessGates" ExplainField="pod.spec.readinessGates" Items="@Item.Spec.ReadinessGates" Key="ConditionType" T="V1PodReadinessGate"></PropertyListView>
+        <PropertySimpleView Title="ServiceAccount" ExplainField="pod.spec.serviceAccount" Item="@Item.Spec.ServiceAccount"></PropertySimpleView>
+        <PropertySimpleView Title="ServiceAccountName" ExplainField="pod.spec.serviceAccountName" Item="@Item.Spec.ServiceAccountName"></PropertySimpleView>
+        <PropertySimpleView Title="SetHostnameAsFQDN" ExplainField="pod.spec.setHostnameAsFQDN" Item="@Item.Spec.SetHostnameAsFQDN"></PropertySimpleView>
+        <PropertySimpleView Title="ShareProcessNamespace" ExplainField="pod.spec.shareProcessNamespace" Item="@Item.Spec.ShareProcessNamespace"></PropertySimpleView>
+        <PropertySimpleView Title="TerminationGracePeriodSeconds" ExplainField="pod.spec.terminationGracePeriodSeconds" Item="@Item.Spec.TerminationGracePeriodSeconds"></PropertySimpleView>
+        <PropertySimpleView Title="TopologySpreadConstraints" ExplainField="pod.spec.topologySpreadConstraints" Item="@Item.Spec.TopologySpreadConstraints"></PropertySimpleView>
+
         <SelectorView Title="NodeSelector" Selector="@Item.Spec.NodeSelector"></SelectorView>
         <PodConditionView Conditions="@Item.Status.Conditions"></PodConditionView>
         <ImagesView PodSpec="@Item.Spec"></ImagesView>

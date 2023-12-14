@@ -18,6 +18,9 @@
                 <Badge Count="@xx.Count"></Badge>
             </TitleTemplate>
             <ChildContent>
+                <DescriptionsItem Title="Message">
+                    <p >@xx.Message</p>
+                </DescriptionsItem>
                 <DescriptionsItem Title="事件源">
                     <Tag >@xx.Source.Host</Tag>
                     <Tag >@xx.Source.Component</Tag>
@@ -35,6 +38,7 @@
             </ChildContent>
         </Descriptions>
     }
+
     if (!String.IsNullOrEmpty(Advice))
     {
         <Card Title="智能诊断">
