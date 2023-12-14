@@ -18,6 +18,8 @@ public partial class PropertySimpleView : ComponentBase
     [Parameter]
     public bool ShowInJson { get; set; } = false;
 
+
+
     [Parameter]
     public EventCallback OnClick { get; set; }
 

@@ -1,0 +1,18 @@
+@using Microsoft.IdentityModel.Tokens
+@using BlazorApp.Utils
+@typeparam            T
+
+@if (Item != null)
+{
+    <DescriptionsItem Title="@Title">
+        <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
+
+            @if (!Key.IsNullOrEmpty())
+            {
+                @GetValue(Item);
+            }
+
+        </Tag>
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+    </DescriptionsItem>
+}

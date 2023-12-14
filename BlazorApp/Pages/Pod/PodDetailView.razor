@@ -39,9 +39,11 @@
         <PropertySimpleView Title="HostPID" ExplainField="pod.spec.hostPID" Item="@Item.Spec.HostPID"></PropertySimpleView>
         <PropertySimpleView Title="HostUsers" ExplainField="pod.spec.hostUsers" Item="@Item.Spec.HostUsers"></PropertySimpleView>
         <PropertySimpleView Title="Hostname" ExplainField="pod.spec.Hostname" Item="@Item.Spec.Hostname"></PropertySimpleView>
+        <PropertySimpleGenericsView Title="Os" ExplainField="pod.spec.os"   Item="@Item.Spec.Os" Key="Name"  T="V1PodOS"></PropertySimpleGenericsView>
         <PropertySimpleView Title="NodeName" ExplainField="pod.spec.NodeName" Item="@Item.Spec.NodeName" OnClick="@(() => OnNodeNameClick(Item.Spec.NodeName))"></PropertySimpleView>
         <PropertySimpleView Title="PriorityClass" Item="@Item.Spec.PriorityClassName" ExplainField="pod.spec.priorityClassName"></PropertySimpleView>
-        <SelectorView Title="Node Selector" Selector="@Item.Spec.NodeSelector"></SelectorView>
+        <PropertyListView Title="ImagePullSecrets" Items="@Item.Spec.ImagePullSecrets" Key="Name" ExplainField="pod.spec.imagePullSecrets" T="V1LocalObjectReference"></PropertyListView>
+        <SelectorView Title="NodeSelector" Selector="@Item.Spec.NodeSelector"></SelectorView>
         <PodConditionView Conditions="@Item.Status.Conditions"></PodConditionView>
         <ImagesView PodSpec="@Item.Spec"></ImagesView>
         <TolerationsView Tolerations="@Item.Spec.Tolerations"></TolerationsView>

@@ -1,25 +1,33 @@
-using System.Collections.Generic;
+using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class PropertyListView<T> : ComponentBase
+public partial class PropertySimpleGenericsView<T>:ComponentBase
 {
+
     [Parameter]
-    public IList<T> Items { get; set; }
+    public T Item { get; set; }
 
     [Parameter]
     public string Title { get; set; }
 
     [Parameter]
+    public string ExplainField { get; set; }
+
+    [Parameter]
     public string Key { get; set; }
 
     [Parameter]
-    public string ExplainField { get; set; }
+    public EventCallback OnClick { get; set; }
 
     private string GetValue(T item)
     {
         return ReflectHelper<T>.GetValue(item, Key);
+    }
+    private Task OnTagClick()
+    {
+        return OnClick.InvokeAsync();
     }
 }
