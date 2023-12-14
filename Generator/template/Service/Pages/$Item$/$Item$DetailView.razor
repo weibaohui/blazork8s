@@ -1,7 +1,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<k8s.Models.$ItemType$, bool>
+@inherits DrawerPageBase<$ItemType$>
 @if (Item != null)
 {
     <$Item$Action Item="Item" MenuMode="MenuMode.Horizontal"  ></$Item$Action>

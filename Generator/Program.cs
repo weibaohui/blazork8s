@@ -13,7 +13,7 @@ class Program
         // dictList.AddItem("Node", "V1Node");
         // dictList.AddItem("ReplicaSet", "V1ReplicaSet");
         dictList.AddItem("Job", "V1Job");
-        dictList.AddItem("Service", "V1Service");
+        // dictList.AddItem("Service", "V1Service");
         dictList.AddItem("ServiceAccount", "V1ServiceAccount");
         dictList.AddItem("ClusterRole", "V1ClusterRole");
         dictList.AddItem("ClusterRoleBinding", "V1ClusterRoleBinding");
