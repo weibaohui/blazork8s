@@ -54,12 +54,11 @@ public class PortForwardExecutorHelper
     /// </summary>
     private  void NcProbe()
     {
-        Logger.LogInformation("开始探测{Count}端口是否存活", Map.Count);
         if (Map.Count == 0)
         {
             return;
         }
-
+        Logger.LogInformation("开始探测{Count}端口是否存活", Map.Count);
         lock (_lockObj)
         {
             foreach (var (_, pfe) in Map)
@@ -83,12 +82,11 @@ public class PortForwardExecutorHelper
 
     private async void RemoveFailedPort()
     {
-        Logger.LogInformation("清除失败端口");
         if (Map.Count == 0)
         {
             return;
         }
-
+        Logger.LogInformation("清除失败端口");
         lock (_lockObj)
         {
             foreach (var (_, pfe) in Map)
