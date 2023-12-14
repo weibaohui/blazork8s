@@ -1,0 +1,7 @@
+@if (Item != null)
+{
+    <DescriptionsItem Title="@Title">
+        <OptionsView Options='@Options' SelectOption="@(Item != null ? Item.ToString() : "")"></OptionsView>
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+    </DescriptionsItem>
+}

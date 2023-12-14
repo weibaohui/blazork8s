@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Pod
 {
-    public partial class PodDetailView : FeedbackComponent<V1Pod, bool>
+    public partial class PodDetailView : DrawerPageBase<V1Pod>
     {
         [Inject]
         private INodeService NodeService { get; set; }
@@ -16,11 +17,11 @@ namespace BlazorApp.Pages.Pod
         [Inject]
         private DrawerService DrawerService { get; set; }
 
-        private V1Pod _podItem;
+        private V1Pod Item;
 
         protected override void OnInitialized()
         {
-            _podItem = base.Options;
+            Item = base.Options;
             base.OnInitialized();
         }
 

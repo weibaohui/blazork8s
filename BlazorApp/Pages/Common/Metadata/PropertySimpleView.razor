@@ -1,0 +1,11 @@
+@using BlazorApp.Utils
+@using k8s
+@if (Item != null)
+{
+    <DescriptionsItem Title="@Title">
+        <Tag Color=@RandomColorHelper.RandomColor()>
+            @(ShowInJson ? KubernetesJson.Serialize(Item) : Item)
+        </Tag>
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+    </DescriptionsItem>
+}

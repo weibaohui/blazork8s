@@ -1,0 +1,22 @@
+@using BlazorApp.Utils
+@typeparam            T
+
+@if (Items != null)
+{
+    <DescriptionsItem Title=@Title>
+        @foreach (var p in Items)
+        {
+            <Tag Color=@RandomColorHelper.RandomColor()>
+                @if (typeof(T).Name.Equals("String"))
+                {
+                    @p
+                }
+                else
+                {
+                    @GetValue(p)
+                }
+            </Tag>
+        }
+        <KubectlExplainButton Field=@ExplainField></KubectlExplainButton>
+    </DescriptionsItem>
+}

@@ -3,49 +3,61 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<V1Pod, bool>
-@if (_podItem != null)
+@using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
+@if (Item != null)
 {
-    <PodAction PodItem="_podItem" MenuMode="MenuMode.Horizontal"  ></PodAction>
+    <PodAction PodItem="Item" MenuMode="MenuMode.Horizontal"></PodAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="Item" T="V1Pod"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <MetadataView Item="_podItem" T="V1Pod"></MetadataView>
-        <DescriptionsItem Title="status" LabelStyle="width:120px">
-            <StatusView Status=@_podItem.Status()></StatusView>
-        </DescriptionsItem>
         <DescriptionsItem Title="Node">
             <Tag PresetColor=@PresetColor.Green
-                 OnClick="@(() => OnNodeNameClick(_podItem.Spec.NodeName))"
+                 OnClick="@(() => OnNodeNameClick(Item.Spec.NodeName))"
                  Style="cursor: pointer">
-                @_podItem.Spec.NodeName
+                @Item.Spec.NodeName
             </Tag>
         </DescriptionsItem>
-        <DescriptionsItem Title="Pod IP">
-            @if (_podItem.Status.PodIP != null)
-            {
-                @_podItem.Status.PodIP
-            }
-        </DescriptionsItem>
-        <DescriptionsItem Title="Pod IPs">
-            @if (_podItem.Status.PodIPs != null)
-            {
-                @foreach (var ip in _podItem.Status.PodIPs)
+        @if (Item.Spec.HostAliases != null)
+        {
+            <DescriptionsItem Title="HostAliases">
+                @foreach (var alias in Item.Spec.HostAliases)
                 {
-                    <Tag PresetColor=@PresetColor.Cyan>@ip.Ip</Tag>
+                    @foreach (var hostname in alias.Hostnames)
+                    {
+                        <div>
+                            <Tag Color=@RandomColorHelper.RandomColor()>@($"{alias.Ip} {hostname}")</Tag>
+                        </div>
+                    }
                 }
-            }
-        </DescriptionsItem>
-
-        <DescriptionsItem Title="Priority Class">@_podItem.Spec.PriorityClassName</DescriptionsItem>
-        <DescriptionsItem Title="QoS Class">@_podItem.Status.QosClass</DescriptionsItem>
-        <SelectorView Title="Node Selector" Selector="@_podItem.Spec.NodeSelector"></SelectorView>
-        <PodConditionView Conditions="@_podItem.Status.Conditions"></PodConditionView>
-        <LabelsView Labels="_podItem.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@_podItem.Annotations()"></AnnotationsView>
-        <ImagesView PodSpec="@_podItem.Spec"></ImagesView>
-        <TolerationsView Tolerations="@_podItem.Spec.Tolerations"></TolerationsView>
-
+                <KubectlExplainButton Field="pod.spec.hostAliases"></KubectlExplainButton>
+            </DescriptionsItem>
+        }
+        <PropertySimpleView Title="ActiveDeadlineSeconds" ExplainField="pod.spec.activeDeadlineSeconds" Item="@Item.Spec.ActiveDeadlineSeconds"></PropertySimpleView>
+        <PropertySimpleView Title="Affinity" ExplainField="pod.spec.affinity" Item="@Item.Spec.Affinity" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="EnableServiceLinks" ExplainField="pod.spec.enableServiceLinks" Item="@Item.Spec.EnableServiceLinks"></PropertySimpleView>
+        <PropertySimpleView Title="DnsConfig" ExplainField="pod.spec.dnsConfig" Item="@Item.Spec.DnsConfig" ShowInJson="true"></PropertySimpleView>
+        <PropertyOptionView Title="DnsPolicy" Item="@Item.Spec.DnsPolicy" Options='@(new[] { "Default", "ClusterFirst", "ClusterFirstWithHostNet", "None" })' ExplainField="pod.spec.dnsPolicy"></PropertyOptionView>
+        <PropertySimpleView Title="AutomountServiceAccountToken" ExplainField="pod.spec.automountServiceAccountToken" Item="@Item.Spec.AutomountServiceAccountToken"></PropertySimpleView>
+        <PropertySimpleView Title="HostIPC" ExplainField="pod.spec.hostIPC" Item="@Item.Spec.HostIPC"></PropertySimpleView>
+        <PropertySimpleView Title="PriorityClass" Item="@Item.Spec.PriorityClassName" ExplainField="pod.spec.priorityClassName"></PropertySimpleView>
+        <SelectorView Title="Node Selector" Selector="@Item.Spec.NodeSelector"></SelectorView>
+        <PodConditionView Conditions="@Item.Status.Conditions"></PodConditionView>
+        <ImagesView PodSpec="@Item.Spec"></ImagesView>
+        <TolerationsView Tolerations="@Item.Spec.Tolerations"></TolerationsView>
     </Descriptions>
-    <ContainerListView Pod="@_podItem"></ContainerListView>
-    <VolumeView PodItem="@_podItem"></VolumeView>
-    <MiniEventListView Uid="@_podItem.Metadata.Uid"></MiniEventListView>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+        <DescriptionsItem Title="status">
+            <StatusView Status=@Item.Status()></StatusView>
+        </DescriptionsItem>
+        <PropertySimpleView Title="PodIP" ExplainField="pod.status.podIP" Item="@Item.Status.PodIP"></PropertySimpleView>
+        <PropertyListView Title="PodIPs" ExplainField="pod.status.podIPs" Key="Ip" Items="@Item.Status.PodIPs" T="V1PodIP"></PropertyListView>
+        <PropertySimpleView Title="PriorityClass" Item="@Item.Status.QosClass" ExplainField="pod.status.qosClass"></PropertySimpleView>
+    </Descriptions>
+
+    <ContainerListView Pod="@Item"></ContainerListView>
+    <VolumeView PodItem="@Item"></VolumeView>
+    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }
