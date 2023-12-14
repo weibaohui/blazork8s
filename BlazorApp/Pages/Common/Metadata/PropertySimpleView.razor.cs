@@ -1,4 +1,5 @@
 #nullable enable
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
@@ -16,4 +17,13 @@ public partial class PropertySimpleView : ComponentBase
 
     [Parameter]
     public bool ShowInJson { get; set; } = false;
+
+    [Parameter]
+    public EventCallback OnClick { get; set; }
+
+
+    private Task OnTagClick()
+    {
+       return OnClick.InvokeAsync();
+    }
 }

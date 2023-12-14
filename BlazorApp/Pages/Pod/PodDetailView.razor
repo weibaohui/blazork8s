@@ -12,13 +12,7 @@
     <MetadataView Item="Item" T="V1Pod"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Node">
-            <Tag PresetColor=@PresetColor.Green
-                 OnClick="@(() => OnNodeNameClick(Item.Spec.NodeName))"
-                 Style="cursor: pointer">
-                @Item.Spec.NodeName
-            </Tag>
-        </DescriptionsItem>
+
         @if (Item.Spec.HostAliases != null)
         {
             <DescriptionsItem Title="HostAliases">
@@ -41,6 +35,11 @@
         <PropertyOptionView Title="DnsPolicy" Item="@Item.Spec.DnsPolicy" Options='@(new[] { "Default", "ClusterFirst", "ClusterFirstWithHostNet", "None" })' ExplainField="pod.spec.dnsPolicy"></PropertyOptionView>
         <PropertySimpleView Title="AutomountServiceAccountToken" ExplainField="pod.spec.automountServiceAccountToken" Item="@Item.Spec.AutomountServiceAccountToken"></PropertySimpleView>
         <PropertySimpleView Title="HostIPC" ExplainField="pod.spec.hostIPC" Item="@Item.Spec.HostIPC"></PropertySimpleView>
+        <PropertySimpleView Title="HostNetwork" ExplainField="pod.spec.hostNetwork" Item="@Item.Spec.HostNetwork"></PropertySimpleView>
+        <PropertySimpleView Title="HostPID" ExplainField="pod.spec.hostPID" Item="@Item.Spec.HostPID"></PropertySimpleView>
+        <PropertySimpleView Title="HostUsers" ExplainField="pod.spec.hostUsers" Item="@Item.Spec.HostUsers"></PropertySimpleView>
+        <PropertySimpleView Title="Hostname" ExplainField="pod.spec.Hostname" Item="@Item.Spec.Hostname"></PropertySimpleView>
+        <PropertySimpleView Title="NodeName" ExplainField="pod.spec.NodeName" Item="@Item.Spec.NodeName" OnClick="@(() => OnNodeNameClick(Item.Spec.NodeName))"></PropertySimpleView>
         <PropertySimpleView Title="PriorityClass" Item="@Item.Spec.PriorityClassName" ExplainField="pod.spec.priorityClassName"></PropertySimpleView>
         <SelectorView Title="Node Selector" Selector="@Item.Spec.NodeSelector"></SelectorView>
         <PodConditionView Conditions="@Item.Status.Conditions"></PodConditionView>
