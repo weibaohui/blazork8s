@@ -32,4 +32,18 @@ public  class ReflectHelper<T>
         object          value = fun.Invoke(item);
         return value.ToString();
     }
+
+
+    private void ListProperty(T item)
+    {
+        Type type     = typeof(T);
+        var  propertyList = type.GetProperties();
+        foreach (var p in propertyList)
+        {
+            var method = p.GetGetMethod();
+           Console.WriteLine( method.Name.ToString());
+           Console.WriteLine( method.ToString());
+           Console.WriteLine( method.GetType().ToString());
+        }
+    }
 }
