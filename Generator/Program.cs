@@ -1,4 +1,5 @@
 ﻿using Generator;
+using k8s.Models;
 
 class Program
 {
@@ -8,33 +9,33 @@ class Program
         // dictList.AddItem("DaemonSet", "V1DaemonSet");
         // dictList.AddItem("Node", "V1Node");
         // dictList.AddItem("ReplicaSet", "V1ReplicaSet");
-        dictList.AddItem("Job", "V1Job");
         // dictList.AddItem("Service", "V1Service");
-        dictList.AddItem("ServiceAccount", "V1ServiceAccount");
-        dictList.AddItem("ClusterRole", "V1ClusterRole");
-        dictList.AddItem("ClusterRoleBinding", "V1ClusterRoleBinding");
-        dictList.AddItem("Role", "V1Role");
-        dictList.AddItem("RoleBinding", "V1RoleBinding");
-        dictList.AddItem("Ingress", "V1Ingress");
-        dictList.AddItem("PersistentVolume", "V1PersistentVolume");
-        dictList.AddItem("PersistentVolumeClaim", "V1PersistentVolumeClaim");
-        dictList.AddItem("StorageClass", "V1StorageClass");
-        dictList.AddItem("NetworkPolicy", "V1NetworkPolicy");
-        dictList.AddItem("IngressClass", "V1IngressClass");
-        dictList.AddItem("EndpointSlice", "V1EndpointSlice");
-        dictList.AddItem("Endpoints", "V1Endpoints");
-        dictList.AddItem("Secret", "V1Secret");
-        dictList.AddItem("PriorityClass", "V1PriorityClass");
-        dictList.AddItem("PodDisruptionBudget", "V1PodDisruptionBudget");
-        dictList.AddItem("ValidatingWebhookConfiguration", "V1ValidatingWebhookConfiguration");
-        dictList.AddItem("MutatingWebhookConfiguration", "V1MutatingWebhookConfiguration");
-        dictList.AddItem("LimitRange", "V1LimitRange");
-        dictList.AddItem("HorizontalPodAutoscaler", "V1HorizontalPodAutoscaler");
-        dictList.AddItem("ResourceQuota", "V1ResourceQuota");
-        dictList.AddItem("ConfigMap", "V1ConfigMap");
-        dictList.AddItem("CronJob", "V1CronJob");
-        dictList.AddItem("StatefulSet", "V1StatefulSet");
-        dictList.AddItem("ReplicationController", "V1ReplicationController");
+        dictList.AddItem("Job",typeof(V1Job));
+        dictList.AddItem("ServiceAccount",typeof(V1ServiceAccount));
+        dictList.AddItem("ClusterRole",typeof(V1ClusterRole));
+        dictList.AddItem("ClusterRoleBinding",typeof(V1ClusterRoleBinding));
+        dictList.AddItem("Role",typeof(V1Role));
+        dictList.AddItem("RoleBinding",typeof(V1RoleBinding));
+        dictList.AddItem("Ingress",typeof(V1Ingress));
+        dictList.AddItem("PersistentVolume",typeof(V1PersistentVolume));
+        dictList.AddItem("PersistentVolumeClaim",typeof(V1PersistentVolumeClaim));
+        dictList.AddItem("StorageClass",typeof(V1StorageClass));
+        dictList.AddItem("NetworkPolicy",typeof(V1NetworkPolicy));
+        dictList.AddItem("IngressClass",typeof(V1IngressClass));
+        dictList.AddItem("EndpointSlice",typeof(V1EndpointSlice));
+        dictList.AddItem("Endpoints",typeof(V1Endpoints));
+        dictList.AddItem("Secret",typeof(V1Secret));
+        dictList.AddItem("PriorityClass",typeof(V1PriorityClass));
+        dictList.AddItem("PodDisruptionBudget",typeof(V1PodDisruptionBudget));
+        dictList.AddItem("ValidatingWebhookConfiguration",typeof(V1ValidatingWebhookConfiguration));
+        dictList.AddItem("MutatingWebhookConfiguration",typeof(V1MutatingWebhookConfiguration));
+        dictList.AddItem("LimitRange",typeof(V1LimitRange));
+        dictList.AddItem("HorizontalPodAutoscaler",typeof(V1HorizontalPodAutoscaler));
+        dictList.AddItem("ResourceQuota",typeof(V1ResourceQuota));
+        dictList.AddItem("ConfigMap",typeof(V1ConfigMap));
+        dictList.AddItem("CronJob",typeof(V1CronJob));
+        dictList.AddItem("StatefulSet",typeof(V1StatefulSet));
+        dictList.AddItem("ReplicationController",typeof(V1ReplicationController));
 
 
         GeneratorHelper.Generator(dictList.GetDictList()).Run();

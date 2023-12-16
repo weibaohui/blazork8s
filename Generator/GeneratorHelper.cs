@@ -18,7 +18,7 @@ public class GeneratorHelper
         internal static readonly GeneratorHelper Instance = new GeneratorHelper();
     }
 
-    public static Generator Generator(IList<IDictionary<string, string>> dictList)
+    public static Generator Generator(IList<IDictionary<string, object>> dictList)
     {
         var templatePath            = Directory.GetCurrentDirectory() + "../../../../template/";
         var generatorFolderPath     = Directory.GetCurrentDirectory() + "/../generator/";

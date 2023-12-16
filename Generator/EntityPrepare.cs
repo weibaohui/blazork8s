@@ -9,7 +9,24 @@ namespace Generator;
 
 public class EntityPrepare
 {
+    public static List<KubeType> GetK8SEntity(Type type,string resourceName)
+    {
+        var kubeList = new List<KubeType>();
+        ReflectHelper<Type>.ListProperty(type, resourceName, kubeList);
 
+
+        var zList = new List<KubeType>();
+        ZipList(zList, kubeList);
+        zList.Sort((a, b) => a.FieldLevel - b.FieldLevel);
+        zList.Sort((a, b) => String.CompareOrdinal(a.FullName, b.FullName));
+
+
+        var list = zList
+            .Where(x => x.FieldLevel == 3)
+            .ToList();
+        File.WriteAllText("pod-zip.json", KubernetesJson.Serialize(list));
+        return list;
+    }
 
     /// <summary>
     /// 准备k8s资源，为下一步生成字段明细做准备
@@ -40,7 +57,6 @@ public class EntityPrepare
     /// </summary>
     /// <param name="topList"></param>
     /// <param name="childList"></param>
-
     private static void ZipList(IList<KubeType> topList, IList<KubeType> childList)
     {
         foreach (var kubeType in childList)

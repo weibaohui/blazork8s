@@ -8,7 +8,7 @@ namespace Generator;
 
 public class Generator
 {
-    private IList<IDictionary<string, string>> _dictList = new List<IDictionary<string, string>>();
+    private IList<IDictionary<string, object>> _dictList = new List<IDictionary<string, object>>();
 
     /// <summary>
     /// 模板根目录，完全路径
@@ -20,7 +20,7 @@ public class Generator
     /// </summary>
     public string GeneratorFolderPath { get; set; }
 
-    public void SetDictList(IList<IDictionary<string, string>> dictList)
+    public void SetDictList(IList<IDictionary<string, object>> dictList)
     {
         _dictList = dictList;
     }
@@ -31,7 +31,7 @@ public class Generator
     /// <param name="templateFileList"></param>
     /// <param name="dict"></param>
     private IEnumerable<GenFileInfo> ProcessGenList(IEnumerable<GenFileInfo> templateFileList,
-        IDictionary<string, string>                                          dict)
+        IDictionary<string, object>                                          dict)
     {
         //将模板拷贝出来
         var processGenList = templateFileList.ToList();
@@ -60,7 +60,7 @@ public class Generator
     /// <param name="content">模板文件内容</param>
     /// <param name="parameters">参数</param>
     /// <returns></returns>
-    private static string ProcessTemplate(string content, IDictionary<string, string> parameters)
+    private static string ProcessTemplate(string content, IDictionary<string, object> parameters)
     {
         var template = TemplateEngineHelper.LoadTemplateByString(content);
         foreach (var (key, value) in parameters)
@@ -90,7 +90,6 @@ public class Generator
 
         foreach (var file in files)
         {
-
             var fileRelativePath = Path.GetFullPath(folderPath, file).Replace(RootFolderTemplatePath, "");
             genFileList.Add(new GenFileInfo
             {
