@@ -37,9 +37,7 @@ class Program
         dictList.AddItem("ReplicationController", "V1ReplicationController");
 
 
-        var generator = new Generator.Generator();
-        generator.SetDictList(dictList.GetDictList());
-        generator.Run();
+        GeneratorHelper.Generator(dictList.GetDictList()).Run();
     }
 
     public static void Main()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using JinianNet.JNTemplate;
 
 namespace Generator;
@@ -31,11 +32,15 @@ public class Generator
     /// <summary>
     /// 替换关键字，形成目标模板文件名、目标模板路径、目标模板内容
     /// </summary>
-    /// <param name="targetList"></param>
+    /// <param name="templateFileList"></param>
     /// <param name="dict"></param>
-    private static void ProcessGenList(IList<GenInfo> targetList, IDictionary<string, string> dict)
+    private IEnumerable<GenFileInfo> ProcessGenList(IEnumerable<GenFileInfo> templateFileList,
+        IDictionary<string, string>                                          dict)
     {
-        foreach (var info in targetList)
+        //将模板拷贝出来
+        var processGenList = templateFileList.ToList();
+
+        foreach (var info in processGenList)
         {
             info.TargetName    = info.Name.Replace(".g", ".cs");
             info.TargetPath    = info.Path;
@@ -44,7 +49,12 @@ public class Generator
             info.TargetContent = ProcessTemplate(info.TargetContent, dict);
             info.TargetPath    = ProcessTemplate(info.TargetPath, dict);
             info.TargetName    = ProcessTemplate(info.TargetName, dict);
+
+            info.TargetFullPath     = Path.Combine(GeneratorFolderPath, info.TargetPath);
+            info.TargetFullFilePath = Path.Combine(info.TargetFullPath, info.TargetName);
         }
+
+        return processGenList;
     }
 
 
@@ -65,30 +75,27 @@ public class Generator
         return template.Render();
     }
 
-    private  IList<GenInfo> ReadAllTemplateFiles(string fullRootFolderPath)
+    private IList<GenFileInfo> ReadAllTemplateFiles()
     {
-        IList<GenInfo> targetList = new List<GenInfo>();
-        ReadTemplateFiles( fullRootFolderPath, targetList);
-        return targetList;
+        IList<GenFileInfo> genFileList = new List<GenFileInfo>();
+        ReadTemplateFiles(RootFolderTemplatePath, genFileList);
+        return genFileList;
     }
 
     /// <summary>
     /// 遍历读取模板文件夹，读取每一个模板文件
     /// </summary>
     /// <param name="folderPath"></param>
-    /// <param name="targetList"></param>
-    private  void ReadTemplateFiles( string folderPath,
-        IList<GenInfo>                           targetList)
+    /// <param name="genFileList"></param>
+    private void ReadTemplateFiles(string folderPath,
+        IList<GenFileInfo>                genFileList)
     {
         var files = Directory.GetFiles(folderPath);
 
         foreach (var file in files)
         {
             var filePath = Path.GetFullPath(folderPath, file).Replace(RootFolderTemplatePath, "");
-            Console.WriteLine("file:" + file);
-            Console.WriteLine("folderPath:" + folderPath);
-            Console.WriteLine("filePath:" + filePath);
-            targetList.Add(new GenInfo
+            genFileList.Add(new GenFileInfo
             {
                 Name    = Path.GetFileName(file),
                 Path    = filePath,
@@ -100,36 +107,28 @@ public class Generator
 
         foreach (var directory in directories)
         {
-            ReadTemplateFiles(directory, targetList);
+            ReadTemplateFiles(directory, genFileList);
         }
     }
 
     /// <summary>
     /// 按照模板写入生成文件夹
     /// </summary>
-    /// <param name="targetList"></param>
-    /// <param name="generatorFolderPath"></param>
-    private static void WriteTemplate(IList<GenInfo> targetList, string generatorFolderPath)
+    /// <param name="genFileList"></param>
+    private void WriteTemplate(IEnumerable<GenFileInfo> genFileList)
     {
-        foreach (var info in targetList)
+        foreach (var info in genFileList)
         {
-            var realPath     = Path.Combine(generatorFolderPath, info.TargetPath);
-            var realFilePath = Path.Combine(realPath, info.TargetName);
-            if (!Directory.Exists(realPath))
-            {
-                Directory.CreateDirectory(realPath);
-            }
-
-            File.WriteAllText(realFilePath, info.TargetContent);
+            info.WriteToFile();
         }
     }
 
     /// <summary>
     /// 清空自动生成文件夹
     /// </summary>
-    /// <param name="folderPath"></param>
-    private static void RemoveFolder(string folderPath)
+    private void RemoveGeneratorFolder()
     {
+        string folderPath = GeneratorFolderPath;
         if (Directory.Exists(folderPath))
         {
             Directory.Delete(folderPath, true);
@@ -139,20 +138,28 @@ public class Generator
 
     public void Run()
     {
-        var templatePath        = Directory.GetCurrentDirectory() + "../../../../template/";
-        var generatorFolderPath = Directory.GetCurrentDirectory() + "/../generator/";
-        var fullRootFolderPath      = Path.GetFullPath(templatePath);        // 替换为要读取的文件夹路径
-        var fullGeneratorFolderPath = Path.GetFullPath(generatorFolderPath); // 替换为要读取的文件夹路径
+        if (RootFolderTemplatePath == null)
+        {
+            throw new ArgumentNullException(nameof(RootFolderTemplatePath));
+        }
 
-        RootFolderTemplatePath = Path.GetFullPath(fullRootFolderPath);
-        GeneratorFolderPath    = Path.GetFullPath(fullGeneratorFolderPath);
+        if (GeneratorFolderPath == null)
+        {
+            throw new ArgumentNullException(nameof(GeneratorFolderPath));
+        }
 
-        var targetList = ReadAllTemplateFiles(fullRootFolderPath);
-        RemoveFolder(fullGeneratorFolderPath);
+        //清空自动生成文件夹
+        RemoveGeneratorFolder();
+
+        //读取所有模板文件
+        var tempFileList = ReadAllTemplateFiles();
+
+        //每一个dict 对应一个 k8s 资源类型
+        //按类型处理模板文件，并保存
         foreach (var dict in _dictList)
         {
-            ProcessGenList(targetList, dict);
-            WriteTemplate(targetList, fullGeneratorFolderPath);
+            var genFileList = ProcessGenList(tempFileList, dict);
+            WriteTemplate(genFileList);
         }
     }
 }
