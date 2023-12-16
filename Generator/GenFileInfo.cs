@@ -8,7 +8,7 @@ public class GenFileInfo
     public string Name { get; set; }
 
     /// <summary>
-    /// 原始模板文件路径
+    /// 原始模板文件路径，相对路径
     /// </summary>
     public string Path { get; set; }
 
@@ -23,7 +23,7 @@ public class GenFileInfo
     public string TargetContent { get; set; }
 
     /// <summary>
-    /// 替换关键字后的目标模板路径
+    /// 替换关键字后的目标模板路径，相对路径
     /// </summary>
     public string TargetPath { get; set; }
 

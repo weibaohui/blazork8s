@@ -10,10 +10,6 @@ public class Generator
 {
     private IList<IDictionary<string, string>> _dictList = new List<IDictionary<string, string>>();
 
-
-    // var fullRootFolderPath      = Path.GetFullPath(templatePath);        // 替换为要读取的文件夹路径
-    // var fullGeneratorFolderPath = Path.GetFullPath(generatorFolderPath); // 替换为要读取的文件夹路径
-
     /// <summary>
     /// 模板根目录，完全路径
     /// </summary>
@@ -94,11 +90,12 @@ public class Generator
 
         foreach (var file in files)
         {
-            var filePath = Path.GetFullPath(folderPath, file).Replace(RootFolderTemplatePath, "");
+
+            var fileRelativePath = Path.GetFullPath(folderPath, file).Replace(RootFolderTemplatePath, "");
             genFileList.Add(new GenFileInfo
             {
                 Name    = Path.GetFileName(file),
-                Path    = filePath,
+                Path    = fileRelativePath,
                 Content = File.ReadAllText(file)
             });
         }
