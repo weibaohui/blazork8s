@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using JinianNet.JNTemplate;
@@ -8,6 +9,19 @@ public class Generator
 {
     private IList<IDictionary<string, string>> _dictList = new List<IDictionary<string, string>>();
 
+
+    // var fullRootFolderPath      = Path.GetFullPath(templatePath);        // 替换为要读取的文件夹路径
+    // var fullGeneratorFolderPath = Path.GetFullPath(generatorFolderPath); // 替换为要读取的文件夹路径
+
+    /// <summary>
+    /// 模板根目录，完全路径
+    /// </summary>
+    public string RootFolderTemplatePath { get; set; }
+
+    /// <summary>
+    /// 生成文件夹根目录，完全路径
+    /// </summary>
+    public string GeneratorFolderPath { get; set; }
 
     public void SetDictList(IList<IDictionary<string, string>> dictList)
     {
@@ -51,27 +65,29 @@ public class Generator
         return template.Render();
     }
 
-    private static IList<GenInfo> ReadAllTemplateFiles(string fullTemplateFolderPath, string fullFolderPath)
+    private  IList<GenInfo> ReadAllTemplateFiles(string fullRootFolderPath)
     {
         IList<GenInfo> targetList = new List<GenInfo>();
-        ReadTemplateFiles(fullTemplateFolderPath, fullFolderPath, targetList);
+        ReadTemplateFiles( fullRootFolderPath, targetList);
         return targetList;
     }
 
     /// <summary>
     /// 遍历读取模板文件夹，读取每一个模板文件
     /// </summary>
-    /// <param name="fullTemplateFolderPath"></param>
-    /// <param name="fullFolderPath"></param>
+    /// <param name="folderPath"></param>
     /// <param name="targetList"></param>
-    private static void ReadTemplateFiles(string fullTemplateFolderPath, string fullFolderPath,
+    private  void ReadTemplateFiles( string folderPath,
         IList<GenInfo>                           targetList)
     {
-        var files = Directory.GetFiles(fullTemplateFolderPath);
+        var files = Directory.GetFiles(folderPath);
 
         foreach (var file in files)
         {
-            var filePath = Path.GetFullPath(fullTemplateFolderPath, file).Replace(fullFolderPath, "");
+            var filePath = Path.GetFullPath(folderPath, file).Replace(RootFolderTemplatePath, "");
+            Console.WriteLine("file:" + file);
+            Console.WriteLine("folderPath:" + folderPath);
+            Console.WriteLine("filePath:" + filePath);
             targetList.Add(new GenInfo
             {
                 Name    = Path.GetFileName(file),
@@ -80,11 +96,11 @@ public class Generator
             });
         }
 
-        var directories = Directory.GetDirectories(fullTemplateFolderPath);
+        var directories = Directory.GetDirectories(folderPath);
 
         foreach (var directory in directories)
         {
-            ReadTemplateFiles(directory, fullFolderPath, targetList);
+            ReadTemplateFiles(directory, targetList);
         }
     }
 
@@ -125,14 +141,13 @@ public class Generator
     {
         var templatePath        = Directory.GetCurrentDirectory() + "../../../../template/";
         var generatorFolderPath = Directory.GetCurrentDirectory() + "/../generator/";
-
-
-        var fullTemplateFolderPath  = Path.GetFullPath(templatePath);        // 替换为要读取的文件夹路径
-        var fullFolderPath          = Path.GetFullPath(templatePath);        // 替换为要读取的文件夹路径
+        var fullRootFolderPath      = Path.GetFullPath(templatePath);        // 替换为要读取的文件夹路径
         var fullGeneratorFolderPath = Path.GetFullPath(generatorFolderPath); // 替换为要读取的文件夹路径
 
+        RootFolderTemplatePath = Path.GetFullPath(fullRootFolderPath);
+        GeneratorFolderPath    = Path.GetFullPath(fullGeneratorFolderPath);
 
-        var targetList = ReadAllTemplateFiles(fullTemplateFolderPath, fullFolderPath);
+        var targetList = ReadAllTemplateFiles(fullRootFolderPath);
         RemoveFolder(fullGeneratorFolderPath);
         foreach (var dict in _dictList)
         {
