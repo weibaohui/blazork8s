@@ -6,10 +6,10 @@ class Program
     public void makeTemplate()
     {
         var dictList = new DictList();
-        // dictList.AddItem("DaemonSet", "V1DaemonSet");
         // dictList.AddItem("Node", "V1Node");
         // dictList.AddItem("ReplicaSet", "V1ReplicaSet");
         // dictList.AddItem("Service", "V1Service");
+        dictList.AddItem("DaemonSet",typeof(V1DaemonSet));
         dictList.AddItem("Job",typeof(V1Job));
         dictList.AddItem("ServiceAccount",typeof(V1ServiceAccount));
         dictList.AddItem("ClusterRole",typeof(V1ClusterRole));
@@ -46,5 +46,6 @@ class Program
         new Program().makeTemplate();
         // EntityPrepare.PrepareK8SEntity();
         // RazorEngineProcessor.Process();
+
     }
 }

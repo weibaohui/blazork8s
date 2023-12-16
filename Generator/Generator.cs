@@ -65,9 +65,18 @@ public class Generator
         var template = TemplateEngineHelper.LoadTemplateByString(content);
         foreach (var (key, value) in parameters)
         {
-            template.Set(key, value);
-        }
+            //根据实际类型，将value类型强转回来List<KubeType>
+            if (value.GetType()==typeof(List<KubeType>))
+            {
+                template.Set(key, value as List<KubeType>);
+            }
+            else
+            {
+                template.Set(key, value);
+            }
 
+
+        }
         return template.Render();
     }
 

@@ -23,6 +23,7 @@ public class EntityPrepare
 
         var list = zList
             .Where(x => x.FieldLevel == 3)
+            .Where(x=>!x.FullName.Contains(".Metadata."))
             .ToList();
         File.WriteAllText("pod-zip.json", KubernetesJson.Serialize(list));
         return list;

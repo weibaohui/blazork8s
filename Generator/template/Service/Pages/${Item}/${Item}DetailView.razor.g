@@ -5,11 +5,11 @@ namespace BlazorApp.Pages.${Item}
 {
     public partial class ${Item}DetailView :  DrawerPageBase<${ItemType}>
     {
-        private ${ItemType} Item { get; set; }
+        private ${ItemType} ${Item} { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            ${Item} = base.Options;
             await base.OnInitializedAsync();
         }
     }
