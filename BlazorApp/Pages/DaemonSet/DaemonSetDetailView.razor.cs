@@ -1,16 +1,16 @@
 using System.Threading.Tasks;
-using AntDesign;
+using BlazorApp.Pages.Common;
 using k8s.Models;
 
 namespace BlazorApp.Pages.DaemonSet
 {
-    public partial class DaemonSetDetailView : FeedbackComponent<V1DaemonSet, bool>
+    public partial class DaemonSetDetailView :  DrawerPageBase<V1DaemonSet>
     {
-        private V1DaemonSet Item { get; set; }
+        private V1DaemonSet DaemonSet { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            DaemonSet = base.Options;
             await base.OnInitializedAsync();
         }
     }

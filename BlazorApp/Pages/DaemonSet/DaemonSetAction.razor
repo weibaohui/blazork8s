@@ -5,10 +5,9 @@
             <Menu >
                 <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
                 <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
-
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
-                                OnConfirm="() => OnDaemonSetDeleteClick(Item)"
+                                OnConfirm="@(() => OnDeleteClick(Item))"
                                 OkText="Yes"
                                 CancelText="No">
                         删除

@@ -1,15 +1,48 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits FeedbackComponent<k8s.Models.V1DaemonSet, bool>
-@if (Item != null)
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1DaemonSet>
+@if (DaemonSet != null)
 {
-    <DaemonSetAction Item="Item" MenuMode="MenuMode.Horizontal"  ></DaemonSetAction>
-    <MetadataView Item="Item" T="V1DaemonSet"></MetadataView>
+    <DaemonSetAction Item="DaemonSet" MenuMode="MenuMode.Horizontal"></DaemonSetAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="DaemonSet" T="V1DaemonSet"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @DaemonSet.Name()
         </DescriptionsItem>
+
+        <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="Selector" Item="@DaemonSet.Spec.Selector" ExplainField="daemonSet.spec.selector" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="Template" Item="@DaemonSet.Spec.Template" ExplainField="daemonSet.spec.template" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="UpdateStrategy" Item="@DaemonSet.Spec.UpdateStrategy" ExplainField="daemonSet.spec.updateStrategy" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="Conditions" Item="@DaemonSet.Status.Conditions" ExplainField="daemonSet.status.conditions" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="CurrentNumberScheduled" Item="@DaemonSet.Status.CurrentNumberScheduled" ExplainField="daemonSet.status.currentNumberScheduled" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="DesiredNumberScheduled" Item="@DaemonSet.Status.DesiredNumberScheduled" ExplainField="daemonSet.status.desiredNumberScheduled" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="NumberAvailable" Item="@DaemonSet.Status.NumberAvailable" ExplainField="daemonSet.status.numberAvailable" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="NumberMisscheduled" Item="@DaemonSet.Status.NumberMisscheduled" ExplainField="daemonSet.status.numberMisscheduled" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="NumberReady" Item="@DaemonSet.Status.NumberReady" ExplainField="daemonSet.status.numberReady" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="NumberUnavailable" Item="@DaemonSet.Status.NumberUnavailable" ExplainField="daemonSet.status.numberUnavailable" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="ObservedGeneration" Item="@DaemonSet.Status.ObservedGeneration" ExplainField="daemonSet.status.observedGeneration" ShowInJson="false"></PropertySimpleView>
+
+        <PropertySimpleView Title="UpdatedNumberScheduled" Item="@DaemonSet.Status.UpdatedNumberScheduled" ExplainField="daemonSet.status.updatedNumberScheduled" ShowInJson="false"></PropertySimpleView>
+
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+    <MiniEventListView Uid="@DaemonSet.Metadata.Uid"></MiniEventListView>
 }
