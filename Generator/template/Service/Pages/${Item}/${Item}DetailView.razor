@@ -2,12 +2,12 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<$ItemType$>
+@inherits DrawerPageBase<${ItemType}>
 @if (Item != null)
 {
-    <$Item$Action Item="Item" MenuMode="MenuMode.Horizontal"  ></$Item$Action>
+    <${Item}Action Item="Item" MenuMode="MenuMode.Horizontal"  ></${Item}Action>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Item" T="$ItemType$"></MetadataView>
+    <MetadataView Item="Item" T="${ItemType}"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

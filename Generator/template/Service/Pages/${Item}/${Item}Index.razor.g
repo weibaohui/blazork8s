@@ -5,15 +5,15 @@ using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.$Item$;
+namespace BlazorApp.Pages.${Item};
 
-public partial class $Item$Index : TableBase<$ItemType$>
+public partial class ${Item}Index : TableBase<${ItemType}>
 {
     [Inject]
-    private I$Item$Service $Item$Service { get; set; }
+    private I${Item}Service ${Item}Service { get; set; }
 
 
-    private async Task OnResourceChanged(ResourceCache<$ItemType$> data)
+    private async Task OnResourceChanged(ResourceCache<${ItemType}> data)
     {
         ItemList = data;
         TableData.CopyData(ItemList);
@@ -28,11 +28,11 @@ public partial class $Item$Index : TableBase<$ItemType$>
     }
 
 
-    private async Task OnItemNameClick($ItemType$ item)
+    private async Task OnItemNameClick(${ItemType} item)
     {
-        await PageDrawerHelper<$ItemType$>.Instance
+        await PageDrawerHelper<${ItemType}>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<$Item$DetailView, $ItemType$, bool>(item);
+            .ShowDrawerAsync<${Item}DetailView, ${ItemType}, bool>(item);
 
     }
 }

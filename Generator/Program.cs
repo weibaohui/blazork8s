@@ -1,12 +1,7 @@
-﻿using System.IO;
-using Generator;
+﻿using Generator;
 
 class Program
 {
-    private static readonly string TemplatePath        = Directory.GetCurrentDirectory() + "../../../../template/";
-    private static readonly string GeneratorFolderPath = Directory.GetCurrentDirectory() + "/../generator/";
-
-
     public void makeTemplate()
     {
         var dictList = new DictList();
@@ -41,28 +36,16 @@ class Program
         dictList.AddItem("StatefulSet", "V1StatefulSet");
         dictList.AddItem("ReplicationController", "V1ReplicationController");
 
-        var fullTemplateFolderPath  = Path.GetFullPath(TemplatePath);        // 替换为要读取的文件夹路径
-        var fullFolderPath          = Path.GetFullPath(TemplatePath);        // 替换为要读取的文件夹路径
-        var fullGeneratorFolderPath = Path.GetFullPath(GeneratorFolderPath); // 替换为要读取的文件夹路径
 
         var generator = new Generator.Generator();
-        generator.RecursivelyReadFiles(fullTemplateFolderPath, fullFolderPath);
-        generator.PrintGenList();
-        generator.RemoveGenFolder(fullGeneratorFolderPath);
-        foreach (var dict in dictList.GetDictList())
-        {
-            generator.SetDict(dict);
-            generator.PrepareGenList();
-            generator.PrintGenTargetList();
-            generator.GenTemplate(fullGeneratorFolderPath);
-        }
+        generator.SetDictList(dictList.GetDictList());
+        generator.Run();
     }
 
     public static void Main()
     {
-        // new Program().makeTemplate();
+        new Program().makeTemplate();
         // EntityPrepare.PrepareK8SEntity();
         // RazorEngineProcessor.Process();
     }
-
 }

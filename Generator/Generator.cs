@@ -1,12 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using JinianNet.JNTemplate;
 
 namespace Generator;
 
 public class Generator
 {
+    private static readonly string TemplatePath        = Directory.GetCurrentDirectory() + "../../../../template/";
+    private static readonly string GeneratorFolderPath = Directory.GetCurrentDirectory() + "/../generator/";
+
+
+
     private          IDictionary<string, string> _dict    = new Dictionary<string, string>();
+    private          IList<IDictionary<string, string>> _dictList    = new List<IDictionary<string, string>>();
     private readonly IList<GenInfo>              _genList = new List<GenInfo>();
 
 
@@ -17,6 +24,10 @@ public class Generator
     public void SetDict(IDictionary<string, string> dict)
     {
         _dict = dict;
+    }
+    public void SetDictList( IList<IDictionary<string, string>> dictList)
+    {
+        _dictList = dictList;
     }
 
     /// <summary>
@@ -36,21 +47,28 @@ public class Generator
             info.TargetPath    = info.Path;
             info.TargetContent = info.Content;
 
-            foreach (KeyValuePair<string, string> kvp in _dict)
-            {
-                info.TargetContent = info.TargetContent.Replace(kvp.Key, kvp.Value);
-            }
+            info.TargetContent = ProcessTemplate(info.TargetContent, _dict);
+            info.TargetPath    = ProcessTemplate(info.TargetPath, _dict);
+            info.TargetName    = ProcessTemplate(info.TargetName, _dict);
 
-            foreach (KeyValuePair<string, string> kvp in _dict)
-            {
-                info.TargetPath = info.TargetPath.Replace(kvp.Key, kvp.Value);
-            }
-
-            foreach (KeyValuePair<string, string> kvp in _dict)
-            {
-                info.TargetName = info.TargetName.Replace(kvp.Key, kvp.Value);
-            }
         }
+    }
+
+
+    /// <summary>
+    /// 对指定模板文件进行处理
+    /// </summary>
+    /// <param name="content">模板文件内容</param>
+    /// <param name="parameters">参数</param>
+    /// <returns></returns>
+    private string ProcessTemplate(string content, IDictionary<string, string> parameters)
+    {
+        var template = TemplateEngineHelper.LoadTemplateByString(content);
+        foreach (var (key, value) in parameters)
+        {
+            template.Set(key,value);
+        }
+        return template.Render();
     }
 
     /// <summary>
@@ -60,9 +78,9 @@ public class Generator
     /// <param name="fullFolderPath"></param>
     public void RecursivelyReadFiles(string fullTemplateFolderPath, string fullFolderPath)
     {
-        string[] files = Directory.GetFiles(fullTemplateFolderPath);
+        var files = Directory.GetFiles(fullTemplateFolderPath);
 
-        foreach (string file in files)
+        foreach (var file in files)
         {
             var filePath = Path.GetFullPath(fullTemplateFolderPath, file).Replace(fullFolderPath, "");
             _genList.Add(new GenInfo
@@ -73,9 +91,9 @@ public class Generator
             });
         }
 
-        string[] directories = Directory.GetDirectories(fullTemplateFolderPath);
+        var directories = Directory.GetDirectories(fullTemplateFolderPath);
 
-        foreach (string directory in directories)
+        foreach (var directory in directories)
         {
             RecursivelyReadFiles(directory, fullFolderPath);
         }
@@ -136,11 +154,30 @@ public class Generator
     /// 清空自动生成文件夹
     /// </summary>
     /// <param name="folderPath"></param>
-    public void RemoveGenFolder(string folderPath)
+    public void RemoveFolder(string folderPath)
     {
         if (Directory.Exists(folderPath))
         {
             Directory.Delete(folderPath, true);
+        }
+    }
+
+
+
+    public void Run()
+    {
+        var fullTemplateFolderPath  = Path.GetFullPath(TemplatePath);        // 替换为要读取的文件夹路径
+        var fullFolderPath          = Path.GetFullPath(TemplatePath);        // 替换为要读取的文件夹路径
+        var fullGeneratorFolderPath = Path.GetFullPath(GeneratorFolderPath); // 替换为要读取的文件夹路径
+
+
+        RecursivelyReadFiles(fullTemplateFolderPath, fullFolderPath);
+        RemoveFolder(fullGeneratorFolderPath);
+        foreach (var dict in _dictList)
+        {
+            SetDict(dict);
+            PrepareGenList();
+            GenTemplate(fullGeneratorFolderPath);
         }
     }
 }

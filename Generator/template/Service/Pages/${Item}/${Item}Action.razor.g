@@ -9,18 +9,18 @@ using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 
-namespace BlazorApp.Pages.$Item$;
+namespace BlazorApp.Pages.${Item};
 
-public partial class $Item$Action : ComponentBase
+public partial class ${Item}Action : ComponentBase
 {
     [Parameter]
-    public $ItemType$ Item { get; set; }
+    public ${ItemType} Item { get; set; }
 
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
     [Inject]
-    private I$Item$Service $Item$Service { get; set; }
+    private I${Item}Service ${Item}Service { get; set; }
 
 
     [Inject]
@@ -31,23 +31,23 @@ public partial class $Item$Action : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task OnDeleteClick($ItemType$ item)
+    private async Task OnDeleteClick(${ItemType} item)
     {
-        await $Item$Service.Delete(item.Namespace(), item.Name());
+        await ${Item}Service.Delete(item.Namespace(), item.Name());
         StateHasChanged();
     }
 
  
 
-    private async Task OnYamlClick($ItemType$ item)
+    private async Task OnYamlClick(${ItemType} item)
     {
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<$ItemType$>, $ItemType$, bool>(options, item);
+        await PageDrawerService.ShowDrawerAsync<YamlView<${ItemType}>, ${ItemType}, bool>(options, item);
     }
 
-    private async Task OnDocClick($ItemType$ item)
+    private async Task OnDocClick(${ItemType} item)
     {
         var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DocTreeView<$ItemType$>, $ItemType$, bool>(options, item);
+        await PageDrawerService.ShowDrawerAsync<DocTreeView<${ItemType}>, ${ItemType}, bool>(options, item);
     }
 }

@@ -1,14 +1,14 @@
-@page "/$Item$"
+@page "/${Item}"
 @using k8s.Models
 @using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
-@inherits TableBase<$ItemType$>
+@inherits TableBase<${ItemType}>
 @if (TableData.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="$Item$" Count="@TableData.Total"
+            <SearchToolBar Title="${Item}" Count="@TableData.Total"
                            OnSearch="OnSearchHandler"
                            OnNsSelected="OnNsSelectedHandler">
             </SearchToolBar>
@@ -16,7 +16,7 @@
         <ChildContent>
             <Body>
 
-            <Table TItem="$ItemType$"
+            <Table TItem="${ItemType}"
                    DataSource="@TableData.PagedItems"
                    Size=@TableSize.Small Bordered="true"
                    Total="TableData.Total"
@@ -34,12 +34,12 @@
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
                 <ActionColumn Title="Action" Width="200" Fixed="right">
-                    <$Item$Action Item="@context"></$Item$Action>
+                    <${Item}Action Item="@context"></${Item}Action>
                 </ActionColumn>
             </Table>
             </Body>
         </ChildContent>
 
     </Card>
-    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="$ItemType$"></ResourceWatcher>
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="${ItemType}"></ResourceWatcher>
 }
