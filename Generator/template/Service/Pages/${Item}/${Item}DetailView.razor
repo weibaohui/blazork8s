@@ -14,7 +14,15 @@
             @${Item}.Name()
         </DescriptionsItem>
         $for(i in Properties)
-        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="false"></PropertySimpleView>
+        ${if(i.isList)}
+            ${if(i.MultipleChildItem)}
+        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+            ${else}
+        <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
+            ${end}
+        ${else}
+        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ></PropertySimpleView>
+        ${end}
         ${end}
     </Descriptions>
     <MiniEventListView Uid="@${Item}.Metadata.Uid"></MiniEventListView>

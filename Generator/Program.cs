@@ -11,7 +11,6 @@ class Program
         // dictList.AddItem("Service", "V1Service");
         dictList.AddItem("DaemonSet",typeof(V1DaemonSet));
         dictList.AddItem("Job",typeof(V1Job));
-        dictList.AddItem("ServiceAccount",typeof(V1ServiceAccount));
         dictList.AddItem("ClusterRole",typeof(V1ClusterRole));
         dictList.AddItem("ClusterRoleBinding",typeof(V1ClusterRoleBinding));
         dictList.AddItem("Role",typeof(V1Role));
@@ -36,6 +35,7 @@ class Program
         dictList.AddItem("CronJob",typeof(V1CronJob));
         dictList.AddItem("StatefulSet",typeof(V1StatefulSet));
         dictList.AddItem("ReplicationController",typeof(V1ReplicationController));
+        dictList.AddItem("ServiceAccount",typeof(V1ServiceAccount));
 
 
         GeneratorHelper.Generator(dictList.GetDictList()).Run();

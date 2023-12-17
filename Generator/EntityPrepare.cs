@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using k8s;
-using k8s.Models;
 
 namespace Generator;
 
 public class EntityPrepare
 {
-    public static List<KubeType> GetK8SEntity(Type type,string resourceName)
+    public static List<KubeType> GetK8SEntity(Type type, string resourceName)
     {
         var kubeList = new List<KubeType>();
         ReflectHelper<Type>.ListProperty(type, resourceName, kubeList);
 
+        ReflectHelper<Type>.ProcessOnlyOneChildItem(kubeList);
+        ReflectHelper<Type>.ProcessMultipleChildItem(kubeList);
 
         var zList = new List<KubeType>();
         ZipList(zList, kubeList);
@@ -22,34 +23,17 @@ public class EntityPrepare
 
 
         var list = zList
-            .Where(x => x.FieldLevel == 3)
-            .Where(x=>!x.FullName.Contains(".Metadata."))
-            .ToList();
-        File.WriteAllText("pod-zip.json", KubernetesJson.Serialize(list));
-        return list;
-    }
-
-    /// <summary>
-    /// 准备k8s资源，为下一步生成字段明细做准备
-    /// </summary>
-    public static void PrepareK8SEntity()
-    {
-        var kubeList = new List<KubeType>();
-        ReflectHelper<V1Pod>.ListProperty(typeof(V1Pod), "Pod", kubeList);
-        var s = KubernetesJson.Serialize(kubeList);
-        File.WriteAllText("pod.json", s);
-
-        var zList = new List<KubeType>();
-        ZipList(zList, kubeList);
-        zList.Sort((a, b) => a.FieldLevel - b.FieldLevel);
-        zList.Sort((a, b) => String.CompareOrdinal(a.FullName, b.FullName));
-
-        File.WriteAllText("pod-zip.json",
-            KubernetesJson.Serialize(zList
-                .Where(x => x.FieldLevel == 3)
-                .ToList()
+            .Where(x => (x.FieldLevel == 2 || x.FieldLevel == 3)
+                        && !x.FullName.Contains(".Metadata")
+                        && !x.FullName.Contains(".ApiVersion")
+                        && !x.FullName.Contains(".Kind")
             )
-        );
+            .ToList();
+
+        list = RemoveMultipleItem(list);
+        list = RemoveOnlyOneChildItem(list);
+        File.WriteAllText("pod-zip3.json", KubernetesJson.Serialize(list));
+        return list;
     }
 
 
@@ -70,5 +54,59 @@ public class EntityPrepare
             kubeType.Child = null;
             topList.Add(kubeType);
         }
+    }
+
+
+    /// <summary>
+    /// 剔除具有子列表并且是多项的情况
+    /// 在模板中不需要这种
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    private static List<KubeType> RemoveMultipleItem(IList<KubeType> list)
+    {
+        var keys = new List<string>();
+        foreach (var kt in list)
+        {
+            if (kt.MultipleChildItem)
+            {
+                keys.Add(kt.FullName);
+            }
+        }
+
+        var ret = list.ToList();
+
+        keys.ForEach(k =>
+        {
+            ret.RemoveAll(x => x.IsList == false && x.MultipleChildItem == false && x.FullName.StartsWith(k));
+        });
+        return ret;
+    }
+
+
+    /// <summary>
+    /// 删除只有一个child item 的情况
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    private static List<KubeType> RemoveOnlyOneChildItem(IList<KubeType> list)
+    {
+        var keys = new List<string>();
+        foreach (var kt in list)
+        {
+            if (kt.IsList && kt.OnlyOneChildItemName != null)
+            {
+                keys.Add(kt.FullName);
+            }
+        }
+
+        var ret = list.ToList();
+
+        keys.ForEach(k =>
+        {
+            //只有下一级才会带".",以此保证自身不会被删除
+            ret.RemoveAll(x => x.FullName.StartsWith(k+"."));
+        });
+        return ret;
     }
 }

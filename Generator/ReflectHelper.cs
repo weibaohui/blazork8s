@@ -42,14 +42,18 @@ public class ReflectHelper<T>
             var method = property.GetGetMethod();
 
             KubeType kt = new KubeType();
-            kt.Type = method.ReturnType.ToString()
+            kt.Type = method?.ReturnType.ToString()
                     .Replace("System.Collections.Generic.", "")
                     .Replace("[", "<")
                     .Replace("]", ">")
                     .Replace("`1", "")
                     .Replace("`2", "")
                 ;
-            kt.Name         = method.Name.Replace("get_", "");
+            kt.CoreType = method?.ReturnType.ToString()?.Replace("System.Collections.Generic.IList", "")
+                .Replace("`1", "")
+                .Replace("[", "")
+                .Replace("]", "");
+            kt.Name         = method?.Name.Replace("get_", "");
             kt.FullName     = parentName + "." + kt.Name;
             kt.ExplainFiled = kt.FullName.ToCamelCase(true);
             kt.FieldLevel   = kt.ExplainFiled.CountBy(".") + 1;
@@ -59,11 +63,11 @@ public class ReflectHelper<T>
             {
                 if (kt.IsList)
                 {
-                    ListItemsProperty(method.ReturnType, kt.FullName, kt.Child);
+                    ListItemsProperty(method?.ReturnType, kt.FullName, kt.Child);
                 }
                 else
                 {
-                    ListProperty(method.ReturnType, kt.FullName, kt.Child);
+                    ListProperty(method?.ReturnType, kt.FullName, kt.Child);
                 }
             }
 
@@ -72,13 +76,13 @@ public class ReflectHelper<T>
         }
     }
 
-    public static void ListItemsProperty(Type type, string parentName, IList<KubeType> container)
+    private static void ListItemsProperty(Type type, string parentName, IList<KubeType> container)
     {
         var properties = type.GetProperties();
 
         if (properties.Length == 1 && properties[0].Name == "Item")
         {
-            var transType = properties[0].GetGetMethod().ReturnType;
+            var transType = properties[0].GetGetMethod()?.ReturnType;
             ListProperty(transType, parentName, container);
         }
     }
@@ -86,5 +90,50 @@ public class ReflectHelper<T>
     private static bool IsList(string type)
     {
         return type.StartsWith("IList");
+    }
+
+
+    /// <summary>
+    /// 处理child只有一个属性的情况，抽取到上层实例中。
+    /// </summary>
+    /// <param name="list"></param>
+    public static void ProcessOnlyOneChildItem(IList<KubeType> list)
+    {
+        foreach (var type in list)
+        {
+            if (type.OnlyOneChildItemName != null)
+            {
+                continue;
+            }
+
+            if (type.IsList && type.Child != null && type.Child.Count == 1 && type.Child[0].IsList == false)
+            {
+                type.OnlyOneChildItemName = type.Child[0].Name;
+            }
+
+            if (type.Child != null && type.Child.Count > 1)
+            {
+                ProcessOnlyOneChildItem(type.Child);
+            }
+        }
+    }
+
+    public static void ProcessMultipleChildItem(IList<KubeType> list)
+    {
+        foreach (var type in list)
+        {
+            if (type.OnlyOneChildItemName != null)
+            {
+                continue;
+            }
+
+            if (type.IsList && type.Child != null && type.Child.Count > 1)
+            {
+                type.MultipleChildItem = true;
+                ProcessMultipleChildItem(type.Child);
+            }
+
+
+        }
     }
 }
