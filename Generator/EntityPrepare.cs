@@ -59,7 +59,7 @@ public class EntityPrepare
 
     /// <summary>
     /// 剔除具有子列表并且是多项的情况
-    /// 在模板中不需要这种
+    /// 在模板中不需要展开，直接以json方式展现所有子项，如需要展现，请自行修改ui显示逻辑
     /// </summary>
     /// <param name="list"></param>
     /// <returns></returns>
