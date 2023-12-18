@@ -8,6 +8,15 @@ spec:
     spec:
       template:
         spec:
+          affinity:
+            nodeAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                nodeSelectorTerms:
+                  - matchExpressions:
+                      - key: type
+                        operator: In
+                        values:
+                          - kwok
           containers:
             - name: hello
               image: busybox:latest
