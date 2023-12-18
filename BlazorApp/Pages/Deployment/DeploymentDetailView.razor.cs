@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Deployment
 {
-    public partial class DeploymentDetailView : FeedbackComponent<V1Deployment, bool>
+    public partial class DeploymentDetailView : DrawerPageBase<V1Deployment>
     {
         private V1Deployment Item { get; set; }
 

@@ -1,11 +1,13 @@
-﻿@using k8s.Models
-@using BlazorApp.Pages.Common.Metadata
+﻿@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.ReplicaSet
-@inherits FeedbackComponent<k8s.Models.V1Deployment, bool>
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
 @if (Item != null)
 {
+    <DeploymentAction Item="Item" MenuMode="MenuMode.Horizontal"  ></DeploymentAction>
+
     <MetadataView Item="Item" T="V1Deployment"></MetadataView>
 
     <Descriptions Bordered Column="1">
