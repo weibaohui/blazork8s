@@ -32,7 +32,8 @@ public partial class BasicLayout : LayoutComponentBase
                 Name = "NodeList",
                 Key  = "NodeList",
                 Icon = "setting",
-            }, new MenuDataItem
+            },
+            new MenuDataItem
             {
                 Path = "/Node",
                 Name = "Nodes",
@@ -46,11 +47,39 @@ public partial class BasicLayout : LayoutComponentBase
                 Icon     = "setting",
                 Children = WorkloadsMenu(),
             },
+            new MenuDataItem
+            {
+                Name     = "Config",
+                Key      = "Config",
+                Icon     = "setting",
+                Children = ConfigMenu(),
+            },
+            new MenuDataItem
+            {
+                Name     = "Network",
+                Key      = "Network",
+                Icon     = "setting",
+                Children = NetworkMenu(),
+            },
+            new MenuDataItem
+            {
+                Name     = "Storage",
+                Key      = "Storage",
+                Icon     = "setting",
+                Children = StorageMenu(),
+            },
+            new MenuDataItem
+            {
+                Name     = "AccessControl",
+                Key      = "AccessControl",
+                Icon     = "setting",
+                Children = AccessControlMenu(),
+            },
         };
         await base.OnInitializedAsync();
     }
 
-    private  MenuDataItem  GetMenuItem(string item)
+    private MenuDataItem GetMenuItem(string item)
     {
         return new MenuDataItem
         {
@@ -61,65 +90,90 @@ public partial class BasicLayout : LayoutComponentBase
         };
     }
 
+    private MenuDataItem GetMenuItem(string name, string path)
+    {
+        return new MenuDataItem
+        {
+            Path = path,
+            Name = name,
+            Key  = path,
+            Icon = "setting",
+        };
+    }
+
+    private MenuDataItem GetMenuItem(string name, string path, string icon)
+    {
+        return new MenuDataItem
+        {
+            Path = path,
+            Name = name,
+            Key  = path,
+            Icon = icon,
+        };
+    }
+
     private MenuDataItem[] WorkloadsMenu()
     {
         return new[]
         {
-            new MenuDataItem
-            {
-                Path = "/Pods",
-                Name = "Pods",
-                Key  = "Pods",
-                Icon = "setting",
-            },
-            new MenuDataItem
-            {
-                Path = "/Deployments",
-                Name = "Deployments",
-                Key  = "Deployments",
-                Icon = "setting",
-            },
-            new MenuDataItem
-            {
-                Path = "/ReplicaSets",
-                Name = "ReplicaSets",
-                Key  = "ReplicaSets",
-                Icon = "setting",
-            },
-            new MenuDataItem
-            {
-                Path = "/DaemonSet",
-                Name = "DaemonSet",
-                Key  = "DaemonSet",
-                Icon = "setting",
-            },
+            GetMenuItem("Pods"),
+            GetMenuItem("Deployments"),
+            GetMenuItem("ReplicaSets"),
+            GetMenuItem("DaemonSet"),
+            GetMenuItem("RC", "ReplicationController"),
             GetMenuItem("Job"),
+            GetMenuItem("CronJob"),
+        };
+    }
+
+    private MenuDataItem[] ConfigMenu()
+    {
+        return new[]
+        {
+            GetMenuItem("ConfigMap"),
+            GetMenuItem("Secret"),
+            GetMenuItem("ResourceQuota"),
+            GetMenuItem("LimitRange"),
+            GetMenuItem("HPA", "HorizontalPodAutoscaler"),
+            GetMenuItem("PDB", "PodDisruptionBudget"),
+            GetMenuItem("PriorityClass"),
+            GetMenuItem("Validating", "ValidatingWebhookConfiguration"),
+            GetMenuItem("Mutating", "MutatingWebhookConfiguration"),
+        };
+    }
+
+    private MenuDataItem[] NetworkMenu()
+    {
+        return new[]
+        {
             GetMenuItem("Service"),
+            GetMenuItem("EndpointSlice"),
+            GetMenuItem("Endpoints"),
+            GetMenuItem("NetworkPolicy"),
+            GetMenuItem("IngressClass"),
+            GetMenuItem("Ingress"),
+        };
+    }
+
+    private MenuDataItem[] StorageMenu()
+    {
+        return new[]
+        {
+            GetMenuItem("StorageClass"),
+            GetMenuItem("PV", "PersistentVolume"),
+            GetMenuItem("PVC", "PersistentVolumeClaim"),
+        };
+    }
+
+    private MenuDataItem[] AccessControlMenu()
+    {
+        return new[]
+        {
             GetMenuItem("ServiceAccount"),
             GetMenuItem("ClusterRole"),
             GetMenuItem("ClusterRoleBinding"),
             GetMenuItem("Role"),
             GetMenuItem("RoleBinding"),
-            GetMenuItem("Ingress"),
-            GetMenuItem("PersistentVolume"),
-            GetMenuItem("PersistentVolumeClaim"),
-            GetMenuItem("StorageClass"),
-            GetMenuItem("NetworkPolicy"),
-            GetMenuItem("IngressClass"),
-            GetMenuItem("EndpointSlice"),
-            GetMenuItem("Endpoints"),
-            GetMenuItem("Secret"),
-            GetMenuItem("PriorityClass"),
-            GetMenuItem("PodDisruptionBudget"),
-            GetMenuItem("ValidatingWebhookConfiguration"),
-            GetMenuItem("MutatingWebhookConfiguration"),
-            GetMenuItem("LimitRange"),
-            GetMenuItem("HorizontalPodAutoscaler"),
-            GetMenuItem("ResourceQuota"),
-            GetMenuItem("ConfigMap"),
-            GetMenuItem("CronJob"),
-            GetMenuItem("StatefulSet"),
-            GetMenuItem("ReplicationController"),
         };
     }
 }
