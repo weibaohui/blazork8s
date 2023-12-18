@@ -10,7 +10,7 @@ namespace BlazorApp.Pages.Deployment
 {
     public partial class DeploymentDetailView : DrawerPageBase<V1Deployment>
     {
-        private V1Deployment Item { get; set; }
+        private V1Deployment Deployment { get; set; }
 
         [Inject]
         private IPodService PodService { get; set; }
@@ -22,9 +22,9 @@ namespace BlazorApp.Pages.Deployment
 
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            Deployment = base.Options;
 
-            var rs = ReplicaSetService.ListByOwnerUid(Item.Uid());
+            var rs = ReplicaSetService.ListByOwnerUid(Deployment.Uid());
             rs.ForEach(r =>
             {
                 var pods = PodService.ListByOwnerUid(r.Uid());
