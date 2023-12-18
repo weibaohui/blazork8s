@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx
+  annotations:
+    ingressclass.kubernetes.io/is-default-class: 'true'
+spec:
+  controller: nginx.org/ingress-controller
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: nginx-2
+spec:
+  controller: nginx.org/ingress-controller2
+---
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+metadata:
+  name: external-lb
+spec:
+  controller: example.com/ingress-controller
+  parameters:
+    #    scope: Namespace
+    scope: Cluster
+    apiGroup: k8s.example.com
+    kind: IngressParameters
+    name: external-lb

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: forever
+  name: forever
+spec:
+  selector:
+    matchLabels:
+      app: forever
+  template:
+    metadata:
+      labels:
+        app: forever
+    spec:
+      containers:
+        - image: bash
+          name: forever
+          command:
+            - bash
+            - -c
+            - for((i=0;i<=100000000;i++));do sleep 1;echo $i; done;

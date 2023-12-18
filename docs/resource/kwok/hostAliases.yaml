@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: host-aliases
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: host-aliases
+  template:
+    metadata:
+      labels:
+        app: host-aliases
+    spec:
+      containers:
+        - name: fake-container
+          image: fake-image
+      hostAliases:
+        - hostnames:
+            - www.baidu.com
+            - www1.baidu.com
+            - www2.baidu.com
+          ip: 192.192.192.192
+      tolerations:
+        - key: kwok.x-k8s.io/node
+          operator: Exists
+          effect: NoSchedule
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - kwok

@@ -1,0 +1,26 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: aggregation-rule-pod-reader # role名称
+aggregationRule:
+  clusterRoleSelectors:
+    - matchLabels:
+        app: xxx
+    - matchLabels:
+        xxxx: xxx
+    - matchExpressions:
+        - key: type
+          operator: In
+          values:
+            - cr
+            - dr
+        - key: style
+          operator: In
+          values:
+            - height
+            - over
+
+rules:
+  - apiGroups: [''] # "" 标明 core API 组
+    resources: [pods] # 资源对象
+    verbs: [get, watch, list] # 权限

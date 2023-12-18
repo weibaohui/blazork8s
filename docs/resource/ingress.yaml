@@ -1,0 +1,227 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-wildcard-host
+spec:
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /bar
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: /bar2
+            backend:
+              resource:
+                apiGroup: k8s.example.com
+                kind: StorageBucket
+                name: static-assets
+    - host: '*.foo.com'
+      http:
+        paths:
+          - pathType: Prefix
+            path: /foo
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+          - pathType: Prefix
+            path: /foo2
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-resource-default-backend
+spec:
+  defaultBackend:
+    resource:
+      apiGroup: k8s.example.com
+      kind: StorageBucket
+      name: static-assets
+  rules:
+    - http:
+        paths:
+          - path: /icons
+            pathType: ImplementationSpecific
+            backend:
+              resource:
+                apiGroup: k8s.example.com
+                kind: StorageBucket
+                name: icon-assets
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-svc-default-backend
+spec:
+  defaultBackend:
+    service:
+      name: test
+      port:
+        number: 80
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simple-fanout-example
+spec:
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - path: /foo
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 4200
+          - path: /bar
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 8080
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: name-virtual-host-ingress
+spec:
+  rules:
+    - host: foo.bar.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+    - host: bar.foo.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: name-virtual-host-ingress-no-third-host
+spec:
+  rules:
+    - host: first.bar.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+    - host: second.bar.com
+      http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+    - http:
+        paths:
+          - pathType: Prefix
+            path: /
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testsecret-tls
+  namespace: default
+data:
+  tls.crt: Nzc3Nzc3Nzc3Nzc3Nw==
+  tls.key: Nzc3Nzc3Nzc3Nzc3Nw==
+type: kubernetes.io/tls
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tls-example-ingress
+spec:
+  tls:
+    - hosts:
+        - https-example.foo.com
+        - https-example2.foo.com
+        - https-example3.foo.com
+      secretName: testsecret-tls
+    - hosts:
+        - b1.bar.com
+        - b2.bar.com
+        - b3.bar.com
+      secretName: testsecret-tls
+  rules:
+    - host: https-example.foo.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-web
+                port:
+                  number: 80

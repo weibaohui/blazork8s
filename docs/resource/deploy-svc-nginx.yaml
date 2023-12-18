@@ -1,0 +1,214 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-web
+spec:
+  selector:
+    matchLabels:
+      run: nginx-web
+  template:
+    metadata:
+      labels:
+        run: nginx-web
+    spec:
+      containers:
+        - name: nginx-web
+          image: nginx:alpine
+          ports:
+            - containerPort: 443
+              name: https-web-svc
+            - containerPort: 80
+              name: http-web-svc
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-web2
+spec:
+  selector:
+    matchLabels:
+      run: nginx-web2
+  template:
+    metadata:
+      labels:
+        run: nginx-web2
+    spec:
+      #activeDeadlineSeconds: 500
+      automountServiceAccountToken: true
+      restartPolicy: Always
+      hostIPC: true
+      # priority: 2000
+      # priorityClassName: priority-first
+      readinessGates:
+        - conditionType: www.example.com/feature-1
+        - conditionType: www.example.com/feature-2
+        - conditionType: www.example.com/feature-3
+        - conditionType: www.example.com/feature-4
+        - conditionType: www.example.com/feature-5
+        - conditionType: www.example.com/feature-6
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 3000
+        fsGroup: 2000  
+        fsGroupChangePolicy: "OnRootMismatch"
+        #allowPrivilegeEscalation: false
+        seLinuxOptions:
+          level: "s0:c123,c456"
+        seccompProfile:
+          type: RuntimeDefault  
+      os:
+        name: linux
+      hostAliases:
+      - ip: "127.0.0.1"
+        hostnames:
+        - "foo.local"
+        - "bar.local"
+      - ip: "10.1.2.3"
+        hostnames:
+        - "foo.remote"
+        - "bar.remote"
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: nginx-web
+          image: nginx:alpine
+          ports:
+            - containerPort: 443
+              name: https-web-svc
+            - containerPort: 80
+              name: http-web-svc
+          resources:
+            limits:
+              cpu: 500m
+            requests:
+              cpu: 200m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-web
+  labels:
+    run: nginx-web
+spec:
+  publishNotReadyAddresses: true
+  ports:
+    - name: http-web-svc
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+    - name: https-web-svc
+      protocol: TCP
+      port: 443
+      targetPort: https-web-svc
+  selector:
+    run: nginx-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-web-noderport
+  labels:
+    run: nginx-web
+spec:
+  ports:
+    - name: http-web-svc
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+    - name: https-web-svc
+      protocol: TCP
+      port: 443
+      targetPort: https-web-svc
+  type: NodePort
+  selector:
+    run: nginx-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-web-externalname
+  labels:
+    run: nginx-web
+spec:
+  type: NodePort
+  externalName: my.nginx.example.com
+  externalTrafficPolicy: "Cluster"
+  selector:
+    run: nginx-web
+  ports:
+    - name: http-web-svc
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+    - name: https-web-svc
+      protocol: TCP
+      port: 443
+      targetPort: https-web-svc  
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-web-loadblancer1
+  labels:
+    run: nginx-web
+spec:
+  ports:
+    - name: http-web-svc
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+    - name: https-web-svc
+      protocol: TCP
+      port: 443
+      targetPort: https-web-svc
+  type: LoadBalancer
+  externalTrafficPolicy: "Cluster"
+  allocateLoadBalancerNodePorts: true
+  selector:
+    run: nginx-web
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-web-loadbalancer2
+  labels:
+    run: nginx-web
+spec:
+  ports:
+    - name: http-web-svc
+      protocol: TCP
+      port: 80
+      targetPort: http-web-svc
+    - name: https-web-svc
+      protocol: TCP
+      port: 443
+      targetPort: https-web-svc
+  healthCheckNodePort: 32766   
+  publishNotReadyAddresses: true
+  sessionAffinity: ClientIP
+  sessionAffinityConfig:
+    clientIP:
+      timeoutSeconds: 3000
+  externalTrafficPolicy: "Local"
+  loadBalancerClass: "example.com/internal-vip"
+  loadBalancerIP: 177.177.177.177
+  loadBalancerSourceRanges: 
+    - 10.10.0.0/24
+    - 20.20.0.0/16
+  type: LoadBalancer
+  selector:
+    run: nginx-web    
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: regcred
+  namespace: default
+data:
+  .dockerconfigjson: ewogICAgImF1dGhzIjogewogICAgICAgICJodHRwczovL2luZGV4LmRvY2tlci5pby92MS8iOiB7CiAgICAgICAgICAgICJhdXRoIjogImMzUi4uLnpFMiIKICAgICAgICB9CiAgICB9Cn0=
+type: kubernetes.io/dockerconfigjson

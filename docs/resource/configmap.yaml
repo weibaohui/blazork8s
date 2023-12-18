@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap
+  namespace: default
+data:
+  s-config: Value
+  y-config: |
+    test=test

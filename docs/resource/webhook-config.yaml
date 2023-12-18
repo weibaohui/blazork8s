@@ -1,0 +1,74 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: pod-webhook1.example.com
+webhooks:
+  - name: my-webhook.example.com
+    matchPolicy: Equivalent
+    namespaceSelector:
+      matchExpressions:
+        - key: runlevel
+          operator: NotIn
+          values: ['0', '1']
+    objectSelector:
+      matchLabels:
+        foo: bar
+    admissionReviewVersions: [v1]
+    sideEffects: None
+    failurePolicy: Ignore # 失败时继续处理请求但跳过 Webhook (可选值)
+    clientConfig:
+      service:
+        namespace: example-namespace
+        name: example-service
+      caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
+    rules:
+      - operations: [CREATE]
+        apiGroups: ['*']
+        apiVersions: ['*']
+        resources: ['*']
+        scope: '*'
+  - name: pod-policy2.example.com
+    rules:
+      - apiGroups: [apps]
+        apiVersions: [v1, v1beta1]
+        operations: [CREATE, UPDATE]
+        resources: [pods]
+        scope: Namespaced
+    clientConfig:
+      service:
+        namespace: example-namespace
+        name: example-service
+      caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
+    admissionReviewVersions: [v1]
+    sideEffects: None
+    timeoutSeconds: 5
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: pod-webhook3.example.com
+webhooks:
+  - name: my-webhook.example.com
+    clientConfig:
+      url: 'https://my-webhook.example.com:9443/my-webhook-path'
+    admissionReviewVersions: [v1]
+    sideEffects: None
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: pod-webhook4.example.com
+webhooks:
+  - name: my-webhook.example.com
+    clientConfig:
+      caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
+      service:
+        namespace: my-service-namespace
+        name: my-service-name
+        path: /my-path
+        port: 1234
+    admissionReviewVersions: [v1]
+    sideEffects: NoneOnDryRun
+    timeoutSeconds: 2
+    reinvocationPolicy: IfNeeded
+    failurePolicy: Fail
