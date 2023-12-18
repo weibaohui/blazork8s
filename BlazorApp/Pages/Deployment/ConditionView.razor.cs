@@ -8,5 +8,7 @@ namespace  BlazorApp.Pages.Deployment
     {
         [Parameter]
         public IList<V1DeploymentCondition> ConditionList { get; set; }
+        [Parameter]
+        public string ExplainField { get; set; }
     }
 }

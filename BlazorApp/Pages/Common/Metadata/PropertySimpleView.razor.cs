@@ -11,10 +11,10 @@ public partial class PropertySimpleView : ComponentBase
     public object? Item { get; set; }
 
     [Parameter]
-    public string Title { get; set; }
+    public string Title { get; set; } = "";
 
     [Parameter]
-    public string ExplainField { get; set; }
+    public string ExplainField { get; set; } = "";
 
     [Parameter]
     public bool ShowInJson { get; set; } = false;
