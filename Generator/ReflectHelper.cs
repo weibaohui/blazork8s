@@ -59,7 +59,7 @@ public class ReflectHelper<T>
             kt.FieldLevel   = kt.ExplainFiled.CountBy(".") + 1;
             kt.IsList       = IsList(kt.Type);
 
-            if (kt.Type.Contains("k8s"))
+            if (kt.Type != null && kt.Type.Contains("k8s"))
             {
                 if (kt.IsList)
                 {

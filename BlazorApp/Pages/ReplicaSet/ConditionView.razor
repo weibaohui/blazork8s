@@ -1,0 +1,8 @@
+@using BlazorApp.Pages.Common.Metadata
+@if (ConditionList != null)
+{
+    <DescriptionsItem Title="Conditions">
+        <Condition ConditionList="ConditionList"></Condition>
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+    </DescriptionsItem>
+}

@@ -9,7 +9,7 @@
 {
     <PodAction PodItem="Item" MenuMode="MenuMode.Horizontal"></PodAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Item" T="V1Pod"></MetadataView>
+    <MetadataView Item="Item" T="V1Pod" ExplainFieldPrefix="pod"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
 
@@ -69,7 +69,7 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Status">
+        <DescriptionsItem Title="Status" LabelStyle="width:120px">
             <StatusView Status=@Item.Status()></StatusView>
             @if (Item.Status.Reason != null)
             {
@@ -82,7 +82,7 @@
                 </div>
             }
         </DescriptionsItem>
-        <DescriptionsItem Title="StartTime">
+        <DescriptionsItem Title="StartTime" >
             <AgeView Age="@Item.Status.StartTime"></AgeView>
             (@Item.Status.StartTime.GetValueOrDefault().ToLocalTime())
         </DescriptionsItem>

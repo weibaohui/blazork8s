@@ -1,17 +1,16 @@
 ﻿@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.ReplicaSet
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
 @if (Deployment != null)
 {
     <DeploymentAction Item="Deployment" MenuMode="MenuMode.Horizontal"></DeploymentAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Deployment" T="V1Deployment"></MetadataView>
+    <MetadataView Item="Deployment" T="V1Deployment" ExplainFieldPrefix="deployment"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
 
-    <Descriptions Bordered Column="1">
+    <Descriptions Bordered Column="1" >
         <SelectorView Title="Selector" Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
 
@@ -40,6 +39,8 @@
         <PropertySimpleView Title="UnavailableReplicas" Item="@Deployment.Status.UnavailableReplicas" ExplainField="deployment.status.unavailableReplicas"></PropertySimpleView>
         <PropertySimpleView Title="UpdatedReplicas" Item="@Deployment.Status.UpdatedReplicas" ExplainField="deployment.status.updatedReplicas"></PropertySimpleView>
     </Descriptions>
+
+
 
     <MiniReplicaSetListView ControllerByUid="@Deployment.Metadata.Uid"></MiniReplicaSetListView>
     <MiniPodListView Pods="@PodList"></MiniPodListView>

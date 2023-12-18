@@ -1,4 +1,3 @@
-@using Extension
 @using k8s.Models
 @using Microsoft.IdentityModel.Tokens
 @typeparam            T
@@ -9,7 +8,7 @@
         <DescriptionsItem Title="Name" LabelStyle="width:120px">
             <Text Copyable>@Item.Name()</Text>
         </DescriptionsItem>
-        <DescriptionsItem Title="创建时间">
+        <DescriptionsItem Title="Creation">
             <AgeView Age="@Item.CreationTimestamp()"></AgeView>
             (@Item.Metadata.CreationTimestamp.GetValueOrDefault().ToLocalTime())
         </DescriptionsItem>
@@ -22,5 +21,14 @@
         <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
         <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
         <FinalizersView Finalizers="@Item.Finalizers()"></FinalizersView>
+        <PropertySimpleView Title="DeletionGracePeriodSeconds" Item="@Item.Metadata.DeletionGracePeriodSeconds" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionGracePeriodSeconds")></PropertySimpleView>
+        <PropertySimpleView Title="DeletionTimestamp" Item="@Item.Metadata.DeletionTimestamp" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionTimestamp")></PropertySimpleView>
+        <PropertySimpleView Title="GenerateName" Item="@Item.Metadata.GenerateName" ExplainField=@(ExplainFieldPrefix + ".metadata.generateName")></PropertySimpleView>
+        <PropertySimpleView Title="Generation" Item="@Item.Metadata.Generation" ExplainField=@(ExplainFieldPrefix + ".metadata.generation")></PropertySimpleView>
+        <PropertySimpleView Title="ResourceVersion" Item="@Item.Metadata.ResourceVersion" ExplainField=@(ExplainFieldPrefix + ".metadata.resourceVersion")></PropertySimpleView>
+        <PropertySimpleView Title="SelfLink" Item="@Item.Metadata.SelfLink" ExplainField=@(ExplainFieldPrefix + ".metadata.selfLink")></PropertySimpleView>
+        <PropertySimpleView Title="Uid" Item="@Item.Metadata.Uid" ExplainField=@(ExplainFieldPrefix + ".metadata.uid")></PropertySimpleView>
+
+
     </Descriptions>
 }

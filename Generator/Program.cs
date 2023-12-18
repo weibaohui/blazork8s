@@ -7,7 +7,7 @@ class Program
     {
         var dictList = new DictList();
         // dictList.AddItem("Node", "V1Node");
-        // dictList.AddItem("ReplicaSet", "V1ReplicaSet");
+        dictList.AddItem("ReplicaSet", typeof(V1ReplicaSet));
         // dictList.AddItem("Service", "V1Service");
         dictList.AddItem("Deployment",typeof(V1Deployment));
         dictList.AddItem("DaemonSet",typeof(V1DaemonSet));

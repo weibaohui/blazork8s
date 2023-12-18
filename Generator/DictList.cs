@@ -22,6 +22,7 @@ public class DictList
         var dict = new Dictionary<string, object>();
         dict.Add("Item", item);
         dict.Add("ItemType", itemType);
+        dict.Add("ExplainResourceName", item.ToCamelCase());
         dict.Add("Properties", properties);
         _dictList.Add(dict);
     }
