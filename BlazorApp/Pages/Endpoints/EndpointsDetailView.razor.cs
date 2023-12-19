@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.Endpoints
 {
     public partial class EndpointsDetailView :  DrawerPageBase<V1Endpoints>
     {
-        private V1Endpoints Item { get; set; }
-
+        private V1Endpoints Endpoints { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            Endpoints = base.Options;
             await base.OnInitializedAsync();
         }
     }

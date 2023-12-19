@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.RoleBinding
 {
     public partial class RoleBindingDetailView :  DrawerPageBase<V1RoleBinding>
     {
-        private V1RoleBinding Item { get; set; }
-
+        private V1RoleBinding RoleBinding { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            RoleBinding = base.Options;
             await base.OnInitializedAsync();
         }
     }

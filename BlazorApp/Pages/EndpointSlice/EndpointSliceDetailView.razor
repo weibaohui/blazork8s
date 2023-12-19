@@ -3,14 +3,21 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1EndpointSlice>
-@if (Item != null)
+@if (EndpointSlice != null)
 {
-    <EndpointSliceAction Item="Item" MenuMode="MenuMode.Horizontal"  ></EndpointSliceAction>
-    <MetadataView Item="Item" T="V1EndpointSlice"></MetadataView>
+    <EndpointSliceAction Item="EndpointSlice" MenuMode="MenuMode.Horizontal"  ></EndpointSliceAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="EndpointSlice" T="V1EndpointSlice" ExplainFieldPrefix="endpointSlice"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @EndpointSlice.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="AddressType" Item="@EndpointSlice.AddressType" ExplainField="endpointSlice.addressType" ></PropertySimpleView>
+                <PropertySimpleView Title="Ports" Item="@EndpointSlice.Ports" ExplainField="endpointSlice.ports" ShowInJson="true"></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@EndpointSlice.Metadata.Uid"></MiniEventListView>
 }

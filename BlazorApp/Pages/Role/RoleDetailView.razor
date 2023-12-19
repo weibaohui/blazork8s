@@ -3,14 +3,19 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1Role>
-@if (Item != null)
+@if (Role != null)
 {
-    <RoleAction Item="Item" MenuMode="MenuMode.Horizontal"  ></RoleAction>
-    <MetadataView Item="Item" T="V1Role"></MetadataView>
+    <RoleAction Item="Role" MenuMode="MenuMode.Horizontal"  ></RoleAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="Role" T="V1Role" ExplainFieldPrefix="role"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @Role.Name()
         </DescriptionsItem>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@Role.Metadata.Uid"></MiniEventListView>
 }

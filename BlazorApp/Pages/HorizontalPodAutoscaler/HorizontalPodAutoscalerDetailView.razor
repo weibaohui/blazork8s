@@ -3,14 +3,28 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1HorizontalPodAutoscaler>
-@if (Item != null)
+@if (HorizontalPodAutoscaler != null)
 {
-    <HorizontalPodAutoscalerAction Item="Item" MenuMode="MenuMode.Horizontal"  ></HorizontalPodAutoscalerAction>
-    <MetadataView Item="Item" T="V1HorizontalPodAutoscaler"></MetadataView>
+    <HorizontalPodAutoscalerAction Item="HorizontalPodAutoscaler" MenuMode="MenuMode.Horizontal"  ></HorizontalPodAutoscalerAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="HorizontalPodAutoscaler" T="V1HorizontalPodAutoscaler" ExplainFieldPrefix="horizontalPodAutoscaler"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @HorizontalPodAutoscaler.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="MaxReplicas" Item="@HorizontalPodAutoscaler.Spec.MaxReplicas" ExplainField="horizontalPodAutoscaler.spec.maxReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="MinReplicas" Item="@HorizontalPodAutoscaler.Spec.MinReplicas" ExplainField="horizontalPodAutoscaler.spec.minReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="ScaleTargetRef" Item="@HorizontalPodAutoscaler.Spec.ScaleTargetRef" ExplainField="horizontalPodAutoscaler.spec.scaleTargetRef"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="TargetCPUUtilizationPercentage" Item="@HorizontalPodAutoscaler.Spec.TargetCPUUtilizationPercentage" ExplainField="horizontalPodAutoscaler.spec.targetCPUUtilizationPercentage" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+                <PropertySimpleView Title="CurrentCPUUtilizationPercentage" Item="@HorizontalPodAutoscaler.Status.CurrentCPUUtilizationPercentage" ExplainField="horizontalPodAutoscaler.status.currentCPUUtilizationPercentage" ></PropertySimpleView>
+                <PropertySimpleView Title="CurrentReplicas" Item="@HorizontalPodAutoscaler.Status.CurrentReplicas" ExplainField="horizontalPodAutoscaler.status.currentReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="DesiredReplicas" Item="@HorizontalPodAutoscaler.Status.DesiredReplicas" ExplainField="horizontalPodAutoscaler.status.desiredReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="LastScaleTime" Item="@HorizontalPodAutoscaler.Status.LastScaleTime" ExplainField="horizontalPodAutoscaler.status.lastScaleTime" ></PropertySimpleView>
+                <PropertySimpleView Title="ObservedGeneration" Item="@HorizontalPodAutoscaler.Status.ObservedGeneration" ExplainField="horizontalPodAutoscaler.status.observedGeneration" ></PropertySimpleView>
+    </Descriptions>
+    <MiniEventListView Uid="@HorizontalPodAutoscaler.Metadata.Uid"></MiniEventListView>
 }

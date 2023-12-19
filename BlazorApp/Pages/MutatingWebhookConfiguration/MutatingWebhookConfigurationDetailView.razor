@@ -3,14 +3,19 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1MutatingWebhookConfiguration>
-@if (Item != null)
+@if (MutatingWebhookConfiguration != null)
 {
-    <MutatingWebhookConfigurationAction Item="Item" MenuMode="MenuMode.Horizontal"  ></MutatingWebhookConfigurationAction>
-    <MetadataView Item="Item" T="V1MutatingWebhookConfiguration"></MetadataView>
+    <MutatingWebhookConfigurationAction Item="MutatingWebhookConfiguration" MenuMode="MenuMode.Horizontal"  ></MutatingWebhookConfigurationAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="MutatingWebhookConfiguration" T="V1MutatingWebhookConfiguration" ExplainFieldPrefix="mutatingWebhookConfiguration"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @MutatingWebhookConfiguration.Name()
         </DescriptionsItem>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@MutatingWebhookConfiguration.Metadata.Uid"></MiniEventListView>
 }

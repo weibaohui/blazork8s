@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
-using BlazorApp.Pages.Common;
 using k8s.Models;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ReplicationController
 {
     public partial class ReplicationControllerDetailView :  DrawerPageBase<V1ReplicationController>

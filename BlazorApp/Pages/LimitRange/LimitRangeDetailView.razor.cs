@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.LimitRange
 {
     public partial class LimitRangeDetailView :  DrawerPageBase<V1LimitRange>
     {
-        private V1LimitRange Item { get; set; }
-
+        private V1LimitRange LimitRange { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            LimitRange = base.Options;
             await base.OnInitializedAsync();
         }
     }

@@ -1,7 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ReplicationController>
+@using BlazorApp.Pages.Common;
+@inherits DrawerPageBase<V1ReplicationController>
 @if (ReplicationController != null)
 {
     <ReplicationControllerAction Item="ReplicationController" MenuMode="MenuMode.Horizontal"  ></ReplicationControllerAction>

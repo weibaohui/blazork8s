@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.ValidatingWebhookConfiguration
 {
     public partial class ValidatingWebhookConfigurationDetailView :  DrawerPageBase<V1ValidatingWebhookConfiguration>
     {
-        private V1ValidatingWebhookConfiguration Item { get; set; }
-
+        private V1ValidatingWebhookConfiguration ValidatingWebhookConfiguration { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            ValidatingWebhookConfiguration = base.Options;
             await base.OnInitializedAsync();
         }
     }

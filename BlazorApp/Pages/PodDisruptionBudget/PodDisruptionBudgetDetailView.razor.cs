@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.PodDisruptionBudget
 {
     public partial class PodDisruptionBudgetDetailView :  DrawerPageBase<V1PodDisruptionBudget>
     {
-        private V1PodDisruptionBudget Item { get; set; }
-
+        private V1PodDisruptionBudget PodDisruptionBudget { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            PodDisruptionBudget = base.Options;
             await base.OnInitializedAsync();
         }
     }

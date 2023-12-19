@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.ResourceQuota
 {
     public partial class ResourceQuotaDetailView :  DrawerPageBase<V1ResourceQuota>
     {
-        private V1ResourceQuota Item { get; set; }
-
+        private V1ResourceQuota ResourceQuota { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            ResourceQuota = base.Options;
             await base.OnInitializedAsync();
         }
     }

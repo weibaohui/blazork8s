@@ -3,14 +3,24 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1Ingress>
-@if (Item != null)
+@if (Ingress != null)
 {
-    <IngressAction Item="Item" MenuMode="MenuMode.Horizontal"  ></IngressAction>
-    <MetadataView Item="Item" T="V1Ingress"></MetadataView>
+    <IngressAction Item="Ingress" MenuMode="MenuMode.Horizontal"  ></IngressAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="Ingress" T="V1Ingress" ExplainFieldPrefix="ingress"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @Ingress.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="DefaultBackend" Item="@Ingress.Spec.DefaultBackend" ExplainField="ingress.spec.defaultBackend"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="IngressClassName" Item="@Ingress.Spec.IngressClassName" ExplainField="ingress.spec.ingressClassName" ></PropertySimpleView>
+                <PropertySimpleView Title="Rules" Item="@Ingress.Spec.Rules" ExplainField="ingress.spec.rules" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="Tls" Item="@Ingress.Spec.Tls" ExplainField="ingress.spec.tls" ShowInJson="true"></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+                <PropertySimpleView Title="LoadBalancer" Item="@Ingress.Status.LoadBalancer" ExplainField="ingress.status.loadBalancer"  ShowInJson="true" ></PropertySimpleView>
+    </Descriptions>
+    <MiniEventListView Uid="@Ingress.Metadata.Uid"></MiniEventListView>
 }

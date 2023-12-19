@@ -3,14 +3,25 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1StorageClass>
-@if (Item != null)
+@if (StorageClass != null)
 {
-    <StorageClassAction Item="Item" MenuMode="MenuMode.Horizontal"  ></StorageClassAction>
-    <MetadataView Item="Item" T="V1StorageClass"></MetadataView>
+    <StorageClassAction Item="StorageClass" MenuMode="MenuMode.Horizontal"  ></StorageClassAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="StorageClass" T="V1StorageClass" ExplainFieldPrefix="storageClass"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @StorageClass.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="AllowVolumeExpansion" Item="@StorageClass.AllowVolumeExpansion" ExplainField="storageClass.allowVolumeExpansion" ></PropertySimpleView>
+                <PropertySimpleView Title="MountOptions" Item="@StorageClass.MountOptions" ExplainField="storageClass.mountOptions" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="Parameters" Item="@StorageClass.Parameters" ExplainField="storageClass.parameters"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="Provisioner" Item="@StorageClass.Provisioner" ExplainField="storageClass.provisioner" ></PropertySimpleView>
+                <PropertySimpleView Title="ReclaimPolicy" Item="@StorageClass.ReclaimPolicy" ExplainField="storageClass.reclaimPolicy" ></PropertySimpleView>
+                <PropertySimpleView Title="VolumeBindingMode" Item="@StorageClass.VolumeBindingMode" ExplainField="storageClass.volumeBindingMode" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@StorageClass.Metadata.Uid"></MiniEventListView>
 }

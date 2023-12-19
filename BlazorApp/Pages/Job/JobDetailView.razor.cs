@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
-using BlazorApp.Pages.Common;
 using k8s.Models;
-
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.Job
 {
     public partial class JobDetailView :  DrawerPageBase<V1Job>

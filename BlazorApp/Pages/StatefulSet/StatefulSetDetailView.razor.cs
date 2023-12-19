@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.StatefulSet
 {
     public partial class StatefulSetDetailView :  DrawerPageBase<V1StatefulSet>
     {
-        private V1StatefulSet Item { get; set; }
-
+        private V1StatefulSet StatefulSet { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            StatefulSet = base.Options;
             await base.OnInitializedAsync();
         }
     }

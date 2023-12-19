@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.PersistentVolume
 {
     public partial class PersistentVolumeDetailView :  DrawerPageBase<V1PersistentVolume>
     {
-        private V1PersistentVolume Item { get; set; }
-
+        private V1PersistentVolume PersistentVolume { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            PersistentVolume = base.Options;
             await base.OnInitializedAsync();
         }
     }

@@ -1,8 +1,9 @@
 @page "/CronJob"
 @using k8s.Models
+@using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
-@inherits BlazorApp.Pages.Common.TableBase<V1CronJob>
+@inherits TableBase<V1CronJob>
 @if (TableData.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">

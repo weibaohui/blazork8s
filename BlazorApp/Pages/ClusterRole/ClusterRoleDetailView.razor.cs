@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.ClusterRole
 {
     public partial class ClusterRoleDetailView :  DrawerPageBase<V1ClusterRole>
     {
-        private V1ClusterRole Item { get; set; }
-
+        private V1ClusterRole ClusterRole { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            ClusterRole = base.Options;
             await base.OnInitializedAsync();
         }
     }

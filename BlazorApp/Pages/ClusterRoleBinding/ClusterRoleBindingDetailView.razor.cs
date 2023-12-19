@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.ClusterRoleBinding
 {
     public partial class ClusterRoleBindingDetailView :  DrawerPageBase<V1ClusterRoleBinding>
     {
-        private V1ClusterRoleBinding Item { get; set; }
-
+        private V1ClusterRoleBinding ClusterRoleBinding { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            ClusterRoleBinding = base.Options;
             await base.OnInitializedAsync();
         }
     }

@@ -3,14 +3,23 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1NetworkPolicy>
-@if (Item != null)
+@if (NetworkPolicy != null)
 {
-    <NetworkPolicyAction Item="Item" MenuMode="MenuMode.Horizontal"  ></NetworkPolicyAction>
-    <MetadataView Item="Item" T="V1NetworkPolicy"></MetadataView>
+    <NetworkPolicyAction Item="NetworkPolicy" MenuMode="MenuMode.Horizontal"  ></NetworkPolicyAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="NetworkPolicy" T="V1NetworkPolicy" ExplainFieldPrefix="networkPolicy"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @NetworkPolicy.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="Egress" Item="@NetworkPolicy.Spec.Egress" ExplainField="networkPolicy.spec.egress" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="Ingress" Item="@NetworkPolicy.Spec.Ingress" ExplainField="networkPolicy.spec.ingress" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="PodSelector" Item="@NetworkPolicy.Spec.PodSelector" ExplainField="networkPolicy.spec.podSelector"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="PolicyTypes" Item="@NetworkPolicy.Spec.PolicyTypes" ExplainField="networkPolicy.spec.policyTypes" ShowInJson="true"></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@NetworkPolicy.Metadata.Uid"></MiniEventListView>
 }

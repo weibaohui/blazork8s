@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.Ingress
 {
     public partial class IngressDetailView :  DrawerPageBase<V1Ingress>
     {
-        private V1Ingress Item { get; set; }
-
+        private V1Ingress Ingress { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            Ingress = base.Options;
             await base.OnInitializedAsync();
         }
     }

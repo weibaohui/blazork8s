@@ -3,14 +3,22 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1ClusterRoleBinding>
-@if (Item != null)
+@if (ClusterRoleBinding != null)
 {
-    <ClusterRoleBindingAction Item="Item" MenuMode="MenuMode.Horizontal"  ></ClusterRoleBindingAction>
-    <MetadataView Item="Item" T="V1ClusterRoleBinding"></MetadataView>
+    <ClusterRoleBindingAction Item="ClusterRoleBinding" MenuMode="MenuMode.Horizontal"  ></ClusterRoleBindingAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="ClusterRoleBinding" T="V1ClusterRoleBinding" ExplainFieldPrefix="clusterRoleBinding"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @ClusterRoleBinding.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="ApiGroup" Item="@ClusterRoleBinding.RoleRef.ApiGroup" ExplainField="clusterRoleBinding.roleRef.apiGroup" ></PropertySimpleView>
+                <PropertySimpleView Title="Name" Item="@ClusterRoleBinding.RoleRef.Name" ExplainField="clusterRoleBinding.roleRef.name" ></PropertySimpleView>
+                <PropertySimpleView Title="Subjects" Item="@ClusterRoleBinding.Subjects" ExplainField="clusterRoleBinding.subjects" ShowInJson="true"></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@ClusterRoleBinding.Metadata.Uid"></MiniEventListView>
 }

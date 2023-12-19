@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.NetworkPolicy
 {
     public partial class NetworkPolicyDetailView :  DrawerPageBase<V1NetworkPolicy>
     {
-        private V1NetworkPolicy Item { get; set; }
-
+        private V1NetworkPolicy NetworkPolicy { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            NetworkPolicy = base.Options;
             await base.OnInitializedAsync();
         }
     }

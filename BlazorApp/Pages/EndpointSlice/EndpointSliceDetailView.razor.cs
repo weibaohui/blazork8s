@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.EndpointSlice
 {
     public partial class EndpointSliceDetailView :  DrawerPageBase<V1EndpointSlice>
     {
-        private V1EndpointSlice Item { get; set; }
-
+        private V1EndpointSlice EndpointSlice { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            EndpointSlice = base.Options;
             await base.OnInitializedAsync();
         }
     }

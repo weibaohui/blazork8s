@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.HorizontalPodAutoscaler
 {
     public partial class HorizontalPodAutoscalerDetailView :  DrawerPageBase<V1HorizontalPodAutoscaler>
     {
-        private V1HorizontalPodAutoscaler Item { get; set; }
-
+        private V1HorizontalPodAutoscaler HorizontalPodAutoscaler { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            HorizontalPodAutoscaler = base.Options;
             await base.OnInitializedAsync();
         }
     }

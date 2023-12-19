@@ -120,6 +120,8 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItem("Deployments"),
             GetMenuItem("ReplicaSets"),
             GetMenuItem("DaemonSet"),
+            GetMenuItem("DaemonSet"),
+            GetMenuItem("StatefulSet"),
             GetMenuItem("RC", "ReplicationController"),
             GetMenuItem("Job"),
             GetMenuItem("CronJob"),

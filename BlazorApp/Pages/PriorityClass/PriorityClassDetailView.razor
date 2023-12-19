@@ -3,14 +3,23 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1PriorityClass>
-@if (Item != null)
+@if (PriorityClass != null)
 {
-    <PriorityClassAction Item="Item" MenuMode="MenuMode.Horizontal"  ></PriorityClassAction>
-    <MetadataView Item="Item" T="V1PriorityClass"></MetadataView>
+    <PriorityClassAction Item="PriorityClass" MenuMode="MenuMode.Horizontal"  ></PriorityClassAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="PriorityClass" T="V1PriorityClass" ExplainFieldPrefix="priorityClass"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @PriorityClass.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="Description" Item="@PriorityClass.Description" ExplainField="priorityClass.description" ></PropertySimpleView>
+                <PropertySimpleView Title="GlobalDefault" Item="@PriorityClass.GlobalDefault" ExplainField="priorityClass.globalDefault" ></PropertySimpleView>
+                <PropertySimpleView Title="PreemptionPolicy" Item="@PriorityClass.PreemptionPolicy" ExplainField="priorityClass.preemptionPolicy" ></PropertySimpleView>
+                <PropertySimpleView Title="Value" Item="@PriorityClass.Value" ExplainField="priorityClass.value" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@PriorityClass.Metadata.Uid"></MiniEventListView>
 }

@@ -3,14 +3,20 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1LimitRange>
-@if (Item != null)
+@if (LimitRange != null)
 {
-    <LimitRangeAction Item="Item" MenuMode="MenuMode.Horizontal"  ></LimitRangeAction>
-    <MetadataView Item="Item" T="V1LimitRange"></MetadataView>
+    <LimitRangeAction Item="LimitRange" MenuMode="MenuMode.Horizontal"  ></LimitRangeAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="LimitRange" T="V1LimitRange" ExplainFieldPrefix="limitRange"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @LimitRange.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="Limits" Item="@LimitRange.Spec.Limits" ExplainField="limitRange.spec.limits" ShowInJson="true"></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@LimitRange.Metadata.Uid"></MiniEventListView>
 }

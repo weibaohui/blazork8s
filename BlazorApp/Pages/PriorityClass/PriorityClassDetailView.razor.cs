@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.PriorityClass
 {
     public partial class PriorityClassDetailView :  DrawerPageBase<V1PriorityClass>
     {
-        private V1PriorityClass Item { get; set; }
-
+        private V1PriorityClass PriorityClass { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            PriorityClass = base.Options;
             await base.OnInitializedAsync();
         }
     }

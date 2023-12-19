@@ -5,11 +5,10 @@ namespace BlazorApp.Pages.MutatingWebhookConfiguration
 {
     public partial class MutatingWebhookConfigurationDetailView :  DrawerPageBase<V1MutatingWebhookConfiguration>
     {
-        private V1MutatingWebhookConfiguration Item { get; set; }
-
+        private V1MutatingWebhookConfiguration MutatingWebhookConfiguration { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            MutatingWebhookConfiguration = base.Options;
             await base.OnInitializedAsync();
         }
     }

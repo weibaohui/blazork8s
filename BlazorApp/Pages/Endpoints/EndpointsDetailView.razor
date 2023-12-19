@@ -3,14 +3,19 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1Endpoints>
-@if (Item != null)
+@if (Endpoints != null)
 {
-    <EndpointsAction Item="Item" MenuMode="MenuMode.Horizontal"  ></EndpointsAction>
-    <MetadataView Item="Item" T="V1Endpoints"></MetadataView>
+    <EndpointsAction Item="Endpoints" MenuMode="MenuMode.Horizontal"  ></EndpointsAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="Endpoints" T="V1Endpoints" ExplainFieldPrefix="endpoints"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @Endpoints.Name()
         </DescriptionsItem>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@Endpoints.Metadata.Uid"></MiniEventListView>
 }

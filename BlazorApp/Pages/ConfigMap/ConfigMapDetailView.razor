@@ -3,14 +3,22 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common;
 @inherits DrawerPageBase<V1ConfigMap>
-@if (Item != null)
+@if (ConfigMap != null)
 {
-    <ConfigMapAction Item="Item" MenuMode="MenuMode.Horizontal"  ></ConfigMapAction>
-    <MetadataView Item="Item" T="V1ConfigMap"></MetadataView>
+    <ConfigMapAction Item="ConfigMap" MenuMode="MenuMode.Horizontal"  ></ConfigMapAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="ConfigMap" T="V1ConfigMap" ExplainFieldPrefix="configMap"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @ConfigMap.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="BinaryData" Item="@ConfigMap.BinaryData" ExplainField="configMap.binaryData"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="Data" Item="@ConfigMap.Data" ExplainField="configMap.data"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="Immutable" Item="@ConfigMap.Immutable" ExplainField="configMap.immutable" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    </Descriptions>
+    <MiniEventListView Uid="@ConfigMap.Metadata.Uid"></MiniEventListView>
 }
