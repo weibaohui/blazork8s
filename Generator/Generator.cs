@@ -124,7 +124,7 @@ public class Generator
     {
         foreach (var info in genFileList)
         {
-            info.WriteToFile();
+            info.WriteToFile(true);
         }
     }
 
