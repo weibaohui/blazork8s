@@ -35,8 +35,8 @@ class Program
         dictList.AddItem("ConfigMap",typeof(V1ConfigMap));
         dictList.AddItem("CronJob",typeof(V1CronJob));
         dictList.AddItem("StatefulSet",typeof(V1StatefulSet));
-        dictList.AddItem("ReplicationController",typeof(V1ReplicationController));
         dictList.AddItem("ServiceAccount",typeof(V1ServiceAccount));
+        dictList.AddItem("ReplicationController",typeof(V1ReplicationController));
 
 
         GeneratorHelper.Generator(dictList.GetDictList()).Run();
