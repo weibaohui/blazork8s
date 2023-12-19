@@ -58,7 +58,7 @@ public class ReflectHelper<T>
             kt.ExplainFiled = kt.FullName.ToCamelCase(true);
             kt.FieldLevel   = kt.ExplainFiled.CountBy(".") + 1;
             kt.IsList       = IsList(kt.Type);
-
+            kt.IsStatus     = kt.FullName.Contains(".Status");
             if (kt.Type != null && kt.Type.Contains("k8s"))
             {
                 if (kt.IsList)
@@ -132,8 +132,6 @@ public class ReflectHelper<T>
                 type.MultipleChildItem = true;
                 ProcessMultipleChildItem(type.Child);
             }
-
-
         }
     }
 }

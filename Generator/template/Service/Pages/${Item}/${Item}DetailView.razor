@@ -14,20 +14,44 @@
             @${Item}.Name()
         </DescriptionsItem>
         $for(i in Properties)
-            ${if(i.isList)}
-                ${if(i.MultipleChildItem)}
-            <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
-                ${else}
-                    ${if(i.OnlyOneChildItemName==null)}
-                    <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+            ${if(i.IsStatus==false)}
+                ${if(i.isList)}
+                    ${if(i.MultipleChildItem)}
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
                     ${else}
-                     <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
+                        ${if(i.OnlyOneChildItemName==null)}
+                        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+                        ${else}
+                         <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
+                        ${end}
                     ${end}
+                ${else}
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ></PropertySimpleView>
                 ${end}
-            ${else}
-            <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ></PropertySimpleView>
             ${end}
         ${end}
     </Descriptions>
+
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+    $for(i in Properties)
+            ${if(i.IsStatus==true)}
+                ${if(i.isList)}
+                    ${if(i.MultipleChildItem)}
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+                    ${else}
+                        ${if(i.OnlyOneChildItemName==null)}
+                        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+                        ${else}
+                         <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
+                        ${end}
+                    ${end}
+                ${else}
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ></PropertySimpleView>
+                ${end}
+            ${end}
+        ${end}
+    </Descriptions>
+
     <MiniEventListView Uid="@${Item}.Metadata.Uid"></MiniEventListView>
 }

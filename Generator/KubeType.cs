@@ -19,6 +19,11 @@ public class KubeType
     public bool IsList { get; set; }
 
     /// <summary>
+    /// 是否为Status类属性
+    /// </summary>
+    public bool IsStatus { get; set; }
+
+    /// <summary>
     /// 当IsList 为真，且child仅包含一个字段时，提取其字段名称
     /// </summary>
     public string OnlyOneChildItemName { get; set; }
