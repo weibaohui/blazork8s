@@ -1,6 +1,7 @@
-﻿@if (Probe != null)
+﻿@using BlazorApp.Pages.Common.Html
+@if (Probe != null)
 {
-    <DescriptionsItem Title="@ProbeType">
+    <HTableColumn Title="@ProbeType">
         <Divider>探测类型</Divider>
         <ProbeKindStatus Probe="Probe"></ProbeKindStatus>
         <Divider>探测配置</Divider>
@@ -9,5 +10,5 @@
         <Tag>@($"period={Probe.PeriodSeconds}s")</Tag>
         <Tag>@($"#success={Probe.SuccessThreshold}")</Tag>
         <Tag>@($"#failure={Probe.FailureThreshold}")</Tag>
-    </DescriptionsItem>
+    </HTableColumn>
 }

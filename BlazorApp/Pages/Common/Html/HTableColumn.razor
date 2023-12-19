@@ -1,0 +1,13 @@
+@using BlazorApp.Pages.Common.Html.HTable
+<HTr>
+    <HTd>@Title</HTd>
+    <HTd>@ChildContent</HTd>
+</HTr>
+@code {
+
+    [Parameter]
+    public string? Title { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+}

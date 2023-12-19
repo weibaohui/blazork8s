@@ -1,10 +1,11 @@
+@using BlazorApp.Pages.Common.Html
 @if(Finalizers!=null){
-<DescriptionsItem Title="Finalizers">
+<HTableColumn Title="Finalizers">
     @foreach (var label in Finalizers)
     {
         <Paragraph Copyable>
             <Tag PresetColor=@PresetColor.Blue>@label</Tag>
         </Paragraph>
     }
-</DescriptionsItem>
+</HTableColumn>
 }

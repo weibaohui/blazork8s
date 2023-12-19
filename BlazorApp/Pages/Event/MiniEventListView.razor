@@ -1,43 +1,45 @@
 ﻿@using Extension
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common.Html
 <Divider Orientation="left" Style="font-weight:bold">Events</Divider>
 @if (Events != null)
 {
     foreach (var xx in Events)
     {
-        <Descriptions Title="" Bordered Column="1">
-            <TitleTemplate>
-                <br>
-                @if (xx.Type == "Warning")
-                {
-                    <AntDesign.Text Type="danger" Strong="true">@xx.Message</AntDesign.Text>
-                }
-                else
-                {
-                    @xx.Message
-                }
-                <Badge Count="@xx.Count"></Badge>
-            </TitleTemplate>
+        <HTable  Bordered Column="1">
+            @* <TitleTemplate> *@
+            @*     <br> *@
+            @*     @if (xx.Type == "Warning") *@
+            @*     { *@
+            @*         <AntDesign.Text Type="danger" Strong="true">@xx.Message</AntDesign.Text> *@
+            @*     } *@
+            @*     else *@
+            @*     { *@
+            @*         @xx.Message *@
+            @*     } *@
+            @*     <Badge Count="@xx.Count"></Badge> *@
+            @* </TitleTemplate> *@
             <ChildContent>
-                <DescriptionsItem Title="Message">
+                <HTableColumn Title="Message">
                     <p >@xx.Message</p>
-                </DescriptionsItem>
-                <DescriptionsItem Title="事件源">
+                </HTableColumn>
+                <HTableColumn Title="事件源">
                     <Tag >@xx.Source.Host</Tag>
                     <Tag >@xx.Source.Component</Tag>
-                </DescriptionsItem>
-                <DescriptionsItem Title="最后出现">
+                </HTableColumn>
+                <HTableColumn Title="最后出现">
                     <AgeView Age="@xx.LastTimestamp"></AgeView>
                     ( @xx.LastTimestamp)
-                </DescriptionsItem>
-                <DescriptionsItem Title="起因">
+                </HTableColumn>
+                <HTableColumn Title="起因">
                     <Tag PresetColor="PresetColor.Blue">@xx.InvolvedObject.NamespaceProperty</Tag>
                     <Tag PresetColor="PresetColor.Purple">@xx.InvolvedObject.Kind</Tag>
                     <Tag PresetColor="PresetColor.Orange">@xx.InvolvedObject.Name</Tag>
                     <Tag PresetColor="PresetColor.Green">@xx.InvolvedObject.FieldPath</Tag>
-                </DescriptionsItem>
+                </HTableColumn>
             </ChildContent>
-        </Descriptions>
+        </HTable>
     }
 
     if (!String.IsNullOrEmpty(Advice))

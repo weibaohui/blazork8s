@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PersistentVolumeClaim>
 @if (PersistentVolumeClaim != null)
 {
@@ -8,10 +10,10 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="PersistentVolumeClaim.Metadata"  ExplainFieldPrefix="persistentVolumeClaim"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @PersistentVolumeClaim.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="AccessModes" Item="@PersistentVolumeClaim.Spec.AccessModes" ExplainField="persistentVolumeClaim.spec.accessModes" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="DataSource" Item="@PersistentVolumeClaim.Spec.DataSource" ExplainField="persistentVolumeClaim.spec.dataSource"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="DataSourceRef" Item="@PersistentVolumeClaim.Spec.DataSourceRef" ExplainField="persistentVolumeClaim.spec.dataSourceRef"  ShowInJson="true" ></PropertySimpleView>
@@ -20,15 +22,15 @@
                 <PropertySimpleView Title="StorageClassName" Item="@PersistentVolumeClaim.Spec.StorageClassName" ExplainField="persistentVolumeClaim.spec.storageClassName" ></PropertySimpleView>
                 <PropertySimpleView Title="VolumeMode" Item="@PersistentVolumeClaim.Spec.VolumeMode" ExplainField="persistentVolumeClaim.spec.volumeMode" ></PropertySimpleView>
                 <PropertySimpleView Title="VolumeName" Item="@PersistentVolumeClaim.Spec.VolumeName" ExplainField="persistentVolumeClaim.spec.volumeName" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
                 <PropertySimpleView Title="AccessModes" Item="@PersistentVolumeClaim.Status.AccessModes" ExplainField="persistentVolumeClaim.status.accessModes" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="AllocatedResourceStatuses" Item="@PersistentVolumeClaim.Status.AllocatedResourceStatuses" ExplainField="persistentVolumeClaim.status.allocatedResourceStatuses"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="AllocatedResources" Item="@PersistentVolumeClaim.Status.AllocatedResources" ExplainField="persistentVolumeClaim.status.allocatedResources"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="Capacity" Item="@PersistentVolumeClaim.Status.Capacity" ExplainField="persistentVolumeClaim.status.capacity"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="Conditions" Item="@PersistentVolumeClaim.Status.Conditions" ExplainField="persistentVolumeClaim.status.conditions" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="Phase" Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@PersistentVolumeClaim.Metadata.Uid"></MiniEventListView>
 }

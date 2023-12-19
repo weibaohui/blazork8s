@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1NetworkPolicy>
 @if (NetworkPolicy != null)
 {
@@ -8,17 +10,17 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="NetworkPolicy.Metadata"  ExplainFieldPrefix="networkPolicy"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @NetworkPolicy.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="Egress" Item="@NetworkPolicy.Spec.Egress" ExplainField="networkPolicy.spec.egress" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="Ingress" Item="@NetworkPolicy.Spec.Ingress" ExplainField="networkPolicy.spec.ingress" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="PodSelector" Item="@NetworkPolicy.Spec.PodSelector" ExplainField="networkPolicy.spec.podSelector"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="PolicyTypes" Item="@NetworkPolicy.Spec.PolicyTypes" ExplainField="networkPolicy.spec.policyTypes" ShowInJson="true"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
-    </Descriptions>
+    <HTable Bordered Column="1">
+    </HTable>
     <MiniEventListView Uid="@NetworkPolicy.Metadata.Uid"></MiniEventListView>
 }

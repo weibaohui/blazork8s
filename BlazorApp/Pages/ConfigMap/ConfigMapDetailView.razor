@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1ConfigMap>
 @if (ConfigMap != null)
 {
@@ -8,16 +10,16 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="ConfigMap.Metadata"  ExplainFieldPrefix="configMap"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @ConfigMap.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="BinaryData" Item="@ConfigMap.BinaryData" ExplainField="configMap.binaryData"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="Data" Item="@ConfigMap.Data" ExplainField="configMap.data"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="Immutable" Item="@ConfigMap.Immutable" ExplainField="configMap.immutable" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
-    </Descriptions>
+    <HTable Bordered Column="1">
+    </HTable>
     <MiniEventListView Uid="@ConfigMap.Metadata.Uid"></MiniEventListView>
 }

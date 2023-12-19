@@ -3884,7 +3884,7 @@ public class SwaggerDefinition
       "properties": {
         "describedObject": {
           "$ref": "#/definitions/io.k8s.api.autoscaling.v2.CrossVersionObjectReference",
-          "description": "describedObject specifies the descriptions of a object,such as kind,name apiVersion"
+          "description": "describedObject specifies the HTable of a object,such as kind,name apiVersion"
         },
         "metric": {
           "$ref": "#/definitions/io.k8s.api.autoscaling.v2.MetricIdentifier",
@@ -3911,7 +3911,7 @@ public class SwaggerDefinition
         },
         "describedObject": {
           "$ref": "#/definitions/io.k8s.api.autoscaling.v2.CrossVersionObjectReference",
-          "description": "DescribedObject specifies the descriptions of a object,such as kind,name apiVersion"
+          "description": "DescribedObject specifies the HTable of a object,such as kind,name apiVersion"
         },
         "metric": {
           "$ref": "#/definitions/io.k8s.api.autoscaling.v2.MetricIdentifier",

@@ -1,17 +1,19 @@
 ﻿@using Extension.k8s
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common.Html
 @if (Containers != null)
 {
     @foreach (var c in Containers)
     {
         <BadgeRibbon Text="@c.Name" Placement="start">
             <Card Bordered>
-                <Descriptions Title="" Bordered Column="1">
-                    <DescriptionsItem Title="Name">
+                <HTable Title="" Bordered Column="1">
+                    <HTableColumn Title="Name">
                         <ContainerType Type="@Type"></ContainerType>
                         @c.Name
-                    </DescriptionsItem>
-                    <DescriptionsItem Title="Status">
+                    </HTableColumn>
+                    <HTableColumn Title="Status">
                         @{
                             var (sum, msg) = ContainerStatuses.ReadySummaryWithMsg(c.Name);
                             if (sum == "Ready")
@@ -24,7 +26,7 @@
                                 <p>@msg</p>
                             }
                         }
-                    </DescriptionsItem>
+                    </HTableColumn>
                     <PropertySimpleView Title="RestartCount" Item="@ContainerStatuses.Where(x => x.Name == c.Name).Sum(x => x.RestartCount)" ExplainField="pod.status.containerStatuses.restartCount"></PropertySimpleView>
                     <PropertySimpleView Title="Image" Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
                     <PropertyOptionView Title="ImagePullPolicy" ExplainField="pod.spec.containers.imagePullPolicy" Item="@c.ImagePullPolicy" Options='@(new[] { "Always", "IfNotPresent", "Never" })'></PropertyOptionView>
@@ -43,7 +45,7 @@
                     <EnvView Env="@c.Env"></EnvView>
                     @if (c.Ports != null)
                     {
-                        <DescriptionsItem Title="Ports">
+                        <HTableColumn Title="Ports">
 
                             @foreach (var p in c.Ports)
                             {
@@ -52,27 +54,27 @@
                                     <Button Type="@ButtonType.Primary" OnClick="@(() => Forward(p))">Forward</Button>
                                 </div>
                             }
-                        </DescriptionsItem>
+                        </HTableColumn>
                     }
                     @if (c.Command != null)
                     {
-                        <DescriptionsItem Title="Command">
+                        <HTableColumn Title="Command">
                             @foreach (var cc in c.Command)
                             {
                                 @cc
                                 <br/>
                             }
-                        </DescriptionsItem>
+                        </HTableColumn>
                     }
                     @if (c.Args != null)
                     {
-                        <DescriptionsItem Title="Args">
+                        <HTableColumn Title="Args">
                             @foreach (var cc in c.Args)
                             {
                                 @cc
                                 <br/>
                             }
-                        </DescriptionsItem>
+                        </HTableColumn>
                     }
                     <ProbeView Probe="@c.LivenessProbe" ProbeType="LivenessProbe"></ProbeView>
                     <ProbeView Probe="@c.ReadinessProbe" ProbeType="ReadinessProbe"></ProbeView>
@@ -80,7 +82,7 @@
 
                     @if (c.VolumeMounts != null)
                     {
-                        <DescriptionsItem Title="VolumeMounts">
+                        <HTableColumn Title="VolumeMounts">
                             @foreach (var vm in c.VolumeMounts)
                             {
                                 @if (vm.ReadOnlyProperty != null && vm.ReadOnlyProperty == true)
@@ -96,9 +98,9 @@
                                 <Tag Color="#87d068">@vm.MountPath</Tag>
                                 <br/>
                             }
-                        </DescriptionsItem>
+                        </HTableColumn>
                     }
-                </Descriptions>
+                </HTable>
             </Card>
         </BadgeRibbon>
     }

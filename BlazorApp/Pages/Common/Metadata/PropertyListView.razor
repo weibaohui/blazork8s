@@ -1,9 +1,9 @@
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
 @typeparam            T
-
 @if (Items != null)
 {
-    <DescriptionsItem Title=@Title>
+    <HTableColumn Title=@Title>
         @foreach (var p in Items)
         {
             <Tag Color=@RandomColorHelper.RandomColor()>
@@ -18,5 +18,5 @@
             </Tag>
         }
         <KubectlExplainButton Field=@ExplainField></KubectlExplainButton>
-    </DescriptionsItem>
+    </HTableColumn>
 }

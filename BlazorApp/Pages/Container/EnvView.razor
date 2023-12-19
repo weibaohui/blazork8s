@@ -1,6 +1,7 @@
-﻿@if (Env != null)
+﻿@using BlazorApp.Pages.Common.Html
+@if (Env != null)
 {
-    <DescriptionsItem Title="Env">
+    <HTableColumn Title="Env">
         @foreach (var ce in Env)
         {
             if (ce.ValueFrom != null)
@@ -32,5 +33,5 @@
             }
             <br/>
         }
-    </DescriptionsItem>
+    </HTableColumn>
 }

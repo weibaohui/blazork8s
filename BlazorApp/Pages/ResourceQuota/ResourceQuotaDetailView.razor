@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1ResourceQuota>
 @if (ResourceQuota != null)
 {
@@ -8,18 +10,18 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="ResourceQuota.Metadata" ExplainFieldPrefix="resourceQuota"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @ResourceQuota.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="Hard" Item="@ResourceQuota.Spec.Hard" ExplainField="resourceQuota.spec.hard"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="ScopeSelector" Item="@ResourceQuota.Spec.ScopeSelector" ExplainField="resourceQuota.spec.scopeSelector"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="Scopes" Item="@ResourceQuota.Spec.Scopes" ExplainField="resourceQuota.spec.scopes" ShowInJson="true"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
                 <PropertySimpleView Title="Hard" Item="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="Used" Item="@ResourceQuota.Status.Used" ExplainField="resourceQuota.status.used"  ShowInJson="true" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@ResourceQuota.Metadata.Uid"></MiniEventListView>
 }

@@ -1,5 +1,58 @@
 .monaco-editor-container {
-  height: 100%;
-  width: 100%;
-  border: 1px solid gray;
+    height: 100%;
+    width: 100%;
+    border: 1px solid gray;
 }
+
+/** Table 表格样式 **/
+.table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #f0f0f0 !important;
+    margin-bottom: 20px;
+}
+
+.table th {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background-color: #fafafa !important;
+    padding: 5px 9px;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.table td {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding: 5px 9px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    word-break: break-all;
+    height: 50px;
+
+}
+
+.table tr td:first-child {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background-color: #fafafa !important;
+    padding: 5px 9px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    width: 160px;
+}
+
+
+/*.table tr:nth-child(odd) {*/
+/*    background-color: #fff !important;*/
+/*}*/
+
+/*.table tr:nth-child(even) {*/
+/*    background-color: #f8f8f8 !important;*/
+/*}*/

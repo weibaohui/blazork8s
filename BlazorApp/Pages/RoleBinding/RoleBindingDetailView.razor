@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1RoleBinding>
 @if (RoleBinding != null)
 {
@@ -8,16 +10,16 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="RoleBinding.Metadata"  ExplainFieldPrefix="roleBinding"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @RoleBinding.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="ApiGroup" Item="@RoleBinding.RoleRef.ApiGroup" ExplainField="roleBinding.roleRef.apiGroup" ></PropertySimpleView>
                 <PropertySimpleView Title="Name" Item="@RoleBinding.RoleRef.Name" ExplainField="roleBinding.roleRef.name" ></PropertySimpleView>
                 <PropertySimpleView Title="Subjects" Item="@RoleBinding.Subjects" ExplainField="roleBinding.subjects" ShowInJson="true"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
-    </Descriptions>
+    <HTable Bordered Column="1">
+    </HTable>
     <MiniEventListView Uid="@RoleBinding.Metadata.Uid"></MiniEventListView>
 }

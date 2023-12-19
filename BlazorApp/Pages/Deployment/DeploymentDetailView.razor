@@ -1,6 +1,8 @@
 ﻿@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
 @if (Deployment != null)
 {
@@ -9,7 +11,7 @@
     <MetadataView Item="Deployment.Metadata"  ExplainFieldPrefix="deployment"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
 
-    <Descriptions Bordered Column="1" >
+    <HTable Bordered Column="1" >
         <SelectorView Title="Selector" Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
 
@@ -22,14 +24,14 @@
         <PropertySimpleView Title="Replicas" Item="@Deployment.Spec.Replicas" ExplainField="deployment.spec.replicas"></PropertySimpleView>
         <PropertySimpleView Title="RevisionHistoryLimit" Item="@Deployment.Spec.RevisionHistoryLimit" ExplainField="deployment.spec.revisionHistoryLimit"></PropertySimpleView>
         <TolerationsView Tolerations="@Deployment.Spec.Template.Spec.Tolerations"></TolerationsView>
-    </Descriptions>
+    </HTable>
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
         <ConditionView ConditionList="@Deployment.Status.Conditions" ExplainField="deployment.status.conditions"></ConditionView>
-        <DescriptionsItem Title="Replicas Sum" LabelStyle="width:120px">
+        <HTableColumn Title="Replicas Sum" >
             @($"{Deployment.Spec.Replicas ?? 0} desired, {Deployment.Status.UpdatedReplicas ?? 0} updated, {Deployment.Status.Replicas ?? 0} total, {Deployment.Status.AvailableReplicas ?? 0} available, {Deployment.Status.UnavailableReplicas ?? 0} unavailable")
-        </DescriptionsItem>
+        </HTableColumn>
         <PropertySimpleView Title="AvailableReplicas" Item="@Deployment.Status.AvailableReplicas" ExplainField="deployment.status.availableReplicas"></PropertySimpleView>
         <PropertySimpleView Title="CollisionCount" Item="@Deployment.Status.CollisionCount" ExplainField="deployment.status.collisionCount"></PropertySimpleView>
         <PropertySimpleView Title="ObservedGeneration" Item="@Deployment.Status.ObservedGeneration" ExplainField="deployment.status.observedGeneration"></PropertySimpleView>
@@ -37,7 +39,7 @@
         <PropertySimpleView Title="Replicas" Item="@Deployment.Status.Replicas" ExplainField="deployment.status.replicas"></PropertySimpleView>
         <PropertySimpleView Title="UnavailableReplicas" Item="@Deployment.Status.UnavailableReplicas" ExplainField="deployment.status.unavailableReplicas"></PropertySimpleView>
         <PropertySimpleView Title="UpdatedReplicas" Item="@Deployment.Status.UpdatedReplicas" ExplainField="deployment.status.updatedReplicas"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
 
 
 

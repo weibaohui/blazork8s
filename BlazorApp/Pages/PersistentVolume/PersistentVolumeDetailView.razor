@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PersistentVolume>
 @if (PersistentVolume != null)
 {
@@ -8,10 +10,10 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="PersistentVolume.Metadata"  ExplainFieldPrefix="persistentVolume"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @PersistentVolume.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="AccessModes" Item="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="AwsElasticBlockStore" Item="@PersistentVolume.Spec.AwsElasticBlockStore" ExplainField="persistentVolume.spec.awsElasticBlockStore"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="AzureDisk" Item="@PersistentVolume.Spec.AzureDisk" ExplainField="persistentVolume.spec.azureDisk"  ShowInJson="true" ></PropertySimpleView>
@@ -42,13 +44,13 @@
                 <PropertySimpleView Title="Storageos" Item="@PersistentVolume.Spec.Storageos" ExplainField="persistentVolume.spec.storageos"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" ></PropertySimpleView>
                 <PropertySimpleView Title="VsphereVolume" Item="@PersistentVolume.Spec.VsphereVolume" ExplainField="persistentVolume.spec.vsphereVolume"  ShowInJson="true" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
                 <PropertySimpleView Title="LastPhaseTransitionTime" Item="@PersistentVolume.Status.LastPhaseTransitionTime" ExplainField="persistentVolume.status.lastPhaseTransitionTime" ></PropertySimpleView>
                 <PropertySimpleView Title="Message" Item="@PersistentVolume.Status.Message" ExplainField="persistentVolume.status.message" ></PropertySimpleView>
                 <PropertySimpleView Title="Phase" Item="@PersistentVolume.Status.Phase" ExplainField="persistentVolume.status.phase" ></PropertySimpleView>
                 <PropertySimpleView Title="Reason" Item="@PersistentVolume.Status.Reason" ExplainField="persistentVolume.status.reason" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@PersistentVolume.Metadata.Uid"></MiniEventListView>
 }

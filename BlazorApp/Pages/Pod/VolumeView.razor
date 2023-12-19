@@ -1,10 +1,12 @@
-﻿@if (PodItem.Spec.Volumes != null)
+﻿@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
+@if (PodItem.Spec.Volumes != null)
 {
     <Divider Orientation="left" Style="font-weight:bold">Volumes</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
         @foreach (var v in PodItem.Spec.Volumes)
         {
-            <DescriptionsItem Title="@v.Name">
+            <HTableColumn Title="@v.Name">
                 @if (v.HostPath != null)
                 {
                     <Tag Icon="hdd" PresetColor="@PresetColor.Blue">HostPath @v.HostPath.Type</Tag>
@@ -51,7 +53,7 @@
                         <Tag>@p.ResourceFieldRef @p.ResourceFieldRef.Resource</Tag>
                     }
                 }
-            </DescriptionsItem>
+            </HTableColumn>
         }
-    </Descriptions>
+    </HTable>
 }

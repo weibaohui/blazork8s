@@ -1,7 +1,8 @@
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Container
 @if (PodSpec != null)
 {
-    <DescriptionsItem Title="Images">
+    <HTableColumn Title="Images">
         @if (PodSpec.Containers != null)
         {
             @foreach (var c in PodSpec.Containers)
@@ -32,5 +33,5 @@
                 </Paragraph>
             }
         }
-    </DescriptionsItem>
+    </HTableColumn>
 }

@@ -1,26 +1,28 @@
 @using k8s.Models
 @using Microsoft.IdentityModel.Tokens
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @if (Item != null)
 {
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
         @if (Item.Name != null)
         {
-            <DescriptionsItem Title="Name">
+            <HTableColumn Title="Name">
                 <Text Copyable>@Item.Name</Text>
-            </DescriptionsItem>
+            </HTableColumn>
         }
 
         @if (Item.CreationTimestamp != null)
         {
-            <DescriptionsItem Title="Creation">
+            <HTableColumn Title="Creation">
                 <AgeView Age="@Item.CreationTimestamp"></AgeView>
                 (@Item.CreationTimestamp.GetValueOrDefault().ToLocalTime())
-            </DescriptionsItem>
+            </HTableColumn>
         }
 
         @if (!Item.Namespace().IsNullOrEmpty())
         {
-            <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
+            <HTableColumn Title="Namespace">@Item.Namespace()</HTableColumn>
         }
         <LabelsView Labels="Item.Labels"></LabelsView>
         <AnnotationsView Annotations="@Item.Annotations"></AnnotationsView>
@@ -33,5 +35,5 @@
         <PropertySimpleView Title="ResourceVersion" Item="@Item.ResourceVersion" ExplainField=@(ExplainFieldPrefix + ".metadata.resourceVersion")></PropertySimpleView>
         <PropertySimpleView Title="SelfLink" Item="@Item.SelfLink" ExplainField=@(ExplainFieldPrefix + ".metadata.selfLink")></PropertySimpleView>
         <PropertySimpleView Title="Uid" Item="@Item.Uid" ExplainField=@(ExplainFieldPrefix + ".metadata.uid")></PropertySimpleView>
-    </Descriptions>
+    </HTable>
 }

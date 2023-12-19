@@ -1,0 +1,63 @@
+<table class="table">
+    <thead>
+    @Header
+    </thead>
+    <tbody>
+    @ChildContent
+    </tbody>
+</table>
+
+@code {
+
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public bool Bordered { get; set; } = false;
+
+    [Parameter]
+    public string Column { get; set; } = "1";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public RenderFragment? Header { get; set; }
+
+}
+
+@* *@
+@* <HTable> *@
+@*     <Header> *@
+@*         <HTr> *@
+@*             <HTh>0-1</HTh> *@
+@*             <HTh>0-2</HTh> *@
+@*             <HTh>0-3</HTh> *@
+@*         </HTr> *@
+@*     </Header> *@
+@*     <ChildContent> *@
+@*         <HTr> *@
+@*             <HTd>1-1</HTd> *@
+@*             <HTd>1-2</HTd> *@
+@*             <HTd>1-3</HTd> *@
+@*         </HTr> *@
+@*         <HTr> *@
+@*             <HTd>2-1</HTd> *@
+@*             <HTd>2-2</HTd> *@
+@*             <HTd>2-3</HTd> *@
+@*         </HTr> *@
+@*     </ChildContent> *@
+@* </HTable> *@
+
+@* *@
+@* <HTable> *@
+@*     <HTr> *@
+@*         <HTd>1-1</HTd> *@
+@*         <HTd>1-2</HTd> *@
+@*         <HTd>1-3</HTd> *@
+@*     </HTr> *@
+@*     <HTr> *@
+@*         <HTd>2-1</HTd> *@
+@*         <HTd>2-2</HTd> *@
+@*         <HTd>2-3</HTd> *@
+@*     </HTr> *@
+@* </HTable> *@

@@ -2,6 +2,8 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1StatefulSet>
 @if (StatefulSet != null)
 {
@@ -9,10 +11,10 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="StatefulSet.Metadata"  ExplainFieldPrefix="statefulSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @StatefulSet.Name()
-        </DescriptionsItem>
+        </HTableColumn>
         <PropertySimpleView Title="MinReadySeconds" Item="@StatefulSet.Spec.MinReadySeconds" ExplainField="statefulSet.spec.minReadySeconds" ></PropertySimpleView>
         <PropertySimpleView Title="Ordinals" Item="@StatefulSet.Spec.Ordinals" ExplainField="statefulSet.spec.ordinals"  ShowInJson="true" ></PropertySimpleView>
         <PropertySimpleView Title="PersistentVolumeClaimRetentionPolicy" Item="@StatefulSet.Spec.PersistentVolumeClaimRetentionPolicy" ExplainField="statefulSet.spec.persistentVolumeClaimRetentionPolicy"  ShowInJson="true" ></PropertySimpleView>
@@ -23,12 +25,12 @@
         <PropertySimpleView Title="ServiceName" Item="@StatefulSet.Spec.ServiceName" ExplainField="statefulSet.spec.serviceName" ></PropertySimpleView>
         <PropertySimpleView Title="UpdateStrategy" Item="@StatefulSet.Spec.UpdateStrategy" ExplainField="statefulSet.spec.updateStrategy"  ShowInJson="true" ></PropertySimpleView>
         <PropertySimpleView Title="VolumeClaimTemplates" Item="@StatefulSet.Spec.VolumeClaimTemplates" ExplainField="statefulSet.spec.volumeClaimTemplates" ShowInJson="true"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <Divider Orientation="left" Style="font-weight:bold">PodTemplate</Divider>
     <MetadataView Item="@StatefulSet.Spec.Template.Metadata"  ExplainFieldPrefix="statefulSet"></MetadataView>
     <PodSpecView PodSpec="@StatefulSet.Spec.Template.Spec"></PodSpecView>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
                 <PropertySimpleView Title="AvailableReplicas" Item="@StatefulSet.Status.AvailableReplicas" ExplainField="statefulSet.status.availableReplicas" ></PropertySimpleView>
                 <PropertySimpleView Title="CollisionCount" Item="@StatefulSet.Status.CollisionCount" ExplainField="statefulSet.status.collisionCount" ></PropertySimpleView>
                 <PropertySimpleView Title="Conditions" Item="@StatefulSet.Status.Conditions" ExplainField="statefulSet.status.conditions" ShowInJson="true"></PropertySimpleView>
@@ -39,6 +41,6 @@
                 <PropertySimpleView Title="Replicas" Item="@StatefulSet.Status.Replicas" ExplainField="statefulSet.status.replicas" ></PropertySimpleView>
                 <PropertySimpleView Title="UpdateRevision" Item="@StatefulSet.Status.UpdateRevision" ExplainField="statefulSet.status.updateRevision" ></PropertySimpleView>
                 <PropertySimpleView Title="UpdatedReplicas" Item="@StatefulSet.Status.UpdatedReplicas" ExplainField="statefulSet.status.updatedReplicas" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@StatefulSet.Metadata.Uid"></MiniEventListView>
 }

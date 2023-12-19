@@ -1,10 +1,11 @@
 @using Microsoft.IdentityModel.Tokens
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
 @typeparam            T
 
 @if (Item != null)
 {
-    <DescriptionsItem Title="@Title">
+    <HTableColumn Title="@Title">
         <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
 
             @if (!Key.IsNullOrEmpty())
@@ -14,5 +15,5 @@
 
         </Tag>
         <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
-    </DescriptionsItem>
+    </HTableColumn>
 }

@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1CronJob>
 @if (CronJob != null)
 {
@@ -8,10 +10,10 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="CronJob.Metadata"  ExplainFieldPrefix="cronJob"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @CronJob.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" ></PropertySimpleView>
                 <PropertySimpleView Title="FailedJobsHistoryLimit" Item="@CronJob.Spec.FailedJobsHistoryLimit" ExplainField="cronJob.spec.failedJobsHistoryLimit" ></PropertySimpleView>
                 <PropertySimpleView Title="JobTemplate" Item="@CronJob.Spec.JobTemplate" ExplainField="cronJob.spec.jobTemplate"  ShowInJson="true" ></PropertySimpleView>
@@ -20,12 +22,12 @@
                 <PropertySimpleView Title="SuccessfulJobsHistoryLimit" Item="@CronJob.Spec.SuccessfulJobsHistoryLimit" ExplainField="cronJob.spec.successfulJobsHistoryLimit" ></PropertySimpleView>
                 <PropertySimpleView Title="Suspend" Item="@CronJob.Spec.Suspend" ExplainField="cronJob.spec.suspend" ></PropertySimpleView>
                 <PropertySimpleView Title="TimeZone" Item="@CronJob.Spec.TimeZone" ExplainField="cronJob.spec.timeZone" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
                 <PropertySimpleView Title="Active" Item="@CronJob.Status.Active" ExplainField="cronJob.status.active" ShowInJson="true"></PropertySimpleView>
                 <PropertySimpleView Title="LastScheduleTime" Item="@CronJob.Status.LastScheduleTime" ExplainField="cronJob.status.lastScheduleTime" ></PropertySimpleView>
                 <PropertySimpleView Title="LastSuccessfulTime" Item="@CronJob.Status.LastSuccessfulTime" ExplainField="cronJob.status.lastSuccessfulTime" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@CronJob.Metadata.Uid"></MiniEventListView>
 }

@@ -1,6 +1,8 @@
 ﻿@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits FeedbackComponent<k8s.Models.V1ReplicaSet, bool>
 @if (ReplicaSet != null)
 {
@@ -8,20 +10,20 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="ReplicaSet.Metadata"  ExplainFieldPrefix="replicaSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
         <SelectorView Title="Selector" Selector="@ReplicaSet.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@ReplicaSet.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@ReplicaSet.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@ReplicaSet.Spec.Template.Spec.Tolerations"></TolerationsView>
         <PropertySimpleView Title="MinReadySeconds" Item="@ReplicaSet.Spec.MinReadySeconds" ExplainField="replicaSet.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="Replicas" Item="@ReplicaSet.Spec.Replicas" ExplainField="replicaSet.spec.replicas"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Replicas" LabelStyle="width:120px">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Replicas" >
             @($"{ReplicaSet.Status.AvailableReplicas ?? 0} current / {ReplicaSet.Status.Replicas} desired")
-        </DescriptionsItem>
+        </HTableColumn>
         <ConditionView ConditionList="@ReplicaSet.Status.Conditions" ExplainField="replicaSet.status.conditions"></ConditionView>
         <PropertySimpleView Title="Replicas" Item="@ReplicaSet.Status.Replicas" ExplainField="replicaSet.status.replicas"></PropertySimpleView>
         <PropertySimpleView Title="AvailableReplicas" Item="@ReplicaSet.Status.AvailableReplicas" ExplainField="replicaSet.status.availableReplicas"></PropertySimpleView>
@@ -29,7 +31,7 @@
         <PropertySimpleView Title="ObservedGeneration" Item="@ReplicaSet.Status.ObservedGeneration" ExplainField="replicaSet.status.observedGeneration"></PropertySimpleView>
         <PropertySimpleView Title="ReadyReplicas" Item="@ReplicaSet.Status.ReadyReplicas" ExplainField="replicaSet.status.readyReplicas"></PropertySimpleView>
 
-    </Descriptions>
+    </HTable>
 
     <MiniPodListView ControllerByUid="@ReplicaSet.Metadata.Uid"></MiniPodListView>
     <MiniEventListView Uid="@ReplicaSet.Metadata.Uid"></MiniEventListView>

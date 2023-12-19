@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1EndpointSlice>
 @if (EndpointSlice != null)
 {
@@ -8,15 +10,15 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="EndpointSlice.Metadata" ExplainFieldPrefix="endpointSlice"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @EndpointSlice.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="AddressType" Item="@EndpointSlice.AddressType" ExplainField="endpointSlice.addressType" ></PropertySimpleView>
                 <PropertySimpleView Title="Ports" Item="@EndpointSlice.Ports" ExplainField="endpointSlice.ports" ShowInJson="true"></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
-    </Descriptions>
+    <HTable Bordered Column="1">
+    </HTable>
     <MiniEventListView Uid="@EndpointSlice.Metadata.Uid"></MiniEventListView>
 }

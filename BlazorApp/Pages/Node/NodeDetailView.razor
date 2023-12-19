@@ -1,16 +1,18 @@
 @using Extension.k8s
 @using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Common.Html
 @inherits FeedbackComponent<V1Node, bool>
 @if (_node != null)
 {
     <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
         <MetadataView Item="_node.Metadata" ></MetadataView>
 
-        <DescriptionsItem Title="Conditions" LabelStyle="width:120px">
+        <HTableColumn Title="Conditions" >
             @if (_node.Status.Conditions.IsReady())
             {
                 <Tag Icon="check-circle" Color="success">Ready</Tag>
@@ -19,20 +21,20 @@
             {
                 <Tag Icon="close-circle" Color="error">@_node.Status.Conditions.NotReadyReason()</Tag>
             }
-        </DescriptionsItem>
-        <DescriptionsItem Title="Address">
+        </HTableColumn>
+        <HTableColumn Title="Address">
             @foreach (var addr in _node.Status.Addresses)
             {
                 <div>@addr.Type : @addr.Address</div>
             }
-        </DescriptionsItem>
-        <DescriptionsItem Title="OS">
+        </HTableColumn>
+        <HTableColumn Title="OS">
             @_node.Status.NodeInfo.OperatingSystem (@_node.Status.NodeInfo.Architecture)
-        </DescriptionsItem>
-        <DescriptionsItem Title="KernelVersion">@_node.Status.NodeInfo.KernelVersion</DescriptionsItem>
-        <DescriptionsItem Title="KubeletVersion">@_node.Status.NodeInfo.KubeletVersion</DescriptionsItem>
-        <DescriptionsItem Title="ContainerRuntime">@_node.Status.NodeInfo.ContainerRuntimeVersion</DescriptionsItem>
-    </Descriptions>
+        </HTableColumn>
+        <HTableColumn Title="KernelVersion">@_node.Status.NodeInfo.KernelVersion</HTableColumn>
+        <HTableColumn Title="KubeletVersion">@_node.Status.NodeInfo.KubeletVersion</HTableColumn>
+        <HTableColumn Title="ContainerRuntime">@_node.Status.NodeInfo.ContainerRuntimeVersion</HTableColumn>
+    </HTable>
     <NodeResourceQuantityView BlockTitle="Capacity" Dict=@_node.Status.Capacity>
     </NodeResourceQuantityView>
     <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@_node.Status.Allocatable>

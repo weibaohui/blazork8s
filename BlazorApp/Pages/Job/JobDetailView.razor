@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1Job>
 @if (Job != null)
 {
@@ -8,10 +10,10 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="Job.Metadata"  ExplainFieldPrefix="job"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @Job.Name()
-        </DescriptionsItem>
+        </HTableColumn>
                 <PropertySimpleView Title="ActiveDeadlineSeconds" Item="@Job.Spec.ActiveDeadlineSeconds" ExplainField="job.spec.activeDeadlineSeconds" ></PropertySimpleView>
                 <PropertySimpleView Title="BackoffLimit" Item="@Job.Spec.BackoffLimit" ExplainField="job.spec.backoffLimit" ></PropertySimpleView>
                 <PropertySimpleView Title="BackoffLimitPerIndex" Item="@Job.Spec.BackoffLimitPerIndex" ExplainField="job.spec.backoffLimitPerIndex" ></PropertySimpleView>
@@ -26,9 +28,9 @@
                 <PropertySimpleView Title="Suspend" Item="@Job.Spec.Suspend" ExplainField="job.spec.suspend" ></PropertySimpleView>
                 <PropertySimpleView Title="Template" Item="@Job.Spec.Template" ExplainField="job.spec.template"  ShowInJson="true" ></PropertySimpleView>
                 <PropertySimpleView Title="TtlSecondsAfterFinished" Item="@Job.Spec.TtlSecondsAfterFinished" ExplainField="job.spec.ttlSecondsAfterFinished" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
                 <PropertySimpleView Title="Active" Item="@Job.Status.Active" ExplainField="job.status.active" ></PropertySimpleView>
                 <PropertySimpleView Title="CompletedIndexes" Item="@Job.Status.CompletedIndexes" ExplainField="job.status.completedIndexes" ></PropertySimpleView>
                 <PropertySimpleView Title="CompletionTime" Item="@Job.Status.CompletionTime" ExplainField="job.status.completionTime" ></PropertySimpleView>
@@ -40,6 +42,6 @@
                 <PropertySimpleView Title="Succeeded" Item="@Job.Status.Succeeded" ExplainField="job.status.succeeded" ></PropertySimpleView>
                 <PropertySimpleView Title="Terminating" Item="@Job.Status.Terminating" ExplainField="job.status.terminating" ></PropertySimpleView>
                 <PropertySimpleView Title="UncountedTerminatedPods" Item="@Job.Status.UncountedTerminatedPods" ExplainField="job.status.uncountedTerminatedPods"  ShowInJson="true" ></PropertySimpleView>
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@Job.Metadata.Uid"></MiniEventListView>
 }

@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1MutatingWebhookConfiguration>
 @if (MutatingWebhookConfiguration != null)
 {
@@ -8,13 +10,13 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="MutatingWebhookConfiguration.Metadata"  ExplainFieldPrefix="mutatingWebhookConfiguration"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @MutatingWebhookConfiguration.Name()
-        </DescriptionsItem>
-    </Descriptions>
+        </HTableColumn>
+    </HTable>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
-    </Descriptions>
+    <HTable Bordered Column="1">
+    </HTable>
     <MiniEventListView Uid="@MutatingWebhookConfiguration.Metadata.Uid"></MiniEventListView>
 }

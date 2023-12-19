@@ -1,5 +1,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
@@ -7,7 +9,7 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="Item.Metadata" ></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector"></SelectorView>
         <PropertyOptionView Title="Type" Item="@Item.Spec.Type" Options='@(new[] { "ClusterIP", "NodePort", "ExternalName", "LoadBalancer" })' ExplainField="service.spec.type"></PropertyOptionView>
         <PropertyOptionView Title="SessionAffinity" Item="@Item.Spec.SessionAffinity" Options='@(new[] { "ClusterIP", "None" })' ExplainField="service.spec.sessionAffinity"></PropertyOptionView>
@@ -29,7 +31,7 @@
 
         @if (Item.Spec.Ports != null)
         {
-            <DescriptionsItem Title="Ports">
+            <HTableColumn Title="Ports">
                 @foreach (var p in Item.Spec.Ports)
                 {
                     <div>
@@ -46,8 +48,8 @@
                     </div>
                 }
                 <KubectlExplainButton Field="service.spec.ports"></KubectlExplainButton>
-            </DescriptionsItem>
+            </HTableColumn>
         }
-    </Descriptions>
+    </HTable>
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }

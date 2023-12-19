@@ -1,6 +1,7 @@
+@using BlazorApp.Pages.Common.Html
 @if (Annotations != null)
 {
-    <DescriptionsItem Title="Annotations">
+    <HTableColumn Title="Annotations">
         @foreach (var label in Annotations)
         {
             <Paragraph >
@@ -9,5 +10,5 @@
                 </Text>
             </Paragraph>
         }
-    </DescriptionsItem>
+    </HTableColumn>
 }

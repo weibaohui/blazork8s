@@ -1,7 +1,8 @@
+@using BlazorApp.Pages.Common.Html
 @if (Item != null)
 {
-    <DescriptionsItem Title="@Title">
+    <HTableColumn Title="@Title">
         <OptionsView Options='@Options' SelectOption="@(Item.ToString())"></OptionsView>
         <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
-    </DescriptionsItem>
+    </HTableColumn>
 }

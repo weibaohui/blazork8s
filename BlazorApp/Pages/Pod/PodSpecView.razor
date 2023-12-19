@@ -1,12 +1,14 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Utils
+@using BlazorApp.Pages.Common.Html
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
-<Descriptions Bordered Column="1">
+<HTable Bordered Column="1">
 
         @if (PodSpec.HostAliases != null)
         {
-            <DescriptionsItem Title="HostAliases">
+            <HTableColumn Title="HostAliases">
                 @foreach (var alias in PodSpec.HostAliases)
                 {
                     @foreach (var hostname in alias.Hostnames)
@@ -17,7 +19,7 @@
                     }
                 }
                 <KubectlExplainButton Field="pod.spec.hostAliases"></KubectlExplainButton>
-            </DescriptionsItem>
+            </HTableColumn>
         }
         <PropertySimpleView Title="ActiveDeadlineSeconds" ExplainField="pod.spec.activeDeadlineSeconds" Item="@PodSpec.ActiveDeadlineSeconds"></PropertySimpleView>
         <PropertySimpleView Title="Affinity" ExplainField="pod.spec.affinity" Item="@PodSpec.Affinity" ShowInJson="true"></PropertySimpleView>
@@ -55,4 +57,4 @@
         <SelectorView Title="NodeSelector" Selector="@PodSpec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@PodSpec"></ImagesView>
         <TolerationsView Tolerations="@PodSpec.Tolerations"></TolerationsView>
-</Descriptions>
+</HTable>

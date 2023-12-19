@@ -1,30 +1,32 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits FeedbackComponent<Entity.PortForward, bool>
 @if (Item != null)
 {
     <PortForwardAction Item="Item" MenuMode="MenuMode.Horizontal"></PortForwardAction>
     <MetadataView Item="Item.Metadata" ></MetadataView>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
 
-        <DescriptionsItem Title="KubePort" LabelStyle="width:120px">
+        <HTableColumn Title="KubePort" >
             <Tag Color="#2db7f5"> @Item.Type </Tag>
             <Tag Color="#2db7f5"> @Item.KubeName </Tag>
             <Tag Color="#2db7f5">@Item.KubePort</Tag>
             =>
             <Tag Color="DarkRed">@Item.LocalPort</Tag>
 
-        </DescriptionsItem>
+        </HTableColumn>
 
-        <DescriptionsItem Title="status">
+        <HTableColumn Title="status">
             @Item.Status (@Item.StatusTimestamp)
-        </DescriptionsItem>
-        <DescriptionsItem Title="访问">
+        </HTableColumn>
+        <HTableColumn Title="访问">
             <div>
                 <a href=@($"http://127.0.0.1:{Item.LocalPort}") target="_blank">Http</a>
                 <a href=@($"https://127.0.0.1:{Item.LocalPort}") target="_blank">Https</a>
             </div>
-        </DescriptionsItem>
-    </Descriptions>
+        </HTableColumn>
+    </HTable>
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }
