@@ -1,16 +1,31 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1CronJob>
-@if (Item != null)
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1CronJob>
+@if (CronJob != null)
 {
-    <CronJobAction Item="Item" MenuMode="MenuMode.Horizontal"  ></CronJobAction>
-    <MetadataView Item="Item" T="V1CronJob"></MetadataView>
+    <CronJobAction Item="CronJob" MenuMode="MenuMode.Horizontal"  ></CronJobAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="CronJob" T="V1CronJob" ExplainFieldPrefix="cronJob"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @CronJob.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" ></PropertySimpleView>
+                <PropertySimpleView Title="FailedJobsHistoryLimit" Item="@CronJob.Spec.FailedJobsHistoryLimit" ExplainField="cronJob.spec.failedJobsHistoryLimit" ></PropertySimpleView>
+                <PropertySimpleView Title="JobTemplate" Item="@CronJob.Spec.JobTemplate" ExplainField="cronJob.spec.jobTemplate"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="Schedule" Item="@CronJob.Spec.Schedule" ExplainField="cronJob.spec.schedule" ></PropertySimpleView>
+                <PropertySimpleView Title="StartingDeadlineSeconds" Item="@CronJob.Spec.StartingDeadlineSeconds" ExplainField="cronJob.spec.startingDeadlineSeconds" ></PropertySimpleView>
+                <PropertySimpleView Title="SuccessfulJobsHistoryLimit" Item="@CronJob.Spec.SuccessfulJobsHistoryLimit" ExplainField="cronJob.spec.successfulJobsHistoryLimit" ></PropertySimpleView>
+                <PropertySimpleView Title="Suspend" Item="@CronJob.Spec.Suspend" ExplainField="cronJob.spec.suspend" ></PropertySimpleView>
+                <PropertySimpleView Title="TimeZone" Item="@CronJob.Spec.TimeZone" ExplainField="cronJob.spec.timeZone" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+                <PropertySimpleView Title="Active" Item="@CronJob.Status.Active" ExplainField="cronJob.status.active" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="LastScheduleTime" Item="@CronJob.Status.LastScheduleTime" ExplainField="cronJob.status.lastScheduleTime" ></PropertySimpleView>
+                <PropertySimpleView Title="LastSuccessfulTime" Item="@CronJob.Status.LastSuccessfulTime" ExplainField="cronJob.status.lastSuccessfulTime" ></PropertySimpleView>
+    </Descriptions>
+    <MiniEventListView Uid="@CronJob.Metadata.Uid"></MiniEventListView>
 }

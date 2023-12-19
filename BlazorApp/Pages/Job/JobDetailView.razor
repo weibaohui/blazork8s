@@ -1,16 +1,45 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1Job>
-@if (Item != null)
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Job>
+@if (Job != null)
 {
-    <JobAction Item="Item" MenuMode="MenuMode.Horizontal"  ></JobAction>
-    <MetadataView Item="Item" T="V1Job"></MetadataView>
+    <JobAction Item="Job" MenuMode="MenuMode.Horizontal"  ></JobAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="Job" T="V1Job" ExplainFieldPrefix="job"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @Job.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="ActiveDeadlineSeconds" Item="@Job.Spec.ActiveDeadlineSeconds" ExplainField="job.spec.activeDeadlineSeconds" ></PropertySimpleView>
+                <PropertySimpleView Title="BackoffLimit" Item="@Job.Spec.BackoffLimit" ExplainField="job.spec.backoffLimit" ></PropertySimpleView>
+                <PropertySimpleView Title="BackoffLimitPerIndex" Item="@Job.Spec.BackoffLimitPerIndex" ExplainField="job.spec.backoffLimitPerIndex" ></PropertySimpleView>
+                <PropertySimpleView Title="CompletionMode" Item="@Job.Spec.CompletionMode" ExplainField="job.spec.completionMode" ></PropertySimpleView>
+                <PropertySimpleView Title="Completions" Item="@Job.Spec.Completions" ExplainField="job.spec.completions" ></PropertySimpleView>
+                <PropertySimpleView Title="ManualSelector" Item="@Job.Spec.ManualSelector" ExplainField="job.spec.manualSelector" ></PropertySimpleView>
+                <PropertySimpleView Title="MaxFailedIndexes" Item="@Job.Spec.MaxFailedIndexes" ExplainField="job.spec.maxFailedIndexes" ></PropertySimpleView>
+                <PropertySimpleView Title="Parallelism" Item="@Job.Spec.Parallelism" ExplainField="job.spec.parallelism" ></PropertySimpleView>
+                <PropertySimpleView Title="PodFailurePolicy" Item="@Job.Spec.PodFailurePolicy" ExplainField="job.spec.podFailurePolicy"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="PodReplacementPolicy" Item="@Job.Spec.PodReplacementPolicy" ExplainField="job.spec.podReplacementPolicy" ></PropertySimpleView>
+                <PropertySimpleView Title="Selector" Item="@Job.Spec.Selector" ExplainField="job.spec.selector"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="Suspend" Item="@Job.Spec.Suspend" ExplainField="job.spec.suspend" ></PropertySimpleView>
+                <PropertySimpleView Title="Template" Item="@Job.Spec.Template" ExplainField="job.spec.template"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="TtlSecondsAfterFinished" Item="@Job.Spec.TtlSecondsAfterFinished" ExplainField="job.spec.ttlSecondsAfterFinished" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+                <PropertySimpleView Title="Active" Item="@Job.Status.Active" ExplainField="job.status.active" ></PropertySimpleView>
+                <PropertySimpleView Title="CompletedIndexes" Item="@Job.Status.CompletedIndexes" ExplainField="job.status.completedIndexes" ></PropertySimpleView>
+                <PropertySimpleView Title="CompletionTime" Item="@Job.Status.CompletionTime" ExplainField="job.status.completionTime" ></PropertySimpleView>
+                <PropertySimpleView Title="Conditions" Item="@Job.Status.Conditions" ExplainField="job.status.conditions" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="Failed" Item="@Job.Status.Failed" ExplainField="job.status.failed" ></PropertySimpleView>
+                <PropertySimpleView Title="FailedIndexes" Item="@Job.Status.FailedIndexes" ExplainField="job.status.failedIndexes" ></PropertySimpleView>
+                <PropertySimpleView Title="Ready" Item="@Job.Status.Ready" ExplainField="job.status.ready" ></PropertySimpleView>
+                <PropertySimpleView Title="StartTime" Item="@Job.Status.StartTime" ExplainField="job.status.startTime" ></PropertySimpleView>
+                <PropertySimpleView Title="Succeeded" Item="@Job.Status.Succeeded" ExplainField="job.status.succeeded" ></PropertySimpleView>
+                <PropertySimpleView Title="Terminating" Item="@Job.Status.Terminating" ExplainField="job.status.terminating" ></PropertySimpleView>
+                <PropertySimpleView Title="UncountedTerminatedPods" Item="@Job.Status.UncountedTerminatedPods" ExplainField="job.status.uncountedTerminatedPods"  ShowInJson="true" ></PropertySimpleView>
+    </Descriptions>
+    <MiniEventListView Uid="@Job.Metadata.Uid"></MiniEventListView>
 }

@@ -1,16 +1,30 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1ReplicationController>
-@if (Item != null)
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ReplicationController>
+@if (ReplicationController != null)
 {
-    <ReplicationControllerAction Item="Item" MenuMode="MenuMode.Horizontal"  ></ReplicationControllerAction>
-    <MetadataView Item="Item" T="V1ReplicationController"></MetadataView>
+    <ReplicationControllerAction Item="ReplicationController" MenuMode="MenuMode.Horizontal"  ></ReplicationControllerAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="ReplicationController" T="V1ReplicationController" ExplainFieldPrefix="replicationController"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name"  LabelStyle="width:120px">
-            @Item.Name()
+        <DescriptionsItem Title="Name">
+            @ReplicationController.Name()
         </DescriptionsItem>
+                <PropertySimpleView Title="MinReadySeconds" Item="@ReplicationController.Spec.MinReadySeconds" ExplainField="replicationController.spec.minReadySeconds" ></PropertySimpleView>
+                <PropertySimpleView Title="Replicas" Item="@ReplicationController.Spec.Replicas" ExplainField="replicationController.spec.replicas" ></PropertySimpleView>
+                <PropertySimpleView Title="Selector" Item="@ReplicationController.Spec.Selector" ExplainField="replicationController.spec.selector"  ShowInJson="true" ></PropertySimpleView>
+                <PropertySimpleView Title="Template" Item="@ReplicationController.Spec.Template" ExplainField="replicationController.spec.template"  ShowInJson="true" ></PropertySimpleView>
     </Descriptions>
-    <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
+ <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Descriptions Bordered Column="1">
+                <PropertySimpleView Title="AvailableReplicas" Item="@ReplicationController.Status.AvailableReplicas" ExplainField="replicationController.status.availableReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="Conditions" Item="@ReplicationController.Status.Conditions" ExplainField="replicationController.status.conditions" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="FullyLabeledReplicas" Item="@ReplicationController.Status.FullyLabeledReplicas" ExplainField="replicationController.status.fullyLabeledReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="ObservedGeneration" Item="@ReplicationController.Status.ObservedGeneration" ExplainField="replicationController.status.observedGeneration" ></PropertySimpleView>
+                <PropertySimpleView Title="ReadyReplicas" Item="@ReplicationController.Status.ReadyReplicas" ExplainField="replicationController.status.readyReplicas" ></PropertySimpleView>
+                <PropertySimpleView Title="Replicas" Item="@ReplicationController.Status.Replicas" ExplainField="replicationController.status.replicas" ></PropertySimpleView>
+    </Descriptions>
+    <MiniEventListView Uid="@ReplicationController.Metadata.Uid"></MiniEventListView>
 }

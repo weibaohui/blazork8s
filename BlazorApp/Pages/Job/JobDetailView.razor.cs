@@ -1,15 +1,15 @@
 using System.Threading.Tasks;
-using k8s.Models;
 using BlazorApp.Pages.Common;
+using k8s.Models;
+
 namespace BlazorApp.Pages.Job
 {
     public partial class JobDetailView :  DrawerPageBase<V1Job>
     {
-        private V1Job Item { get; set; }
-
+        private V1Job Job { get; set; }
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            Job = base.Options;
             await base.OnInitializedAsync();
         }
     }

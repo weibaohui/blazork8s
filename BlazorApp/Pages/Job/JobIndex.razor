@@ -1,9 +1,8 @@
 @page "/Job"
 @using k8s.Models
-@using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
-@inherits TableBase<V1Job>
+@inherits BlazorApp.Pages.Common.TableBase<V1Job>
 @if (TableData.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -15,7 +14,6 @@
         </TitleTemplate>
         <ChildContent>
             <Body>
-
             <Table TItem="V1Job"
                    DataSource="@TableData.PagedItems"
                    Size=@TableSize.Small Bordered="true"
@@ -39,7 +37,6 @@
             </Table>
             </Body>
         </ChildContent>
-
     </Card>
     <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1Job"></ResourceWatcher>
 }
