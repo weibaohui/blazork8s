@@ -20,13 +20,13 @@
                 <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
                     ${else}
                         ${if(i.OnlyOneChildItemName==null)}
-                        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
                         ${else}
-                         <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
+                <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
                         ${end}
                     ${end}
                 ${else}
-                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ></PropertySimpleView>
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ${if(i.ShowInJson)} ShowInJson="true" ${end}></PropertySimpleView>
                 ${end}
             ${end}
         ${end}
@@ -41,13 +41,14 @@
                 <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
                     ${else}
                         ${if(i.OnlyOneChildItemName==null)}
-                        <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ShowInJson="true"></PropertySimpleView>
                         ${else}
-                         <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
+                <PropertyListView Title="$i.Name" Items="@$i.FullName" ExplainField="$i.ExplainFiled"  Key="$i.OnlyOneChildItemName"  T="$i.CoreType"></PropertyListView>
                         ${end}
                     ${end}
                 ${else}
-                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ></PropertySimpleView>
+
+                <PropertySimpleView Title="$i.Name" Item="@$i.FullName" ExplainField="$i.ExplainFiled" ${if(i.ShowInJson)} ShowInJson="true" ${end}></PropertySimpleView>
                 ${end}
             ${end}
         ${end}

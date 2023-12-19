@@ -59,6 +59,7 @@ public class ReflectHelper<T>
             kt.FieldLevel   = kt.ExplainFiled.CountBy(".") + 1;
             kt.IsList       = IsList(kt.Type);
             kt.IsStatus     = kt.FullName.Contains(".Status");
+            kt.ShowInJson   = ShowInJson(kt.Type);
             if (kt.Type != null && kt.Type.Contains("k8s"))
             {
                 if (kt.IsList)
@@ -74,6 +75,11 @@ public class ReflectHelper<T>
 
             container.Add(kt);
         }
+    }
+
+    private static bool ShowInJson(string type)
+    {
+        return type.Contains("k8s") || type.Contains("IDictionary") || type.Contains("IList");
     }
 
     private static void ListItemsProperty(Type type, string parentName, IList<KubeType> container)
