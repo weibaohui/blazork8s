@@ -1,11 +1,10 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1ClusterRole>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ClusterRole>
 @if (ClusterRole != null)
 {
-    <ClusterRoleAction Item="ClusterRole" MenuMode="MenuMode.Horizontal"  ></ClusterRoleAction>
+    <ClusterRoleAction Item="ClusterRole" MenuMode="MenuMode.Horizontal"></ClusterRoleAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="ClusterRole" T="V1ClusterRole" ExplainFieldPrefix="clusterRole"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
@@ -13,9 +12,8 @@
         <DescriptionsItem Title="Name">
             @ClusterRole.Name()
         </DescriptionsItem>
-                <PropertySimpleView Title="ClusterRoleSelectors" Item="@ClusterRole.AggregationRule.ClusterRoleSelectors" ExplainField="clusterRole.aggregationRule.clusterRoleSelectors" ShowInJson="true"></PropertySimpleView>
     </Descriptions>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <Descriptions Bordered Column="1">
     </Descriptions>
     <MiniEventListView Uid="@ClusterRole.Metadata.Uid"></MiniEventListView>
