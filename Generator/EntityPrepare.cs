@@ -32,6 +32,7 @@ public class EntityPrepare
 
         list = RemoveMultipleItem(list);
         list = RemoveOnlyOneChildItem(list);
+        list = RemoveExpandedItem(list);
         File.WriteAllText("pod-zip3.json", KubernetesJson.Serialize(list));
         return list;
     }
@@ -83,6 +84,36 @@ public class EntityPrepare
         return ret;
     }
 
+    /// <summary>
+    /// 删除已经展开的父项，其子项已经作了展开显示，不需要再显示一个父项了
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    private static List<KubeType> RemoveExpandedItem(IList<KubeType> list)
+    {
+        //1.找出所有的2级属性
+        //2.找出具有子属性的2级属性
+        //3.删除这些2级属性
+        var keys = list.Where(x => x.FieldLevel == 2).ToList();
+
+
+        var removeKeys = new List<KubeType>();
+
+        keys.ForEach(k =>
+        {
+            if (list.Any(x => x.FieldLevel == 3 && x.FullName.StartsWith(k.FullName)))
+            {
+                removeKeys.Add(k);
+            }
+        });
+
+        var ret = list.ToList();
+
+        removeKeys.ForEach(k => { ret.RemoveAll(x => x.FullName == k.FullName); });
+        return ret;
+        return ret;
+    }
+
 
     /// <summary>
     /// 删除只有一个child item 的情况
@@ -105,7 +136,7 @@ public class EntityPrepare
         keys.ForEach(k =>
         {
             //只有下一级才会带".",以此保证自身不会被删除
-            ret.RemoveAll(x => x.FullName.StartsWith(k+"."));
+            ret.RemoveAll(x => x.FullName.StartsWith(k + "."));
         });
         return ret;
     }
