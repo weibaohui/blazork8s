@@ -1,7 +1,9 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits DrawerPageBase<${ItemType}>
 @if (${Item} != null)
 {
@@ -9,10 +11,10 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="${Item}.Metadata"  ExplainFieldPrefix="${ExplainResourceName}"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <Descriptions Bordered Column="1">
-        <DescriptionsItem Title="Name">
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Name">
             @${Item}.Name()
-        </DescriptionsItem>
+        </HTableColumn>
         $for(i in Properties)
             ${if(i.IsStatus==false)}
                 ${if(i.isList)}
@@ -30,10 +32,10 @@
                 ${end}
             ${end}
         ${end}
-    </Descriptions>
+    </HTable>
 
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <Descriptions Bordered Column="1">
+    <HTable Bordered Column="1">
     $for(i in Properties)
             ${if(i.IsStatus==true)}
                 ${if(i.isList)}
@@ -52,7 +54,7 @@
                 ${end}
             ${end}
         ${end}
-    </Descriptions>
+    </HTable>
 
     <MiniEventListView Uid="@${Item}.Metadata.Uid"></MiniEventListView>
 }
