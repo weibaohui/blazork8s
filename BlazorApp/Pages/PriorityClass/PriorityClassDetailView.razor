@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1PriorityClass>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PriorityClass>
 @if (PriorityClass != null)
 {
     <PriorityClassAction Item="PriorityClass" MenuMode="MenuMode.Horizontal"  ></PriorityClassAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="PriorityClass" T="V1PriorityClass" ExplainFieldPrefix="priorityClass"></MetadataView>
+    <MetadataView Item="PriorityClass.Metadata"  ExplainFieldPrefix="priorityClass"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

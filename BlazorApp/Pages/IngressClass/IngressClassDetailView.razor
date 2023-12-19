@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1IngressClass>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1IngressClass>
 @if (IngressClass != null)
 {
     <IngressClassAction Item="IngressClass" MenuMode="MenuMode.Horizontal"  ></IngressClassAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="IngressClass" T="V1IngressClass" ExplainFieldPrefix="ingressClass"></MetadataView>
+    <MetadataView Item="IngressClass.Metadata"  ExplainFieldPrefix="ingressClass"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

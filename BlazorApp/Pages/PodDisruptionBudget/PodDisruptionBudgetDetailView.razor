@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1PodDisruptionBudget>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodDisruptionBudget>
 @if (PodDisruptionBudget != null)
 {
     <PodDisruptionBudgetAction Item="PodDisruptionBudget" MenuMode="MenuMode.Horizontal"  ></PodDisruptionBudgetAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="PodDisruptionBudget" T="V1PodDisruptionBudget" ExplainFieldPrefix="podDisruptionBudget"></MetadataView>
+    <MetadataView Item="PodDisruptionBudget.Metadata"  ExplainFieldPrefix="podDisruptionBudget"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

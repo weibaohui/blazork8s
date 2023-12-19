@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1EndpointSlice>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1EndpointSlice>
 @if (EndpointSlice != null)
 {
     <EndpointSliceAction Item="EndpointSlice" MenuMode="MenuMode.Horizontal"  ></EndpointSliceAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="EndpointSlice" T="V1EndpointSlice" ExplainFieldPrefix="endpointSlice"></MetadataView>
+    <MetadataView Item="EndpointSlice.Metadata" ExplainFieldPrefix="endpointSlice"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

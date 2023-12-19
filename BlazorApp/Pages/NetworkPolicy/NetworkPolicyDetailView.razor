@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1NetworkPolicy>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1NetworkPolicy>
 @if (NetworkPolicy != null)
 {
     <NetworkPolicyAction Item="NetworkPolicy" MenuMode="MenuMode.Horizontal"  ></NetworkPolicyAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="NetworkPolicy" T="V1NetworkPolicy" ExplainFieldPrefix="networkPolicy"></MetadataView>
+    <MetadataView Item="NetworkPolicy.Metadata"  ExplainFieldPrefix="networkPolicy"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

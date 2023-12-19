@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1PersistentVolumeClaim>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PersistentVolumeClaim>
 @if (PersistentVolumeClaim != null)
 {
     <PersistentVolumeClaimAction Item="PersistentVolumeClaim" MenuMode="MenuMode.Horizontal"  ></PersistentVolumeClaimAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="PersistentVolumeClaim" T="V1PersistentVolumeClaim" ExplainFieldPrefix="persistentVolumeClaim"></MetadataView>
+    <MetadataView Item="PersistentVolumeClaim.Metadata"  ExplainFieldPrefix="persistentVolumeClaim"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

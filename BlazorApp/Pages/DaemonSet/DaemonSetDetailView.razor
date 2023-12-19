@@ -1,24 +1,26 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1DaemonSet>
+@using BlazorApp.Pages.Pod
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1DaemonSet>
 @if (DaemonSet != null)
 {
     <DaemonSetAction Item="DaemonSet" MenuMode="MenuMode.Horizontal"  ></DaemonSetAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="DaemonSet" T="V1DaemonSet" ExplainFieldPrefix="daemonSet"></MetadataView>
+    <MetadataView Item="DaemonSet.Metadata"  ExplainFieldPrefix="daemonSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">
             @DaemonSet.Name()
         </DescriptionsItem>
-                <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds" ></PropertySimpleView>
-                <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit" ></PropertySimpleView>
-                <PropertySimpleView Title="Selector" Item="@DaemonSet.Spec.Selector" ExplainField="daemonSet.spec.selector"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Template" Item="@DaemonSet.Spec.Template" ExplainField="daemonSet.spec.template"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="UpdateStrategy" Item="@DaemonSet.Spec.UpdateStrategy" ExplainField="daemonSet.spec.updateStrategy"  ShowInJson="true" ></PropertySimpleView>
+        <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds" ></PropertySimpleView>
+        <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit" ></PropertySimpleView>
+        <PropertySimpleView Title="Selector" Item="@DaemonSet.Spec.Selector" ExplainField="daemonSet.spec.selector"  ShowInJson="true" ></PropertySimpleView>
+        <PropertySimpleView Title="UpdateStrategy" Item="@DaemonSet.Spec.UpdateStrategy" ExplainField="daemonSet.spec.updateStrategy"  ShowInJson="true" ></PropertySimpleView>
     </Descriptions>
+    <Divider Orientation="left" Style="font-weight:bold">PodTemplate</Divider>
+    <MetadataView Item="@DaemonSet.Spec.Template.Metadata"  ExplainFieldPrefix="statefulSet"></MetadataView>
+    <PodSpecView PodSpec="@DaemonSet.Spec.Template.Spec"></PodSpecView>
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <Descriptions Bordered Column="1">
                 <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount" ></PropertySimpleView>

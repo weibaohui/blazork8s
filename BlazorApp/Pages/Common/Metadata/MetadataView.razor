@@ -1,34 +1,37 @@
 @using k8s.Models
 @using Microsoft.IdentityModel.Tokens
-@typeparam            T
 @if (Item != null)
 {
     <Descriptions Bordered Column="1">
+        @if (Item.Name != null)
+        {
+            <DescriptionsItem Title="Name">
+                <Text Copyable>@Item.Name</Text>
+            </DescriptionsItem>
+        }
 
-        <DescriptionsItem Title="Name" LabelStyle="width:120px">
-            <Text Copyable>@Item.Name()</Text>
-        </DescriptionsItem>
-        <DescriptionsItem Title="Creation">
-            <AgeView Age="@Item.CreationTimestamp()"></AgeView>
-            (@Item.Metadata.CreationTimestamp.GetValueOrDefault().ToLocalTime())
-        </DescriptionsItem>
+        @if (Item.CreationTimestamp != null)
+        {
+            <DescriptionsItem Title="Creation">
+                <AgeView Age="@Item.CreationTimestamp"></AgeView>
+                (@Item.CreationTimestamp.GetValueOrDefault().ToLocalTime())
+            </DescriptionsItem>
+        }
 
         @if (!Item.Namespace().IsNullOrEmpty())
         {
             <DescriptionsItem Title="Namespace">@Item.Namespace()</DescriptionsItem>
         }
-        <LabelsView Labels="Item.Labels()"></LabelsView>
-        <AnnotationsView Annotations="@Item.Annotations()"></AnnotationsView>
-        <ControllerByView Owner=@Item.OwnerReferences()></ControllerByView>
-        <FinalizersView Finalizers="@Item.Finalizers()"></FinalizersView>
-        <PropertySimpleView Title="DeletionGracePeriodSeconds" Item="@Item.Metadata.DeletionGracePeriodSeconds" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionGracePeriodSeconds")></PropertySimpleView>
-        <PropertySimpleView Title="DeletionTimestamp" Item="@Item.Metadata.DeletionTimestamp" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionTimestamp")></PropertySimpleView>
-        <PropertySimpleView Title="GenerateName" Item="@Item.Metadata.GenerateName" ExplainField=@(ExplainFieldPrefix + ".metadata.generateName")></PropertySimpleView>
-        <PropertySimpleView Title="Generation" Item="@Item.Metadata.Generation" ExplainField=@(ExplainFieldPrefix + ".metadata.generation")></PropertySimpleView>
-        <PropertySimpleView Title="ResourceVersion" Item="@Item.Metadata.ResourceVersion" ExplainField=@(ExplainFieldPrefix + ".metadata.resourceVersion")></PropertySimpleView>
-        <PropertySimpleView Title="SelfLink" Item="@Item.Metadata.SelfLink" ExplainField=@(ExplainFieldPrefix + ".metadata.selfLink")></PropertySimpleView>
-        <PropertySimpleView Title="Uid" Item="@Item.Metadata.Uid" ExplainField=@(ExplainFieldPrefix + ".metadata.uid")></PropertySimpleView>
-
-
+        <LabelsView Labels="Item.Labels"></LabelsView>
+        <AnnotationsView Annotations="@Item.Annotations"></AnnotationsView>
+        <ControllerByView Owner=@Item.OwnerReferences></ControllerByView>
+        <FinalizersView Finalizers="@Item.Finalizers"></FinalizersView>
+        <PropertySimpleView Title="DeletionGracePeriodSeconds" Item="@Item.DeletionGracePeriodSeconds" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionGracePeriodSeconds")></PropertySimpleView>
+        <PropertySimpleView Title="DeletionTimestamp" Item="@Item.DeletionTimestamp" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionTimestamp")></PropertySimpleView>
+        <PropertySimpleView Title="GenerateName" Item="@Item.GenerateName" ExplainField=@(ExplainFieldPrefix + ".metadata.generateName")></PropertySimpleView>
+        <PropertySimpleView Title="Generation" Item="@Item.Generation" ExplainField=@(ExplainFieldPrefix + ".metadata.generation")></PropertySimpleView>
+        <PropertySimpleView Title="ResourceVersion" Item="@Item.ResourceVersion" ExplainField=@(ExplainFieldPrefix + ".metadata.resourceVersion")></PropertySimpleView>
+        <PropertySimpleView Title="SelfLink" Item="@Item.SelfLink" ExplainField=@(ExplainFieldPrefix + ".metadata.selfLink")></PropertySimpleView>
+        <PropertySimpleView Title="Uid" Item="@Item.Uid" ExplainField=@(ExplainFieldPrefix + ".metadata.uid")></PropertySimpleView>
     </Descriptions>
 }

@@ -1,13 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common;
-@inherits DrawerPageBase<V1ReplicationController>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ReplicationController>
 @if (ReplicationController != null)
 {
     <ReplicationControllerAction Item="ReplicationController" MenuMode="MenuMode.Horizontal"  ></ReplicationControllerAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="ReplicationController" T="V1ReplicationController" ExplainFieldPrefix="replicationController"></MetadataView>
+    <MetadataView Item="ReplicationController.Metadata"  ExplainFieldPrefix="replicationController"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <DescriptionsItem Title="Name">

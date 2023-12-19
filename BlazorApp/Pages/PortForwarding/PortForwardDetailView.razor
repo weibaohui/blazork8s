@@ -1,11 +1,10 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using Entity
 @inherits FeedbackComponent<Entity.PortForward, bool>
 @if (Item != null)
 {
     <PortForwardAction Item="Item" MenuMode="MenuMode.Horizontal"></PortForwardAction>
-    <MetadataView Item="Item" T="PortForward"></MetadataView>
+    <MetadataView Item="Item.Metadata" ></MetadataView>
     <Descriptions Bordered Column="1">
 
         <DescriptionsItem Title="KubePort" LabelStyle="width:120px">

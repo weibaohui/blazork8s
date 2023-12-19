@@ -1,12 +1,11 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
     <ServiceAction Item="Item" MenuMode="MenuMode.Horizontal"></ServiceAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Item" T="V1Service"></MetadataView>
+    <MetadataView Item="Item.Metadata" ></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <Descriptions Bordered Column="1">
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector"></SelectorView>

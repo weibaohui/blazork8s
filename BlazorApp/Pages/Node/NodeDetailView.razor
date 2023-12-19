@@ -8,7 +8,7 @@
 {
     <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
     <Descriptions Bordered Column="1">
-        <MetadataView Item="_node" T="V1Node"></MetadataView>
+        <MetadataView Item="_node.Metadata" ></MetadataView>
 
         <DescriptionsItem Title="Conditions" LabelStyle="width:120px">
             @if (_node.Status.Conditions.IsReady())

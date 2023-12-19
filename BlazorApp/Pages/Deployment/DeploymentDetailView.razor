@@ -1,13 +1,12 @@
 ﻿@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
 @if (Deployment != null)
 {
     <DeploymentAction Item="Deployment" MenuMode="MenuMode.Horizontal"></DeploymentAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Deployment" T="V1Deployment" ExplainFieldPrefix="deployment"></MetadataView>
+    <MetadataView Item="Deployment.Metadata"  ExplainFieldPrefix="deployment"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
 
     <Descriptions Bordered Column="1" >
