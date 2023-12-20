@@ -27,7 +27,7 @@
                             }
                         }
                     </HTableColumn>
-                    <PropertySimpleView Title="RestartCount" Item="@ContainerStatuses.Where(x => x.Name == c.Name).Sum(x => x.RestartCount)" ExplainField="pod.status.containerStatuses.restartCount"></PropertySimpleView>
+                    <PropertySimpleView Title="RestartCount" Item="@ContainerStatuses?.Where(x => x.Name == c.Name).Sum(x => x.RestartCount)" ExplainField="pod.status.containerStatuses.restartCount"></PropertySimpleView>
                     <PropertySimpleView Title="Image" Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
                     <PropertyOptionView Title="ImagePullPolicy" ExplainField="pod.spec.containers.imagePullPolicy" Item="@c.ImagePullPolicy" Options='@(new[] { "Always", "IfNotPresent", "Never" })'></PropertyOptionView>
                     <PropertySimpleView Title="Resources" Item="@c.Resources" ExplainField="pod.spec.containers.resources" ShowInJson="true"></PropertySimpleView>
