@@ -12,9 +12,6 @@
     <MetadataView Item="${Item}.Metadata"  ExplainFieldPrefix="${ExplainResourceName}"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @${Item}.Name()
-        </HTableColumn>
         $for(i in Properties)
             ${if(i.IsStatus==false)}
                 ${if(i.isList)}
@@ -33,7 +30,6 @@
             ${end}
         ${end}
     </HTable>
-
  <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
     $for(i in Properties)

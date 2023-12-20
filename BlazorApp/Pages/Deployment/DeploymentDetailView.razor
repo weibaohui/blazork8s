@@ -14,7 +14,6 @@
     <HTable Bordered Column="1" >
         <SelectorView Title="Selector" Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
-
         <ImagesView PodSpec="@Deployment.Spec.Template.Spec"></ImagesView>
         <PropertyOptionView Title="StrategyType" Item="@Deployment.Spec.Strategy.Type" ExplainField="deployment.spec.strategy" Options=@(new[] { "Recreate", "RollingUpdate" })></PropertyOptionView>
         <PropertySimpleView Title="Strategy" Item="@Deployment.Spec.Strategy" ExplainField="deployment.spec.strategy" ShowInJson="true"></PropertySimpleView>
