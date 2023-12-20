@@ -11,7 +11,7 @@ public class ConfigService : IConfigService
     {
         var builder = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true);
+            .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
         _config = builder.Build();
     }
 

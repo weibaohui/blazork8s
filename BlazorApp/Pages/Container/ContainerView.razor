@@ -35,7 +35,7 @@
                     <PropertySimpleView Title="lifecycle" Item="@c.Lifecycle" ExplainField="pod.spec.containers.lifecycle" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="ResizePolicy" Item="@c.ResizePolicy" ExplainField="pod.spec.containers.resizePolicy" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="securityContext" Item="@c.SecurityContext" ExplainField="pod.spec.containers.securityContext" ShowInJson="true"></PropertySimpleView>
-                    <PropertyOptionView Title="TerminationMessagePolicy" Item="@c.TerminationMessagePolicy" ExplainField="pod.spec.containers.terminationMessagePolicy"  Options='@(new[] { "FallbackToLogsOnError", "File" })'></PropertyOptionView>
+                    <PropertyOptionView Title="TerminationMessagePolicy" Item="@c.TerminationMessagePolicy" ExplainField="pod.spec.containers.terminationMessagePolicy" Options='@(new[] { "FallbackToLogsOnError", "File" })'></PropertyOptionView>
                     <PropertySimpleView Title="TerminationMessagePath" Item="@c.TerminationMessagePath" ExplainField="pod.spec.containers.terminationMessagePath"></PropertySimpleView>
                     <PropertySimpleView Title="WorkingDir" Item="@c.WorkingDir" ExplainField="pod.spec.containers.workingDir"></PropertySimpleView>
                     <PropertySimpleView Title="Tty" Item="@c.Tty" ExplainField="pod.spec.containers.tty"></PropertySimpleView>
