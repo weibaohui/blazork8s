@@ -10,7 +10,6 @@
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="Deployment.Metadata"  ExplainFieldPrefix="deployment"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-
     <HTable Bordered Column="1" >
         <SelectorView Title="Selector" Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>

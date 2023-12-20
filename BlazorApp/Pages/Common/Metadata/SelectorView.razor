@@ -1,13 +1,11 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
-@if (Selector != null)
+@if (Selector != null && Selector.Keys.Count>0)
 {
     <HTableColumn Title="@Title">
         @foreach (var label in Selector)
         {
-            <Paragraph Copyable>
                 <Tag Color=@RandomColorHelper.RandomColor()>@label.Key = @label.Value</Tag>
-            </Paragraph>
         }
     </HTableColumn>
 }

@@ -1,0 +1,18 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Pod
+<HTable Bordered Column="1">
+    <PropertySimpleView Title="ActiveDeadlineSeconds" Item="@JobSpec.ActiveDeadlineSeconds" ExplainField="job.spec.activeDeadlineSeconds"></PropertySimpleView>
+    <PropertySimpleView Title="BackoffLimit" Item="@JobSpec.BackoffLimit" ExplainField="job.spec.backoffLimit"></PropertySimpleView>
+    <PropertySimpleView Title="BackoffLimitPerIndex" Item="@JobSpec.BackoffLimitPerIndex" ExplainField="job.spec.backoffLimitPerIndex"></PropertySimpleView>
+    <PropertySimpleView Title="CompletionMode" Item="@JobSpec.CompletionMode" ExplainField="job.spec.completionMode"></PropertySimpleView>
+    <PropertySimpleView Title="Completions" Item="@JobSpec.Completions" ExplainField="job.spec.completions"></PropertySimpleView>
+    <PropertySimpleView Title="ManualSelector" Item="@JobSpec.ManualSelector" ExplainField="job.spec.manualSelector"></PropertySimpleView>
+    <PropertySimpleView Title="MaxFailedIndexes" Item="@JobSpec.MaxFailedIndexes" ExplainField="job.spec.maxFailedIndexes"></PropertySimpleView>
+    <PropertySimpleView Title="Parallelism" Item="@JobSpec.Parallelism" ExplainField="job.spec.parallelism"></PropertySimpleView>
+    <PropertySimpleView Title="PodFailurePolicy" Item="@JobSpec.PodFailurePolicy" ExplainField="job.spec.podFailurePolicy" ShowInJson="true"></PropertySimpleView>
+    <PropertySimpleView Title="PodReplacementPolicy" Item="@JobSpec.PodReplacementPolicy" ExplainField="job.spec.podReplacementPolicy"></PropertySimpleView>
+    <PropertySimpleView Title="Suspend" Item="@JobSpec.Suspend" ExplainField="job.spec.suspend"></PropertySimpleView>
+    <PropertySimpleView Title="TtlSecondsAfterFinished" Item="@JobSpec.TtlSecondsAfterFinished" ExplainField="job.spec.ttlSecondsAfterFinished"></PropertySimpleView>
+</HTable>
+<PodTemplateView PodTemplateItem="@JobSpec.Template"></PodTemplateView>
