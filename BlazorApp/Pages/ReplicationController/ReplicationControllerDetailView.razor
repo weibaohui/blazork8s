@@ -14,7 +14,7 @@
         <PropertySimpleView Title="MinReadySeconds" Item="@ReplicationController.Spec.MinReadySeconds" ExplainField="replicationController.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="Replicas" Item="@ReplicationController.Spec.Replicas" ExplainField="replicationController.spec.replicas"></PropertySimpleView>
     </HTable>
-    <PodTemplateView PodTemplateItem="@ReplicationController.Spec.Template" MetadataExplainFieldPrefix="replicationController"></PodTemplateView>
+    <PodTemplateView PodTemplate="@ReplicationController.Spec.Template" MetadataExplainFieldPrefix="replicationController"></PodTemplateView>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="AvailableReplicas" Item="@ReplicationController.Status.AvailableReplicas" ExplainField="replicationController.status.availableReplicas"></PropertySimpleView>

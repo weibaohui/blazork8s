@@ -18,7 +18,7 @@
         <PropertySimpleView Title="MinReadySeconds" Item="@ReplicaSet.Spec.MinReadySeconds" ExplainField="replicaSet.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="Replicas" Item="@ReplicaSet.Spec.Replicas" ExplainField="replicaSet.spec.replicas"></PropertySimpleView>
     </HTable>
-    <PodTemplateView PodTemplateItem="@ReplicaSet.Spec.Template" MetadataExplainFieldPrefix="replicaSet"></PodTemplateView>
+    <PodTemplateView PodTemplate="@ReplicaSet.Spec.Template" MetadataExplainFieldPrefix="replicaSet"></PodTemplateView>
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">

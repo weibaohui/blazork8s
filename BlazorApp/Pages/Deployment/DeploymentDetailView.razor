@@ -23,7 +23,7 @@
         <PropertySimpleView Title="RevisionHistoryLimit" Item="@Deployment.Spec.RevisionHistoryLimit" ExplainField="deployment.spec.revisionHistoryLimit"></PropertySimpleView>
         <TolerationsView Tolerations="@Deployment.Spec.Template.Spec.Tolerations"></TolerationsView>
     </HTable>
-    <PodTemplateView PodTemplateItem="@Deployment.Spec.Template" MetadataExplainFieldPrefix="deployment"></PodTemplateView>
+    <PodTemplateView PodTemplate="@Deployment.Spec.Template" MetadataExplainFieldPrefix="deployment"></PodTemplateView>
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
