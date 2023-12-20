@@ -1,4 +1,5 @@
 ﻿@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html
 @if (PodItem.Spec.Volumes != null)
 {
@@ -54,6 +55,38 @@
                     }
                 }
             </HTableColumn>
+            <PropertySimpleView Title="AwsElasticBlockStore" Item="@v.AwsElasticBlockStore" ExplainField="volume.awsElasticBlockStore" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="AzureDisk" Item="@v.AzureDisk" ExplainField="volume.azureDisk" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="AzureFile" Item="@v.AzureFile" ExplainField="volume.azureFile" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Cephfs" Item="@v.Cephfs" ExplainField="volume.cephfs" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Cinder" Item="@v.Cinder" ExplainField="volume.cinder" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="ConfigMap" Item="@v.ConfigMap" ExplainField="volume.configMap" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Csi" Item="@v.Csi" ExplainField="volume.csi" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="DownwardAPI" Item="@v.DownwardAPI" ExplainField="volume.downwardAPI" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="EmptyDir" Item="@v.EmptyDir" ExplainField="volume.emptyDir" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Ephemeral" Item="@v.Ephemeral" ExplainField="volume.ephemeral" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Fc" Item="@v.Fc" ExplainField="volume.fc" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="FlexVolume" Item="@v.FlexVolume" ExplainField="volume.flexVolume" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Flocker" Item="@v.Flocker" ExplainField="volume.flocker" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="GcePersistentDisk" Item="@v.GcePersistentDisk" ExplainField="volume.gcePersistentDisk" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="GitRepo" Item="@v.GitRepo" ExplainField="volume.gitRepo" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Glusterfs" Item="@v.Glusterfs" ExplainField="volume.glusterfs" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="HostPath" Item="@v.HostPath" ExplainField="volume.hostPath" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Iscsi" Item="@v.Iscsi" ExplainField="volume.iscsi" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Name" Item="@v.Name" ExplainField="volume.name"></PropertySimpleView>
+            <PropertySimpleView Title="Nfs" Item="@v.Nfs" ExplainField="volume.nfs" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="PersistentVolumeClaim" Item="@v.PersistentVolumeClaim" ExplainField="volume.persistentVolumeClaim" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="PhotonPersistentDisk" Item="@v.PhotonPersistentDisk" ExplainField="volume.photonPersistentDisk" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="PortworxVolume" Item="@v.PortworxVolume" ExplainField="volume.portworxVolume" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Projected" Item="@v.Projected" ExplainField="volume.projected" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Quobyte" Item="@v.Quobyte" ExplainField="volume.quobyte" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Rbd" Item="@v.Rbd" ExplainField="volume.rbd" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="ScaleIO" Item="@v.ScaleIO" ExplainField="volume.scaleIO" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Secret" Item="@v.Secret" ExplainField="volume.secret" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="Storageos" Item="@v.Storageos" ExplainField="volume.storageos" ShowInJson="true"></PropertySimpleView>
+            <PropertySimpleView Title="VsphereVolume" Item="@v.VsphereVolume" ExplainField="volume.vsphereVolume" ShowInJson="true"></PropertySimpleView>
         }
+    </HTable>
+    <HTable>
     </HTable>
 }

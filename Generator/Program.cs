@@ -44,9 +44,19 @@ class Program
 
     public static void Main()
     {
-        new Program().makeTemplate();
+        // new Program().makeTemplate();
         // EntityPrepare.PrepareK8SEntity();
         // RazorEngineProcessor.Process();
+        Volume();
+    }
 
+    public static void Volume()
+    {
+        var dictList = new DictList();
+        dictList.AddItem("Volume",typeof(V1Volume));
+        GeneratorHelper.Generator(dictList.GetDictList()).Run();
+
+        // var list = EntityPrepare.GetK8SEntity(typeof(V1Volume), "Volume");
+        // File.WriteAllText("volume.json",KubernetesJson.Serialize(list));
     }
 }

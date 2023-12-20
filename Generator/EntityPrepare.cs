@@ -30,9 +30,9 @@ public class EntityPrepare
             )
             .ToList();
 
-        list = RemoveMultipleItem(list);
-        list = RemoveOnlyOneChildItem(list);
-        list = RemoveExpandedItem(list);
+        // list = RemoveMultipleItem(list);
+        // list = RemoveOnlyOneChildItem(list);
+        // list = RemoveExpandedItem(list);
         File.WriteAllText("pod-zip3.json", KubernetesJson.Serialize(list));
         return list;
     }
