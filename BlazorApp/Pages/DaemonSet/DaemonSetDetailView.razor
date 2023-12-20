@@ -7,34 +7,32 @@
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1DaemonSet>
 @if (DaemonSet != null)
 {
-    <DaemonSetAction Item="DaemonSet" MenuMode="MenuMode.Horizontal"  ></DaemonSetAction>
+    <DaemonSetAction Item="DaemonSet" MenuMode="MenuMode.Horizontal"></DaemonSetAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="DaemonSet.Metadata"  ExplainFieldPrefix="daemonSet"></MetadataView>
+    <MetadataView Item="DaemonSet.Metadata" ExplainFieldPrefix="daemonSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
         <HTableColumn Title="Name">
             @DaemonSet.Name()
         </HTableColumn>
-        <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds" ></PropertySimpleView>
-        <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit" ></PropertySimpleView>
-        <PropertySimpleView Title="Selector" Item="@DaemonSet.Spec.Selector" ExplainField="daemonSet.spec.selector"  ShowInJson="true" ></PropertySimpleView>
-        <PropertySimpleView Title="UpdateStrategy" Item="@DaemonSet.Spec.UpdateStrategy" ExplainField="daemonSet.spec.updateStrategy"  ShowInJson="true" ></PropertySimpleView>
+        <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds"></PropertySimpleView>
+        <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit"></PropertySimpleView>
+        <PropertySimpleView Title="Selector" Item="@DaemonSet.Spec.Selector" ExplainField="daemonSet.spec.selector" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="UpdateStrategy" Item="@DaemonSet.Spec.UpdateStrategy" ExplainField="daemonSet.spec.updateStrategy" ShowInJson="true"></PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">PodTemplate</Divider>
-    <MetadataView Item="@DaemonSet.Spec.Template.Metadata"  ExplainFieldPrefix="statefulSet"></MetadataView>
-    <PodSpecView PodSpec="@DaemonSet.Spec.Template.Spec"></PodSpecView>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <PodTemplateView PodTemplateItem="@DaemonSet.Spec.Template" MetadataExplainFieldPrefix="statefulSet"></PodTemplateView>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-                <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount" ></PropertySimpleView>
-                <PropertySimpleView Title="Conditions" Item="@DaemonSet.Status.Conditions" ExplainField="daemonSet.status.conditions" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="CurrentNumberScheduled" Item="@DaemonSet.Status.CurrentNumberScheduled" ExplainField="daemonSet.status.currentNumberScheduled" ></PropertySimpleView>
-                <PropertySimpleView Title="DesiredNumberScheduled" Item="@DaemonSet.Status.DesiredNumberScheduled" ExplainField="daemonSet.status.desiredNumberScheduled" ></PropertySimpleView>
-                <PropertySimpleView Title="NumberAvailable" Item="@DaemonSet.Status.NumberAvailable" ExplainField="daemonSet.status.numberAvailable" ></PropertySimpleView>
-                <PropertySimpleView Title="NumberMisscheduled" Item="@DaemonSet.Status.NumberMisscheduled" ExplainField="daemonSet.status.numberMisscheduled" ></PropertySimpleView>
-                <PropertySimpleView Title="NumberReady" Item="@DaemonSet.Status.NumberReady" ExplainField="daemonSet.status.numberReady" ></PropertySimpleView>
-                <PropertySimpleView Title="NumberUnavailable" Item="@DaemonSet.Status.NumberUnavailable" ExplainField="daemonSet.status.numberUnavailable" ></PropertySimpleView>
-                <PropertySimpleView Title="ObservedGeneration" Item="@DaemonSet.Status.ObservedGeneration" ExplainField="daemonSet.status.observedGeneration" ></PropertySimpleView>
-                <PropertySimpleView Title="UpdatedNumberScheduled" Item="@DaemonSet.Status.UpdatedNumberScheduled" ExplainField="daemonSet.status.updatedNumberScheduled" ></PropertySimpleView>
+        <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount"></PropertySimpleView>
+        <PropertySimpleView Title="Conditions" Item="@DaemonSet.Status.Conditions" ExplainField="daemonSet.status.conditions" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="CurrentNumberScheduled" Item="@DaemonSet.Status.CurrentNumberScheduled" ExplainField="daemonSet.status.currentNumberScheduled"></PropertySimpleView>
+        <PropertySimpleView Title="DesiredNumberScheduled" Item="@DaemonSet.Status.DesiredNumberScheduled" ExplainField="daemonSet.status.desiredNumberScheduled"></PropertySimpleView>
+        <PropertySimpleView Title="NumberAvailable" Item="@DaemonSet.Status.NumberAvailable" ExplainField="daemonSet.status.numberAvailable"></PropertySimpleView>
+        <PropertySimpleView Title="NumberMisscheduled" Item="@DaemonSet.Status.NumberMisscheduled" ExplainField="daemonSet.status.numberMisscheduled"></PropertySimpleView>
+        <PropertySimpleView Title="NumberReady" Item="@DaemonSet.Status.NumberReady" ExplainField="daemonSet.status.numberReady"></PropertySimpleView>
+        <PropertySimpleView Title="NumberUnavailable" Item="@DaemonSet.Status.NumberUnavailable" ExplainField="daemonSet.status.numberUnavailable"></PropertySimpleView>
+        <PropertySimpleView Title="ObservedGeneration" Item="@DaemonSet.Status.ObservedGeneration" ExplainField="daemonSet.status.observedGeneration"></PropertySimpleView>
+        <PropertySimpleView Title="UpdatedNumberScheduled" Item="@DaemonSet.Status.UpdatedNumberScheduled" ExplainField="daemonSet.status.updatedNumberScheduled"></PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@DaemonSet.Metadata.Uid"></MiniEventListView>
 }
