@@ -1,16 +1,17 @@
 @using Extension.k8s
 @using k8s.Models
-@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @inherits FeedbackComponent<V1Node, bool>
 @if (_node != null)
 {
+    <MetadataView Item="_node.Metadata" ></MetadataView>
+
     <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
     <HTable Bordered Column="1">
-        <MetadataView Item="_node.Metadata" ></MetadataView>
 
         <HTableColumn Title="Conditions" >
             @if (_node.Status.Conditions.IsReady())
