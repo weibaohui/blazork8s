@@ -1,5 +1,5 @@
 @using BlazorApp.Pages.Common.Html
-@if (Annotations != null)
+@if (Annotations != null && Annotations.Count > 0)
 {
     <HTableColumn Title="Annotations">
         @foreach (var label in Annotations)
