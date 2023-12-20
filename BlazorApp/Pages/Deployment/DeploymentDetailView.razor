@@ -28,7 +28,7 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <ConditionView ConditionList="@Deployment.Status.Conditions" ExplainField="deployment.status.conditions"></ConditionView>
+        <DeploymentConditionView ConditionList="@Deployment.Status.Conditions" ExplainField="deployment.status.conditions"></DeploymentConditionView>
         <HTableColumn Title="Replicas Sum" >
             @($"{Deployment.Spec.Replicas ?? 0} desired, {Deployment.Status.UpdatedReplicas ?? 0} updated, {Deployment.Status.Replicas ?? 0} total, {Deployment.Status.AvailableReplicas ?? 0} available, {Deployment.Status.UnavailableReplicas ?? 0} unavailable")
         </HTableColumn>

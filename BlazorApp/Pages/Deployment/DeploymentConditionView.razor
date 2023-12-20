@@ -3,7 +3,7 @@
 @if (ConditionList != null)
 {
     <HTableColumn Title="Conditions">
-        <Condition ConditionList="ConditionList"></Condition>
+        <DeploymentCondition ConditionList="@ConditionList"></DeploymentCondition>
         <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
     </HTableColumn>
 }

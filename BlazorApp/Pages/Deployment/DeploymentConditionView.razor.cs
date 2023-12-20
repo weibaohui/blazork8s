@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace  BlazorApp.Pages.Deployment
 {
-    public partial class ConditionView:ComponentBase
+    public partial class DeploymentConditionView:ComponentBase
     {
         [Parameter]
         public IList<V1DeploymentCondition> ConditionList { get; set; }
