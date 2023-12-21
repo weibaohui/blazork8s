@@ -1,0 +1,47 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.ConfigMap != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">ConfigMap</Tag>
+            </HTd>
+        </HTr>
+        <PropertySimpleView Title="Name" ExplainField="pod.spec.volumes.configMap.name" Item="@Volume.ConfigMap.Name"></PropertySimpleView>
+        <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.configMap.defaultMode" Item="@Volume.ConfigMap.DefaultMode"></PropertySimpleView>
+        <PropertySimpleView Title="Optional" ExplainField="pod.spec.volumes.configMap.optional" Item="@Volume.ConfigMap.Optional"></PropertySimpleView>
+
+        @if (Volume.ConfigMap.Items != null)
+        {
+            @foreach (var ktp in Volume.ConfigMap.Items)
+            {
+                <HTr>
+                    <HTd >
+                        ConfigMap
+                        <KubectlExplainButton Field="pod.spec.volumes.configMap"></KubectlExplainButton>
+                    </HTd >
+                    <HTd >
+                        <Tag>@ktp.Key => @ktp.Path</Tag>
+                        <KubectlExplainButton Field="pod.spec.volumes.configMap.items"></KubectlExplainButton>
+                    </HTd>
+                </HTr>
+            }
+        }
+    </HTable>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+
+    [Parameter]
+    public int Index { get; set; }
+
+}

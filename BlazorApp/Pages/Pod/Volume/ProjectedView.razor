@@ -29,7 +29,7 @@
                             <Tag Icon="hdd" PresetColor="@PresetColor.Green">@item.Path</Tag>
                             @if (item.FieldRef != null)
                             {
-                                <Tag>@item.Mode @item.FieldRef.ApiVersion @item.FieldRef.FieldPath </Tag>
+                                <Tag>@item.Mode @item.FieldRef.ApiVersion/@item.FieldRef.FieldPath </Tag>
                             }
                             @if (item.ResourceFieldRef != null)
                             {
