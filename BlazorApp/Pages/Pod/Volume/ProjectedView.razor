@@ -1,0 +1,26 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.Projected != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">Projected</Tag>
+            </HTd>
+        </HTr>
+        <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.projected.defaultMode" Item="@Volume.Projected.DefaultMode" ></PropertySimpleView>
+    </HTable>
+    }
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+    [Parameter]
+    public int Index { get; set; }
+}

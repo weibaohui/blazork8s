@@ -1,20 +1,21 @@
-﻿@using BlazorApp.Pages.Common.Html.HTable
+﻿@using BlazorApp.Pages.Pod.Volume
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Pod.Volume
 @using BlazorApp.Pages.Common.Html
 @if (PodItem.Spec.Volumes != null)
 {
 
 
     <Divider Orientation="left" Style="font-weight:bold">  Volumes  <Badge Count="@PodItem.Spec.Volumes.Count"></Badge></Divider>
-    <HTable Bordered Column="1">
 
         @for (var i = 0; i < PodItem.Spec.Volumes.Count; i++)
         {
             var v  = PodItem.Spec.Volumes[i];
             var index = i+1;
             <HostPathView Volume="@v" Index="@index"></HostPathView>
+            <ProjectedView Volume="@v" Index="@index"></ProjectedView>
         }
+        <HTable Bordered Column="1">
 
         @foreach (var v in PodItem.Spec.Volumes)
         {
