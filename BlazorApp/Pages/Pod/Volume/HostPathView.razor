@@ -1,0 +1,26 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.HostPath != null)
+{
+    <HTr>
+        <HTd ColSpan="2">
+            <Divider Orientation="left" Style="font-weight:bold"><Badge Count="@Index"></Badge>
+                    @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">HostPath</Tag>
+                    </Divider>
+        </HTd>
+    </HTr>
+
+    <PropertyOptionView Title="Type" Item="@Volume.HostPath.Type" Options='@(new[] { "","DirectoryOrCreate", "Directory", "FileOrCreate", "File","Socket", "CharDevice", "BlockDevice" })' ExplainField="pod.spec.volumes.hostPath.type"></PropertyOptionView>
+    <PropertySimpleView Title="Path" ExplainField="pod.spec.volumes.hostPath.path" Item="@Volume.HostPath.Path" ></PropertySimpleView>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+    [Parameter]
+    public int Index { get; set; }
+}
