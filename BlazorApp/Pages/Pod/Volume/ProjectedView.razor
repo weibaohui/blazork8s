@@ -23,21 +23,44 @@
                     <HTr>
                         <HTd >
                             DownwardAPI
+                            <KubectlExplainButton Field="pod.spec.volumes.downwardAPI"></KubectlExplainButton>
                         </HTd >
                         <HTd >
                             <Tag Icon="hdd" PresetColor="@PresetColor.Green">@item.Path</Tag>
                             @if (item.FieldRef != null)
                             {
-                                <Tag>@item.FieldRef.ApiVersion @item.FieldRef.FieldPath </Tag>
+                                <Tag>@item.Mode @item.FieldRef.ApiVersion @item.FieldRef.FieldPath </Tag>
                             }
                             @if (item.ResourceFieldRef != null)
                             {
-                                <Tag> @item.ResourceFieldRef.ContainerName @item.ResourceFieldRef.Resource @item.ResourceFieldRef.Divisor</Tag>
+                                <Tag> @item.ResourceFieldRef.ContainerName/@item.ResourceFieldRef.Resource @item.ResourceFieldRef.Divisor</Tag>
                             }
-
-                                    @* <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton> *@
+                            <KubectlExplainButton Field="pod.spec.volumes.downwardAPI.items"></KubectlExplainButton>
                         </HTd>
                     </HTr>
+                }
+            }
+
+
+            @if (p.ConfigMap != null)
+            {
+                @if (p.ConfigMap.Items != null)
+                {
+                    @foreach (var ktp in p.ConfigMap.Items)
+                    {
+                        <HTr>
+                            <HTd >
+                                ConfigMap
+                                <KubectlExplainButton Field="pod.spec.volumes.configMap"></KubectlExplainButton>
+
+                            </HTd >
+                            <HTd >
+                                <Tag Icon="hdd" PresetColor="@PresetColor.Orange">ConfigMap @p.ConfigMap.Name</Tag>
+                                <Tag>@ktp.Key => @ktp.Path</Tag>
+                                <KubectlExplainButton Field="pod.spec.volumes.configMap.items"></KubectlExplainButton>
+                            </HTd>
+                        </HTr>
+                    }
                 }
             }
         }
