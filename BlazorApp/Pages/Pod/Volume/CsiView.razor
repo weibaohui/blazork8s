@@ -1,0 +1,34 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.Csi != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">CSI</Tag>
+            </HTd>
+        </HTr>
+
+        <PropertySimpleView Title="Driver" ExplainField="pod.spec.volumes.csi.driver" Item="@Volume.Csi.Driver"></PropertySimpleView>
+        <PropertySimpleView Title="VolumeAttributes" ExplainField="pod.spec.volumes.csi.volumeAttributes" Item="@Volume.Csi.VolumeAttributes" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.csi.fsType" Item="@Volume.Csi.FsType"></PropertySimpleView>
+        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.csi.readOnly" Item="@Volume.Csi.ReadOnlyProperty"></PropertySimpleView>
+        <PropertySimpleGenericsView Title="NodePublishSecretRef" ExplainField="pod.spec.volumes.csi.nodePublishSecretRef" Item="@Volume.Csi.NodePublishSecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
+
+    </HTable>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+
+    [Parameter]
+    public int Index { get; set; }
+
+}

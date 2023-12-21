@@ -20,12 +20,12 @@
             <PvcView Volume="@v" Index="@index"></PvcView>
             <IscsiView Volume="@v" Index="@index"></IscsiView>
             <FcView Volume="@v" Index="@index"></FcView>
+            <CsiView Volume="@v" Index="@index"></CsiView>
         }
         <HTable Bordered Column="1">
 
         @foreach (var v in PodItem.Spec.Volumes)
         {
-            <PropertySimpleView Title="Csi" Item="@v.Csi" ExplainField="volume.csi" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="Ephemeral" Item="@v.Ephemeral" ExplainField="volume.ephemeral" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="Flocker" Item="@v.Flocker" ExplainField="volume.flocker" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="PhotonPersistentDisk" Item="@v.PhotonPersistentDisk" ExplainField="volume.photonPersistentDisk" ShowInJson="true"></PropertySimpleView>
