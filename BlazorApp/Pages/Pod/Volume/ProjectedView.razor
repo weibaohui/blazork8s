@@ -1,6 +1,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @if (Volume.Projected != null)
 {
     <HTable >
@@ -9,7 +10,7 @@
             <HTd ColSpan="2">
                 <Badge Count="@Index"></Badge>
                 @Volume.Name
-                <Tag PresetColor="PresetColor.Lime">Projected</Tag>
+                <Tag Color="@RandomColorHelper.RandomColor()">Projected</Tag>
             </HTd>
         </HTr>
         <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.projected.defaultMode" Item="@Volume.Projected.DefaultMode"></PropertySimpleView>
@@ -26,7 +27,7 @@
                             <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI"></KubectlExplainButton>
                         </HTd >
                         <HTd >
-                            <Tag Icon="hdd" PresetColor="@PresetColor.Green">@item.Path</Tag>
+                            <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@item.Path</Tag>
                             @if (item.FieldRef != null)
                             {
                                 <Tag>@item.Mode @item.FieldRef.ApiVersion/@item.FieldRef.FieldPath </Tag>
@@ -53,7 +54,7 @@
 
                         </HTd >
                         <HTd >
-                            <Tag Icon="hdd" PresetColor="@PresetColor.Lime">@p.ConfigMap.Name</Tag>
+                            <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@p.ConfigMap.Name</Tag>
                             <Tag>@ktp.Key => @ktp.Path</Tag>
                             <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap.items"></KubectlExplainButton>
                         </HTd>
@@ -71,7 +72,7 @@
                             <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret"></KubectlExplainButton>
                         </HTd >
                         <HTd >
-                            <Tag Icon="hdd" PresetColor="@PresetColor.Purple"> @p.Secret.Name</Tag>
+                            <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.Secret.Name</Tag>
                             <Tag>@ktp.Key => @ktp.Path</Tag>
                             <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret.items"></KubectlExplainButton>
                         </HTd>
@@ -87,7 +88,7 @@
                         <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
                     </HTd >
                     <HTd >
-                        <Tag Icon="hdd" PresetColor="@PresetColor.Purple"> @p.ServiceAccountToken.Path</Tag>
+                        <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.ServiceAccountToken.Path</Tag>
                         <Tag>@p.ServiceAccountToken.Audience @p.ServiceAccountToken.ExpirationSeconds s</Tag>
                         <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
                     </HTd>

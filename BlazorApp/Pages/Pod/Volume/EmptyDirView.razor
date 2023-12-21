@@ -1,6 +1,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @if (Volume.EmptyDir != null)
 {
     <HTable >
@@ -9,7 +10,7 @@
             <HTd ColSpan="2">
                 <Badge Count="@Index"></Badge>
                 @Volume.Name
-                <Tag PresetColor="PresetColor.Lime">EmptyDir</Tag>
+                <Tag Color="@RandomColorHelper.RandomColor()">EmptyDir</Tag>
             </HTd>
         </HTr>
 
