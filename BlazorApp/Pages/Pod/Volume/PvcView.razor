@@ -1,0 +1,27 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.PersistentVolumeClaim != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">PersistentVolumeClaim</Tag>
+            </HTd>
+        </HTr>
+
+        <PropertySimpleView Title="ClaimName" ExplainField="pod.spec.volumes.persistentVolumeClaim.claimName" Item="@Volume.PersistentVolumeClaim.ClaimName" ></PropertySimpleView>
+    </HTable>
+    }
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+    [Parameter]
+    public int Index { get; set; }
+}

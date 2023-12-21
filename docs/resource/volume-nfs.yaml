@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-nfs
+spec:
+  containers:
+    - image: registry.k8s.io/test-webserver
+      name: test-container
+      volumeMounts:
+        - mountPath: /my-nfs-data
+          name: test-volume
+  volumes:
+    - name: test-volume
+      nfs:
+        server: my-nfs-server.example.com
+        path: /my-nfs-volume
+        readOnly: true

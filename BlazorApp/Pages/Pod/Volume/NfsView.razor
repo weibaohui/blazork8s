@@ -1,0 +1,29 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.Nfs != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">Nfs</Tag>
+            </HTd>
+        </HTr>
+
+        <PropertySimpleView Title="Server" ExplainField="pod.spec.volumes.nfs.server" Item="@Volume.Nfs.Server" ></PropertySimpleView>
+        <PropertySimpleView Title="Path" ExplainField="pod.spec.volumes.nfs.path" Item="@Volume.Nfs.Path" ></PropertySimpleView>
+        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.nfs.readOnly" Item="@Volume.Nfs.ReadOnlyProperty" ></PropertySimpleView>
+    </HTable>
+    }
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+    [Parameter]
+    public int Index { get; set; }
+}
