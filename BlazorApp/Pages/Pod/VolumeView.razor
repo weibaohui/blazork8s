@@ -1,40 +1,23 @@
 ﻿@using BlazorApp.Pages.Pod.Volume
-@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @if (PodItem.Spec.Volumes != null)
 {
+    <Divider Orientation="left" Style="font-weight:bold"> Volumes <Badge Count="@PodItem.Spec.Volumes.Count"></Badge></Divider>
 
-
-    <Divider Orientation="left" Style="font-weight:bold">  Volumes  <Badge Count="@PodItem.Spec.Volumes.Count"></Badge></Divider>
-
-        @for (var i = 0; i < PodItem.Spec.Volumes.Count; i++)
-        {
-            var v  = PodItem.Spec.Volumes[i];
-            var index = i+1;
-            <HostPathView Volume="@v" Index="@index"></HostPathView>
-            <ProjectedView Volume="@v" Index="@index"></ProjectedView>
-            <ConfigMapView Volume="@v" Index="@index"></ConfigMapView>
-            <EmptyDirView Volume="@v" Index="@index"></EmptyDirView>
-            <SecretView Volume="@v" Index="@index"></SecretView>
-            <NfsView Volume="@v" Index="@index"></NfsView>
-            <PvcView Volume="@v" Index="@index"></PvcView>
-            <IscsiView Volume="@v" Index="@index"></IscsiView>
-            <FcView Volume="@v" Index="@index"></FcView>
-            <CsiView Volume="@v" Index="@index"></CsiView>
-        }
-        <HTable Bordered Column="1">
-
-        @foreach (var v in PodItem.Spec.Volumes)
-        {
-            <PropertySimpleView Title="Ephemeral" Item="@v.Ephemeral" ExplainField="volume.ephemeral" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="Flocker" Item="@v.Flocker" ExplainField="volume.flocker" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="PhotonPersistentDisk" Item="@v.PhotonPersistentDisk" ExplainField="volume.photonPersistentDisk" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="Quobyte" Item="@v.Quobyte" ExplainField="volume.quobyte" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="Rbd" Item="@v.Rbd" ExplainField="volume.rbd" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="ScaleIO" Item="@v.ScaleIO" ExplainField="volume.scaleIO" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="Storageos" Item="@v.Storageos" ExplainField="volume.storageos" ShowInJson="true"></PropertySimpleView>
-        }
-    </HTable>
-    <HTable>
-    </HTable>
+    @for (var i = 0; i < PodItem.Spec.Volumes.Count; i++)
+    {
+        var v     = PodItem.Spec.Volumes[i];
+        var index = i + 1;
+        <HostPathView Volume="@v" Index="@index"></HostPathView>
+        <ProjectedView Volume="@v" Index="@index"></ProjectedView>
+        <ConfigMapView Volume="@v" Index="@index"></ConfigMapView>
+        <EmptyDirView Volume="@v" Index="@index"></EmptyDirView>
+        <SecretView Volume="@v" Index="@index"></SecretView>
+        <NfsView Volume="@v" Index="@index"></NfsView>
+        <PvcView Volume="@v" Index="@index"></PvcView>
+        <IscsiView Volume="@v" Index="@index"></IscsiView>
+        <FcView Volume="@v" Index="@index"></FcView>
+        <CsiView Volume="@v" Index="@index"></CsiView>
+        <PropertySimpleView Title="Ephemeral" Item="@v.Ephemeral" ExplainField="volume.ephemeral" ShowInJson="true"></PropertySimpleView>
+    }
 }
