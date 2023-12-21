@@ -19,6 +19,7 @@
             <NfsView Volume="@v" Index="@index"></NfsView>
             <PvcView Volume="@v" Index="@index"></PvcView>
             <IscsiView Volume="@v" Index="@index"></IscsiView>
+            <FcView Volume="@v" Index="@index"></FcView>
         }
         <HTable Bordered Column="1">
 
@@ -29,7 +30,6 @@
             <PropertySimpleView Title="Fc" Item="@v.Fc" ExplainField="volume.fc" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="FlexVolume" Item="@v.FlexVolume" ExplainField="volume.flexVolume" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="Flocker" Item="@v.Flocker" ExplainField="volume.flocker" ShowInJson="true"></PropertySimpleView>
-            <PropertySimpleView Title="Iscsi" Item="@v.Iscsi" ExplainField="volume.iscsi" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="PhotonPersistentDisk" Item="@v.PhotonPersistentDisk" ExplainField="volume.photonPersistentDisk" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="Quobyte" Item="@v.Quobyte" ExplainField="volume.quobyte" ShowInJson="true"></PropertySimpleView>
             <PropertySimpleView Title="Rbd" Item="@v.Rbd" ExplainField="volume.rbd" ShowInJson="true"></PropertySimpleView>

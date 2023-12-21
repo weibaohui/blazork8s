@@ -1,0 +1,42 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-fc
+spec:
+  containers:
+    - name: fc-rw
+      image: kubernetes/pause
+      volumeMounts:
+        - mountPath: "/mnt/fc"
+          name: fc-rw
+  volumes:
+    - name: fc-rw
+      fc:
+        targetWWNs:
+          - '500a0982991b8dc5'
+          - '500a0982891b8dc5'
+        lun: 2
+        fsType: ext4
+        readOnly: true
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-fc-2
+spec:
+  containers:
+    - name: fc-rw
+      image: kubernetes/pause
+      volumeMounts:
+        - mountPath: "/mnt/fc"
+          name: fc-rw
+  volumes:
+    - name: fc-rw
+      fc:
+        wwids:
+          - '500a0982991b8dc5'
+          - '500a0982891b8dc5'
+        lun: 2
+        fsType: ext4
+        readOnly: true

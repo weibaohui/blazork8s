@@ -1,0 +1,34 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.Fc != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">FC</Tag>
+            </HTd>
+        </HTr>
+
+        <PropertyListView Title="TargetWWNs" ExplainField="pod.spec.volumes.fc.targetWWNs" Items="@Volume.Fc.TargetWWNs" T="string"></PropertyListView>
+        <PropertyListView Title="Wwids" ExplainField="pod.spec.volumes.fc.wwids" Items="@Volume.Fc.Wwids" T="string"></PropertyListView>
+        <PropertySimpleView Title="Lun" ExplainField="pod.spec.volumes.fc.lun" Item="@Volume.Fc.Lun"></PropertySimpleView>
+        <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.fc.fsType" Item="@Volume.Fc.FsType"></PropertySimpleView>
+        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.fc.readOnly" Item="@Volume.Fc.ReadOnlyProperty"></PropertySimpleView>
+
+    </HTable>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+
+    [Parameter]
+    public int Index { get; set; }
+
+}
