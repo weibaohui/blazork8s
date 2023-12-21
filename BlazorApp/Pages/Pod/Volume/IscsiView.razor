@@ -1,0 +1,38 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.Iscsi != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">iSCSI</Tag>
+            </HTd>
+        </HTr>
+
+        <PropertySimpleView Title="Iqn" ExplainField="pod.spec.volumes.iscsi.iqn" Item="@Volume.Iscsi.Iqn"></PropertySimpleView>
+        <PropertyListView Title="Portals" ExplainField="pod.spec.volumes.iscsi.portals" Items="@Volume.Iscsi.Portals" T="string"></PropertyListView>
+        <PropertySimpleView Title="TargetPortal" ExplainField="pod.spec.volumes.iscsi.targetPortal" Item="@Volume.Iscsi.TargetPortal"></PropertySimpleView>
+        <PropertySimpleView Title="Lun" ExplainField="pod.spec.volumes.iscsi.lun" Item="@Volume.Iscsi.Lun"></PropertySimpleView>
+        <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.iscsi.fsType" Item="@Volume.Iscsi.FsType"></PropertySimpleView>
+        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.iscsi.readOnly" Item="@Volume.Iscsi.ReadOnlyProperty"></PropertySimpleView>
+        <PropertySimpleView Title="ChapAuthDiscovery" ExplainField="pod.spec.volumes.iscsi.chapAuthDiscovery" Item="@Volume.Iscsi.ChapAuthDiscovery"></PropertySimpleView>
+        <PropertySimpleView Title="ChapAuthSession" ExplainField="pod.spec.volumes.iscsi.chapAuthSession" Item="@Volume.Iscsi.ChapAuthSession"></PropertySimpleView>
+        <PropertySimpleGenericsView Title="SecretRef" ExplainField="pod.spec.volumes.iscsi.SecretRef" Item="@Volume.Iscsi.SecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
+
+    </HTable>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+
+    [Parameter]
+    public int Index { get; set; }
+
+}
