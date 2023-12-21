@@ -43,7 +43,7 @@
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>
                 <AntDesign.Column Title="Condition" TData="string">
-                    <Condition ConditionList="@context.Status.Conditions"></Condition>
+                    <DeploymentCondition ConditionList="@context.Status.Conditions"></DeploymentCondition>
                 </AntDesign.Column>
 
                 <ActionColumn Title="Action" Width="200" Fixed="right">
