@@ -12,15 +12,47 @@
                 <Tag PresetColor="PresetColor.Lime">Projected</Tag>
             </HTd>
         </HTr>
-        <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.projected.defaultMode" Item="@Volume.Projected.DefaultMode" ></PropertySimpleView>
+        <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.projected.defaultMode" Item="@Volume.Projected.DefaultMode"></PropertySimpleView>
+
+        @foreach (var p in Volume.Projected.Sources)
+        {
+            @if (p.DownwardAPI != null)
+            {
+                @foreach (var item in p.DownwardAPI.Items)
+                {
+                    <HTr>
+                        <HTd >
+                            DownwardAPI
+                        </HTd >
+                        <HTd >
+                            <Tag Icon="hdd" PresetColor="@PresetColor.Green">@item.Path</Tag>
+                            @if (item.FieldRef != null)
+                            {
+                                <Tag>@item.FieldRef.ApiVersion @item.FieldRef.FieldPath </Tag>
+                            }
+                            @if (item.ResourceFieldRef != null)
+                            {
+                                <Tag> @item.ResourceFieldRef.ContainerName @item.ResourceFieldRef.Resource @item.ResourceFieldRef.Divisor</Tag>
+                            }
+
+                                    @* <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton> *@
+                        </HTd>
+                    </HTr>
+                }
+            }
+        }
+
+
     </HTable>
-    }
+}
 
 
 @code {
 
     [Parameter]
     public V1Volume Volume { get; set; }
+
     [Parameter]
     public int Index { get; set; }
+
 }
