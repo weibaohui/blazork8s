@@ -80,7 +80,7 @@ public class PortForwardExecutorHelper
         }
     }
 
-    private async void RemoveFailedPort()
+    private  void RemoveFailedPort()
     {
         if (Map.Count == 0)
         {
