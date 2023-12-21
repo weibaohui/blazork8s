@@ -16,14 +16,14 @@
 
         @foreach (var p in Volume.Projected.Sources)
         {
-            @if (p.DownwardAPI != null)
+            @if (p.DownwardAPI != null && p.DownwardAPI.Items != null)
             {
                 @foreach (var item in p.DownwardAPI.Items)
                 {
                     <HTr>
                         <HTd >
                             DownwardAPI
-                            <KubectlExplainButton Field="pod.spec.volumes.downwardAPI"></KubectlExplainButton>
+                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI"></KubectlExplainButton>
                         </HTd >
                         <HTd >
                             <Tag Icon="hdd" PresetColor="@PresetColor.Green">@item.Path</Tag>
@@ -33,35 +33,65 @@
                             }
                             @if (item.ResourceFieldRef != null)
                             {
-                                <Tag> @item.ResourceFieldRef.ContainerName/@item.ResourceFieldRef.Resource @item.ResourceFieldRef.Divisor</Tag>
+                                <Tag> @item.ResourceFieldRef.ContainerName/@item.ResourceFieldRef.Resource</Tag>
                             }
-                            <KubectlExplainButton Field="pod.spec.volumes.downwardAPI.items"></KubectlExplainButton>
+                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI.items"></KubectlExplainButton>
                         </HTd>
                     </HTr>
                 }
             }
 
 
-            @if (p.ConfigMap != null)
+            @if (p.ConfigMap != null && p.ConfigMap.Items != null)
             {
-                @if (p.ConfigMap.Items != null)
+                @foreach (var ktp in p.ConfigMap.Items)
                 {
-                    @foreach (var ktp in p.ConfigMap.Items)
-                    {
-                        <HTr>
-                            <HTd >
-                                ConfigMap
-                                <KubectlExplainButton Field="pod.spec.volumes.configMap"></KubectlExplainButton>
+                    <HTr>
+                        <HTd >
+                            ConfigMap
+                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap"></KubectlExplainButton>
 
-                            </HTd >
-                            <HTd >
-                                <Tag Icon="hdd" PresetColor="@PresetColor.Orange">ConfigMap @p.ConfigMap.Name</Tag>
-                                <Tag>@ktp.Key => @ktp.Path</Tag>
-                                <KubectlExplainButton Field="pod.spec.volumes.configMap.items"></KubectlExplainButton>
-                            </HTd>
-                        </HTr>
-                    }
+                        </HTd >
+                        <HTd >
+                            <Tag Icon="hdd" PresetColor="@PresetColor.Lime">@p.ConfigMap.Name</Tag>
+                            <Tag>@ktp.Key => @ktp.Path</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap.items"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
                 }
+            }
+
+            @if (p.Secret != null && p.Secret.Items != null)
+            {
+                @foreach (var ktp in p.Secret.Items)
+                {
+                    <HTr>
+                        <HTd >
+                            Secret
+                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret"></KubectlExplainButton>
+                        </HTd >
+                        <HTd >
+                            <Tag Icon="hdd" PresetColor="@PresetColor.Purple"> @p.Secret.Name</Tag>
+                            <Tag>@ktp.Key => @ktp.Path</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret.items"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
+                }
+            }
+
+            @if (p.ServiceAccountToken != null )
+            {
+                <HTr>
+                    <HTd >
+                        ServiceAccountToken
+                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
+                    </HTd >
+                    <HTd >
+                        <Tag Icon="hdd" PresetColor="@PresetColor.Purple"> @p.ServiceAccountToken.Path</Tag>
+                        <Tag>@p.ServiceAccountToken.Audience @p.ServiceAccountToken.ExpirationSeconds s</Tag>
+                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
+                    </HTd>
+                </HTr>
             }
         }
 

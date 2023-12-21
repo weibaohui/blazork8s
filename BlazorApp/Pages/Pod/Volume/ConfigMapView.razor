@@ -27,6 +27,10 @@
                     </HTd >
                     <HTd >
                         <Tag>@ktp.Key => @ktp.Path</Tag>
+                        @if (ktp.Mode != null)
+                        {
+                            <Tag>@ktp.Mode</Tag>
+                        }
                         <KubectlExplainButton Field="pod.spec.volumes.configMap.items"></KubectlExplainButton>
                     </HTd>
                 </HTr>

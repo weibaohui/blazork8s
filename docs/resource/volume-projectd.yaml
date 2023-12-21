@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: volume-projected
+spec:
+  containers:
+    - name: container-test
+      image: busybox:1.28
+      command: ["sleep", "3600"]
+      volumeMounts:
+        - name: all-in-one
+          mountPath: "/projected-volume"
+          readOnly: true
+  volumes:
+    - name: all-in-one
+      projected:
+        sources:
+          - serviceAccountToken:
+              audience: api
+              expirationSeconds: 3600
+              path: token
+          - secret:
+              name: mysecret2
+              items:
+                - key: password
+                  path: my-group/my-password
+                  mode: 511
+          - secret:
+              name: mysecret
+              items:
+                - key: username
+                  path: my-group/my-username
+          - downwardAPI:
+              items:
+                - path: "labels"
+                  fieldRef:
+                    fieldPath: metadata.labels
+                - path: "cpu_limit"
+                  resourceFieldRef:
+                    containerName: container-test
+                    resource: limits.cpu
+          - configMap:
+              name: myconfigmap
+              items:
+                - key: config
+                  path: my-group/my-config
+#          - clusterTrustBundle:
+#              name: example
+#              path: example-roots.pem
+#          - clusterTrustBundle:
+#                    signerName: "example.com/mysigner"
+#                    labelSelector:
+#                      matchLabels:
+#                        version: live
+#                    path: mysigner-roots.pem
+#                    optional: true

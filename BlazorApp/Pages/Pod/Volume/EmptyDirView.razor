@@ -1,0 +1,28 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Volume.EmptyDir != null)
+{
+    <HTable >
+
+        <HTr>
+            <HTd ColSpan="2">
+                <Badge Count="@Index"></Badge>
+                @Volume.Name
+                <Tag PresetColor="PresetColor.Lime">EmptyDir</Tag>
+            </HTd>
+        </HTr>
+
+        <PropertyOptionView Title="Medium" Item="@Volume.EmptyDir.Medium" Options='@(new[] { "","Memory" })' ExplainField="pod.spec.volumes.emptyDir.medium"></PropertyOptionView>
+        <PropertySimpleView Title="SizeLimit" ExplainField="pod.spec.volumes.emptyDir.sizeLimit" Item="@Volume.EmptyDir.SizeLimit" ></PropertySimpleView>
+    </HTable>
+    }
+
+
+@code {
+
+    [Parameter]
+    public V1Volume Volume { get; set; }
+    [Parameter]
+    public int Index { get; set; }
+}
