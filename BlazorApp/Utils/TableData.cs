@@ -40,7 +40,6 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
     {
         _originItems = data.Get();
         PagedItems   = _originItems;
-        PageIndex    = 1;
         FilterNsAndKey();
     }
 
