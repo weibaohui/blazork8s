@@ -25,7 +25,10 @@
             @if (e.Source != null)
             {
                 <HTableColumn Title="Source">
-                    <Tag >@e.Source.Host</Tag>
+                    @if (e.Source.Host != null)
+                    {
+                        <Tag >@e.Source.Host</Tag>
+                    }
                     <Tag >@e.Source.Component</Tag>
                 </HTableColumn>
             }
@@ -42,7 +45,10 @@
                     <Tag PresetColor="PresetColor.Blue">@e.InvolvedObject.NamespaceProperty</Tag>
                     <Tag PresetColor="PresetColor.Purple">@e.InvolvedObject.Kind</Tag>
                     <Tag PresetColor="PresetColor.Orange">@e.InvolvedObject.Name</Tag>
-                    <Tag PresetColor="PresetColor.Green">@e.InvolvedObject.FieldPath</Tag>
+                    @if (e.InvolvedObject.FieldPath != null)
+                    {
+                        <Tag PresetColor="PresetColor.Green">@e.InvolvedObject.FieldPath</Tag>
+                    }
                 </HTableColumn>
             }
         </HTable>
