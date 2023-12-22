@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
+using BlazorApp.Pages.Job;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Pages.ReplicationController;
@@ -29,6 +30,8 @@ public partial class ControllerBy : ComponentBase
     [Inject]
     private INodeService NodeService { get; set; }
 
+    [Inject]
+    private IJobService JobService { get; set; }
     [Inject]
     private IPodService PodService { get; set; }
 
@@ -113,10 +116,24 @@ public partial class ControllerBy : ComponentBase
             "ReplicationController" => OnReplicationControllerNameClick(name),
             "ReplicaSet"            => OnRsNameClick(name),
             "Node"                  => OnNodeNameClick(name),
+            "Job"                  => OnJobNameClick(name),
             _                       => OnXClick(name)
         };
 
         return task;
+    }
+
+    private async Task OnJobNameClick(string name)
+    {
+        var   item = JobService.GetByName(name);
+        if (item == null)
+        {
+          await  Message.Error($"Job {name} 已被删除");
+          return;
+        }
+        await PageDrawerHelper<V1Job>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<JobDetailView, V1Job, bool>(item);
     }
 
     private async Task OnStatefulSetNameClick(string name)
