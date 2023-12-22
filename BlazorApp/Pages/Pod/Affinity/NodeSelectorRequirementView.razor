@@ -1,0 +1,41 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@if (MatchExpressions != null)
+{
+    @foreach (var expression in MatchExpressions)
+    {
+        <Alert Type="@AlertType.Success">
+             @($"{Type} {SelectType} {expression.Key} {expression.OperatorProperty} [{string.Join(", ", (expression.Values))}]    ")
+                @if (TopologyKey != null)
+                {
+                    <Tag>@TopologyKey</Tag>
+                }
+                @if (Weight > 0)
+                {
+                    <Tag>Weight=@Weight</Tag>
+                }
+            <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+        </Alert>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IList<V1NodeSelectorRequirement> MatchExpressions { get; set; }
+
+    [Parameter]
+    public int Weight { get; set; }
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string SelectType { get; set; }
+
+
+    [Parameter]
+    public string TopologyKey { get; set; }
+    [Parameter]
+    public string ExplainField { get; set; }
+
+}

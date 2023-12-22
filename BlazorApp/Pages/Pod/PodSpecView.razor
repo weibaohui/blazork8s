@@ -21,10 +21,8 @@
             <KubectlExplainButton Field="pod.spec.hostAliases"></KubectlExplainButton>
         </HTableColumn>
     }
-
     <SelectorView Title="Node Selector" Selector="@PodSpec.NodeSelector"></SelectorView>
     <PropertySimpleView Title="ActiveDeadlineSeconds" ExplainField="pod.spec.activeDeadlineSeconds" Item="@PodSpec.ActiveDeadlineSeconds"></PropertySimpleView>
-    <PropertySimpleView Title="Affinity" ExplainField="pod.spec.affinity" Item="@PodSpec.Affinity" ShowInJson="true"></PropertySimpleView>
     <PropertySimpleView Title="EnableServiceLinks" ExplainField="pod.spec.enableServiceLinks" Item="@PodSpec.EnableServiceLinks"></PropertySimpleView>
     <PropertySimpleView Title="DnsConfig" ExplainField="pod.spec.dnsConfig" Item="@PodSpec.DnsConfig" ShowInJson="true"></PropertySimpleView>
     <PropertyOptionView Title="DnsPolicy" Item="@PodSpec.DnsPolicy" Options='@(new[] { "Default", "ClusterFirst", "ClusterFirstWithHostNet", "None" })' ExplainField="pod.spec.dnsPolicy"></PropertyOptionView>
@@ -57,6 +55,7 @@
     <PropertySimpleView Title="TopologySpreadConstraints" ExplainField="pod.spec.topologySpreadConstraints" Item="@PodSpec.TopologySpreadConstraints"></PropertySimpleView>
     <SelectorView Title="NodeSelector" Selector="@PodSpec.NodeSelector"></SelectorView>
     <ImagesView PodSpec="@PodSpec"></ImagesView>
+    <PodAffinityView Affinity="@PodSpec.Affinity"></PodAffinityView>
     <TolerationsView Tolerations="@PodSpec.Tolerations"></TolerationsView>
 </HTable>
 

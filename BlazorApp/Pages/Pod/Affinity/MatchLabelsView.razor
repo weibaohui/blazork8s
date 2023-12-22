@@ -1,0 +1,43 @@
+@using BlazorApp.Pages.Common.Metadata
+@if (Labels != null)
+{
+    @foreach (var label in Labels)
+    {
+        <Alert Type="@AlertType.Success">
+
+            @($"{Type} {SelectType} {label.Key} = {label.Value}   ")
+            @if (TopologyKey != null)
+            {
+                <Tag>@TopologyKey</Tag>
+            }
+            @if (Weight > 0)
+            {
+                <Tag>Weight=@Weight</Tag>
+            }
+            <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+        </Alert>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IDictionary<string, string> Labels { get; set; }
+
+    [Parameter]
+    public int Weight { get; set; }
+
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public string SelectType { get; set; }
+
+
+    [Parameter]
+    public string TopologyKey { get; set; }
+
+    [Parameter]
+    public string ExplainField { get; set; }
+
+}

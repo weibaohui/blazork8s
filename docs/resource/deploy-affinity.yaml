@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-affinity
+spec:
+  selector:
+    matchLabels:
+      run: node-affinity
+  template:
+    metadata:
+      labels:
+        run: node-affinity
+    spec:
+      containers:
+        - name: node-affinity
+          image: nginx:alpine
+      tolerations:
+        - key: kwok.x-k8s.io/node
+          operator: Exists
+          effect: NoSchedule
+      affinity:
+        podAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                topologyKey: "kubernetes.io/hostname22"
+                labelSelector:
+                  matchLabels:
+                    diskType: ssd
+                  matchExpressions:
+                    - key: security
+                      operator: In
+                      values:
+                        - S1
+                namespaces:
+                  - default
+                  - ttttttt
+              weight: 100
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - namespaces:
+                - default
+                - ddddd
+              topologyKey: "kubernetes.io/hostname2"
+            - namespaceSelector:
+               matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - store
+              topologyKey: "kubernetes.io/hostname1"
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - store
+              topologyKey: "kubernetes.io/hostname0"
+            - labelSelector:
+                matchExpressions:
+                  - key: security
+                    operator: In
+                    values:
+                      - S1
+              topologyKey: topology.kubernetes.io/zone
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: diskType
+                    operator: In
+                    values:
+                      - ssd
+              topologyKey: topology.kubernetes.io/zone2
+          preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: security
+                        operator: In
+                        values:
+                          - S2
+                  topologyKey: topology.kubernetes.io/zone
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: diskType
+                    operator: In
+                    values:
+                      - ssd
+            - weight: 10
+              preference:
+                matchExpressions:
+                  - key: diskType
+                    operator: In
+                    values:
+                      - hdd
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchFields:
+                  - key: metadata.name
+                    operator: NotIn
+                    values:
+                      - kwok-s
+              - matchExpressions:
+                  - key: type
+                    operator: In
+                    values:
+                      - kwok
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux

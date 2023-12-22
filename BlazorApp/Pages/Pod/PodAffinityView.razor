@@ -1,0 +1,282 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Pod.Affinity
+@if (Affinity != null)
+{
+    <HTableColumn Title="Affinity">
+        <Collapse Accordion>
+
+
+            @if (Affinity.PodAffinity != null)
+            {
+                <Panel Header="PodAffinity" Key="PodAffinity">
+
+                    @{
+                        var preferred = Affinity.PodAffinity.PreferredDuringSchedulingIgnoredDuringExecution;
+
+                        @if (preferred != null)
+                        {
+                            @foreach (var term in preferred)
+                            {
+                                @if (term.PodAffinityTerm.NamespaceSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.PodAffinityTerm.NamespaceSelector.MatchLabels"
+                                                     Type="Preferred"
+                                                     SelectType="Ns Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     ExplainField="pod.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.namespaceSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.PodAffinityTerm.NamespaceSelector.MatchExpressions"
+                                                     SelectType="Ns Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.namespaceSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.PodAffinityTerm.LabelSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.PodAffinityTerm.LabelSelector.MatchLabels"
+                                                     SelectType="Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.labelSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.PodAffinityTerm.LabelSelector.MatchExpressions"
+                                                     SelectType="Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.labelSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.PodAffinityTerm.Namespaces != null)
+                                {
+                                    <NamespacePropertyView Namespaces="@term.PodAffinityTerm.Namespaces"
+                                                           SelectType="Ns" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                           Weight="@term.Weight"
+                                                           Type="Preferred"
+                                                           ExplainField="pod.spec.affinity.podAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.namespaces">
+                                    </NamespacePropertyView>
+                                }
+                            }
+                        }
+                    }
+
+                    @{
+                        var required = Affinity.PodAffinity.RequiredDuringSchedulingIgnoredDuringExecution;
+
+                        @if (required != null)
+                        {
+                            @foreach (var term in required)
+                            {
+                                @if (term.NamespaceSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.NamespaceSelector.MatchLabels"
+                                                     Type="Required"
+                                                     SelectType="Ns Label" TopologyKey="@term.TopologyKey"
+                                                     ExplainField="pod.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution.namespaceSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.NamespaceSelector.MatchExpressions"
+                                                     Type="Required"
+                                                     SelectType="Ns Label" TopologyKey="@term.TopologyKey"
+                                                     ExplainField="pod.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution.namespaceSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.LabelSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.LabelSelector.MatchLabels"
+                                                     Type="Required"
+                                                     SelectType="Label" TopologyKey="@term.TopologyKey"
+                                                     ExplainField="pod.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution.labelSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.LabelSelector.MatchExpressions"
+                                                     SelectType="Label" TopologyKey="@term.TopologyKey"
+                                                     Type="Required"
+                                                     ExplainField="pod.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution.labelSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.Namespaces != null)
+                                {
+                                    <NamespacePropertyView Namespaces="@term.Namespaces"
+                                                           SelectType="Ns" TopologyKey="@term.TopologyKey"
+                                                           Type="Required"
+                                                           ExplainField="pod.spec.affinity.podAffinity.requiredDuringSchedulingIgnoredDuringExecution.namespaces">
+                                    </NamespacePropertyView>
+                                }
+                            }
+                        }
+                    }
+                </Panel>
+            }
+
+
+            @if (Affinity.PodAntiAffinity != null)
+            {
+                <Panel Header="PodAntiAffinity" Key="PodAntiAffinity">
+
+                    @{
+                        var preferred = Affinity.PodAntiAffinity.PreferredDuringSchedulingIgnoredDuringExecution;
+
+                        @if (preferred != null && preferred.Count > 0)
+                        {
+                            @foreach (var term in preferred)
+                            {
+                                @if (term.PodAffinityTerm.NamespaceSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.PodAffinityTerm.NamespaceSelector.MatchLabels"
+                                                     SelectType="Ns Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.namespaceSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.PodAffinityTerm.NamespaceSelector.MatchExpressions"
+                                                     SelectType="Ns Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.namespaceSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.PodAffinityTerm.LabelSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.PodAffinityTerm.LabelSelector.MatchLabels"
+                                                     SelectType="Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.labelSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.PodAffinityTerm.LabelSelector.MatchExpressions"
+                                                     SelectType="Label" TopologyKey="@term.PodAffinityTerm.TopologyKey"
+                                                     Weight="@term.Weight"
+                                                     Type="Preferred"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.labelSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.PodAffinityTerm.Namespaces != null)
+                                {
+                                    <NamespacePropertyView Namespaces="@term.PodAffinityTerm.Namespaces" Type="Preferred" SelectType="Ns"
+                                                           ExplainField="pod.spec.affinity.podAntiAffinity.preferredDuringSchedulingIgnoredDuringExecution.podAffinityTerm.namespaces">
+
+                                        >
+                                    </NamespacePropertyView>
+                                }
+                            }
+                        }
+                    }
+
+                    @{
+                        var required = Affinity.PodAntiAffinity.RequiredDuringSchedulingIgnoredDuringExecution;
+
+                        @if (required != null && required.Count > 0)
+                        {
+                            @foreach (var term in required)
+                            {
+                                @if (term.NamespaceSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.NamespaceSelector.MatchLabels"
+                                                     SelectType="Ns Label" TopologyKey="@term.TopologyKey"
+                                                     Type="Required"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution.namespaceSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.NamespaceSelector.MatchExpressions"
+                                                     Type="Required"
+                                                     SelectType="Ns Label" TopologyKey="@term.TopologyKey"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution.namespaceSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.LabelSelector != null)
+                                {
+                                    <MatchLabelsView Labels="@term.LabelSelector.MatchLabels"
+                                                     SelectType="Label" TopologyKey="@term.TopologyKey"
+                                                     Type="Required"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution.labelSelector.matchLabels">
+                                    </MatchLabelsView>
+                                    <ExpressionsView MatchExpressions="@term.LabelSelector.MatchExpressions"
+                                                     SelectType="Label" TopologyKey="@term.TopologyKey"
+                                                     Type="Required"
+                                                     ExplainField="pod.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution.labelSelector.matchExpressions">
+                                    </ExpressionsView>
+                                }
+
+                                @if (term.Namespaces != null)
+                                {
+                                    <NamespacePropertyView Namespaces="@term.Namespaces"
+                                                           SelectType="Ns" TopologyKey="@term.TopologyKey"
+                                                           Type="Required"
+
+                                                           ExplainField="pod.spec.affinity.podAntiAffinity.requiredDuringSchedulingIgnoredDuringExecution.namespaces">
+                                    </NamespacePropertyView>
+                                }
+                            }
+                        }
+                    }
+                </Panel>
+            }
+
+
+            @if (Affinity.NodeAffinity != null)
+            {
+                <Panel Header="NodeAffinity" Key="NodeAffinity">
+
+                    @{
+                        var preferred = Affinity.NodeAffinity.PreferredDuringSchedulingIgnoredDuringExecution;
+
+                        @if (preferred != null)
+                        {
+                            @foreach (var term in preferred)
+                            {
+                                <NodeSelectorRequirementView
+                                    MatchExpressions="@term.Preference.MatchFields"
+                                    SelectType="Field"
+                                    Weight="@term.Weight"
+                                    Type="Preferred"
+                                    ExplainField="pod.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution.preference.matchFields">
+                                </NodeSelectorRequirementView>
+                                <NodeSelectorRequirementView
+                                    MatchExpressions="@term.Preference.MatchExpressions"
+                                    SelectType="Label"
+                                    Weight="@term.Weight"
+                                    Type="Preferred"
+                                    ExplainField="pod.spec.affinity.nodeAffinity.preferredDuringSchedulingIgnoredDuringExecution.preference.matchExpressions">
+                                </NodeSelectorRequirementView>
+                            }
+                        }
+                    }
+
+                    @{
+                        var required = Affinity.NodeAffinity.RequiredDuringSchedulingIgnoredDuringExecution;
+                        @if (required != null)
+                        {
+                            @foreach (var term in required.NodeSelectorTerms)
+                            {
+                                <NodeSelectorRequirementView
+                                    MatchExpressions="@term.MatchFields" Type="Required"
+                                    SelectType="Field"
+                                    ExplainField="pod.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms.matchFields">
+                                </NodeSelectorRequirementView>
+                                <NodeSelectorRequirementView
+                                    MatchExpressions="@term.MatchExpressions" Type="Required"
+                                    SelectType="Label"
+                                    ExplainField="pod.spec.affinity.nodeAffinity.requiredDuringSchedulingIgnoredDuringExecution.nodeSelectorTerms.matchExpressions">
+                                </NodeSelectorRequirementView>
+                            }
+                        }
+                    }
+                </Panel>
+            }
+
+        </Collapse>
+    </HTableColumn>
+}
+
+@code {
+
+    [Parameter]
+    public V1Affinity Affinity { get; set; }
+
+}
