@@ -33,7 +33,7 @@
             <AgeView Age="@Item.Status.StartTime"></AgeView>
             (@Item.Status.StartTime.GetValueOrDefault().ToLocalTime())
         </HTableColumn>
-        <PropertyOptionView Title="Phase" ExplainField="pod.spec.phase" Item="@Item.Status.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
+        <PropertyOptionView Title="Phase" ExplainField="pod.status.phase" Item="@Item.Status.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
         <PodConditionView Conditions="@Item.Status.Conditions"></PodConditionView>
         <PropertySimpleView Title="Resize" ExplainField="pod.status.resize" Item="@Item.Status.Resize"></PropertySimpleView>
         <PropertySimpleView Title="HostIP" ExplainField="pod.status.hostIP" Item="@Item.Status.HostIP"></PropertySimpleView>
