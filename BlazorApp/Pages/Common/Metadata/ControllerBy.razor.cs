@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.ReplicaSet;
@@ -31,6 +32,8 @@ public partial class ControllerBy : ComponentBase
 
     [Inject]
     private IDeploymentService DeploymentService { get; set; }
+    [Inject]
+    private IDaemonSetService DaemonSetService { get; set; }
 
     [Inject]
     private ILogger<ControllerBy> Logger { get; set; }
@@ -64,6 +67,13 @@ public partial class ControllerBy : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(item);
     }
+    private async Task OnDaemonSetNameClick(string name)
+    {
+        var item = DaemonSetService.GetByName(name);
+        await PageDrawerHelper<V1DaemonSet>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<DaemonSetDetailView, V1DaemonSet, bool>(item);
+    }
 
     private Task OnXClick(string name)
     {
@@ -81,6 +91,7 @@ public partial class ControllerBy : ComponentBase
         var task = kind switch
         {
             "Deployment" => OnDeploymentNameClick(name),
+            "DaemonSet" => OnDaemonSetNameClick(name),
             "ReplicaSet" => OnRsNameClick(name),
             "Node"       => OnNodeNameClick(name),
             _            => OnXClick(name)
