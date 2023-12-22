@@ -4,100 +4,109 @@
 @using BlazorApp.Utils
 @if (Volume.Projected != null)
 {
-    <HTable >
-
-        <HTr>
-            <HTd ColSpan="2">
-                <span style="color:#DCDCDC">@Index</span>
-                @Volume.Name
-                <Tag Color="@RandomColorHelper.RandomColor()">Projected</Tag>
-            </HTd>
-        </HTr>
-        <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.projected.defaultMode" Item="@Volume.Projected.DefaultMode"></PropertySimpleView>
-
-        @foreach (var p in Volume.Projected.Sources)
-        {
-            @if (p.DownwardAPI != null && p.DownwardAPI.Items != null)
-            {
-                @foreach (var item in p.DownwardAPI.Items)
-                {
+    <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
+        <TextTemplate>
+            <span style="color:#DCDCDC">@Index</span>
+            <Icon Type="hdd" Theme="outline"/>
+            @Volume.Name
+        </TextTemplate>
+        <ChildContent>
+            <Card Bordered>
+                <HTable >
                     <HTr>
+                        <HTd>Volume</HTd>
                         <HTd >
-                            DownwardAPI
-                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI"></KubectlExplainButton>
-                        </HTd >
-                        <HTd >
-                            <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@item.Path</Tag>
-                            @if (item.FieldRef != null)
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">Projected</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.projected"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
+
+                    <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.projected.defaultMode" Item="@Volume.Projected.DefaultMode"></PropertySimpleView>
+
+                    @foreach (var p in Volume.Projected.Sources)
+                    {
+                        @if (p.DownwardAPI != null && p.DownwardAPI.Items != null)
+                        {
+                            @foreach (var item in p.DownwardAPI.Items)
                             {
-                                <Tag>@item.Mode @item.FieldRef.ApiVersion/@item.FieldRef.FieldPath </Tag>
+                                <HTr>
+                                    <HTd >
+                                        DownwardAPI
+                                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI"></KubectlExplainButton>
+                                    </HTd >
+                                    <HTd >
+                                        <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@item.Path</Tag>
+                                        @if (item.FieldRef != null)
+                                        {
+                                            <Tag>@item.Mode @item.FieldRef.ApiVersion/@item.FieldRef.FieldPath </Tag>
+                                        }
+                                        @if (item.ResourceFieldRef != null)
+                                        {
+                                            <Tag> @item.ResourceFieldRef.ContainerName/@item.ResourceFieldRef.Resource</Tag>
+                                        }
+                                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI.items"></KubectlExplainButton>
+                                    </HTd>
+                                </HTr>
                             }
-                            @if (item.ResourceFieldRef != null)
+                        }
+
+
+                        @if (p.ConfigMap != null && p.ConfigMap.Items != null)
+                        {
+                            @foreach (var ktp in p.ConfigMap.Items)
                             {
-                                <Tag> @item.ResourceFieldRef.ContainerName/@item.ResourceFieldRef.Resource</Tag>
+                                <HTr>
+                                    <HTd >
+                                        ConfigMap
+                                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap"></KubectlExplainButton>
+
+                                    </HTd >
+                                    <HTd >
+                                        <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@p.ConfigMap.Name</Tag>
+                                        <Tag>@ktp.Key => @ktp.Path</Tag>
+                                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap.items"></KubectlExplainButton>
+                                    </HTd>
+                                </HTr>
                             }
-                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.downwardAPI.items"></KubectlExplainButton>
-                        </HTd>
-                    </HTr>
-                }
-            }
+                        }
 
+                        @if (p.Secret != null && p.Secret.Items != null)
+                        {
+                            @foreach (var ktp in p.Secret.Items)
+                            {
+                                <HTr>
+                                    <HTd >
+                                        Secret
+                                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret"></KubectlExplainButton>
+                                    </HTd >
+                                    <HTd >
+                                        <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.Secret.Name</Tag>
+                                        <Tag>@ktp.Key => @ktp.Path</Tag>
+                                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret.items"></KubectlExplainButton>
+                                    </HTd>
+                                </HTr>
+                            }
+                        }
 
-            @if (p.ConfigMap != null && p.ConfigMap.Items != null)
-            {
-                @foreach (var ktp in p.ConfigMap.Items)
-                {
-                    <HTr>
-                        <HTd >
-                            ConfigMap
-                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap"></KubectlExplainButton>
-
-                        </HTd >
-                        <HTd >
-                            <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@p.ConfigMap.Name</Tag>
-                            <Tag>@ktp.Key => @ktp.Path</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.configMap.items"></KubectlExplainButton>
-                        </HTd>
-                    </HTr>
-                }
-            }
-
-            @if (p.Secret != null && p.Secret.Items != null)
-            {
-                @foreach (var ktp in p.Secret.Items)
-                {
-                    <HTr>
-                        <HTd >
-                            Secret
-                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret"></KubectlExplainButton>
-                        </HTd >
-                        <HTd >
-                            <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.Secret.Name</Tag>
-                            <Tag>@ktp.Key => @ktp.Path</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.projected.sources.secret.items"></KubectlExplainButton>
-                        </HTd>
-                    </HTr>
-                }
-            }
-
-            @if (p.ServiceAccountToken != null )
-            {
-                <HTr>
-                    <HTd >
-                        ServiceAccountToken
-                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
-                    </HTd >
-                    <HTd >
-                        <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.ServiceAccountToken.Path</Tag>
-                        <Tag>@p.ServiceAccountToken.Audience @p.ServiceAccountToken.ExpirationSeconds s</Tag>
-                        <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
-                    </HTd>
-                </HTr>
-            }
-        }
-
-
-    </HTable>
+                        @if (p.ServiceAccountToken != null)
+                        {
+                            <HTr>
+                                <HTd >
+                                    ServiceAccountToken
+                                    <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
+                                </HTd >
+                                <HTd >
+                                    <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.ServiceAccountToken.Path</Tag>
+                                    <Tag>@p.ServiceAccountToken.Audience @p.ServiceAccountToken.ExpirationSeconds s</Tag>
+                                    <KubectlExplainButton Field="pod.spec.volumes.projected.sources.serviceAccountToken"></KubectlExplainButton>
+                                </HTd>
+                            </HTr>
+                        }
+                    }
+                </HTable>
+            </Card>
+        </ChildContent>
+    </BadgeRibbon>
 }
 
 

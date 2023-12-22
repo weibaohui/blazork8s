@@ -4,23 +4,32 @@
 @using BlazorApp.Utils
 @if (Volume.Csi != null)
 {
-    <HTable >
+    <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
+        <TextTemplate>
+            <span style="color:#DCDCDC">@Index</span>
+            <Icon Type="hdd" Theme="outline"/>
+            @Volume.Name
+        </TextTemplate>
+        <ChildContent>
+            <Card Bordered>
+                <HTable >
+                    <HTr>
+                        <HTd>Volume</HTd>
+                        <HTd >
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">CSI</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.csi"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
 
-        <HTr>
-            <HTd ColSpan="2">
-                <span style="color:#DCDCDC">@Index</span>
-                @Volume.Name
-                <Tag Color="@RandomColorHelper.RandomColor()">CSI</Tag>
-            </HTd>
-        </HTr>
-
-        <PropertySimpleView Title="Driver" ExplainField="pod.spec.volumes.csi.driver" Item="@Volume.Csi.Driver"></PropertySimpleView>
-        <PropertySimpleView Title="VolumeAttributes" ExplainField="pod.spec.volumes.csi.volumeAttributes" Item="@Volume.Csi.VolumeAttributes" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.csi.fsType" Item="@Volume.Csi.FsType"></PropertySimpleView>
-        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.csi.readOnly" Item="@Volume.Csi.ReadOnlyProperty"></PropertySimpleView>
-        <PropertySimpleGenericsView Title="NodePublishSecretRef" ExplainField="pod.spec.volumes.csi.nodePublishSecretRef" Item="@Volume.Csi.NodePublishSecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
-
-    </HTable>
+                    <PropertySimpleView Title="Driver" ExplainField="pod.spec.volumes.csi.driver" Item="@Volume.Csi.Driver"></PropertySimpleView>
+                    <PropertySimpleView Title="VolumeAttributes" ExplainField="pod.spec.volumes.csi.volumeAttributes" Item="@Volume.Csi.VolumeAttributes" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.csi.fsType" Item="@Volume.Csi.FsType"></PropertySimpleView>
+                    <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.csi.readOnly" Item="@Volume.Csi.ReadOnlyProperty"></PropertySimpleView>
+                    <PropertySimpleGenericsView Title="NodePublishSecretRef" ExplainField="pod.spec.volumes.csi.nodePublishSecretRef" Item="@Volume.Csi.NodePublishSecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
+                </HTable>
+            </Card>
+        </ChildContent>
+    </BadgeRibbon>
 }
 
 

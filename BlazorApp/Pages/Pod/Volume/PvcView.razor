@@ -4,25 +4,37 @@
 @using BlazorApp.Utils
 @if (Volume.PersistentVolumeClaim != null)
 {
-    <HTable >
+    <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
+        <TextTemplate>
+            <span style="color:#DCDCDC">@Index</span>
+            <Icon Type="hdd" Theme="outline"/>
+            @Volume.Name
+        </TextTemplate>
+        <ChildContent>
+            <Card Bordered>
+                <HTable >
+                    <HTr>
+                        <HTd>Volume</HTd>
+                        <HTd >
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">PersistentVolumeClaim</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.persistentVolumeClaim"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
 
-        <HTr>
-            <HTd ColSpan="2">
-                <span style="color:#DCDCDC">@Index</span>
-                @Volume.Name
-                <Tag Color="@RandomColorHelper.RandomColor()">PersistentVolumeClaim</Tag>
-            </HTd>
-        </HTr>
-
-        <PropertySimpleView Title="ClaimName" ExplainField="pod.spec.volumes.persistentVolumeClaim.claimName" Item="@Volume.PersistentVolumeClaim.ClaimName" ></PropertySimpleView>
-    </HTable>
-    }
+                    <PropertySimpleView Title="ClaimName" ExplainField="pod.spec.volumes.persistentVolumeClaim.claimName" Item="@Volume.PersistentVolumeClaim.ClaimName"></PropertySimpleView>
+                </HTable>
+            </Card>
+        </ChildContent>
+    </BadgeRibbon>
+}
 
 
 @code {
 
     [Parameter]
     public V1Volume Volume { get; set; }
+
     [Parameter]
     public int Index { get; set; }
+
 }

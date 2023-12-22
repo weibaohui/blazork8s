@@ -4,23 +4,32 @@
 @using BlazorApp.Utils
 @if (Volume.Fc != null)
 {
-    <HTable >
+    <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
+        <TextTemplate>
+            <span style="color:#DCDCDC">@Index</span>
+            <Icon Type="hdd" Theme="outline"/>
+            @Volume.Name
+        </TextTemplate>
+        <ChildContent>
+            <Card Bordered>
+                <HTable >
+                    <HTr>
+                        <HTd>Volume</HTd>
+                        <HTd >
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">FC</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.fc"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
 
-        <HTr>
-            <HTd ColSpan="2">
-                <span style="color:#DCDCDC">@Index</span>
-                @Volume.Name
-                <Tag Color="@RandomColorHelper.RandomColor()">FC</Tag>
-            </HTd>
-        </HTr>
-
-        <PropertyListView Title="TargetWWNs" ExplainField="pod.spec.volumes.fc.targetWWNs" Items="@Volume.Fc.TargetWWNs" T="string"></PropertyListView>
-        <PropertyListView Title="Wwids" ExplainField="pod.spec.volumes.fc.wwids" Items="@Volume.Fc.Wwids" T="string"></PropertyListView>
-        <PropertySimpleView Title="Lun" ExplainField="pod.spec.volumes.fc.lun" Item="@Volume.Fc.Lun"></PropertySimpleView>
-        <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.fc.fsType" Item="@Volume.Fc.FsType"></PropertySimpleView>
-        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.fc.readOnly" Item="@Volume.Fc.ReadOnlyProperty"></PropertySimpleView>
-
-    </HTable>
+                    <PropertyListView Title="TargetWWNs" ExplainField="pod.spec.volumes.fc.targetWWNs" Items="@Volume.Fc.TargetWWNs" T="string"></PropertyListView>
+                    <PropertyListView Title="Wwids" ExplainField="pod.spec.volumes.fc.wwids" Items="@Volume.Fc.Wwids" T="string"></PropertyListView>
+                    <PropertySimpleView Title="Lun" ExplainField="pod.spec.volumes.fc.lun" Item="@Volume.Fc.Lun"></PropertySimpleView>
+                    <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.fc.fsType" Item="@Volume.Fc.FsType"></PropertySimpleView>
+                    <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.fc.readOnly" Item="@Volume.Fc.ReadOnlyProperty"></PropertySimpleView>
+                </HTable>
+            </Card>
+        </ChildContent>
+    </BadgeRibbon>
 }
 
 

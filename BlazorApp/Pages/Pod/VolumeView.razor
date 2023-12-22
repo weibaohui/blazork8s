@@ -8,6 +8,7 @@
     {
         var v     = PodSpec.Volumes[i];
         var index = i + 1;
+
         <HostPathView Volume="@v" Index="@index"></HostPathView>
         <ProjectedView Volume="@v" Index="@index"></ProjectedView>
         <ConfigMapView Volume="@v" Index="@index"></ConfigMapView>

@@ -4,27 +4,38 @@
 @using BlazorApp.Utils
 @if (Volume.Nfs != null)
 {
-    <HTable >
-
-        <HTr>
-            <HTd ColSpan="2">
-                <span style="color:#DCDCDC">@Index</span>
-                @Volume.Name
-                <Tag Color="@RandomColorHelper.RandomColor()">Nfs</Tag>
-            </HTd>
-        </HTr>
-
-        <PropertySimpleView Title="Server" ExplainField="pod.spec.volumes.nfs.server" Item="@Volume.Nfs.Server" ></PropertySimpleView>
-        <PropertySimpleView Title="Path" ExplainField="pod.spec.volumes.nfs.path" Item="@Volume.Nfs.Path" ></PropertySimpleView>
-        <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.nfs.readOnly" Item="@Volume.Nfs.ReadOnlyProperty" ></PropertySimpleView>
-    </HTable>
-    }
+    <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
+        <TextTemplate>
+            <span style="color:#DCDCDC">@Index</span>
+            <Icon Type="hdd" Theme="outline"/>
+            @Volume.Name
+        </TextTemplate>
+        <ChildContent>
+            <Card Bordered>
+                <HTable >
+                    <HTr>
+                        <HTd>Volume</HTd>
+                        <HTd >
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">Nfs</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.nfs"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
+                    <PropertySimpleView Title="Server" ExplainField="pod.spec.volumes.nfs.server" Item="@Volume.Nfs.Server"></PropertySimpleView>
+                    <PropertySimpleView Title="Path" ExplainField="pod.spec.volumes.nfs.path" Item="@Volume.Nfs.Path"></PropertySimpleView>
+                    <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.nfs.readOnly" Item="@Volume.Nfs.ReadOnlyProperty"></PropertySimpleView>
+                </HTable>
+            </Card>
+        </ChildContent>
+    </BadgeRibbon>
+}
 
 
 @code {
 
     [Parameter]
     public V1Volume Volume { get; set; }
+
     [Parameter]
     public int Index { get; set; }
+
 }

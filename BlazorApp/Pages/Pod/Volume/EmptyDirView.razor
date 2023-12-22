@@ -4,26 +4,37 @@
 @using BlazorApp.Utils
 @if (Volume.EmptyDir != null)
 {
-    <HTable >
-
-        <HTr>
-            <HTd ColSpan="2">
-                <span style="color:#DCDCDC">@Index</span>
-                @Volume.Name
-                <Tag Color="@RandomColorHelper.RandomColor()">EmptyDir</Tag>
-            </HTd>
-        </HTr>
-
-        <PropertyOptionView Title="Medium" Item="@Volume.EmptyDir.Medium" Options='@(new[] { "","Memory" })' ExplainField="pod.spec.volumes.emptyDir.medium"></PropertyOptionView>
-        <PropertySimpleView Title="SizeLimit" ExplainField="pod.spec.volumes.emptyDir.sizeLimit" Item="@Volume.EmptyDir.SizeLimit" ></PropertySimpleView>
-    </HTable>
-    }
+    <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
+        <TextTemplate>
+            <span style="color:#DCDCDC">@Index</span>
+            <Icon Type="hdd" Theme="outline"/>
+            @Volume.Name
+        </TextTemplate>
+        <ChildContent>
+            <Card Bordered>
+                <HTable >
+                    <HTr>
+                        <HTd>Volume</HTd>
+                        <HTd >
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">EmptyDir</Tag>
+                            <KubectlExplainButton Field="pod.spec.volumes.emptyDir"></KubectlExplainButton>
+                        </HTd>
+                    </HTr>
+                    <PropertyOptionView Title="Medium" Item="@Volume.EmptyDir.Medium" Options='@(new[] { "", "Memory" })' ExplainField="pod.spec.volumes.emptyDir.medium"></PropertyOptionView>
+                    <PropertySimpleView Title="SizeLimit" ExplainField="pod.spec.volumes.emptyDir.sizeLimit" Item="@Volume.EmptyDir.SizeLimit"></PropertySimpleView>
+                </HTable>
+            </Card>
+        </ChildContent>
+    </BadgeRibbon>
+}
 
 
 @code {
 
     [Parameter]
     public V1Volume Volume { get; set; }
+
     [Parameter]
     public int Index { get; set; }
+
 }
