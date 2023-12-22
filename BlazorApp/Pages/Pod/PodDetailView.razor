@@ -1,53 +1,15 @@
-@using Extension.k8s
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Utils
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
 @if (Item != null)
 {
     <PodAction PodItem="Item" MenuMode="MenuMode.Horizontal"></PodAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Item.Metadata"   ExplainFieldPrefix="pod"></MetadataView>
+    <MetadataView Item="Item.Metadata" ExplainFieldPrefix="pod"></MetadataView>
 
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <PodSpecView PodSpec="@Item.Spec"></PodSpecView>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
-        <HTableColumn Title="Status" >
-            <StatusView Status=@Item.Status()></StatusView>
-            @if (Item.Status.Reason != null)
-            {
-                <Tag Color=@RandomColorHelper.RandomColor()>@Item.Status.Reason</Tag>
-            }
-            @if (Item.Status.Message != null)
-            {
-                <div>
-                    <Text Copyable> @Item.Status.Message</Text>
-                </div>
-            }
-        </HTableColumn>
-        <HTableColumn Title="StartTime">
-            <AgeView Age="@Item.Status.StartTime"></AgeView>
-            (@Item.Status.StartTime.GetValueOrDefault().ToLocalTime())
-        </HTableColumn>
-        <PropertyOptionView Title="Phase" ExplainField="pod.status.phase" Item="@Item.Status.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
-        <PodConditionView Conditions="@Item.Status.Conditions"></PodConditionView>
-        <PropertySimpleView Title="Resize" ExplainField="pod.status.resize" Item="@Item.Status.Resize"></PropertySimpleView>
-        <PropertySimpleView Title="HostIP" ExplainField="pod.status.hostIP" Item="@Item.Status.HostIP"></PropertySimpleView>
-        <PropertyListView Title="HostIPs" ExplainField="pod.status.hostIPs" Key="Ip" Items="@Item.Status.HostIPs" T="V1HostIP"></PropertyListView>
-        <PropertySimpleView Title="PodIP" ExplainField="pod.status.podIP" Item="@Item.Status.PodIP"></PropertySimpleView>
-        <PropertyListView Title="PodIPs" ExplainField="pod.status.podIPs" Key="Ip" Items="@Item.Status.PodIPs" T="V1PodIP"></PropertyListView>
-        <PropertySimpleView Title="NominatedNodeName" Item="@Item.Status.NominatedNodeName" ExplainField="pod.status.nominatedNodeName"></PropertySimpleView>
-        <PropertyOptionView Title="QosClass" ExplainField="pod.status.qosClass" Item="@Item.Status.QosClass" Options='@(new[] { "BestEffort", "Burstable", "Guaranteed" })'></PropertyOptionView>
-
-    </HTable>
-
-
-
-
+    <PodStatusView PodStatus="@Item.Status"></PodStatusView>
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
-
 }

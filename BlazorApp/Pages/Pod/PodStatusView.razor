@@ -1,5 +1,42 @@
-<h3>PodStatusView</h3>
+@using Extension.k8s
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using BlazorApp.Pages.Common.Html
+<HTable Bordered Column="1">
+    <HTableColumn Title="Status">
+        <StatusView Status=@PodStatus.Status()></StatusView>
+        @if (PodStatus.Reason != null)
+        {
+            <Tag Color=@RandomColorHelper.RandomColor()>@PodStatus.Reason</Tag>
+        }
+        @if (PodStatus.Message != null)
+        {
+            <div>
+                <Text Copyable> @PodStatus.Message</Text>
+            </div>
+        }
+    </HTableColumn>
+    <HTableColumn Title="StartTime">
+        <AgeView Age="@PodStatus.StartTime"></AgeView>
+        (@PodStatus.StartTime.GetValueOrDefault().ToLocalTime())
+    </HTableColumn>
+    <PropertyOptionView Title="Phase" ExplainField="pod.status.phase" Item="@PodStatus.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
+    <PodConditionView Conditions="@PodStatus.Conditions"></PodConditionView>
+    <PropertySimpleView Title="Resize" ExplainField="pod.status.resize" Item="@PodStatus.Resize"></PropertySimpleView>
+    <PropertySimpleView Title="HostIP" ExplainField="pod.status.hostIP" Item="@PodStatus.HostIP"></PropertySimpleView>
+    <PropertyListView Title="HostIPs" ExplainField="pod.status.hostIPs" Key="Ip" Items="@PodStatus.HostIPs" T="V1HostIP"></PropertyListView>
+    <PropertySimpleView Title="PodIP" ExplainField="pod.status.podIP" Item="@PodStatus.PodIP"></PropertySimpleView>
+    <PropertyListView Title="PodIPs" ExplainField="pod.status.podIPs" Key="Ip" Items="@PodStatus.PodIPs" T="V1PodIP"></PropertyListView>
+    <PropertySimpleView Title="NominatedNodeName" Item="@PodStatus.NominatedNodeName" ExplainField="pod.status.nominatedNodeName"></PropertySimpleView>
+    <PropertyOptionView Title="QosClass" ExplainField="pod.status.qosClass" Item="@PodStatus.QosClass" Options='@(new[] { "BestEffort", "Burstable", "Guaranteed" })'></PropertyOptionView>
+
+</HTable>
 
 @code {
-    
+
+    [Parameter]
+    public V1PodStatus PodStatus { get; set; }
+
 }

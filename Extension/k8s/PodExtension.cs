@@ -128,7 +128,43 @@ namespace Extension.k8s
                     return string.Empty;
                 }).Where(w => !string.IsNullOrWhiteSpace(w)).ToList();
 
-            if (!phaseList.Any())
+            if (phaseList.Count == 0)
+            {
+                return phase;
+            }
+            else
+            {
+                return phaseList.First();
+            }
+        }
+        public static string Status(this V1PodStatus podStatus)
+        {
+
+            var phase = podStatus.Phase;
+
+            if (podStatus.ContainerStatuses == null)
+            {
+                return phase;
+            }
+
+            var phaseList = podStatus.ContainerStatuses
+                .Select(s => s.State)
+                .Select(s =>
+                {
+                    if (s.Terminated != null)
+                    {
+                        return "Terminating";
+                    }
+
+                    if (s.Waiting != null)
+                    {
+                        return s.Waiting.Reason;
+                    }
+
+                    return string.Empty;
+                }).Where(w => !string.IsNullOrWhiteSpace(w)).ToList();
+
+            if (phaseList.Count == 0)
             {
                 return phase;
             }
