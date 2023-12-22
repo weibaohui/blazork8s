@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Job;
@@ -32,6 +33,8 @@ public partial class ControllerBy : ComponentBase
 
     [Inject]
     private IJobService JobService { get; set; }
+    [Inject]
+    private ICronJobService CronJobService { get; set; }
     [Inject]
     private IPodService PodService { get; set; }
 
@@ -117,10 +120,20 @@ public partial class ControllerBy : ComponentBase
             "ReplicaSet"            => OnRsNameClick(name),
             "Node"                  => OnNodeNameClick(name),
             "Job"                  => OnJobNameClick(name),
+            "CronJob"                  => OnCronJobNameClick(name),
             _                       => OnXClick(name)
         };
 
         return task;
+    }
+
+    private async Task OnCronJobNameClick(string name)
+    {
+        var item = CronJobService.GetByName(name);
+
+        await PageDrawerHelper<V1CronJob>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<CronJobDetailView, V1CronJob, bool>(item);
     }
 
     private async Task OnJobNameClick(string name)
