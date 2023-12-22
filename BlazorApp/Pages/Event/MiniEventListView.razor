@@ -10,17 +10,15 @@
         <HTable Bordered Column="1">
 
             <HTableColumn Title="Message">
-                @if (e.Type == "Warning")
-                {
-                    <span style="color: red">
-                          @e.Message
-                    </span>
-                }
-                else
-                {
+
+                <span style="color: @(e.Type == "Warning" ? "red" : "black")">
                     @e.Message
+                </span>
+
+                @if (e.Count > 1)
+                {
+                    <Badge Count="@e.Count"></Badge>
                 }
-                <Badge Count="@e.Count"></Badge>
             </HTableColumn>
             @if (e.Source != null)
             {
