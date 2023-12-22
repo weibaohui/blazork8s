@@ -5,42 +5,44 @@
 <Divider Orientation="left" Style="font-weight:bold">Events</Divider>
 @if (Events != null)
 {
-    foreach (var xx in Events)
+    foreach (var e in Events)
     {
         <HTable Bordered Column="1">
 
             <HTableColumn Title="Message">
-                @if (xx.Type == "Warning")
+                @if (e.Type == "Warning")
                 {
-                    <Text Type="danger" Strong="true">@xx.Message</Text>
+                    <span style="color: red">
+                          @e.Message
+                    </span>
                 }
                 else
                 {
-                    @xx.Message
+                    @e.Message
                 }
-                <Badge Count="@xx.Count"></Badge>
+                <Badge Count="@e.Count"></Badge>
             </HTableColumn>
-            @if (xx.Source != null)
+            @if (e.Source != null)
             {
                 <HTableColumn Title="Source">
-                    <Tag >@xx.Source.Host</Tag>
-                    <Tag >@xx.Source.Component</Tag>
+                    <Tag >@e.Source.Host</Tag>
+                    <Tag >@e.Source.Component</Tag>
                 </HTableColumn>
             }
-            @if (xx.LastTimestamp != null)
+            @if (e.LastTimestamp != null)
             {
                 <HTableColumn Title="LastSeen">
-                    <AgeView Age="@xx.LastTimestamp"></AgeView>
-                    ( @xx.LastTimestamp.GetValueOrDefault().ToLocalTime() )
+                    <AgeView Age="@e.LastTimestamp"></AgeView>
+                    ( @e.LastTimestamp.GetValueOrDefault().ToLocalTime() )
                 </HTableColumn>
             }
-            @if (xx.InvolvedObject != null)
+            @if (e.InvolvedObject != null)
             {
                 <HTableColumn Title="Involved">
-                    <Tag PresetColor="PresetColor.Blue">@xx.InvolvedObject.NamespaceProperty</Tag>
-                    <Tag PresetColor="PresetColor.Purple">@xx.InvolvedObject.Kind</Tag>
-                    <Tag PresetColor="PresetColor.Orange">@xx.InvolvedObject.Name</Tag>
-                    <Tag PresetColor="PresetColor.Green">@xx.InvolvedObject.FieldPath</Tag>
+                    <Tag PresetColor="PresetColor.Blue">@e.InvolvedObject.NamespaceProperty</Tag>
+                    <Tag PresetColor="PresetColor.Purple">@e.InvolvedObject.Kind</Tag>
+                    <Tag PresetColor="PresetColor.Orange">@e.InvolvedObject.Name</Tag>
+                    <Tag PresetColor="PresetColor.Green">@e.InvolvedObject.FieldPath</Tag>
                 </HTableColumn>
             }
         </HTable>
@@ -53,5 +55,10 @@
             @((MarkupString)Advice.ToHtmlDisplay())
             </Body>
         </Card>
+    }
+
+    if (Events.Count==0)
+    {
+        <Empty Simple/>
     }
 }
