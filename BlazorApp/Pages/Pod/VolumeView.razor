@@ -1,12 +1,12 @@
 ﻿@using BlazorApp.Pages.Pod.Volume
 @using BlazorApp.Pages.Common.Metadata
-@if (PodItem.Spec.Volumes != null)
+@if (PodSpec.Volumes != null)
 {
-    <Divider Orientation="left" Style="font-weight:bold"> Volumes <Badge Count="@PodItem.Spec.Volumes.Count"></Badge></Divider>
+    <Divider Orientation="left" Style="font-weight:bold"> Volumes <span style="color:#DCDCDC">(@PodSpec.Volumes.Count)</span></Divider>
 
-    @for (var i = 0; i < PodItem.Spec.Volumes.Count; i++)
+    @for (var i = 0; i < PodSpec.Volumes.Count; i++)
     {
-        var v     = PodItem.Spec.Volumes[i];
+        var v     = PodSpec.Volumes[i];
         var index = i + 1;
         <HostPathView Volume="@v" Index="@index"></HostPathView>
         <ProjectedView Volume="@v" Index="@index"></ProjectedView>

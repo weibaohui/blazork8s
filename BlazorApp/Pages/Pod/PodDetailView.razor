@@ -1,7 +1,6 @@
 @using Extension.k8s
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
 @using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
@@ -47,10 +46,6 @@
     </HTable>
 
 
-    <ContainerListView Pod="@Item"></ContainerListView>
-
-
-    <VolumeView PodItem="@Item"></VolumeView>
 
 
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>

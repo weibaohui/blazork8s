@@ -6,6 +6,6 @@ namespace  BlazorApp.Pages.Pod
     public partial class VolumeView : ComponentBase
     {
         [Parameter]
-        public V1Pod PodItem { get; set; }
+        public V1PodSpec PodSpec { get; set; }
     }
 }

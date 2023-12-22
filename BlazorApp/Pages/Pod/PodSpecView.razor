@@ -1,5 +1,6 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Container
 @using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html
 @using k8s.Models
@@ -58,3 +59,8 @@
     <ImagesView PodSpec="@PodSpec"></ImagesView>
     <TolerationsView Tolerations="@PodSpec.Tolerations"></TolerationsView>
 </HTable>
+
+
+<ContainerSpecListView PodSpec="@PodSpec"></ContainerSpecListView>
+
+<VolumeView PodSpec="@PodSpec"></VolumeView>

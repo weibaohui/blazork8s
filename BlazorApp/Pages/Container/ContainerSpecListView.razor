@@ -1,0 +1,45 @@
+@using k8s.Models
+@if (PodSpec != null)
+{
+    <Divider Orientation="left" Style="font-weight:bold"> Containers <span style="color:#DCDCDC">(@Count())</span> </Divider>
+    <ContainerView Containers="@PodSpec.Containers"
+                   Type="Main">
+    </ContainerView>
+    <ContainerView Containers="@PodSpec.InitContainers"
+                   Type="Init">
+    </ContainerView>
+}
+
+@code {
+
+    [Parameter]
+    public V1PodSpec PodSpec { get; set; }
+
+    private int Count()
+    {
+        if (PodSpec == null)
+        {
+            return 0;
+        }
+
+        var count = 0;
+
+        if (PodSpec.Containers != null)
+        {
+            count += PodSpec.Containers.Count;
+        }
+
+        if (PodSpec.InitContainers != null)
+        {
+            count += PodSpec.InitContainers.Count;
+        }
+
+        if (PodSpec.EphemeralContainers != null)
+        {
+            count += PodSpec.EphemeralContainers.Count;
+        }
+
+        return count;
+    }
+
+}
