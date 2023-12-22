@@ -7,38 +7,42 @@
 {
     foreach (var xx in Events)
     {
-        <HTable  Bordered Column="1">
-            @* <TitleTemplate> *@
-            @*     <br> *@
-            @*     @if (xx.Type == "Warning") *@
-            @*     { *@
-            @*         <AntDesign.Text Type="danger" Strong="true">@xx.Message</AntDesign.Text> *@
-            @*     } *@
-            @*     else *@
-            @*     { *@
-            @*         @xx.Message *@
-            @*     } *@
-            @*     <Badge Count="@xx.Count"></Badge> *@
-            @* </TitleTemplate> *@
-            <ChildContent>
-                <HTableColumn Title="Message">
-                    <p >@xx.Message</p>
-                </HTableColumn>
-                <HTableColumn Title="事件源">
+        <HTable Bordered Column="1">
+
+            <HTableColumn Title="Message">
+                @if (xx.Type == "Warning")
+                {
+                    <Text Type="danger" Strong="true">@xx.Message</Text>
+                }
+                else
+                {
+                    @xx.Message
+                }
+                <Badge Count="@xx.Count"></Badge>
+            </HTableColumn>
+            @if (xx.Source != null)
+            {
+                <HTableColumn Title="Source">
                     <Tag >@xx.Source.Host</Tag>
                     <Tag >@xx.Source.Component</Tag>
                 </HTableColumn>
-                <HTableColumn Title="最后出现">
+            }
+            @if (xx.LastTimestamp != null)
+            {
+                <HTableColumn Title="LastSeen">
                     <AgeView Age="@xx.LastTimestamp"></AgeView>
-                    ( @xx.LastTimestamp)
+                    ( @xx.LastTimestamp.GetValueOrDefault().ToLocalTime() )
                 </HTableColumn>
-                <HTableColumn Title="起因">
+            }
+            @if (xx.InvolvedObject != null)
+            {
+                <HTableColumn Title="Involved">
                     <Tag PresetColor="PresetColor.Blue">@xx.InvolvedObject.NamespaceProperty</Tag>
                     <Tag PresetColor="PresetColor.Purple">@xx.InvolvedObject.Kind</Tag>
                     <Tag PresetColor="PresetColor.Orange">@xx.InvolvedObject.Name</Tag>
                     <Tag PresetColor="PresetColor.Green">@xx.InvolvedObject.FieldPath</Tag>
                 </HTableColumn>
-            </ChildContent>
+            }
         </HTable>
     }
 
