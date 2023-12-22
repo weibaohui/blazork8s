@@ -117,7 +117,7 @@ namespace Extension.k8s
                 {
                     if (s.Terminated != null)
                     {
-                        return "Terminating";
+                        return s.Terminated.Reason;
                     }
 
                     if (s.Waiting != null)
@@ -153,7 +153,7 @@ namespace Extension.k8s
                 {
                     if (s.Terminated != null)
                     {
-                        return "Terminating";
+                        return s.Terminated.Reason;
                     }
 
                     if (s.Waiting != null)
