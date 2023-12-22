@@ -5,6 +5,8 @@ using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.ReplicaSet;
+using BlazorApp.Pages.ReplicationController;
+using BlazorApp.Pages.StatefulSet;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
@@ -32,14 +34,21 @@ public partial class ControllerBy : ComponentBase
 
     [Inject]
     private IDeploymentService DeploymentService { get; set; }
+
     [Inject]
     private IDaemonSetService DaemonSetService { get; set; }
+    [Inject]
+    private IStatefulSetService StatefulSetService { get; set; }
+
+    [Inject]
+    private IReplicationControllerService ReplicationControllerService { get; set; }
 
     [Inject]
     private ILogger<ControllerBy> Logger { get; set; }
 
     [Inject]
     private IMessageService Message { get; set; }
+
     [Inject]
     private DrawerService DrawerService { get; set; }
 
@@ -57,22 +66,30 @@ public partial class ControllerBy : ComponentBase
         await PageDrawerHelper<V1Node>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<NodeDetailView, V1Node, bool>(item);
-
     }
 
     private async Task OnDeploymentNameClick(string name)
     {
-        var item  = DeploymentService.GetByName(name);
+        var item = DeploymentService.GetByName(name);
         await PageDrawerHelper<V1Deployment>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(item);
     }
+
     private async Task OnDaemonSetNameClick(string name)
     {
         var item = DaemonSetService.GetByName(name);
         await PageDrawerHelper<V1DaemonSet>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<DaemonSetDetailView, V1DaemonSet, bool>(item);
+    }
+
+    private async Task OnReplicationControllerNameClick(string name)
+    {
+        var item = ReplicationControllerService.GetByName(name);
+        await PageDrawerHelper<V1ReplicationController>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ReplicationControllerDetailView, V1ReplicationController, bool>(item);
     }
 
     private Task OnXClick(string name)
@@ -90,13 +107,23 @@ public partial class ControllerBy : ComponentBase
 
         var task = kind switch
         {
-            "Deployment" => OnDeploymentNameClick(name),
-            "DaemonSet" => OnDaemonSetNameClick(name),
-            "ReplicaSet" => OnRsNameClick(name),
-            "Node"       => OnNodeNameClick(name),
-            _            => OnXClick(name)
+            "Deployment"            => OnDeploymentNameClick(name),
+            "DaemonSet"             => OnDaemonSetNameClick(name),
+            "StatefulSet"             => OnStatefulSetNameClick(name),
+            "ReplicationController" => OnReplicationControllerNameClick(name),
+            "ReplicaSet"            => OnRsNameClick(name),
+            "Node"                  => OnNodeNameClick(name),
+            _                       => OnXClick(name)
         };
 
         return task;
+    }
+
+    private async Task OnStatefulSetNameClick(string name)
+    {
+        var   item = StatefulSetService.GetByName(name);
+        await PageDrawerHelper<V1StatefulSet>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<StatefulSetDetailView, V1StatefulSet, bool>(item);
     }
 }
