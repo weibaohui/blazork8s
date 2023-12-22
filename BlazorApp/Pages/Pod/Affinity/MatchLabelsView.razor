@@ -5,7 +5,7 @@
     {
         <Alert Type="@AlertType.Success">
 
-            @($"{Type} {SelectType} {label.Key} = {label.Value}   ")
+            @($"{Type} {SelectType} `{label.Key}` = `{label.Value}`   ")
             @if (TopologyKey != null)
             {
                 <Tag>@TopologyKey</Tag>

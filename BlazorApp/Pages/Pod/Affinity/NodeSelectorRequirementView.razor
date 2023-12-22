@@ -5,7 +5,7 @@
     @foreach (var expression in MatchExpressions)
     {
         <Alert Type="@AlertType.Success">
-             @($"{Type} {SelectType} {expression.Key} {expression.OperatorProperty} [{string.Join(", ", (expression.Values))}]    ")
+             @($"{Type} {SelectType} `{expression.Key}` {expression.OperatorProperty} [{string.Join(", ", (expression.Values))}]    ")
                 @if (TopologyKey != null)
                 {
                     <Tag>@TopologyKey</Tag>
