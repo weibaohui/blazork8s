@@ -2,12 +2,15 @@
 @if (PodSpec != null)
 {
     <Divider Orientation="left" Style="font-weight:bold"> Containers <span style="color:#DCDCDC">(@Count())</span> </Divider>
-    <ContainerView Containers="@PodSpec.Containers"
+    <ContainerSpecView Containers="@PodSpec.Containers"
                    Type="Main">
-    </ContainerView>
-    <ContainerView Containers="@PodSpec.InitContainers"
+    </ContainerSpecView>
+    <ContainerSpecView Containers="@PodSpec.InitContainers"
                    Type="Init">
-    </ContainerView>
+    </ContainerSpecView>
+    <EphemeralContainerSpecView Containers="@PodSpec.EphemeralContainers"
+                   Type="Ephemeral">
+    </EphemeralContainerSpecView>
 }
 
 @code {
