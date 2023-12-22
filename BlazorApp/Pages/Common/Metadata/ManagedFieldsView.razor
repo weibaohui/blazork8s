@@ -1,0 +1,21 @@
+@using Extension
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Utils
+@if (ManagedFields != null && ManagedFields.Count > 0)
+{
+    <HTableColumn Title="ManagedFields">
+        @foreach (var entry in ManagedFields)
+        {
+            <Tag Color="@RandomColorHelper.RandomColor()">
+                @($"{entry.Manager} {entry.Operation} {entry.Time.GetValueOrDefault().ToLocalTime().ToFriendlyDisplay()}")
+            </Tag>
+        }
+
+    </HTableColumn>
+}
+
+@code {
+    [Parameter]
+    public IList<V1ManagedFieldsEntry> ManagedFields { get; set; }
+}
