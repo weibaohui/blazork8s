@@ -2,16 +2,19 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.ReplicaSet
+@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
 @if (Deployment != null)
 {
     <DeploymentAction Item="Deployment" MenuMode="MenuMode.Horizontal"></DeploymentAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Deployment.Metadata"  ExplainFieldPrefix="deployment"></MetadataView>
+    <MetadataView Item="Deployment.Metadata" ExplainFieldPrefix="deployment"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <HTable Bordered Column="1" >
+    <HTable Bordered Column="1">
         <SelectorView Title="Selector" Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@Deployment.Spec.Template.Spec"></ImagesView>
@@ -28,8 +31,8 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <DeploymentConditionView ConditionList="@Deployment.Status.Conditions" ExplainField="deployment.status.conditions"></DeploymentConditionView>
-        <HTableColumn Title="Replicas Sum" >
+        <ConditionsView Conditions="@(AutoMapperHelper<V1DeploymentCondition>.MapToCondition(Deployment.Status.Conditions))" ExplainField="deployment.status.conditions"></ConditionsView>
+        <HTableColumn Title="Replicas Sum">
             @($"{Deployment.Spec.Replicas ?? 0} desired, {Deployment.Status.UpdatedReplicas ?? 0} updated, {Deployment.Status.Replicas ?? 0} total, {Deployment.Status.AvailableReplicas ?? 0} available, {Deployment.Status.UnavailableReplicas ?? 0} unavailable")
         </HTableColumn>
         <PropertySimpleView Title="AvailableReplicas" Item="@Deployment.Status.AvailableReplicas" ExplainField="deployment.status.availableReplicas"></PropertySimpleView>
@@ -40,7 +43,6 @@
         <PropertySimpleView Title="UnavailableReplicas" Item="@Deployment.Status.UnavailableReplicas" ExplainField="deployment.status.unavailableReplicas"></PropertySimpleView>
         <PropertySimpleView Title="UpdatedReplicas" Item="@Deployment.Status.UpdatedReplicas" ExplainField="deployment.status.updatedReplicas"></PropertySimpleView>
     </HTable>
-
 
 
     <MiniReplicaSetListView ControllerByUid="@Deployment.Metadata.Uid"></MiniReplicaSetListView>

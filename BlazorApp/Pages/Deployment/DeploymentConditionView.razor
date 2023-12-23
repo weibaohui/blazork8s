@@ -1,9 +1,0 @@
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common.Metadata
-@if (ConditionList != null)
-{
-    <HTableColumn Title="Conditions">
-        <DeploymentCondition ConditionList="@ConditionList"></DeploymentCondition>
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
-    </HTableColumn>
-}

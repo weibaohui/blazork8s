@@ -25,5 +25,7 @@
         <PropertySimpleView Title="Terminating" Item="@Job.Status.Terminating" ExplainField="job.status.terminating"></PropertySimpleView>
         <PropertySimpleView Title="UncountedTerminatedPods" Item="@Job.Status.UncountedTerminatedPods" ExplainField="job.status.uncountedTerminatedPods" ShowInJson="true"></PropertySimpleView>
     </HTable>
+
+    <MiniPodListView ControllerByUid="@Job.Metadata.Uid"></MiniPodListView>
     <MiniEventListView Uid="@Job.Metadata.Uid"></MiniEventListView>
 }

@@ -20,6 +20,8 @@ namespace BlazorApp.Pages.Deployment
 
         private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
 
+
+
         protected override async Task OnInitializedAsync()
         {
             Deployment = base.Options;

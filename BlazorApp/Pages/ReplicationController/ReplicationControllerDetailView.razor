@@ -24,5 +24,8 @@
         <PropertySimpleView Title="ReadyReplicas" Item="@ReplicationController.Status.ReadyReplicas" ExplainField="replicationController.status.readyReplicas"></PropertySimpleView>
         <PropertySimpleView Title="Replicas" Item="@ReplicationController.Status.Replicas" ExplainField="replicationController.status.replicas"></PropertySimpleView>
     </HTable>
+
+    <MiniPodListView ControllerByUid="@ReplicationController.Metadata.Uid"></MiniPodListView>
+
     <MiniEventListView Uid="@ReplicationController.Metadata.Uid"></MiniEventListView>
 }

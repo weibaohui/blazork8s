@@ -38,5 +38,7 @@
         <PropertySimpleView Title="UpdateRevision" Item="@StatefulSet.Status.UpdateRevision" ExplainField="statefulSet.status.updateRevision"></PropertySimpleView>
         <PropertySimpleView Title="UpdatedReplicas" Item="@StatefulSet.Status.UpdatedReplicas" ExplainField="statefulSet.status.updatedReplicas"></PropertySimpleView>
     </HTable>
+
+    <MiniPodListView ControllerByUid="@StatefulSet.Metadata.Uid"></MiniPodListView>
     <MiniEventListView Uid="@StatefulSet.Metadata.Uid"></MiniEventListView>
 }
