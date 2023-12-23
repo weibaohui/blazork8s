@@ -1,6 +1,10 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod
+@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Job>
 @if (Job != null)
 {
@@ -13,10 +17,11 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
+        <ConditionsView Conditions="@(AutoMapperHelper<V1JobCondition>.MapToCondition(Job.Status.Conditions))" ExplainField="deployment.status.conditions"></ConditionsView>
+
         <PropertySimpleView Title="Active" Item="@Job.Status.Active" ExplainField="job.status.active"></PropertySimpleView>
         <PropertySimpleView Title="CompletedIndexes" Item="@Job.Status.CompletedIndexes" ExplainField="job.status.completedIndexes"></PropertySimpleView>
         <PropertySimpleView Title="CompletionTime" Item="@Job.Status.CompletionTime" ExplainField="job.status.completionTime"></PropertySimpleView>
-        <PropertySimpleView Title="Conditions" Item="@Job.Status.Conditions" ExplainField="job.status.conditions" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Failed" Item="@Job.Status.Failed" ExplainField="job.status.failed"></PropertySimpleView>
         <PropertySimpleView Title="FailedIndexes" Item="@Job.Status.FailedIndexes" ExplainField="job.status.failedIndexes"></PropertySimpleView>
         <PropertySimpleView Title="Ready" Item="@Job.Status.Ready" ExplainField="job.status.ready"></PropertySimpleView>
