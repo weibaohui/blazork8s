@@ -1,0 +1,27 @@
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Metadata
+@if (Ports != null)
+{
+    <HTableColumn Title="Ports">
+        @foreach (var p in Ports)
+        {
+            <div>
+                @($"{p.Name}:{p.Port}/{p.Protocol} ")
+                @if (p.NodePort != null)
+                {
+                    <Tag Color="success">@p.NodePort</Tag>
+                }
+                @if (p.AppProtocol != null)
+                {
+                    <Tag Color="@PresetColor.Blue.ToString()">@p.AppProtocol</Tag>
+                }
+
+                @if (SvcName != null && SvcNamespace != null)
+                {
+                    <Button Type="@ButtonType.Primary" OnClick="@(() => Forward(p))">Forward</Button>
+                }
+            </div>
+        }
+        <KubectlExplainButton Field="service.spec.ports"></KubectlExplainButton>
+    </HTableColumn>
+}

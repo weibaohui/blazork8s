@@ -1,0 +1,37 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Addresses != null && Addresses.Count > 0)
+{
+    <Divider Orientation="left" Style="font-weight:bold">@Title</Divider>
+
+
+    <HTable>
+        <HTr>
+            <HTd>IP</HTd>
+            <HTd>Node</HTd>
+            <HTd>Host</HTd>
+            <HTd>Ref</HTd>
+        </HTr>
+        @foreach (var a in Addresses)
+        {
+            <HTr>
+                <HTd>@a.Ip</HTd>
+                <HTd>@a.NodeName</HTd>
+                <HTd>@a.Hostname</HTd>
+                <HTd>
+                    <RefView Ref="@a.TargetRef"></RefView>
+                </HTd>
+            </HTr>
+        }
+    </HTable>
+}
+
+@code {
+
+    [Parameter]
+    public IList<V1EndpointAddress> Addresses { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+}

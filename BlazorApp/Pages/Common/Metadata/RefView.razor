@@ -1,0 +1,15 @@
+@using k8s.Models
+@if (Ref != null)
+{
+    <Tag PresetColor=@PresetColor.Green
+         Style="cursor: pointer">
+        @($"{Ref.Kind} {Ref.NamespaceProperty}/{Ref.Name}")
+    </Tag>
+}
+
+@code {
+
+    [Parameter]
+    public V1ObjectReference Ref { get; set; }
+
+}

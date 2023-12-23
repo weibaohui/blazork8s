@@ -1,13 +1,12 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
     <ServiceAction Item="Item" MenuMode="MenuMode.Horizontal"></ServiceAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Item.Metadata" ></MetadataView>
+    <MetadataView Item="Item.Metadata"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector"></SelectorView>
@@ -28,28 +27,7 @@
         <PropertySimpleView Title="LoadBalancerIP" Item="@Item.Spec.LoadBalancerIP" ExplainField="service.spec.loadBalancerIP"></PropertySimpleView>
         <PropertyListView Title="LoadBalancerSourceRanges" Items="@Item.Spec.LoadBalancerSourceRanges" ExplainField="service.spec.loadBalancerSourceRanges" T="string"></PropertyListView>
         <PropertySimpleView Title="PublishNotReadyAddresses" Item="@Item.Spec.PublishNotReadyAddresses" ExplainField="service.spec.publishNotReadyAddresses"></PropertySimpleView>
-
-        @if (Item.Spec.Ports != null)
-        {
-            <HTableColumn Title="Ports">
-                @foreach (var p in Item.Spec.Ports)
-                {
-                    <div>
-                        @($"{p.Name}:{p.Port}/{p.Protocol} ")
-                        @if (p.NodePort != null)
-                        {
-                            <Tag Color="success">@p.NodePort</Tag>
-                        }
-                        @if (p.AppProtocol != null)
-                        {
-                            <Tag Color="@PresetColor.Blue.ToString()">@p.AppProtocol</Tag>
-                        }
-                        <Button Type="@ButtonType.Primary" OnClick="@(() => Forward(p))">Forward</Button>
-                    </div>
-                }
-                <KubectlExplainButton Field="service.spec.ports"></KubectlExplainButton>
-            </HTableColumn>
-        }
+        <ServicePortsView Ports="@Item.Spec.Ports" SvcName="@Item.Metadata.Name" SvcNamespace="@Item.Metadata.NamespaceProperty"></ServicePortsView>
     </HTable>
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }

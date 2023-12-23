@@ -1,22 +1,13 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Endpoints>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Endpoints>
 @if (Endpoints != null)
 {
-    <EndpointsAction Item="Endpoints" MenuMode="MenuMode.Horizontal"  ></EndpointsAction>
+    <EndpointsAction Item="Endpoints" MenuMode="MenuMode.Horizontal"></EndpointsAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Endpoints.Metadata"  ExplainFieldPrefix="endpoints"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
-    <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @Endpoints.Name()
-        </HTableColumn>
-    </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
-    </HTable>
+    <MetadataView Item="Endpoints.Metadata" ExplainFieldPrefix="endpoints"></MetadataView>
+    <EndpointsPortView Ports="@(Endpoints.Subsets.Where(x=>x.Ports!=null).SelectMany(x=>x.Ports).ToList())"></EndpointsPortView>
+    <EndpointAddressView Addresses="@(Endpoints.Subsets.Where(x=>x.Addresses!=null).SelectMany(x=>x.Addresses).ToList())" Title="Addresses" ></EndpointAddressView>
+    <EndpointAddressView Addresses="@(Endpoints.Subsets.Where(x=>x.NotReadyAddresses!=null).SelectMany(x=>x.NotReadyAddresses).ToList())" Title="NotReadyAddresses" ></EndpointAddressView>
     <MiniEventListView Uid="@Endpoints.Metadata.Uid"></MiniEventListView>
 }
