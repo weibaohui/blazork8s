@@ -28,4 +28,15 @@ public static class AutoMapperHelper<S>
         var mapper = config.CreateMapper();
         return mapper.Map<IList<S>, IList<V1ServicePort>>(subSetPorts);
     }
+    public static IList<V1ObjectReference> MapToObjectReference(IList<S> owners)
+    {
+        var config =
+            new MapperConfiguration(cfg => cfg.CreateMap< S,V1ObjectReference>()
+                .ForMember(dest => dest.FieldPath, opt => opt.Ignore())
+                .ForMember(dest => dest.NamespaceProperty, opt => opt.Ignore())
+                .ForMember(dest => dest.ResourceVersion, opt => opt.Ignore())
+            );
+        var mapper = config.CreateMapper();
+        return mapper.Map<IList<S>, IList<V1ObjectReference>>(owners);
+    }
 }

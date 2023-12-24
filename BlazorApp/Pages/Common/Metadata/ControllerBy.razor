@@ -1,15 +1,15 @@
-@if (Owner != null)
+@if (Refs != null)
 {
-    @foreach (var o in Owner)
+    @foreach (var r in Refs)
     {
-        <Tag PresetColor=@PresetColor.Green
-             OnClick="@(() => OnObjClick(o))"
-             Style="cursor: pointer">
-            @o.Kind &nbsp;
-            @if (ShowOwnerName)
-            {
-                @o.Name
-            }
-        </Tag>
+        @if (ShowOwnerName)
+        {
+            <RefView Ref="@r" FullView="true" ></RefView>
+        }
+        else
+        {
+            <RefView Ref="@r"  ></RefView>
+        }
+
     }
 }

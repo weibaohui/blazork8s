@@ -1,15 +1,28 @@
-@using k8s.Models
+@using BlazorApp.Utils
 @if (Ref != null)
 {
-    <Tag PresetColor=@PresetColor.Green
-         Style="cursor: pointer">
-        @($"{Ref.Kind} {Ref.NamespaceProperty}/{Ref.Name}")
+    <Tag Color="@RandomColorHelper.RandomColor()" OnClick="@OnObjClick" Style="cursor: pointer">
+        @if (FullView)
+        {
+            @($"{Ref.Kind} {Ref.NamespaceProperty} {Ref.Name}")
+        }
+        else
+        {
+            <Tooltip>
+                <TitleTemplate>
+                    @($"[{Ref.Kind}] {Ref.NamespaceProperty} {Ref.Name}")
+                </TitleTemplate>
+                <ChildContent>
+                    @($"{Ref.Kind}")
+                </ChildContent>
+            </Tooltip>
+        }
+
     </Tag>
 }
 
 @code {
 
-    [Parameter]
-    public V1ObjectReference Ref { get; set; }
+
 
 }
