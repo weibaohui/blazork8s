@@ -45,7 +45,6 @@
     <PropertyOptionView Title="PreemptionPolicy" ExplainField="pod.spec.preemptionPolicy" Item="@PodSpec.PreemptionPolicy" Options='@(new[] { "Never", "PreemptLowerPriority" })'></PropertyOptionView>
     <PropertySimpleView Title="Overhead" Item="@PodSpec.Overhead" ExplainField="pod.spec.overhead" ShowInJson="true"></PropertySimpleView>
     <PropertySimpleView Title="ResourceClaims" Item="@PodSpec.ResourceClaims" ExplainField="pod.spec.resourceClaims" ShowInJson="true"></PropertySimpleView>
-    <PropertySimpleView Title="securityContext" Item="@PodSpec.SecurityContext" ExplainField="pod.spec.securityContext" ShowInJson="true"></PropertySimpleView>
     <PropertyListView Title="ReadinessGates" ExplainField="pod.spec.readinessGates" Items="@PodSpec.ReadinessGates" Key="ConditionType" T="V1PodReadinessGate"></PropertyListView>
     <PropertySimpleView Title="ServiceAccount" ExplainField="pod.spec.serviceAccount" Item="@PodSpec.ServiceAccount"></PropertySimpleView>
     <PropertySimpleView Title="ServiceAccountName" ExplainField="pod.spec.serviceAccountName" Item="@PodSpec.ServiceAccountName"></PropertySimpleView>
@@ -59,6 +58,7 @@
     <TolerationsView Tolerations="@PodSpec.Tolerations"></TolerationsView>
 </HTable>
 
+<PodSecurityContextView PodSecurityContext="@PodSpec.SecurityContext"></PodSecurityContextView>
 
 <ContainerSpecListView PodSpec="@PodSpec"></ContainerSpecListView>
 

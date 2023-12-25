@@ -1,0 +1,28 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
+@if (PodSecurityContext != null)
+{
+    <Divider Orientation="left" Style="font-weight:bold"> PodSecurityContext </Divider>
+
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="FsGroup" Item="@PodSecurityContext.FsGroup" ExplainField="pod.spec.securityContext.fsGroup"></PropertySimpleView>
+        <PropertyOptionView Title="FsGroupChangePolicy" ExplainField="pod.spec.securityContext.fsGroupChangePolicy" Item="@PodSecurityContext.FsGroupChangePolicy" Options='@(new[] { "OnRootMismatch", "Always" })'></PropertyOptionView>
+        <PropertySimpleView Title="RunAsGroup" Item="@PodSecurityContext.RunAsGroup" ExplainField="pod.spec.securityContext.runAsGroup"></PropertySimpleView>
+        <PropertySimpleView Title="RunAsNonRoot" Item="@PodSecurityContext.RunAsNonRoot" ExplainField="pod.spec.securityContext.runAsNonRoot"></PropertySimpleView>
+        <PropertySimpleView Title="RunAsUser" Item="@PodSecurityContext.RunAsUser" ExplainField="pod.spec.securityContext.runAsUser"></PropertySimpleView>
+        <PropertySimpleView Title="SeLinuxOptions" Item="@PodSecurityContext.SeLinuxOptions" ExplainField="pod.spec.securityContext.seLinuxOptions" ShowInJson="true"></PropertySimpleView>
+        <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.securityContext.seccompProfile" Item="@PodSecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
+        <PropertySimpleView Title="SupplementalGroups" Item="@PodSecurityContext.SupplementalGroups" ExplainField="pod.spec.securityContext.supplementalGroups" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Sysctls" Item="@PodSecurityContext.Sysctls" ExplainField="pod.spec.securityContext.sysctls" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="WindowsOptions" Item="@PodSecurityContext.WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions" ShowInJson="true"></PropertySimpleView>
+    </HTable>
+}
+
+@code{
+
+    [Parameter]
+    public V1PodSecurityContext PodSecurityContext { get; set; }
+
+}
