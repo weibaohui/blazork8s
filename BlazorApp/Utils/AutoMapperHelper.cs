@@ -10,7 +10,13 @@ public static class AutoMapperHelper<S>
     {
         var config =
             new MapperConfiguration(cfg => cfg.CreateMap<S, V1Condition>()
-                .ForMember(dest => dest.ObservedGeneration, opt => opt.Ignore()));
+                .ForMember(dest => dest.ObservedGeneration, opt => opt.Ignore())
+                .ForAllMembers(opts =>
+                {
+                    opts.AllowNull();
+                    opts.Condition((src, dest, srcMember) => srcMember != null);
+                })
+            );
         var mapper = config.CreateMapper();
         return mapper.Map<IList<S>, IList<V1Condition>>(conditions);
     }
@@ -24,6 +30,11 @@ public static class AutoMapperHelper<S>
             new MapperConfiguration(cfg => cfg.CreateMap< S,V1ServicePort>()
                 .ForMember(dest => dest.NodePort, opt => opt.Ignore())
                 .ForMember(dest => dest.TargetPort, opt => opt.Ignore())
+                .ForAllMembers(opts =>
+                {
+                    opts.AllowNull();
+                    opts.Condition((src, dest, srcMember) => srcMember != null);
+                })
             );
         var mapper = config.CreateMapper();
         return mapper.Map<IList<S>, IList<V1ServicePort>>(subSetPorts);
@@ -35,6 +46,11 @@ public static class AutoMapperHelper<S>
                 .ForMember(dest => dest.FieldPath, opt => opt.Ignore())
                 .ForMember(dest => dest.NamespaceProperty, opt => opt.Ignore())
                 .ForMember(dest => dest.ResourceVersion, opt => opt.Ignore())
+                .ForAllMembers(opts =>
+                {
+                    opts.AllowNull();
+                    opts.Condition((src, dest, srcMember) => srcMember != null);
+                })
             );
         var mapper = config.CreateMapper();
         return mapper.Map<IList<S>, IList<V1ObjectReference>>(owners);
