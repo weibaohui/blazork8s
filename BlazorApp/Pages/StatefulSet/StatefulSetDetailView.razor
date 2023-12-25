@@ -1,7 +1,9 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1StatefulSet>
 @if (StatefulSet != null)
 {
@@ -19,7 +21,12 @@
         <PropertySimpleView Title="RevisionHistoryLimit" Item="@StatefulSet.Spec.RevisionHistoryLimit" ExplainField="statefulSet.spec.revisionHistoryLimit"></PropertySimpleView>
         <PropertySimpleView Title="ServiceName" Item="@StatefulSet.Spec.ServiceName" ExplainField="statefulSet.spec.serviceName"></PropertySimpleView>
         <PropertyOptionView Title="StrategyType" Item="@StatefulSet.Spec.UpdateStrategy.Type" ExplainField="statefulSet.spec.updateStrategy" Options=@(new[] { "OnDelete", "RollingUpdate" })></PropertyOptionView>
-        <PropertySimpleView Title="UpdateStrategy" Item="@StatefulSet.Spec.UpdateStrategy" ExplainField="statefulSet.spec.updateStrategy" ShowInJson="true"></PropertySimpleView>
+        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@(AutoMapperHelper<V1RollingUpdateStatefulSetStrategy>.MapToRollingUpdate(StatefulSet.Spec.UpdateStrategy.RollingUpdate))" ExplainField="statefulSet.spec.updateStrategy.rollingUpdate">
+            @if (StatefulSet.Spec.UpdateStrategy.RollingUpdate.Partition != null)
+            {
+                <Tag>Partition = @StatefulSet.Spec.UpdateStrategy.RollingUpdate.Partition </Tag>
+            }
+        </RollingUpdateView>
         <PropertySimpleView Title="VolumeClaimTemplates" Item="@StatefulSet.Spec.VolumeClaimTemplates" ExplainField="statefulSet.spec.volumeClaimTemplates" ShowInJson="true"></PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">PodTemplate</Divider>

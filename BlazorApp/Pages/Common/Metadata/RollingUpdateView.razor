@@ -1,0 +1,44 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Utils
+@if (RollingUpdate != null)
+{
+    <HTableColumn Title="@Title">
+        @if (RollingUpdate.MaxSurge != null)
+        {
+            <Tag Color="@RandomColorHelper.RandomColor()">
+                MaxSurge = @RollingUpdate.MaxSurge
+            </Tag>
+        }
+
+        @if (RollingUpdate.MaxUnavailable != null)
+        {
+            <Tag Color="@RandomColorHelper.RandomColor()">
+                MaxUnavailable = @RollingUpdate.MaxUnavailable
+            </Tag>
+        }
+        @if (ChildContent != null)
+        {
+            @ChildContent
+        }
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+    </HTableColumn>
+}
+
+@code {
+
+    [Parameter]
+    public V1RollingUpdateDeployment RollingUpdate { get; set; }
+
+    [Parameter]
+    public string ExplainField { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+#nullable enable
+    public RenderFragment? ChildContent { get; set; }
+
+
+}

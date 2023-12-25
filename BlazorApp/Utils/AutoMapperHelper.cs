@@ -55,4 +55,19 @@ public static class AutoMapperHelper<S>
         var mapper = config.CreateMapper();
         return mapper.Map<IList<S>, IList<V1ObjectReference>>(owners);
     }
+
+    public static V1RollingUpdateDeployment MapToRollingUpdate(S up)
+    {
+        var config =
+            new MapperConfiguration(cfg => cfg.CreateMap< S,V1RollingUpdateDeployment>()
+                // .ForMember(dest => dest.ResourceVersion, opt => opt.Ignore())
+                .ForAllMembers(opts =>
+                {
+                    opts.AllowNull();
+                    opts.Condition((src, dest, srcMember) => srcMember != null);
+                })
+            );
+        var mapper = config.CreateMapper();
+        return mapper.Map<S, V1RollingUpdateDeployment>(up);
+    }
 }

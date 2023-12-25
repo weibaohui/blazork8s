@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
-using k8s.Models;
 using BlazorApp.Pages.Common;
+using k8s.Models;
+
 namespace BlazorApp.Pages.DaemonSet
 {
     public partial class DaemonSetDetailView :  DrawerPageBase<V1DaemonSet>

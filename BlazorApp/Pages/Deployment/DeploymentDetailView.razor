@@ -19,7 +19,7 @@
         <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@Deployment.Spec.Template.Spec"></ImagesView>
         <PropertyOptionView Title="StrategyType" Item="@Deployment.Spec.Strategy.Type" ExplainField="deployment.spec.strategy" Options=@(new[] { "Recreate", "RollingUpdate" })></PropertyOptionView>
-        <PropertySimpleView Title="Strategy" Item="@Deployment.Spec.Strategy" ExplainField="deployment.spec.strategy" ShowInJson="true"></PropertySimpleView>
+        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@Deployment.Spec.Strategy.RollingUpdate" ExplainField="deployment.spec.strategy.rollingUpdate"></RollingUpdateView>
         <PropertySimpleView Title="MinReadySeconds" Item="@Deployment.Spec.MinReadySeconds" ExplainField="deployment.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="Paused" Item="@Deployment.Spec.Paused" ExplainField="deployment.spec.paused"></PropertySimpleView>
         <PropertySimpleView Title="ProgressDeadlineSeconds" Item="@Deployment.Spec.ProgressDeadlineSeconds" ExplainField="deployment.spec.progressDeadlineSeconds"></PropertySimpleView>
