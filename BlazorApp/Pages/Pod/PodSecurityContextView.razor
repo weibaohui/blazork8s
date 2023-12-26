@@ -19,8 +19,7 @@
             <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.securityContext.seccompProfile" Item="@PodSecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
             <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.securityContext.seccompProfile.LocalhostProfile" Item="@PodSecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
         }
-
-        <PropertySimpleView Title="SupplementalGroups" Item="@PodSecurityContext.SupplementalGroups" ExplainField="pod.spec.securityContext.supplementalGroups" ShowInJson="true"></PropertySimpleView>
+        <PropertyListView Title="SupplementalGroups" ExplainField="pod.spec.securityContext.supplementalGroups" Items="@PodSecurityContext.SupplementalGroups" T="long?"></PropertyListView>
         <PropertySimpleView Title="Sysctls" Item="@PodSecurityContext.Sysctls" ExplainField="pod.spec.securityContext.sysctls" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="WindowsOptions" Item="@PodSecurityContext.WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions" ShowInJson="true"></PropertySimpleView>
     </HTable>
