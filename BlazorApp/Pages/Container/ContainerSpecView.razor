@@ -41,7 +41,11 @@
                     @if (c.Command != null)
                     {
                         <HTableColumn Title="Command">
-                               @(string.Join(" ",c.Command))
+                            @foreach (var cc in c.Command)
+                            {
+                                @cc
+                                <br/>
+                            }
                         </HTableColumn>
                     }
                     @if (c.Args != null)

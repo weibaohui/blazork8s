@@ -60,33 +60,47 @@
         @if (SecurityContext.Capabilities != null)
         {
             <HTr>
-                <HTd>Capabilities</HTd>
                 <HTd>
-
-                    @if (SecurityContext.Capabilities.Add is { Count: > 0 })
-                    {
-                        <span>
-                            Add
-                            @foreach (var a in SecurityContext.Capabilities.Add)
-                            {
-                                <ColorfulTag>@a</ColorfulTag>
-                            }
-                        </span>
-                    }
-
-
-                    @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
-                    {
-                        <span>
-                            Drop
-                            @foreach (var a in SecurityContext.Capabilities.Drop)
-                            {
-                                <ColorfulTag>@a</ColorfulTag>
-                            }
-                        </span>
-                    }
-
+                    Capabilities
                     <KubectlExplainButton Field="pod.spec.containers.securityContext.capabilities"></KubectlExplainButton>
+                </HTd>
+                <HTd>
+                    <Card >
+
+                        <Tabs Size="TabSize.Small" TabPosition="TabPosition.Bottom" Animated>
+
+
+                            <TabPane Key="Add" Tab="Add">
+                                @if (SecurityContext.Capabilities.Add is { Count: > 0 })
+                                {
+                                    @foreach (var a in SecurityContext.Capabilities.Add)
+                                    {
+                                        <ColorfulTag>@a</ColorfulTag>
+                                    }
+                                }
+                                else
+                                {
+                                    <Tag>Null</Tag>
+                                }
+                            </TabPane>
+
+
+                            <TabPane Key="Drop" Tab="Drop">
+                                @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
+                                {
+                                    @foreach (var a in SecurityContext.Capabilities.Drop)
+                                    {
+                                        <ColorfulTag>@a</ColorfulTag>
+                                    }
+                                }
+                                else
+                                {
+                                    <Tag>Null</Tag>
+                                }
+                            </TabPane>
+
+                        </Tabs>
+                    </Card>
                 </HTd>
             </HTr>
         }
