@@ -15,7 +15,7 @@
                     </HTableColumn>
                     <PropertySimpleView Title="Image" Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
                     <PropertyOptionView Title="ImagePullPolicy" ExplainField="pod.spec.containers.imagePullPolicy" Item="@c.ImagePullPolicy" Options='@(new[] { "Always", "IfNotPresent", "Never" })'></PropertyOptionView>
-                    <PropertySimpleView Title="Resources" Item="@c.Resources" ExplainField="pod.spec.containers.resources" ShowInJson="true"></PropertySimpleView>
+                    <ContainerResourceRequestLimitsView RequestLimits="@c.Resources"></ContainerResourceRequestLimitsView>
                     <PropertySimpleView Title="envFrom" Item="@c.EnvFrom" ExplainField="pod.spec.containers.envFrom" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="lifecycle" Item="@c.Lifecycle" ExplainField="pod.spec.containers.lifecycle" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="ResizePolicy" Item="@c.ResizePolicy" ExplainField="pod.spec.containers.resizePolicy" ShowInJson="true"></PropertySimpleView>
@@ -41,21 +41,13 @@
                     @if (c.Command != null)
                     {
                         <HTableColumn Title="Command">
-                            @foreach (var cc in c.Command)
-                            {
-                                @cc
-                                <br/>
-                            }
+                            @(string.Join(" ", c.Command))
                         </HTableColumn>
                     }
                     @if (c.Args != null)
                     {
                         <HTableColumn Title="Args">
-                            @foreach (var cc in c.Args)
-                            {
-                                @cc
-                                <br/>
-                            }
+                            @(string.Join(" ", c.Args))
                         </HTableColumn>
                     }
                     <ProbeView Probe="@c.LivenessProbe" ProbeType="LivenessProbe"></ProbeView>

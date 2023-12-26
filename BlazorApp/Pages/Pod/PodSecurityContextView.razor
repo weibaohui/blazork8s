@@ -2,6 +2,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
 @if (PodSecurityContext != null && !PodSecurityContext.ToJson().Equals("{}"))
 {
@@ -15,30 +16,38 @@
         <PropertySimpleView Title="RunAsUser" Item="@PodSecurityContext.RunAsUser" ExplainField="pod.spec.securityContext.runAsUser"></PropertySimpleView>
 
         @if (PodSecurityContext.SeLinuxOptions != null)
-                {
-                    <HTr>
-                        <HTd>SeLinuxOptions</HTd>
-                        <HTd>
-                            @if (PodSecurityContext.SeLinuxOptions.Level != null)
-                            {
-                                <ColorfulTag Text="@($"Level={PodSecurityContext.SeLinuxOptions.Level}")"></ColorfulTag>
-                            }
-                            @if (PodSecurityContext.SeLinuxOptions.User != null)
-                            {
-                                <ColorfulTag Text="@($"User={PodSecurityContext.SeLinuxOptions.User}")"></ColorfulTag>
-                            }
-                            @if (PodSecurityContext.SeLinuxOptions.Type != null)
-                            {
-                                <ColorfulTag Text="@($"Type={PodSecurityContext.SeLinuxOptions.Type}")"></ColorfulTag>
-                            }
-                            @if (PodSecurityContext.SeLinuxOptions.Role != null)
-                            {
-                                <ColorfulTag Text="@($"Role={PodSecurityContext.SeLinuxOptions.Role}")"></ColorfulTag>
-                            }
-                            <KubectlExplainButton Field="pod.spec.securityContext.seLinuxOptions"></KubectlExplainButton>
-                        </HTd>
-                    </HTr>
-                }
+        {
+            <HTr>
+                <HTd>SeLinuxOptions</HTd>
+                <HTd>
+                    @if (PodSecurityContext.SeLinuxOptions.Level != null)
+                    {
+                        <ColorfulTag >
+                            @($"Level={PodSecurityContext.SeLinuxOptions.Level}")
+                        </ColorfulTag>
+                    }
+                    @if (PodSecurityContext.SeLinuxOptions.User != null)
+                    {
+                        <ColorfulTag >
+                            @($"User={PodSecurityContext.SeLinuxOptions.User}")
+                        </ColorfulTag>
+                    }
+                    @if (PodSecurityContext.SeLinuxOptions.Type != null)
+                    {
+                        <ColorfulTag >
+                            @($"Type={PodSecurityContext.SeLinuxOptions.Type}")
+                        </ColorfulTag>
+                    }
+                    @if (PodSecurityContext.SeLinuxOptions.Role != null)
+                    {
+                        <ColorfulTag >
+                            @($"Role={PodSecurityContext.SeLinuxOptions.Role}")
+                        </ColorfulTag>
+                    }
+                    <KubectlExplainButton Field="pod.spec.securityContext.seLinuxOptions"></KubectlExplainButton>
+                </HTd>
+            </HTr>
+        }
         @if (PodSecurityContext.SeccompProfile != null)
         {
             <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.securityContext.seccompProfile" Item="@PodSecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>

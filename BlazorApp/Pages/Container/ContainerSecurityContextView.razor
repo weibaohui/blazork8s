@@ -19,19 +19,27 @@
                 <HTd>
                     @if (SecurityContext.SeLinuxOptions.Level != null)
                     {
-                        <ColorfulTag Text="@($"Level={SecurityContext.SeLinuxOptions.Level}")"></ColorfulTag>
+                        <ColorfulTag >
+                            @($"Level={SecurityContext.SeLinuxOptions.Level}")
+                        </ColorfulTag>
                     }
                     @if (SecurityContext.SeLinuxOptions.User != null)
                     {
-                        <ColorfulTag Text="@($"User={SecurityContext.SeLinuxOptions.User}")"></ColorfulTag>
+                        <ColorfulTag >
+                            @($"User={SecurityContext.SeLinuxOptions.User}")
+                        </ColorfulTag>
                     }
                     @if (SecurityContext.SeLinuxOptions.Type != null)
                     {
-                        <ColorfulTag Text="@($"Type={SecurityContext.SeLinuxOptions.Type}")"></ColorfulTag>
+                        <ColorfulTag >
+                            @($"Type={SecurityContext.SeLinuxOptions.Type}")
+                        </ColorfulTag>
                     }
                     @if (SecurityContext.SeLinuxOptions.Role != null)
                     {
-                        <ColorfulTag Text="@($"Role={SecurityContext.SeLinuxOptions.Role}")"></ColorfulTag>
+                        <ColorfulTag >
+                            @($"Role={SecurityContext.SeLinuxOptions.Role}")
+                        </ColorfulTag>
                     }
                     <KubectlExplainButton Field="pod.spec.containers.securityContext.seLinuxOptions"></KubectlExplainButton>
                 </HTd>
@@ -61,7 +69,7 @@
                             Add
                             @foreach (var a in SecurityContext.Capabilities.Add)
                             {
-                                <ColorfulTag Text="@a"></ColorfulTag>
+                                <ColorfulTag>@a</ColorfulTag>
                             }
                         </span>
                     }
@@ -73,7 +81,7 @@
                             Drop
                             @foreach (var a in SecurityContext.Capabilities.Drop)
                             {
-                                <ColorfulTag Text="@a"></ColorfulTag>
+                                <ColorfulTag>@a</ColorfulTag>
                             }
                         </span>
                     }

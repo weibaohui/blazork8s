@@ -1,0 +1,49 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
+@if (RequestLimits is { Limits.Count: > 0 })
+{
+    <HTr>
+        <HTd>Resource</HTd>
+        <HTd>
+             @foreach (var (key, value) in RequestLimits.Limits)
+                {
+                    <span>
+                        Limits:
+                        <ColorfulTag >@($"{key}={value}") </ColorfulTag>
+                    </span>
+                }
+
+
+                @foreach (var (key, value) in RequestLimits.Requests)
+                {
+                    <span>
+                        Requests:
+                        <ColorfulTag >@($"{key}={value}") </ColorfulTag>
+                    </span>
+                }
+
+                @if (RequestLimits.Claims != null)
+                {
+                    foreach (var c in RequestLimits.Claims)
+                    {
+                        <span>
+                            Claims:
+                            <ColorfulTag >@($"{c.Name}") </ColorfulTag>
+                        </span>
+                    }
+                }
+
+                <KubectlExplainButton Field="pod.spec.containers.resources"></KubectlExplainButton>
+        </HTd>
+    </HTr>
+
+}
+
+@code {
+
+    [Parameter]
+    public V1ResourceRequirements RequestLimits { get; set; }
+
+}
