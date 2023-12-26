@@ -7,7 +7,7 @@
         @foreach (var p in Items)
         {
             <Tag Color=@RandomColorHelper.RandomColor()>
-                @if (typeof(T).Name.Equals("String"))
+                @if (IsBasicType())
                 {
                     @p
                 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BlazorApp.Utils;
+using Extension;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
@@ -21,5 +22,10 @@ public partial class PropertyListView<T> : ComponentBase
     private string GetValue(T item)
     {
         return ReflectHelper<T>.GetValue(item, Key);
+    }
+
+    public bool IsBasicType()
+    {
+        return typeof(T).IsNullableType() ? typeof(T).GetUnderlyingType().IsBasicType() : typeof(T).IsBasicType();
     }
 }
