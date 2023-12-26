@@ -41,13 +41,17 @@
                     @if (c.Command != null)
                     {
                         <HTableColumn Title="Command">
-                            @(string.Join(" ", c.Command))
+                               @(string.Join(" ",c.Command))
                         </HTableColumn>
                     }
                     @if (c.Args != null)
                     {
                         <HTableColumn Title="Args">
-                            @(string.Join(" ", c.Args))
+                            @foreach (var cc in c.Args)
+                            {
+                                @cc
+                                <br/>
+                            }
                         </HTableColumn>
                     }
                     <ProbeView Probe="@c.LivenessProbe" ProbeType="LivenessProbe"></ProbeView>
