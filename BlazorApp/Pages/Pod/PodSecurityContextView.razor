@@ -1,8 +1,9 @@
+@using Extension
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
-@if (PodSecurityContext != null)
+@if (PodSecurityContext != null && !PodSecurityContext.ToJson().Equals("{}"))
 {
     <Divider Orientation="left" Style="font-weight:bold"> PodSecurityContext </Divider>
 
@@ -13,7 +14,12 @@
         <PropertySimpleView Title="RunAsNonRoot" Item="@PodSecurityContext.RunAsNonRoot" ExplainField="pod.spec.securityContext.runAsNonRoot"></PropertySimpleView>
         <PropertySimpleView Title="RunAsUser" Item="@PodSecurityContext.RunAsUser" ExplainField="pod.spec.securityContext.runAsUser"></PropertySimpleView>
         <PropertySimpleView Title="SeLinuxOptions" Item="@PodSecurityContext.SeLinuxOptions" ExplainField="pod.spec.securityContext.seLinuxOptions" ShowInJson="true"></PropertySimpleView>
-        <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.securityContext.seccompProfile" Item="@PodSecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
+        @if (PodSecurityContext.SeccompProfile != null)
+        {
+            <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.securityContext.seccompProfile" Item="@PodSecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
+            <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.securityContext.seccompProfile.LocalhostProfile" Item="@PodSecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
+        }
+
         <PropertySimpleView Title="SupplementalGroups" Item="@PodSecurityContext.SupplementalGroups" ExplainField="pod.spec.securityContext.supplementalGroups" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Sysctls" Item="@PodSecurityContext.Sysctls" ExplainField="pod.spec.securityContext.sysctls" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="WindowsOptions" Item="@PodSecurityContext.WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions" ShowInJson="true"></PropertySimpleView>
