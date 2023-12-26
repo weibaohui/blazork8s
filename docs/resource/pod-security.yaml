@@ -7,12 +7,31 @@ spec:
     runAsUser: 1000
     runAsGroup: 3000
     fsGroup: 2000
+    runAsNonRoot: true
     supplementalGroups:
       - 2000
       - 3000
     seccompProfile:
       type: Localhost
       localhostProfile: my-profiles/profile-allow.json
+    seLinuxOptions:
+      level: "s0:c123,c456"
+      user: "admin"
+      type: "type"
+      role: "role"
+    sysctls:
+        - name: kernel.shm_rmid_forced
+          value: "0"
+        - name: net.core.somaxconn
+          value: "1024"
+        - name: kernel.msgmax
+          value: "65536"
+    windowsOptions:
+      gmsaCredentialSpec: "gmsa.com"
+      gmsaCredentialSpecName: "gmsa.com"
+      hostProcess: true
+      runAsUserName: "blazor-k8s"
+  hostNetwork: true
   volumes:
     - name: sec-ctx-vol
       emptyDir: {}
@@ -24,9 +43,26 @@ spec:
         - name: sec-ctx-vol
           mountPath: /data/demo
       securityContext:
+        runAsGroup: 3000
+        runAsNonRoot: true
+        seccompProfile:
+          type: Localhost
+          localhostProfile: my-profiles/profile-allow.json
+        privileged: true
+        readOnlyRootFilesystem: true
+        procMount: xxx
         seLinuxOptions:
           level: "s0:c123,c456"
+          user: "admin"
+          type: "type"
+          role: "role"
         capabilities:
           add: [ "NET_ADMIN", "SYS_TIME" ]
+          drop: [ "NET_ADMIN", "SYS_TIME" ]
         runAsUser: 2000
-        allowPrivilegeEscalation: false
+        allowPrivilegeEscalation: true
+        windowsOptions:
+          gmsaCredentialSpec: "gmsa.com"
+          gmsaCredentialSpecName: "gmsa.com"
+          hostProcess: true
+          runAsUserName: "blazor-k8s"

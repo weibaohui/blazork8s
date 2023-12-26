@@ -54,8 +54,70 @@
             <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.securityContext.seccompProfile.LocalhostProfile" Item="@PodSecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
         }
         <PropertyListView Title="SupplementalGroups" ExplainField="pod.spec.securityContext.supplementalGroups" Items="@PodSecurityContext.SupplementalGroups" T="long?"></PropertyListView>
-        <PropertySimpleView Title="Sysctls" Item="@PodSecurityContext.Sysctls" ExplainField="pod.spec.securityContext.sysctls" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="WindowsOptions" Item="@PodSecurityContext.WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions" ShowInJson="true"></PropertySimpleView>
+
+        @if (PodSecurityContext.Sysctls != null)
+        {
+            <HTr>
+                <HTd>
+                    Sysctls
+                    <KubectlExplainButton Field="pod.spec.securityContext.sysctls"></KubectlExplainButton>
+                </HTd>
+                <HTd>
+                    @foreach (var sysctl in PodSecurityContext.Sysctls)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"{sysctl.Name}={sysctl.Value}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                </HTd>
+            </HTr>
+        }
+
+        @if (PodSecurityContext.WindowsOptions != null)
+        {
+            <HTr>
+                <HTd>
+                    WindowsOptions
+                    <KubectlExplainButton Field="pod.spec.securityContext.windowsOptions"></KubectlExplainButton>
+                </HTd>
+                <HTd>
+                    @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpec != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"GmsaCredentialSpec={PodSecurityContext.WindowsOptions.GmsaCredentialSpec}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                    @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"GmsaCredentialSpecName={PodSecurityContext.WindowsOptions.GmsaCredentialSpecName}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                    @if (PodSecurityContext.WindowsOptions.HostProcess != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"HostProcess={PodSecurityContext.WindowsOptions.HostProcess}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                    @if (PodSecurityContext.WindowsOptions.RunAsUserName != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"RunAsUserName={PodSecurityContext.WindowsOptions.RunAsUserName}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                </HTd>
+            </HTr>
+        }
     </HTable>
 }
 

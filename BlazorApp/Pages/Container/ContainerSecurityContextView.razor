@@ -51,11 +51,10 @@
             <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.containers.securityContext.seccompProfile" Item="@SecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
             <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.containers.securityContext.seccompProfile.LocalhostProfile" Item="@SecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
         }
-        <PropertySimpleView Title="WindowsOptions" Item="@SecurityContext.WindowsOptions" ExplainField="pod.spec.containers.securityContext.windowsOptions" ShowInJson="true"></PropertySimpleView>
 
         <PropertySimpleView Title="AllowPrivilegeEscalation" Item="@SecurityContext.AllowPrivilegeEscalation" ExplainField="pod.spec.containers.securityContext.allowPrivilegeEscalation"></PropertySimpleView>
         <PropertySimpleView Title="Privileged" Item="@SecurityContext.Privileged" ExplainField="pod.spec.containers.securityContext.privileged"></PropertySimpleView>
-        <PropertySimpleView Title="ProcMount" Item="@SecurityContext.ProcMount" ExplainField="pod.spec.containers.securityContext.procMount"></PropertySimpleView>
+        <PropertyOptionView Title="ProcMount" ExplainField="pod.spec.containers.securityContext.procMount" Item="@SecurityContext.ProcMount" Options='@(new[] { "Default", "Unmasked" })'></PropertyOptionView>
         <PropertySimpleView Title="ReadOnlyRootFilesystem" Item="@SecurityContext.ReadOnlyRootFilesystem" ExplainField="pod.spec.containers.securityContext.readOnlyRootFilesystem"></PropertySimpleView>
         @if (SecurityContext.Capabilities != null)
         {
@@ -65,45 +64,76 @@
                     <KubectlExplainButton Field="pod.spec.containers.securityContext.capabilities"></KubectlExplainButton>
                 </HTd>
                 <HTd>
-                    <Card >
-
-                        <Tabs Size="TabSize.Small" TabPosition="TabPosition.Bottom" Animated>
-
-
-                            <TabPane Key="Add" Tab="Add">
-                                @if (SecurityContext.Capabilities.Add is { Count: > 0 })
-                                {
-                                    @foreach (var a in SecurityContext.Capabilities.Add)
-                                    {
-                                        <ColorfulTag>@a</ColorfulTag>
-                                    }
-                                }
-                                else
-                                {
-                                    <Tag>Null</Tag>
-                                }
-                            </TabPane>
-
-
-                            <TabPane Key="Drop" Tab="Drop">
-                                @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
-                                {
-                                    @foreach (var a in SecurityContext.Capabilities.Drop)
-                                    {
-                                        <ColorfulTag>@a</ColorfulTag>
-                                    }
-                                }
-                                else
-                                {
-                                    <Tag>Null</Tag>
-                                }
-                            </TabPane>
-
-                        </Tabs>
-                    </Card>
+                    @if (SecurityContext.Capabilities.Add is { Count: > 0 })
+                    {
+                        <Alert Type="@AlertType.Success">
+                            Add:
+                            @foreach (var a in SecurityContext.Capabilities.Add)
+                            {
+                                <ColorfulTag>@a</ColorfulTag>
+                            }
+                        </Alert>
+                    }
+                    @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
+                    {
+                        <Alert Type="@AlertType.Error">
+                            Drop:
+                            @foreach (var a in SecurityContext.Capabilities.Drop)
+                            {
+                                <ColorfulTag>@a</ColorfulTag>
+                            }
+                        </Alert>
+                    }
                 </HTd>
             </HTr>
         }
+        @if (SecurityContext.WindowsOptions != null)
+        {
+            <HTr>
+                <HTd>
+                    WindowsOptions
+                    <KubectlExplainButton Field="pod.spec.securityContext.windowsOptions"></KubectlExplainButton>
+
+                </HTd>
+                <HTd>
+                    @if (SecurityContext.WindowsOptions.GmsaCredentialSpec != null)
+                    {
+                        <div>
+
+
+                            <ColorfulTag >
+                                @($"GmsaCredentialSpec={SecurityContext.WindowsOptions.GmsaCredentialSpec}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                    @if (SecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"GmsaCredentialSpecName={SecurityContext.WindowsOptions.GmsaCredentialSpecName}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                    @if (SecurityContext.WindowsOptions.HostProcess != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"HostProcess={SecurityContext.WindowsOptions.HostProcess}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                    @if (SecurityContext.WindowsOptions.RunAsUserName != null)
+                    {
+                        <div>
+                            <ColorfulTag >
+                                @($"RunAsUserName={SecurityContext.WindowsOptions.RunAsUserName}")
+                            </ColorfulTag>
+                        </div>
+                    }
+                </HTd>
+            </HTr>
+        }
+
     </HTable>
 }
 

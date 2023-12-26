@@ -10,53 +10,36 @@
             <KubectlExplainButton Field="pod.spec.containers.resources"></KubectlExplainButton>
         </HTd>
         <HTd>
-            <Card >
-                <Tabs Size="TabSize.Small" TabPosition="TabPosition.Bottom" Animated>
-
-                    <TabPane Key="Requests" Tab="Requests">
                         @if (RequestLimits.Requests != null)
                         {
-                            @foreach (var (key, value) in RequestLimits.Requests)
-                            {
-                                <ColorfulTag >@($"{key}={value}") </ColorfulTag>
-                            }
+                            <Alert Type="@AlertType.Success">
+                                Requests:
+                                @foreach (var (key, value) in RequestLimits.Requests)
+                                {
+                                    <ColorfulTag >@($"{key}={value}") </ColorfulTag>
+                                }
+                            </Alert>
                         }
-                        else
-                        {
-                            <Tag>Null</Tag>
-                        }
-                    </TabPane>
-
-
-                    <TabPane Key="Limits" Tab="Limits">
                         @if (RequestLimits.Limits != null)
                         {
-                            @foreach (var (key, value) in RequestLimits.Limits)
-                            {
-                                <ColorfulTag >@($"{key}={value}") </ColorfulTag>
-                            }
+                            <Alert Type="@AlertType.Warning">
+                                Limits:
+                                @foreach (var (key, value) in RequestLimits.Limits)
+                                {
+                                    <ColorfulTag >@($"{key}={value}") </ColorfulTag>
+                                }
+                            </Alert>
                         }
-                        else
-                        {
-                            <Tag>Null</Tag>
-                        }
-                    </TabPane>
-                    <TabPane Key="Claims" Tab="Claims">
                         @if (RequestLimits.Claims != null)
                         {
-                            @foreach (var c in RequestLimits.Claims)
-                            {
-                                <ColorfulTag >@($"{c.Name}") </ColorfulTag>
-                            }
+                            <Alert Type="@AlertType.Warning">
+                                Claims:
+                                @foreach (var c in RequestLimits.Claims)
+                                {
+                                    <ColorfulTag >@($"{c.Name}") </ColorfulTag>
+                                }
+                            </Alert>
                         }
-                        else
-                        {
-                            <Tag>Null</Tag>
-                        }
-                    </TabPane>
-
-                </Tabs>
-            </Card>
         </HTd>
     </HTr>
 }
