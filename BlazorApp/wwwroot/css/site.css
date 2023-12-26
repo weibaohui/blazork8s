@@ -1,3 +1,8 @@
+
+.ant-layout {
+    padding-left: 0 !important;
+}
+
 .monaco-editor-container {
     height: 100%;
     width: 100%;
