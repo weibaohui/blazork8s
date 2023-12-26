@@ -1,0 +1,10 @@
+@using BlazorApp.Utils
+@if (Text != null)
+{
+    <Tag Color="@RandomColorHelper.RandomColor()">@Text</Tag>
+}
+
+@code {
+    [Parameter]
+    public string Text { get; set; }
+}

@@ -1,0 +1,93 @@
+@using Extension
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
+@if (SecurityContext != null && !SecurityContext.ToJson().Equals("{}"))
+{
+    <Divider Orientation="left" Style="font-weight:bold"> Container Security Context </Divider>
+
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="RunAsGroup" Item="@SecurityContext.RunAsGroup" ExplainField="pod.spec.containers.securityContext.runAsGroup"></PropertySimpleView>
+        <PropertySimpleView Title="RunAsNonRoot" Item="@SecurityContext.RunAsNonRoot" ExplainField="pod.spec.containers.securityContext.runAsNonRoot"></PropertySimpleView>
+        <PropertySimpleView Title="RunAsUser" Item="@SecurityContext.RunAsUser" ExplainField="pod.spec.containers.securityContext.runAsUser"></PropertySimpleView>
+        @if (SecurityContext.SeLinuxOptions != null)
+        {
+            <HTr>
+                <HTd>SeLinuxOptions</HTd>
+                <HTd>
+                    @if (SecurityContext.SeLinuxOptions.Level != null)
+                    {
+                        <ColorfulTag Text="@($"Level={SecurityContext.SeLinuxOptions.Level}")"></ColorfulTag>
+                    }
+                    @if (SecurityContext.SeLinuxOptions.User != null)
+                    {
+                        <ColorfulTag Text="@($"User={SecurityContext.SeLinuxOptions.User}")"></ColorfulTag>
+                    }
+                    @if (SecurityContext.SeLinuxOptions.Type != null)
+                    {
+                        <ColorfulTag Text="@($"Type={SecurityContext.SeLinuxOptions.Type}")"></ColorfulTag>
+                    }
+                    @if (SecurityContext.SeLinuxOptions.Role != null)
+                    {
+                        <ColorfulTag Text="@($"Role={SecurityContext.SeLinuxOptions.Role}")"></ColorfulTag>
+                    }
+                    <KubectlExplainButton Field="pod.spec.containers.securityContext.seLinuxOptions"></KubectlExplainButton>
+                </HTd>
+            </HTr>
+        }
+
+        @if (SecurityContext.SeccompProfile != null)
+        {
+            <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.containers.securityContext.seccompProfile" Item="@SecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
+            <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.containers.securityContext.seccompProfile.LocalhostProfile" Item="@SecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
+        }
+        <PropertySimpleView Title="WindowsOptions" Item="@SecurityContext.WindowsOptions" ExplainField="pod.spec.containers.securityContext.windowsOptions" ShowInJson="true"></PropertySimpleView>
+
+        <PropertySimpleView Title="AllowPrivilegeEscalation" Item="@SecurityContext.AllowPrivilegeEscalation" ExplainField="pod.spec.containers.securityContext.allowPrivilegeEscalation"></PropertySimpleView>
+        <PropertySimpleView Title="Privileged" Item="@SecurityContext.Privileged" ExplainField="pod.spec.containers.securityContext.privileged"></PropertySimpleView>
+        <PropertySimpleView Title="ProcMount" Item="@SecurityContext.ProcMount" ExplainField="pod.spec.containers.securityContext.procMount"></PropertySimpleView>
+        <PropertySimpleView Title="ReadOnlyRootFilesystem" Item="@SecurityContext.ReadOnlyRootFilesystem" ExplainField="pod.spec.containers.securityContext.readOnlyRootFilesystem"></PropertySimpleView>
+        @if (SecurityContext.Capabilities != null)
+        {
+            <HTr>
+                <HTd>Capabilities</HTd>
+                <HTd>
+
+                    @if (SecurityContext.Capabilities.Add is { Count: > 0 })
+                    {
+                        <span>
+                            Add
+                            @foreach (var a in SecurityContext.Capabilities.Add)
+                            {
+                                <ColorfulTag Text="@a"></ColorfulTag>
+                            }
+                        </span>
+                    }
+
+
+                    @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
+                    {
+                        <span>
+                            Drop
+                            @foreach (var a in SecurityContext.Capabilities.Drop)
+                            {
+                                <ColorfulTag Text="@a"></ColorfulTag>
+                            }
+                        </span>
+                    }
+
+                    <KubectlExplainButton Field="pod.spec.containers.securityContext.capabilities"></KubectlExplainButton>
+                </HTd>
+            </HTr>
+        }
+    </HTable>
+}
+
+@code{
+
+    [Parameter]
+    public V1SecurityContext SecurityContext { get; set; }
+
+}

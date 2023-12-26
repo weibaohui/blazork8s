@@ -19,7 +19,6 @@
                     <PropertySimpleView Title="envFrom" Item="@c.EnvFrom" ExplainField="pod.spec.containers.envFrom" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="lifecycle" Item="@c.Lifecycle" ExplainField="pod.spec.containers.lifecycle" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="ResizePolicy" Item="@c.ResizePolicy" ExplainField="pod.spec.containers.resizePolicy" ShowInJson="true"></PropertySimpleView>
-                    <PropertySimpleView Title="securityContext" Item="@c.SecurityContext" ExplainField="pod.spec.containers.securityContext" ShowInJson="true"></PropertySimpleView>
                     <PropertyOptionView Title="TerminationMessagePolicy" Item="@c.TerminationMessagePolicy" ExplainField="pod.spec.containers.terminationMessagePolicy" Options='@(new[] { "FallbackToLogsOnError", "File" })'></PropertyOptionView>
                     <PropertySimpleView Title="TerminationMessagePath" Item="@c.TerminationMessagePath" ExplainField="pod.spec.containers.terminationMessagePath"></PropertySimpleView>
                     <PropertySimpleView Title="WorkingDir" Item="@c.WorkingDir" ExplainField="pod.spec.containers.workingDir"></PropertySimpleView>
@@ -85,6 +84,7 @@
                         </HTableColumn>
                     }
                 </HTable>
+                <ContainerSecurityContextView SecurityContext="@c.SecurityContext"></ContainerSecurityContextView>
             </Card>
         </BadgeRibbon>
     }

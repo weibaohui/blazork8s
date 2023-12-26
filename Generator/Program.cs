@@ -53,7 +53,7 @@ class Program
     public static void Volume()
     {
         var dictList = new DictList();
-        dictList.AddItem("Volume",typeof(V1Volume));
+        dictList.AddItem("V1SecurityContext",typeof(V1SecurityContext));
         GeneratorHelper.Generator(dictList.GetDictList()).Run();
 
         // var list = EntityPrepare.GetK8SEntity(typeof(V1Volume), "Volume");
