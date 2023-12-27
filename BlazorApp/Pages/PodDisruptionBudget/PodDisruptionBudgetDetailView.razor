@@ -1,33 +1,29 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodDisruptionBudget>
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PodDisruptionBudget>
 @if (PodDisruptionBudget != null)
 {
-    <PodDisruptionBudgetAction Item="PodDisruptionBudget" MenuMode="MenuMode.Horizontal"  ></PodDisruptionBudgetAction>
+    <PodDisruptionBudgetAction Item="PodDisruptionBudget" MenuMode="MenuMode.Horizontal"></PodDisruptionBudgetAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="PodDisruptionBudget.Metadata"  ExplainFieldPrefix="podDisruptionBudget"></MetadataView>
+    <MetadataView Item="PodDisruptionBudget.Metadata" ExplainFieldPrefix="podDisruptionBudget"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @PodDisruptionBudget.Name()
-        </HTableColumn>
-                <PropertySimpleView Title="MaxUnavailable" Item="@PodDisruptionBudget.Spec.MaxUnavailable" ExplainField="podDisruptionBudget.spec.maxUnavailable"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="MinAvailable" Item="@PodDisruptionBudget.Spec.MinAvailable" ExplainField="podDisruptionBudget.spec.minAvailable"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Selector" Item="@PodDisruptionBudget.Spec.Selector" ExplainField="podDisruptionBudget.spec.selector"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="UnhealthyPodEvictionPolicy" Item="@PodDisruptionBudget.Spec.UnhealthyPodEvictionPolicy" ExplainField="podDisruptionBudget.spec.unhealthyPodEvictionPolicy" ></PropertySimpleView>
+        <PropertySimpleView Title="MaxUnavailable" Item="@PodDisruptionBudget.Spec.MaxUnavailable" ExplainField="podDisruptionBudget.spec.maxUnavailable" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="MinAvailable" Item="@PodDisruptionBudget.Spec.MinAvailable" ExplainField="podDisruptionBudget.spec.minAvailable" ShowInJson="true"></PropertySimpleView>
+        <LabelSelectorView Title="Selector" LabelSelector="@PodDisruptionBudget.Spec.Selector" ExplainField="podDisruptionBudget.spec.selector"></LabelSelectorView>
+        <PropertySimpleView Title="UnhealthyPodEvictionPolicy" Item="@PodDisruptionBudget.Spec.UnhealthyPodEvictionPolicy" ExplainField="podDisruptionBudget.spec.unhealthyPodEvictionPolicy"></PropertySimpleView>
     </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-                <PropertySimpleView Title="Conditions" Item="@PodDisruptionBudget.Status.Conditions" ExplainField="podDisruptionBudget.status.conditions" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="CurrentHealthy" Item="@PodDisruptionBudget.Status.CurrentHealthy" ExplainField="podDisruptionBudget.status.currentHealthy" ></PropertySimpleView>
-                <PropertySimpleView Title="DesiredHealthy" Item="@PodDisruptionBudget.Status.DesiredHealthy" ExplainField="podDisruptionBudget.status.desiredHealthy" ></PropertySimpleView>
-                <PropertySimpleView Title="DisruptedPods" Item="@PodDisruptionBudget.Status.DisruptedPods" ExplainField="podDisruptionBudget.status.disruptedPods"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="DisruptionsAllowed" Item="@PodDisruptionBudget.Status.DisruptionsAllowed" ExplainField="podDisruptionBudget.status.disruptionsAllowed" ></PropertySimpleView>
-                <PropertySimpleView Title="ExpectedPods" Item="@PodDisruptionBudget.Status.ExpectedPods" ExplainField="podDisruptionBudget.status.expectedPods" ></PropertySimpleView>
-                <PropertySimpleView Title="ObservedGeneration" Item="@PodDisruptionBudget.Status.ObservedGeneration" ExplainField="podDisruptionBudget.status.observedGeneration" ></PropertySimpleView>
+        <ConditionsView Conditions="@PodDisruptionBudget.Status.Conditions" ExplainField="podDisruptionBudget.status.conditions"></ConditionsView>
+        <PropertySimpleView Title="CurrentHealthy" Item="@PodDisruptionBudget.Status.CurrentHealthy" ExplainField="podDisruptionBudget.status.currentHealthy"></PropertySimpleView>
+        <PropertySimpleView Title="DesiredHealthy" Item="@PodDisruptionBudget.Status.DesiredHealthy" ExplainField="podDisruptionBudget.status.desiredHealthy"></PropertySimpleView>
+        <PropertySimpleView Title="DisruptedPods" Item="@PodDisruptionBudget.Status.DisruptedPods" ExplainField="podDisruptionBudget.status.disruptedPods" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="DisruptionsAllowed" Item="@PodDisruptionBudget.Status.DisruptionsAllowed" ExplainField="podDisruptionBudget.status.disruptionsAllowed"></PropertySimpleView>
+        <PropertySimpleView Title="ExpectedPods" Item="@PodDisruptionBudget.Status.ExpectedPods" ExplainField="podDisruptionBudget.status.expectedPods"></PropertySimpleView>
+        <PropertySimpleView Title="ObservedGeneration" Item="@PodDisruptionBudget.Status.ObservedGeneration" ExplainField="podDisruptionBudget.status.observedGeneration"></PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@PodDisruptionBudget.Metadata.Uid"></MiniEventListView>
 }
