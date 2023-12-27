@@ -1,4 +1,4 @@
-<table class="table">
+<table class="@Class">
     @if (Header != null)
     {
         <thead>
@@ -17,6 +17,9 @@
 
     [Parameter]
     public string Title { get; set; }
+
+    [Parameter]
+    public string Class { get; set; } = "normalTable";
 
     [Parameter]
     public bool Bordered { get; set; } = false;

@@ -10,14 +10,14 @@
 }
 
 /** Table 表格样式 **/
-.table {
+.normalTable {
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #f0f0f0 !important;
     margin-bottom: 20px;
 }
 
-.table th {
+.normalTable th {
     border-collapse: collapse;
     border-right: 1px solid #f0f0f0 !important;
     border-bottom: 1px solid #f0f0f0 !important;
@@ -28,7 +28,7 @@
     text-align: center;
 }
 
-.table td {
+.normalTable td {
     border-collapse: collapse;
     border-right: 1px solid #f0f0f0 !important;
     border-bottom: 1px solid #f0f0f0 !important;
@@ -41,7 +41,7 @@
 
 }
 
-.table tr td:first-child {
+.normalTable tr td:first-child {
     border-collapse: collapse;
     border-right: 1px solid #f0f0f0 !important;
     border-bottom: 1px solid #f0f0f0 !important;
@@ -51,6 +51,50 @@
     font-weight: normal;
     text-align: left;
     width: 160px;
+}
+
+
+/** Table 表格样式 **/
+.miniTable {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #f0f0f0 !important;
+    margin-bottom: 20px;
+}
+
+.miniTable  th {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background-color: #fafafa !important;
+    padding: 5px 9px;
+    font-size: 16px;
+    font-weight: normal;
+    text-align: center;
+}
+
+.miniTable  td {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding: 5px 9px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    word-break: break-all;
+    height: 50px;
+
+}
+.miniTable tr td:first-child {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    background-color: #fafafa !important;
+    padding: 5px 9px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    width: 100px;
 }
 
 
