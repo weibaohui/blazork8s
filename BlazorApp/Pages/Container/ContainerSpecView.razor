@@ -34,6 +34,10 @@
                             {
                                 <div>
                                     @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
+                                    @if (ShowPortForwardBtn)
+                                    {
+                                        <Button Type="@ButtonType.Primary" OnClick="@(() => OnPortForwardBtnClick(p.ContainerPort))">Forward</Button>
+                                    }
                                 </div>
                             }
                         </HTableColumn>
@@ -100,5 +104,15 @@
 
     [Parameter]
     public string Type { get; set; }
+
+    [Parameter]
+    public bool ShowPortForwardBtn { get; set; }
+    [Parameter]
+    public EventCallback<int> OnPortForward { get; set; }
+
+    private async Task OnPortForwardBtnClick(int port)
+    {
+        await OnPortForward.InvokeAsync(port);
+    }
 
 }

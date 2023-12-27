@@ -2,7 +2,7 @@
 @if (PodSpec != null)
 {
     <Divider Orientation="left" Style="font-weight:bold"> Containers <span style="color:#DCDCDC">(@Count())</span> </Divider>
-    <ContainerSpecView Containers="@PodSpec.Containers"
+    <ContainerSpecView Containers="@PodSpec.Containers" OnPortForward="OnPortForwardBtnClick" ShowPortForwardBtn="ShowPortForwardBtn"
                    Type="Main">
     </ContainerSpecView>
     <ContainerSpecView Containers="@PodSpec.InitContainers"
@@ -17,6 +17,19 @@
 
     [Parameter]
     public V1PodSpec PodSpec { get; set; }
+
+    [Parameter]
+    public bool ShowPortForwardBtn { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnPortForward { get; set; }
+
+    private async Task OnPortForwardBtnClick(int port)
+    {
+        await OnPortForward.InvokeAsync(port);
+    }
+
+
 
     private int Count()
     {
