@@ -1,0 +1,32 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
+@if (Backend != null)
+{
+            @if (Backend.Resource != null)
+            {
+                <span>
+                    <ColorfulTag>Resource</ColorfulTag>
+                    <ColorfulTag>@($"{Backend.Resource.ApiGroup}/{Backend.Resource.Kind}:{Backend.Resource.Name}") </ColorfulTag>
+                    <KubectlExplainButton Field="ingress.spec.defaultBackend.resource"></KubectlExplainButton>
+                </span>
+            }
+            @if (Backend.Service != null)
+            {
+                <span>
+                    <ColorfulTag>Service</ColorfulTag>
+                    <ColorfulTag>@($"{Backend.Service.Name}:{Backend.Service.Port.Name}{Backend.Service.Port.Number}") </ColorfulTag>
+                    <KubectlExplainButton Field="ingress.spec.defaultBackend.service"></KubectlExplainButton>
+                </span>
+            }
+}
+
+
+@code {
+
+    [Parameter]
+    public V1IngressBackend Backend { get; set; }
+
+
+
+}

@@ -1,0 +1,28 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Tls is { Count: > 0 })
+{
+    <HTableColumn Title="@Title">
+        @foreach (var tl in Tls)
+        {
+            <HTable Class="miniTable">
+                <PropertySimpleView Title="SecretName" Item="tl.SecretName" ExplainField="ingress.spec.tls.secretName"></PropertySimpleView>
+                <PropertyListView Title="Hosts" Items="tl.Hosts" ExplainField="ingress.spec.tls.hosts" T="string"></PropertyListView>
+            </HTable>
+        }
+            <KubectlExplainButton Field="ingress.spec.tls"></KubectlExplainButton>
+    </HTableColumn>
+}
+
+
+@code {
+
+    [Parameter]
+    public IList<V1IngressTLS> Tls { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+}
