@@ -41,6 +41,11 @@
                 }
             }
         </HTable>
+
+        @if (Ingress.Where(x=>x.FromProperty!=null).SelectMany(x => x.FromProperty).ToList().Count == 0 && Ingress.Where(x=>x.Ports!=null).SelectMany(x => x.Ports).ToList().Count == 0)
+        {
+            <Tag>ALL</Tag>
+        }
         <KubectlExplainButton Field="networkPolicy.spec.ingress"></KubectlExplainButton>
     </HTableColumn>
 }

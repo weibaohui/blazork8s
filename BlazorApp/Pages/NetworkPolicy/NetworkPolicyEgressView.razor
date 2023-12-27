@@ -41,6 +41,10 @@
                 }
             }
         </HTable>
+        @if (Egress.Where(x=>x.To!=null).SelectMany(x => x.To).ToList().Count == 0 && Egress.Where(x=>x.Ports!=null).SelectMany(x => x.Ports).ToList().Count == 0)
+                {
+                    <Tag>ALL</Tag>
+                }
         <KubectlExplainButton Field="networkPolicy.spec.egress"></KubectlExplainButton>
     </HTableColumn>
 }
