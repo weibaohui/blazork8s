@@ -1,56 +1,45 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1PersistentVolume>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PersistentVolume>
 @if (PersistentVolume != null)
 {
-    <PersistentVolumeAction Item="PersistentVolume" MenuMode="MenuMode.Horizontal"  ></PersistentVolumeAction>
+    <PersistentVolumeAction Item="PersistentVolume" MenuMode="MenuMode.Horizontal"></PersistentVolumeAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="PersistentVolume.Metadata"  ExplainFieldPrefix="persistentVolume"></MetadataView>
+    <MetadataView Item="PersistentVolume.Metadata" ExplainFieldPrefix="persistentVolume"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @PersistentVolume.Name()
+        <PropertyListView Title="AccessModes" Items="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" T="string"></PropertyListView>
+        <PropertySimpleView Title="Capacity" Item="@PersistentVolume.Spec.Capacity" ExplainField="persistentVolume.spec.capacity" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
+        <HTableColumn Title="ScaleTarget">
+            <RefView FullView="true" Ref="@PersistentVolume.Spec.ClaimRef"></RefView>
         </HTableColumn>
-                <PropertySimpleView Title="AccessModes" Item="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="AwsElasticBlockStore" Item="@PersistentVolume.Spec.AwsElasticBlockStore" ExplainField="persistentVolume.spec.awsElasticBlockStore"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="AzureDisk" Item="@PersistentVolume.Spec.AzureDisk" ExplainField="persistentVolume.spec.azureDisk"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="AzureFile" Item="@PersistentVolume.Spec.AzureFile" ExplainField="persistentVolume.spec.azureFile"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Capacity" Item="@PersistentVolume.Spec.Capacity" ExplainField="persistentVolume.spec.capacity"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="ClaimRef" Item="@PersistentVolume.Spec.ClaimRef" ExplainField="persistentVolume.spec.claimRef"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Csi" Item="@PersistentVolume.Spec.Csi" ExplainField="persistentVolume.spec.csi"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Fc" Item="@PersistentVolume.Spec.Fc" ExplainField="persistentVolume.spec.fc"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="FlexVolume" Item="@PersistentVolume.Spec.FlexVolume" ExplainField="persistentVolume.spec.flexVolume"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Flocker" Item="@PersistentVolume.Spec.Flocker" ExplainField="persistentVolume.spec.flocker"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="GcePersistentDisk" Item="@PersistentVolume.Spec.GcePersistentDisk" ExplainField="persistentVolume.spec.gcePersistentDisk"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="HostPath" Item="@PersistentVolume.Spec.HostPath" ExplainField="persistentVolume.spec.hostPath"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Iscsi" Item="@PersistentVolume.Spec.Iscsi" ExplainField="persistentVolume.spec.iscsi"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Local" Item="@PersistentVolume.Spec.Local" ExplainField="persistentVolume.spec.local"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="MountOptions" Item="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="Nfs" Item="@PersistentVolume.Spec.Nfs" ExplainField="persistentVolume.spec.nfs"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="NodeAffinity" Item="@PersistentVolume.Spec.NodeAffinity" ExplainField="persistentVolume.spec.nodeAffinity"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="PersistentVolumeReclaimPolicy" Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy" ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy" ></PropertySimpleView>
-                <PropertySimpleView Title="PhotonPersistentDisk" Item="@PersistentVolume.Spec.PhotonPersistentDisk" ExplainField="persistentVolume.spec.photonPersistentDisk"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="PortworxVolume" Item="@PersistentVolume.Spec.PortworxVolume" ExplainField="persistentVolume.spec.portworxVolume"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Quobyte" Item="@PersistentVolume.Spec.Quobyte" ExplainField="persistentVolume.spec.quobyte"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="ScaleIO" Item="@PersistentVolume.Spec.ScaleIO" ExplainField="persistentVolume.spec.scaleIO"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName" ></PropertySimpleView>
-                <PropertySimpleView Title="Storageos" Item="@PersistentVolume.Spec.Storageos" ExplainField="persistentVolume.spec.storageos"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" ></PropertySimpleView>
-                <PropertySimpleView Title="VsphereVolume" Item="@PersistentVolume.Spec.VsphereVolume" ExplainField="persistentVolume.spec.vsphereVolume"  ShowInJson="true" ></PropertySimpleView>
+        <PropertySimpleView Title="Csi" Item="@PersistentVolume.Spec.Csi" ExplainField="persistentVolume.spec.csi" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Fc" Item="@PersistentVolume.Spec.Fc" ExplainField="persistentVolume.spec.fc" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="HostPath" Item="@PersistentVolume.Spec.HostPath" ExplainField="persistentVolume.spec.hostPath" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Iscsi" Item="@PersistentVolume.Spec.Iscsi" ExplainField="persistentVolume.spec.iscsi" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Local" Item="@PersistentVolume.Spec.Local" ExplainField="persistentVolume.spec.local" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="MountOptions" Item="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Nfs" Item="@PersistentVolume.Spec.Nfs" ExplainField="persistentVolume.spec.nfs" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="NodeAffinity" Item="@PersistentVolume.Spec.NodeAffinity" ExplainField="persistentVolume.spec.nodeAffinity" ShowInJson="true"></PropertySimpleView>
+        <PropertyOptionView Title="PvReclaimPolicy" Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy" ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
+
+        <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName"></PropertySimpleView>
+        <PropertyOptionView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>
+
+        <PropertySimpleView ></PropertySimpleView>
     </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-                <PropertySimpleView Title="LastPhaseTransitionTime" Item="@PersistentVolume.Status.LastPhaseTransitionTime" ExplainField="persistentVolume.status.lastPhaseTransitionTime" ></PropertySimpleView>
-                <PropertySimpleView Title="Message" Item="@PersistentVolume.Status.Message" ExplainField="persistentVolume.status.message" ></PropertySimpleView>
-                <PropertySimpleView Title="Phase" Item="@PersistentVolume.Status.Phase" ExplainField="persistentVolume.status.phase" ></PropertySimpleView>
-                <PropertySimpleView Title="Reason" Item="@PersistentVolume.Status.Reason" ExplainField="persistentVolume.status.reason" ></PropertySimpleView>
+        <PropertySimpleView Title="LastPhaseTransitionTime" Item="@PersistentVolume.Status.LastPhaseTransitionTime" ExplainField="persistentVolume.status.lastPhaseTransitionTime"></PropertySimpleView>
+        <PropertySimpleView Title="Message" Item="@PersistentVolume.Status.Message" ExplainField="persistentVolume.status.message"></PropertySimpleView>
+        <PropertySimpleView Title="Phase" Item="@PersistentVolume.Status.Phase" ExplainField="persistentVolume.status.phase"></PropertySimpleView>
+        <PropertySimpleView Title="Reason" Item="@PersistentVolume.Status.Reason" ExplainField="persistentVolume.status.reason"></PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@PersistentVolume.Metadata.Uid"></MiniEventListView>
 }

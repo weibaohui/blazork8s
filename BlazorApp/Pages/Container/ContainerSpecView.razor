@@ -15,7 +15,7 @@
                     </HTableColumn>
                     <PropertySimpleView Title="Image" Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
                     <PropertyOptionView Title="ImagePullPolicy" ExplainField="pod.spec.containers.imagePullPolicy" Item="@c.ImagePullPolicy" Options='@(new[] { "Always", "IfNotPresent", "Never" })'></PropertyOptionView>
-                    <ContainerResourceRequestLimitsView RequestLimits="@c.Resources"></ContainerResourceRequestLimitsView>
+                    <ContainerResourceRequestLimitsView RequestLimits="@c.Resources" ExplainField="pod.spec.containers.resources"></ContainerResourceRequestLimitsView>
                     <PropertySimpleView Title="envFrom" Item="@c.EnvFrom" ExplainField="pod.spec.containers.envFrom" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="lifecycle" Item="@c.Lifecycle" ExplainField="pod.spec.containers.lifecycle" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title="ResizePolicy" Item="@c.ResizePolicy" ExplainField="pod.spec.containers.resizePolicy" ShowInJson="true"></PropertySimpleView>
