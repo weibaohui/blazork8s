@@ -8,6 +8,11 @@
     <HTableColumn Title="@Title">
         <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
 
+            @if (IsString)
+            {
+                @($"{Item.ToString()}")
+            }
+
             @if (!Key.IsNullOrEmpty())
             {
                 @GetValue(Item);

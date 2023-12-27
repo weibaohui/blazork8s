@@ -1,0 +1,49 @@
+@using Extension
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Metadata
+@if (LabelSelector != null)
+{
+    <HTableColumn Title="@Title">
+        @if (LabelSelector.MatchLabels is { Count: > 0 })
+        {
+            @foreach (var label in LabelSelector.MatchLabels)
+            {
+                <ColorfulTag>@label.Key = @label.Value</ColorfulTag>
+            }
+        }
+        @if (LabelSelector.MatchExpressions is { Count: > 0 })
+        {
+            @foreach (var expression in LabelSelector.MatchExpressions)
+            {
+                <Alert Type="@AlertType.Success">
+                    @($"`{expression.Key}` {expression.OperatorProperty} [{string.Join(", ", (expression.Values))}]   ")
+                </Alert>
+            }
+        }
+
+        @if (LabelSelector.ToJson() == "{}")
+        {
+            <ColorfulTag>@NullDesc</ColorfulTag>
+        }
+
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+
+    </HTableColumn>
+}
+
+@code {
+
+    [Parameter]
+    public V1LabelSelector LabelSelector { get; set; }
+
+    [Parameter]
+    public string ExplainField { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string NullDesc { get; set; }
+
+}

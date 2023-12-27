@@ -20,6 +20,8 @@ public partial class PropertySimpleGenericsView<T>:ComponentBase
     public string Key { get; set; }
 
     [Parameter]
+    public bool IsString { get; set; }
+    [Parameter]
     public EventCallback OnClick { get; set; }
 
     private string GetValue(T item)

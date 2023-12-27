@@ -1,0 +1,52 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@if (Peers is { Count: > 0 })
+{
+    foreach (var peer in Peers)
+    {
+        if (peer.PodSelector != null)
+        {
+            <LabelSelectorView LabelSelector="peer.PodSelector" ExplainField="@ExplainField" Title="Pod"></LabelSelectorView>
+        }
+
+        if (peer.NamespaceSelector != null)
+        {
+            <LabelSelectorView LabelSelector="peer.NamespaceSelector" ExplainField="@ExplainField" Title="Namespace"></LabelSelectorView>
+        }
+
+        if (peer.IpBlock != null)
+        {
+            <HTableColumn Title="IpBlock">
+
+                <Alert Type="@AlertType.Success">
+                    @if (peer.IpBlock.Cidr != null)
+                    {
+                        <div>
+                            @($"CIDR={peer.IpBlock.Cidr}")
+                        </div>
+                    }
+                    @if (peer.IpBlock.Except is { Count: > 0 })
+                    {
+                        <div>
+                            @($"Except {string.Join(",", peer.IpBlock.Except)}")
+                        </div>
+                    }
+                </Alert>
+            </HTableColumn>
+        }
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IList<V1NetworkPolicyPeer> Peers { get; set; }
+
+    [Parameter]
+    public string ExplainField { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+}

@@ -1,26 +1,20 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1NetworkPolicy>
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1NetworkPolicy>
 @if (NetworkPolicy != null)
 {
-    <NetworkPolicyAction Item="NetworkPolicy" MenuMode="MenuMode.Horizontal"  ></NetworkPolicyAction>
+    <NetworkPolicyAction Item="NetworkPolicy" MenuMode="MenuMode.Horizontal"></NetworkPolicyAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="NetworkPolicy.Metadata"  ExplainFieldPrefix="networkPolicy"></MetadataView>
+    <MetadataView Item="NetworkPolicy.Metadata" ExplainFieldPrefix="networkPolicy"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @NetworkPolicy.Name()
-        </HTableColumn>
-                <PropertySimpleView Title="Egress" Item="@NetworkPolicy.Spec.Egress" ExplainField="networkPolicy.spec.egress" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="Ingress" Item="@NetworkPolicy.Spec.Ingress" ExplainField="networkPolicy.spec.ingress" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="PodSelector" Item="@NetworkPolicy.Spec.PodSelector" ExplainField="networkPolicy.spec.podSelector"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="PolicyTypes" Item="@NetworkPolicy.Spec.PolicyTypes" ExplainField="networkPolicy.spec.policyTypes" ShowInJson="true"></PropertySimpleView>
-    </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
+        <PropertyListView Title="PolicyTypes" Items="@NetworkPolicy.Spec.PolicyTypes" ExplainField="networkPolicy.spec.policyTypes" T="string"></PropertyListView>
+        <LabelSelectorView Title="PodSelector" LabelSelector="@NetworkPolicy.Spec.PodSelector" NullDesc="All Pod" ExplainField="networkPolicy.spec.podSelector"></LabelSelectorView>
+
+        <NetworkPolicyIngressView Ingress="@NetworkPolicy.Spec.Ingress" Title="Ingress"></NetworkPolicyIngressView>
+        <NetworkPolicyEgressView Egress="@NetworkPolicy.Spec.Egress" Title="Egress"></NetworkPolicyEgressView>
     </HTable>
     <MiniEventListView Uid="@NetworkPolicy.Metadata.Uid"></MiniEventListView>
 }

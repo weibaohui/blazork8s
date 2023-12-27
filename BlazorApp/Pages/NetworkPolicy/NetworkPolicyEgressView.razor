@@ -1,0 +1,57 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
+@if (Egress is { Count: > 0 })
+{
+    <HTableColumn Title="@Title">
+        <HTable Class="miniTable">
+            @foreach (var egressRule in Egress)
+            {
+                @if (egressRule.To is { Count: > 0 })
+                {
+                    <HTableColumn Title="To">
+                        <HTable>
+                            <NetworkPolicyPeerView Peers="egressRule.To" ExplainField="networkPolicy.spec.egress.to"></NetworkPolicyPeerView>
+                        </HTable>
+                    </HTableColumn>
+                }
+
+                @if (egressRule.Ports is { Count: > 0 })
+                {
+                    <HTableColumn Title="Ports">
+                        @foreach (var port in egressRule.Ports)
+                        {
+                            <HTable Class="miniTable">
+                                <PropertyOptionView Title="Protocol" Item="port.Protocol" ExplainField="networkPolicy.spec.egress.ports" Options='@(new[] { "TCP", "UDP", "SCTP" })'></PropertyOptionView>
+                                <HTableColumn Title="Ports">
+                                    <ColorfulTag>
+                                        @port.Port
+                                        @if (port.EndPort != null)
+                                        {
+                                            @($" - {port.EndPort}")
+                                        }
+                                    </ColorfulTag>
+                                    <KubectlExplainButton Field="networkPolicy.spec.egress.ports"></KubectlExplainButton>
+                                </HTableColumn>
+                            </HTable>
+                        }
+                    </HTableColumn>
+                }
+            }
+        </HTable>
+        <KubectlExplainButton Field="networkPolicy.spec.egress"></KubectlExplainButton>
+    </HTableColumn>
+}
+
+@code {
+
+    [Parameter]
+    public IList<V1NetworkPolicyEgressRule> Egress { get; set; }
+
+
+    [Parameter]
+    public string Title { get; set; }
+
+}
