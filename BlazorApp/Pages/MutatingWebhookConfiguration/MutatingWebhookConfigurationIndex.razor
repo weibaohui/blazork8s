@@ -1,9 +1,8 @@
 @page "/MutatingWebhookConfiguration"
 @using k8s.Models
-@using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
-@inherits TableBase<V1MutatingWebhookConfiguration>
+@inherits BlazorApp.Pages.Common.TableBase<V1MutatingWebhookConfiguration>
 @if (TableData.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
@@ -29,7 +28,7 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
-                <AntDesign.Column Title="存活" TData="string">
+                <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
                 <ActionColumn Title="Action" Width="200" Fixed="right">
