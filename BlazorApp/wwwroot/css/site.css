@@ -1,7 +1,7 @@
-
-.ant-layout {
-    padding-left: 0 !important;
-}
+/* For ant blazor 0.17.0 only */
+/*.ant-layout {*/
+/*    padding-left: 0 !important;*/
+/*}*/
 
 .monaco-editor-container {
     height: 100%;
