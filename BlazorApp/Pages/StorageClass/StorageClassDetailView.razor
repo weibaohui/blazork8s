@@ -1,28 +1,21 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1StorageClass>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1StorageClass>
 @if (StorageClass != null)
 {
-    <StorageClassAction Item="StorageClass" MenuMode="MenuMode.Horizontal"  ></StorageClassAction>
+    <StorageClassAction Item="StorageClass" MenuMode="MenuMode.Horizontal"></StorageClassAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="StorageClass.Metadata"  ExplainFieldPrefix="storageClass"></MetadataView>
+    <MetadataView Item="StorageClass.Metadata" ExplainFieldPrefix="storageClass"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @StorageClass.Name()
-        </HTableColumn>
-                <PropertySimpleView Title="AllowVolumeExpansion" Item="@StorageClass.AllowVolumeExpansion" ExplainField="storageClass.allowVolumeExpansion" ></PropertySimpleView>
-                <PropertySimpleView Title="MountOptions" Item="@StorageClass.MountOptions" ExplainField="storageClass.mountOptions" ShowInJson="true"></PropertySimpleView>
-                <PropertySimpleView Title="Parameters" Item="@StorageClass.Parameters" ExplainField="storageClass.parameters"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Provisioner" Item="@StorageClass.Provisioner" ExplainField="storageClass.provisioner" ></PropertySimpleView>
-                <PropertySimpleView Title="ReclaimPolicy" Item="@StorageClass.ReclaimPolicy" ExplainField="storageClass.reclaimPolicy" ></PropertySimpleView>
-                <PropertySimpleView Title="VolumeBindingMode" Item="@StorageClass.VolumeBindingMode" ExplainField="storageClass.volumeBindingMode" ></PropertySimpleView>
+        <PropertySimpleView Title="Provisioner" Item="@StorageClass.Provisioner" ExplainField="storageClass.provisioner"></PropertySimpleView>
+        <PropertySimpleView Title="Parameters" Item="@StorageClass.Parameters" ExplainField="storageClass.parameters" ShowInJson="true"></PropertySimpleView>
+        <PropertyListView Title="MountOptions" Items="@StorageClass.MountOptions" ExplainField="storageClass.mountOptions" T="string"></PropertyListView>
+        <PropertyOptionView Title="ReclaimPolicy" Item="@StorageClass.ReclaimPolicy" ExplainField="storageClass.reclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
+        <PropertyOptionView Title="VolumeBindingMode" Item="@StorageClass.VolumeBindingMode" ExplainField="storageClass.volumeBindingMode" Options='@(new[] { "Immediate", "WaitForFirstConsumer" })'></PropertyOptionView>
+        <PropertySimpleView Title="AllowVolumeExpansion" Item="@StorageClass.AllowVolumeExpansion" ExplainField="storageClass.allowVolumeExpansion"></PropertySimpleView>
     </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
-    </HTable>
+
     <MiniEventListView Uid="@StorageClass.Metadata.Uid"></MiniEventListView>
 }
