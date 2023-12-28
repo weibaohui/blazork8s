@@ -20,9 +20,7 @@
                             <KubectlExplainButton Field="pod.spec.volumes.hostPath"></KubectlExplainButton>
                         </HTd>
                     </HTr>
-
-                    <PropertyOptionView Title="Type" Item="@Volume.HostPath.Type" Options='@(new[] { "", "DirectoryOrCreate", "Directory", "FileOrCreate", "File", "Socket", "CharDevice", "BlockDevice" })' ExplainField="pod.spec.volumes.hostPath.type"></PropertyOptionView>
-                    <PropertySimpleView Title="Path" ExplainField="pod.spec.volumes.hostPath.path" Item="@Volume.HostPath.Path"></PropertySimpleView>
+                    <HostPathSourceView HostPath="@Volume.HostPath" FieldPrefix="pod.spec.volumes"></HostPathSourceView>
                 </HTable>
             </Card>
         </ChildContent>

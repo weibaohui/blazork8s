@@ -1,0 +1,17 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@if (HostPath  != null)
+{
+    <PropertyOptionView Title="Type" Item="@HostPath.Type" Options='@(new[] { "", "DirectoryOrCreate", "Directory", "FileOrCreate", "File", "Socket", "CharDevice", "BlockDevice" })' ExplainField=@(FieldPrefix+".hostPath.type")></PropertyOptionView>
+    <PropertySimpleView Title="Path" ExplainField=@(FieldPrefix+".hostPath.path") Item="@HostPath.Path"></PropertySimpleView>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1HostPathVolumeSource HostPath { get; set; }
+
+    [Parameter]
+    public string FieldPrefix { get; set; }
+}
