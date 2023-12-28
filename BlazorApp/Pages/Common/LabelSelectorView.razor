@@ -1,15 +1,16 @@
 @using Extension
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common.Metadata
 @if (LabelSelector != null)
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="@ExplainField">
         @if (LabelSelector.MatchLabels is { Count: > 0 })
         {
             @foreach (var label in LabelSelector.MatchLabels)
             {
-                <ColorfulTag>@label.Key = @label.Value</ColorfulTag>
+                <Alert Type="@AlertType.Info">
+                    <ColorfulTag>@label.Key = @label.Value</ColorfulTag>
+                </Alert>
             }
         }
         @if (LabelSelector.MatchExpressions is { Count: > 0 })
@@ -27,7 +28,6 @@
             <ColorfulTag>@NullDesc</ColorfulTag>
         }
 
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
 
     </HTableColumn>
 }

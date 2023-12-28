@@ -1,6 +1,12 @@
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
 <HTr>
-    <HTd>@Title</HTd>
+    <HTd>@Title
+    @if (ExplainField != null)
+    {
+        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+    }
+        </HTd>
     <HTd>@ChildContent</HTd>
 </HTr>
 @code {
@@ -10,4 +16,8 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+
+    [Parameter]
+    public string ExplainField { get; set; }
 }
