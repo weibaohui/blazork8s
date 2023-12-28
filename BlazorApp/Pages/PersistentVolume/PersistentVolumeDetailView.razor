@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PersistentVolume>
 @if (PersistentVolume != null)
 {
@@ -10,29 +11,37 @@
     <MetadataView Item="PersistentVolume.Metadata" ExplainFieldPrefix="persistentVolume"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
+        <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName"></PropertySimpleView>
         <PropertyListView Title="AccessModes" Items="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" T="string"></PropertyListView>
-        <PropertySimpleView Title="Capacity" Item="@PersistentVolume.Spec.Capacity" ExplainField="persistentVolume.spec.capacity" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
+        <HTableColumn Title="Capacity">
+            @foreach (var (key, value) in PersistentVolume.Spec.Capacity)
+            {
+                <ColorfulTag>@($"{key}={value}")</ColorfulTag>
+            }
+            <KubectlExplainButton Field="persistentVolume.spec.capacity"></KubectlExplainButton>
+        </HTableColumn>
         <HTableColumn Title="ScaleTarget">
             <RefView FullView="true" Ref="@PersistentVolume.Spec.ClaimRef"></RefView>
         </HTableColumn>
+        <PropertySimpleView Title="MountOptions" Item="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" ShowInJson="true"></PropertySimpleView>
+        <PropertyOptionView Title="PvReclaimPolicy" Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy" ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
+        <PropertyOptionView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>
+        <PropertySimpleView Title="NodeAffinity" Item="@PersistentVolume.Spec.NodeAffinity" ExplainField="persistentVolume.spec.nodeAffinity" ShowInJson="true"></PropertySimpleView>
+
+
+
+        <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Csi" Item="@PersistentVolume.Spec.Csi" ExplainField="persistentVolume.spec.csi" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Fc" Item="@PersistentVolume.Spec.Fc" ExplainField="persistentVolume.spec.fc" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="HostPath" Item="@PersistentVolume.Spec.HostPath" ExplainField="persistentVolume.spec.hostPath" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Iscsi" Item="@PersistentVolume.Spec.Iscsi" ExplainField="persistentVolume.spec.iscsi" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Local" Item="@PersistentVolume.Spec.Local" ExplainField="persistentVolume.spec.local" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="MountOptions" Item="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Nfs" Item="@PersistentVolume.Spec.Nfs" ExplainField="persistentVolume.spec.nfs" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="NodeAffinity" Item="@PersistentVolume.Spec.NodeAffinity" ExplainField="persistentVolume.spec.nodeAffinity" ShowInJson="true"></PropertySimpleView>
-        <PropertyOptionView Title="PvReclaimPolicy" Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy" ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
 
         <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName"></PropertySimpleView>
-        <PropertyOptionView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>
 
-        <PropertySimpleView ></PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">

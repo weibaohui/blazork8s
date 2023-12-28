@@ -33,7 +33,7 @@
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <PropertyOptionView Title="Phase" Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" Options='@(new[] { "Bound", "Lost","Pending" })'></PropertyOptionView>
+        <PropertyOptionView Title="Phase" Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" Options='@(new[] { "Bound", "Lost", "Pending" })'></PropertyOptionView>
         @if (PersistentVolumeClaim.Status.Conditions != null)
         {
             <ConditionsView Conditions="@(AutoMapperHelper<V1PersistentVolumeClaimCondition>.MapToCondition(PersistentVolumeClaim.Status.Conditions))" ExplainField="persistentVolumeClaim.status.conditions"></ConditionsView>
@@ -41,7 +41,17 @@
         <PropertyListView Title="AccessModes" Items="@PersistentVolumeClaim.Status.AccessModes" ExplainField="persistentVolumeClaim.status.accessModes" T="string"></PropertyListView>
         <PropertySimpleView Title="AllocatedResourceStatuses" Item="@PersistentVolumeClaim.Status.AllocatedResourceStatuses" ExplainField="persistentVolumeClaim.status.allocatedResourceStatuses" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="AllocatedResources" Item="@PersistentVolumeClaim.Status.AllocatedResources" ExplainField="persistentVolumeClaim.status.allocatedResources" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Capacity" Item="@PersistentVolumeClaim.Status.Capacity" ExplainField="persistentVolumeClaim.status.capacity" ShowInJson="true"></PropertySimpleView>
+
+        @if (PersistentVolumeClaim.Status.Capacity != null)
+        {
+            <HTableColumn Title="Capacity">
+                @foreach (var (key, value) in PersistentVolumeClaim.Status.Capacity)
+                {
+                    <ColorfulTag>@($"{key}={value}")</ColorfulTag>
+                }
+                <KubectlExplainButton Field="persistentVolumeClaim.status.capacity"></KubectlExplainButton>
+            </HTableColumn>
+        }
     </HTable>
     <MiniEventListView Uid="@PersistentVolumeClaim.Metadata.Uid"></MiniEventListView>
 }
