@@ -1,6 +1,7 @@
 @using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod.Affinity
 @using BlazorApp.Pages.Pod.Volume
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
@@ -23,24 +24,51 @@
             }
             <KubectlExplainButton Field="persistentVolume.spec.capacity"></KubectlExplainButton>
         </HTableColumn>
-        <HTableColumn Title="ScaleTarget">
-            <RefView FullView="true" Ref="@PersistentVolume.Spec.ClaimRef"></RefView>
-        </HTableColumn>
-        <PropertySimpleView Title="MountOptions" Item="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" ShowInJson="true"></PropertySimpleView>
+        @if (PersistentVolume.Spec.ClaimRef != null)
+        {
+            <HTableColumn Title="ScaleTarget">
+                <RefView FullView="true" Ref="@PersistentVolume.Spec.ClaimRef"></RefView>
+            </HTableColumn>
+        }
+
+        <PropertyListView Title="MountOptions" Items="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" T="string"></PropertyListView>
         <PropertyOptionView Title="PvReclaimPolicy" Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy" ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
         <PropertyOptionView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>
-        <PropertySimpleView Title="NodeAffinity" Item="@PersistentVolume.Spec.NodeAffinity" ExplainField="persistentVolume.spec.nodeAffinity" ShowInJson="true"></PropertySimpleView>
+        @if (PersistentVolume.Spec.NodeAffinity != null)
+        {
+            <HTableColumn Title="NodeAffinity">
+                @{
+                    var required = PersistentVolume.Spec.NodeAffinity.Required;
+                    @if (required != null)
+                    {
+                        @foreach (var term in required.NodeSelectorTerms)
+                        {
+                            <NodeSelectorRequirementView
+                                MatchExpressions="@term.MatchFields" Type="Required"
+                                SelectType="Field"
+                                ExplainField="persistentVolume.spec.nodeAffinity.required.nodeSelectorTerms.matchFields">
+                            </NodeSelectorRequirementView>
+                            <NodeSelectorRequirementView
+                                MatchExpressions="@term.MatchExpressions" Type="Required"
+                                SelectType="Label"
+                                ExplainField="persistentVolume.spec.nodeAffinity.required.nodeSelectorTerms.matchExpressions">
+                            </NodeSelectorRequirementView>
+                        }
+                    }
+                }
+            </HTableColumn>
+        }
 
 
-        <CsiSourceView FieldPrefix="persistentVolume.spec" Csi="@(PersistentVolume.Spec.Csi.Adapt<V1CSIVolumeSource>())" ></CsiSourceView>
-        <FcSourceView FieldPrefix="persistentVolume.spec" Fc="@PersistentVolume.Spec.Fc" ></FcSourceView>
-        <HostPathSourceView FieldPrefix="persistentVolume.spec" HostPath="@PersistentVolume.Spec.HostPath" ></HostPathSourceView>
+        <CsiSourceView FieldPrefix="persistentVolume.spec" Csi="@(PersistentVolume.Spec.Csi.Adapt<V1CSIVolumeSource>())"></CsiSourceView>
+        <FcSourceView FieldPrefix="persistentVolume.spec" Fc="@PersistentVolume.Spec.Fc"></FcSourceView>
+        <HostPathSourceView FieldPrefix="persistentVolume.spec" HostPath="@PersistentVolume.Spec.HostPath"></HostPathSourceView>
         <IscsiSourceView FieldPrefix="persistentVolume.spec" Iscsi="@(PersistentVolume.Spec.Iscsi.Adapt<V1ISCSIVolumeSource>())"></IscsiSourceView>
         <NfsSourceView Nfs="@PersistentVolume.Spec.Nfs" FieldPrefix="persistentVolume.spec"></NfsSourceView>
+        <LocalSourceView Local="@PersistentVolume.Spec.Local" FieldPrefix="persistentVolume.spec"></LocalSourceView>
 
         @* TODO MORE PV  *@
         <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Local" Item="@PersistentVolume.Spec.Local" ExplainField="persistentVolume.spec.local" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
