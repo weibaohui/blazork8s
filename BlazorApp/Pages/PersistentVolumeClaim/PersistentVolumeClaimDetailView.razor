@@ -1,3 +1,4 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
@@ -16,11 +17,16 @@
     <HTable Bordered Column="1">
 
         <PropertyListView Title="AccessModes" Items="@PersistentVolumeClaim.Spec.AccessModes" ExplainField="persistentVolumeClaim.spec.accessModes" T="string"></PropertyListView>
-        <PropertySimpleView Title="DataSource" Item="@PersistentVolumeClaim.Spec.DataSource" ExplainField="persistentVolumeClaim.spec.dataSource" ShowInJson="true"></PropertySimpleView>
+        @if (PersistentVolumeClaim.Spec.DataSource != null)
+                {
+                    <HTableColumn Title="DataSource">
+                        <RefView FullView="true" Ref="@(PersistentVolumeClaim.Spec.DataSource.Adapt<V1ObjectReference>())"></RefView>
+                    </HTableColumn>
+                }
         @if (PersistentVolumeClaim.Spec.DataSourceRef != null)
         {
             <HTableColumn Title="DataSourceRef">
-                <RefView FullView="true" Ref="@(AutoMapperHelper<V1TypedObjectReference>.MapToObjectReference(PersistentVolumeClaim.Spec.DataSourceRef))"></RefView>
+                <RefView FullView="true" Ref="@(PersistentVolumeClaim.Spec.DataSourceRef.Adapt<V1ObjectReference>())"></RefView>
             </HTableColumn>
         }
 
