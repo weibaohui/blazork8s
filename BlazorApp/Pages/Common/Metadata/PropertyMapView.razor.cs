@@ -27,10 +27,15 @@ public partial class PropertyMapView<T>:ComponentBase
 
     private string GetValue(T item)
     {
+        if (Key==null)
+        {
+            return item.ToString();
+        }
+
         return ReflectHelper<T>.GetValue(item, Key);
     }
 
-    public string GetSumValue(T item)
+    private string GetSumValue(T item)
     {
         return IsBasicType() ? item.ToString() : GetValue(item);
     }

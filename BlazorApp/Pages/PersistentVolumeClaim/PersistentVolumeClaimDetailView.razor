@@ -18,11 +18,11 @@
 
         <PropertyListView Title="AccessModes" Items="@PersistentVolumeClaim.Spec.AccessModes" ExplainField="persistentVolumeClaim.spec.accessModes" T="string"></PropertyListView>
         @if (PersistentVolumeClaim.Spec.DataSource != null)
-                {
-                    <HTableColumn Title="DataSource">
-                        <RefView FullView="true" Ref="@(PersistentVolumeClaim.Spec.DataSource.Adapt<V1ObjectReference>())"></RefView>
-                    </HTableColumn>
-                }
+        {
+            <HTableColumn Title="DataSource">
+                <RefView FullView="true" Ref="@(PersistentVolumeClaim.Spec.DataSource.Adapt<V1ObjectReference>())"></RefView>
+            </HTableColumn>
+        }
         @if (PersistentVolumeClaim.Spec.DataSourceRef != null)
         {
             <HTableColumn Title="DataSourceRef">
@@ -48,16 +48,9 @@
         <PropertySimpleView Title="AllocatedResourceStatuses" Item="@PersistentVolumeClaim.Status.AllocatedResourceStatuses" ExplainField="persistentVolumeClaim.status.allocatedResourceStatuses" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="AllocatedResources" Item="@PersistentVolumeClaim.Status.AllocatedResources" ExplainField="persistentVolumeClaim.status.allocatedResources" ShowInJson="true"></PropertySimpleView>
 
-        @if (PersistentVolumeClaim.Status.Capacity != null)
-        {
-            <HTableColumn Title="Capacity">
-                @foreach (var (key, value) in PersistentVolumeClaim.Status.Capacity)
-                {
-                    <ColorfulTag>@($"{key}={value}")</ColorfulTag>
-                }
-                <KubectlExplainButton Field="persistentVolumeClaim.status.capacity"></KubectlExplainButton>
-            </HTableColumn>
-        }
+        <PropertyMapView Title="Capacity" Items="@PersistentVolumeClaim.Status.Capacity" ExplainField="persistentVolumeClaim.status.capacity" T="ResourceQuantity"></PropertyMapView>
+
+
     </HTable>
     <MiniEventListView Uid="@PersistentVolumeClaim.Metadata.Uid"></MiniEventListView>
 }

@@ -5,7 +5,6 @@
 @using BlazorApp.Pages.Pod.Volume
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PersistentVolume>
 @if (PersistentVolume != null)
@@ -17,13 +16,7 @@
     <HTable Bordered Column="1">
         <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName"></PropertySimpleView>
         <PropertyListView Title="AccessModes" Items="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" T="string"></PropertyListView>
-        <HTableColumn Title="Capacity">
-            @foreach (var (key, value) in PersistentVolume.Spec.Capacity)
-            {
-                <ColorfulTag>@($"{key}={value}")</ColorfulTag>
-            }
-            <KubectlExplainButton Field="persistentVolume.spec.capacity"></KubectlExplainButton>
-        </HTableColumn>
+        <PropertyMapView Title="Capacity" Items="@PersistentVolume.Spec.Capacity" ExplainField="persistentVolume.spec.capacity" T="ResourceQuantity"></PropertyMapView>
         @if (PersistentVolume.Spec.ClaimRef != null)
         {
             <HTableColumn Title="ScaleTarget">
