@@ -10,7 +10,7 @@
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="Provisioner" Item="@StorageClass.Provisioner" ExplainField="storageClass.provisioner"></PropertySimpleView>
-        <PropertySimpleView Title="Parameters" Item="@StorageClass.Parameters" ExplainField="storageClass.parameters" ShowInJson="true"></PropertySimpleView>
+        <PropertyMapView Title="Parameters" Items="@StorageClass.Parameters" ExplainField="storageClass.parameters" T="string"></PropertyMapView>
         <PropertyListView Title="MountOptions" Items="@StorageClass.MountOptions" ExplainField="storageClass.mountOptions" T="string"></PropertyListView>
         <PropertyOptionView Title="ReclaimPolicy" Item="@StorageClass.ReclaimPolicy" ExplainField="storageClass.reclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
         <PropertyOptionView Title="VolumeBindingMode" Item="@StorageClass.VolumeBindingMode" ExplainField="storageClass.volumeBindingMode" Options='@(new[] { "Immediate", "WaitForFirstConsumer" })'></PropertyOptionView>

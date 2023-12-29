@@ -1,0 +1,15 @@
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Utils
+@typeparam            T
+@if (Items != null)
+{
+    <HTableColumn Title=@Title>
+        @foreach (var p in Items)
+        {
+            <Tag Color=@RandomColorHelper.RandomColor()>
+                <span>@($"{p.Key}={GetSumValue(p.Value)}")</span>
+            </Tag>
+        }
+        <KubectlExplainButton Field=@ExplainField></KubectlExplainButton>
+    </HTableColumn>
+}
