@@ -20,13 +20,9 @@
                             <KubectlExplainButton Field="pod.spec.volumes.csi"></KubectlExplainButton>
                         </HTd>
                     </HTr>
+<CsiSourceView Csi="@Volume.Csi"  FieldPrefix="pod.spec.volumes"></CsiSourceView>
 
-                    <PropertySimpleView Title="Driver" ExplainField="pod.spec.volumes.csi.driver" Item="@Volume.Csi.Driver"></PropertySimpleView>
-                    <PropertySimpleView Title="VolumeAttributes" ExplainField="pod.spec.volumes.csi.volumeAttributes" Item="@Volume.Csi.VolumeAttributes" ShowInJson="true"></PropertySimpleView>
-                    <PropertySimpleView Title="FsType" ExplainField="pod.spec.volumes.csi.fsType" Item="@Volume.Csi.FsType"></PropertySimpleView>
-                    <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.csi.readOnly" Item="@Volume.Csi.ReadOnlyProperty"></PropertySimpleView>
-                    <PropertySimpleGenericsView Title="NodePublishSecretRef" ExplainField="pod.spec.volumes.csi.nodePublishSecretRef" Item="@Volume.Csi.NodePublishSecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
-                </HTable>
+                    </HTable>
             </Card>
         </ChildContent>
     </BadgeRibbon>

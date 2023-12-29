@@ -1,0 +1,25 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@if (Iscsi != null)
+{
+    <PropertySimpleView Title="Iqn" ExplainField=@(FieldPrefix + ".iscsi.iqn") Item="@Iscsi.Iqn"></PropertySimpleView>
+    <PropertyListView Title="Portals" ExplainField=@(FieldPrefix + ".iscsi.portals") Items="@Iscsi.Portals" T="string"></PropertyListView>
+    <PropertySimpleView Title="TargetPortal" ExplainField=@(FieldPrefix + ".iscsi.targetPortal") Item="@Iscsi.TargetPortal"></PropertySimpleView>
+    <PropertySimpleView Title="Lun" ExplainField=@(FieldPrefix + ".iscsi.lun") Item="@Iscsi.Lun"></PropertySimpleView>
+    <PropertySimpleView Title="FsType" ExplainField=@(FieldPrefix + ".iscsi.fsType") Item="@Iscsi.FsType"></PropertySimpleView>
+    <PropertySimpleView Title="ReadOnly" ExplainField=@(FieldPrefix + ".iscsi.readOnly") Item="@Iscsi.ReadOnlyProperty"></PropertySimpleView>
+    <PropertySimpleView Title="ChapAuthDiscovery" ExplainField=@(FieldPrefix + ".iscsi.chapAuthDiscovery") Item="@Iscsi.ChapAuthDiscovery"></PropertySimpleView>
+    <PropertySimpleView Title="ChapAuthSession" ExplainField=@(FieldPrefix + ".iscsi.chapAuthSession") Item="@Iscsi.ChapAuthSession"></PropertySimpleView>
+    <PropertySimpleGenericsView Title="SecretRef" ExplainField=@(FieldPrefix + ".iscsi.SecretRef") Item="@Iscsi.SecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1ISCSIVolumeSource Iscsi { get; set; }
+
+    [Parameter]
+    public string FieldPrefix { get; set; }
+
+}

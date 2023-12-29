@@ -1,0 +1,22 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@if (Csi != null)
+{
+    <PropertySimpleView Title="Driver" ExplainField=@(FieldPrefix + ".csi.driver") Item="@Csi.Driver"></PropertySimpleView>
+    <PropertySimpleView Title="VolumeAttributes" ExplainField=@(FieldPrefix + ".csi.volumeAttributes") Item="@Csi.VolumeAttributes" ShowInJson="true"></PropertySimpleView>
+    <PropertySimpleView Title="FsType" ExplainField=@(FieldPrefix + ".csi.fsType") Item="@Csi.FsType"></PropertySimpleView>
+    <PropertySimpleView Title="ReadOnly" ExplainField=@(FieldPrefix + ".csi.readOnly") Item="@Csi.ReadOnlyProperty"></PropertySimpleView>
+    <PropertySimpleGenericsView Title="NodePublishSecretRef" ExplainField=@(FieldPrefix + ".csi.nodePublishSecretRef") Item="@Csi.NodePublishSecretRef" Key="Name" T="V1LocalObjectReference"></PropertySimpleGenericsView>
+}
+
+
+@code {
+
+
+    [Parameter]
+    public V1CSIVolumeSource Csi { get; set; }
+
+    [Parameter]
+    public string FieldPrefix { get; set; }
+
+}

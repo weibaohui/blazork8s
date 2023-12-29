@@ -1,0 +1,19 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@if (Nfs != null)
+{
+    <PropertySimpleView Title="Server" ExplainField=@(FieldPrefix + ".nfs.server") Item="@Nfs.Server"></PropertySimpleView>
+    <PropertySimpleView Title="Path" ExplainField=@(FieldPrefix + ".nfs.path") Item="@Nfs.Path"></PropertySimpleView>
+    <PropertySimpleView Title="ReadOnly" ExplainField=@(FieldPrefix + ".nfs.readOnly") Item="@Nfs.ReadOnlyProperty"></PropertySimpleView>
+}
+
+
+@code {
+
+    [Parameter]
+    public V1NFSVolumeSource Nfs { get; set; }
+
+    [Parameter]
+    public string FieldPrefix { get; set; }
+
+}

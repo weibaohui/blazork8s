@@ -11,6 +11,7 @@
       <PackageReference Include="BlazorMonaco" Version="3.1.0" />
       <PackageReference Include="FluentScheduler" Version="5.5.1" />
       <PackageReference Include="KubernetesClient" Version="12.1.1" />
+      <PackageReference Include="Mapster" Version="7.4.0" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.0" />
       <PackageReference Include="Quick.PtyNet" Version="1.0.2" />

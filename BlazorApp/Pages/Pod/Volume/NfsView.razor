@@ -20,9 +20,7 @@
                             <KubectlExplainButton Field="pod.spec.volumes.nfs"></KubectlExplainButton>
                         </HTd>
                     </HTr>
-                    <PropertySimpleView Title="Server" ExplainField="pod.spec.volumes.nfs.server" Item="@Volume.Nfs.Server"></PropertySimpleView>
-                    <PropertySimpleView Title="Path" ExplainField="pod.spec.volumes.nfs.path" Item="@Volume.Nfs.Path"></PropertySimpleView>
-                    <PropertySimpleView Title="ReadOnly" ExplainField="pod.spec.volumes.nfs.readOnly" Item="@Volume.Nfs.ReadOnlyProperty"></PropertySimpleView>
+                    <NfsSourceView FieldPrefix="pod.spec.volumes" Nfs="@Volume.Nfs"></NfsSourceView>
                 </HTable>
             </Card>
         </ChildContent>

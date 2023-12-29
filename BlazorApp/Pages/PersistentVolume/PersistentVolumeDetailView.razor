@@ -1,8 +1,11 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod.Volume
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PersistentVolume>
 @if (PersistentVolume != null)
 {
@@ -29,18 +32,18 @@
         <PropertySimpleView Title="NodeAffinity" Item="@PersistentVolume.Spec.NodeAffinity" ExplainField="persistentVolume.spec.nodeAffinity" ShowInJson="true"></PropertySimpleView>
 
 
+        <CsiSourceView FieldPrefix="persistentVolume.spec" Csi="@(PersistentVolume.Spec.Csi.Adapt<V1CSIVolumeSource>())" ></CsiSourceView>
+        <FcSourceView FieldPrefix="persistentVolume.spec" Fc="@PersistentVolume.Spec.Fc" ></FcSourceView>
+        <HostPathSourceView FieldPrefix="persistentVolume.spec" HostPath="@PersistentVolume.Spec.HostPath" ></HostPathSourceView>
+        <IscsiSourceView FieldPrefix="persistentVolume.spec" Iscsi="@(PersistentVolume.Spec.Iscsi.Adapt<V1ISCSIVolumeSource>())"></IscsiSourceView>
+        <NfsSourceView Nfs="@PersistentVolume.Spec.Nfs" FieldPrefix="persistentVolume.spec"></NfsSourceView>
 
+        @* TODO MORE PV  *@
+        <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Local" Item="@PersistentVolume.Spec.Local" ExplainField="persistentVolume.spec.local" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Csi" Item="@PersistentVolume.Spec.Csi" ExplainField="persistentVolume.spec.csi" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Fc" Item="@PersistentVolume.Spec.Fc" ExplainField="persistentVolume.spec.fc" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="HostPath" Item="@PersistentVolume.Spec.HostPath" ExplainField="persistentVolume.spec.hostPath" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Iscsi" Item="@PersistentVolume.Spec.Iscsi" ExplainField="persistentVolume.spec.iscsi" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Local" Item="@PersistentVolume.Spec.Local" ExplainField="persistentVolume.spec.local" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Nfs" Item="@PersistentVolume.Spec.Nfs" ExplainField="persistentVolume.spec.nfs" ShowInJson="true"></PropertySimpleView>
-
-        <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd" ShowInJson="true"></PropertySimpleView>
 
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
