@@ -1,0 +1,56 @@
+<div style="height: 100%;min-height: 300px">
+    <StandaloneCodeEditor
+        @ref="_editor"
+        ConstructionOptions="EditorConstructionOptions"
+        OnDidInit="OnDidInit"/>
+</div>
+@code
+{
+    [Parameter]
+    public string Item { get; set; }
+
+    private StandaloneCodeEditor _editor = null!;
+
+    private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
+    {
+        return new StandaloneEditorConstructionOptions
+        {
+            AutomaticLayout            = true,
+            Language                   = "auto",
+            Theme                      = "vs-dark",
+            Contextmenu                = true,
+            CopyWithSyntaxHighlighting = true,
+            CursorSmoothCaretAnimation = true,
+            FoldingImportsByDefault    = true,
+            MouseWheelZoom             = true,
+            SmoothScrolling            = true,
+            WrappingIndent             = "indent",
+            AutoClosingBrackets        = "always",
+            AutoSurround               = "languageDefined",
+            FontSize                   = 16,
+            WordWrap                   = "on",
+            Minimap = new EditorMinimapOptions
+            {
+                Enabled = false
+            },
+            RenderLineHighlight  = "all",
+            ScrollBeyondLastLine = true,
+            Scrollbar = new EditorScrollbarOptions
+            {
+                AlwaysConsumeMouseWheel = true
+            },
+            BracketPairColorization = new BracketPairColorizationOptions
+            {
+                Enabled                            = true,
+                IndependentColorPoolPerBracketType = true
+            },
+            Value = Item,
+        };
+    }
+    private async Task OnDidInit()
+    {
+        await _editor.SetValue(Item);
+    }
+
+
+}

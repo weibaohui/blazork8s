@@ -1,11 +1,14 @@
+@using BlazorApp.Pages.Common
 @if (Data is { Count: > 0 })
 {
-    <Divider Orientation="left" Style="font-weight:bold">Data</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@Title</Divider>
     <Tabs Animated>
         @foreach (var (key, value) in Data)
         {
-            <TabPane Tab="@key" Key="@key">
-                @value
+            <TabPane Tab="@key" Key="@key" >
+                <div style="height: 300px">
+                    <MonacoView Item="@value"></MonacoView>
+                </div>
             </TabPane>
         }
     </Tabs>
@@ -14,6 +17,8 @@
 @code {
 
     [Parameter]
-    public IDictionary<string, string> Data { get; set; }
+    public string Title { get; set; }
 
+    [Parameter]
+    public IDictionary<string, string> Data { get; set; }
 }
