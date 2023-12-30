@@ -1,4 +1,3 @@
-@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
@@ -12,8 +11,5 @@
         <PropertySimpleView Title="Immutable" Item="@ConfigMap.Immutable" ExplainField="configMap.immutable"></PropertySimpleView>
     </HTable>
     <ConfigMapDataView Data="@ConfigMap.Data" Title="Data"></ConfigMapDataView>
-    <ConfigMapDataView Data="@(ConfigMap.BinaryData.Adapt<IDictionary<string, string>>())" Title="BinaryData"></ConfigMapDataView>
-
-
     <MiniEventListView Uid="@ConfigMap.Metadata.Uid"></MiniEventListView>
 }
