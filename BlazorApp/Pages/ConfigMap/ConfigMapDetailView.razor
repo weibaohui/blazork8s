@@ -8,14 +8,11 @@
     <ConfigMapAction Item="ConfigMap" MenuMode="MenuMode.Horizontal"></ConfigMapAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="ConfigMap.Metadata" ExplainFieldPrefix="configMap"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="BinaryData" Item="@ConfigMap.BinaryData" ExplainField="configMap.binaryData" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Immutable" Item="@ConfigMap.Immutable" ExplainField="configMap.immutable"></PropertySimpleView>
     </HTable>
-
     <ConfigMapDataView Data="@ConfigMap.Data" Title="Data"></ConfigMapDataView>
-    <ConfigMapDataView Data="@ConfigMap.BinaryData.Adapt<IDictionary<string, string>>()" Title="BinaryData"></ConfigMapDataView>
+    <ConfigMapDataView Data="@(ConfigMap.BinaryData.Adapt<IDictionary<string, string>>())" Title="BinaryData"></ConfigMapDataView>
 
 
     <MiniEventListView Uid="@ConfigMap.Metadata.Uid"></MiniEventListView>
