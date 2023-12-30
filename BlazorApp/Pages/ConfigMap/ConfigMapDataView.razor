@@ -1,0 +1,19 @@
+@if (Data is { Count: > 0 })
+{
+    <Divider Orientation="left" Style="font-weight:bold">Data</Divider>
+    <Tabs Animated>
+        @foreach (var (key, value) in Data)
+        {
+            <TabPane Tab="@key" Key="@key">
+                @value
+            </TabPane>
+        }
+    </Tabs>
+}
+
+@code {
+
+    [Parameter]
+    public IDictionary<string, string> Data { get; set; }
+
+}
