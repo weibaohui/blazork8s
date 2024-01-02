@@ -10,6 +10,10 @@ items:
         cpu: '1000'
         memory: 200Gi
         pods: '10'
+        limits.cpu: '1000'
+        limits.memory: 200Gi
+        requests.cpu: 500m
+        requests.memory: 100Gi
       scopeSelector:
         matchExpressions:
           - operator: In
@@ -43,3 +47,56 @@ items:
           - operator: In
             scopeName: PriorityClass
             values: [low]
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: disable-cross-namespace-affinity
+spec:
+  hard:
+    pods: "0"
+  scopeSelector:
+    matchExpressions:
+      - scopeName: CrossNamespacePodAffinity
+        operator: Exists
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: compute-resources
+spec:
+  hard:
+    requests.cpu: "1"
+    requests.memory: 1Gi
+    limits.cpu: "2"
+    limits.memory: 2Gi
+    requests.nvidia.com/gpu: "40"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: object-counts
+spec:
+  hard:
+    configmaps: "10"
+    persistentvolumeclaims: "4"
+    pods: "4"
+    replicationcontrollers: "20"
+    secrets: "10"
+    services: "10"
+    services.loadbalancers: "2"
+    services.nodeports: "1"
+    resourcequotas: "10"
+    count/persistentvolumeclaims : "40"
+    count/services : "40"
+    count/secrets : "40"
+    count/configmaps : "40"
+    count/replicationcontrollers : "40"
+    count/deployments.apps : "40"
+    count/replicasets.apps : "40"
+    count/statefulsets.apps : "40"
+    count/jobs.batch : "40"
+    count/cronjobs.batch : "40"
+    count/daemonsets.apps : "40"
+    count/pods : "40"
+    count/podtemplates : "40"

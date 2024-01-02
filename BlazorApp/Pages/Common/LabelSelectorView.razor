@@ -18,7 +18,14 @@
             @foreach (var expression in LabelSelector.MatchExpressions)
             {
                 <Alert Type="@AlertType.Success">
-                    @($"`{expression.Key}` {expression.OperatorProperty} [{string.Join(", ", (expression.Values))}]   ")
+                    @if (expression.Values is { Count: > 0 })
+                    {
+                        @($"`{expression.Key}` {expression.OperatorProperty} [{string.Join(" ", expression.Values)}]   ")
+                    }
+                    else
+                    {
+                        @($"`{expression.Key}` {expression.OperatorProperty}  ")
+                    }
                 </Alert>
             }
         }
@@ -27,8 +34,6 @@
         {
             <ColorfulTag>@NullDesc</ColorfulTag>
         }
-
-
     </HTableColumn>
 }
 

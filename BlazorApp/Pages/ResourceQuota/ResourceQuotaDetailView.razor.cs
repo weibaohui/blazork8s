@@ -14,12 +14,17 @@ namespace BlazorApp.Pages.ResourceQuota
             ResourceQuota = base.Options;
             await base.OnInitializedAsync();
         }
-        public V1LabelSelector GetSelector()
+
+        private V1LabelSelector GetSelector()
         {
+            if (ResourceQuota?.Spec?.ScopeSelector?.MatchExpressions is null)
+            {
+                return null;
+            }
             var config = TypeAdapterConfig<V1ScopedResourceSelectorRequirement, V1LabelSelectorRequirement>
                 .NewConfig()
                 .Map(dest => dest.Key, src => src.ScopeName);
-            var expressions = ResourceQuota.Spec.ScopeSelector
+            var expressions = ResourceQuota?.Spec?.ScopeSelector?
                 .MatchExpressions
                 .Select(x => x.Adapt<V1LabelSelectorRequirement>())
                 .ToList();
