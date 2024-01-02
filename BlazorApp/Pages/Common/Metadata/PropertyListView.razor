@@ -3,7 +3,7 @@
 @typeparam            T
 @if (Items != null)
 {
-    <HTableColumn Title=@Title>
+    <HTableColumn Title=@Title ExplainField="@ExplainField">
         @foreach (var p in Items)
         {
             <Tag Color=@RandomColorHelper.RandomColor()>
@@ -17,6 +17,5 @@
                 }
             </Tag>
         }
-        <KubectlExplainButton Field=@ExplainField></KubectlExplainButton>
     </HTableColumn>
 }

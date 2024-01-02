@@ -14,15 +14,17 @@
             <Card Bordered>
                 <HTable >
                     <HTr>
-                        <HTd>Volume</HTd>
-                        <HTd >
-                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">CSI</Tag>
+                        <HTd>
+                            Volume
                             <KubectlExplainButton Field="pod.spec.volumes.csi"></KubectlExplainButton>
                         </HTd>
+                        <HTd >
+                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">CSI</Tag>
+                        </HTd>
                     </HTr>
-<CsiSourceView Csi="@Volume.Csi"  FieldPrefix="pod.spec.volumes"></CsiSourceView>
+                    <CsiSourceView Csi="@Volume.Csi" FieldPrefix="pod.spec.volumes"></CsiSourceView>
 
-                    </HTable>
+                </HTable>
             </Card>
         </ChildContent>
     </BadgeRibbon>

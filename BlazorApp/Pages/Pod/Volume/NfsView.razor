@@ -14,10 +14,12 @@
             <Card Bordered>
                 <HTable >
                     <HTr>
-                        <HTd>Volume</HTd>
+                        <HTd>
+                            Volume
+                            <KubectlExplainButton Field="pod.spec.volumes.nfs"></KubectlExplainButton>
+                        </HTd>
                         <HTd >
                             <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">Nfs</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.nfs"></KubectlExplainButton>
                         </HTd>
                     </HTr>
                     <NfsSourceView FieldPrefix="pod.spec.volumes" Nfs="@Volume.Nfs"></NfsSourceView>

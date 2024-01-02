@@ -14,10 +14,12 @@
             <Card Bordered>
                 <HTable >
                     <HTr>
-                        <HTd>Volume</HTd>
+                        <HTd>
+                            Volume
+                            <KubectlExplainButton Field="pod.spec.volumes.emptyDir"></KubectlExplainButton>
+                        </HTd>
                         <HTd >
                             <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">EmptyDir</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.emptyDir"></KubectlExplainButton>
                         </HTd>
                     </HTr>
                     <PropertyOptionView Title="Medium" Item="@Volume.EmptyDir.Medium" Options='@(new[] { "", "Memory" })' ExplainField="pod.spec.volumes.emptyDir.medium"></PropertyOptionView>

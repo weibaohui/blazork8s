@@ -14,10 +14,12 @@
             <Card Bordered>
                 <HTable >
                     <HTr>
-                        <HTd>Volume</HTd>
+                        <HTd>
+                            Volume
+                            <KubectlExplainButton Field="pod.spec.volumes.hostPath"></KubectlExplainButton>
+                        </HTd>
                         <HTd >
                             <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">HostPath</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.hostPath"></KubectlExplainButton>
                         </HTd>
                     </HTr>
                     <HostPathSourceView HostPath="@Volume.HostPath" FieldPrefix="pod.spec.volumes"></HostPathSourceView>

@@ -14,10 +14,12 @@
             <Card Bordered>
                 <HTable >
                     <HTr>
-                        <HTd>Volume</HTd>
+                        <HTd>
+                            Volume
+                            <KubectlExplainButton Field="pod.spec.volumes.fc"></KubectlExplainButton>
+                        </HTd>
                         <HTd >
                             <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">FC</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.fc"></KubectlExplainButton>
                         </HTd>
                     </HTr>
                     <FcSourceView Fc="@Volume.Fc" FieldPrefix="pod.spec.volumes"></FcSourceView>

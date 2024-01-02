@@ -3,7 +3,7 @@
 @using BlazorApp.Utils
 @if (Item != null && !Item.ToJson().Equals("{}"))
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="@ExplainField">
         @if (ShowInJson)
         {
             <p >
@@ -16,7 +16,5 @@
                 @Item
             </Tag>
         }
-
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
     </HTableColumn>
 }

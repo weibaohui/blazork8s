@@ -14,10 +14,12 @@
             <Card Bordered>
                 <HTable >
                     <HTr>
-                        <HTd>Volume</HTd>
+                        <HTd>
+                            Volume
+                            <KubectlExplainButton Field="pod.spec.volumes.persistentVolumeClaim"></KubectlExplainButton>
+                        </HTd>
                         <HTd >
                             <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">PersistentVolumeClaim</Tag>
-                            <KubectlExplainButton Field="pod.spec.volumes.persistentVolumeClaim"></KubectlExplainButton>
                         </HTd>
                     </HTr>
 

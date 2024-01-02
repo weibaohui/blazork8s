@@ -5,7 +5,7 @@
 
 @if (Item != null)
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="@ExplainField">
         <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
 
             @if (IsString)
@@ -19,6 +19,5 @@
             }
 
         </Tag>
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
     </HTableColumn>
 }
