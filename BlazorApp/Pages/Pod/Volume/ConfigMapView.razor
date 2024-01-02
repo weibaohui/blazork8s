@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Utils
+@using BlazorApp.Pages.Common.Html
 @if (Volume.ConfigMap != null)
 {
     <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
@@ -30,20 +31,13 @@
                     {
                         @foreach (var ktp in Volume.ConfigMap.Items)
                         {
-                            <HTr>
-                                <HTd >
-                                    ConfigMap
-                                    <KubectlExplainButton Field="pod.spec.volumes.configMap"></KubectlExplainButton>
-                                </HTd >
-                                <HTd >
-                                    <Tag>@ktp.Key => @ktp.Path</Tag>
-                                    @if (ktp.Mode != null)
-                                    {
-                                        <Tag>@ktp.Mode</Tag>
-                                    }
-                                    <KubectlExplainButton Field="pod.spec.volumes.configMap.items"></KubectlExplainButton>
-                                </HTd>
-                            </HTr>
+                            <HTableColumn Title="ConfigMap" ExplainField="pod.spec.volumes.configMap">
+                                <Tag>@ktp.Key => @ktp.Path</Tag>
+                                @if (ktp.Mode != null)
+                                {
+                                    <Tag>@ktp.Mode</Tag>
+                                }
+                            </HTableColumn>
                         }
                     }
                 </HTable>
