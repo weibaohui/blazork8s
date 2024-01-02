@@ -6,9 +6,20 @@
     <HTableColumn Title=@Title>
         @foreach (var p in Items)
         {
-            <Tag Color=@RandomColorHelper.RandomColor()>
-                <span>@($"{p.Key}={GetSumValue(p.Value)}")</span>
-            </Tag>
+            @if (EveryItemOneRow)
+            {
+                <div>
+                    <Tag Color=@RandomColorHelper.RandomColor()>
+                        <span>@($"{p.Key}={GetSumValue(p.Value)}")</span>
+                    </Tag>
+                </div>
+            }
+            else
+            {
+                <Tag Color=@RandomColorHelper.RandomColor()>
+                    <span>@($"{p.Key}={GetSumValue(p.Value)}")</span>
+                </Tag>
+            }
         }
         <KubectlExplainButton Field=@ExplainField></KubectlExplainButton>
     </HTableColumn>

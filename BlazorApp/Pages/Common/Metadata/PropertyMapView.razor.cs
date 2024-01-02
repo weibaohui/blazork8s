@@ -5,11 +5,10 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class PropertyMapView<T>:ComponentBase
+public partial class PropertyMapView<T> : ComponentBase
 {
-
     [Parameter]
-    public IDictionary<string,T> Items { get; set; }
+    public IDictionary<string, T> Items { get; set; }
 
     [Parameter]
     public string Title { get; set; }
@@ -20,6 +19,10 @@ public partial class PropertyMapView<T>:ComponentBase
     [Parameter]
     public string ExplainField { get; set; }
 
+
+    [Parameter]
+    public bool EveryItemOneRow { get; set; } = false;
+
     private bool IsBasicType()
     {
         return typeof(T).IsNullableType() ? typeof(T).GetUnderlyingType().IsBasicType() : typeof(T).IsBasicType();
@@ -27,7 +30,7 @@ public partial class PropertyMapView<T>:ComponentBase
 
     private string GetValue(T item)
     {
-        if (Key==null)
+        if (Key == null)
         {
             return item.ToString();
         }

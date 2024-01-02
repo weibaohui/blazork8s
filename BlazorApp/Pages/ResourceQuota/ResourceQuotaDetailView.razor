@@ -11,14 +11,14 @@
     <MetadataView Item="ResourceQuota.Metadata" ExplainFieldPrefix="resourceQuota"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Spec.Hard" ExplainField="resourceQuota.spec.hard"></PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Spec.Hard" ExplainField="resourceQuota.spec.hard" EveryItemOneRow="true"></PropertyMapView>
         <LabelSelectorView Title="ScopeSelector" LabelSelector="@GetSelector()"></LabelSelectorView>
         <PropertyListView Title="Scopes" Items="@ResourceQuota.Spec.Scopes" ExplainField="resourceQuota.spec.scopes" T="string"></PropertyListView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard"></PropertyMapView>
-        <PropertyMapView T="ResourceQuantity" Title="Used" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.used"></PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard"  EveryItemOneRow="true"></PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title="Used" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.used"  EveryItemOneRow="true"></PropertyMapView>
     </HTable>
     <MiniEventListView Uid="@ResourceQuota.Metadata.Uid"></MiniEventListView>
 }
