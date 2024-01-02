@@ -1,27 +1,24 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ResourceQuota>
+@using BlazorApp.Pages.Common
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ResourceQuota>
 @if (ResourceQuota != null)
 {
-    <ResourceQuotaAction Item="ResourceQuota" MenuMode="MenuMode.Horizontal"  ></ResourceQuotaAction>
+    <ResourceQuotaAction Item="ResourceQuota" MenuMode="MenuMode.Horizontal"></ResourceQuotaAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="ResourceQuota.Metadata" ExplainFieldPrefix="resourceQuota"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @ResourceQuota.Name()
-        </HTableColumn>
-                <PropertySimpleView Title="Hard" Item="@ResourceQuota.Spec.Hard" ExplainField="resourceQuota.spec.hard"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="ScopeSelector" Item="@ResourceQuota.Spec.ScopeSelector" ExplainField="resourceQuota.spec.scopeSelector"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Scopes" Item="@ResourceQuota.Spec.Scopes" ExplainField="resourceQuota.spec.scopes" ShowInJson="true"></PropertySimpleView>
+        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Spec.Hard" ExplainField="resourceQuota.spec.hard"></PropertyMapView>
+        <LabelSelectorView Title="ScopeSelector" LabelSelector="@GetSelector()"></LabelSelectorView>
+        <PropertyListView Title="Scopes" Items="@ResourceQuota.Spec.Scopes" ExplainField="resourceQuota.spec.scopes" T="string"></PropertyListView>
     </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-                <PropertySimpleView Title="Hard" Item="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard"  ShowInJson="true" ></PropertySimpleView>
-                <PropertySimpleView Title="Used" Item="@ResourceQuota.Status.Used" ExplainField="resourceQuota.status.used"  ShowInJson="true" ></PropertySimpleView>
+        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard"></PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title="Used" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.used"></PropertyMapView>
     </HTable>
     <MiniEventListView Uid="@ResourceQuota.Metadata.Uid"></MiniEventListView>
 }

@@ -1,6 +1,9 @@
+using System.Linq;
 using System.Threading.Tasks;
-using k8s.Models;
 using BlazorApp.Pages.Common;
+using k8s.Models;
+using Mapster;
+
 namespace BlazorApp.Pages.ResourceQuota
 {
     public partial class ResourceQuotaDetailView :  DrawerPageBase<V1ResourceQuota>
@@ -11,5 +14,23 @@ namespace BlazorApp.Pages.ResourceQuota
             ResourceQuota = base.Options;
             await base.OnInitializedAsync();
         }
+        public V1LabelSelector GetSelector()
+        {
+            var config = TypeAdapterConfig<V1ScopedResourceSelectorRequirement, V1LabelSelectorRequirement>
+                .NewConfig()
+                .Map(dest => dest.Key, src => src.ScopeName);
+            var expressions = ResourceQuota.Spec.ScopeSelector
+                .MatchExpressions
+                .Select(x => x.Adapt<V1LabelSelectorRequirement>())
+                .ToList();
+            var labels = new V1LabelSelector()
+            {
+                MatchLabels = null,
+                MatchExpressions = expressions,
+            };
+            return labels;
+        }
     }
+
+
 }
