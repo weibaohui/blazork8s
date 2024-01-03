@@ -4,5 +4,5 @@ metadata:
   name: high-priority
 value: 1000000
 preemptionPolicy: Never
-globalDefault: false
+globalDefault: true
 description: This priority class will not cause other pods to be preempted.
