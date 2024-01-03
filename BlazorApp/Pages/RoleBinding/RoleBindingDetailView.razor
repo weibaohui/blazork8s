@@ -1,25 +1,33 @@
-@using k8s.Models
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1RoleBinding>
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1RoleBinding>
 @if (RoleBinding != null)
 {
-    <RoleBindingAction Item="RoleBinding" MenuMode="MenuMode.Horizontal"  ></RoleBindingAction>
+    <RoleBindingAction Item="RoleBinding" MenuMode="MenuMode.Horizontal"></RoleBindingAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="RoleBinding.Metadata"  ExplainFieldPrefix="roleBinding"></MetadataView>
+    <MetadataView Item="RoleBinding.Metadata" ExplainFieldPrefix="roleBinding"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @RoleBinding.Name()
-        </HTableColumn>
-                <PropertySimpleView Title="ApiGroup" Item="@RoleBinding.RoleRef.ApiGroup" ExplainField="roleBinding.roleRef.apiGroup" ></PropertySimpleView>
-                <PropertySimpleView Title="Name" Item="@RoleBinding.RoleRef.Name" ExplainField="roleBinding.roleRef.name" ></PropertySimpleView>
-                <PropertySimpleView Title="Subjects" Item="@RoleBinding.Subjects" ExplainField="roleBinding.subjects" ShowInJson="true"></PropertySimpleView>
-    </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
+
+        @if (RoleBinding.RoleRef is not null)
+        {
+            <HTableColumn Title="ClusterRole" ExplainField="roleBinding.roleRef">
+                <RefView Ref="@(RoleBinding.RoleRef.Adapt<V1ObjectReference>())" FullView="true"></RefView>
+            </HTableColumn>
+        }
+        @if (RoleBinding.Subjects is { Count: > 0 })
+        {
+            <HTableColumn Title="Subjects" ExplainField="roleBinding.subjects">
+                @foreach (var subject in RoleBinding.Subjects)
+                {
+                    <RefView Ref="@(subject.Adapt<V1ObjectReference>())" FullView="true"></RefView>
+                }
+            </HTableColumn>
+        }
     </HTable>
     <MiniEventListView Uid="@RoleBinding.Metadata.Uid"></MiniEventListView>
 }
