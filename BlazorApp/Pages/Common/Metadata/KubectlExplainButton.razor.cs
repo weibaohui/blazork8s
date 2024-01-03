@@ -7,7 +7,8 @@ public partial class KubectlExplainButton:PageBase
 {
     [Parameter]
     public string Field { get; set; }
-    protected async Task KubectlExplain()
+
+    private async Task KubectlExplainClick()
     {
         var options = PageDrawerService.DefaultOptions("Kubectl Explain", width: 800);
         await PageDrawerService.ShowDrawerAsync<KubectlExplainView, string, bool>(options, Field);
