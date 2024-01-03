@@ -1,47 +1,41 @@
 @using k8s.Models
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
-@if (RequestLimits != null && (RequestLimits.Limits is {Count:>0} || RequestLimits.Requests is {Count:>0}||RequestLimits.Claims is {Count:>0} ))
+@if (RequestLimits != null && (RequestLimits.Limits is { Count: > 0 } || RequestLimits.Requests is { Count: > 0 } || RequestLimits.Claims is { Count: > 0 }))
 {
-    <HTr>
-        <HTd>
-            Resource
-            <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
-        </HTd>
-        <HTd>
-            @if (RequestLimits.Requests != null)
-            {
-                <Alert Type="@AlertType.Success">
-                    Requests:
-                    @foreach (var (key, value) in RequestLimits.Requests)
-                    {
-                        <ColorfulTag >@($"{key}={value}") </ColorfulTag>
-                    }
-                </Alert>
-            }
-            @if (RequestLimits.Limits != null)
-            {
-                <Alert Type="@AlertType.Warning">
-                    Limits:
-                    @foreach (var (key, value) in RequestLimits.Limits)
-                    {
-                        <ColorfulTag >@($"{key}={value}") </ColorfulTag>
-                    }
-                </Alert>
-            }
-            @if (RequestLimits.Claims != null)
-            {
-                <Alert Type="@AlertType.Warning">
-                    Claims:
-                    @foreach (var c in RequestLimits.Claims)
-                    {
-                        <ColorfulTag >@($"{c.Name}") </ColorfulTag>
-                    }
-                </Alert>
-            }
-        </HTd>
-    </HTr>
+    <HTableColumn Title="Resource" ExplainField="@ExplainField">
+
+        @if (RequestLimits.Requests != null)
+        {
+            <Alert Type="@AlertType.Success">
+                Requests:
+                @foreach (var (key, value) in RequestLimits.Requests)
+                {
+                    <ColorfulTag >@($"{key}={value}") </ColorfulTag>
+                }
+            </Alert>
+        }
+        @if (RequestLimits.Limits != null)
+        {
+            <Alert Type="@AlertType.Warning">
+                Limits:
+                @foreach (var (key, value) in RequestLimits.Limits)
+                {
+                    <ColorfulTag >@($"{key}={value}") </ColorfulTag>
+                }
+            </Alert>
+        }
+        @if (RequestLimits.Claims != null)
+        {
+            <Alert Type="@AlertType.Warning">
+                Claims:
+                @foreach (var c in RequestLimits.Claims)
+                {
+                    <ColorfulTag >@($"{c.Name}") </ColorfulTag>
+                }
+            </Alert>
+        }
+    </HTableColumn>
 }
 
 @code {

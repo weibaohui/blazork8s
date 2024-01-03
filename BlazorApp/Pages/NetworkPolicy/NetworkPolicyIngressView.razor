@@ -5,7 +5,7 @@
 @using BlazorApp.Pages.Common
 @if (Ingress is { Count: > 0 })
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="networkPolicy.spec.ingress">
         <HTable Class="miniTable">
             @foreach (var ingressRule in Ingress)
             {
@@ -25,7 +25,7 @@
                         {
                             <HTable Class="miniTable">
                                 <PropertyOptionView Title="Protocol" Item="port.Protocol" ExplainField="networkPolicy.spec.ingress.ports" Options='@(new[] { "TCP", "UDP", "SCTP" })'></PropertyOptionView>
-                                <HTableColumn Title="Ports">
+                                <HTableColumn Title="Ports" ExplainField="networkPolicy.spec.ingress.ports">
                                     <ColorfulTag>
                                         @port.Port
                                         @if (port.EndPort != null)
@@ -33,7 +33,6 @@
                                             @($" - {port.EndPort}")
                                         }
                                     </ColorfulTag>
-                                    <KubectlExplainButton Field="networkPolicy.spec.ingress.ports"></KubectlExplainButton>
                                 </HTableColumn>
                             </HTable>
                         }
@@ -46,7 +45,6 @@
         {
             <Tag>ALL</Tag>
         }
-        <KubectlExplainButton Field="networkPolicy.spec.ingress"></KubectlExplainButton>
     </HTableColumn>
 }
 

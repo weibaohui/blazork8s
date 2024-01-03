@@ -5,7 +5,7 @@
 @using BlazorApp.Pages.Common
 @if (Egress is { Count: > 0 })
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="networkPolicy.spec.egress">
         <HTable Class="miniTable">
             @foreach (var egressRule in Egress)
             {
@@ -25,7 +25,7 @@
                         {
                             <HTable Class="miniTable">
                                 <PropertyOptionView Title="Protocol" Item="port.Protocol" ExplainField="networkPolicy.spec.egress.ports" Options='@(new[] { "TCP", "UDP", "SCTP" })'></PropertyOptionView>
-                                <HTableColumn Title="Ports">
+                                <HTableColumn Title="Ports" ExplainField="networkPolicy.spec.egress.ports">
                                     <ColorfulTag>
                                         @port.Port
                                         @if (port.EndPort != null)
@@ -33,7 +33,6 @@
                                             @($" - {port.EndPort}")
                                         }
                                     </ColorfulTag>
-                                    <KubectlExplainButton Field="networkPolicy.spec.egress.ports"></KubectlExplainButton>
                                 </HTableColumn>
                             </HTable>
                         }
@@ -45,7 +44,6 @@
                 {
                     <Tag>ALL</Tag>
                 }
-        <KubectlExplainButton Field="networkPolicy.spec.egress"></KubectlExplainButton>
     </HTableColumn>
 }
 

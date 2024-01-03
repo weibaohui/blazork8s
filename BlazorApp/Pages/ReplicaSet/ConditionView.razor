@@ -1,9 +1,7 @@
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common.Metadata
 @if (ConditionList != null)
 {
-    <HTableColumn Title="Conditions">
+    <HTableColumn Title="Conditions" ExplainField="@ExplainField">
         <Condition ConditionList="ConditionList"></Condition>
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
     </HTableColumn>
 }

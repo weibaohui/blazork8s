@@ -2,6 +2,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
 @if (PodSecurityContext != null && !PodSecurityContext.ToJson().Equals("{}"))
@@ -17,36 +18,33 @@
 
         @if (PodSecurityContext.SeLinuxOptions != null)
         {
-            <HTr>
-                <HTd>SeLinuxOptions</HTd>
-                <HTd>
-                    @if (PodSecurityContext.SeLinuxOptions.Level != null)
-                    {
-                        <ColorfulTag >
-                            @($"Level={PodSecurityContext.SeLinuxOptions.Level}")
-                        </ColorfulTag>
-                    }
-                    @if (PodSecurityContext.SeLinuxOptions.User != null)
-                    {
-                        <ColorfulTag >
-                            @($"User={PodSecurityContext.SeLinuxOptions.User}")
-                        </ColorfulTag>
-                    }
-                    @if (PodSecurityContext.SeLinuxOptions.Type != null)
-                    {
-                        <ColorfulTag >
-                            @($"Type={PodSecurityContext.SeLinuxOptions.Type}")
-                        </ColorfulTag>
-                    }
-                    @if (PodSecurityContext.SeLinuxOptions.Role != null)
-                    {
-                        <ColorfulTag >
-                            @($"Role={PodSecurityContext.SeLinuxOptions.Role}")
-                        </ColorfulTag>
-                    }
-                    <KubectlExplainButton Field="pod.spec.securityContext.seLinuxOptions"></KubectlExplainButton>
-                </HTd>
-            </HTr>
+            <HTableColumn Title="SeLinuxOptions" ExplainField="pod.spec.securityContext.seLinuxOptions">
+
+                @if (PodSecurityContext.SeLinuxOptions.Level != null)
+                {
+                    <ColorfulTag >
+                        @($"Level={PodSecurityContext.SeLinuxOptions.Level}")
+                    </ColorfulTag>
+                }
+                @if (PodSecurityContext.SeLinuxOptions.User != null)
+                {
+                    <ColorfulTag >
+                        @($"User={PodSecurityContext.SeLinuxOptions.User}")
+                    </ColorfulTag>
+                }
+                @if (PodSecurityContext.SeLinuxOptions.Type != null)
+                {
+                    <ColorfulTag >
+                        @($"Type={PodSecurityContext.SeLinuxOptions.Type}")
+                    </ColorfulTag>
+                }
+                @if (PodSecurityContext.SeLinuxOptions.Role != null)
+                {
+                    <ColorfulTag >
+                        @($"Role={PodSecurityContext.SeLinuxOptions.Role}")
+                    </ColorfulTag>
+                }
+            </HTableColumn>
         }
         @if (PodSecurityContext.SeccompProfile != null)
         {
@@ -57,66 +55,58 @@
 
         @if (PodSecurityContext.Sysctls != null)
         {
-            <HTr>
-                <HTd>
-                    Sysctls
-                    <KubectlExplainButton Field="pod.spec.securityContext.sysctls"></KubectlExplainButton>
-                </HTd>
-                <HTd>
-                    @foreach (var sysctl in PodSecurityContext.Sysctls)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"{sysctl.Name}={sysctl.Value}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                </HTd>
-            </HTr>
+            <HTableColumn Title="Sysctls" ExplainField="pod.spec.securityContext.sysctls">
+
+                @foreach (var sysctl in PodSecurityContext.Sysctls)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"{sysctl.Name}={sysctl.Value}")
+                        </ColorfulTag>
+                    </div>
+                }
+
+            </HTableColumn>
         }
 
         @if (PodSecurityContext.WindowsOptions != null)
         {
-            <HTr>
-                <HTd>
-                    WindowsOptions
-                    <KubectlExplainButton Field="pod.spec.securityContext.windowsOptions"></KubectlExplainButton>
-                </HTd>
-                <HTd>
-                    @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpec != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"GmsaCredentialSpec={PodSecurityContext.WindowsOptions.GmsaCredentialSpec}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                    @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"GmsaCredentialSpecName={PodSecurityContext.WindowsOptions.GmsaCredentialSpecName}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                    @if (PodSecurityContext.WindowsOptions.HostProcess != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"HostProcess={PodSecurityContext.WindowsOptions.HostProcess}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                    @if (PodSecurityContext.WindowsOptions.RunAsUserName != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"RunAsUserName={PodSecurityContext.WindowsOptions.RunAsUserName}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                </HTd>
-            </HTr>
+            <HTableColumn Title="WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions">
+
+
+                @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpec != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"GmsaCredentialSpec={PodSecurityContext.WindowsOptions.GmsaCredentialSpec}")
+                        </ColorfulTag>
+                    </div>
+                }
+                @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"GmsaCredentialSpecName={PodSecurityContext.WindowsOptions.GmsaCredentialSpecName}")
+                        </ColorfulTag>
+                    </div>
+                }
+                @if (PodSecurityContext.WindowsOptions.HostProcess != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"HostProcess={PodSecurityContext.WindowsOptions.HostProcess}")
+                        </ColorfulTag>
+                    </div>
+                }
+                @if (PodSecurityContext.WindowsOptions.RunAsUserName != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"RunAsUserName={PodSecurityContext.WindowsOptions.RunAsUserName}")
+                        </ColorfulTag>
+                    </div>
+                }
+            </HTableColumn>
         }
     </HTable>
 }

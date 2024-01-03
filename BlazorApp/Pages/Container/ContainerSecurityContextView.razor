@@ -2,6 +2,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
 @if (SecurityContext != null && !SecurityContext.ToJson().Equals("{}"))
@@ -14,36 +15,33 @@
         <PropertySimpleView Title="RunAsUser" Item="@SecurityContext.RunAsUser" ExplainField="pod.spec.containers.securityContext.runAsUser"></PropertySimpleView>
         @if (SecurityContext.SeLinuxOptions != null)
         {
-            <HTr>
-                <HTd>SeLinuxOptions</HTd>
-                <HTd>
-                    @if (SecurityContext.SeLinuxOptions.Level != null)
-                    {
-                        <ColorfulTag >
-                            @($"Level={SecurityContext.SeLinuxOptions.Level}")
-                        </ColorfulTag>
-                    }
-                    @if (SecurityContext.SeLinuxOptions.User != null)
-                    {
-                        <ColorfulTag >
-                            @($"User={SecurityContext.SeLinuxOptions.User}")
-                        </ColorfulTag>
-                    }
-                    @if (SecurityContext.SeLinuxOptions.Type != null)
-                    {
-                        <ColorfulTag >
-                            @($"Type={SecurityContext.SeLinuxOptions.Type}")
-                        </ColorfulTag>
-                    }
-                    @if (SecurityContext.SeLinuxOptions.Role != null)
-                    {
-                        <ColorfulTag >
-                            @($"Role={SecurityContext.SeLinuxOptions.Role}")
-                        </ColorfulTag>
-                    }
-                    <KubectlExplainButton Field="pod.spec.containers.securityContext.seLinuxOptions"></KubectlExplainButton>
-                </HTd>
-            </HTr>
+            <HTableColumn Title="SeLinuxOptions" ExplainField="pod.spec.containers.securityContext.seLinuxOptions">
+
+                @if (SecurityContext.SeLinuxOptions.Level != null)
+                {
+                    <ColorfulTag >
+                        @($"Level={SecurityContext.SeLinuxOptions.Level}")
+                    </ColorfulTag>
+                }
+                @if (SecurityContext.SeLinuxOptions.User != null)
+                {
+                    <ColorfulTag >
+                        @($"User={SecurityContext.SeLinuxOptions.User}")
+                    </ColorfulTag>
+                }
+                @if (SecurityContext.SeLinuxOptions.Type != null)
+                {
+                    <ColorfulTag >
+                        @($"Type={SecurityContext.SeLinuxOptions.Type}")
+                    </ColorfulTag>
+                }
+                @if (SecurityContext.SeLinuxOptions.Role != null)
+                {
+                    <ColorfulTag >
+                        @($"Role={SecurityContext.SeLinuxOptions.Role}")
+                    </ColorfulTag>
+                }
+            </HTableColumn>
         }
 
         @if (SecurityContext.SeccompProfile != null)
@@ -58,80 +56,69 @@
         <PropertySimpleView Title="ReadOnlyRootFilesystem" Item="@SecurityContext.ReadOnlyRootFilesystem" ExplainField="pod.spec.containers.securityContext.readOnlyRootFilesystem"></PropertySimpleView>
         @if (SecurityContext.Capabilities != null)
         {
-            <HTr>
-                <HTd>
-                    Capabilities
-                    <KubectlExplainButton Field="pod.spec.containers.securityContext.capabilities"></KubectlExplainButton>
-                </HTd>
-                <HTd>
-                    @if (SecurityContext.Capabilities.Add is { Count: > 0 })
-                    {
-                        <Alert Type="@AlertType.Success">
-                            Add:
-                            @foreach (var a in SecurityContext.Capabilities.Add)
-                            {
-                                <ColorfulTag>@a</ColorfulTag>
-                            }
-                        </Alert>
-                    }
-                    @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
-                    {
-                        <Alert Type="@AlertType.Error">
-                            Drop:
-                            @foreach (var a in SecurityContext.Capabilities.Drop)
-                            {
-                                <ColorfulTag>@a</ColorfulTag>
-                            }
-                        </Alert>
-                    }
-                </HTd>
-            </HTr>
+            <HTableColumn Title="Capabilities" ExplainField="pod.spec.containers.securityContext.capabilities">
+
+                @if (SecurityContext.Capabilities.Add is { Count: > 0 })
+                {
+                    <Alert Type="@AlertType.Success">
+                        Add:
+                        @foreach (var a in SecurityContext.Capabilities.Add)
+                        {
+                            <ColorfulTag>@a</ColorfulTag>
+                        }
+                    </Alert>
+                }
+                @if (SecurityContext.Capabilities.Drop is { Count: > 0 })
+                {
+                    <Alert Type="@AlertType.Error">
+                        Drop:
+                        @foreach (var a in SecurityContext.Capabilities.Drop)
+                        {
+                            <ColorfulTag>@a</ColorfulTag>
+                        }
+                    </Alert>
+                }
+            </HTableColumn>
         }
         @if (SecurityContext.WindowsOptions != null)
         {
-            <HTr>
-                <HTd>
-                    WindowsOptions
-                    <KubectlExplainButton Field="pod.spec.securityContext.windowsOptions"></KubectlExplainButton>
+            <HTableColumn Title="WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions">
 
-                </HTd>
-                <HTd>
-                    @if (SecurityContext.WindowsOptions.GmsaCredentialSpec != null)
-                    {
-                        <div>
+                @if (SecurityContext.WindowsOptions.GmsaCredentialSpec != null)
+                {
+                    <div>
 
 
-                            <ColorfulTag >
-                                @($"GmsaCredentialSpec={SecurityContext.WindowsOptions.GmsaCredentialSpec}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                    @if (SecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"GmsaCredentialSpecName={SecurityContext.WindowsOptions.GmsaCredentialSpecName}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                    @if (SecurityContext.WindowsOptions.HostProcess != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"HostProcess={SecurityContext.WindowsOptions.HostProcess}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                    @if (SecurityContext.WindowsOptions.RunAsUserName != null)
-                    {
-                        <div>
-                            <ColorfulTag >
-                                @($"RunAsUserName={SecurityContext.WindowsOptions.RunAsUserName}")
-                            </ColorfulTag>
-                        </div>
-                    }
-                </HTd>
-            </HTr>
+                        <ColorfulTag >
+                            @($"GmsaCredentialSpec={SecurityContext.WindowsOptions.GmsaCredentialSpec}")
+                        </ColorfulTag>
+                    </div>
+                }
+                @if (SecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"GmsaCredentialSpecName={SecurityContext.WindowsOptions.GmsaCredentialSpecName}")
+                        </ColorfulTag>
+                    </div>
+                }
+                @if (SecurityContext.WindowsOptions.HostProcess != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"HostProcess={SecurityContext.WindowsOptions.HostProcess}")
+                        </ColorfulTag>
+                    </div>
+                }
+                @if (SecurityContext.WindowsOptions.RunAsUserName != null)
+                {
+                    <div>
+                        <ColorfulTag >
+                            @($"RunAsUserName={SecurityContext.WindowsOptions.RunAsUserName}")
+                        </ColorfulTag>
+                    </div>
+                }
+            </HTableColumn>
         }
 
     </HTable>

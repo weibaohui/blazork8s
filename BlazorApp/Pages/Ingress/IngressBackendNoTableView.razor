@@ -6,7 +6,7 @@
     @if (Backend.Resource != null)
     {
         <span>
-            <ColorfulTag>@($"Resource/{Backend.Resource.ApiGroup}/{Backend.Resource.Kind}:{Backend.Resource.Name}") </ColorfulTag>
+            <ColorfulTag>@($"Resource: {Backend.Resource.ApiGroup}/{Backend.Resource.Kind}:{Backend.Resource.Name}") </ColorfulTag>
             <KubectlExplainButton Field="ingress.spec.defaultBackend.resource"></KubectlExplainButton>
         </span>
     }
@@ -14,7 +14,7 @@
     @if (Backend.Service != null)
     {
         <span>
-            <ColorfulTag>@($"Service/{Backend.Service.Name}:{Backend.Service.Port.Name}{Backend.Service.Port.Number}") </ColorfulTag>
+            <ColorfulTag>@($"Service: {Backend.Service.Name}:{Backend.Service.Port.Name}{Backend.Service.Port.Number}") </ColorfulTag>
             <KubectlExplainButton Field="ingress.spec.defaultBackend.service"></KubectlExplainButton>
         </span>
     }

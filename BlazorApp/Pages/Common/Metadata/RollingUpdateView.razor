@@ -3,7 +3,7 @@
 @using BlazorApp.Utils
 @if (RollingUpdate != null)
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="@ExplainField">
         @if (RollingUpdate.MaxSurge != null)
         {
             <Tag Color="@RandomColorHelper.RandomColor()">
@@ -21,7 +21,6 @@
         {
             @ChildContent
         }
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
     </HTableColumn>
 }
 

@@ -1,9 +1,8 @@
 @using Extension
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common.Metadata
 @if (Conditions != null)
 {
-    <HTableColumn Title="Conditions">
+    <HTableColumn Title="Conditions" ExplainField="pod.status.conditions">
         @foreach (var ns in Conditions)
         {
             @if (ns.Status == "True")
@@ -17,7 +16,5 @@
                 </Tooltip>
             }
         }
-        <KubectlExplainButton Field="pod.status.conditions"></KubectlExplainButton>
-
     </HTableColumn>
 }
