@@ -1,10 +1,9 @@
 @using Extension
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common.Metadata
 @if (Conditions != null)
 {
-    <HTableColumn Title="Conditions">
+    <HTableColumn Title="Conditions" ExplainField="@ExplainField">
         @foreach (var ns in Conditions)
         {
             @if (ns.Status == "True")
@@ -18,7 +17,6 @@
                 </Tooltip>
             }
         }
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
 
     </HTableColumn>
 }
