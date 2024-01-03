@@ -2,7 +2,7 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
-@if (RequestLimits != null)
+@if (RequestLimits != null && (RequestLimits.Limits is {Count:>0} || RequestLimits.Requests is {Count:>0}||RequestLimits.Claims is {Count:>0} ))
 {
     <HTr>
         <HTd>
