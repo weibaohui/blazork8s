@@ -27,21 +27,7 @@ public partial class BasicLayout : LayoutComponentBase
                 Icon = "setting",
             },
             GetMenuItem("Namespace"),
-            new MenuDataItem
-            {
-                Path = "/NodeList",
-                Name = "NodeList",
-                Key  = "NodeList",
-                Icon = "setting",
-            },
-
-            new MenuDataItem
-            {
-                Path = "/Node",
-                Name = "Nodes",
-                Key  = "Nodes",
-                Icon = "setting",
-            },
+            GetMenuItem("Node"),
             new MenuDataItem
             {
                 Name     = "Workloads",

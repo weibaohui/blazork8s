@@ -1,45 +1,109 @@
-@using Extension.k8s
+@using Mapster
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @inherits FeedbackComponent<V1Node, bool>
-@if (_node != null)
+@if (Node != null)
 {
-    <MetadataView Item="_node.Metadata" ></MetadataView>
-
-    <Divider Orientation="left" Style="font-weight:bold">节点详细信息</Divider>
+    <NodeAction Item="Node" MenuMode="MenuMode.Horizontal"></NodeAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="Node.Metadata" ExplainFieldPrefix="node"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-
-        <HTableColumn Title="Conditions" >
-            @if (_node.Status.Conditions.IsReady())
-            {
-                <Tag Icon="check-circle" Color="success">Ready</Tag>
-            }
-            else
-            {
-                <Tag Icon="close-circle" Color="error">@_node.Status.Conditions.NotReadyReason()</Tag>
-            }
-        </HTableColumn>
-        <HTableColumn Title="Address">
-            @foreach (var addr in _node.Status.Addresses)
-            {
-                <div>@addr.Type : @addr.Address</div>
-            }
-        </HTableColumn>
-        <HTableColumn Title="OS">
-            @_node.Status.NodeInfo.OperatingSystem (@_node.Status.NodeInfo.Architecture)
-        </HTableColumn>
-        <HTableColumn Title="KernelVersion">@_node.Status.NodeInfo.KernelVersion</HTableColumn>
-        <HTableColumn Title="KubeletVersion">@_node.Status.NodeInfo.KubeletVersion</HTableColumn>
-        <HTableColumn Title="ContainerRuntime">@_node.Status.NodeInfo.ContainerRuntimeVersion</HTableColumn>
+        <PropertySimpleView Title="ConfigSource" Item="@Node.Spec.ConfigSource" ExplainField="node.spec.configSource" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="ExternalID" Item="@Node.Spec.ExternalID" ExplainField="node.spec.externalID"></PropertySimpleView>
+        <PropertySimpleView Title="PodCIDR" Item="@Node.Spec.PodCIDR" ExplainField="node.spec.podCIDR"></PropertySimpleView>
+        <PropertyListView Title="PodCIDRs" Items="@Node.Spec.PodCIDRs" ExplainField="node.spec.podCIDRs" T="string"></PropertyListView>
+        <PropertySimpleView Title="ProviderID" Item="@Node.Spec.ProviderID" ExplainField="node.spec.providerID"></PropertySimpleView>
+        <PropertySimpleView Title="Taints" Item="@Node.Spec.Taints" ExplainField="node.spec.taints" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title="Unschedulable" Item="@Node.Spec.Unschedulable" ExplainField="node.spec.unschedulable"></PropertySimpleView>
     </HTable>
-    <NodeResourceQuantityView BlockTitle="Capacity" Dict=@_node.Status.Capacity>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <HTable Bordered Column="1">
+        <PropertyOptionView Title="Phase" Item="@Node.Status.Phase" ExplainField="node.status.phase" Options="@(new[] { "Pending", "Running", "Terminated" })"></PropertyOptionView>
+        <ConditionsView Conditions="@(Node.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsView>
+        @if (Node.Status.Addresses is { Count: > 0 })
+        {
+            <HTableColumn Title="Address">
+                @foreach (var addr in Node.Status.Addresses)
+                {
+                    <ColorfulTag>@addr.Type : @addr.Address</ColorfulTag>
+                }
+            </HTableColumn>
+        }
+        @if (Node.Status.DaemonEndpoints != null)
+        {
+            <HTableColumn Title="DaemonEndpoints" ExplainField="node.status.daemonEndpoints">
+                <ColorfulTag > @($"KubeletEndpoint:{Node.Status.DaemonEndpoints.KubeletEndpoint.Port}")</ColorfulTag>
+            </HTableColumn>
+        }
+        @if (Node.Status.NodeInfo != null)
+        {
+            <HTableColumn Title="NodeInfo" ExplainField="node.status.nodeInfo">
+                <HTable>
+                    <PropertySimpleView Title="Architecture" Item="@Node.Status.NodeInfo.Architecture" ExplainField="node.status.nodeInfo.architecture"></PropertySimpleView>
+                    <PropertySimpleView Title="BootID" Item="@Node.Status.NodeInfo.BootID" ExplainField="node.status.nodeInfo.bootID"></PropertySimpleView>
+                    <PropertySimpleView Title="ContainerRuntimeVersion" Item="@Node.Status.NodeInfo.ContainerRuntimeVersion" ExplainField="node.status.nodeInfo.containerRuntimeVersion"></PropertySimpleView>
+                    <PropertySimpleView Title="KernelVersion" Item="@Node.Status.NodeInfo.KernelVersion" ExplainField="node.status.nodeInfo.kernelVersion"></PropertySimpleView>
+                    <PropertySimpleView Title="KubeProxyVersion" Item="@Node.Status.NodeInfo.KubeProxyVersion" ExplainField="node.status.nodeInfo.kubeProxyVersion"></PropertySimpleView>
+                    <PropertySimpleView Title="KubeletVersion" Item="@Node.Status.NodeInfo.KubeletVersion" ExplainField="node.status.nodeInfo.kubeletVersion"></PropertySimpleView>
+                    <PropertySimpleView Title="MachineID" Item="@Node.Status.NodeInfo.MachineID" ExplainField="node.status.nodeInfo.machineID"></PropertySimpleView>
+                    <PropertySimpleView Title="OperatingSystem" Item="@Node.Status.NodeInfo.OperatingSystem" ExplainField="node.status.nodeInfo.operatingSystem"></PropertySimpleView>
+                    <PropertySimpleView Title="OsImage" Item="@Node.Status.NodeInfo.OsImage" ExplainField="node.status.nodeInfo.osImage"></PropertySimpleView>
+                    <PropertySimpleView Title="SystemUUID" Item="@Node.Status.NodeInfo.SystemUUID" ExplainField="node.status.nodeInfo.systemUUID"></PropertySimpleView>
+                </HTable>
+            </HTableColumn>
+        }
+        <PropertySimpleView Title="Config" Item="@Node.Status.Config" ExplainField="node.status.config" ShowInJson="true"></PropertySimpleView>
+
+
+        @if (Node.Status.Images is { Count: > 0 })
+        {
+            <HTableColumn Title="Images" ExplainField="node.status.images">
+                @foreach (var image in Node.Status.Images)
+                {
+                    <HTable>
+                        <HTableColumn Title="Name" ExplainField="node.status.images.names">
+                            @foreach (var name in image.Names)
+                            {
+                                <div > @(name)</div>
+                            }
+                        </HTableColumn>
+                        <HTableColumn Title="SizeBytes" ExplainField="node.status.images.sizeBytes">
+                            <ColorfulTag > @(image.SizeBytes.ToString())</ColorfulTag>
+                        </HTableColumn>
+                    </HTable>
+                }
+
+
+            </HTableColumn>
+        }
+
+
+        @if (Node.Status.VolumesAttached is { Count: > 0 })
+        {
+            <HTableColumn Title="VolumesAttached" ExplainField="node.status.volumesAttached">
+                @foreach (var attached in Node.Status.VolumesAttached)
+                {
+                    <HTable>
+                        <HTableColumn Title="Name" ExplainField="node.status.volumesAttached.name">
+                            <div > @(attached.Name)</div>
+                        </HTableColumn>
+                        <PropertySimpleView Title="DevicePath" Item="@attached.DevicePath" ExplainField="node.status.volumesAttached.devicePath"></PropertySimpleView>
+                    </HTable>
+                }
+            </HTableColumn>
+        }
+        <PropertyListView Title="VolumesInUse" T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
+    </HTable>
+    <NodeResourceQuantityView BlockTitle="Capacity" Dict=@Node.Status.Capacity>
     </NodeResourceQuantityView>
-    <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@_node.Status.Allocatable>
+    <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
     </NodeResourceQuantityView>
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
-    <MiniEventListView Host="@_node.Name()"></MiniEventListView>
+    <MiniEventListView Host="@Node.Name()"></MiniEventListView>
 }

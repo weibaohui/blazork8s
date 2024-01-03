@@ -10,7 +10,7 @@ namespace BlazorApp.Pages.Node
 {
     public partial class NodeDetailView : FeedbackComponent<V1Node, bool>
     {
-        private V1Node       _node;
+        public V1Node       Node;
         private IList<V1Pod> _pods;
 
         [Inject]
@@ -18,8 +18,8 @@ namespace BlazorApp.Pages.Node
 
         protected override async Task OnInitializedAsync()
         {
-            _node = Options;
-            _pods = PodService.ListByNodeName(_node.Name());
+            Node = Options;
+            _pods = PodService.ListByNodeName(Node.Name());
             await base.OnInitializedAsync();
         }
 
