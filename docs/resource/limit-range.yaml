@@ -12,6 +12,9 @@ spec:
         cpu: '1'
       min:
         cpu: 100m
+      maxLimitRequestRatio:
+        cpu: "10"
+        memory: "10"
       type: Container
 ---
 apiVersion: v1
