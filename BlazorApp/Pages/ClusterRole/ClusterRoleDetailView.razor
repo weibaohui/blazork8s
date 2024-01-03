@@ -1,22 +1,43 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ClusterRole>
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ClusterRole>
 @if (ClusterRole != null)
 {
     <ClusterRoleAction Item="ClusterRole" MenuMode="MenuMode.Horizontal"></ClusterRoleAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="ClusterRole.Metadata"  ExplainFieldPrefix="clusterRole"></MetadataView>
+    <MetadataView Item="ClusterRole.Metadata" ExplainFieldPrefix="clusterRole"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @ClusterRole.Name()
-        </HTableColumn>
-    </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
+        @if (ClusterRole.AggregationRule is { ClusterRoleSelectors.Count: > 0 })
+        {
+            <HTableColumn Title="AggregationRule" ExplainField="clusterRole.aggregationRule">
+                <HTable>
+                    @foreach (var selector in ClusterRole.AggregationRule.ClusterRoleSelectors)
+                    {
+                        <LabelSelectorView LabelSelector="selector" Title="selector"></LabelSelectorView>
+                    }
+                </HTable>
+            </HTableColumn>
+        }
+        @if (ClusterRole.Rules is { Count: > 0 })
+        {
+            <HTableColumn Title="Rules" ExplainField="clusterRole.rules">
+                @foreach (var rule in ClusterRole.Rules)
+                {
+                    <HTable>
+                        <PropertyListView Items="rule.ResourceNames" T="string" Title="ResourceNames" ExplainField="clusterRole.rules.resourceNames"></PropertyListView>
+                        <PropertyListView Items="rule.NonResourceURLs" T="string" Title="NonResourceURLs" ExplainField="clusterRole.rules.nonResourceURLs"></PropertyListView>
+                        <PropertyListView Items="rule.ApiGroups" T="string" Title="ApiGroups" ExplainField="clusterRole.rules.apiGroups"></PropertyListView>
+                        <PropertyListView Items="rule.Resources" T="string" Title="Resources" ExplainField="clusterRole.rules.resources"></PropertyListView>
+                        <PropertyListView Items="rule.Verbs" T="string" Title="Verbs" ExplainField="clusterRole.rules.verbs"></PropertyListView>
+                    </HTable>
+                }
+            </HTableColumn>
+        }
     </HTable>
     <MiniEventListView Uid="@ClusterRole.Metadata.Uid"></MiniEventListView>
 }
