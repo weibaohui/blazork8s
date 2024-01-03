@@ -1,6 +1,8 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
@@ -11,8 +13,15 @@
     <HTable Bordered Column="1">
         <SelectorView Title="Selector" Selector="@Item.Spec.Selector"></SelectorView>
         <PropertyOptionView Title="Type" Item="@Item.Spec.Type" Options='@(new[] { "ClusterIP", "NodePort", "ExternalName", "LoadBalancer" })' ExplainField="service.spec.type"></PropertyOptionView>
-        <PropertyOptionView Title="SessionAffinity" Item="@Item.Spec.SessionAffinity" Options='@(new[] { "ClusterIP", "None" })' ExplainField="service.spec.sessionAffinity"></PropertyOptionView>
-        <PropertySimpleView Title="SessionAffinityConfig" Item="@Item.Spec.SessionAffinityConfig" ExplainField="service.spec.sessionAffinityConfig" ShowInJson="true"></PropertySimpleView>
+        <PropertyOptionView Title="SessionAffinity" Item="@Item.Spec.SessionAffinity" Options='@(new[] { "ClientIP", "None" })' ExplainField="service.spec.sessionAffinity"></PropertyOptionView>
+        @if (Item.Spec.SessionAffinityConfig != null)
+        {
+            <HTableColumn Title="SessionAffinityConfig" ExplainField="service.spec.sessionAffinityConfig">
+                <ColorfulTag  >@($"timeout = {Item.Spec.SessionAffinityConfig.ClientIP.TimeoutSeconds} seconds")</ColorfulTag>
+
+            </HTableColumn>
+        }
+
         <PropertyListView Title="IpFamilies" Items="@Item.Spec.IpFamilies" ExplainField="service.spec.ipFamilies" T="string"></PropertyListView>
         <PropertyOptionView Title="IpFamilyPolicy" Item="@Item.Spec.IpFamilyPolicy" Options='@(new[] { "PreferDualStack", "RequireDualStack", "SingleStack" })' ExplainField="service.spec.ipFamilyPolicy"></PropertyOptionView>
         <PropertySimpleView Title="HealthCheckNodePort" Item="@Item.Spec.HealthCheckNodePort" ExplainField="service.spec.healthCheckNodePort"></PropertySimpleView>

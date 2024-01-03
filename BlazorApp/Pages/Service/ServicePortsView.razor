@@ -1,8 +1,7 @@
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common.Metadata
 @if (Ports != null)
 {
-    <HTableColumn Title="Ports">
+    <HTableColumn Title="Ports" ExplainField="service.spec.ports">
         @foreach (var p in Ports)
         {
             <div>
@@ -22,6 +21,5 @@
                 }
             </div>
         }
-        <KubectlExplainButton Field="service.spec.ports"></KubectlExplainButton>
     </HTableColumn>
 }
