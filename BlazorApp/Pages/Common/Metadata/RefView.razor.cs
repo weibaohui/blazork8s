@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.ClusterRole;
 using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
@@ -8,6 +9,7 @@ using BlazorApp.Pages.Node;
 using BlazorApp.Pages.Pod;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Pages.ReplicationController;
+using BlazorApp.Pages.ServiceAccount;
 using BlazorApp.Pages.StatefulSet;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
@@ -17,16 +19,22 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class RefView:ComponentBase
+public partial class RefView : ComponentBase
 {
-
     [Parameter]
     public V1ObjectReference Ref { get; set; }
 
     [Parameter]
     public bool FullView { get; set; } = false;
 
+    [Inject]
+    private IMessageService MessageService { get; set; }
 
+    [Inject]
+    private IServiceAccountService ServiceAccountService { get; set; }
+
+    [Inject]
+    private IClusterRoleService ClusterRoleService { get; set; }
 
     [Inject]
     private IReplicaSetService ReplicaSetService { get; set; }
@@ -36,8 +44,10 @@ public partial class RefView:ComponentBase
 
     [Inject]
     private IJobService JobService { get; set; }
+
     [Inject]
     private ICronJobService CronJobService { get; set; }
+
     [Inject]
     private IPodService PodService { get; set; }
 
@@ -46,6 +56,7 @@ public partial class RefView:ComponentBase
 
     [Inject]
     private IDaemonSetService DaemonSetService { get; set; }
+
     [Inject]
     private IStatefulSetService StatefulSetService { get; set; }
 
@@ -118,22 +129,52 @@ public partial class RefView:ComponentBase
         {
             "Deployment"            => OnDeploymentNameClick(name),
             "DaemonSet"             => OnDaemonSetNameClick(name),
-            "StatefulSet"             => OnStatefulSetNameClick(name),
+            "StatefulSet"           => OnStatefulSetNameClick(name),
             "ReplicationController" => OnReplicationControllerNameClick(name),
             "ReplicaSet"            => OnRsNameClick(name),
             "Node"                  => OnNodeNameClick(name),
-            "Job"                  => OnJobNameClick(name),
-            "CronJob"                  => OnCronJobNameClick(name),
-            "Pod"                  => OnPodNameClick(name),
+            "Job"                   => OnJobNameClick(name),
+            "CronJob"               => OnCronJobNameClick(name),
+            "Pod"                   => OnPodNameClick(name),
+            "Group"                 => OnGroupNameClick(name),
+            "User"                  => OnUserNameClick(name),
+            "ServiceAccount"        => OnServiceAccountNameClick(name),
+            "ClusterRole"           => OnClusterRoleNameClick(name),
             _                       => OnXClick(name)
         };
 
         return task;
     }
 
+    private async Task OnUserNameClick(string name)
+    {
+        await MessageService.Info(name);
+    }
+
+    private async Task OnGroupNameClick(string name)
+    {
+        await MessageService.Info(name);
+    }
+
+    private async Task OnServiceAccountNameClick(string name)
+    {
+        var item = ServiceAccountService.GetByName(name);
+        await PageDrawerHelper<V1ServiceAccount>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ServiceAccountDetailView, V1ServiceAccount, bool>(item);
+    }
+
+    private async Task OnClusterRoleNameClick(string name)
+    {
+        var item = ClusterRoleService.GetByName(name);
+        await PageDrawerHelper<V1ClusterRole>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ClusterRoleDetailView, V1ClusterRole, bool>(item);
+    }
+
     private async Task OnPodNameClick(string name)
     {
-        var   item = PodService.GetByName(name);
+        var item = PodService.GetByName(name);
         await PageDrawerHelper<V1Pod>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<PodDetailView, V1Pod, bool>(item);
@@ -150,12 +191,13 @@ public partial class RefView:ComponentBase
 
     private async Task OnJobNameClick(string name)
     {
-        var   item = JobService.GetByName(name);
+        var item = JobService.GetByName(name);
         if (item == null)
         {
-          await  Message.Error($"Job {name} 已被删除");
-          return;
+            await Message.Error($"Job {name} 已被删除");
+            return;
         }
+
         await PageDrawerHelper<V1Job>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<JobDetailView, V1Job, bool>(item);
@@ -163,7 +205,7 @@ public partial class RefView:ComponentBase
 
     private async Task OnStatefulSetNameClick(string name)
     {
-        var   item = StatefulSetService.GetByName(name);
+        var item = StatefulSetService.GetByName(name);
         await PageDrawerHelper<V1StatefulSet>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<StatefulSetDetailView, V1StatefulSet, bool>(item);
