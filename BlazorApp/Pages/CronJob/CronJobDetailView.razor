@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Job
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1CronJob>
 @if (CronJob != null)
 {
@@ -22,9 +23,23 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Active" Item="@CronJob.Status.Active" ExplainField="cronJob.status.active" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="LastScheduleTime" Item="@CronJob.Status.LastScheduleTime" ExplainField="cronJob.status.lastScheduleTime"></PropertySimpleView>
-        <PropertySimpleView Title="LastSuccessfulTime" Item="@CronJob.Status.LastSuccessfulTime" ExplainField="cronJob.status.lastSuccessfulTime"></PropertySimpleView>
+        @if (CronJob.Status.Active is { Count: > 0 })
+        {
+            <HTableColumn Title="Active">
+                @foreach (var reference in CronJob.Status.Active)
+                {
+                    <RefView Ref="reference" FullView="true"></RefView>
+                }
+            </HTableColumn>
+        }
+        <HTableColumn Title="LastScheduleTime" ExplainField="cronJob.status.lastScheduleTime">
+            <AgeView Age="@CronJob.Status.LastScheduleTime"></AgeView>
+             (@CronJob.Status.LastScheduleTime.GetValueOrDefault().ToLocalTime())
+        </HTableColumn>
+        <HTableColumn Title="LastSuccessfulTime" ExplainField="cronJob.status.lastSuccessfulTime">
+            <AgeView Age="@CronJob.Status.LastSuccessfulTime"></AgeView>
+                         (@CronJob.Status.LastSuccessfulTime.GetValueOrDefault().ToLocalTime())
+        </HTableColumn>
     </HTable>
     <MiniJobListView ControllerByUid="@CronJob.Metadata.Uid"></MiniJobListView>
     <MiniEventListView Uid="@CronJob.Metadata.Uid"></MiniEventListView>

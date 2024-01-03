@@ -60,8 +60,8 @@ metadata:
 spec:
   limits:
     - max:
-        cpu: "2"
-        memory: "2Gi"
+        cpu: "8"
+        memory: "8Gi"
       type: Pod
 ---
 apiVersion: v1
@@ -83,5 +83,5 @@ metadata:
 spec:
   limits:
     - maxLimitRequestRatio:
-        memory: 2
+        memory: "8"
       type: Pod
