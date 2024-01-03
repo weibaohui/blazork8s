@@ -19,7 +19,7 @@
     <HTable Bordered Column="1">
         <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard"  EveryItemOneRow="true"></PropertyMapView>
         <PropertyMapView T="ResourceQuantity" Title="Used" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.used"  EveryItemOneRow="true"></PropertyMapView>
-        <PropertyMapView T="ResourceQuantity" Title="Left" Items="@Calculate(ResourceQuota.Status.Hard, ResourceQuota.Status.Used)" ExplainField="resourceQuota.status.used"  EveryItemOneRow="true"></PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title="Left" Items="@Calculate(ResourceQuota.Status.Hard, ResourceQuota.Status.Used)"   EveryItemOneRow="true"></PropertyMapView>
     </HTable>
     <MiniEventListView Uid="@ResourceQuota.Metadata.Uid"></MiniEventListView>
 }
