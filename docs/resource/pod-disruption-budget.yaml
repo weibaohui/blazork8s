@@ -3,7 +3,18 @@ kind: PodDisruptionBudget
 metadata:
   name: nginx-web-pdb
 spec:
-  maxUnavailable: 1
+  maxUnavailable: 3
+  selector:
+    matchLabels:
+      app: nginx-web
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pdb-eviction-policy
+spec:
+  maxUnavailable: 5
+  unhealthyPodEvictionPolicy: IfHealthyBudget
   selector:
     matchLabels:
       app: nginx-web
