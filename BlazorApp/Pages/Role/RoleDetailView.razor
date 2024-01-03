@@ -1,22 +1,32 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Role>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Role>
 @if (Role != null)
 {
     <RoleAction Item="Role" MenuMode="MenuMode.Horizontal"  ></RoleAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="Role.Metadata"  ExplainFieldPrefix="role"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @Role.Name()
-        </HTableColumn>
-    </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
+
+        @if (Role.Rules is { Count: > 0 })
+        {
+            <HTableColumn Title="Rules" ExplainField="role.rules">
+                @foreach (var rule in Role.Rules)
+                {
+                    <HTable>
+                        <PropertyListView Items="rule.ResourceNames" T="string" Title="ResourceNames" ExplainField="role.rules.resourceNames"></PropertyListView>
+                        <PropertyListView Items="rule.NonResourceURLs" T="string" Title="NonResourceURLs" ExplainField="role.rules.nonResourceURLs"></PropertyListView>
+                        <PropertyListView Items="rule.ApiGroups" T="string" Title="ApiGroups" ExplainField="role.rules.apiGroups"></PropertyListView>
+                        <PropertyListView Items="rule.Resources" T="string" Title="Resources" ExplainField="role.rules.resources"></PropertyListView>
+                        <PropertyListView Items="rule.Verbs" T="string" Title="Verbs" ExplainField="role.rules.verbs"></PropertyListView>
+                    </HTable>
+                }
+            </HTableColumn>
+        }
     </HTable>
     <MiniEventListView Uid="@Role.Metadata.Uid"></MiniEventListView>
 }
