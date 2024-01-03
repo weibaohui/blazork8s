@@ -26,6 +26,7 @@ public partial class BasicLayout : LayoutComponentBase
                 Key  = "welcome",
                 Icon = "setting",
             },
+            GetMenuItem("Namespace"),
             new MenuDataItem
             {
                 Path = "/NodeList",
@@ -33,6 +34,7 @@ public partial class BasicLayout : LayoutComponentBase
                 Key  = "NodeList",
                 Icon = "setting",
             },
+
             new MenuDataItem
             {
                 Path = "/Node",
