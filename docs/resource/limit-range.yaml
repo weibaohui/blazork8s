@@ -32,3 +32,56 @@ spec:
       min:
         cpu: 100m
       type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-mem-cpu-per-container
+spec:
+  limits:
+    - max:
+        cpu: "800m"
+        memory: "1Gi"
+      min:
+        cpu: "100m"
+        memory: "99Mi"
+      default:
+        cpu: "700m"
+        memory: "900Mi"
+      defaultRequest:
+        cpu: "110m"
+        memory: "111Mi"
+      type: Container
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-mem-cpu-per-pod
+spec:
+  limits:
+    - max:
+        cpu: "2"
+        memory: "2Gi"
+      type: Pod
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: storage-limits
+spec:
+  limits:
+    - type: PersistentVolumeClaim
+      max:
+        storage: 2Gi
+      min:
+        storage: 1Gi
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: limit-memory-ratio-pod
+spec:
+  limits:
+    - maxLimitRequestRatio:
+        memory: 2
+      type: Pod
