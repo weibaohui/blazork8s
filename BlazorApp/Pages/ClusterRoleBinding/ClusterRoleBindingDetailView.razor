@@ -1,25 +1,33 @@
-@using k8s.Models
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1ClusterRoleBinding>
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ClusterRoleBinding>
 @if (ClusterRoleBinding != null)
 {
-    <ClusterRoleBindingAction Item="ClusterRoleBinding" MenuMode="MenuMode.Horizontal"  ></ClusterRoleBindingAction>
+    <ClusterRoleBindingAction Item="ClusterRoleBinding" MenuMode="MenuMode.Horizontal"></ClusterRoleBindingAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="ClusterRoleBinding.Metadata"  ExplainFieldPrefix="clusterRoleBinding"></MetadataView>
+    <MetadataView Item="ClusterRoleBinding.Metadata" ExplainFieldPrefix="clusterRoleBinding"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @ClusterRoleBinding.Name()
-        </HTableColumn>
-                <PropertySimpleView Title="ApiGroup" Item="@ClusterRoleBinding.RoleRef.ApiGroup" ExplainField="clusterRoleBinding.roleRef.apiGroup" ></PropertySimpleView>
-                <PropertySimpleView Title="Name" Item="@ClusterRoleBinding.RoleRef.Name" ExplainField="clusterRoleBinding.roleRef.name" ></PropertySimpleView>
-                <PropertySimpleView Title="Subjects" Item="@ClusterRoleBinding.Subjects" ExplainField="clusterRoleBinding.subjects" ShowInJson="true"></PropertySimpleView>
-    </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
+
+        @if (ClusterRoleBinding.RoleRef is not null)
+        {
+            <HTableColumn Title="ClusterRole" ExplainField="clusterRoleBinding.roleRef">
+                <RefView Ref="@(ClusterRoleBinding.RoleRef.Adapt<V1ObjectReference>())" FullView="true"></RefView>
+            </HTableColumn>
+        }
+        @if (ClusterRoleBinding.Subjects is { Count: > 0 })
+        {
+            <HTableColumn Title="Subjects" ExplainField="clusterRoleBinding.subjects">
+                @foreach (var subject in ClusterRoleBinding.Subjects)
+                {
+                    <RefView Ref="@(subject.Adapt<V1ObjectReference>())" FullView="true"></RefView>
+                }
+            </HTableColumn>
+        }
     </HTable>
     <MiniEventListView Uid="@ClusterRoleBinding.Metadata.Uid"></MiniEventListView>
 }
