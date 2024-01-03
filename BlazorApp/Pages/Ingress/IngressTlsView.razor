@@ -4,7 +4,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @if (Tls is { Count: > 0 })
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="ingress.spec.tls">
         @foreach (var tl in Tls)
         {
             <HTable Class="miniTable">
@@ -12,7 +12,6 @@
                 <PropertyListView Title="Hosts" Items="tl.Hosts" ExplainField="ingress.spec.tls.hosts" T="string"></PropertyListView>
             </HTable>
         }
-            <KubectlExplainButton Field="ingress.spec.tls"></KubectlExplainButton>
     </HTableColumn>
 }
 

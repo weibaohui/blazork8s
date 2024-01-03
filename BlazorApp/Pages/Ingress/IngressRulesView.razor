@@ -1,21 +1,17 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
 @if (Rules is { Count: > 0 })
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title="@Title" ExplainField="ingress.spec.rules.http">
         @foreach (var rule in Rules)
         {
             <HTable Class="miniTable">
-                <HTr>
-                    <HTd>Host</HTd>
-                    <HTd>
-                        <ColorfulTag>@(rule.Host ?? "*") </ColorfulTag>
-                        <KubectlExplainButton Field="ingress.spec.rules.host"></KubectlExplainButton>
-                    </HTd>
-                </HTr>
+
+                <HTableColumn Title="Host" ExplainField="ingress.spec.rules.host">
+                    <ColorfulTag>@(rule.Host ?? "*") </ColorfulTag>
+                </HTableColumn>
 
 
                 @if (rule.Http.Paths is { Count: > 0 })
@@ -32,7 +28,6 @@
 
             </HTable>
         }
-        <KubectlExplainButton Field="ingress.spec.rules.http"></KubectlExplainButton>
     </HTableColumn>
 }
 
