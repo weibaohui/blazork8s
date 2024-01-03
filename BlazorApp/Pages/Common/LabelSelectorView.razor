@@ -1,7 +1,7 @@
 @using Extension
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
-@if (LabelSelector != null)
+@if (LabelSelector != null && (LabelSelector.MatchLabels is { Count: > 0 } || LabelSelector.MatchExpressions is { Count: > 0 }))
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
         @if (LabelSelector.MatchLabels is { Count: > 0 })
@@ -30,7 +30,7 @@
             }
         }
 
-        @if (LabelSelector.ToJson() == "{}")
+        @if (LabelSelector.ToJson() == "{}" && NullDesc != null)
         {
             <ColorfulTag>@NullDesc</ColorfulTag>
         }

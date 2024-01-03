@@ -1,0 +1,36 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
+@if (Webhooks is { Count: > 0 })
+{
+    @foreach (var hook in Webhooks)
+    {
+        <BadgeRibbon Text="@hook.Name" Placement="start" Color="#832">
+            <Card Bordered>
+                <HTable >
+                    <PropertySimpleView Title="Name" Item="@hook.Name" ExplainField="mutatingWebhookConfiguration.webhooks.name"></PropertySimpleView>
+                    <PropertyListView Title="AdmissionReviewVersions" Items="@hook.AdmissionReviewVersions" ExplainField="mutatingWebhookConfiguration.webhooks.admissionReviewVersions" T="string"></PropertyListView>
+                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField="mutatingWebhookConfiguration.webhooks.clientConfig" ShowInJson="true"></PropertySimpleView>
+                    <PropertyOptionView Title="FailurePolicy" Item="@hook.FailurePolicy" ExplainField="mutatingWebhookConfiguration.webhooks.failurePolicy" Options="@(new[] { "Fail", "Ignore" })"></PropertyOptionView>
+                    <PropertySimpleView Title="MatchConditions" Item="@hook.MatchConditions" ExplainField="mutatingWebhookConfiguration.webhooks.matchConditions" ShowInJson="true"></PropertySimpleView>
+                    <PropertyOptionView Title="MatchPolicy" Item="@hook.MatchPolicy" ExplainField="mutatingWebhookConfiguration.webhooks.matchPolicy" Options="@(new[] { "Equivalent", "Exact" })"></PropertyOptionView>
+
+                    <LabelSelectorView Title="NamespaceSelector" LabelSelector="@hook.NamespaceSelector"></LabelSelectorView>
+                    <LabelSelectorView Title="ObjectSelector" LabelSelector="@hook.ObjectSelector"></LabelSelectorView>
+                    <PropertyOptionView Title="ReinvocationPolicy" Item="@hook.ReinvocationPolicy" ExplainField="mutatingWebhookConfiguration.webhooks.reinvocationPolicy" Options="@(new[] { "IfNeeded", "Never" })"></PropertyOptionView>
+                    <PropertySimpleView Title="Rules" Item="@hook.Rules" ExplainField="mutatingWebhookConfiguration.webhooks.rules" ShowInJson="true"></PropertySimpleView>
+                    <PropertyOptionView Title="SideEffects" Item="@hook.SideEffects" ExplainField="mutatingWebhookConfiguration.webhooks.sideEffects" Options="@(new[] { "None", "NoneOnDryRun", "Unknown", "Some" })"></PropertyOptionView>
+                    <PropertySimpleView Title="TimeoutSeconds" Item="@hook.TimeoutSeconds" ExplainField="mutatingWebhookConfiguration.webhooks.timeoutSeconds"></PropertySimpleView>
+                </HTable>
+            </Card>
+        </BadgeRibbon>
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IList<V1MutatingWebhook> Webhooks { get; set; }
+
+}

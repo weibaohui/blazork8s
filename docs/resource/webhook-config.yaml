@@ -59,7 +59,33 @@ kind: MutatingWebhookConfiguration
 metadata:
   name: pod-webhook4.example.com
 webhooks:
-  - name: my-webhook.example.com
+  - name: my-webhook-1.example.com
+    matchPolicy: Equivalent
+    namespaceSelector:
+      matchLabels:
+        runlevel: "0"
+      matchExpressions:
+        - key: runlevel
+          operator: NotIn
+          values: [ '0', '1' ]
+    objectSelector:
+      matchLabels:
+        foo: bar
+    admissionReviewVersions: [ v1 ]
+    sideEffects: None
+    failurePolicy: Ignore # 失败时继续处理请求但跳过 Webhook (可选值)
+    clientConfig:
+      service:
+        namespace: example-namespace
+        name: example-service
+      caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
+    rules:
+      - operations: [ CREATE ]
+        apiGroups: [ '*' ]
+        apiVersions: [ '*' ]
+        resources: [ '*' ]
+        scope: '*'
+  - name: my-webhook-2.example.com
     clientConfig:
       caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
       service:

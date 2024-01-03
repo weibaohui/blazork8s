@@ -1,22 +1,15 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<V1MutatingWebhookConfiguration>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1MutatingWebhookConfiguration>
 @if (MutatingWebhookConfiguration != null)
 {
-    <MutatingWebhookConfigurationAction Item="MutatingWebhookConfiguration" MenuMode="MenuMode.Horizontal"  ></MutatingWebhookConfigurationAction>
+    <MutatingWebhookConfigurationAction Item="MutatingWebhookConfiguration" MenuMode="MenuMode.Horizontal"></MutatingWebhookConfigurationAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="MutatingWebhookConfiguration.Metadata"  ExplainFieldPrefix="mutatingWebhookConfiguration"></MetadataView>
+    <MetadataView Item="MutatingWebhookConfiguration.Metadata" ExplainFieldPrefix="mutatingWebhookConfiguration"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Name">
-            @MutatingWebhookConfiguration.Name()
-        </HTableColumn>
-    </HTable>
- <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
-    <HTable Bordered Column="1">
+        <WebhooksView Webhooks="MutatingWebhookConfiguration.Webhooks"></WebhooksView>
     </HTable>
     <MiniEventListView Uid="@MutatingWebhookConfiguration.Metadata.Uid"></MiniEventListView>
 }
