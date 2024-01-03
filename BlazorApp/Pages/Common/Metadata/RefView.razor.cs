@@ -9,6 +9,7 @@ using BlazorApp.Pages.Node;
 using BlazorApp.Pages.Pod;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Pages.ReplicationController;
+using BlazorApp.Pages.Role;
 using BlazorApp.Pages.ServiceAccount;
 using BlazorApp.Pages.StatefulSet;
 using BlazorApp.Service.k8s;
@@ -35,7 +36,8 @@ public partial class RefView : ComponentBase
 
     [Inject]
     private IClusterRoleService ClusterRoleService { get; set; }
-
+    [Inject]
+    private IRoleService RoleService { get; set; }
     [Inject]
     private IReplicaSetService ReplicaSetService { get; set; }
 
@@ -140,6 +142,7 @@ public partial class RefView : ComponentBase
             "User"                  => OnUserNameClick(name),
             "ServiceAccount"        => OnServiceAccountNameClick(name),
             "ClusterRole"           => OnClusterRoleNameClick(name),
+            "Role"           => OnRoleNameClick(name),
             _                       => OnXClick(name)
         };
 
@@ -159,6 +162,11 @@ public partial class RefView : ComponentBase
     private async Task OnServiceAccountNameClick(string name)
     {
         var item = ServiceAccountService.GetByName(name);
+        if (item==null)
+        {
+            await MessageService.Error($"ServiceAccount {name} Not Found");
+            return;
+        }
         await PageDrawerHelper<V1ServiceAccount>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<ServiceAccountDetailView, V1ServiceAccount, bool>(item);
@@ -170,6 +178,13 @@ public partial class RefView : ComponentBase
         await PageDrawerHelper<V1ClusterRole>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<ClusterRoleDetailView, V1ClusterRole, bool>(item);
+    }
+    private async Task OnRoleNameClick(string name)
+    {
+        var item = RoleService.GetByName(name);
+        await PageDrawerHelper<V1ClusterRole>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<RoleDetailView, V1Role, bool>(item);
     }
 
     private async Task OnPodNameClick(string name)

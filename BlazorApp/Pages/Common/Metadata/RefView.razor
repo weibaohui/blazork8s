@@ -2,27 +2,20 @@
 @if (Ref != null)
 {
     <Tag Color="@RandomColorHelper.RandomColor()" OnClick="@OnObjClick" Style="cursor: pointer">
-        @if (FullView)
-        {
-            @($"{Ref.Kind} {Ref.NamespaceProperty} {Ref.Name}")
-        }
-        else
-        {
-            <Tooltip>
-                <TitleTemplate>
-                    @($"[{Ref.Kind}] {Ref.NamespaceProperty} {Ref.Name}")
-                </TitleTemplate>
-                <ChildContent>
+        <Tooltip>
+            <TitleTemplate>
+                @($"[{Ref.Kind}]  {Ref.ApiVersion} {Ref.NamespaceProperty} {Ref.Name}")
+            </TitleTemplate>
+            <ChildContent>
+                @if (FullView)
+                {
+                    @($"{Ref.Kind} {Ref.NamespaceProperty} {Ref.Name}")
+                }
+                else
+                {
                     @($"{Ref.Kind}")
-                </ChildContent>
-            </Tooltip>
-        }
-
+                }
+            </ChildContent>
+        </Tooltip>
     </Tag>
-}
-
-@code {
-
-
-
 }

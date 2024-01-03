@@ -50,7 +50,7 @@ public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesOb
 
     public T GetByName(string name)
     {
-        return List().First(x => x.Name() == name);
+        return List().FirstOrDefault(x => x.Name() == name);
     }
 
     public IList<T> List()
