@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
@@ -33,6 +35,13 @@ public partial class NodeIndex : TableBase<V1Node>
         await PageDrawerHelper<V1Node>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
             .ShowDrawerAsync<NodeDetailView, V1Node, bool>(item);
+    }
 
+    private List<string> GetNodeRole(V1Node item)
+    {
+        return item.Labels()
+            .Where(x => x.Key.Contains("node-role.kubernetes.io/"))
+            .Select(x => x.Key.Split("/")[1])
+            .ToList();
     }
 }

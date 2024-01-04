@@ -2,6 +2,7 @@
 @using k8s.Models
 @using Mapster
 @using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.TableBase<V1Node>
 @if (TableData.PagedItems != null)
 {
@@ -30,6 +31,33 @@
                 </AntDesign.Column>
                 <AntDesign.Column Title="Ready" TData="string">
                     <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                </AntDesign.Column>
+                <AntDesign.Column Title="Role" TData="string">
+                    @foreach (var role in GetNodeRole(context))
+                    {
+                        <ColorfulTag>@role</ColorfulTag>
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="InternalIP" TData="string">
+                    @context.Status.Addresses.FirstOrDefault(x => x.Type=="InternalIP")?.Address
+                </AntDesign.Column>
+                <AntDesign.Column Title="ExternalIP" TData="string">
+                                                    @context.Status.Addresses.FirstOrDefault(x => x.Type=="ExternalIP")?.Address
+                                 </AntDesign.Column>
+                <AntDesign.Column Title="KubeletVersion" TData="string">
+                    @context.Status.NodeInfo.KubeletVersion
+                </AntDesign.Column>
+                <AntDesign.Column Title="ContainerVersion" TData="string">
+                                    @context.Status.NodeInfo.ContainerRuntimeVersion
+                                </AntDesign.Column>
+                <AntDesign.Column Title="KernelVersion" TData="string">
+                    @context.Status.NodeInfo.KernelVersion
+                </AntDesign.Column>
+                <AntDesign.Column Title="OsImage" TData="string">
+                    @context.Status.NodeInfo.OsImage
+                </AntDesign.Column>
+                <AntDesign.Column Title="Age" TData="string">
+                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
                 <ActionColumn Title="Action" Width="200" Fixed="right">
                     <NodeAction Item="@context"></NodeAction>
