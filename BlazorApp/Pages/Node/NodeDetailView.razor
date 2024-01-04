@@ -14,12 +14,12 @@
     <MetadataView Item="Node.Metadata" ExplainFieldPrefix="node"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
+        <TaintsView Taints="@Node.Spec.Taints"></TaintsView>
         <PropertySimpleView Title="ConfigSource" Item="@Node.Spec.ConfigSource" ExplainField="node.spec.configSource" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="ExternalID" Item="@Node.Spec.ExternalID" ExplainField="node.spec.externalID"></PropertySimpleView>
         <PropertySimpleView Title="PodCIDR" Item="@Node.Spec.PodCIDR" ExplainField="node.spec.podCIDR"></PropertySimpleView>
         <PropertyListView Title="PodCIDRs" Items="@Node.Spec.PodCIDRs" ExplainField="node.spec.podCIDRs" T="string"></PropertyListView>
         <PropertySimpleView Title="ProviderID" Item="@Node.Spec.ProviderID" ExplainField="node.spec.providerID"></PropertySimpleView>
-        <PropertySimpleView Title="Taints" Item="@Node.Spec.Taints" ExplainField="node.spec.taints" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="Unschedulable" Item="@Node.Spec.Unschedulable" ExplainField="node.spec.unschedulable"></PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
