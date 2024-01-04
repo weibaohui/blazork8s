@@ -1,5 +1,6 @@
 @page "/CronJob"
 @using k8s.Models
+@using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.TableBase<V1CronJob>
@@ -28,6 +29,24 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="Schedule" TData="string">
+                    @(context.Spec.Schedule)
+                </AntDesign.Column>
+                <AntDesign.Column Title="Suspend" TData="string">
+                    @(context.Spec.Suspend ?? false ? "True" : "False")
+                </AntDesign.Column>
+                 <AntDesign.Column Title="Active" TData="string">
+                                    @(context.Status.Active?.Count() ?? 0)
+                                </AntDesign.Column>
+                <AntDesign.Column Title="Last Schedule" TData="string">
+                    @(context.Status.LastScheduleTime.AgeFromUtc())
+                </AntDesign.Column>
+                <AntDesign.Column Title="Selector" TData="string">
+                    <LabelSelectorView LabelSelector="@context.Spec.JobTemplate.Spec.Selector"></LabelSelectorView>
+                </AntDesign.Column>
+                <AntDesign.Column Title="Images" TData="string">
+                    <ImagesListView PodSpec="@context.Spec.JobTemplate.Spec.Template.Spec"></ImagesListView>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
