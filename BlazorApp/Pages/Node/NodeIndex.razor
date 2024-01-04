@@ -39,17 +39,17 @@
                     }
                 </AntDesign.Column>
                 <AntDesign.Column Title="InternalIP" TData="string">
-                    @context.Status.Addresses.FirstOrDefault(x => x.Type=="InternalIP")?.Address
+                    @context.Status.Addresses.FirstOrDefault(x => x.Type == "InternalIP")?.Address
                 </AntDesign.Column>
                 <AntDesign.Column Title="ExternalIP" TData="string">
-                                                    @context.Status.Addresses.FirstOrDefault(x => x.Type=="ExternalIP")?.Address
-                                 </AntDesign.Column>
+                    @context.Status.Addresses.FirstOrDefault(x => x.Type == "ExternalIP")?.Address
+                </AntDesign.Column>
                 <AntDesign.Column Title="KubeletVersion" TData="string">
                     @context.Status.NodeInfo.KubeletVersion
                 </AntDesign.Column>
                 <AntDesign.Column Title="ContainerVersion" TData="string">
-                                    @context.Status.NodeInfo.ContainerRuntimeVersion
-                                </AntDesign.Column>
+                    @context.Status.NodeInfo.ContainerRuntimeVersion
+                </AntDesign.Column>
                 <AntDesign.Column Title="KernelVersion" TData="string">
                     @context.Status.NodeInfo.KernelVersion
                 </AntDesign.Column>
