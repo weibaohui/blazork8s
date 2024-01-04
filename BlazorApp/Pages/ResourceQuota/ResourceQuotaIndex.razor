@@ -28,6 +28,12 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="Request" TData="string">
+                    @foreach (var (key, value) in Calculate(context.Status.Hard, context.Status.Used))
+                    {
+                        <div><ColorfulTag>@($"{key}={value}")</ColorfulTag></div>
+                    }
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>

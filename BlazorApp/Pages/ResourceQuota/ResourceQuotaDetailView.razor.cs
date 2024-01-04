@@ -39,19 +39,15 @@ namespace BlazorApp.Pages.ResourceQuota
             return labels;
         }
 
-        private IDictionary<string, ResourceQuantity> Calculate(IDictionary<string, ResourceQuantity> hard, IDictionary<string, ResourceQuantity> used)
+        private IDictionary<string, string> Calculate(IDictionary<string, ResourceQuantity> hard, IDictionary<string, ResourceQuantity> used)
         {
-            var result = new Dictionary<string, ResourceQuantity>();
+            var result = new Dictionary<string, string>();
             foreach (var (k, v) in hard)
             {
                 used.TryGetValue(k, out var uv);
 
                 if (uv == null) continue;
-                var x = v.ToInt64() - uv.ToInt64();
-                result[k] = new ResourceQuantity
-                {
-                    Value = x.ToString()
-                };
+                result[k] = $"{uv}/{v}";
             }
 
             return result;
