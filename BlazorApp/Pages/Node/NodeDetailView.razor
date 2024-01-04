@@ -100,10 +100,7 @@
         }
         <PropertyListView Title="VolumesInUse" T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
     </HTable>
-    <NodeResourceQuantityView BlockTitle="Capacity" Dict=@Node.Status.Capacity>
-    </NodeResourceQuantityView>
-    <NodeResourceQuantityView BlockTitle="Allocatable" Dict=@Node.Status.Allocatable>
-    </NodeResourceQuantityView>
+    <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable" ></NodeResourceCompareView>
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
     <MiniEventListView Host="@Node.Name()"></MiniEventListView>
 }

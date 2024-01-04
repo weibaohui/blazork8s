@@ -1,0 +1,57 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+<Divider Orientation="left" Style="font-weight:bold">Capacity</Divider>
+<HTable>
+    <HTr>
+        <HTh>Type</HTh>
+        <HTh>Capacity</HTh>
+        <HTh>Allocatable</HTh>
+    </HTr>
+    <HTr>
+        <HTd>Pods</HTd>
+        <HTd>@Echo("pods", Capacity)</HTd>
+        <HTd>@Echo("pods", Allocatable)</HTd>
+    </HTr>
+    <HTr>
+        <HTd>CPU</HTd>
+        <HTd>@Echo("cpu", Capacity)</HTd>
+        <HTd>@Echo("cpu", Allocatable)</HTd>
+    </HTr>
+    <HTr>
+        <HTd>Memory</HTd>
+        <HTd>@Echo("memory", Capacity)</HTd>
+        <HTd>@Echo("memory", Allocatable)</HTd>
+    </HTr>
+    <HTr>
+        <HTd>Ephemeral Storage</HTd>
+        <HTd>@Echo("ephemeral-storage", Capacity)</HTd>
+        <HTd>@Echo("ephemeral-storage", Allocatable)</HTd>
+    </HTr>
+    <HTr>
+        <HTd>Hugepages-1Gi</HTd>
+        <HTd>@Echo("hugepages-1Gi", Capacity)</HTd>
+        <HTd>@Echo("hugepages-1Gi", Allocatable)</HTd>
+    </HTr>
+    <HTr>
+        <HTd>Hugepages-2Mi</HTd>
+        <HTd>@Echo("hugepages-2Mi", Capacity)</HTd>
+        <HTd>@Echo("hugepages-2Mi", Allocatable)</HTd>
+    </HTr>
+</HTable>
+
+@code {
+
+    [Parameter]
+    public IDictionary<string, ResourceQuantity> Capacity { get; set; }
+
+    [Parameter]
+    public IDictionary<string, ResourceQuantity> Allocatable { get; set; }
+
+
+    public string Echo(string key, IDictionary<string, ResourceQuantity> dict)
+    {
+        return dict.FirstOrDefault(w => w.Key == key).Value
+            ?.CanonicalizeString();
+    }
+
+}
