@@ -27,6 +27,37 @@
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
+                <AntDesign.Column Title="Capacity" TData="string">
+                    @foreach (var (key, value) in context.Spec.Capacity)
+                    {
+                        <div>
+                            <ColorfulTag>@($"{key}={value}")</ColorfulTag>
+                        </div>
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="AccessModes" TData="string">
+                    @foreach (var mode in context.Spec.AccessModes)
+                    {
+                        <div>
+                            <ColorfulTag>@mode</ColorfulTag>
+                        </div>
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="ReclaimPolicy" TData="string">
+                    <ColorfulTag>@context.Spec.PersistentVolumeReclaimPolicy</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="Status" TData="string">
+                    <ColorfulTag>@context.Status.Phase</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="Claim" TData="string">
+                    <RefView Ref="@context.Spec.ClaimRef"></RefView>
+                </AntDesign.Column>
+                <AntDesign.Column Title="StorageClass" TData="string">
+                    <ColorfulTag>@context.Spec.StorageClassName</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="VolumeMode" TData="string">
+                    <ColorfulTag>@context.Spec.VolumeMode</ColorfulTag>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
