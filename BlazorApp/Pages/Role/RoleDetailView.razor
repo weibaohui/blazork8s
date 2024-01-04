@@ -1,7 +1,9 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Role>
 @if (Role != null)
 {
@@ -28,5 +30,19 @@
             </HTableColumn>
         }
     </HTable>
+    @if (Subjects is { Count: > 0 })
+    {
+        <Divider Orientation="left" Style="font-weight:bold">Had Subjects</Divider>
+        <HTable>
+
+            @foreach (var subject in Subjects)
+            {
+                <HTableColumn Title="@subject.Kind">
+                    <RefView FullView="true" Ref="subject.Adapt<V1ObjectReference>()"></RefView>
+                </HTableColumn>
+            }
+
+        </HTable>
+    }
     <MiniEventListView Uid="@Role.Metadata.Uid"></MiniEventListView>
 }
