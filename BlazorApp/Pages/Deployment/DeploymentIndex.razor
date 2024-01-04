@@ -2,6 +2,7 @@
 @using k8s.Models
 @using Extension
 @using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.TableBase<V1Deployment>
 @if (TableData.PagedItems != null)
 {
@@ -43,6 +44,10 @@
                 <AntDesign.Column Title="Selector" TData="string">
                     <LabelSelectorView LabelSelector="@context.Spec.Selector"></LabelSelectorView>
                 </AntDesign.Column>
+                <AntDesign.Column Title="Images" TData="string">
+                    <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
+                </AntDesign.Column>
+
                 <AntDesign.Column Title="Age" TData="string">
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>

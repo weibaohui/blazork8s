@@ -1,0 +1,34 @@
+@using k8s.Models
+@if (PodSpec != null)
+{
+    @if (PodSpec.Containers != null)
+    {
+        @foreach (var c in PodSpec.Containers)
+        {
+            <ColorfulTag>@c.Image</ColorfulTag>
+        }
+    }
+
+    @if (PodSpec.InitContainers != null)
+    {
+        @foreach (var c in PodSpec.InitContainers)
+        {
+            <ColorfulTag>@c.Image</ColorfulTag>
+        }
+    }
+
+    @if (PodSpec.EphemeralContainers != null)
+    {
+        @foreach (var c in PodSpec.EphemeralContainers)
+        {
+            <ColorfulTag>@c.Image</ColorfulTag>
+        }
+    }
+}
+
+@code {
+
+    [Parameter]
+    public V1PodSpec PodSpec { get; set; }
+
+}

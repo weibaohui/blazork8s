@@ -49,6 +49,9 @@
                 <AntDesign.Column Title="Selector" TData="string">
                     <LabelSelectorView LabelSelector="@context.Spec.Selector"></LabelSelectorView>
                 </AntDesign.Column>
+                <AntDesign.Column Title="Images" TData="string">
+                    <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
