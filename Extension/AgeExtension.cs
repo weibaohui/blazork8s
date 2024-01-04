@@ -93,27 +93,30 @@ namespace Extension
             var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
             return dateTime.Age();
         }
+
         public static double? FromNowSeconds(this DateTime? dateTime)
         {
-            if (dateTime==null)
+            if (dateTime == null)
             {
                 return 0;
             }
-            var ts    = DateTime.Now - dateTime;
-            return  ts?.TotalSeconds;
 
+            var ts = DateTime.Now - dateTime;
+            return ts?.TotalSeconds;
         }
+
         public static double FromNowSeconds(this DateTime dateTime)
         {
             var ts = DateTime.Now - dateTime;
-            return  ts.TotalSeconds;
-
+            return ts.TotalSeconds;
         }
+
         public static string AgeFromUtc(this DateTime time)
         {
             var dateTime = DateTime.Parse(time.ToString("yyyy-MM-dd'T'HH:mm:ssZ"));
             return dateTime.Age();
         }
+
         public static string AgeFromUtc(this DateTime? time)
         {
             if (time == null)
@@ -127,15 +130,20 @@ namespace Extension
 
         public static string Age(this DateTime time, DateTime burnTime)
         {
-            var s = (int)time.Subtract(burnTime).TotalSeconds;
-            var m = (int)time.Subtract(burnTime).TotalMinutes;
-            var h = (int)time.Subtract(burnTime).TotalHours;
-            var d = (int)time.Subtract(burnTime).TotalDays;
+            return time.Subtract(burnTime).Age();
+        }
+
+        public static string Age(this TimeSpan ts)
+        {
+            var s = (int)ts.TotalSeconds;
+            var m = (int)ts.TotalMinutes;
+            var h = (int)ts.TotalHours;
+            var d = (int)ts.TotalDays;
             var y = (int)s / 60 / 60 / 24 / 365;
 
-            var ys = time.Subtract(burnTime).Seconds;
-            var ym = time.Subtract(burnTime).Minutes;
-            var yh = time.Subtract(burnTime).Hours;
+            var ys = ts.Seconds;
+            var ym = ts.Minutes;
+            var yh = ts.Hours;
             var str = s switch
             {
                 < 0                                     => "0s",
