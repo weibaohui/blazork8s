@@ -1,5 +1,6 @@
 @page "/Job"
 @using k8s.Models
+@using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.TableBase<V1Job>
@@ -29,16 +30,16 @@
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
                 <AntDesign.Column Title="Completions" TData="string">
-                    @($"{context.Status.Ready}/{context.Spec.Completions}")
+                    @($"{context.Status.Succeeded??0}/{context.Spec.Completions}")
                 </AntDesign.Column>
                 <AntDesign.Column Title="Duration" TData="string">
                     @if (context.Status.CompletionTime != null)
                     {
-                        @((context.Status.CompletionTime - context.Status.StartTime).GetValueOrDefault().TotalSeconds)
+                        @((context.Status.CompletionTime - context.Status.StartTime).GetValueOrDefault().Age())
                     }
                     else
                     {
-                        @((DateTime.Now - context.Status.StartTime).GetValueOrDefault().TotalSeconds)
+                        @((DateTime.Now - context.Status.StartTime).GetValueOrDefault().Age())
                     }
                 </AntDesign.Column>
                 <AntDesign.Column Title="Selector" TData="string">
