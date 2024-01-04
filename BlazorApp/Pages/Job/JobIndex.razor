@@ -28,6 +28,26 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="Completions" TData="string">
+                    @($"{context.Status.Ready}/{context.Spec.Completions}")
+                </AntDesign.Column>
+                <AntDesign.Column Title="Duration" TData="string">
+                    @if (context.Status.CompletionTime != null)
+                    {
+                        @((context.Status.CompletionTime - context.Status.StartTime).GetValueOrDefault().TotalSeconds)
+                    }
+                    else
+                    {
+                        @((DateTime.Now - context.Status.StartTime).GetValueOrDefault().TotalSeconds)
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="Selector" TData="string">
+                    <LabelSelectorView LabelSelector="@context.Spec.Selector"></LabelSelectorView>
+                </AntDesign.Column>
+                <AntDesign.Column Title="Images" TData="string">
+                    <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
+                </AntDesign.Column>
+
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
