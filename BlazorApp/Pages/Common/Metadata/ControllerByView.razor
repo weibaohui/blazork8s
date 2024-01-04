@@ -1,12 +1,12 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
 @using k8s.Models
 @if (Owner != null)
 {
     <HTableColumn Title="ControllerBy">
         <ControllerBy
             ShowOwnerName="true"
-            Refs="@(AutoMapperHelper<V1OwnerReference>.MapToObjectReference(Owner))">
+            Refs="@(Owner.Adapt<IList<V1ObjectReference>>())">
         </ControllerBy>
     </HTableColumn>
 }

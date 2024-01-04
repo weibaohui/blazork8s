@@ -1,12 +1,12 @@
+@using Mapster
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Service
-@using BlazorApp.Utils
 @if (Ports != null)
 {
     <Divider Orientation="left" Style="font-weight:bold">Ports</Divider>
     <HTable Bordered Column="1">
-        <ServicePortsView Ports="@(AutoMapperHelper<Corev1EndpointPort>.MapToServicePorts(Ports))"></ServicePortsView>
+        <ServicePortsView Ports="@(Ports.Adapt<IList<V1ServicePort>>())"></ServicePortsView>
     </HTable>
 }
 

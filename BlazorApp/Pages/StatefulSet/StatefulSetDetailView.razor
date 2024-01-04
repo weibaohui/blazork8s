@@ -1,7 +1,7 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
@@ -36,7 +36,7 @@
         }
         <PropertyOptionView Title="PodManagementPolicy" Item="@StatefulSet.Spec.PodManagementPolicy" ExplainField="statefulSet.spec.podManagementPolicy" Options="@(new[] { "OrderedReady", "Parallel" })"></PropertyOptionView>
         <PropertyOptionView Title="StrategyType" Item="@StatefulSet.Spec.UpdateStrategy.Type" ExplainField="statefulSet.spec.updateStrategy" Options=@(new[] { "OnDelete", "RollingUpdate" })></PropertyOptionView>
-        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@(AutoMapperHelper<V1RollingUpdateStatefulSetStrategy>.MapToRollingUpdate(StatefulSet.Spec.UpdateStrategy.RollingUpdate))" ExplainField="statefulSet.spec.updateStrategy.rollingUpdate">
+        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@(StatefulSet.Spec.UpdateStrategy.RollingUpdate.Adapt<V1RollingUpdateDeployment>())" ExplainField="statefulSet.spec.updateStrategy.rollingUpdate">
             @if (StatefulSet.Spec.UpdateStrategy.RollingUpdate.Partition != null)
             {
                 <ColorfulTag>Partition = @StatefulSet.Spec.UpdateStrategy.RollingUpdate.Partition </ColorfulTag>

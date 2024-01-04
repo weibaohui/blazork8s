@@ -1,6 +1,6 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using k8s.Models
@@ -15,7 +15,7 @@
         <PropertySimpleView Title="MaxReplicas" Item="@HorizontalPodAutoscaler.Spec.MaxReplicas" ExplainField="horizontalPodAutoscaler.spec.maxReplicas"></PropertySimpleView>
         <PropertySimpleView Title="MinReplicas" Item="@HorizontalPodAutoscaler.Spec.MinReplicas" ExplainField="horizontalPodAutoscaler.spec.minReplicas"></PropertySimpleView>
         <HTableColumn Title="ScaleTarget">
-            <RefView FullView="true" Ref="@(AutoMapperHelper<V1CrossVersionObjectReference>.MapToObjectReference(HorizontalPodAutoscaler.Spec.ScaleTargetRef))"></RefView>
+            <RefView FullView="true" Ref="@(HorizontalPodAutoscaler.Spec.ScaleTargetRef.Adapt<V1ObjectReference>())"></RefView>
         </HTableColumn>
         <PropertySimpleView Title="TargetCPUUtilizationPercentage" Item="@HorizontalPodAutoscaler.Spec.TargetCPUUtilizationPercentage" ExplainField="horizontalPodAutoscaler.spec.targetCPUUtilizationPercentage"></PropertySimpleView>
     </HTable>
