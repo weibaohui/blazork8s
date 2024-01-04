@@ -40,6 +40,9 @@
                 <AntDesign.Column Title="Available" TData="int">
                     @(context.Status.AvailableReplicas ?? 0)
                 </AntDesign.Column>
+                <AntDesign.Column Title="Selector" TData="string">
+                    <LabelSelectorView LabelSelector="@context.Spec.Selector"></LabelSelectorView>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>

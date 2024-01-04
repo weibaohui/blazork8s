@@ -1,3 +1,4 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
@@ -22,7 +23,7 @@
     <PodTemplateView PodTemplate="@DaemonSet.Spec.Template" MetadataExplainFieldPrefix="statefulSet"></PodTemplateView>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <ConditionsView Conditions="@(AutoMapperHelper<V1DaemonSetCondition>.MapToCondition(DaemonSet.Status.Conditions))" ExplainField="daemonSet.status.conditions"></ConditionsView>
+        <ConditionsView Conditions="@(DaemonSet.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="daemonSet.status.conditions"></ConditionsView>
         <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount"></PropertySimpleView>
         <PropertySimpleView Title="CurrentNumberScheduled" Item="@DaemonSet.Status.CurrentNumberScheduled" ExplainField="daemonSet.status.currentNumberScheduled"></PropertySimpleView>
         <PropertySimpleView Title="DesiredNumberScheduled" Item="@DaemonSet.Status.DesiredNumberScheduled" ExplainField="daemonSet.status.desiredNumberScheduled"></PropertySimpleView>

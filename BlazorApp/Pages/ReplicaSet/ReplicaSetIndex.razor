@@ -44,7 +44,9 @@
                     @(context.Status.ReadyReplicas ?? 0)
                 </AntDesign.Column>
 
-
+                <AntDesign.Column Title="Selector" TData="string">
+                    <LabelSelectorView LabelSelector="@context.Spec.Selector"></LabelSelectorView>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>
