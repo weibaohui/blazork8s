@@ -1,8 +1,8 @@
-﻿@using BlazorApp.Pages.Common.Metadata
+﻿@using Mapster
+@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.ReplicaSet
-@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
@@ -31,7 +31,7 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <ConditionsView Conditions="@(AutoMapperHelper<V1DeploymentCondition>.MapToCondition(Deployment.Status.Conditions))" ExplainField="deployment.status.conditions"></ConditionsView>
+        <ConditionsView Conditions="@(Deployment.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
         <HTableColumn Title="Replicas Sum">
             @($"{Deployment.Spec.Replicas ?? 0} desired, {Deployment.Status.UpdatedReplicas ?? 0} updated, {Deployment.Status.Replicas ?? 0} total, {Deployment.Status.AvailableReplicas ?? 0} available, {Deployment.Status.UnavailableReplicas ?? 0} unavailable")
         </HTableColumn>

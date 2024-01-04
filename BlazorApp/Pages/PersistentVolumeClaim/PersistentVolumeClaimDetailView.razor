@@ -2,7 +2,6 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
-@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
@@ -42,7 +41,7 @@
         <PropertyOptionView Title="Phase" Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" Options='@(new[] { "Bound", "Lost", "Pending" })'></PropertyOptionView>
         @if (PersistentVolumeClaim.Status.Conditions != null)
         {
-            <ConditionsView Conditions="@(AutoMapperHelper<V1PersistentVolumeClaimCondition>.MapToCondition(PersistentVolumeClaim.Status.Conditions))" ExplainField="persistentVolumeClaim.status.conditions"></ConditionsView>
+            <ConditionsView Conditions="@(PersistentVolumeClaim.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="persistentVolumeClaim.status.conditions"></ConditionsView>
         }
         <PropertyListView Title="AccessModes" Items="@PersistentVolumeClaim.Status.AccessModes" ExplainField="persistentVolumeClaim.status.accessModes" T="string"></PropertyListView>
         <PropertySimpleView Title="AllocatedResourceStatuses" Item="@PersistentVolumeClaim.Status.AllocatedResourceStatuses" ExplainField="persistentVolumeClaim.status.allocatedResourceStatuses" ShowInJson="true"></PropertySimpleView>
