@@ -11,7 +11,7 @@
     <MetadataView Item="CronJob.Metadata" ExplainFieldPrefix="cronJob"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy"></PropertySimpleView>
+        <PropertyOptionView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" Options="@(new []{"Allow", "Forbid", "Replace"})"></PropertyOptionView>
         <PropertySimpleView Title="FailedJobsHistoryLimit" Item="@CronJob.Spec.FailedJobsHistoryLimit" ExplainField="cronJob.spec.failedJobsHistoryLimit"></PropertySimpleView>
         <PropertySimpleView Title="Schedule" Item="@CronJob.Spec.Schedule" ExplainField="cronJob.spec.schedule"></PropertySimpleView>
         <PropertySimpleView Title="StartingDeadlineSeconds" Item="@CronJob.Spec.StartingDeadlineSeconds" ExplainField="cronJob.spec.startingDeadlineSeconds"></PropertySimpleView>
