@@ -18,9 +18,12 @@ namespace BlazorApp.Pages.ServiceAccount
 
         private V1ServiceAccount ServiceAccount { get; set; }
 
+        public List<V1RoleRef> RoleRefs { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
             ServiceAccount = base.Options;
+            RoleRefs= ListSaRoles();
             await base.OnInitializedAsync();
         }
 
