@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using BlazorApp.Utils;
 using k8s.Models;
+using Mapster;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
@@ -21,7 +21,7 @@ public partial class ControllerBy : ComponentBase
     {
         if (Owner != null)
         {
-            Refs = AutoMapperHelper<V1OwnerReference>.MapToObjectReference(Owner);
+            Refs = Owner.Adapt<IList<V1ObjectReference>>();
         }
 
         await base.OnInitializedAsync();
