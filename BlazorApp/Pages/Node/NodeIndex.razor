@@ -1,5 +1,6 @@
 @page "/Node"
 @using k8s.Models
+@using Mapster
 @using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.TableBase<V1Node>
 @if (TableData.PagedItems != null)
@@ -27,7 +28,9 @@
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
-
+                <AntDesign.Column Title="Ready" TData="string">
+                    <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                </AntDesign.Column>
                 <ActionColumn Title="Action" Width="200" Fixed="right">
                     <NodeAction Item="@context"></NodeAction>
                 </ActionColumn>

@@ -1,0 +1,26 @@
+@using Extension
+@using k8s.Models
+@if (Conditions != null)
+{
+    @foreach (var ns in Conditions.OrderBy(x => x.Type))
+    {
+        @if (ns.Status == "True")
+        {
+            <Tag Icon="check" PresetColor=@PresetColor.Blue>@ns.Type</Tag>
+        }
+        else
+        {
+            <Tooltip Title="@($"{ns.Reason}:{ns.Message}  {ns.LastTransitionTime.AgeFromUtc()} ago (at {ns.LastTransitionTime}).")">
+                <Tag Icon="close" PresetColor=@PresetColor.Red>@ns.Type</Tag>
+            </Tooltip>
+        }
+    }
+}
+
+
+@code {
+
+    [Parameter]
+    public IList<V1Condition> Conditions { get; set; }
+
+}

@@ -1,5 +1,6 @@
 ﻿@page "/Deployments"
 @using k8s.Models
+@using Mapster
 @using Extension
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
@@ -52,7 +53,7 @@
                     @context.CreationTimestamp()?.AgeFromUtc()
                 </AntDesign.Column>
                 <AntDesign.Column Title="Condition" TData="string">
-                    <DeploymentCondition ConditionList="@context.Status.Conditions"></DeploymentCondition>
+                    <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                 </AntDesign.Column>
 
                 <ActionColumn Title="Action" Width="200" Fixed="right">

@@ -1,23 +1,9 @@
-@using Extension
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @if (Conditions != null)
 {
     <HTableColumn Title="Conditions" ExplainField="@ExplainField">
-        @foreach (var ns in Conditions)
-        {
-            @if (ns.Status == "True")
-            {
-                <Tag Icon="check" PresetColor=@PresetColor.Blue>@ns.Type</Tag>
-            }
-            else
-            {
-                <Tooltip Title="@($"{ns.Reason}:{ns.Message}  {ns.LastTransitionTime.AgeFromUtc()} ago (at {ns.LastTransitionTime}).")">
-                    <Tag Icon="close" PresetColor=@PresetColor.Red>@ns.Type</Tag>
-                </Tooltip>
-            }
-        }
-
+        <ConditionsTagView Conditions="@Conditions"></ConditionsTagView>
     </HTableColumn>
 }
 
@@ -27,5 +13,4 @@
     public IList<V1Condition> Conditions { get; set; }
     [Parameter]
     public string ExplainField { get; set; }
-
 }
