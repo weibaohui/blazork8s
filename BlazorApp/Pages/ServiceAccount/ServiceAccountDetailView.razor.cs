@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,26 +13,42 @@ namespace BlazorApp.Pages.ServiceAccount
     {
         [Inject]
         public IRoleService RoleService { get; set; }
-
+        [Inject]
+        public IClusterRoleBindingService ClusterRoleBindingService { get; set; }
         [Inject]
         public IRoleBindingService RoleBindingService { get; set; }
 
         private V1ServiceAccount ServiceAccount { get; set; }
 
-        public List<V1RoleRef> RoleRefs { get; set; }
+        private List<V1RoleRef> RoleRefs { get; set; }
+        private List<V1RoleRef> ClusterRoleRefs { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            ServiceAccount = base.Options;
-            RoleRefs= ListSaRoles();
+            ServiceAccount  = base.Options;
+            RoleRefs        = ListRoles();
+            ClusterRoleRefs = ListClusterRoles();
+            Console.WriteLine($"{ServiceAccount.Name()}-{RoleRefs.Count}-{ClusterRoleRefs.Count}");
             await base.OnInitializedAsync();
         }
 
 
-        private List<V1RoleRef> ListSaRoles()
+        private List<V1RoleRef> ListRoles()
         {
             var saName = ServiceAccount.Name();
             var bindings = RoleBindingService.List()
+                .Where(x =>
+                    x.Subjects is { Count: > 0 }
+                    && x.Subjects.Any(y => y.Kind == "ServiceAccount" && y.Name == saName)
+                )
+                .ToList();
+            return bindings.Select(x => x.RoleRef).ToList();
+        }
+
+        private List<V1RoleRef> ListClusterRoles()
+        {
+            var saName = ServiceAccount.Name();
+            var bindings = ClusterRoleBindingService.List()
                 .Where(x =>
                     x.Subjects is { Count: > 0 }
                     && x.Subjects.Any(y => y.Kind == "ServiceAccount" && y.Name == saName)
