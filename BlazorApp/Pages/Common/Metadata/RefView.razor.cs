@@ -6,6 +6,7 @@ using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Job;
 using BlazorApp.Pages.Node;
+using BlazorApp.Pages.PersistentVolumeClaim;
 using BlazorApp.Pages.Pod;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Pages.ReplicationController;
@@ -33,6 +34,12 @@ public partial class RefView : ComponentBase
 
     [Inject]
     private IServiceAccountService ServiceAccountService { get; set; }
+
+    [Inject]
+    private IPersistentVolumeService PersistentVolumeService { get; set; }
+
+    [Inject]
+    private IPersistentVolumeClaimService PersistentVolumeClaimService { get; set; }
 
     [Inject]
     private IClusterRoleService ClusterRoleService { get; set; }
@@ -145,10 +152,19 @@ public partial class RefView : ComponentBase
             "ServiceAccount"        => OnServiceAccountNameClick(name),
             "ClusterRole"           => OnClusterRoleNameClick(name),
             "Role"                  => OnRoleNameClick(name),
+            "PersistentVolumeClaim" => OnPersistentVolumeClaimNameClick(name),
             _                       => OnXClick(name)
         };
 
         return task;
+    }
+
+    private async Task OnPersistentVolumeClaimNameClick(string name)
+    {
+        var item = PersistentVolumeClaimService.GetByName(name);
+        await PageDrawerHelper<V1PersistentVolumeClaim>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<PersistentVolumeClaimDetailView, V1PersistentVolumeClaim, bool>(item);
     }
 
     private async Task OnUserNameClick(string name)
@@ -186,7 +202,7 @@ public partial class RefView : ComponentBase
     private async Task OnRoleNameClick(string name)
     {
         var item = RoleService.GetByName(name);
-         await PageDrawerHelper<V1Role>.Instance
+        await PageDrawerHelper<V1Role>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<RoleDetailView, V1Role, bool>(item);
     }
