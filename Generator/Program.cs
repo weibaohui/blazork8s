@@ -53,7 +53,7 @@ class Program
     public static void Volume()
     {
         var dictList = new DictList();
-        dictList.AddItem("NodeSystemInfo",typeof(V1NodeSystemInfo));
+        dictList.AddItem("RuleWithOperations",typeof(V1RuleWithOperations));
         GeneratorHelper.Generator(dictList.GetDictList()).Run();
 
         // var list = EntityPrepare.GetK8SEntity(typeof(V1Volume), "Volume");

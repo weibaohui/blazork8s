@@ -1,0 +1,29 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@if (Rules is { Count: > 0 })
+{
+    <HTableColumn Title="Rules" ExplainField=@(ExplainFieldPrefix + ".rules")>
+        @foreach (var rule in Rules)
+        {
+            <HTable>
+                <PropertyListView Items="@rule.ApiGroups" T="string" Title="ApiGroups" ExplainField=@(ExplainFieldPrefix + ".rules.apiGroups")></PropertyListView>
+                <PropertyListView Items="@rule.ApiVersions" T="string" Title="ApiVersions" ExplainField=@(ExplainFieldPrefix + ".rules.verbs")></PropertyListView>
+                <PropertyListView Items="@rule.Resources" T="string" Title="Resources" ExplainField=@(ExplainFieldPrefix + ".rules.resources")></PropertyListView>
+                <PropertyListView Title="Operations" T="string" Items="@rule.Operations" ExplainField=@(ExplainFieldPrefix + ".rules.operations")></PropertyListView>
+                <PropertySimpleView Title="Scope" Item="@rule.Scope" ExplainField=@(ExplainFieldPrefix + ".rules.scope")></PropertySimpleView>
+            </HTable>
+        }
+    </HTableColumn>
+}
+
+@code {
+
+    [Parameter]
+    public IList<V1RuleWithOperations> Rules { get; set; }
+
+    [Parameter]
+    public string ExplainFieldPrefix { get; set; }
+
+}

@@ -9,19 +9,19 @@
         <BadgeRibbon Text="@hook.Name" Placement="start" Color="#832">
             <Card Bordered>
                 <HTable >
-                    <PropertySimpleView Title="Name" Item="@hook.Name" ExplainField="mutatingWebhookConfiguration.webhooks.name"></PropertySimpleView>
-                    <PropertyListView Title="AdmissionReviewVersions" Items="@hook.AdmissionReviewVersions" ExplainField="mutatingWebhookConfiguration.webhooks.admissionReviewVersions" T="string"></PropertyListView>
-                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField="mutatingWebhookConfiguration.webhooks.clientConfig" ShowInJson="true"></PropertySimpleView>
-                    <PropertyOptionView Title="FailurePolicy" Item="@hook.FailurePolicy" ExplainField="mutatingWebhookConfiguration.webhooks.failurePolicy" Options="@(new[] { "Fail", "Ignore" })"></PropertyOptionView>
-                    <PropertySimpleView Title="MatchConditions" Item="@hook.MatchConditions" ExplainField="mutatingWebhookConfiguration.webhooks.matchConditions" ShowInJson="true"></PropertySimpleView>
-                    <PropertyOptionView Title="MatchPolicy" Item="@hook.MatchPolicy" ExplainField="mutatingWebhookConfiguration.webhooks.matchPolicy" Options="@(new[] { "Equivalent", "Exact" })"></PropertyOptionView>
+                    <PropertySimpleView Title="Name" Item="@hook.Name" ExplainField=@(ExplainFieldPrefix + ".name")></PropertySimpleView>
+                    <PropertyListView Title="AdmissionReviewVersions" Items="@hook.AdmissionReviewVersions" ExplainField=@(ExplainFieldPrefix + ".admissionReviewVersions") T="string"></PropertyListView>
+                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField=@(ExplainFieldPrefix + ".clientConfig") ShowInJson="true"></PropertySimpleView>
+                    <PropertyOptionView Title="FailurePolicy" Item="@hook.FailurePolicy" ExplainField=@(ExplainFieldPrefix + ".failurePolicy") Options="@(new[] { "Fail", "Ignore" })"></PropertyOptionView>
+                    <PropertySimpleView Title="MatchConditions" Item="@hook.MatchConditions" ExplainField=@(ExplainFieldPrefix + ".matchConditions") ShowInJson="true"></PropertySimpleView>
+                    <PropertyOptionView Title="MatchPolicy" Item="@hook.MatchPolicy" ExplainField=@(ExplainFieldPrefix + ".matchPolicy") Options="@(new[] { "Equivalent", "Exact" })"></PropertyOptionView>
 
                     <LabelSelectorView Title="NamespaceSelector" LabelSelector="@hook.NamespaceSelector"></LabelSelectorView>
                     <LabelSelectorView Title="ObjectSelector" LabelSelector="@hook.ObjectSelector"></LabelSelectorView>
-                    <PropertyOptionView Title="ReinvocationPolicy" Item="@hook.ReinvocationPolicy" ExplainField="mutatingWebhookConfiguration.webhooks.reinvocationPolicy" Options="@(new[] { "IfNeeded", "Never" })"></PropertyOptionView>
-                    <PropertySimpleView Title="Rules" Item="@hook.Rules" ExplainField="mutatingWebhookConfiguration.webhooks.rules" ShowInJson="true"></PropertySimpleView>
-                    <PropertyOptionView Title="SideEffects" Item="@hook.SideEffects" ExplainField="mutatingWebhookConfiguration.webhooks.sideEffects" Options="@(new[] { "None", "NoneOnDryRun", "Unknown", "Some" })"></PropertyOptionView>
-                    <PropertySimpleView Title="TimeoutSeconds" Item="@hook.TimeoutSeconds" ExplainField="mutatingWebhookConfiguration.webhooks.timeoutSeconds"></PropertySimpleView>
+                    <PropertyOptionView Title="ReInvocationPolicy" Item="@hook.ReinvocationPolicy" ExplainField=@(ExplainFieldPrefix + ".reinvocationPolicy") Options="@(new[] { "IfNeeded", "Never" })"></PropertyOptionView>
+                    <RuleWithOperationsView Rules="@hook.Rules" ExplainFieldPrefix="@ExplainFieldPrefix"></RuleWithOperationsView>
+                    <PropertyOptionView Title="SideEffects" Item="@hook.SideEffects" ExplainField=@(ExplainFieldPrefix + ".sideEffects") Options="@(new[] { "None", "NoneOnDryRun", "Unknown", "Some" })"></PropertyOptionView>
+                    <PropertySimpleView Title="TimeoutSeconds" Item="@hook.TimeoutSeconds" ExplainField=@(ExplainFieldPrefix + ".timeoutSeconds")></PropertySimpleView>
                 </HTable>
             </Card>
         </BadgeRibbon>
@@ -32,5 +32,8 @@
 
     [Parameter]
     public IList<V1MutatingWebhook> Webhooks { get; set; }
+
+    [Parameter]
+    public string ExplainFieldPrefix { get; set; }
 
 }
