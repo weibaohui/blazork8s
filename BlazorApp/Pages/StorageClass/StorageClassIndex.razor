@@ -27,6 +27,18 @@
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
+                <AntDesign.Column Title="Provisioner" TData="string">
+                    <ColorfulTag>@context.Provisioner</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="ReclaimPolicy" TData="string">
+                    <ColorfulTag>@context.ReclaimPolicy</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="VolumeBindingMode" TData="string">
+                    <ColorfulTag>@context.VolumeBindingMode</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="VolumeBindingMode" TData="string">
+                    <ColorfulTag>@(context.AllowVolumeExpansion ?? false)</ColorfulTag>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
