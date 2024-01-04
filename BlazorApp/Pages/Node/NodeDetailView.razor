@@ -64,22 +64,26 @@
         @if (Node.Status.Images is { Count: > 0 })
         {
             <HTableColumn Title="Images" ExplainField="node.status.images">
-                @foreach (var image in Node.Status.Images)
-                {
-                    <HTable>
-                        <HTableColumn Title="Name" ExplainField="node.status.images.names">
-                            @foreach (var name in image.Names)
+                <Collapse>
+                    <Panel Key="1">
+                        <HeaderTemplate>
+                            <Badge Count="@Node.Status.Images.SelectMany(x => x.Names).Count()"/>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            @foreach (var image in Node.Status.Images)
                             {
-                                <div > @(name)</div>
+                                <ul>
+                                    @foreach (var name in image.Names)
+                                    {
+                                        <li >
+                                            @(name) <ColorfulTag > @($"{image.SizeBytes / 1000 / 1000} MB")</ColorfulTag>
+                                        </li>
+                                    }
+                                </ul>
                             }
-                        </HTableColumn>
-                        <HTableColumn Title="SizeBytes" ExplainField="node.status.images.sizeBytes">
-                            <ColorfulTag > @(image.SizeBytes.ToString())</ColorfulTag>
-                        </HTableColumn>
-                    </HTable>
-                }
-
-
+                        </ChildContent>
+                    </Panel>
+                </Collapse>
             </HTableColumn>
         }
 
@@ -87,20 +91,29 @@
         @if (Node.Status.VolumesAttached is { Count: > 0 })
         {
             <HTableColumn Title="VolumesAttached" ExplainField="node.status.volumesAttached">
-                @foreach (var attached in Node.Status.VolumesAttached)
-                {
-                    <HTable>
-                        <HTableColumn Title="Name" ExplainField="node.status.volumesAttached.name">
-                            <div > @(attached.Name)</div>
-                        </HTableColumn>
-                        <PropertySimpleView Title="DevicePath" Item="@attached.DevicePath" ExplainField="node.status.volumesAttached.devicePath"></PropertySimpleView>
-                    </HTable>
-                }
+                <Collapse>
+                    <Panel Key="1">
+                        <HeaderTemplate>
+                            <Badge Count="@Node.Status.VolumesAttached.Select(x => x.Name).Count()"/>
+                        </HeaderTemplate>
+                        <ChildContent>
+                            @foreach (var attached in Node.Status.VolumesAttached)
+                            {
+                                <HTable>
+                                    <HTableColumn Title="Name" ExplainField="node.status.volumesAttached.name">
+                                        <div > @(attached.Name)</div>
+                                    </HTableColumn>
+                                    <PropertySimpleView Title="DevicePath" Item="@attached.DevicePath" ExplainField="node.status.volumesAttached.devicePath"></PropertySimpleView>
+                                </HTable>
+                            }
+                        </ChildContent>
+                    </Panel>
+                </Collapse>
             </HTableColumn>
         }
         <PropertyListView Title="VolumesInUse" T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
     </HTable>
-    <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable" ></NodeResourceCompareView>
+    <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable"></NodeResourceCompareView>
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
     <MiniEventListView Host="@Node.Name()"></MiniEventListView>
 }
