@@ -28,6 +28,15 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="Min" TData="string">
+                    @(context.Spec.MinAvailable??"N/A")
+                </AntDesign.Column>
+                <AntDesign.Column Title="Max" TData="string">
+                    @context.Spec.MaxUnavailable
+                </AntDesign.Column>
+                <AntDesign.Column Title="DisruptionsAllowed" TData="string">
+                    @context.Status.DisruptionsAllowed
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
