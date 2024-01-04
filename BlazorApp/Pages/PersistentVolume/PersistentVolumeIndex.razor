@@ -22,7 +22,8 @@
                    @bind-PageSize="TableData.PageSize"
                    @bind-SelectedRows="TableData.SelectedRows"
                    Loading="TableData.Loading"
-                   OnChange="OnPageChangeHandler">
+                   OnChange="OnPageChangeHandler"
+                   >
                 <Selection Key="@(context.Name())"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
@@ -50,7 +51,7 @@
                     <ColorfulTag>@context.Status.Phase</ColorfulTag>
                 </AntDesign.Column>
                 <AntDesign.Column Title="Claim" TData="string">
-                    <RefView Ref="@context.Spec.ClaimRef"></RefView>
+                    <RefView Ref="@context.Spec.ClaimRef"  ></RefView>
                 </AntDesign.Column>
                 <AntDesign.Column Title="StorageClass" TData="string">
                     <ColorfulTag>@context.Spec.StorageClassName</ColorfulTag>
