@@ -1,3 +1,4 @@
+@using Extension
 @using BlazorApp.Utils
 @if (ChildContent != null)
 {
@@ -9,5 +10,11 @@
 @code {
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+
+    private string GetColor()
+    {
+        var x = (((string) ChildContent.Target) ?? string.Empty).ToMd5Digits();
+        return Enum.GetValues(typeof(RandomColor)).GetValue(x % 11)?.ToString();
+     }
 
 }
