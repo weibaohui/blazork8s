@@ -29,6 +29,37 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+
+                <AntDesign.Column Title="Type" TData="string">
+                    <ColorfulTag>@context.Spec.Type</ColorfulTag>
+                </AntDesign.Column>
+                <AntDesign.Column Title="ClusterIP" TData="string">
+                    @if (context.Spec.ClusterIPs is { Count: > 0 })
+                    {
+                        @foreach (var p in context.Spec.ClusterIPs)
+                        {
+                            <ColorfulTag>@p</ColorfulTag>
+                        }
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="ExternalIP" TData="string">
+                    @if (context.Spec.ExternalIPs is { Count: > 0 })
+                    {
+                        @foreach (var p in context.Spec.ExternalIPs)
+                        {
+                            <ColorfulTag>@p</ColorfulTag>
+                        }
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="ClusterIP" TData="string">
+                    @foreach (var p in context.Spec.Ports)
+                    {
+                        <ColorfulTag>@($"{p.Port}{(p.NodePort != null ? ":" + p.NodePort : "")}/{p.Protocol}")</ColorfulTag>
+                    }
+                </AntDesign.Column>
+                <AntDesign.Column Title="Selector" TData="string">
+                    <SelectorView Selector="@context.Spec.Selector"></SelectorView>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>

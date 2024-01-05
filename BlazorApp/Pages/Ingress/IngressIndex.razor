@@ -28,6 +28,30 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+
+                <AntDesign.Column Title="Class" TData="string">
+                    @context.Spec.IngressClassName
+                </AntDesign.Column>
+                <AntDesign.Column Title="Hosts" TData="string">
+                    @if (context.Spec.Rules is { Count: > 0 })
+                    {
+                        @foreach (var rule in context.Spec.Rules)
+                        {
+                            @if (rule.Host != null)
+                            {
+                                <div>
+                                    <ColorfulTag>@rule.Host</ColorfulTag>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>
+                                    <ColorfulTag>*</ColorfulTag>
+                                </div>
+                            }
+                        }
+                    }
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>

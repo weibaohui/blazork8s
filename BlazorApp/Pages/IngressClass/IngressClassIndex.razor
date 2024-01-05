@@ -27,6 +27,9 @@
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
+                <AntDesign.Column Title="Controller" TData="string">
+                    <ColorfulTag>@context.Spec.Controller</ColorfulTag>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>

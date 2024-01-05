@@ -28,6 +28,9 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="PodSelector" TData="string">
+                    <LabelSelectorView LabelSelector="@context.Spec.PodSelector"></LabelSelectorView>
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>

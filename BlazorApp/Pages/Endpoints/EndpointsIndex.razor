@@ -28,6 +28,12 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                <AntDesign.Column Title="EndPoints" TData="string">
+                    @foreach (var p in GetEndPointsIpPorts(context))
+                    {
+                        <ColorfulTag>@p</ColorfulTag>
+                    }
+                </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
