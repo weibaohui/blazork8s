@@ -1,5 +1,6 @@
 @page "/ClusterRole"
 @using k8s.Models
+@using Mapster
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.TableBase<V1ClusterRole>
@@ -26,6 +27,12 @@
                 <Selection Key="@(context.Name())"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                </AntDesign.Column>
+                <AntDesign.Column Title="User" TData="string">
+                    @foreach (var subject in ClusterRoleService.ListManagedSubjectByClusterRole(context))
+                    {
+                        <RefView Ref="@(subject.Adapt<V1ObjectReference>())" FullView="true"></RefView>
+                    }
                 </AntDesign.Column>
                 <AntDesign.Column Title="Age" TData="string">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
