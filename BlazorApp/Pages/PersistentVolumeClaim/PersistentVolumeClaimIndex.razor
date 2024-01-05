@@ -30,7 +30,7 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
                     <AntDesign.Column Title="Status" TData="string">
                         <ColorfulTag>@context.Status.Phase</ColorfulTag>
                     </AntDesign.Column>
@@ -62,7 +62,7 @@
                     <AntDesign.Column Title="VolumeMode" TData="string">
                         <ColorfulTag>@context.Spec.VolumeMode</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string">
+                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
                     <ActionColumn Title="Action" Width="200" Fixed="right">

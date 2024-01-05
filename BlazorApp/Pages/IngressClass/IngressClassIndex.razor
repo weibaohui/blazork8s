@@ -1,44 +1,48 @@
 @page "/IngressClass"
 @using k8s.Models
-@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.TableBase<V1IngressClass>
 @if (TableData.PagedItems != null)
 {
-    <Card Bordered="false" Hoverable="true">
-        <TitleTemplate>
-            <SearchToolBar Title="IngressClass" Count="@TableData.Total"
-                           OnSearch="OnSearchHandler"
-                           OnNsSelected="OnNsSelectedHandler">
-            </SearchToolBar>
-        </TitleTemplate>
-        <ChildContent>
-            <Body>
-            <Table TItem="V1IngressClass"
-                   DataSource="@TableData.PagedItems"
-                   Size=@TableSize.Small Bordered="true"
-                   Total="TableData.Total"
-                   @bind-PageIndex="TableData.PageIndex"
-                   @bind-PageSize="TableData.PageSize"
-                   @bind-SelectedRows="TableData.SelectedRows"
-                   Loading="TableData.Loading"
-                   OnChange="OnPageChangeHandler">
-                <Selection Key="@(context.Name())"/>
-                <AntDesign.Column Field="@context.Name()" Title="Name">
-                    <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
-                </AntDesign.Column>
-                <AntDesign.Column Title="Controller" TData="string">
-                    <ColorfulTag>@context.Spec.Controller</ColorfulTag>
-                </AntDesign.Column>
-                <AntDesign.Column Title="Age" TData="string">
-                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
-                </AntDesign.Column>
-                <ActionColumn Title="Action" Width="200" Fixed="right">
-                    <IngressClassAction Item="@context"></IngressClassAction>
-                </ActionColumn>
-            </Table>
-            </Body>
-        </ChildContent>
-    </Card>
+    <HTable Class="wideTable">
+        <HTr>
+            <HTd >
+                <SearchToolBar Title="IngressClass" Count="@TableData.Total"
+                               OnSearch="OnSearchHandler"
+                               OnNsSelected="OnNsSelectedHandler">
+                </SearchToolBar>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd >
+                <Table TItem="V1IngressClass"
+                       DataSource="@TableData.PagedItems"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="TableData.Total"
+                       @bind-PageIndex="TableData.PageIndex"
+                       @bind-PageSize="TableData.PageSize"
+                       @bind-SelectedRows="TableData.SelectedRows"
+                       Loading="TableData.Loading"
+                       OnChange="OnPageChangeHandler">
+                    <Selection Key="@(context.Name())"/>
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                        <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Controller" TData="string">
+                        <ColorfulTag>@context.Spec.Controller</ColorfulTag>
+                    </AntDesign.Column>
+                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                        <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <ActionColumn Title="Action" Width="200" Fixed="right">
+                        <IngressClassAction Item="@context"></IngressClassAction>
+                    </ActionColumn>
+                </Table>
+            </HTd>
+        </HTr>
+    </HTable>
+
     <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1IngressClass"></ResourceWatcher>
 }

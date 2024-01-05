@@ -17,7 +17,7 @@
         <AntDesign.Column Title="Pods" TData="int">
             @CountPodsByOwner(@context.Metadata.Uid)
         </AntDesign.Column>
-        <AntDesign.Column Title="Age" TData="string">
+        <AntDesign.Column  Title="Age" TData="string"  Width="100px">
             @context.CreationTimestamp()?.AgeFromUtc()
         </AntDesign.Column>
 

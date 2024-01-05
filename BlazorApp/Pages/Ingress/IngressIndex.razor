@@ -1,66 +1,70 @@
 @page "/Ingress"
 @using k8s.Models
-@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.TableBase<V1Ingress>
 @if (TableData.PagedItems != null)
 {
-    <Card Bordered="false" Hoverable="true">
-        <TitleTemplate>
-            <SearchToolBar Title="Ingress" Count="@TableData.Total"
-                           OnSearch="OnSearchHandler"
-                           OnNsSelected="OnNsSelectedHandler">
-            </SearchToolBar>
-        </TitleTemplate>
-        <ChildContent>
-            <Body>
-            <Table TItem="V1Ingress"
-                   DataSource="@TableData.PagedItems"
-                   Size=@TableSize.Small Bordered="true"
-                   Total="TableData.Total"
-                   @bind-PageIndex="TableData.PageIndex"
-                   @bind-PageSize="TableData.PageSize"
-                   @bind-SelectedRows="TableData.SelectedRows"
-                   Loading="TableData.Loading"
-                   OnChange="OnPageChangeHandler">
-                <Selection Key="@(context.Name())"/>
-                <AntDesign.Column Field="@context.Name()" Title="Name">
-                    <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
-                </AntDesign.Column>
-                <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
+    <HTable Class="wideTable">
+        <HTr>
+            <HTd >
+                <SearchToolBar Title="Ingress" Count="@TableData.Total"
+                               OnSearch="OnSearchHandler"
+                               OnNsSelected="OnNsSelectedHandler">
+                </SearchToolBar>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd >
+                <Table TItem="V1Ingress"
+                       DataSource="@TableData.PagedItems"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="TableData.Total"
+                       @bind-PageIndex="TableData.PageIndex"
+                       @bind-PageSize="TableData.PageSize"
+                       @bind-SelectedRows="TableData.SelectedRows"
+                       Loading="TableData.Loading"
+                       OnChange="OnPageChangeHandler">
+                    <Selection Key="@(context.Name())"/>
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                        <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                    </AntDesign.Column>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
 
-                <AntDesign.Column Title="Class" TData="string">
-                    @context.Spec.IngressClassName
-                </AntDesign.Column>
-                <AntDesign.Column Title="Hosts" TData="string">
-                    @if (context.Spec.Rules is { Count: > 0 })
-                    {
-                        @foreach (var rule in context.Spec.Rules)
+                    <AntDesign.Column Title="Class" TData="string">
+                        @context.Spec.IngressClassName
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Hosts" TData="string">
+                        @if (context.Spec.Rules is { Count: > 0 })
                         {
-                            @if (rule.Host != null)
+                            @foreach (var rule in context.Spec.Rules)
                             {
-                                <div>
-                                    <ColorfulTag>@rule.Host</ColorfulTag>
-                                </div>
-                            }
-                            else
-                            {
-                                <div>
-                                    <ColorfulTag>*</ColorfulTag>
-                                </div>
+                                @if (rule.Host != null)
+                                {
+                                    <div>
+                                        <ColorfulTag>@rule.Host</ColorfulTag>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>
+                                        <ColorfulTag>*</ColorfulTag>
+                                    </div>
+                                }
                             }
                         }
-                    }
-                </AntDesign.Column>
-                <AntDesign.Column Title="Age" TData="string">
-                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
-                </AntDesign.Column>
-                <ActionColumn Title="Action" Width="200" Fixed="right">
-                    <IngressAction Item="@context"></IngressAction>
-                </ActionColumn>
-            </Table>
-            </Body>
-        </ChildContent>
-    </Card>
+                    </AntDesign.Column>
+                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                        <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <ActionColumn Title="Action" Width="200" Fixed="right">
+                        <IngressAction Item="@context"></IngressAction>
+                    </ActionColumn>
+                </Table>
+            </HTd>
+        </HTr>
+    </HTable>
+
     <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1Ingress"></ResourceWatcher>
 }

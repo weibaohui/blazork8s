@@ -1,64 +1,67 @@
 ﻿@page "/Pods"
 @using k8s.Models
 @using Extension.k8s
-@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
+@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.TableBase<V1Pod>
 
 
 @if (ItemList != null)
 {
-    <Card Bordered="false" Hoverable="true" Style="width: 100%">
-        <TitleTemplate>
-            <SearchToolBar Title="Pods" Count="@TableData.Total"
-                           OnSearch="OnSearchHandler"
-                           OnNsSelected="OnNsSelectedHandler">
-            </SearchToolBar>
-        </TitleTemplate>
-        <ChildContent>
-            <Body>
-            <Table TItem="V1Pod"
-                   DataSource="@TableData.PagedItems"
-                   Size=@TableSize.Small Bordered="true"
-                   Total="TableData.Total"
-                   @bind-PageIndex="TableData.PageIndex"
-                   @bind-PageSize="TableData.PageSize"
-                   @bind-SelectedRows="TableData.SelectedRows"
-                   OnChange="OnPageChangeHandler"
-                   >
-                <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
-                <AntDesign.Column Field="@context.Name()" Title="Name">
-                    <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
-                </AntDesign.Column>
-                <AntDesign.Column Field="@context.Namespace()" Title="Namespace"/>
-                <AntDesign.Column Title="Containers" TData="string">
-                    <ContainerStatus Pod="@context"></ContainerStatus>
-                </AntDesign.Column>
-                <AntDesign.Column Title="重启" TData="string" Width="50">
-                    @context.RestartCount()
-                </AntDesign.Column>
-                <AntDesign.Column Title="ControllerBy" TData="string">
-                    <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
-                </AntDesign.Column>
-                <AntDesign.Column Title="Node" TData="string">
-                    <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
-                </AntDesign.Column>
-                <AntDesign.Column Title="QoS" TData="string">
-                    @context.Status.QosClass
-                </AntDesign.Column>
-                <AntDesign.Column Title="Age" TData="string">
-                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
-                </AntDesign.Column>
-                <AntDesign.Column Title="Status" TData="string">
-                    <StatusView Status="@context.Status()"></StatusView>
-                </AntDesign.Column>
-                <ActionColumn Title="Action" Width="200" Fixed="right">
-                    <PodAction PodItem="@context"  ></PodAction>
-                </ActionColumn>
-            </Table>
-            </Body>
-        </ChildContent>
-    </Card>
+    <HTable Class="wideTable">
+        <HTr>
+            <HTd >
+                <SearchToolBar Title="Pods" Count="@TableData.Total"
+                               OnSearch="OnSearchHandler"
+                               OnNsSelected="OnNsSelectedHandler">
+                </SearchToolBar>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd >
+                <Table TItem="V1Pod"
+                       DataSource="@TableData.PagedItems"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="TableData.Total"
+                       @bind-PageIndex="TableData.PageIndex"
+                       @bind-PageSize="TableData.PageSize"
+                       @bind-SelectedRows="TableData.SelectedRows"
+                       OnChange="OnPageChangeHandler">
+                    <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                        <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
+                    </AntDesign.Column>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
+                    <AntDesign.Column Title="Containers" TData="string">
+                        <ContainerStatus Pod="@context"></ContainerStatus>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="重启" TData="string" Width="50">
+                        @context.RestartCount()
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="ControllerBy" TData="string">
+                        <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Node" TData="string">
+                        <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="QoS" TData="string">
+                        @context.Status.QosClass
+                    </AntDesign.Column>
+                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                        <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Status" TData="string">
+                        <StatusView Status="@context.Status()"></StatusView>
+                    </AntDesign.Column>
+                    <ActionColumn Title="Action" Width="200" Fixed="right">
+                        <PodAction PodItem="@context"></PodAction>
+                    </ActionColumn>
+                </Table>
+            </HTd>
+        </HTr>
+    </HTable>
+
     <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1Pod"></ResourceWatcher>
 }
