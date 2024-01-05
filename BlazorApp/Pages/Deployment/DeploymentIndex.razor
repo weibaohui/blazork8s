@@ -7,7 +7,7 @@
 @inherits BlazorApp.Pages.Common.TableBase<V1Deployment>
 @if (TableData.PagedItems != null)
 {
-    <Card Bordered="false" Hoverable="true">
+    <Card Bordered="false" Hoverable="true" Style="width: 100%">
         <TitleTemplate>
             <SearchToolBar Title="Deployments" Count="@TableData.Total"
                            OnSearch="OnSearchHandler"

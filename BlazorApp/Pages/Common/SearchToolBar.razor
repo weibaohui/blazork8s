@@ -1,17 +1,17 @@
 @using BlazorApp.Pages.Namespace
 <Row Gutter="@gutter">
-    <AntDesign.Col Class="gutter-row" Span="6">
+    <AntDesign.Col Class="gutter-row" Span="5">
         <div style="@style">@Title</div>
     </AntDesign.Col>
-    <AntDesign.Col Class="gutter-row" Span="6">
+    <AntDesign.Col Class="gutter-row" Span="5">
         <div style="@style">@Count Items</div>
     </AntDesign.Col>
-    <AntDesign.Col Class="gutter-row" Span="6">
+    <AntDesign.Col Class="gutter-row" Span="5">
         <div style="@style">
             <NamespaceSelect OnNsSelected="OnNsSelectedHandler"></NamespaceSelect>
         </div>
     </AntDesign.Col>
-    <AntDesign.Col Class="gutter-row" Span="6">
+    <AntDesign.Col Class="gutter-row" Span="5">
         <div style="@style">
             <Search Placeholder="@($"Search {Title}")" OnSearch="OnSearchHandler" @bind-Value="@TxtValue" ClassicSearchIcon/>
         </div>

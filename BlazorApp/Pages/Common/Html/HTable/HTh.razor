@@ -1,8 +1,10 @@
-<th>
+<th colspan="@ColSpan">
     @ChildContent
 </th>
 @code {
 
     [Parameter]
     public RenderFragment ChildContent { get; set; }
+    [Parameter]
+    public string ColSpan { get; set; } = "1";
 }

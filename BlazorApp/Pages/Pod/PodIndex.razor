@@ -9,7 +9,7 @@
 
 @if (ItemList != null)
 {
-    <Card Bordered="false" Hoverable="true">
+    <Card Bordered="false" Hoverable="true" Style="width: 100%">
         <TitleTemplate>
             <SearchToolBar Title="Pods" Count="@TableData.Total"
                            OnSearch="OnSearchHandler"
@@ -26,7 +26,7 @@
                    @bind-PageSize="TableData.PageSize"
                    @bind-SelectedRows="TableData.SelectedRows"
                    OnChange="OnPageChangeHandler"
-                   ScrollX="1500">
+                   >
                 <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
                 <AntDesign.Column Field="@context.Name()" Title="Name">
                     <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
