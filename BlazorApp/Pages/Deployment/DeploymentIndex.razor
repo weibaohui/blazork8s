@@ -35,13 +35,13 @@
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
 
 
-                    <AntDesign.Column Title="Ready" TData="int">
+                    <AntDesign.Column Title="Ready" TData="int" Width="80px">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas ?? 0}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Up To Date" TData="int">
+                    <AntDesign.Column Title="Up To Date" TData="int"  Width="80px">
                         @(context.Status.UpdatedReplicas ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Available" TData="int">
+                    <AntDesign.Column Title="Available" TData="int" Width="80px">
                         @(context.Status.AvailableReplicas ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title="Selector" TData="string">

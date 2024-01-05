@@ -31,19 +31,19 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
-                    <AntDesign.Column Title="Desired" TData="int">
+                    <AntDesign.Column Title="Desired" TData="int" Width="70px">
                         @(context.Status.DesiredNumberScheduled)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Current" TData="int">
+                    <AntDesign.Column Title="Current" TData="int" Width="70px">
                         @($"{context.Status.CurrentNumberScheduled}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="int">
+                    <AntDesign.Column Title="Ready" TData="int" Width="70px">
                         @($"{context.Status.NumberReady}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Up To Date" TData="int">
+                    <AntDesign.Column Title="Up To Date" TData="int" Width="70px">
                         @(context.Status.UpdatedNumberScheduled ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Available" TData="int">
+                    <AntDesign.Column Title="Available" TData="int" Width="70px">
                         @(context.Status.NumberAvailable ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title="NodeSelector" TData="string">

@@ -36,13 +36,13 @@
                     <AntDesign.Column Title="ControllerBy" TData="string">
                         <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Desired" TData="int">
+                    <AntDesign.Column Title="Desired" TData="int"  Width="80px">
                         @context.Status.Replicas
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Current" TData="int">
+                    <AntDesign.Column Title="Current" TData="int" Width="80px">
                         @(context.Status.FullyLabeledReplicas ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="int">
+                    <AntDesign.Column Title="Ready" TData="int" Width="80px">
                         @(context.Status.ReadyReplicas ?? 0)
                     </AntDesign.Column>
 
