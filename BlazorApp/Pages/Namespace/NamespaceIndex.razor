@@ -30,6 +30,18 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
+                      <AntDesign.Column Title="Finalizers" TData="string">
+                                            @if (context.Spec.Finalizers is { Count: > 0 })
+                                            {
+                                                @foreach (var p in context.Spec.Finalizers)
+                                                {
+                                                    <ColorfulTag>@p</ColorfulTag>
+                                                }
+                                            }
+                                        </AntDesign.Column>
+                    <AntDesign.Column Title="Status" TData="string" >
+                        <ColorfulTag> @context.Status.Phase</ColorfulTag>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
