@@ -30,11 +30,9 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
 
-    - name: DockerBuildX
-      run: docker buildx version
+
     - name: Build the Docker image
       run: docker build . --file BlazorApp/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-#      run: docker buildx build -t  $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"  -f BlazorApp/Dockerfile   --platform=linux/arm64,linux/amd64 . --push
 
     - name: Log in to registry
         # This is where you will update the PAT to GITHUB_TOKEN
@@ -56,3 +54,6 @@ jobs:
           echo VERSION=$VERSION
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
+
+    - name: DockerBuildX
+      run: docker buildx build -t  $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"  -f BlazorApp/Dockerfile   --platform=linux/arm64,linux/amd64 . --push
