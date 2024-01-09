@@ -32,10 +32,10 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
-                    <AntDesign.Column Title="Completions" TData="string">
+                    <AntDesign.Column Title="Completions" TData="string" Width="80px">
                         @($"{context.Status.Succeeded ?? 0}/{context.Spec.Completions}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Duration" TData="string">
+                    <AntDesign.Column Title="Duration" TData="string" Width="100px">
                         @if (context.Status.CompletionTime != null)
                         {
                             @((context.Status.CompletionTime - context.Status.StartTime).GetValueOrDefault().Age())
