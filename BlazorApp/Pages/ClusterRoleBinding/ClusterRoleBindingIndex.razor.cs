@@ -4,9 +4,12 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+
 namespace BlazorApp.Pages.ClusterRoleBinding;
 public partial class ClusterRoleBindingIndex : TableBase<V1ClusterRoleBinding>
 {
+    [Inject]
+    private IClusterRoleService ClusterRoleService { get; set; }
     [Inject]
     private IClusterRoleBindingService ClusterRoleBindingService { get; set; }
     private async Task OnResourceChanged(ResourceCache<V1ClusterRoleBinding> data)

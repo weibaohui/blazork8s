@@ -5,6 +5,6 @@ namespace BlazorApp.Service.k8s;
 
 public interface IRoleService : ICommonAction<V1Role>
 {
-      IList<V1Subject> ListManagedSubjectByRole(V1Role role);
-
+    IList<V1Subject> ListManagedSubjectByRole(V1Role     role);
+    IList<V1Subject> ListManagedSubjectByRoleName(string ns, string name);
 }

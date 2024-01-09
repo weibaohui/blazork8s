@@ -6,25 +6,28 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class RoleService : CommonAction<V1Role>, IRoleService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IBaseService _baseService;
 
     private readonly IRoleBindingService _roleBindingService;
 
     public RoleService(IBaseService baseService, IRoleBindingService roleBindingService)
     {
-        _baseService             = baseService;
+        _baseService        = baseService;
         _roleBindingService = roleBindingService;
     }
 
 
-
-
     public IList<V1Subject> ListManagedSubjectByRole(V1Role role)
+    {
+        return this.ListManagedSubjectByRoleName(role.Namespace(), role.Name());
+    }
+
+    public IList<V1Subject> ListManagedSubjectByRoleName(string ns, string name)
     {
         var bindings = _roleBindingService.List()
             .Where(x =>
-                x.Namespace()== role.Namespace() &&
-                x.RoleRef is not null && x.RoleRef.Name == role.Name()
+                x.Namespace() == ns &&
+                x.RoleRef is not null && x.RoleRef.Name == name
             )
             .ToList();
         return bindings.Where(x => x.Subjects is { Count: > 0 }).SelectMany(x => x.Subjects).ToList();

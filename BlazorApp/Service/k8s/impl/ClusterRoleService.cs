@@ -18,14 +18,17 @@ public class ClusterRoleService : CommonAction<V1ClusterRole>, IClusterRoleServi
 
     public IList<V1Subject> ListManagedSubjectByClusterRole(V1ClusterRole role)
     {
-        var name = role.Name();
+        return ListManagedSubjectByClusterRoleName(role.Name());
+    }
+
+    public IList<V1Subject> ListManagedSubjectByClusterRoleName(string name)
+    {
+
         var bindings = _clusterRoleBindingService.List()
             .Where(x =>
                 x.RoleRef is not null && x.RoleRef.Name == name
             )
             .ToList();
-
-
         return bindings.Where(x => x.Subjects is { Count: > 0 }).SelectMany(x => x.Subjects).ToList();
     }
 }

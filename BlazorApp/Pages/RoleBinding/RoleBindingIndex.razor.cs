@@ -4,9 +4,12 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+
 namespace BlazorApp.Pages.RoleBinding;
 public partial class RoleBindingIndex : TableBase<V1RoleBinding>
 {
+    [Inject]
+    private IRoleService RoleService { get; set; }
     [Inject]
     private IRoleBindingService RoleBindingService { get; set; }
     private async Task OnResourceChanged(ResourceCache<V1RoleBinding> data)
