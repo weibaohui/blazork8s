@@ -56,7 +56,11 @@ jobs:
 #          docker push $IMAGE_ID:$VERSION
     - name: DockerBuildX ls
       run: docker buildx ls
-    - name: DockerBuildX ls
+    - name: DockerBuildX install
       run: docker run  --rm --privileged tonistiigi/binfmt --install all
+    - name: DockerBuildX ls
+      run: docker buildx ls
+    - name: DockerBuildX create
+      run: docker buildx create --use
     - name: DockerBuildX
       run: docker buildx create --use && docker buildx build -t  $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"  -f BlazorApp/Dockerfile   --platform=linux/arm64,linux/amd64 . --push
