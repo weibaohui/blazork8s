@@ -29,6 +29,9 @@ jobs:
       with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
     - uses: actions/checkout@v2
+
+    - name: DockerBuildX
+      run: docker buildx version
     - name: Build the Docker image
       run: docker build . --file BlazorApp/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 #      run: docker buildx build -t  $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"  -f BlazorApp/Dockerfile   --platform=linux/arm64,linux/amd64 . --push
