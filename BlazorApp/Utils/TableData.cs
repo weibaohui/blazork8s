@@ -17,7 +17,7 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
     /// <summary>
     /// 获取的原始条目
     /// </summary>
-    private IList<T> _originItems;
+    private List<T> _originItems;
 
     private string _selectedNs;
     private string _searchKey;
@@ -38,7 +38,8 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
 
     public void CopyData(ResourceCache<T> data)
     {
-        _originItems = data.Get();
+        _originItems = data.Get().ToList();
+        _originItems.Sort((x, y) => y.CreationTimestamp()?.CompareTo(x.CreationTimestamp()) ?? 0);
         PagedItems   = _originItems;
         FilterNsAndKey();
     }
