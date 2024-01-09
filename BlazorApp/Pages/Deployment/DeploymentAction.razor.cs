@@ -4,6 +4,7 @@ using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
+using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -11,10 +12,11 @@ namespace BlazorApp.Pages.Deployment;
 
 public partial class DeploymentAction : ComponentBase
 {
-
+    [Inject]
+    public IDeploymentService DeploymentService { get; set; }
 
     [Parameter]
-    public MenuMode MenuMode { get; set; } =MenuMode.Vertical;
+    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 
     [Parameter]
     public V1Deployment Item { get; set; }
@@ -39,6 +41,7 @@ public partial class DeploymentAction : ComponentBase
 
     private async Task OnDeleteClick(V1Deployment item)
     {
+        DeploymentService.Delete(item.Namespace(), item.Name());
         await OnDeploymentDelete.InvokeAsync(item);
     }
 
