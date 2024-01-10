@@ -38,6 +38,11 @@
                     <AntDesign.Column Title="Ready" TData="int" Width="80px">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas ?? 0}")
                     </AntDesign.Column>
+                    <AntDesign.Column Title="Desired" Width="130px" TData="string">
+                        <ColorfulTag>@(context.Spec.Replicas??0)</ColorfulTag>
+                        <Button OnClick="@(() => BtnMinusClick(context))" Icon=Minus Size="small"></Button>
+                        <Button OnClick="@(() => BtnIncreaseClick(context))"  Icon=Plus Size="small"></Button>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="Up To Date" TData="int"  Width="80px">
                         @(context.Status.UpdatedReplicas ?? 0)
                     </AntDesign.Column>

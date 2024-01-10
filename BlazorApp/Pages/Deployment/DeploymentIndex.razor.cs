@@ -35,4 +35,17 @@ public partial class DeploymentIndex : TableBase<V1Deployment>
             .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(deploy);
 
     }
+
+
+    private async Task BtnIncreaseClick(V1Deployment deploy)
+    {
+       await DeploymentService.UpdateReplicas(deploy, deploy.Spec.Replicas+1);
+       await InvokeAsync(StateHasChanged);
+
+    }
+    private async Task BtnMinusClick(V1Deployment deploy)
+    {
+        await DeploymentService.UpdateReplicas(deploy, deploy.Spec.Replicas-1);
+        await InvokeAsync(StateHasChanged);
+    }
 }
