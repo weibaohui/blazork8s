@@ -7,6 +7,8 @@
             <Menu >
                 <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
                 <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
+                <MenuItem OnClick="@(() => OnRestartClick(Item))">Restart</MenuItem>
+                <MenuItem OnClick="@(() => OnScaleClick(Item))">Scale</MenuItem>
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
                                 OnConfirm="() => OnDeleteClick(Item)"

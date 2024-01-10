@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
@@ -24,7 +25,6 @@ namespace BlazorApp.Service.k8s.impl
         {
             if (deploy == null) return;
 
-            Console.WriteLine($"UpdateReplicas {replicas} {deploy.Name()} {deploy.Namespace()}");
             if (replicas < 0)
             {
                 replicas = 0;
@@ -40,6 +40,32 @@ namespace BlazorApp.Service.k8s.impl
                     .Replace("${deploy.Spec.Replicas}", replicas.ToString())
                 ;
             var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentScaleAsync(
+                new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
+                , deploy.Name(), deploy.Namespace());
+        }
+
+        public async Task Restart(V1Deployment deploy)
+        {
+            if (deploy == null) return;
+
+
+            var patchStr = """
+                    {
+                           "spec": {
+                             "template": {
+                               "metadata": {
+                                 "annotations": {
+                                   "kubectl.kubernetes.io/restartedAt": "${now}",
+                                   "kubectl.kubernetes.io/origin": "BlazorK8s"
+                                 }
+                               }
+                             }
+                           }
+                    }
+                    """
+                    .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture))
+                ;
+            var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , deploy.Name(), deploy.Namespace());
         }

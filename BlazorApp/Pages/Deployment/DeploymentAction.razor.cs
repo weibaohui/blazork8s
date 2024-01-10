@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
@@ -14,6 +15,9 @@ public partial class DeploymentAction : ComponentBase
 {
     [Inject]
     public IDeploymentService DeploymentService { get; set; }
+
+    [Inject]
+    ModalService ModalService { get; set; }
 
     [Parameter]
     public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
@@ -41,7 +45,7 @@ public partial class DeploymentAction : ComponentBase
 
     private async Task OnDeleteClick(V1Deployment item)
     {
-        DeploymentService.Delete(item.Namespace(), item.Name());
+        await DeploymentService.Delete(item.Namespace(), item.Name());
         await OnDeploymentDelete.InvokeAsync(item);
     }
 
@@ -66,6 +70,40 @@ public partial class DeploymentAction : ComponentBase
         });
     }
 
+    private async Task OnRestartClick(V1Deployment item)
+    {
+        await DeploymentService.Restart(item);
+    }
+
+    private async Task OnScaleClick(V1Deployment item)
+    {
+        var options = new ConfirmOptions()
+        {
+            Title = "Component",
+        };
+
+        var confirmRef =
+            await ModalService.CreateConfirmAsync<DeploymentScaleView, double, double>(options, item.Spec.Replicas ?? 0);
+
+        confirmRef.OnOpen = () =>
+        {
+            Console.WriteLine("Open Confirm");
+            return Task.CompletedTask;
+        };
+
+        confirmRef.OnClose = () =>
+        {
+            Console.WriteLine("Close Confirm");
+            return Task.CompletedTask;
+        };
+
+        confirmRef.OnOk = async (result) =>
+        {
+            Console.WriteLine($"OnOk:{result},{Int32.Parse(result.ToString(CultureInfo.CurrentCulture))}");
+            await DeploymentService.UpdateReplicas(item, Int32.Parse(result.ToString(CultureInfo.CurrentCulture)));
+            await InvokeAsync(StateHasChanged);
+        };
+    }
 
     private async Task OnYamlClick(V1Deployment item)
     {

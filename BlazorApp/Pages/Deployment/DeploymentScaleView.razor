@@ -1,0 +1,45 @@
+@inherits FeedbackComponent<double, double>
+
+<div>
+    <div>
+        <Text>Current : @_replicas</Text>
+    </div>
+    <div>
+        Desired:@_value
+        <Slider Min="1" Max="99"  Step="1" @bind-Value="@_value"/>
+    </div>
+</div>
+
+@code{
+
+    private double _replicas;
+
+    private double _value;
+
+    protected override void OnInitialized()
+    {
+        _replicas = this.Options;
+        _value    = _replicas;
+        base.OnInitialized();
+    }
+
+
+    public override async Task OnFeedbackOkAsync(ModalClosingEventArgs args)
+    {
+        if (FeedbackRef is ConfirmRef confirmRef)
+        {
+            confirmRef.Config.OkButtonProps.Loading = true;
+            await confirmRef.UpdateConfigAsync();
+        }
+        else if (FeedbackRef is ModalRef modalRef)
+        {
+            modalRef.Config.ConfirmLoading = true;
+            await modalRef.UpdateConfigAsync();
+        }
+
+        await base.OkCancelRefWithResult!.OnOk(_value);
+
+        await base.OnFeedbackOkAsync(args);
+    }
+
+}
