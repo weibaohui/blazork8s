@@ -86,7 +86,7 @@ spec:
     - name: http-blazork8s
       protocol: TCP
       port: 4000
-      targetPort: 80
+      targetPort: 8080
   selector:
     app: blazork8s
   type: ClusterIP
@@ -103,7 +103,7 @@ spec:
     - name: http-blazork8s
       protocol: TCP
       port: 4000
-      targetPort: 80
+      targetPort: 8080
       nodePort: 31999
   selector:
     app: blazork8s
@@ -135,7 +135,7 @@ spec:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
           ports:
-            - containerPort: 80
+            - containerPort: 8080
               protocol: TCP
               name: http-blazork8s
           imagePullPolicy: Always
