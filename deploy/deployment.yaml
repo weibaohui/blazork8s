@@ -130,10 +130,10 @@ spec:
         - name: blazork8s
           image: ghcr.io/weibaohui/blazork8s:latest
           env:
-            - name: ASPNETCORE_ENVIRONMENT
-              value: "Development"
 #            - name: ASPNETCORE_ENVIRONMENT
-#              value: "Production"
+#              value: "Development"
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
           ports:
             - containerPort: 80
               protocol: TCP
