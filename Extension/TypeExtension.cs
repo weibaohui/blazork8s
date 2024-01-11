@@ -31,7 +31,7 @@ public static class TypeExtension
             case TypeCode.String:
             case TypeCode.Single:
             case TypeCode.SByte:
-            case TypeCode.Object:
+            // case TypeCode.Object:
             case TypeCode.Int64:
             case TypeCode.Int32:
             case TypeCode.Int16:
