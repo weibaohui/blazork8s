@@ -1,13 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+
 namespace BlazorApp.Pages.StorageClass;
 public partial class StorageClassAction : ComponentBase
 {
@@ -15,6 +13,8 @@ public partial class StorageClassAction : ComponentBase
     public V1StorageClass Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+    [Inject]
+    IMessageService MessageService { get; set; }
     [Inject]
     private IStorageClassService StorageClassService { get; set; }
     [Inject]
@@ -37,5 +37,11 @@ public partial class StorageClassAction : ComponentBase
     {
         var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<DocTreeView<V1StorageClass>, V1StorageClass, bool>(options, item);
+    }
+    private async Task OnDefaultClick(V1StorageClass item)
+    {
+        await  StorageClassService.SetDefault(item);
+        await MessageService.Success($"{item.Name()} is set to Global Default ");
+
     }
 }

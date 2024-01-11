@@ -33,7 +33,7 @@
                     <AntDesign.Column Title="Value" TData="string">
                         @context.Value
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Default" TData="string">
+                    <AntDesign.Column Title="Default" TData="string" Width="100px">
                         <Switch  Value="@(context.GlobalDefault??false)" OnChange="@(()=>OnDefaultChange(context))"></Switch>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Age" TData="string" Width="100px">

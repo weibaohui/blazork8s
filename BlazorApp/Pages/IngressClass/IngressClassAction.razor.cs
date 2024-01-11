@@ -42,5 +42,7 @@ public partial class IngressClassAction : ComponentBase
     private async Task OnDefaultClick(V1IngressClass item)
     {
       await  IngressClassService.SetDefault(item);
+      await MessageService.Success($"{item.Name()} is set to Global Default ");
+
     }
 }

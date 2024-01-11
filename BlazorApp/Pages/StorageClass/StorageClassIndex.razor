@@ -33,6 +33,12 @@
                     <AntDesign.Column Title="Provisioner" TData="string">
                         <ColorfulTag>@context.Provisioner</ColorfulTag>
                     </AntDesign.Column>
+                    <AntDesign.Column Title="Default" TData="string" Width="100px">
+                        @if (context.Metadata.Annotations.Count(x => x is { Key: "storageclass.kubernetes.io/is-default-class", Value: "true" }) > 0)
+                        {
+                            <Tag PresetColor="PresetColor.Green">True</Tag>
+                        }
+                    </AntDesign.Column>
                     <AntDesign.Column Title="ReclaimPolicy" TData="string">
                         <ColorfulTag>@context.ReclaimPolicy</ColorfulTag>
                     </AntDesign.Column>
@@ -42,10 +48,10 @@
                     <AntDesign.Column Title="VolumeBindingMode" TData="string">
                         <ColorfulTag>@(context.AllowVolumeExpansion ?? false)</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <StorageClassAction Item="@context"></StorageClassAction>
                     </ActionColumn>
                 </Table>

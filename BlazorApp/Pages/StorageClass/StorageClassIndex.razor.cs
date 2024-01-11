@@ -4,6 +4,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+
 namespace BlazorApp.Pages.StorageClass;
 public partial class StorageClassIndex : TableBase<V1StorageClass>
 {
@@ -27,4 +28,5 @@ public partial class StorageClassIndex : TableBase<V1StorageClass>
             .SetDrawerService(PageDrawerService.DrawerService)
             .ShowDrawerAsync<StorageClassDetailView, V1StorageClass, bool>(item);
     }
+
 }
