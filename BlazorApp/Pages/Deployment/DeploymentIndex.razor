@@ -59,11 +59,11 @@
                     <AntDesign.Column  Title="Age" TData="string"  Width="100px">
                         @context.CreationTimestamp()?.AgeFromUtc()
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Condition" TData="string">
+                    <AntDesign.Column Title="Condition" TData="string" Width="150px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
 
-                    <ActionColumn Title="Action" Width="200" Fixed="right">
+                    <ActionColumn Title="Action" Width="100px" >
                         <DeploymentAction Item="@context"></DeploymentAction>
                     </ActionColumn>
                 </Table>
