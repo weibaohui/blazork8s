@@ -79,11 +79,12 @@ public partial class DeploymentAction : ComponentBase
     {
         var options = new ConfirmOptions()
         {
-            Title = "Component",
+            Title = "Scale Deployment " + item.Name(),
         };
 
         var confirmRef =
-            await ModalService.CreateConfirmAsync<DeploymentScaleView, double, double>(options, item.Spec.Replicas ?? 0);
+            await ModalService.CreateConfirmAsync<DeploymentScaleView, double, double>(options,
+                item.Spec.Replicas ?? 0);
 
         confirmRef.OnOpen = () =>
         {
@@ -99,7 +100,6 @@ public partial class DeploymentAction : ComponentBase
 
         confirmRef.OnOk = async (result) =>
         {
-            Console.WriteLine($"OnOk:{result},{Int32.Parse(result.ToString(CultureInfo.CurrentCulture))}");
             await DeploymentService.UpdateReplicas(item, Int32.Parse(result.ToString(CultureInfo.CurrentCulture)));
             await InvokeAsync(StateHasChanged);
         };

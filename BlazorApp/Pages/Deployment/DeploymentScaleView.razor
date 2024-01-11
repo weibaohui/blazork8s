@@ -1,14 +1,30 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @inherits FeedbackComponent<double, double>
+<HTable Class="miniTable">
 
-<div>
-    <div>
-        <Text>Current : @_replicas</Text>
-    </div>
-    <div>
-        Desired:@_value
-        <Slider Min="1" Max="99"  Step="1" @bind-Value="@_value"/>
-    </div>
-</div>
+
+    <HTr>
+        <HTd >Current : </HTd>
+        <HTd>
+            <Text>@_replicas</Text>
+        </HTd>
+    </HTr>
+    <HTr>
+        <HTd>Desired:</HTd>
+        <HTd>
+            <Space Size="@($"15")">
+
+                <SpaceItem>
+                    <div style="float: left">@_value</div>
+                </SpaceItem>
+                <SpaceItem>
+                    <Slider Style="float:left;width: 150px"  Min="1" Max="100" Step="1"   @bind-Value="@_value"/>
+                </SpaceItem>
+            </Space>
+        </HTd>
+    </HTr>
+</HTable>
+
 
 @code{
 
