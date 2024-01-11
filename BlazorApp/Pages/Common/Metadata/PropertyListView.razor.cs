@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using BlazorApp.Utils;
 using Extension;
@@ -22,8 +21,6 @@ public partial class PropertyListView<T> : ComponentBase
 
     private string GetValue(T item)
     {
-        Console.WriteLine("item" + item);
-        Console.WriteLine("key" + Key);
         return ReflectHelper<T>.GetValue(item, Key);
     }
 
