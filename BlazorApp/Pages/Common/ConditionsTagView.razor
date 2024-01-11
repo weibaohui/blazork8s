@@ -4,16 +4,34 @@
 {
     @foreach (var ns in Conditions.OrderBy(x => x.Type))
     {
-        @if (ns.Status == "True")
-        {
-            <Tag Icon="check" PresetColor=@PresetColor.Blue>@ns.Type</Tag>
+        @if(ns.Type.Contains("Pressure"))
+        { //压力 状态 反过来
+            @if (ns.Status == "False")
+            {
+                <Tag Icon="check" PresetColor=@PresetColor.Green>@ns.Type</Tag>
+            }
+            else
+            {
+                <Tooltip Title="@($"{ns.Reason}:{ns.Message}  {ns.LastTransitionTime.AgeFromUtc()} ago (at {ns.LastTransitionTime}).")">
+                    <Tag Icon="close" PresetColor=@PresetColor.Red>@ns.Type</Tag>
+                </Tooltip>
+            }
         }
         else
         {
-            <Tooltip Title="@($"{ns.Reason}:{ns.Message}  {ns.LastTransitionTime.AgeFromUtc()} ago (at {ns.LastTransitionTime}).")">
-                <Tag Icon="close" PresetColor=@PresetColor.Red>@ns.Type</Tag>
-            </Tooltip>
+            @if (ns.Status == "True")
+            {
+                <Tag Icon="check" PresetColor=@PresetColor.Green>@ns.Type</Tag>
+            }
+            else
+            {
+                <Tooltip Title="@($"{ns.Reason}:{ns.Message}  {ns.LastTransitionTime.AgeFromUtc()} ago (at {ns.LastTransitionTime}).")">
+                    <Tag Icon="close" PresetColor=@PresetColor.Red>@ns.Type</Tag>
+                </Tooltip>
+            }
         }
+
+
     }
 }
 
