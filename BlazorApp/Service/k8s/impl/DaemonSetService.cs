@@ -10,5 +10,7 @@ namespace BlazorApp.Service.k8s.impl
         {
             _baseService = baseService;
         }
+
+
     }
 }

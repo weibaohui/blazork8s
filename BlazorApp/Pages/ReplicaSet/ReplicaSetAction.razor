@@ -5,6 +5,7 @@
             <Menu >
                 <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
                 <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
+                <MenuItem OnClick="@(() => OnScaleClick(Item))">Scale</MenuItem>
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
                                 OnConfirm="() => OnReplicaSetDeleteClick(Item)"
@@ -25,5 +26,6 @@
     <Alert Type="@AlertType.Success">
         <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
         <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
+        <Button OnClick="@(() => OnScaleClick(Item))">Scale</Button>
     </Alert>
 }

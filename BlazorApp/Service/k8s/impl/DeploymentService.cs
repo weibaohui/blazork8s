@@ -33,11 +33,11 @@ namespace BlazorApp.Service.k8s.impl
             var patchStr = """
                     {
                         "spec": {
-                            "replicas":  ${deploy.Spec.Replicas}
+                            "replicas":  ${replicas}
                         }
                     }
                     """
-                    .Replace("${deploy.Spec.Replicas}", replicas.ToString())
+                    .Replace("${replicas}", replicas.ToString())
                 ;
             var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentScaleAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)

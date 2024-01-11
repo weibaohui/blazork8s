@@ -1,5 +1,3 @@
-
-
 @if (MenuMode == MenuMode.Vertical)
 {
     <Dropdown >
@@ -29,5 +27,7 @@
     <Alert Type="@AlertType.Success">
         <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
         <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
+        <Button OnClick="@(() => OnRestartClick(Item))">Restart</Button>
+        <Button OnClick="@(() => OnScaleClick(Item))">Scale</Button>
     </Alert>
 }

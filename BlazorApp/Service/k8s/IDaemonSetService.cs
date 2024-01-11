@@ -1,8 +1,8 @@
 using k8s.Models;
 
-namespace BlazorApp.Service.k8s
+namespace BlazorApp.Service.k8s;
+
+public interface IDaemonSetService : ICommonAction<V1DaemonSet>
 {
-    public interface IDaemonSetService : ICommonAction<V1DaemonSet>
-    {
-    }
+
 }
