@@ -33,10 +33,16 @@
                     <AntDesign.Column Title="Controller" TData="string">
                         <ColorfulTag>@context.Spec.Controller</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Default" TData="string">
+                            @if (context.Metadata.Annotations.Count(x => x is { Key: "ingressclass.kubernetes.io/is-default-class", Value: "true" }) > 0)
+                            {
+                                <Tag PresetColor="PresetColor.Green">True</Tag>
+                            }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <IngressClassAction Item="@context"></IngressClassAction>
                     </ActionColumn>
                 </Table>

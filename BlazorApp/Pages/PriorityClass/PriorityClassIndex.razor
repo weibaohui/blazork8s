@@ -33,10 +33,13 @@
                     <AntDesign.Column Title="Value" TData="string">
                         @context.Value
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Default" TData="string">
+                        <Switch  Value="@(context.GlobalDefault??false)" OnChange="@(()=>OnDefaultChange(context))"></Switch>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <PriorityClassAction Item="@context"></PriorityClassAction>
                     </ActionColumn>
                 </Table>

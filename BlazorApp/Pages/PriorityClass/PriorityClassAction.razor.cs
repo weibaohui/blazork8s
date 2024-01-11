@@ -1,13 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+
 namespace BlazorApp.Pages.PriorityClass;
 public partial class PriorityClassAction : ComponentBase
 {
@@ -15,6 +13,9 @@ public partial class PriorityClassAction : ComponentBase
     public V1PriorityClass Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+    [Inject]
+    IMessageService MessageService { get; set; }
+
     [Inject]
     private IPriorityClassService PriorityClassService { get; set; }
     [Inject]
@@ -37,5 +38,11 @@ public partial class PriorityClassAction : ComponentBase
     {
         var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<DocTreeView<V1PriorityClass>, V1PriorityClass, bool>(options, item);
+    }
+
+    private async Task OnCancelDefaultClick(V1PriorityClass item)
+    {
+      await  PriorityClassService.ChangeGlobalDefaultTo(item, false);
+      await MessageService.Success($"{item.Name()} Set Global Default to False");
     }
 }

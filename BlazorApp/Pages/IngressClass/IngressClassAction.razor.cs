@@ -1,13 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+
 namespace BlazorApp.Pages.IngressClass;
 public partial class IngressClassAction : ComponentBase
 {
@@ -17,6 +15,8 @@ public partial class IngressClassAction : ComponentBase
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
     [Inject]
     private IIngressClassService IngressClassService { get; set; }
+    [Inject]
+    IMessageService MessageService { get; set; }
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
     protected override async Task OnInitializedAsync()
@@ -37,5 +37,10 @@ public partial class IngressClassAction : ComponentBase
     {
         var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<DocTreeView<V1IngressClass>, V1IngressClass, bool>(options, item);
+    }
+
+    private async Task OnDefaultClick(V1IngressClass item)
+    {
+      await  IngressClassService.SetDefault(item);
     }
 }
