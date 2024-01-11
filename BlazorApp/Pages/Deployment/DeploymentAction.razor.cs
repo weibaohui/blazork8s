@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
@@ -79,24 +80,18 @@ public partial class DeploymentAction : ComponentBase
     {
         var options = new ConfirmOptions()
         {
-            Title = "Scale Deployment " + item.Name(),
+            Title        = "Scale Deployment : " + item.Name(),
+            MaskClosable = true,
+            Mask         = true
         };
 
         var confirmRef =
-            await ModalService.CreateConfirmAsync<DeploymentScaleView, double, double>(options,
+            await ModalService.CreateConfirmAsync<ReplicaScaleView, double, double>(options,
                 item.Spec.Replicas ?? 0);
 
-        confirmRef.OnOpen = () =>
-        {
-            Console.WriteLine("Open Confirm");
-            return Task.CompletedTask;
-        };
+        confirmRef.OnOpen = () => Task.CompletedTask;
 
-        confirmRef.OnClose = () =>
-        {
-            Console.WriteLine("Close Confirm");
-            return Task.CompletedTask;
-        };
+        confirmRef.OnClose = () => Task.CompletedTask;
 
         confirmRef.OnOk = async (result) =>
         {
