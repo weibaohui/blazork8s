@@ -1,3 +1,5 @@
+using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using k8s;
 using k8s.Models;
@@ -33,6 +35,32 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 .Replace("${replicas}", replicas.ToString())
             ;
         var resp = await _baseService.Client().AppsV1.PatchNamespacedStatefulSetScaleAsync(
+            new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
+            , item.Name(), item.Namespace());
+    }
+
+    public async Task Restart(V1StatefulSet item)
+    {
+        if (item == null) return;
+
+
+        var patchStr = """
+                {
+                       "spec": {
+                         "template": {
+                           "metadata": {
+                             "annotations": {
+                               "kubectl.kubernetes.io/restartedAt": "${now}",
+                               "kubectl.kubernetes.io/origin": "BlazorK8s"
+                             }
+                           }
+                         }
+                       }
+                }
+                """
+                .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
+            ;
+        var resp = await _baseService.Client().AppsV1.PatchNamespacedStatefulSetAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }

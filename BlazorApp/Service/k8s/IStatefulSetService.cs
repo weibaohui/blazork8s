@@ -7,4 +7,5 @@ public interface IStatefulSetService : ICommonAction<V1StatefulSet>
 {
     Task UpdateReplicas(V1StatefulSet item, int? replicas);
 
+    Task Restart(V1StatefulSet item);
 }

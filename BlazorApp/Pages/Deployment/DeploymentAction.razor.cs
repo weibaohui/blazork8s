@@ -19,6 +19,8 @@ public partial class DeploymentAction : ComponentBase
 
     [Inject]
     ModalService ModalService { get; set; }
+    [Inject]
+    IMessageService MessageService { get; set; }
 
     [Parameter]
     public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
@@ -74,6 +76,7 @@ public partial class DeploymentAction : ComponentBase
     private async Task OnRestartClick(V1Deployment item)
     {
         await DeploymentService.Restart(item);
+        await MessageService.Success($"{item.Name()} Restarted");
     }
 
     private async Task OnScaleClick(V1Deployment item)

@@ -18,6 +18,8 @@ public partial class StatefulSetAction : ComponentBase
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
     [Inject]
+    IMessageService MessageService { get; set; }
+    [Inject]
     ModalService ModalService { get; set; }
     [Inject]
     private IStatefulSetService StatefulSetService { get; set; }
@@ -64,5 +66,10 @@ public partial class StatefulSetAction : ComponentBase
             await StatefulSetService.UpdateReplicas(item, Int32.Parse(result.ToString(CultureInfo.CurrentCulture)));
             await InvokeAsync(StateHasChanged);
         };
+    }
+    private async Task OnRestartClick(V1StatefulSet item)
+    {
+        await StatefulSetService.Restart(item);
+        await MessageService.Success($"{item.Name()} Restarted");
     }
 }
