@@ -33,12 +33,11 @@ public class IngressClassService : CommonAction<V1IngressClass>, IIngressClassSe
 
     public async Task ChangeGlobalDefaultTo(V1IngressClass item, bool status)
     {
-
             var patchStr = """
                     {
                         "metadata": {
                             "annotations": {
-                           "ingressclass.kubernetes.io/is-default-class": "${default}"
+                                 "ingressclass.kubernetes.io/is-default-class": "${default}"
                              }
                         }
                     }
@@ -48,6 +47,5 @@ public class IngressClassService : CommonAction<V1IngressClass>, IIngressClassSe
          var x=   await _baseService.Client().PatchIngressClassAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
-
     }
 }

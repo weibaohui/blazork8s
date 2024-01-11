@@ -36,7 +36,6 @@ public class PriorityClassService : CommonAction<V1PriorityClass>, IPriorityClas
 
     public async Task ChangeGlobalDefaultTo(V1PriorityClass item, bool status)
     {
-
             var patchStr = """
                     {
                         
@@ -50,5 +49,4 @@ public class PriorityClassService : CommonAction<V1PriorityClass>, IPriorityClas
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }
-
 }
