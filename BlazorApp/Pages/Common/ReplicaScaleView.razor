@@ -23,6 +23,15 @@
             </Space>
         </HTd>
     </HTr>
+    @if (_value >= 90)
+    {
+        <HTr>
+            <HTd ColSpan="2">
+                <Alert Message="High number of replicas may cause cluster performance issues" Type="@AlertType.Warning" />
+            </HTd>
+        </HTr>
+
+    }
 </HTable>
 
 
