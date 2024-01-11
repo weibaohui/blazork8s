@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -17,7 +19,10 @@ public class ServiceAccountService : CommonAction<V1ServiceAccount>, IServiceAcc
         _roleBindingService        = roleBindingService;
         _clusterRoleBindingService = clusterRoleBindingService;
     }
-
+    public new async Task<object> Delete(string ns, string name)
+    {
+        return await _baseService.Client().DeleteNamespacedServiceAccountAsync(name, ns);
+    }
     public IList<V1RoleRef> ListRoles(string serviceAccountName)
     {
         var bindings = _roleBindingService.List()

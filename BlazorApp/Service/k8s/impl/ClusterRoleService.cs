@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -14,7 +16,10 @@ public class ClusterRoleService : CommonAction<V1ClusterRole>, IClusterRoleServi
         _baseService               = baseService;
         _clusterRoleBindingService = clusterRoleBindingService;
     }
-
+    public new async Task<object> Delete(string ns, string name)
+    {
+        return await _baseService.Client().DeleteClusterRoleAsync(name);
+    }
 
     public IList<V1Subject> ListManagedSubjectByClusterRole(V1ClusterRole role)
     {

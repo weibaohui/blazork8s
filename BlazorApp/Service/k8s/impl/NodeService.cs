@@ -15,7 +15,7 @@ namespace BlazorApp.Service.k8s.impl
 
         public new async Task<V1Status> Delete(string ns, string name)
         {
-           return await _baseService.Client().CoreV1.DeleteNodeAsync(name: name);
+           return await _baseService.Client().DeleteNodeAsync(name: name);
         }
     }
 }

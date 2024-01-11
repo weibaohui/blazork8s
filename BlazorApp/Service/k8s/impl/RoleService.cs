@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -15,7 +17,10 @@ public class RoleService : CommonAction<V1Role>, IRoleService
         _baseService        = baseService;
         _roleBindingService = roleBindingService;
     }
-
+    public new async Task<object> Delete(string ns, string name)
+    {
+        return await _baseService.Client().DeleteNamespacedRoleAsync(name, ns);
+    }
 
     public IList<V1Subject> ListManagedSubjectByRole(V1Role role)
     {

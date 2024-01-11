@@ -11,4 +11,8 @@ public class ${Item}Service : CommonAction<${ItemType}>, I${Item}Service
     {
         _baseService = baseService;
     }
+    public new async Task<object> Delete(string ns, string name)
+    {
+        return await _baseService.Client().DeleteNamespaced${Item}Async(name, ns);
+    }
 }

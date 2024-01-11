@@ -1,9 +1,6 @@
 #nullable enable
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Threading.Tasks;
 using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -53,16 +50,4 @@ public class KubeService : IKubeService
         return _client;
     }
 
-
-    public async Task<List<string>> ListNs()
-    {
-        var namespaces = await Client().CoreV1.ListNamespaceAsync();
-        return namespaces.Items.Select(r => r.Metadata.Name).ToList();
-    }
-
-    public async Task<List<string>> ListPodByNs(string? ns = "kube-system")
-    {
-        var list = await Client().CoreV1.ListNamespacedPodAsync(ns);
-        return list.Items.Select(r => r.Metadata.Name).ToList();
-    }
 }

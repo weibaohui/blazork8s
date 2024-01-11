@@ -14,7 +14,10 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
     {
         _baseService = baseService;
     }
-
+    public new async Task<object> Delete(string ns, string name)
+    {
+        return await _baseService.Client().DeleteNamespacedStatefulSetAsync(name, ns);
+    }
     public async Task UpdateReplicas(V1StatefulSet item, int? replicas)
     {
 
@@ -34,7 +37,7 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 """
                 .Replace("${replicas}", replicas.ToString())
             ;
-        var resp = await _baseService.Client().AppsV1.PatchNamespacedStatefulSetScaleAsync(
+        var resp = await _baseService.Client().PatchNamespacedStatefulSetScaleAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }
@@ -60,7 +63,7 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 """
                 .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
             ;
-        var resp = await _baseService.Client().AppsV1.PatchNamespacedStatefulSetAsync(
+        var resp = await _baseService.Client().PatchNamespacedStatefulSetAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }

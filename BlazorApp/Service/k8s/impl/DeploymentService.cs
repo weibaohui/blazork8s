@@ -17,7 +17,7 @@ namespace BlazorApp.Service.k8s.impl
 
         public new async Task<object> Delete(string ns, string name)
         {
-            return await _baseService.Client().AppsV1.DeleteNamespacedDeploymentAsync(name, ns);
+            return await _baseService.Client().DeleteNamespacedDeploymentAsync(name, ns);
         }
 
 
@@ -39,7 +39,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${replicas}", replicas.ToString())
                 ;
-            var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentScaleAsync(
+            var resp = await _baseService.Client().PatchNamespacedDeploymentScaleAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }
@@ -65,7 +65,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
                 ;
-            var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentAsync(
+            var resp = await _baseService.Client().PatchNamespacedDeploymentAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }

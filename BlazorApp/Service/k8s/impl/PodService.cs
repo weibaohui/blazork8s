@@ -24,15 +24,6 @@ namespace BlazorApp.Service.k8s.impl
                 .ToList();
         }
 
-
-        public async Task<bool> DeletePod(string ns, string name)
-        {
-            // Console.WriteLine($"DeletePod,{ns},{name}");
-            return await _baseService.Client().DeleteNamespacedPodAsync(name, ns) != null;
-        }
-
-
-
         public IEnumerable<Tuple<string, int>> NodePodsNum()
         {
             var pods = List();

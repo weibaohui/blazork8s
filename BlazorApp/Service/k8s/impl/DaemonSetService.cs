@@ -14,7 +14,10 @@ namespace BlazorApp.Service.k8s.impl
         {
             _baseService = baseService;
         }
-
+        public new async Task<object> Delete(string ns, string name)
+        {
+            return await _baseService.Client().DeleteNamespacedDaemonSetAsync(name, ns);
+        }
 
         public async Task Restart(V1DaemonSet item)
         {
@@ -37,7 +40,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
                 ;
-            var resp = await _baseService.Client().AppsV1.PatchNamespacedDaemonSetAsync(
+            var resp = await _baseService.Client().PatchNamespacedDaemonSetAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }

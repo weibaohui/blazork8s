@@ -12,7 +12,10 @@ namespace BlazorApp.Service.k8s.impl
         {
             _baseService = baseService;
         }
-
+        public new async Task<object> Delete(string ns, string name)
+        {
+            return await _baseService.Client().DeleteNamespacedReplicaSetAsync(name, ns);
+        }
         public async Task UpdateReplicas(V1ReplicaSet item, int? replicas)
         {
 
@@ -32,7 +35,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${replicas}", replicas.ToString())
                 ;
-            var resp = await _baseService.Client().AppsV1.PatchNamespacedReplicaSetScaleAsync(
+            var resp = await _baseService.Client().PatchNamespacedReplicaSetScaleAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }
