@@ -21,9 +21,9 @@ namespace BlazorApp.Service.k8s.impl
         }
 
 
-        public async Task UpdateReplicas(V1Deployment deploy, int? replicas)
+        public async Task UpdateReplicas(V1Deployment item, int? replicas)
         {
-            if (deploy == null) return;
+            if (item == null) return;
 
             if (replicas < 0)
             {
@@ -41,12 +41,12 @@ namespace BlazorApp.Service.k8s.impl
                 ;
             var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentScaleAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
-                , deploy.Name(), deploy.Namespace());
+                , item.Name(), item.Namespace());
         }
 
-        public async Task Restart(V1Deployment deploy)
+        public async Task Restart(V1Deployment item)
         {
-            if (deploy == null) return;
+            if (item == null) return;
 
 
             var patchStr = """
@@ -63,11 +63,11 @@ namespace BlazorApp.Service.k8s.impl
                            }
                     }
                     """
-                    .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.InvariantCulture))
+                    .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
                 ;
             var resp = await _baseService.Client().AppsV1.PatchNamespacedDeploymentAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
-                , deploy.Name(), deploy.Namespace());
+                , item.Name(), item.Namespace());
         }
     }
 }
