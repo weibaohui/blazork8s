@@ -43,6 +43,5 @@ public partial class IngressClassAction : ComponentBase
     {
       await  IngressClassService.SetDefault(item);
       await MessageService.Success($"{item.Name()} is set to Global Default ");
-
     }
 }
