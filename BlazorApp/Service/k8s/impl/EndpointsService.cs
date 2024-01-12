@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class EndpointsService : CommonAction<V1Endpoints>, IEndpointsService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public EndpointsService(IKubeService baseService)
+    public EndpointsService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedEndpointsAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedEndpointsAsync(name, ns);
     }
 }

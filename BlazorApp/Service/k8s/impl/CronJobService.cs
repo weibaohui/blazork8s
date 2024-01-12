@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class CronJobService : CommonAction<V1CronJob>, ICronJobService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public CronJobService(IKubeService baseService)
+    public CronJobService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedCronJobAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedCronJobAsync(name, ns);
     }
 }

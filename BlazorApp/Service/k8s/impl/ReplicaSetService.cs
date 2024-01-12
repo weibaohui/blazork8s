@@ -6,15 +6,15 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class ReplicaSetService : CommonAction<V1ReplicaSet>, IReplicaSetService
     {
-        private readonly IKubeService _baseService;
+        private readonly IKubeService _kubeService;
 
-        public ReplicaSetService(IKubeService baseService)
+        public ReplicaSetService(IKubeService kubeService)
         {
-            _baseService = baseService;
+            _kubeService = kubeService;
         }
         public new async Task<object> Delete(string ns, string name)
         {
-            return await _baseService.Client().DeleteNamespacedReplicaSetAsync(name, ns);
+            return await _kubeService.Client().DeleteNamespacedReplicaSetAsync(name, ns);
         }
         public async Task UpdateReplicas(V1ReplicaSet item, int? replicas)
         {
@@ -35,7 +35,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${replicas}", replicas.ToString())
                 ;
-            var resp = await _baseService.Client().PatchNamespacedReplicaSetScaleAsync(
+            var resp = await _kubeService.Client().PatchNamespacedReplicaSetScaleAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }

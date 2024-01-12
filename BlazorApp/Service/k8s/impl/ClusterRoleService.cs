@@ -8,17 +8,17 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class ClusterRoleService : CommonAction<V1ClusterRole>, IClusterRoleService
 {
-    private readonly IKubeService               _baseService;
+    private readonly IKubeService               _kubeService;
     private readonly IClusterRoleBindingService _clusterRoleBindingService;
 
-    public ClusterRoleService(IKubeService baseService, IClusterRoleBindingService clusterRoleBindingService)
+    public ClusterRoleService(IKubeService kubeService, IClusterRoleBindingService clusterRoleBindingService)
     {
-        _baseService               = baseService;
+        _kubeService               = kubeService;
         _clusterRoleBindingService = clusterRoleBindingService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteClusterRoleAsync(name);
+        return await _kubeService.Client().DeleteClusterRoleAsync(name);
     }
 
     public IList<V1Subject> ListManagedSubjectByClusterRole(V1ClusterRole role)

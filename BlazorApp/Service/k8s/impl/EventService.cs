@@ -6,15 +6,15 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class EventService : CommonAction<Corev1Event>, IEventService
     {
-        private readonly IKubeService _baseService;
+        private readonly IKubeService _kubeService;
 
-        public EventService(IKubeService baseService)
+        public EventService(IKubeService kubeService)
         {
-            _baseService = baseService;
+            _kubeService = kubeService;
         }
         public new async Task<object> Delete(string ns, string name)
         {
-            return await _baseService.Client().CoreV1.DeleteNamespacedEventAsync(name, ns);
+            return await _kubeService.Client().CoreV1.DeleteNamespacedEventAsync(name, ns);
         }
     }
 }

@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class LimitRangeService : CommonAction<V1LimitRange>, ILimitRangeService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public LimitRangeService(IKubeService baseService)
+    public LimitRangeService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedLimitRangeAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedLimitRangeAsync(name, ns);
     }
 }

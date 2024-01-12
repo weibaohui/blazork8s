@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class IngressService : CommonAction<V1Ingress>, IIngressService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public IngressService(IKubeService baseService)
+    public IngressService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedIngressAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedIngressAsync(name, ns);
     }
 }

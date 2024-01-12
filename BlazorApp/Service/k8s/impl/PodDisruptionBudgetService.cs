@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class PodDisruptionBudgetService : CommonAction<V1PodDisruptionBudget>, IPodDisruptionBudgetService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public PodDisruptionBudgetService(IKubeService baseService)
+    public PodDisruptionBudgetService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedPodDisruptionBudgetAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedPodDisruptionBudgetAsync(name, ns);
     }
 }

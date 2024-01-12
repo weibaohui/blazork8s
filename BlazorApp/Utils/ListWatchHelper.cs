@@ -23,9 +23,9 @@ public class ListWatchHelper
         internal static readonly ListWatchHelper Instance = new ListWatchHelper();
     }
 
-    public ListWatchService Create(IKubeService baseService, IHubContext<ChatHub> ctx)
+    public ListWatchService Create(IKubeService kubeService, IHubContext<ChatHub> ctx)
     {
-        _watchService = new ListWatchService(baseService, ctx);
+        _watchService = new ListWatchService(kubeService, ctx);
         return _watchService;
     }
 

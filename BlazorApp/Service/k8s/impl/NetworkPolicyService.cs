@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class NetworkPolicyService : CommonAction<V1NetworkPolicy>, INetworkPolicyService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public NetworkPolicyService(IKubeService baseService)
+    public NetworkPolicyService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedNetworkPolicyAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedNetworkPolicyAsync(name, ns);
     }
 }

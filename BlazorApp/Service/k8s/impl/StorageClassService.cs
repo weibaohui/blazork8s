@@ -7,21 +7,21 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class StorageClassService : CommonAction<V1StorageClass>, IStorageClassService
 {
-    private readonly IKubeService _baseService;
+    private readonly IKubeService _kubeService;
 
-    public StorageClassService(IKubeService baseService)
+    public StorageClassService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
 
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteStorageClassAsync(name);
+        return await _kubeService.Client().DeleteStorageClassAsync(name);
     }
 
     public async Task SetDefault(V1StorageClass item)
     {
-        var list = await _baseService.Client().ListStorageClassAsync();
+        var list = await _kubeService.Client().ListStorageClassAsync();
         foreach (var pc in list.Items.Where(x => x.Name() != item.Name()))
         {
             await ChangeGlobalDefaultTo(pc, false);
@@ -45,7 +45,7 @@ public class StorageClassService : CommonAction<V1StorageClass>, IStorageClassSe
                 """
                 .Replace("${default}", status.ToString().ToLower())
             ;
-        var x =   await _baseService.Client().PatchStorageClassAsync(
+        var x =   await _kubeService.Client().PatchStorageClassAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }

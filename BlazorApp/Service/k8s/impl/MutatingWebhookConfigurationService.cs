@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class MutatingWebhookConfigurationService : CommonAction<V1MutatingWebhookConfiguration>, IMutatingWebhookConfigurationService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public MutatingWebhookConfigurationService(IKubeService baseService)
+    public MutatingWebhookConfigurationService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteMutatingWebhookConfigurationAsync(name);
+        return await _kubeService.Client().DeleteMutatingWebhookConfigurationAsync(name);
     }
 }

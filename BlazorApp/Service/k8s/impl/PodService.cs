@@ -9,11 +9,11 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class PodService : CommonAction<V1Pod>, IPodService
     {
-        private readonly IKubeService  _baseService;
+        private readonly IKubeService  _kubeService;
 
-        public PodService(IKubeService baseService)
+        public PodService(IKubeService kubeService)
         {
-            _baseService   = baseService;
+            _kubeService   = kubeService;
         }
 
 
@@ -40,7 +40,7 @@ namespace BlazorApp.Service.k8s.impl
 
         public new async Task<object> Delete(string ns, string name)
         {
-            return await _baseService.Client().DeleteNamespacedPodAsync(name, ns);
+            return await _kubeService.Client().DeleteNamespacedPodAsync(name, ns);
         }
     }
 }

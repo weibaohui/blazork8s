@@ -6,14 +6,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class JobService : CommonAction<V1Job>, IJobService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public JobService(IKubeService baseService)
+    public JobService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedJobAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedJobAsync(name, ns);
     }
 }

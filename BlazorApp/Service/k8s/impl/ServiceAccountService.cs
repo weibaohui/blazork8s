@@ -8,20 +8,20 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class ServiceAccountService : CommonAction<V1ServiceAccount>, IServiceAccountService
 {
-    private readonly IKubeService               _baseService;
+    private readonly IKubeService               _kubeService;
     private readonly IClusterRoleBindingService _clusterRoleBindingService;
     private readonly IRoleBindingService        _roleBindingService;
 
-    public ServiceAccountService(IKubeService baseService, IRoleBindingService roleBindingService,
+    public ServiceAccountService(IKubeService kubeService, IRoleBindingService roleBindingService,
         IClusterRoleBindingService            clusterRoleBindingService)
     {
-        _baseService               = baseService;
+        _kubeService               = kubeService;
         _roleBindingService        = roleBindingService;
         _clusterRoleBindingService = clusterRoleBindingService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedServiceAccountAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedServiceAccountAsync(name, ns);
     }
     public IList<V1RoleRef> ListRoles(string serviceAccountName)
     {

@@ -7,15 +7,15 @@ namespace BlazorApp.Service.k8s.impl;
 public class ValidatingWebhookConfigurationService : CommonAction<V1ValidatingWebhookConfiguration>,
     IValidatingWebhookConfigurationService
 {
-    private readonly IKubeService _baseService;
+    private readonly IKubeService _kubeService;
 
-    public ValidatingWebhookConfigurationService(IKubeService baseService)
+    public ValidatingWebhookConfigurationService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
 
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteValidatingWebhookConfigurationAsync(name);
+        return await _kubeService.Client().DeleteValidatingWebhookConfigurationAsync(name);
     }
 }

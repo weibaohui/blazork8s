@@ -8,18 +8,18 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class RoleService : CommonAction<V1Role>, IRoleService
 {
-    private readonly IKubeService _baseService;
+    private readonly IKubeService _kubeService;
 
     private readonly IRoleBindingService _roleBindingService;
 
-    public RoleService(IKubeService baseService, IRoleBindingService roleBindingService)
+    public RoleService(IKubeService kubeService, IRoleBindingService roleBindingService)
     {
-        _baseService        = baseService;
+        _kubeService        = kubeService;
         _roleBindingService = roleBindingService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedRoleAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedRoleAsync(name, ns);
     }
 
     public IList<V1Subject> ListManagedSubjectByRole(V1Role role)

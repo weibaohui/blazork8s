@@ -8,15 +8,15 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetService
 {
-    private readonly IKubeService                _baseService;
+    private readonly IKubeService                _kubeService;
 
-    public StatefulSetService(IKubeService baseService)
+    public StatefulSetService(IKubeService kubeService)
     {
-        _baseService = baseService;
+        _kubeService = kubeService;
     }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespacedStatefulSetAsync(name, ns);
+        return await _kubeService.Client().DeleteNamespacedStatefulSetAsync(name, ns);
     }
     public async Task UpdateReplicas(V1StatefulSet item, int? replicas)
     {
@@ -37,7 +37,7 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 """
                 .Replace("${replicas}", replicas.ToString())
             ;
-        var resp = await _baseService.Client().PatchNamespacedStatefulSetScaleAsync(
+        var resp = await _kubeService.Client().PatchNamespacedStatefulSetScaleAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }
@@ -63,7 +63,7 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 """
                 .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
             ;
-        var resp = await _baseService.Client().PatchNamespacedStatefulSetAsync(
+        var resp = await _kubeService.Client().PatchNamespacedStatefulSetAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }

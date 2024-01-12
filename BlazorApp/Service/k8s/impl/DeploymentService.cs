@@ -8,16 +8,16 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class DeploymentService : CommonAction<V1Deployment>, IDeploymentService
     {
-        private readonly IKubeService _baseService;
+        private readonly IKubeService _kubeService;
 
-        public DeploymentService(IKubeService baseService)
+        public DeploymentService(IKubeService kubeService)
         {
-            _baseService = baseService;
+            _kubeService = kubeService;
         }
 
         public new async Task<object> Delete(string ns, string name)
         {
-            return await _baseService.Client().DeleteNamespacedDeploymentAsync(name, ns);
+            return await _kubeService.Client().DeleteNamespacedDeploymentAsync(name, ns);
         }
 
 
@@ -39,7 +39,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${replicas}", replicas.ToString())
                 ;
-            var resp = await _baseService.Client().PatchNamespacedDeploymentScaleAsync(
+            var resp = await _kubeService.Client().PatchNamespacedDeploymentScaleAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }
@@ -65,7 +65,7 @@ namespace BlazorApp.Service.k8s.impl
                     """
                     .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
                 ;
-            var resp = await _baseService.Client().PatchNamespacedDeploymentAsync(
+            var resp = await _kubeService.Client().PatchNamespacedDeploymentAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
         }
