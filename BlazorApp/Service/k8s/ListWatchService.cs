@@ -65,11 +65,17 @@ public class ListWatchService
         WatchClusterRole();
         WatchClusterRoleBinding();
         WatchServiceAccount();
+        WatchCrd();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
 
-
+    private async Task WatchCrd()
+    {
+        var listResp = _kubeService.Client().ApiextensionsV1
+            .ListCustomResourceDefinitionWithHttpMessagesAsync(watch: true);
+        await new Watcher<V1CustomResourceDefinition, V1CustomResourceDefinitionList>(_ctx).Watch(listResp);
+    }
     private async Task WatchPod()
     {
         var listResp = _kubeService.Client().CoreV1
