@@ -8,7 +8,7 @@ namespace BlazorApp.Utils;
 public class ResourceCacheHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 {
     private static readonly ILogger<ResourceCacheHelper<T>> Logger = LoggingHelper<ResourceCacheHelper<T>>.Logger();
-    private static          Dictionary<string, ResourceCache<T>> map = new();
+
     private static readonly string key = $"{typeof(T)}";
 
     public static ResourceCacheHelper<T> Instance => Nested.Instance;
@@ -27,13 +27,13 @@ public class ResourceCacheHelper<T> where T : IKubernetesObject<V1ObjectMeta>
 
     public ResourceCache<T> Build()
     {
-        if (map.TryGetValue(key, out var cache))
+        if (ResourceCacheContainer.Instance.GetMap().TryGetValue(key, out var cache))
         {
-            return cache;
+            return (ResourceCache<T>)cache;
         }
 
         cache = new ResourceCache<T>();
-        var result = map.TryAdd(key, cache);
-        return cache;
+        var result = ResourceCacheContainer.Instance.GetMap().TryAdd(key, cache);
+        return (ResourceCache<T>)cache;
     }
 }
