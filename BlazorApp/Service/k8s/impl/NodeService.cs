@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class NodeService : CommonAction<V1Node>, INodeService
     {
-        private readonly IBaseService _baseService;
+        private readonly IKubeService _baseService;
 
-        public NodeService(IBaseService baseService)
+        public NodeService(IKubeService baseService)
         {
             _baseService = baseService;
         }

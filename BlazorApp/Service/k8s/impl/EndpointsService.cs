@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class EndpointsService : CommonAction<V1Endpoints>, IEndpointsService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public EndpointsService(IBaseService baseService)
+    public EndpointsService(IKubeService baseService)
     {
         _baseService = baseService;
     }

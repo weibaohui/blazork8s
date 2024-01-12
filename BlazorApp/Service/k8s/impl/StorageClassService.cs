@@ -7,9 +7,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class StorageClassService : CommonAction<V1StorageClass>, IStorageClassService
 {
-    private readonly IBaseService _baseService;
+    private readonly IKubeService _baseService;
 
-    public StorageClassService(IBaseService baseService)
+    public StorageClassService(IKubeService baseService)
     {
         _baseService = baseService;
     }

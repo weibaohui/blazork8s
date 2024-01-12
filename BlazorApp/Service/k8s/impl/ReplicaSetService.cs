@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class ReplicaSetService : CommonAction<V1ReplicaSet>, IReplicaSetService
     {
-        private readonly IBaseService _baseService;
+        private readonly IKubeService _baseService;
 
-        public ReplicaSetService(IBaseService baseService)
+        public ReplicaSetService(IKubeService baseService)
         {
             _baseService = baseService;
         }

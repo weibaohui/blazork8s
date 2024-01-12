@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class IngressService : CommonAction<V1Ingress>, IIngressService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public IngressService(IBaseService baseService)
+    public IngressService(IKubeService baseService)
     {
         _baseService = baseService;
     }

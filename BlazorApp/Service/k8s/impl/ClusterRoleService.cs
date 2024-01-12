@@ -8,10 +8,10 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class ClusterRoleService : CommonAction<V1ClusterRole>, IClusterRoleService
 {
-    private readonly IBaseService               _baseService;
+    private readonly IKubeService               _baseService;
     private readonly IClusterRoleBindingService _clusterRoleBindingService;
 
-    public ClusterRoleService(IBaseService baseService, IClusterRoleBindingService clusterRoleBindingService)
+    public ClusterRoleService(IKubeService baseService, IClusterRoleBindingService clusterRoleBindingService)
     {
         _baseService               = baseService;
         _clusterRoleBindingService = clusterRoleBindingService;

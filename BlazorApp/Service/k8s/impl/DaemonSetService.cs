@@ -8,9 +8,9 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class DaemonSetService : CommonAction<V1DaemonSet>, IDaemonSetService
     {
-        private readonly IBaseService                _baseService;
+        private readonly IKubeService                _baseService;
 
-        public DaemonSetService(IBaseService baseService)
+        public DaemonSetService(IKubeService baseService)
         {
             _baseService = baseService;
         }

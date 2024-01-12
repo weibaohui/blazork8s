@@ -8,9 +8,9 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class DeploymentService : CommonAction<V1Deployment>, IDeploymentService
     {
-        private readonly IBaseService _baseService;
+        private readonly IKubeService _baseService;
 
-        public DeploymentService(IBaseService baseService)
+        public DeploymentService(IKubeService baseService)
         {
             _baseService = baseService;
         }

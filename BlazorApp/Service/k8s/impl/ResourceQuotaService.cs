@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class ResourceQuotaService : CommonAction<V1ResourceQuota>, IResourceQuotaService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public ResourceQuotaService(IBaseService baseService)
+    public ResourceQuotaService(IKubeService baseService)
     {
         _baseService = baseService;
     }

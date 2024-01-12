@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class ConfigMapService : CommonAction<V1ConfigMap>, IConfigMapService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public ConfigMapService(IBaseService baseService)
+    public ConfigMapService(IKubeService baseService)
     {
         _baseService = baseService;
     }

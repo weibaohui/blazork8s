@@ -7,9 +7,9 @@ namespace BlazorApp.Service.k8s.impl;
 public class ValidatingWebhookConfigurationService : CommonAction<V1ValidatingWebhookConfiguration>,
     IValidatingWebhookConfigurationService
 {
-    private readonly IBaseService _baseService;
+    private readonly IKubeService _baseService;
 
-    public ValidatingWebhookConfigurationService(IBaseService baseService)
+    public ValidatingWebhookConfigurationService(IKubeService baseService)
     {
         _baseService = baseService;
     }

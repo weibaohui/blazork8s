@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class NamespaceService : CommonAction<V1Namespace>, INamespaceService
     {
-        private readonly IBaseService _baseService;
+        private readonly IKubeService _baseService;
 
-        public NamespaceService(IBaseService baseService)
+        public NamespaceService(IKubeService baseService)
         {
             _baseService = baseService;
         }

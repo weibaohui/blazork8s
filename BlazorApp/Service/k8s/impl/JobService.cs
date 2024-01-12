@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class JobService : CommonAction<V1Job>, IJobService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public JobService(IBaseService baseService)
+    public JobService(IKubeService baseService)
     {
         _baseService = baseService;
     }

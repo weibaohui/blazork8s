@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class PersistentVolumeClaimService : CommonAction<V1PersistentVolumeClaim>, IPersistentVolumeClaimService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public PersistentVolumeClaimService(IBaseService baseService)
+    public PersistentVolumeClaimService(IKubeService baseService)
     {
         _baseService = baseService;
     }

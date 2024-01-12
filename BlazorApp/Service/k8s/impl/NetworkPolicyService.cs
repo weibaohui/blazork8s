@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class NetworkPolicyService : CommonAction<V1NetworkPolicy>, INetworkPolicyService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public NetworkPolicyService(IBaseService baseService)
+    public NetworkPolicyService(IKubeService baseService)
     {
         _baseService = baseService;
     }

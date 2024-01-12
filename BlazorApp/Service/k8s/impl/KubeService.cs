@@ -1,29 +1,34 @@
 #nullable enable
 using System;
-using BlazorApp.Utils;
+using BlazorApp.Chat;
 using k8s;
+using Microsoft.AspNetCore.SignalR;
 
 namespace BlazorApp.Service.k8s.impl;
 
 public class KubeService : IKubeService
 {
-    private string?     ContextName { get; set; }
-    private Kubernetes? _client     { get; set; }
+    private          string?              ContextName { get; set; }
+    private          Kubernetes?          _client     { get; set; }
+    private readonly IHubContext<ChatHub> _ctx;
 
     public void ChangeContext(string ctxName)
     {
         //重新连接k8s
         ContextName = ctxName;
         //停止list watch
-
-        _client?.Dispose();
-        _client = null;
-        var map = ResourceCacheContainer.Instance.GetMap();
-        map.Clear();
+        // ListWatchHelper.Instance.Dispose();
+        //
+        // _client?.Dispose();
+        // _client = null;
+        // var map = ResourceCacheContainer.Instance.GetMap();
+        // map.Clear();
 
         //重连
-        Client();
+        // Client();
         //重新 list watch
+        // var watchService = ListWatchHelper.Instance.Create(this, _ctx);
+        // watchService.StartAsync();
     }
 
     public Kubernetes Client()

@@ -8,11 +8,11 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class RoleService : CommonAction<V1Role>, IRoleService
 {
-    private readonly IBaseService _baseService;
+    private readonly IKubeService _baseService;
 
     private readonly IRoleBindingService _roleBindingService;
 
-    public RoleService(IBaseService baseService, IRoleBindingService roleBindingService)
+    public RoleService(IKubeService baseService, IRoleBindingService roleBindingService)
     {
         _baseService        = baseService;
         _roleBindingService = roleBindingService;

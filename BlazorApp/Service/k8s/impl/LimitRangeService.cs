@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class LimitRangeService : CommonAction<V1LimitRange>, ILimitRangeService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public LimitRangeService(IBaseService baseService)
+    public LimitRangeService(IKubeService baseService)
     {
         _baseService = baseService;
     }

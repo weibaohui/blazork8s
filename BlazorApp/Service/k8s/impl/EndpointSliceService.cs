@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class EndpointSliceService : CommonAction<V1EndpointSlice>, IEndpointSliceService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public EndpointSliceService(IBaseService baseService)
+    public EndpointSliceService(IKubeService baseService)
     {
         _baseService = baseService;
     }

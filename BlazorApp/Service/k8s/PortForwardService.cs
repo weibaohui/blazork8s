@@ -12,11 +12,11 @@ namespace BlazorApp.Service.k8s;
 public class PortForwardService : IHostedService, IDisposable
 {
     private readonly ILogger<PortForwardService> _logger;
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
     private readonly IHubContext<ChatHub>        _ctx;
     private          PortForwardExecutorHelper   _helper;
 
-    public PortForwardService(ILogger<PortForwardService> logger, IBaseService baseService, IHubContext<ChatHub> ctx)
+    public PortForwardService(ILogger<PortForwardService> logger, IKubeService baseService, IHubContext<ChatHub> ctx)
     {
         _logger = logger;
         Console.WriteLine("PortForwardService 初始化" + DateTime.Now);

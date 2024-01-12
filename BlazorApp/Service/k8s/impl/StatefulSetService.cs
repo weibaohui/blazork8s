@@ -8,9 +8,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public StatefulSetService(IBaseService baseService)
+    public StatefulSetService(IKubeService baseService)
     {
         _baseService = baseService;
     }

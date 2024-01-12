@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class SecretService : CommonAction<V1Secret>, ISecretService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public SecretService(IBaseService baseService)
+    public SecretService(IKubeService baseService)
     {
         _baseService = baseService;
     }

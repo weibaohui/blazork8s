@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class PodDisruptionBudgetService : CommonAction<V1PodDisruptionBudget>, IPodDisruptionBudgetService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public PodDisruptionBudgetService(IBaseService baseService)
+    public PodDisruptionBudgetService(IKubeService baseService)
     {
         _baseService = baseService;
     }

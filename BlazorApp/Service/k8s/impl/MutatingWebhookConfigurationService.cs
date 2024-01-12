@@ -6,9 +6,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class MutatingWebhookConfigurationService : CommonAction<V1MutatingWebhookConfiguration>, IMutatingWebhookConfigurationService
 {
-    private readonly IBaseService                _baseService;
+    private readonly IKubeService                _baseService;
 
-    public MutatingWebhookConfigurationService(IBaseService baseService)
+    public MutatingWebhookConfigurationService(IKubeService baseService)
     {
         _baseService = baseService;
     }
