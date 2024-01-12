@@ -1,9 +1,11 @@
 @using Extension.k8s
 @using k8s.Models
+@using Mapster
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common
 <HTable Bordered Column="1">
     <HTableColumn Title="Status">
         <StatusView Status=@PodStatus.Status()></StatusView>
@@ -23,7 +25,7 @@
         (@PodStatus.StartTime.GetValueOrDefault().ToLocalTime())
     </HTableColumn>
     <PropertyOptionView Title="Phase" ExplainField="pod.status.phase" Item="@PodStatus.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
-    <PodConditionView Conditions="@PodStatus.Conditions"></PodConditionView>
+    <ConditionsView Conditions="@(PodStatus.Conditions.Adapt<IList<V1Condition>>())"></ConditionsView>
     <PropertySimpleView Title="Resize" ExplainField="pod.status.resize" Item="@PodStatus.Resize"></PropertySimpleView>
     <PropertySimpleView Title="HostIP" ExplainField="pod.status.hostIP" Item="@PodStatus.HostIP"></PropertySimpleView>
     <PropertyListView Title="HostIPs" ExplainField="pod.status.hostIPs" Key="Ip" Items="@PodStatus.HostIPs" T="V1HostIP"></PropertyListView>
