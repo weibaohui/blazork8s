@@ -6,6 +6,5 @@ public interface IKubeService
 {
     public Kubernetes Client();
     public string     CurrentContext();
-    public void       ChangeContext(string ctxName);
 
 }
