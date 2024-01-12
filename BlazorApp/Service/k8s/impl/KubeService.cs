@@ -1,36 +1,26 @@
 #nullable enable
 using System;
-using System.Net.Http;
 using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
 
 public class KubeService : IKubeService
 {
-    private readonly HttpClient _http;
+    private string _contextName { get; set; }
 
-    private string      _name    { get; set; }
-    private string      _version { get; set; }
-    private Kubernetes? _client  { get; set; }
 
-    public KubeService(HttpClient http)
+    private Kubernetes? _client { get; set; }
+
+
+    public void ChangeContext(string ctxName)
     {
-        _http    = http;
-        _name    = "AutoName";
-        _version = "AutoVersion";
+        //重新连接k8s
+        _contextName = ctxName;
+        _client?.Dispose();
+        _client = null;
+        //重连
+        Client();
     }
-
-
-    public string Name()
-    {
-        return _name;
-    }
-
-    public string Version()
-    {
-        return _version;
-    }
-
 
     public Kubernetes Client()
     {
@@ -39,15 +29,20 @@ public class KubeService : IKubeService
             return _client;
         }
 
+
         KubernetesClientConfiguration config;
         // Load from in-cluster configuration:
         config = KubernetesClientConfiguration.IsInCluster()
             ? KubernetesClientConfiguration.InClusterConfig()
-            : KubernetesClientConfiguration.BuildConfigFromConfigFile();
-
-        _client = new Kubernetes(config);
-        Console.WriteLine("KubeService initialized.");
+            : KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: _contextName);
+        _contextName = config.CurrentContext;
+        _client      = new Kubernetes(config);
+        Console.WriteLine($"KubeService initialized.{config.CurrentContext}");
         return _client;
     }
 
+    public string CurrentContext()
+    {
+        return _contextName;
+    }
 }

@@ -1,0 +1,6 @@
+@page "/ClusterConfig"
+<h3>ClusterConfig</h3>
+
+@KubeService.CurrentContext()
+<Button Type="@ButtonType.Primary"  OnClick="@(() => OnChangeBtnClick("docker-desktop-2"))">docker-desktop-2</Button>
+<Button Type="@ButtonType.Primary" OnClick="@(() => OnChangeBtnClick("docker-desktop"))">docker-desktop</Button>
