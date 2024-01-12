@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html
+@using k8s
 @if (Containers != null)
 {
     @foreach (var c in Containers)
@@ -36,7 +37,10 @@
                                     @($"{p.Name}:{p.ContainerPort}/{p.Protocol}")
                                     @if (ShowPortForwardBtn)
                                     {
-                                        <Button Type="@ButtonType.Primary" OnClick="@(() => OnPortForwardBtnClick(p.ContainerPort))">Forward</Button>
+                                        @if (!KubernetesClientConfiguration.IsInCluster())
+                                        {
+                                            <Button Type="@ButtonType.Primary" OnClick="@(() => OnPortForwardBtnClick(p.ContainerPort))">Forward</Button>
+                                        }
                                     }
                                 </div>
                             }
@@ -107,6 +111,7 @@
 
     [Parameter]
     public bool ShowPortForwardBtn { get; set; }
+
     [Parameter]
     public EventCallback<int> OnPortForward { get; set; }
 

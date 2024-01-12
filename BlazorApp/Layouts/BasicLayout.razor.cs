@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AntDesign.ProLayout;
+using k8s;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Layouts;
@@ -18,6 +19,7 @@ public partial class BasicLayout : LayoutComponentBase
                 Name = "PortForward",
                 Key  = "PortForward",
                 Icon = "setting",
+                HideInMenu = KubernetesClientConfiguration.IsInCluster()
             },
             new MenuDataItem
             {
