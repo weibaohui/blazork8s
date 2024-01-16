@@ -29,6 +29,7 @@ public class KubeService : IKubeService
         //重新 list watch
         // var watchService = ListWatchHelper.Instance.Create(this, _ctx);
         // watchService.StartAsync();
+
     }
 
     public Kubernetes Client()

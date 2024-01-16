@@ -1,4 +1,21 @@
 @page "/ClusterConfig"
-<h3>ClusterConfig</h3>
+@using k8s.Models
+@using Mapster
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common
 
-@KubeService.CurrentContext()
+
+<Card Title="@KubeService.CurrentContext()"  Style="width: 400px;margin: 50px">
+    @if (ComponentStatus is { Count: > 0 })
+    {
+        <HTable>
+            @foreach (var status in ComponentStatus)
+            {
+                <HTableColumn Title="@status.Name()">
+                    <ConditionsTagView Conditions="@(status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                </HTableColumn>
+            }
+        </HTable>
+    }
+</Card>
