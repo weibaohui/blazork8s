@@ -37,7 +37,13 @@
                         @metrics.Name
                     </HTd>
                     <HTd>
-                        @status.Window
+                        <Area Data="@GetTrendData(status.Name(), "cpu")" Config="config1"/>
+                    </HTd>
+                    <HTd>
+                        <TinyLine Data="@GetTrendData(status.Name(), "cpu")" Config="timesConfig"></TinyLine>
+                    </HTd>
+                    <HTd>
+                        <TinyLine Data="@GetTrendData(status.Name(), "memory")" Config="timesConfig"></TinyLine>
                     </HTd>
                     <HTd>
                         @foreach (var (key, value) in metrics.Usage)
@@ -49,28 +55,4 @@
             }
         }
     </HTable>
-
-
-    <HTable>
-        @foreach (var data in datas)
-        {
-            <HTr>
-                <HTd></HTd>
-                <HTd>
-                    <TinyColumn Data="@data.trend" Config="trendConfig"></TinyColumn>
-                </HTd>
-                <HTd>
-                    <TinyLine Data="@data.times" Config="timesConfig"></TinyLine>
-                </HTd>
-                <HTd>
-                    <RingProgress Data="@data.load" Config="loadConfig"></RingProgress>
-                </HTd>
-            </HTr>
-        }
-
-    </HTable>
-
-
-    <Line Data="data" Config="config" />
-
 }

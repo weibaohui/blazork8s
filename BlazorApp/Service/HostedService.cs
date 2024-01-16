@@ -12,15 +12,16 @@ namespace BlazorApp.Service;
 
 public class HostedService : IHostedService, IDisposable
 {
-    private readonly ILogger<HostedService> _logger;
-    private readonly IKubeService           _kubeService;
-    private readonly IHubContext<ChatHub>   _ctx;
+    private readonly ILogger<HostedService>   _logger;
+    private readonly IKubeService             _kubeService;
+    private readonly IHubContext<ChatHub>     _ctx;
+
 
     public HostedService(ILogger<HostedService> logger, IKubeService kubeService, IHubContext<ChatHub> ctx)
     {
-        _logger      = logger;
-        _kubeService = kubeService;
-        _ctx         = ctx;
+        _logger                        = logger;
+        _kubeService                   = kubeService;
+        _ctx                           = ctx;
     }
 
 
@@ -28,6 +29,8 @@ public class HostedService : IHostedService, IDisposable
     {
         var watchService = ListWatchHelper.Instance.Create(_kubeService, _ctx);
         watchService.StartAsync();
+
+
         return Task.CompletedTask;
     }
 

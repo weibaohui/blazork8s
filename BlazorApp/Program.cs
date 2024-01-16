@@ -31,6 +31,7 @@ builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
 builder.Services.AddHostedService<HostedService>();
 builder.Services.AddHostedService<PortForwardService>();
+builder.Services.AddHostedService<MetricsQueueWatchService>();
 
 builder.Services.AddScoped<IJobService,JobService>();
 builder.Services.AddScoped<IServiceService,ServiceService>();
