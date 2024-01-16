@@ -19,8 +19,10 @@ public partial class ClusterConfig : ComponentBase
     private IList<PodMetrics>        PodMetricsList  { get; set; }
     public  IList<NodeMetrics>       NodeMetricsList { get; set; }
 
+
     protected override async Task OnInitializedAsync()
     {
+
         var podMetricsList = await KubeService.Client().GetKubernetesPodsMetricsAsync();
         PodMetricsList = podMetricsList.Items.ToList();
 
@@ -74,10 +76,10 @@ public partial class ClusterConfig : ComponentBase
         public int    value { get; set; }
     }
 
-    readonly TinyColumnConfig trendConfig = new TinyColumnConfig
+    TinyColumnConfig trendConfig = new TinyColumnConfig
     {
-        Width  = 200,
-        Height = 50,
+        Width  = 100,
+        Height = 20,
         XField = "index",
         YField = "value",
         GuideLine = new GuideLineConfig[]
@@ -130,17 +132,19 @@ public partial class ClusterConfig : ComponentBase
         Height = 50
     };
 
-    object[] data = new object[] {
-        new  { year = "1991", value = 3 },
-        new  { year = "1992", value = 4 },
-        new  { year = "1993", value = 3.5 },
-        new  { year = "1994", value = 5 },
-        new  { year = "1995", value = 4.9 },
-        new  { year = "1996", value = 6 },
-        new  { year = "1997", value = 7 },
-        new  { year = "1998", value = 9 },
-        new  { year = "1999", value = 13 },
+    object[] data = new object[]
+    {
+        new { year = "1991", value = 3 },
+        new { year = "1992", value = 4 },
+        new { year = "1993", value = 3.5 },
+        new { year = "1994", value = 5 },
+        new { year = "1995", value = 4.9 },
+        new { year = "1996", value = 6 },
+        new { year = "1997", value = 7 },
+        new { year = "1998", value = 9 },
+        new { year = "1999", value = 13 },
     };
+
     LineConfig config = new LineConfig()
     {
         Title = new Title()
