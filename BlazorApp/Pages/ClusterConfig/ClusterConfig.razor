@@ -6,7 +6,7 @@
 @using BlazorApp.Pages.Common
 
 
-<Card Title="@KubeService.CurrentContext()"  Style="width: 400px;margin: 50px">
+<Card Title="@KubeService.CurrentContext()" Style="width: 400px;margin: 50px">
     @if (ComponentStatus is { Count: > 0 })
     {
         <HTable>
@@ -19,3 +19,58 @@
         </HTable>
     }
 </Card>
+@if (PodMetricsList is { Count: > 0 })
+{
+    <HTable>
+        @foreach (var status in PodMetricsList)
+        {
+            @foreach (var metrics in status.Containers)
+            {
+                <HTr>
+                    <HTd>
+                        @status.Name()
+                    </HTd>
+                    <HTd>
+                        @status.CreationTimestamp()
+                    </HTd>
+                    <HTd>
+                        @metrics.Name
+                    </HTd>
+                    <HTd>
+                        @status.Window
+                    </HTd>
+                    <HTd>
+                        @foreach (var (key, value) in metrics.Usage)
+                        {
+                            <div>@key: @value</div>
+                        }
+                    </HTd>
+                </HTr>
+            }
+        }
+    </HTable>
+
+
+    <HTable>
+        @foreach (var data in datas)
+        {
+            <HTr>
+                <HTd></HTd>
+                <HTd>
+                    <TinyColumn Data="@data.trend" Config="trendConfig"></TinyColumn>
+                </HTd>
+                <HTd>
+                    <TinyLine Data="@data.times" Config="timesConfig"></TinyLine>
+                </HTd>
+                <HTd>
+                    <RingProgress Data="@data.load" Config="loadConfig"></RingProgress>
+                </HTd>
+            </HTr>
+        }
+
+    </HTable>
+
+
+    <Line Data="data" Config="config" />
+
+}
