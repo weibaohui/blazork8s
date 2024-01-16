@@ -19,6 +19,7 @@ public class PortForward : IKubernetesObject<V1ObjectMeta>
     public int    LocalPort { get; set; }
     public string KubePort  { get; set; }
     public string KubeName  { get; set; }
+    public string KubeNamespace  { get; set; }
 
     public string           Status          { get; set; }
     public DateTime? StatusTimestamp { get; set; }

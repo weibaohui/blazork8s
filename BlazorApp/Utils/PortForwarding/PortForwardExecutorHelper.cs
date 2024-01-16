@@ -26,8 +26,9 @@ public class PortForwardExecutorHelper
     /// <summary>
     /// 发送watch event ，使用DI获取后，赋值到本helper
     /// </summary>
-    private                 IHubContext<ChatHub>? _ctx;
-    public static           PortForwardExecutorHelper Instance => Nested.Instance;
+    private IHubContext<ChatHub>? _ctx;
+
+    public static PortForwardExecutorHelper Instance => Nested.Instance;
 
     private class Nested
     {
@@ -52,12 +53,13 @@ public class PortForwardExecutorHelper
     /// <summary>
     /// 探测端口是否存活
     /// </summary>
-    private  void NcProbe()
+    private void NcProbe()
     {
         if (Map.Count == 0)
         {
             return;
         }
+
         Logger.LogInformation("开始探测{Count}端口是否存活", Map.Count);
         lock (_lockObj)
         {
@@ -80,12 +82,13 @@ public class PortForwardExecutorHelper
         }
     }
 
-    private  void RemoveFailedPort()
+    private void RemoveFailedPort()
     {
         if (Map.Count == 0)
         {
             return;
         }
+
         Logger.LogInformation("清除失败端口");
         lock (_lockObj)
         {
@@ -109,12 +112,13 @@ public class PortForwardExecutorHelper
     {
         var pf = new PortForward
         {
-            Kind       = "PortForward",
-            ApiVersion = "blazorK8s.io/v1",
-            Type       = type,
-            LocalPort  = localPort,
-            KubePort   = kubePort,
-            KubeName   = kubeName,
+            Kind          = "PortForward",
+            ApiVersion    = "blazorK8s.io/v1",
+            Type          = type,
+            LocalPort     = localPort,
+            KubePort      = kubePort,
+            KubeName      = kubeName,
+            KubeNamespace = ns,
             Metadata = new V1ObjectMeta
             {
                 Name              = $"{kubeName}-{kubePort}-{localPort}",

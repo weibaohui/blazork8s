@@ -11,10 +11,10 @@ public class PortForwardExecutor
     private static readonly ILogger<PortForwardExecutor> Logger = LoggingHelper<PortForwardExecutor>.Logger();
     public                  PortForward           PortForward { get; set; }
 
-    public string Command()
+    private string Command()
     {
         var command =
-            $"kubectl port-forward --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.KubeName} {PortForward.LocalPort}:{PortForward.KubePort} \r";
+            $"kubectl port-forward -n {PortForward.KubeNamespace}  --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.KubeName} {PortForward.LocalPort}:{PortForward.KubePort} \r";
         return command;
     }
 
@@ -32,6 +32,7 @@ public class PortForwardExecutor
         }
 
         var command = Command();
+        Logger.LogError("PTY: {Command}",command);
         var service = TerminalHelper.Instance.GetOrCreate(command);
         if (!service.IsRunning)
         {
