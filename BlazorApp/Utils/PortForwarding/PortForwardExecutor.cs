@@ -32,7 +32,7 @@ public class PortForwardExecutor
         }
 
         var command = Command();
-        Logger.LogError("PTY: {Command}",command);
+        // Logger.LogError("PTY: {Command}",command);
         var service = TerminalHelper.Instance.GetOrCreate(command);
         if (!service.IsRunning)
         {
