@@ -30,19 +30,22 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
                     <AntDesign.Column Title="Data" TData="string">
-                        @foreach (var (k, v) in context.Data)
+                        @if (context.Data is { Count: > 0 })
                         {
-                            <div>
-                                <ColorfulTag>@k</ColorfulTag>
-                            </div>
+                            @foreach (var (k, v) in context.Data)
+                            {
+                                <div>
+                                    <ColorfulTag>@k</ColorfulTag>
+                                </div>
+                            }
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <ConfigMapAction Item="@context"></ConfigMapAction>
                     </ActionColumn>
                 </Table>
