@@ -44,7 +44,7 @@ public class MetricsQueueWatchService : IHostedService, IDisposable
 
     public Task StartAsync(CancellationToken cancellationToken)
     {
-//每5秒执行一次指标更新
+        //每1秒执行一次指标更新
         JobManager.Initialize();
         JobManager.AddJob(Watch, (s) => s.ToRunEvery(1).Seconds());
         return Task.CompletedTask;
