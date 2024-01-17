@@ -51,6 +51,11 @@ public partial class ClusterConfig : ComponentBase
 
             foreach (var (key, value) in cpuList)
             {
+                Console.WriteLine($"[{podName} {type}] {key}= {value.Value} {value.Format}");
+                if (type == "memory")
+                {
+                    Console.WriteLine($"[{podName} {type}] {key}= {value.ToDecimal()/8/1024}MB");
+                }
                 var item = new DataValue
                 {
                     index = i++,
