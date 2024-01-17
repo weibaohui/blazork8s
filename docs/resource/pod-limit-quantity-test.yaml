@@ -1,0 +1,69 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-quantity-test-1
+  labels:
+    app: pod-quantity-test-1
+spec:
+  containers:
+    - name: pod-quantity-test-1
+      image: nginx:alpine
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500m
+          memory: 500Mi
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-quantity-test-2
+  labels:
+    app: pod-quantity-test-2
+spec:
+  containers:
+    - name: pod-quantity-test-2
+      image: nginx:alpine
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 500
+          memory: 500
+  restartPolicy: Always
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-quantity-test-3
+  labels:
+    app: pod-quantity-test-3
+spec:
+  containers:
+    - name: pod-quantity-test-3
+      image: nginx:alpine
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 200000000m
+          memory: 5000000000Mi
+  restartPolicy: Always
+---
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-quantity-test-4
+  labels:
+    app: pod-quantity-test-4
+spec:
+  containers:
+    - name: pod-quantity-test-4
+      image: nginx:alpine
+      imagePullPolicy: IfNotPresent
+      resources:
+        limits:
+          cpu: 1.5
+          memory: 8
+  restartPolicy: Always
+---
