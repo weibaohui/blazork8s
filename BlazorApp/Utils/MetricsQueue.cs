@@ -10,9 +10,9 @@ public class MetricsQueue<T>
 
     public void Enqueue(T item)
     {
-        if (_queue.Count >= MetricCount)
+        if (_queue.Count > MetricCount)
         {
-            for (int i = 1; i < _queue.Count - MetricCount; i++)
+            for (int i = 0; i < _queue.Count - MetricCount; i++)
             {
                 _queue.Dequeue();
             }
