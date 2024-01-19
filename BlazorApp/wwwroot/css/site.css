@@ -127,3 +127,22 @@
     text-align: left;
     word-break: break-all;
 }
+
+/** Table 表格样式 **/
+.wideTableWithGrid {
+    margin: 10px;!important;
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #f0f0f0 !important;
+}
+
+.wideTableWithGrid td {
+    border-collapse: collapse;
+    border-right: 1px solid #f0f0f0 !important;
+    border-bottom: 1px solid #f0f0f0 !important;
+    padding: 5px 9px;
+    font-size: 14px;
+    font-weight: normal;
+    text-align: left;
+    word-break: break-all;
+}
