@@ -88,6 +88,7 @@ public partial class MetricView : ComponentBase, IDisposable
 
         return trend;
     }
+
     private List<DataValue> GetNodeTrendData(string nodeName, string type)
     {
         var queue = MetricsService.NodeMetricsQueue(nodeName);
@@ -114,6 +115,7 @@ public partial class MetricView : ComponentBase, IDisposable
 
         return trend;
     }
+
     private List<DataValue> GetTrendData(string itemName, string type)
     {
         return ResourceType switch
