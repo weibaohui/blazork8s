@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
@@ -20,26 +21,36 @@ public class MetricsQueueWatchService : IHostedService, IDisposable
     {
         _kubeService = kubeService;
         _logger      = logger;
+        var list = _kubeService.Client().ListAPIService().Items.ToList();
+        // Console.WriteLine(KubernetesJson.Serialize(list));
+
     }
 
 
     private async void Watch()
     {
-        // _logger.LogInformation("MetricsQueueWatchService working");
-        var podMetricsList = await _kubeService.Client().GetKubernetesPodsMetricsAsync();
-
-        foreach (var metrics in podMetricsList.Items)
+        try
         {
-            var queue = MetricsQueueHelper<PodMetrics>.Instance.Build(metrics.Name());
-            queue.Enqueue(metrics);
+            var podMetricsList = await _kubeService.Client().GetKubernetesPodsMetricsAsync();
+
+            foreach (var metrics in podMetricsList.Items)
+            {
+                var queue = MetricsQueueHelper<PodMetrics>.Instance.Build(metrics.Name());
+                queue.Enqueue(metrics);
+            }
+
+            var nodeMetricsList = await _kubeService.Client().GetKubernetesNodesMetricsAsync();
+            foreach (var metrics in nodeMetricsList.Items)
+            {
+                var queue = MetricsQueueHelper<NodeMetrics>.Instance.Build(metrics.Name());
+                queue.Enqueue(metrics);
+            }
+        }
+        catch (Exception e)
+        {
+            // Console.WriteLine(e);
         }
 
-        var nodeMetricsList = await _kubeService.Client().GetKubernetesNodesMetricsAsync();
-        foreach (var metrics in nodeMetricsList.Items)
-        {
-            var queue = MetricsQueueHelper<NodeMetrics>.Instance.Build(metrics.Name());
-            queue.Enqueue(metrics);
-        }
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
