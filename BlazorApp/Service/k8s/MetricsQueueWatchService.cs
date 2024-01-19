@@ -31,7 +31,7 @@ public class MetricsQueueWatchService : IHostedService, IDisposable
         var ready = await _metricsService.MetricsServerReady();
         if (!ready)
         {
-            _logger.LogInformation("Metrics not ready");
+            // _logger.LogInformation("Metrics not ready");
             return;
         }
 
