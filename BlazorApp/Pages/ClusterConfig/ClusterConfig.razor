@@ -22,7 +22,7 @@
 @if (ApiServicesList is { Count: > 0 })
 {
     <Card Title="API Services" Style="margin: 20px">
-        <HTable Class="wideTable">
+        <HTable Class="wideTableWithGrid">
             <HTr>
                 <HTd>
                     Name
@@ -39,7 +39,6 @@
                     </HTd>
                     <HTd>
                         <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-
                     </HTd>
                 </HTr>
             }
@@ -60,10 +59,10 @@
                         @pod.CreationTimestamp()
                     </HTd>
                     <HTd>
-                        <MetricView ItemName="@pod.Name()" MetricName="cpu"></MetricView>
+                        <MetricView ResourceType="Pod" ItemName="@pod.Name()" MetricType="cpu"></MetricView>
                     </HTd>
                     <HTd>
-                        <MetricView ItemName="@pod.Name()" MetricName="memory"></MetricView>
+                        <MetricView ResourceType="Pod" ItemName="@pod.Name()" MetricType="memory"></MetricView>
                     </HTd>
                 </HTr>
             }

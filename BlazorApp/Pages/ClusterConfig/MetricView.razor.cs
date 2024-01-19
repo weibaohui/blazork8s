@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using System.Timers;
 using AntDesign.Charts;
 using BlazorApp.Service.k8s;
-using BlazorApp.Utils;
 using Extension;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -17,18 +16,34 @@ public partial class MetricView : ComponentBase, IDisposable
     [Inject]
     public IKubeService KubeService { get; set; }
 
+    [Inject]
+    public IMetricsService MetricsService { get; set; }
+
+
+    /// <summary>
+    /// podName、nodeName
+    /// </summary>
     [Parameter]
     public string ItemName { get; set; }
 
+    /// <summary>
+    /// cpu、memory
+    /// </summary>
     [Parameter]
-    public string MetricName { get; set; }
+    public string MetricType { get; set; }
+
+    /// <summary>
+    /// Pod Node
+    /// </summary>
+    [Parameter]
+    public string ResourceType { get; set; }
 
     private Timer _timer;
 
     private List<DataValue> _showData = new();
 
-    private string           _lastMetricValue;
     private ResourceQuantity _lastValue;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -37,36 +52,29 @@ public partial class MetricView : ComponentBase, IDisposable
         _timer.Start();
 
 
-        _showData = GetTrendData(ItemName, MetricName);
+        _showData = GetTrendData(ItemName, MetricType);
         await base.OnInitializedAsync();
     }
 
     private void OnTimerCallback()
     {
-        _showData = GetTrendData(ItemName, MetricName);
+        _showData = GetTrendData(ItemName, MetricType);
         InvokeAsync(StateHasChanged);
     }
 
-    /// <summary>
-    ///
-    /// </summary>
-    /// <param name="podName"></param>
-    /// <param name="type">cpu/memory</param>
-    /// <returns></returns>
-    private List<DataValue> GetTrendData(string podName, string type)
+    private List<DataValue> GetPodTrendData(string podName, string type)
     {
-        var queue = MetricsQueueHelper<PodMetrics>.Instance.Build(podName);
+        var queue = MetricsService.PodMetricsQueue(podName);
         var trend = new List<DataValue>();
 
         var i = 0;
         foreach (var metrics in queue.GetList())
         {
-            var index = metrics.Timestamp?.ToLocalTime();
-            var cpuList = metrics.Containers.SelectMany(x => x.Usage)
+            var metricsList = metrics.Containers.SelectMany(x => x.Usage)
                 .ToList()
                 .Where(x => x.Key == type);
 
-            foreach (var (key, value) in cpuList)
+            foreach (var (key, value) in metricsList)
             {
                 var item = new DataValue
                 {
@@ -79,6 +87,41 @@ public partial class MetricView : ComponentBase, IDisposable
         }
 
         return trend;
+    }
+    private List<DataValue> GetNodeTrendData(string nodeName, string type)
+    {
+        var queue = MetricsService.NodeMetricsQueue(nodeName);
+        var trend = new List<DataValue>();
+
+        var i = 0;
+        foreach (var metrics in queue.GetList())
+        {
+            var metricsList = metrics.Usage
+                .ToList()
+                .Where(x => x.Key == type);
+
+            foreach (var (key, value) in metricsList)
+            {
+                var item = new DataValue
+                {
+                    Index = i++,
+                    Value = Convert.ToInt64(value.Value.RemoveStringOfNonDigits())
+                };
+                _lastValue = value;
+                trend.Add(item);
+            }
+        }
+
+        return trend;
+    }
+    private List<DataValue> GetTrendData(string itemName, string type)
+    {
+        return ResourceType switch
+        {
+            "Pod"  => GetPodTrendData(itemName, type),
+            "Node" => GetNodeTrendData(itemName, type),
+            _      => null
+        };
     }
 
     private string HumanizeValue()
@@ -113,7 +156,7 @@ public partial class MetricView : ComponentBase, IDisposable
             Fill = "#d6e3fd",
         },
         XField = "index",
-        YField = "Value",
+        YField = "value",
     };
 
     public void Dispose()

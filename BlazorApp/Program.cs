@@ -17,6 +17,11 @@ builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IKubeService, KubeService>();
+builder.Services.AddSingleton<IMetricsService,MetricsService>();
+builder.Services.AddHostedService<HostedService>();
+builder.Services.AddHostedService<PortForwardService>();
+builder.Services.AddHostedService<MetricsQueueWatchService>();
+
 builder.Services.AddScoped<IConfigService, ConfigService>();
 builder.Services.AddScoped<INodeService, NodeService>();
 builder.Services.AddScoped<IPodService, PodService>();
@@ -29,9 +34,6 @@ builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
-builder.Services.AddHostedService<HostedService>();
-builder.Services.AddHostedService<PortForwardService>();
-builder.Services.AddHostedService<MetricsQueueWatchService>();
 
 builder.Services.AddScoped<IJobService,JobService>();
 builder.Services.AddScoped<IServiceService,ServiceService>();

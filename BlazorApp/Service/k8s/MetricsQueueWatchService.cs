@@ -1,10 +1,8 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using FluentScheduler;
-using k8s;
 using k8s.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,63 +13,57 @@ public class MetricsQueueWatchService : IHostedService, IDisposable
 {
     private readonly ILogger<MetricsQueueWatchService> _logger;
 
-    private readonly IKubeService _kubeService;
+    private readonly IKubeService    _kubeService;
+    private readonly IMetricsService _metricsService;
 
-    public MetricsQueueWatchService(IKubeService kubeService, ILogger<MetricsQueueWatchService> logger)
+
+    public MetricsQueueWatchService(IKubeService kubeService, ILogger<MetricsQueueWatchService> logger,
+        IMetricsService                          metricsService)
     {
-        _kubeService = kubeService;
-        _logger      = logger;
+        _kubeService    = kubeService;
+        _logger         = logger;
+        _metricsService = metricsService;
     }
 
 
     private async void Watch()
     {
-        var apis = await _kubeService.Client().ListAPIServiceAsync();
-        if (!apis.Items.Any(x =>
-                x.Metadata.Name.EndsWith("metrics.k8s.io") &&
-                x.Status.Conditions.Any(y => y.Status == "True" && y.Type == "Available")))
+        var ready = await _metricsService.MetricsServerReady();
+        if (!ready)
         {
             _logger.LogInformation("Metrics not ready");
             return;
         }
 
-        try
+
+        foreach (var metrics in await _metricsService.PodMetrics())
         {
-            var podMetricsList = await _kubeService.Client().GetKubernetesPodsMetricsAsync();
-
-            foreach (var metrics in podMetricsList.Items)
-            {
-                var queue = MetricsQueueHelper<PodMetrics>.Instance.Build(metrics.Name());
-                queue.Enqueue(metrics);
-            }
-
-            var nodeMetricsList = await _kubeService.Client().GetKubernetesNodesMetricsAsync();
-            foreach (var metrics in nodeMetricsList.Items)
-            {
-                var queue = MetricsQueueHelper<NodeMetrics>.Instance.Build(metrics.Name());
-                queue.Enqueue(metrics);
-            }
+            var queue = MetricsQueueHelper<PodMetrics>.Instance.Build(metrics.Name());
+            queue.Enqueue(metrics);
         }
-        catch (Exception e)
+
+        foreach (var metrics in await _metricsService.NodeMetrics())
         {
-            // Console.WriteLine(e);
+            var queue = MetricsQueueHelper<NodeMetrics>.Instance.Build(metrics.Name());
+            queue.Enqueue(metrics);
         }
-    }
+}
 
-    public Task StartAsync(CancellationToken cancellationToken)
-    {
-        //每1秒执行一次指标更新
-        JobManager.Initialize();
-        JobManager.AddJob(Watch, (s) => s.ToRunEvery(1).Seconds());
-        return Task.CompletedTask;
-    }
+public Task StartAsync(CancellationToken cancellationToken)
+{
+    //每1秒执行一次指标更新
+    JobManager.Initialize();
+    JobManager.AddJob(Watch, (s) => s.ToRunEvery(1).Seconds());
+    return Task.CompletedTask;
+}
 
-    public Task StopAsync(CancellationToken cancellationToken)
-    {
-        return Task.CompletedTask;
-    }
+public Task StopAsync(CancellationToken cancellationToken)
+{
+    return Task.CompletedTask;
+}
 
-    public void Dispose()
-    {
-    }
+public void Dispose()
+{
+}
+
 }

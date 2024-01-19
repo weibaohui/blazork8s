@@ -5,13 +5,14 @@ namespace BlazorApp.Utils;
 
 public class MetricsQueue<T>
 {
-    private readonly Queue<T> _queue = new(10);
+    private const    int      MetricCount = 30;
+    private readonly Queue<T> _queue      = new(MetricCount);
 
     public void Enqueue(T item)
     {
-        if (_queue.Count >= 10)
+        if (_queue.Count >= MetricCount)
         {
-            for (int i = 0; i < _queue.Count - 10; i++)
+            for (int i = 1; i < _queue.Count - MetricCount; i++)
             {
                 _queue.Dequeue();
             }
