@@ -107,7 +107,7 @@ public partial class MetricView : ComponentBase, IDisposable
         Width   = 100,
         Height  = 20,
         Smooth  = true,
-        AutoFit = false,
+        AutoFit = true,
         AreaStyle = new TextStyle()
         {
             Fill = "#d6e3fd",
