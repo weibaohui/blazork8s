@@ -21,14 +21,20 @@ public class MetricsQueueWatchService : IHostedService, IDisposable
     {
         _kubeService = kubeService;
         _logger      = logger;
-        var list = _kubeService.Client().ListAPIService().Items.ToList();
-        // Console.WriteLine(KubernetesJson.Serialize(list));
-
     }
 
 
     private async void Watch()
     {
+        var apis = await _kubeService.Client().ListAPIServiceAsync();
+        if (!apis.Items.Any(x =>
+                x.Metadata.Name.EndsWith("metrics.k8s.io") &&
+                x.Status.Conditions.Any(y => y.Status == "True" && y.Type == "Available")))
+        {
+            _logger.LogInformation("Metrics not ready");
+            return;
+        }
+
         try
         {
             var podMetricsList = await _kubeService.Client().GetKubernetesPodsMetricsAsync();
@@ -50,7 +56,6 @@ public class MetricsQueueWatchService : IHostedService, IDisposable
         {
             // Console.WriteLine(e);
         }
-
     }
 
     public Task StartAsync(CancellationToken cancellationToken)

@@ -13,17 +13,22 @@ public partial class ClusterConfig : ComponentBase
     [Inject]
     public IKubeService KubeService { get; set; }
 
+    [Inject]
+    public IPodService PodService { get; set; }
+
     private IList<V1ComponentStatus> ComponentStatus { get; set; }
-    private IList<PodMetrics>        PodMetricsList  { get; set; }
+    private IList<V1Pod>             PodList         { get; set; }
+    private IList<V1APIService>      ApiServicesList { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
-        var podMetricsList = await KubeService.Client().GetKubernetesPodsMetricsAsync();
-        PodMetricsList = podMetricsList.Items.ToList();
+        PodList = PodService.List();
         var statusList = await KubeService.Client().ListComponentStatusAsync();
         ComponentStatus = statusList.Items;
+
+        var apiServiceList = await KubeService.Client().ListAPIServiceAsync();
+        ApiServicesList = apiServiceList.Items.ToList();
         await base.OnInitializedAsync();
     }
-
 }
