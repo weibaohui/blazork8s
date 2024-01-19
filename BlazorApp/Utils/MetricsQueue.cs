@@ -5,7 +5,7 @@ namespace BlazorApp.Utils;
 
 public class MetricsQueue<T>
 {
-    private const    int      MetricCount = 30;
+    private const    int      MetricCount = 60;
     private readonly Queue<T> _queue      = new(MetricCount);
 
     public void Enqueue(T item)
