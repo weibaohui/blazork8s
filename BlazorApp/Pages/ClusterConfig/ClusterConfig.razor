@@ -37,19 +37,10 @@
                         @metrics.Name
                     </HTd>
                     <HTd>
-                        <Area Data="@GetTrendData(status.Name(), "cpu")" Config="config1"/>
+                        <MetricView ItemName="@status.Name()" MetricName="cpu"></MetricView>
                     </HTd>
                     <HTd>
-                        <TinyLine Data="@GetTrendData(status.Name(), "cpu")" Config="timesConfig"></TinyLine>
-                    </HTd>
-                    <HTd>
-                        <TinyLine Data="@GetTrendData(status.Name(), "memory")" Config="timesConfig"></TinyLine>
-                    </HTd>
-                    <HTd>
-                        @foreach (var (key, value) in metrics.Usage)
-                        {
-                            <div>@key: @value</div>
-                        }
+                        <MetricView ItemName="@status.Name()" MetricName="memory"></MetricView>
                     </HTd>
                 </HTr>
             }
