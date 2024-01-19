@@ -48,6 +48,7 @@
 
 @if (PodList is { Count: > 0 })
 {
+    <Card Title="Node Metrics" Style="margin: 20px">
         <HTable Class="wideTableWithGrid">
             @foreach (var pod in PodList)
             {
@@ -67,28 +68,31 @@
                 </HTr>
             }
         </HTable>
+    </Card>
 }
 
 
 @if (NodeList is { Count: > 0 })
 {
-    <HTable Class="wideTableWithGrid">
-        @foreach (var node in NodeList)
-        {
-            <HTr>
-                <HTd>
-                    @node.Name()
-                </HTd>
-                <HTd>
-                    @node.CreationTimestamp()
-                </HTd>
-                <HTd>
-                    <MetricView ResourceType="Node" ItemName="@node.Name()" MetricType="cpu"></MetricView>
-                </HTd>
-                <HTd>
-                    <MetricView ResourceType="Node" ItemName="@node.Name()" MetricType="memory"></MetricView>
-                </HTd>
-            </HTr>
-        }
-    </HTable>
+    <Card Title="Node Metrics" Style="margin: 20px">
+        <HTable Class="wideTableWithGrid">
+            @foreach (var node in NodeList)
+            {
+                <HTr>
+                    <HTd>
+                        @node.Name()
+                    </HTd>
+                    <HTd>
+                        @node.CreationTimestamp()
+                    </HTd>
+                    <HTd>
+                        <MetricView ResourceType="Node" ItemName="@node.Name()" MetricType="cpu"></MetricView>
+                    </HTd>
+                    <HTd>
+                        <MetricView ResourceType="Node" ItemName="@node.Name()" MetricType="memory"></MetricView>
+                    </HTd>
+                </HTr>
+            }
+        </HTable>
+    </Card>
 }
