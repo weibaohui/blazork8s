@@ -1,0 +1,11 @@
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r win-x64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r win-x86
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r win-arm64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r linux-x64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r linux-bionic-arm64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r linux-arm
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r linux-arm64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r linux-musl-arm64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r linux-musl-x64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r osx-x64
+dotnet publish "BlazorApp/BlazorApp.csproj" -c Release  /p:PublishSingleFile=true  /p:PublishTrimmed=false -r osx-arm64
