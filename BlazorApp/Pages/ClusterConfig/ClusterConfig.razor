@@ -22,27 +22,19 @@
 @if (ApiServicesList is { Count: > 0 })
 {
     <Card Title="API Services" Style="margin: 20px">
-        <HTable Class="wideTableWithGrid">
-            <HTr>
-                <HTd>
-                    Name
-                </HTd>
-                <HTd>
-                    Status
-                </HTd>
-            </HTr>
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="8">Status</GridCol>
+            </GridRow>
             @foreach (var item in ApiServicesList)
             {
-                <HTr>
-                    <HTd>
-                        @item.Name()
-                    </HTd>
-                    <HTd>
+                <GridRow Class="grid-table">
+                    <GridCol Span="8"> @item.Name()</GridCol>
+                    <GridCol Span="8">
                         <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-                    </HTd>
-                </HTr>
+                    </GridCol>
+                </GridRow>
             }
-        </HTable>
     </Card>
 }
 
