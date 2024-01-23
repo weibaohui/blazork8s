@@ -1,7 +1,7 @@
 @using k8s.Models
 @using Extension.k8s
 @using BlazorApp.Pages.Common.Metadata
-@if (Pods.Count > 0)
+@if (Pods is { Count: > 0 })
 {
     <Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
     <Table TItem="V1Pod" DataSource="@Pods"

@@ -10,7 +10,11 @@ namespace BlazorApp.Pages.Node
 {
     public partial class NodeDetailView : FeedbackComponent<V1Node, bool>
     {
-        public V1Node       Node;
+        [Inject]
+        private IMetricsService MetricsService { get; set; }
+
+        private bool         _isMetricsServerReady;
+        public  V1Node       Node;
         private IList<V1Pod> _pods;
 
         [Inject]
@@ -18,8 +22,9 @@ namespace BlazorApp.Pages.Node
 
         protected override async Task OnInitializedAsync()
         {
-            Node = Options;
-            _pods = PodService.ListByNodeName(Node.Name());
+            Node                  = Options;
+            _pods                 = PodService.ListByNodeName(Node.Name());
+            _isMetricsServerReady = await MetricsService.MetricsServerReady();
             await base.OnInitializedAsync();
         }
 

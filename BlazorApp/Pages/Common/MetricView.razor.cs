@@ -9,7 +9,7 @@ using Extension;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.ClusterConfig;
+namespace BlazorApp.Pages.Common;
 
 public partial class MetricView : ComponentBase, IDisposable
 {

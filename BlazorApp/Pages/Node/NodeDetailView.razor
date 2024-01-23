@@ -1,15 +1,27 @@
-@using Mapster
 @using k8s.Models
+@using Mapster
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
-@using BlazorApp.Pages.Common.Html
 @inherits FeedbackComponent<V1Node, bool>
 @if (Node != null)
 {
     <NodeAction Item="Node" MenuMode="MenuMode.Horizontal"></NodeAction>
+    @if (_isMetricsServerReady)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
+        <Tabs  Animated>
+            <TabPane Tab="CPU" Key="1">
+                <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
+            </TabPane>
+            <TabPane Tab="Memory" Key="2">
+                <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="memory"></MetricView>
+            </TabPane>
+        </Tabs>
+    }
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="Node.Metadata" ExplainFieldPrefix="node"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
