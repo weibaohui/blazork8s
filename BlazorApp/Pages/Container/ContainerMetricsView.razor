@@ -4,15 +4,15 @@
 @if (_isMetricsServerReady)
 {
     <Divider Orientation="left" Style="font-weight:bold">Container Metrics</Divider>
-    <GridRow Class="grid-table">
-        <GridCol Span="8">Container Name</GridCol>
+    <GridRow Class="grid-table ">
+        <GridCol Span="8" Flex=@("160px")>Container Name</GridCol>
         <GridCol Span="8">CPU</GridCol>
         <GridCol Span="8">Memory</GridCol>
     </GridRow>
     @foreach (var item in Containers)
     {
-        <GridRow Class="grid-table grid-table-first-row">
-            <GridCol Span="8">@item.Name</GridCol>
+        <GridRow Class="grid-table grid-table-first-row ">
+            <GridCol Span="8" Flex=@("160px")>@item.Name</GridCol>
             <GridCol Span="8">
                 <MetricView ResourceType="Container" ItemName="@PodName" ContainerName="@item.Name" MetricType="cpu"></MetricView>
             </GridCol>

@@ -186,6 +186,10 @@ public partial class MetricView : ComponentBase, IDisposable
         },
         XField = "index",
         YField = "value",
+        XAxis = new Axis
+        {
+            TickCount = 2,
+        },
     };
 
     readonly AreaConfig _areaConfig = new AreaConfig
