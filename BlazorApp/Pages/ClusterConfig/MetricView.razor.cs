@@ -85,7 +85,7 @@ public partial class MetricView : ComponentBase, IDisposable
                 var item = new DataValue
                 {
                     Index = i++,
-                    Value =value.HumanizeValue()
+                    Value = value.HumanizeValue()
                 };
                 _lastValue = value;
                 trend.Add(item);
@@ -112,7 +112,7 @@ public partial class MetricView : ComponentBase, IDisposable
                 var item = new DataValue
                 {
                     Index = i++,
-                    Value =value.HumanizeValue()
+                    Value = value.HumanizeValue()
                 };
                 _lastValue = value;
                 trend.Add(item);
@@ -133,10 +133,9 @@ public partial class MetricView : ComponentBase, IDisposable
     }
 
 
-
     public class DataValue
     {
-        public int  Index { get; set; }
+        public int     Index { get; set; }
         public decimal Value { get; set; }
     }
 
@@ -162,14 +161,23 @@ public partial class MetricView : ComponentBase, IDisposable
         AutoFit = true,
         AreaStyle = new GraphicStyle()
         {
-            Fill = "#d6e3fd",
+            Fill = "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
         },
         XField = "index",
         YField = "value",
         XAxis = new ValueCatTimeAxis
         {
-            Type      = "dateTime",
-            TickCount = 1
+            TickCount = 1,
+            Range     = [0, 1]
+        },
+        Slider = new Slider
+        {
+            Start = 0,
+            End   = 1,
+            TrendCfg = new TrendCfg
+            {
+                IsArea = true
+            }
         }
     };
 

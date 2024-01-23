@@ -1,10 +1,11 @@
 @using Extension
+@using k8s.Models
 @if (_showData is { Count: > 0 })
 {
     @if (FullView)
     {
+        <div style="text-align: center">@(_lastValue.Format == ResourceQuantity.SuffixFormat.BinarySI ? "Mi (1024Mi=1Gi)" : "m (1000m=1core)")</div>
         <Area Data="@_showData" Config="_areaConfig"></Area>
-
     }
     else
     {
@@ -17,5 +18,4 @@
             </div>
         </div>
     }
-
 }
