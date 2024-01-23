@@ -66,6 +66,8 @@ public partial class BasicLayout : LayoutComponentBase
                 Icon     = "setting",
                 Children = AccessControlMenu(),
             },
+            GetMenuItem("Crd"),
+
         };
         await base.OnInitializedAsync();
     }

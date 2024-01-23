@@ -1,0 +1,47 @@
+@page "/Crd"
+@using k8s.Models
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.TableBase<V1CustomResourceDefinition>
+@if (TableData.PagedItems != null)
+{
+    <HTable Class="wideTable">
+        <HTr>
+            <HTd >
+                <SearchToolBar Title="CustomResourceDefinition" Count="@TableData.Total"
+                               OnSearch="OnSearchHandler"
+                               OnNsSelected="OnNsSelectedHandler">
+                </SearchToolBar>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd >
+                <Table TItem="V1CustomResourceDefinition"
+                       DataSource="@TableData.PagedItems"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="TableData.Total"
+                       @bind-PageIndex="TableData.PageIndex"
+                       @bind-PageSize="TableData.PageSize"
+                       @bind-SelectedRows="TableData.SelectedRows"
+                       Loading="TableData.Loading"
+                       OnChange="OnPageChangeHandler">
+                    <Selection Key="@(context.Name())"/>
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                        <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                    </AntDesign.Column>
+
+                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                        <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <ActionColumn Title="Action" Width="100px" >
+                        <CustomResourceDefinitionAction Item="@context"></CustomResourceDefinitionAction>
+                    </ActionColumn>
+                </Table>
+
+            </HTd>
+        </HTr>
+    </HTable>
+
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1CustomResourceDefinition"></ResourceWatcher>
+}

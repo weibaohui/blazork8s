@@ -61,6 +61,7 @@ builder.Services.AddScoped<IResourceQuotaService,ResourceQuotaService>();
 builder.Services.AddScoped<IConfigMapService,ConfigMapService>();
 builder.Services.AddScoped<ICronJobService,CronJobService>();
 builder.Services.AddScoped<IStatefulSetService,StatefulSetService>();
+builder.Services.AddScoped<ICustomResourceDefinitionService,CustomResourceDefinitionService>();
 builder.Services.AddScoped<IReplicationControllerService,ReplicationControllerService>();
 
 var app = builder.Build();
