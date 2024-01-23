@@ -34,6 +34,11 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         var attribute = instance.GetKubernetesTypeMetadata();
         var group     = attribute.Group == "" ? "core" : attribute.Group.Split(".")[0];
         var key       = $"io.k8s.api.{group}.{attribute.ApiVersion}.{attribute.Kind}";
+        //对CRD的key进行特殊处理
+        if ($"{group}.{attribute.ApiVersion}.{attribute.Kind}" == "apiextensions.v1.CustomResourceDefinition")
+        {
+            key = "io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.CustomResourceDefinition";
+        }
         _currentRootKey = key;
         var definition = SwaggerHelper.Instance.GetEntityByName(key);
         _dataList.AddRange(definition.ToTreeData().ChildList);
