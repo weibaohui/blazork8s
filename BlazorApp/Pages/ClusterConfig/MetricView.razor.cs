@@ -85,7 +85,7 @@ public partial class MetricView : ComponentBase, IDisposable
                 var item = new DataValue
                 {
                     Index = i++,
-                    Value = Convert.ToInt64(value.Value.RemoveStringOfNonDigits())
+                    Value =value.HumanizeValue()
                 };
                 _lastValue = value;
                 trend.Add(item);
@@ -112,7 +112,7 @@ public partial class MetricView : ComponentBase, IDisposable
                 var item = new DataValue
                 {
                     Index = i++,
-                    Value = Convert.ToInt64(value.Value.RemoveStringOfNonDigits())
+                    Value =value.HumanizeValue()
                 };
                 _lastValue = value;
                 trend.Add(item);
@@ -132,25 +132,12 @@ public partial class MetricView : ComponentBase, IDisposable
         };
     }
 
-    private string HumanizeValue()
-    {
-        if (_lastValue.Value.EndsWith("n"))
-        {
-            return Math.Round(_lastValue.ToDecimal() * 1000, 2) + "m";
-        }
 
-        if (_lastValue.Value.EndsWith("Ki"))
-        {
-            return Math.Round(_lastValue.ToDecimal() / 1024 / 1024, 2) + "Mi";
-        }
-
-        return _lastValue.CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI);
-    }
 
     public class DataValue
     {
         public int  Index { get; set; }
-        public long Value { get; set; }
+        public decimal Value { get; set; }
     }
 
     private TinyAreaConfig _tinyAreaConfig = new TinyAreaConfig
