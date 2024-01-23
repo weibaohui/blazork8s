@@ -1,0 +1,35 @@
+@using BlazorApp.Service.k8s
+@if (_isMetricsServerReady)
+{
+    <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
+    <Tabs Animated>
+        <TabPane Tab="CPU" Key="1">
+            <MetricView FullView="true" ResourceType="Container" ItemName="@PodName" ContainerName="@ContainerName" MetricType="cpu"></MetricView>
+        </TabPane>
+        <TabPane Tab="Memory" Key="2">
+            <MetricView FullView="true" ResourceType="Container" ItemName="@PodName" ContainerName="@ContainerName" MetricType="memory"></MetricView>
+        </TabPane>
+    </Tabs>
+}
+
+@code {
+
+
+    [Parameter]
+    public string PodName { get; set; }
+
+    [Parameter]
+    public string ContainerName { get; set; }
+
+    [Inject]
+    private IMetricsService MetricsService { get; set; }
+
+    private bool _isMetricsServerReady;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _isMetricsServerReady = await MetricsService.MetricsServerReady();
+        await base.OnInitializedAsync();
+    }
+
+}
