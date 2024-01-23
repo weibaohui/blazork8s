@@ -1,9 +1,24 @@
+@using k8s.Models
+@using BlazorApp.Pages.ClusterConfig
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
 @if (Item != null)
 {
     <PodAction PodItem="Item" MenuMode="MenuMode.Horizontal"></PodAction>
+
+    @if (_isMetricsServerReady)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
+        <Tabs  Animated>
+            <TabPane Tab="CPU" Key="1">
+                <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="cpu"></MetricView>
+            </TabPane>
+            <TabPane Tab="Memory" Key="2">
+               <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="memory"></MetricView>
+            </TabPane>
+        </Tabs>
+    }
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
     <MetadataView Item="Item.Metadata" ExplainFieldPrefix="pod"></MetadataView>
 

@@ -38,6 +38,12 @@ public partial class MetricView : ComponentBase, IDisposable
     [Parameter]
     public string ResourceType { get; set; }
 
+    /// <summary>
+    /// 是否完整视图，还是只显示mini视图,默认mini视图
+    /// </summary>
+    [Parameter]
+    public bool FullView { get; set; } = false;
+
     private Timer _timer;
 
     private List<DataValue> _showData = new();
@@ -159,6 +165,25 @@ public partial class MetricView : ComponentBase, IDisposable
         },
         XField = "index",
         YField = "value",
+    };
+
+    readonly AreaConfig _areaConfig = new AreaConfig
+    {
+        Height  = 250,
+        Width   = 600,
+        Smooth  = true,
+        AutoFit = true,
+        AreaStyle = new GraphicStyle()
+        {
+            Fill = "#d6e3fd",
+        },
+        XField = "index",
+        YField = "value",
+        XAxis = new ValueCatTimeAxis
+        {
+            Type      = "dateTime",
+            TickCount = 1
+        }
     };
 
     public void Dispose()
