@@ -28,7 +28,7 @@
             </GridRow>
             @foreach (var item in ApiServicesList)
             {
-                <GridRow Class="grid-table">
+                <GridRow Class="grid-table grid-table-first-row">
                     <GridCol Span="8"> @item.Name()</GridCol>
                     <GridCol Span="8">
                         <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
@@ -49,7 +49,7 @@
         </GridRow>
         @foreach (var item in PodList)
         {
-            <GridRow Class="grid-table">
+            <GridRow Class="grid-table grid-table-first-row">
                 <GridCol Span="8">@item.Name()</GridCol>
                 <GridCol Span="8">
                     <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
@@ -74,7 +74,7 @@
         </GridRow>
         @foreach (var item in NodeList)
         {
-            <GridRow Class="grid-table">
+            <GridRow Class="grid-table grid-table-first-row">
                 <GridCol Span="8">@item.Name()</GridCol>
                 <GridCol Span="8">
                     <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="cpu"></MetricView>

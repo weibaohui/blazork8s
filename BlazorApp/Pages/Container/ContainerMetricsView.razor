@@ -11,7 +11,7 @@
     </GridRow>
     @foreach (var item in Containers)
     {
-        <GridRow Class="grid-table">
+        <GridRow Class="grid-table grid-table-first-row">
             <GridCol Span="8">@item.Name</GridCol>
             <GridCol Span="8">
                 <MetricView ResourceType="Container" ItemName="@PodName" ContainerName="@item.Name" MetricType="cpu"></MetricView>
