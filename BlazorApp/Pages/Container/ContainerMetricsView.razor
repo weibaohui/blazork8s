@@ -1,15 +1,26 @@
+@using k8s.Models
 @using BlazorApp.Service.k8s
+@using BlazorApp.Pages.Common
 @if (_isMetricsServerReady)
 {
-    <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
-    <Tabs Animated>
-        <TabPane Tab="CPU" Key="1">
-            <MetricView FullView="true" ResourceType="Container" ItemName="@PodName" ContainerName="@ContainerName" MetricType="cpu"></MetricView>
-        </TabPane>
-        <TabPane Tab="Memory" Key="2">
-            <MetricView FullView="true" ResourceType="Container" ItemName="@PodName" ContainerName="@ContainerName" MetricType="memory"></MetricView>
-        </TabPane>
-    </Tabs>
+    <Divider Orientation="left" Style="font-weight:bold">Container Metrics</Divider>
+    <GridRow Class="grid-table">
+        <GridCol Span="8">Name</GridCol>
+        <GridCol Span="8">CPU</GridCol>
+        <GridCol Span="8">Memory</GridCol>
+    </GridRow>
+    @foreach (var item in Containers)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="8">@item.Name</GridCol>
+            <GridCol Span="8">
+                <MetricView ResourceType="Container" ItemName="@PodName" ContainerName="@item.Name" MetricType="cpu"></MetricView>
+            </GridCol>
+            <GridCol Span="8">
+                <MetricView ResourceType="Container" ItemName="@PodName" ContainerName="@item.Name" MetricType="memory"></MetricView>
+            </GridCol>
+        </GridRow>
+    }
 }
 
 @code {
@@ -19,7 +30,7 @@
     public string PodName { get; set; }
 
     [Parameter]
-    public string ContainerName { get; set; }
+    public IList<V1Container> Containers { get; set; }
 
     [Inject]
     private IMetricsService MetricsService { get; set; }

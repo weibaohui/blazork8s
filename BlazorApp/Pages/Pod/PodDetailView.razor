@@ -1,6 +1,7 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
 @if (Item != null)
@@ -26,5 +27,6 @@
     <PodSpecView PodSpec="@Item.Spec" PodName="@Item.Metadata.Name" PodNamespace="@Item.Metadata.NamespaceProperty"></PodSpecView>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <PodStatusView PodStatus="@Item.Status"></PodStatusView>
+    <ContainerMetricsView PodName="@Item.Name()" Containers="@Item.Spec.Containers"></ContainerMetricsView>
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }

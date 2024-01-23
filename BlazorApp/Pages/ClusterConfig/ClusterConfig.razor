@@ -49,22 +49,24 @@
 @if (PodList is { Count: > 0 })
 {
     <Card Title="Pod Metrics" Style="margin: 20px">
-        <HTable Class="wideTableWithGrid">
-            @foreach (var pod in PodList)
-            {
-                <HTr>
-                    <HTd>
-                        @pod.Name()
-                    </HTd>
-                    <HTd>
-                        <MetricView ResourceType="Pod" ItemName="@pod.Name()" MetricType="cpu"></MetricView>
-                    </HTd>
-                    <HTd>
-                        <MetricView ResourceType="Pod" ItemName="@pod.Name()" MetricType="memory"></MetricView>
-                    </HTd>
-                </HTr>
-            }
-        </HTable>
+
+        <GridRow Class="grid-table">
+            <GridCol Span="8">Name</GridCol>
+            <GridCol Span="8">CPU</GridCol>
+            <GridCol Span="8">Memory</GridCol>
+        </GridRow>
+        @foreach (var item in PodList)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">@item.Name()</GridCol>
+                <GridCol Span="8">
+                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                </GridCol>
+                <GridCol Span="8">
+                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                </GridCol>
+            </GridRow>
+        }
     </Card>
 }
 
@@ -72,21 +74,23 @@
 @if (NodeList is { Count: > 0 })
 {
     <Card Title="Node Metrics" Style="margin: 20px">
-        <HTable Class="wideTableWithGrid">
-            @foreach (var node in NodeList)
-            {
-                <HTr>
-                    <HTd>
-                        @node.Name()
-                    </HTd>
-                    <HTd>
-                        <MetricView ResourceType="Node" ItemName="@node.Name()" MetricType="cpu"></MetricView>
-                    </HTd>
-                    <HTd>
-                        <MetricView ResourceType="Node" ItemName="@node.Name()" MetricType="memory"></MetricView>
-                    </HTd>
-                </HTr>
-            }
-        </HTable>
+
+        <GridRow Class="grid-table">
+            <GridCol Span="8">Name</GridCol>
+            <GridCol Span="8">CPU</GridCol>
+            <GridCol Span="8">Memory</GridCol>
+        </GridRow>
+        @foreach (var item in NodeList)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">@item.Name()</GridCol>
+                <GridCol Span="8">
+                    <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                </GridCol>
+                <GridCol Span="8">
+                    <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                </GridCol>
+            </GridRow>
+        }
     </Card>
 }
