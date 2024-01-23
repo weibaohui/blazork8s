@@ -26,6 +26,13 @@ public partial class MetricView : ComponentBase, IDisposable
     [Parameter]
     public string ItemName { get; set; }
 
+
+    /// <summary>
+    /// 需要跟podName、ContainerName一起使用
+    /// </summary>
+    [Parameter]
+    public string ContainerName { get; set; }
+
     /// <summary>
     /// cpu、memory
     /// </summary>
@@ -58,14 +65,41 @@ public partial class MetricView : ComponentBase, IDisposable
         _timer.Start();
 
 
-        _showData = GetTrendData(ItemName, MetricType);
+        _showData = GetTrendData(ItemName, MetricType,ContainerName);
         await base.OnInitializedAsync();
     }
 
     private void OnTimerCallback()
     {
-        _showData = GetTrendData(ItemName, MetricType);
+        _showData = GetTrendData(ItemName, MetricType,ContainerName);
         InvokeAsync(StateHasChanged);
+    }
+
+    private List<DataValue> GetContainerTrendData(string podName, string containerName, string type)
+    {
+        var queue = MetricsService.PodMetricsQueue(podName);
+        var trend = new List<DataValue>();
+
+        var i = 0;
+        foreach (var metrics in queue.GetList())
+        {
+            var metricsList = metrics.Containers.Where(x => x.Name == containerName).SelectMany(x => x.Usage)
+                .ToList()
+                .Where(x => x.Key == type);
+
+            foreach (var (key, value) in metricsList)
+            {
+                var item = new DataValue
+                {
+                    Index = i++,
+                    Value = value.HumanizeValue()
+                };
+                _lastValue = value;
+                trend.Add(item);
+            }
+        }
+
+        return trend;
     }
 
     private List<DataValue> GetPodTrendData(string podName, string type)
@@ -122,13 +156,14 @@ public partial class MetricView : ComponentBase, IDisposable
         return trend;
     }
 
-    private List<DataValue> GetTrendData(string itemName, string type)
+    private List<DataValue> GetTrendData(string itemName, string type, string containerName = null)
     {
         return ResourceType switch
         {
-            "Pod"  => GetPodTrendData(itemName, type),
-            "Node" => GetNodeTrendData(itemName, type),
-            _      => null
+            "Pod"       => GetPodTrendData(itemName, type),
+            "Node"      => GetNodeTrendData(itemName, type),
+            "Container" => GetContainerTrendData(itemName, containerName, type),
+            _           => null
         };
     }
 
