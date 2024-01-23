@@ -1,0 +1,125 @@
+@using Mapster
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1CustomResourceDefinition>
+@if (CustomResourceDefinition != null)
+{
+    <CrdAction Item="CustomResourceDefinition" MenuMode="MenuMode.Horizontal"></CrdAction>
+    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <MetadataView Item="CustomResourceDefinition.Metadata" ExplainFieldPrefix="ingress"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <HTable Bordered Column="1">
+        <HTableColumn Title="Conversion" ExplainField="crd.spec.conversion">
+            <HTable>
+                <PropertySimpleView Title="strategy" Item="CustomResourceDefinition.Spec.Conversion.Strategy" ExplainField="crd.spec.conversion.strategy"></PropertySimpleView>
+                @if (CustomResourceDefinition.Spec.Conversion.Webhook != null)
+                {
+                    <PropertySimpleView Title="WebHook" Item="@CustomResourceDefinition.Spec.Conversion.Webhook" ExplainField="crd.spec.conversion.webhook" ShowInJson="true"></PropertySimpleView>
+                }
+            </HTable>
+        </HTableColumn>
+        <PropertySimpleView Title="Group" Item="CustomResourceDefinition.Spec.Group" ExplainField="crd.spec.group"></PropertySimpleView>
+        <PropertySimpleView Title="Scope" Item="CustomResourceDefinition.Spec.Scope" ExplainField="crd.spec.scope"></PropertySimpleView>
+        @if (CustomResourceDefinition.Spec.Names != null)
+        {
+            <HTableColumn Title="Names" ExplainField="crd.spec.names">
+                <HTable>
+                    <PropertyListView Title="Categories" T="string" Items="CustomResourceDefinition.Spec.Names.Categories" ExplainField="crd.spec.names.categories"></PropertyListView>
+                    <PropertySimpleView Title="Kind" Item="CustomResourceDefinition.Spec.Names.Kind" ExplainField="crd.spec.names.kind"></PropertySimpleView>
+                    <PropertySimpleView Title="ListKind" Item="CustomResourceDefinition.Spec.Names.ListKind" ExplainField="crd.spec.names.listKind"></PropertySimpleView>
+                    <PropertySimpleView Title="Plural" Item="CustomResourceDefinition.Spec.Names.Plural" ExplainField="crd.spec.names.plural"></PropertySimpleView>
+                    <PropertyListView Title="ShortNames" T="string" Items="CustomResourceDefinition.Spec.Names.ShortNames" ExplainField="crd.spec.names.shortNames"></PropertyListView>
+                    <PropertySimpleView Title="Singular" Item="CustomResourceDefinition.Spec.Names.Singular" ExplainField="crd.spec.names.singular"></PropertySimpleView>
+                </HTable>
+            </HTableColumn>
+        }
+        <PropertySimpleView Title="PreserveUnknownFields" Item="CustomResourceDefinition.Spec.PreserveUnknownFields" ExplainField="crd.spec.preserveUnknownFields"></PropertySimpleView>
+        @if (CustomResourceDefinition.Spec.Versions is { Count: > 0 })
+        {
+            <HTableColumn Title="Versions" ExplainField="crd.spec.versions">
+
+                @foreach (var version in CustomResourceDefinition.Spec.Versions)
+                {
+                    <HTable >
+                        <PropertySimpleView Title="Name" Item="version.Name" ExplainField="crd.spec.versions.name"></PropertySimpleView>
+                        <PropertySimpleView Title="Served" Item="version.Served" ExplainField="crd.spec.versions.served"></PropertySimpleView>
+                        <PropertySimpleView Title="Storage" Item="version.Storage" ExplainField="crd.spec.versions.storage"></PropertySimpleView>
+                        <PropertySimpleView Title="Deprecated" Item="version.Deprecated" ExplainField="crd.spec.versions.deprecated"></PropertySimpleView>
+                        <PropertySimpleView Title="DeprecationWarning" Item="version.DeprecationWarning" ExplainField="crd.spec.versions.deprecationWarning" ShowInJson="true"></PropertySimpleView>
+                        @if (version.Subresources != null)
+                        {
+                            <HTableColumn Title="SubResources">
+                                <HTable>
+                                    <PropertySimpleView Title="Status" Item="version.Subresources.Status" ExplainField="crd.spec.versions.subresources.status" ShowInJson="true"></PropertySimpleView>
+                                    @if (version.Subresources.Scale != null)
+                                    {
+                                        if (version.Subresources.Scale.LabelSelectorPath != null)
+                                        {
+                                            <ColorfulTag > @($"Scale.Label=: {version.Subresources.Scale.LabelSelectorPath}")</ColorfulTag>
+                                        }
+
+                                        if (version.Subresources.Scale.SpecReplicasPath != null)
+                                        {
+                                            <ColorfulTag > @($"Scale.SpecReplicas=: {version.Subresources.Scale.SpecReplicasPath}")</ColorfulTag>
+                                        }
+
+                                        if (version.Subresources.Scale.StatusReplicasPath != null)
+                                        {
+                                            <ColorfulTag > @($"Scale.StatusReplicas=: {version.Subresources.Scale.StatusReplicasPath}")</ColorfulTag>
+                                        }
+                                    }
+                                </HTable>
+                            </HTableColumn>
+                            <PropertySimpleView Title="Status" Item="version.Subresources.Status" ExplainField="crd.spec.versions.subresources.status" ShowInJson="true"></PropertySimpleView>
+                        }
+
+                        @if (version.AdditionalPrinterColumns is { Count: > 0 })
+                        {
+                            <HTableColumn Title="AdditionalPrinterColumns">
+
+                                @foreach (var col in version.AdditionalPrinterColumns)
+                                {
+                                    <HTable>
+                                        <PropertySimpleView Title="Name" Item="col.Name" ExplainField="crd.spec.versions.printerColumns.name"></PropertySimpleView>
+                                        <PropertySimpleView Title="Priority" Item="col.Priority" ExplainField="crd.spec.versions.printerColumns.priority"></PropertySimpleView>
+                                        <PropertySimpleView Title="Type" Item="col.Type" ExplainField="crd.spec.versions.printerColumns.type"></PropertySimpleView>
+                                        <PropertySimpleView Title="JsonPath" Item="col.JsonPath" ExplainField="crd.spec.versions.printerColumns.jsonPath"></PropertySimpleView>
+                                        <PropertySimpleView Title="Format" Item="col.Format" ExplainField="crd.spec.versions.printerColumns.format"></PropertySimpleView>
+                                        <PropertySimpleView Title="Description" Item="col.Description" ExplainField="crd.spec.versions.printerColumns.description" ShowInJson="true"></PropertySimpleView>
+                                    </HTable>
+                                }
+
+                            </HTableColumn>
+                        }
+                    </HTable>
+                }
+
+
+            </HTableColumn>
+        }
+
+    </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <HTable Bordered Column="1">
+        <ConditionsView Conditions="@(CustomResourceDefinition.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="crd.status.conditions"></ConditionsView>
+        @if (CustomResourceDefinition.Status.AcceptedNames != null)
+        {
+            <HTableColumn Title="AcceptedNames" ExplainField="crd.status.acceptedNames">
+                <HTable>
+                    <PropertyListView Title="Categories" T="string" Items="CustomResourceDefinition.Status.AcceptedNames.Categories" ExplainField="crd.status.acceptedNames.categories"></PropertyListView>
+                    <PropertySimpleView Title="Kind" Item="CustomResourceDefinition.Status.AcceptedNames.Kind" ExplainField="crd.status.acceptedNames.kind"></PropertySimpleView>
+                    <PropertySimpleView Title="ListKind" Item="CustomResourceDefinition.Status.AcceptedNames.ListKind" ExplainField="crd.status.acceptedNames.listKind"></PropertySimpleView>
+                    <PropertySimpleView Title="Plural" Item="CustomResourceDefinition.Status.AcceptedNames.Plural" ExplainField="crd.status.acceptedNames.plural"></PropertySimpleView>
+                    <PropertyListView Title="ShortNames" T="string" Items="CustomResourceDefinition.Status.AcceptedNames.ShortNames" ExplainField="crd.status.acceptedNames.shortNames"></PropertyListView>
+                    <PropertySimpleView Title="Singular" Item="CustomResourceDefinition.Status.AcceptedNames.Singular" ExplainField="crd.status.acceptedNames.singular"></PropertySimpleView>
+                </HTable>
+            </HTableColumn>
+        }
+        <PropertyListView Title="StoredVersions" T="string" Items="@CustomResourceDefinition.Status.StoredVersions" ExplainField="crd.status.storedVersions"></PropertyListView>
+    </HTable>
+    <MiniEventListView Uid="@CustomResourceDefinition.Metadata.Uid"></MiniEventListView>
+}

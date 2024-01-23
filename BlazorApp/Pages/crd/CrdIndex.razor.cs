@@ -25,8 +25,8 @@ protected override async Task OnInitializedAsync()
 }
 private async Task OnItemNameClick(V1CustomResourceDefinition item)
 {
-    // await PageDrawerHelper<V1CustomResourceDefinition>.Instance
-    //     .SetDrawerService(PageDrawerService.DrawerService)
-    //     .ShowDrawerAsync<V1CustomResourceDefinitionDetailView, V1CustomResourceDefinition, bool>(item);
+    await PageDrawerHelper<V1CustomResourceDefinition>.Instance
+        .SetDrawerService(PageDrawerService.DrawerService)
+        .ShowDrawerAsync<CrdDetailView, V1CustomResourceDefinition, bool>(item);
 }
 }
