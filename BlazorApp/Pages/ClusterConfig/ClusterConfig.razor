@@ -19,70 +19,71 @@
         </HTable>
     }
 </Card>
-@if (ApiServicesList is { Count: > 0 })
-{
-    <Card Title="API Services" Style="margin: 20px">
-            <GridRow Class="grid-table">
-                <GridCol Span="8">Name</GridCol>
-                <GridCol Span="8">Status</GridCol>
-            </GridRow>
-            @foreach (var item in ApiServicesList)
+
+
+    <Tabs Style="margin: 50px" DefaultActiveKey="1" Type="@TabType.Card" Size="@TabSize.Large">
+        <TabPane Key="1" Tab="API Status">
+            @if (ApiServicesList is { Count: > 0 })
             {
-                <GridRow Class="grid-table grid-table-first-row">
-                    <GridCol Span="8"> @item.Name()</GridCol>
-                    <GridCol Span="8">
-                        <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-                    </GridCol>
-                </GridRow>
+                    <GridRow Class="grid-table">
+                        <GridCol Span="8">Name</GridCol>
+                        <GridCol Span="8">Status</GridCol>
+                    </GridRow>
+                    @foreach (var item in ApiServicesList)
+                    {
+                        <GridRow Class="grid-table grid-table-first-row">
+                            <GridCol Span="8"> @item.Name()</GridCol>
+                            <GridCol Span="8">
+                                <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                            </GridCol>
+                        </GridRow>
+                    }
             }
-    </Card>
-}
+        </TabPane>
+        <TabPane Key="2" Tab="Nodes">
+            @if (NodeList is { Count: > 0 })
+            {
 
-@if (PodList is { Count: > 0 })
-{
-    <Card Title="Pod Metrics" Style="margin: 20px">
+                    <GridRow Class="grid-table">
+                        <GridCol Span="8">Name</GridCol>
+                        <GridCol Span="8">CPU</GridCol>
+                        <GridCol Span="8">Memory</GridCol>
+                    </GridRow>
+                    @foreach (var item in NodeList)
+                    {
+                        <GridRow Class="grid-table grid-table-first-row">
+                            <GridCol Span="8">@item.Name()</GridCol>
+                            <GridCol Span="8">
+                                <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                            </GridCol>
+                            <GridCol Span="8">
+                                <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                            </GridCol>
+                        </GridRow>
+                    }
+            }
+        </TabPane>
+        <TabPane Key="3" Tab="Pods">
+            @if (PodList is { Count: > 0 })
+            {
 
-        <GridRow Class="grid-table">
-            <GridCol Span="8">Name</GridCol>
-            <GridCol Span="8">CPU</GridCol>
-            <GridCol Span="8">Memory</GridCol>
-        </GridRow>
-        @foreach (var item in PodList)
-        {
-            <GridRow Class="grid-table grid-table-first-row">
-                <GridCol Span="8">@item.Name()</GridCol>
-                <GridCol Span="8">
-                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
-                </GridCol>
-                <GridCol Span="8">
-                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
-                </GridCol>
-            </GridRow>
-        }
-    </Card>
-}
-
-
-@if (NodeList is { Count: > 0 })
-{
-    <Card Title="Node Metrics" Style="margin: 20px">
-
-        <GridRow Class="grid-table">
-            <GridCol Span="8">Name</GridCol>
-            <GridCol Span="8">CPU</GridCol>
-            <GridCol Span="8">Memory</GridCol>
-        </GridRow>
-        @foreach (var item in NodeList)
-        {
-            <GridRow Class="grid-table grid-table-first-row">
-                <GridCol Span="8">@item.Name()</GridCol>
-                <GridCol Span="8">
-                    <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="cpu"></MetricView>
-                </GridCol>
-                <GridCol Span="8">
-                    <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="memory"></MetricView>
-                </GridCol>
-            </GridRow>
-        }
-    </Card>
-}
+                    <GridRow Class="grid-table">
+                        <GridCol Span="8">Name</GridCol>
+                        <GridCol Span="8">CPU</GridCol>
+                        <GridCol Span="8">Memory</GridCol>
+                    </GridRow>
+                    @foreach (var item in PodList)
+                    {
+                        <GridRow Class="grid-table grid-table-first-row">
+                            <GridCol Span="8">@item.Name()</GridCol>
+                            <GridCol Span="8">
+                                <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                            </GridCol>
+                            <GridCol Span="8">
+                                <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                            </GridCol>
+                        </GridRow>
+                    }
+            }
+        </TabPane>
+    </Tabs>
