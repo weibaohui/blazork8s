@@ -29,7 +29,7 @@
             </HTableColumn>
         }
 
-        <ContainerResourceRequestLimitsView RequestLimits="@PersistentVolumeClaim.Spec.Resources" ExplainField="persistentVolumeClaim.spec.resources"></ContainerResourceRequestLimitsView>
+        <ContainerResourceRequestLimitsView RequestLimits="@(PersistentVolumeClaim.Spec.Resources.Adapt<V1ResourceRequirements>())" ExplainField="persistentVolumeClaim.spec.resources"></ContainerResourceRequestLimitsView>
 
         <LabelSelectorView Title="Selector" LabelSelector="@PersistentVolumeClaim.Spec.Selector" ExplainField="persistentVolumeClaim.spec.selector"></LabelSelectorView>
         <PropertySimpleView Title="StorageClassName" Item="@PersistentVolumeClaim.Spec.StorageClassName" ExplainField="persistentVolumeClaim.spec.storageClassName"></PropertySimpleView>

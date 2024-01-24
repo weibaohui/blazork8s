@@ -22,12 +22,12 @@ public class RoleService : CommonAction<V1Role>, IRoleService
         return await _kubeService.Client().DeleteNamespacedRoleAsync(name, ns);
     }
 
-    public IList<V1Subject> ListManagedSubjectByRole(V1Role role)
+    public IList<Rbacv1Subject> ListManagedSubjectByRole(V1Role role)
     {
         return this.ListManagedSubjectByRoleName(role.Namespace(), role.Name());
     }
 
-    public IList<V1Subject> ListManagedSubjectByRoleName(string ns, string name)
+    public IList<Rbacv1Subject> ListManagedSubjectByRoleName(string ns, string name)
     {
         var bindings = _roleBindingService.List()
             .Where(x =>

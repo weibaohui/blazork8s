@@ -14,7 +14,7 @@ namespace BlazorApp.Pages.ClusterRole
 
         private V1ClusterRole ClusterRole { get; set; }
 
-        private IList<V1Subject> Subjects { get; set; }
+        private IList<Rbacv1Subject> Subjects { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

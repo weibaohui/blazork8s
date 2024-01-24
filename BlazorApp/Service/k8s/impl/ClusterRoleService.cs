@@ -21,12 +21,12 @@ public class ClusterRoleService : CommonAction<V1ClusterRole>, IClusterRoleServi
         return await _kubeService.Client().DeleteClusterRoleAsync(name);
     }
 
-    public IList<V1Subject> ListManagedSubjectByClusterRole(V1ClusterRole role)
+    public IList<Rbacv1Subject> ListManagedSubjectByClusterRole(V1ClusterRole role)
     {
         return ListManagedSubjectByClusterRoleName(role.Name());
     }
 
-    public IList<V1Subject> ListManagedSubjectByClusterRoleName(string name)
+    public IList<Rbacv1Subject> ListManagedSubjectByClusterRoleName(string name)
     {
 
         var bindings = _clusterRoleBindingService.List()

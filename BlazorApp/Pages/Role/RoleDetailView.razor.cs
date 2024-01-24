@@ -13,8 +13,8 @@ namespace BlazorApp.Pages.Role
         public IRoleService RoleService { get; set; }
 
 
-        private IList<V1Subject> Subjects { get; set; }
-        private V1Role          Role     { get; set; }
+        private IList<Rbacv1Subject> Subjects { get; set; }
+        private V1Role               Role     { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
