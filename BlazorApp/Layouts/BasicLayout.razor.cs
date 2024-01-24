@@ -13,7 +13,7 @@ public partial class BasicLayout : LayoutComponentBase
     {
         MenuData = new[]
         {
-            GetMenuItem("ClusterConfig"),
+            GetMenuItem("Cluster"),
             new MenuDataItem
             {
                 Path = "/PortForward",
