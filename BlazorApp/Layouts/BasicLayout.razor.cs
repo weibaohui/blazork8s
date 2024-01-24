@@ -13,13 +13,13 @@ public partial class BasicLayout : LayoutComponentBase
     {
         MenuData = new[]
         {
-            GetMenuItem("Cluster"),
+            GetMenuItem("Cluster","cluster"),
             new MenuDataItem
             {
                 Path = "/PortForward",
                 Name = "PortForward",
                 Key  = "PortForward",
-                Icon = "setting",
+                Icon = "pic-center",
                 HideInMenu = KubernetesClientConfiguration.IsInCluster()
             },
             new MenuDataItem
@@ -27,46 +27,46 @@ public partial class BasicLayout : LayoutComponentBase
                 Path = "/ai/chatDeploy",
                 Name = "welcome",
                 Key  = "welcome",
-                Icon = "setting",
+                Icon = "home",
             },
-            GetMenuItem("Namespace"),
-            GetMenuItem("Node"),
+            GetMenuItem("Namespace","book"),
+            GetMenuItem("Node","database"),
             new MenuDataItem
             {
                 Name     = "Workloads",
                 Key      = "Workloads",
-                Icon     = "setting",
+                Icon     = "appstore",
                 Children = WorkloadsMenu(),
             },
             new MenuDataItem
             {
                 Name     = "Config",
                 Key      = "Config",
-                Icon     = "setting",
+                Icon     = "control",
                 Children = ConfigMenu(),
             },
             new MenuDataItem
             {
                 Name     = "Network",
                 Key      = "Network",
-                Icon     = "setting",
+                Icon     = "apartment",
                 Children = NetworkMenu(),
             },
             new MenuDataItem
             {
                 Name     = "Storage",
                 Key      = "Storage",
-                Icon     = "setting",
+                Icon     = "inbox",
                 Children = StorageMenu(),
             },
             new MenuDataItem
             {
                 Name     = "AccessControl",
                 Key      = "AccessControl",
-                Icon     = "setting",
+                Icon     = "verified",
                 Children = AccessControlMenu(),
             },
-            GetMenuItem("Crd"),
+            GetMenuItem("Crd","code"),
 
         };
         await base.OnInitializedAsync();
@@ -82,41 +82,38 @@ public partial class BasicLayout : LayoutComponentBase
             Icon = "setting",
         };
     }
-
-    private MenuDataItem GetMenuItem(string name, string path)
+    private MenuDataItem GetMenuItem(string item,string icon)
     {
         return new MenuDataItem
         {
-            Path = path,
-            Name = name,
-            Key  = path,
-            Icon = "setting",
-        };
-    }
-
-    private MenuDataItem GetMenuItem(string name, string path, string icon)
-    {
-        return new MenuDataItem
-        {
-            Path = path,
-            Name = name,
-            Key  = path,
+            Path = item,
+            Name = item,
+            Key  = item,
             Icon = icon,
         };
     }
-
+    private MenuDataItem GetMenuItemWithPath(string item, string icon,string path)
+    {
+        return new MenuDataItem
+        {
+            Path = path,
+            Name = item,
+            Key  = item,
+            Icon = icon,
+        };
+    }
     private MenuDataItem[] WorkloadsMenu()
     {
         return new[]
         {
-            GetMenuItem("Pods"),
-            GetMenuItem("Deployments"),
-            GetMenuItem("ReplicaSets"),
-            GetMenuItem("DaemonSet"),
-            GetMenuItem("StatefulSet"),
-            GetMenuItem("RC", "ReplicationController"),
-            GetMenuItem("Job"),
-            GetMenuItem("CronJob"),
+            GetMenuItem("Pods","block"),
+            GetMenuItem("Deployments","deployment-unit"),
+            GetMenuItem("ReplicaSets","build"),
+            GetMenuItem("DaemonSet","partition"),
+            GetMenuItem("StatefulSet","project"),
+            GetMenuItemWithPath("RC", "split-cells","ReplicationController"),
+            GetMenuItem("Job","container"),
+            GetMenuItem("CronJob","history"),
         };
     }
 
@@ -124,15 +121,15 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("ConfigMap"),
-            GetMenuItem("Secret"),
-            GetMenuItem("ResourceQuota"),
-            GetMenuItem("LimitRange"),
-            GetMenuItem("HPA", "HorizontalPodAutoscaler"),
-            GetMenuItem("PDB", "PodDisruptionBudget"),
-            GetMenuItem("PriorityClass"),
-            GetMenuItem("Validating", "ValidatingWebhookConfiguration"),
-            GetMenuItem("Mutating", "MutatingWebhookConfiguration"),
+            GetMenuItem("ConfigMap","table"),
+            GetMenuItem("Secret","file-protect"),
+            GetMenuItem("ResourceQuota","one-to-one"),
+            GetMenuItem("LimitRange","column-width"),
+            GetMenuItemWithPath("HPA", "ungroup","HorizontalPodAutoscaler"),
+            GetMenuItemWithPath("PDB", "appstore-add","PodDisruptionBudget"),
+            GetMenuItem("PriorityClass","insert-row-left"),
+            GetMenuItemWithPath("Validating","security-scan" ,"ValidatingWebhookConfiguration"),
+            GetMenuItemWithPath("Mutating", "sisternode","MutatingWebhookConfiguration"),
         };
     }
 
@@ -140,12 +137,12 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("Service"),
-            GetMenuItem("EndpointSlice"),
-            GetMenuItem("Endpoints"),
-            GetMenuItem("NetworkPolicy"),
-            GetMenuItem("IngressClass"),
-            GetMenuItem("Ingress"),
+            GetMenuItem("Service","partition"),
+            GetMenuItem("EndpointSlice","format-painter"),
+            GetMenuItem("Endpoints","node-expand"),
+            GetMenuItem("NetworkPolicy","partition"),
+            GetMenuItem("IngressClass","reconciliation"),
+            GetMenuItem("Ingress","gateway"),
         };
     }
 
@@ -153,9 +150,9 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("StorageClass"),
-            GetMenuItem("PV", "PersistentVolume"),
-            GetMenuItem("PVC", "PersistentVolumeClaim"),
+            GetMenuItem("StorageClass","file-sync"),
+            GetMenuItemWithPath("PV", "file-done","PersistentVolume"),
+            GetMenuItemWithPath("PVC", "delivered-procedure","PersistentVolumeClaim"),
         };
     }
 
@@ -163,11 +160,11 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("ServiceAccount"),
-            GetMenuItem("ClusterRole"),
-            GetMenuItem("ClusterRoleBinding"),
-            GetMenuItem("Role"),
-            GetMenuItem("RoleBinding"),
+            GetMenuItem("ServiceAccount","team"),
+            GetMenuItem("ClusterRole","audit"),
+            GetMenuItem("ClusterRoleBinding","api"),
+            GetMenuItem("Role","idcard"),
+            GetMenuItem("RoleBinding","contacts"),
         };
     }
 }
