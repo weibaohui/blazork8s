@@ -1,5 +1,6 @@
 @page "/Crd"
 @using k8s.Models
+@using Mapster
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
@@ -30,11 +31,19 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Group" TData="string">
+                        @($"{context.Spec.Group}")
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Scope" TData="string">
+                        @($"{context.Spec.Scope}")
+                    </AntDesign.Column>
+                     <AntDesign.Column Title="Condition" TData="string" Width="150px">
+                                            <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                                        </AntDesign.Column>
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <CrdAction Item="@context"></CrdAction>
                     </ActionColumn>
                 </Table>
