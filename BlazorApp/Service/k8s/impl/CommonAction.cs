@@ -11,13 +11,13 @@ namespace BlazorApp.Service.k8s.impl;
 
 public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private readonly        ResourceCache<T>         _cache = ResourceCacheHelper<T>.Instance.Build();
-    private readonly        IServiceScope            _scope;
-    private readonly        ILogger<CommonAction<T>> _logger =LoggingHelper<CommonAction<T>>.Logger();
+    private readonly ResourceCache<T>         _cache = ResourceCacheHelper<T>.Instance.Build();
+    private readonly IServiceScope            _scope;
+    private readonly ILogger<CommonAction<T>> _logger = LoggingHelper<CommonAction<T>>.Logger();
 
-    public CommonAction(IServiceScopeFactory serviceScopeFactory )
+    public CommonAction(IServiceScopeFactory serviceScopeFactory)
     {
-        _scope  = serviceScopeFactory.CreateScope();
+        _scope = serviceScopeFactory.CreateScope();
         // _watchService = _scope.ServiceProvider.GetService<IWatchService>();
         // Console.WriteLine("PodService 初始化");
     }
@@ -52,6 +52,12 @@ public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesOb
     {
         return List().FirstOrDefault(x => x.Name() == name);
     }
+
+    public T GetByName(string ns, string name)
+    {
+        return List().FirstOrDefault(x => x.Name() == name && x.Namespace() == ns);
+    }
+
 
     public IList<T> List()
     {
