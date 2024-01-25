@@ -10,4 +10,13 @@ public partial class MetadataView : ComponentBase
 
     [Parameter]
     public string ExplainFieldPrefix { get; set; } = "Pod";
+
+    private V1ObjectReference NsRef(string func)
+    {
+        return new V1ObjectReference()
+        {
+            Name              = Item.Namespace(),
+            Kind              = "Namespace"
+        };
+    }
 }

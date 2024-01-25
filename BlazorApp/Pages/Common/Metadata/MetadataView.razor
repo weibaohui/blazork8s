@@ -21,7 +21,9 @@
 
         @if (!Item.Namespace().IsNullOrEmpty())
         {
-            <HTableColumn Title="Namespace">@Item.Namespace()</HTableColumn>
+            <HTableColumn Title="Namespace">
+                <RefView FullView="true" Ref="@NsRef(Item.Namespace())"></RefView>
+            </HTableColumn>
         }
         <LabelsView Labels="Item.Labels"></LabelsView>
         <AnnotationsView Annotations="@Item.Annotations"></AnnotationsView>

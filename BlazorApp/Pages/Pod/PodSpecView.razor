@@ -61,4 +61,4 @@
 
 <ContainerSpecListView PodSpec="@PodSpec" OnPortForward="OnPortForward" ShowPortForwardBtn="@(PodName != null && PodNamespace != null)"></ContainerSpecListView>
 
-<VolumeView PodSpec="@PodSpec"></VolumeView>
+<VolumeView PodSpec="@PodSpec" Namespace="@PodNamespace"></VolumeView>

@@ -1,7 +1,6 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html
 @if (Volume.ConfigMap != null)
 {
@@ -14,19 +13,12 @@
         <ChildContent>
             <Card Bordered>
                 <HTable >
-                    <HTr>
-                        <HTd>
-                            Volume
-                            <KubectlExplainButton Field="pod.spec.volumes.configMap"></KubectlExplainButton>
-                        </HTd>
-                        <HTd >
-                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">ConfigMap</Tag>
-                        </HTd>
-                    </HTr>
+                    <HTableColumn Title="Volume" ExplainField="pod.spec.volumes.secret">
+                        <RefView Ref="@TransferToRef(Volume)" FullView="true"></RefView>
+                    </HTableColumn>
                     <PropertySimpleView Title="Name" ExplainField="pod.spec.volumes.configMap.name" Item="@Volume.ConfigMap.Name"></PropertySimpleView>
                     <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.configMap.defaultMode" Item="@Volume.ConfigMap.DefaultMode"></PropertySimpleView>
                     <PropertySimpleView Title="Optional" ExplainField="pod.spec.volumes.configMap.optional" Item="@Volume.ConfigMap.Optional"></PropertySimpleView>
-
                     @if (Volume.ConfigMap.Items != null)
                     {
                         @foreach (var ktp in Volume.ConfigMap.Items)
@@ -55,5 +47,18 @@
 
     [Parameter]
     public int Index { get; set; }
+
+    [Parameter]
+    public string Namespace { get; set; }
+
+    private V1ObjectReference TransferToRef(V1Volume volume)
+    {
+        return new V1ObjectReference()
+        {
+            Name              = volume.ConfigMap.Name,
+            Kind              = "ConfigMap",
+            NamespaceProperty = Namespace
+        };
+    }
 
 }

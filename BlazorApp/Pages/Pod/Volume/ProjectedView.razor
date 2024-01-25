@@ -48,6 +48,7 @@
                             @foreach (var ktp in p.ConfigMap.Items)
                             {
                                 <HTableColumn Title="ConfigMap" ExplainField="pod.spec.volumes.projected.sources.configMap.items">
+                                    <RefView Ref="@TransferToRef(p.ConfigMap)"></RefView>
                                     <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@p.ConfigMap.Name</Tag>
                                     <Tag>@ktp.Key => @ktp.Path</Tag>
                                 </HTableColumn>
@@ -59,6 +60,7 @@
                             @foreach (var ktp in p.Secret.Items)
                             {
                                 <HTableColumn Title="Secret" ExplainField="pod.spec.volumes.projected.sources.secret.items">
+                                    <RefView Ref="@TransferToRef(p.Secret)"></RefView>
                                     <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.Secret.Name</Tag>
                                     <Tag>@ktp.Key => @ktp.Path</Tag>
                                 </HTableColumn>
@@ -87,5 +89,29 @@
 
     [Parameter]
     public int Index { get; set; }
+
+    [Parameter]
+    public string Namespace { get; set; }
+
+
+    private V1ObjectReference TransferToRef(V1ConfigMapProjection item)
+    {
+        return new V1ObjectReference()
+        {
+            Name              = item.Name,
+            Kind              = "ConfigMap",
+            NamespaceProperty = Namespace
+        };
+    }
+
+    private V1ObjectReference TransferToRef(V1SecretProjection item)
+    {
+        return new V1ObjectReference()
+        {
+            Name              = item.Name,
+            Kind              = "Secret",
+            NamespaceProperty = Namespace
+        };
+    }
 
 }

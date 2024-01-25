@@ -1,7 +1,6 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Utils
 @if (Volume.PersistentVolumeClaim != null)
 {
     <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
@@ -19,12 +18,10 @@
                             <KubectlExplainButton Field="pod.spec.volumes.persistentVolumeClaim"></KubectlExplainButton>
                         </HTd>
                         <HTd >
-                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">PersistentVolumeClaim</Tag>
+                            <RefView Ref="@TransferToRef(Volume)" FullView="true"></RefView>
                         </HTd>
                     </HTr>
-
-                    <PropertySimpleView Title="ClaimName" ExplainField="pod.spec.volumes.persistentVolumeClaim.claimName" Item="@Volume.PersistentVolumeClaim.ClaimName"></PropertySimpleView>
-                </HTable>
+                 </HTable>
             </Card>
         </ChildContent>
     </BadgeRibbon>
@@ -38,5 +35,18 @@
 
     [Parameter]
     public int Index { get; set; }
+
+    [Parameter]
+    public string Namespace { get; set; }
+
+    private V1ObjectReference TransferToRef(V1Volume volume)
+    {
+        return new V1ObjectReference()
+        {
+            Name              = volume.PersistentVolumeClaim.ClaimName,
+            Kind              = "PersistentVolumeClaim",
+            NamespaceProperty = Namespace
+        };
+    }
 
 }

@@ -10,12 +10,12 @@
         var index = i + 1;
 
         <HostPathView Volume="@v" Index="@index"></HostPathView>
-        <ProjectedView Volume="@v" Index="@index"></ProjectedView>
-        <ConfigMapView Volume="@v" Index="@index"></ConfigMapView>
+        <ProjectedView Volume="@v" Index="@index"  Namespace="@Namespace"></ProjectedView>
+        <ConfigMapView Volume="@v" Index="@index" Namespace="@Namespace"></ConfigMapView>
         <EmptyDirView Volume="@v" Index="@index"></EmptyDirView>
-        <SecretView Volume="@v" Index="@index"></SecretView>
+        <SecretView Volume="@v" Index="@index" Namespace="@Namespace"></SecretView>
         <NfsView Volume="@v" Index="@index"></NfsView>
-        <PvcView Volume="@v" Index="@index"></PvcView>
+        <PvcView Volume="@v" Index="@index" Namespace="@Namespace"></PvcView>
         <IscsiView Volume="@v" Index="@index"></IscsiView>
         <FcView Volume="@v" Index="@index"></FcView>
         <CsiView Volume="@v" Index="@index"></CsiView>
