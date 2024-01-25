@@ -6,12 +6,14 @@ using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Job;
+using BlazorApp.Pages.Namespace;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.PersistentVolumeClaim;
 using BlazorApp.Pages.Pod;
 using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Pages.ReplicationController;
 using BlazorApp.Pages.Role;
+using BlazorApp.Pages.Secret;
 using BlazorApp.Pages.ServiceAccount;
 using BlazorApp.Pages.StatefulSet;
 using BlazorApp.Service.k8s;
@@ -78,6 +80,10 @@ public partial class RefView : ComponentBase
     [Inject]
     private IConfigMapService ConfigMapService { get; set; }
 
+
+    [Inject]
+    private ISecretService SecretService { get; set; }
+
     [Inject]
     private ILogger<ControllerBy> Logger { get; set; }
 
@@ -87,52 +93,8 @@ public partial class RefView : ComponentBase
     [Inject]
     private DrawerService DrawerService { get; set; }
 
-    private async Task OnRsClick(V1ObjectReference r)
-    {
-        var item = ReplicaSetService.GetByName(r.NamespaceProperty,r.Name);
-        await PageDrawerHelper<V1ReplicaSet>.Instance
-            .SetDrawerService(DrawerService)
-            .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(item);
-    }
-
-    private async Task OnNodeClick(V1ObjectReference r)
-    {
-        var item = NodeService.GetByName(r.NamespaceProperty,r.Name);
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(DrawerService)
-            .ShowDrawerAsync<NodeDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnDeploymentClick(V1ObjectReference r)
-    {
-        var item = DeploymentService.GetByName(r.NamespaceProperty,r.Name);
-        await PageDrawerHelper<V1Deployment>.Instance
-            .SetDrawerService(DrawerService)
-            .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(item);
-    }
-
-    private async Task OnDaemonSetClick(V1ObjectReference r)
-    {
-        var item = DaemonSetService.GetByName(r.NamespaceProperty,r.Name);
-        await PageDrawerHelper<V1DaemonSet>.Instance
-            .SetDrawerService(DrawerService)
-            .ShowDrawerAsync<DaemonSetDetailView, V1DaemonSet, bool>(item);
-    }
-
-    private async Task OnReplicationControllerClick(V1ObjectReference r)
-    {
-        var item = ReplicationControllerService.GetByName(r.NamespaceProperty,r.Name);
-        await PageDrawerHelper<V1ReplicationController>.Instance
-            .SetDrawerService(DrawerService)
-            .ShowDrawerAsync<ReplicationControllerDetailView, V1ReplicationController, bool>(item);
-    }
-
-    private Task OnXClick(V1ObjectReference r)
-    {
-        Message.Error($"{r.Name}点击未实现");
-        return Task.CompletedTask;
-    }
-
+    [Inject]
+    private INamespaceService NamespaceService { get; set; }
 
     private Task OnObjClick()
     {
@@ -157,6 +119,8 @@ public partial class RefView : ComponentBase
             "ClusterRole"           => OnClusterRoleClick(Ref),
             "Role"                  => OnRoleClick(Ref),
             "ConfigMap"             => OnConfigMapClick(Ref),
+            "Secret"                => OnSecretClick(Ref),
+            "Namespace"             => OnNamespaceClick(Ref),
             "PersistentVolumeClaim" => OnPersistentVolumeClaimClick(Ref),
             _                       => OnXClick(Ref)
         };
@@ -164,19 +128,80 @@ public partial class RefView : ComponentBase
         return task;
     }
 
+    private async Task OnNamespaceClick(V1ObjectReference r)
+    {
+        var item = NamespaceService.GetByName( r.Name);
+        await PageDrawerHelper<V1Namespace>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<NamespaceDetailView, V1Namespace, bool>(item);
+    }
+
+    private async Task OnSecretClick(V1ObjectReference r)
+    {
+        var item = SecretService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Secret>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<SecretDetailView, V1Secret, bool>(item);
+    }
 
 
     private async Task OnConfigMapClick(V1ObjectReference r)
     {
-        var item = ConfigMapService.GetByName(r.NamespaceProperty,r.Name);
+        var item = ConfigMapService.GetByName(r.NamespaceProperty, r.Name);
         await PageDrawerHelper<V1ConfigMap>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<ConfigMapDetailView, V1ConfigMap, bool>(item);
     }
 
+    private async Task OnRsClick(V1ObjectReference r)
+    {
+        var item = ReplicaSetService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1ReplicaSet>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(item);
+    }
+
+    private async Task OnNodeClick(V1ObjectReference r)
+    {
+        var item = NodeService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<NodeDetailView, V1Node, bool>(item);
+    }
+
+    private async Task OnDeploymentClick(V1ObjectReference r)
+    {
+        var item = DeploymentService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Deployment>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(item);
+    }
+
+    private async Task OnDaemonSetClick(V1ObjectReference r)
+    {
+        var item = DaemonSetService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1DaemonSet>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<DaemonSetDetailView, V1DaemonSet, bool>(item);
+    }
+
+    private async Task OnReplicationControllerClick(V1ObjectReference r)
+    {
+        var item = ReplicationControllerService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1ReplicationController>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ReplicationControllerDetailView, V1ReplicationController, bool>(item);
+    }
+
+    private Task OnXClick(V1ObjectReference r)
+    {
+        Message.Error($"{r.Name}点击未实现");
+        return Task.CompletedTask;
+    }
+
     private async Task OnPersistentVolumeClaimClick(V1ObjectReference r)
     {
-        var item = PersistentVolumeClaimService.GetByName(r.NamespaceProperty,r.Name);
+        var item = PersistentVolumeClaimService.GetByName(r.NamespaceProperty, r.Name);
         await PageDrawerHelper<V1PersistentVolumeClaim>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<PersistentVolumeClaimDetailView, V1PersistentVolumeClaim, bool>(item);
@@ -194,7 +219,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnServiceAccountClick(V1ObjectReference r)
     {
-        var item = ServiceAccountService.GetByName(r.NamespaceProperty,r.Name);
+        var item = ServiceAccountService.GetByName(r.NamespaceProperty, r.Name);
         if (item == null)
         {
             await MessageService.Error($"ServiceAccount {r.Name} Not Found");
@@ -208,7 +233,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnClusterRoleClick(V1ObjectReference r)
     {
-        var item = ClusterRoleService.GetByName(r.NamespaceProperty,r.Name);
+        var item = ClusterRoleService.GetByName(r.NamespaceProperty, r.Name);
         await PageDrawerHelper<V1ClusterRole>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<ClusterRoleDetailView, V1ClusterRole, bool>(item);
@@ -216,7 +241,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnRoleClick(V1ObjectReference r)
     {
-        var item = RoleService.GetByName(r.NamespaceProperty,r.Name);
+        var item = RoleService.GetByName(r.NamespaceProperty, r.Name);
         await PageDrawerHelper<V1Role>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<RoleDetailView, V1Role, bool>(item);
@@ -224,7 +249,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnPodClick(V1ObjectReference r)
     {
-        var item = PodService.GetByName(r.NamespaceProperty,r.Name);
+        var item = PodService.GetByName(r.NamespaceProperty, r.Name);
         await PageDrawerHelper<V1Pod>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<PodDetailView, V1Pod, bool>(item);
@@ -232,7 +257,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnCronJobClick(V1ObjectReference r)
     {
-        var item = CronJobService.GetByName(r.NamespaceProperty,r.Name);
+        var item = CronJobService.GetByName(r.NamespaceProperty, r.Name);
 
         await PageDrawerHelper<V1CronJob>.Instance
             .SetDrawerService(DrawerService)
@@ -241,7 +266,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnJobClick(V1ObjectReference r)
     {
-        var item = JobService.GetByName(r.NamespaceProperty,r.Name);
+        var item = JobService.GetByName(r.NamespaceProperty, r.Name);
         if (item == null)
         {
             await Message.Error($"Job {r.Name} 已被删除");
@@ -255,7 +280,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnStatefulSetClick(V1ObjectReference r)
     {
-        var item = StatefulSetService.GetByName(r.NamespaceProperty,r.Name);
+        var item = StatefulSetService.GetByName(r.NamespaceProperty, r.Name);
         await PageDrawerHelper<V1StatefulSet>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<StatefulSetDetailView, V1StatefulSet, bool>(item);
