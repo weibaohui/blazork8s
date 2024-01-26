@@ -27,7 +27,7 @@
         }
         <LabelsView Labels="Item.Labels"></LabelsView>
         <AnnotationsView Annotations="@Item.Annotations"></AnnotationsView>
-        <ControllerByView Owner=@Item.OwnerReferences></ControllerByView>
+        <ControllerByView Owner=@Item.OwnerReferences Namespace=@Item.NamespaceProperty></ControllerByView>
         <FinalizersView Finalizers="@Item.Finalizers"></FinalizersView>
         <ManagedFieldsView ManagedFields="@Item.ManagedFields"></ManagedFieldsView>
         <PropertySimpleView Title="DeletionGracePeriodSeconds" Item="@Item.DeletionGracePeriodSeconds" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionGracePeriodSeconds")></PropertySimpleView>

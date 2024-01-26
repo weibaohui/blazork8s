@@ -41,7 +41,7 @@
                         @context.RestartCount()
                     </AntDesign.Column>
                     <AntDesign.Column Title="ControllerBy" TData="string">
-                        <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
+                        <ControllerBy Owner="@context.OwnerReferences()" Namespace="@context.Namespace()"></ControllerBy>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Node" TData="string" Width="100px">
                         <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>

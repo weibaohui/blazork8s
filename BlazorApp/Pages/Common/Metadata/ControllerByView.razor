@@ -1,12 +1,10 @@
-@using Mapster
 @using BlazorApp.Pages.Common.Html
-@using k8s.Models
 @if (Owner != null)
 {
     <HTableColumn Title="ControllerBy">
-        <ControllerBy
-            ShowOwnerName="true"
-            Refs="@(Owner.Adapt<IList<V1ObjectReference>>())">
-        </ControllerBy>
+        @foreach (var r in Refs)
+        {
+            <RefView Ref="r" FullView="true"></RefView>
+        }
     </HTableColumn>
 }

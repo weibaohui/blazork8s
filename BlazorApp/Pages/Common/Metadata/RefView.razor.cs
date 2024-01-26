@@ -96,6 +96,12 @@ public partial class RefView : ComponentBase
     [Inject]
     private INamespaceService NamespaceService { get; set; }
 
+
+    private string GetDelimiter()
+    {
+        return Ref.NamespaceProperty == null ? "" : "/";
+    }
+
     private Task OnObjClick()
     {
         var name = Ref.Name;
@@ -130,7 +136,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnNamespaceClick(V1ObjectReference r)
     {
-        var item = NamespaceService.GetByName( r.Name);
+        var item = NamespaceService.GetByName(r.Name);
         await PageDrawerHelper<V1Namespace>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<NamespaceDetailView, V1Namespace, bool>(item);
@@ -163,7 +169,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnNodeClick(V1ObjectReference r)
     {
-        var item = NodeService.GetByName(r.NamespaceProperty, r.Name);
+        var item = NodeService.GetByName(r.Name);
         await PageDrawerHelper<V1Node>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<NodeDetailView, V1Node, bool>(item);
@@ -233,7 +239,7 @@ public partial class RefView : ComponentBase
 
     private async Task OnClusterRoleClick(V1ObjectReference r)
     {
-        var item = ClusterRoleService.GetByName(r.NamespaceProperty, r.Name);
+        var item = ClusterRoleService.GetByName(r.Name);
         await PageDrawerHelper<V1ClusterRole>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<ClusterRoleDetailView, V1ClusterRole, bool>(item);
