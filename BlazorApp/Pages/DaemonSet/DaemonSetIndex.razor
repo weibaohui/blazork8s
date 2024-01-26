@@ -40,10 +40,10 @@
                     <AntDesign.Column Title="Ready" TData="int" Width="70px">
                         @($"{context.Status.NumberReady}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Up To Date" TData="int" Width="70px">
+                    <AntDesign.Column Title="Latest" TData="int" Width="70px">
                         @(context.Status.UpdatedNumberScheduled ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Available" TData="int" Width="70px">
+                    <AntDesign.Column Title="Available" TData="int" Width="80px">
                         @(context.Status.NumberAvailable ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title="NodeSelector" TData="string">

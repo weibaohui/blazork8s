@@ -34,10 +34,10 @@
                     <AntDesign.Column Title="Ready" TData="int">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Up To Date" TData="int">
+                    <AntDesign.Column Title="Latest" TData="int" Width="70px">
                         @(context.Status.FullyLabeledReplicas ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Available" TData="int">
+                    <AntDesign.Column Title="Available" TData="int" Width="80px">
                         @(context.Status.AvailableReplicas ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title="Selector" TData="string">

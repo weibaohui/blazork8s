@@ -43,7 +43,7 @@
                         <Button OnClick="@(() => BtnMinusClick(context))" Icon=Minus Size="small"></Button>
                         <Button OnClick="@(() => BtnIncreaseClick(context))"  Icon=Plus Size="small"></Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Up To Date" TData="int"  Width="80px">
+                    <AntDesign.Column Title="Latest" TData="int" Width="70px">
                         @(context.Status.UpdatedReplicas ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title="Available" TData="int" Width="80px">
