@@ -9,14 +9,26 @@ namespace BlazorApp.Service.k8s.impl
 {
     public class PodService : CommonAction<V1Pod>, IPodService
     {
-        private readonly IKubeService  _kubeService;
+        private readonly IKubeService _kubeService;
 
         public PodService(IKubeService kubeService)
         {
-            _kubeService   = kubeService;
+            _kubeService = kubeService;
         }
 
+        public async Task<IList<V1Pod>> FilterPodByLabels(string ns, string labels)
+        {
+            var pods = await _kubeService.Client()
+                .ListNamespacedPodAsync(namespaceParameter: ns, labelSelector: labels);
+            return pods?.Items;
+        }
 
+        public async Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace( string labels)
+        {
+            var pods = await _kubeService.Client()
+                .ListPodForAllNamespacesAsync(labelSelector: labels);
+            return pods?.Items;
+        }
         public IList<V1Pod> ListByNodeName(string nodeName)
         {
             var list = List();

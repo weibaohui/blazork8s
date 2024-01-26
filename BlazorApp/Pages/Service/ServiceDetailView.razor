@@ -1,5 +1,6 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
@@ -17,7 +18,7 @@
         @if (Item.Spec.SessionAffinityConfig != null)
         {
             <HTableColumn Title="SessionAffinityConfig" ExplainField="service.spec.sessionAffinityConfig">
-                <ColorfulTag  >@($"timeout = {Item.Spec.SessionAffinityConfig.ClientIP.TimeoutSeconds} seconds")</ColorfulTag>
+                <ColorfulTag >@($"timeout = {Item.Spec.SessionAffinityConfig.ClientIP.TimeoutSeconds} seconds")</ColorfulTag>
 
             </HTableColumn>
         }
@@ -38,5 +39,8 @@
         <PropertySimpleView Title="PublishNotReadyAddresses" Item="@Item.Spec.PublishNotReadyAddresses" ExplainField="service.spec.publishNotReadyAddresses"></PropertySimpleView>
         <ServicePortsView Ports="@Item.Spec.Ports" SvcName="@Item.Metadata.Name" SvcNamespace="@Item.Metadata.NamespaceProperty"></ServicePortsView>
     </HTable>
+
+    <MiniPodListView Pods="@PodList"></MiniPodListView>
+
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }

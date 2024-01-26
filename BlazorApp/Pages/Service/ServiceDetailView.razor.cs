@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common;
+using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using BlazorApp.Utils.PortForwarding;
 using Entity;
 using k8s.Models;
@@ -14,10 +17,20 @@ namespace BlazorApp.Pages.Service
         [Inject]
         IMessageService MessageService { get; set; }
         private V1Service Item { get; set; }
+        [Inject]
+        private IPodService PodService { get; set; }
 
+
+        private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
         protected override async Task OnInitializedAsync()
         {
-            Item = base.Options;
+            Item    = base.Options;
+            if (Item?.Spec?.Selector!=null)
+            {
+                PodList = await PodService.FilterPodByLabels(Item.Namespace(),
+                    PodSelectorHelper.ToFilter(Item.Spec.Selector));
+            }
+
             await base.OnInitializedAsync();
         }
 

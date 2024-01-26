@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s
@@ -10,6 +11,7 @@ namespace BlazorApp.Service.k8s
 
         IList<V1Pod> ListByNodeName(string nodeName);
 
-
+        Task<IList<V1Pod>> FilterPodByLabels(string                ns, string labels);
+        Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(string labels);
     }
 }
