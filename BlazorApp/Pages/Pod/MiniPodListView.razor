@@ -1,9 +1,9 @@
 @using k8s.Models
 @using Extension.k8s
 @using BlazorApp.Pages.Common.Metadata
+<Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
 @if (Pods is { Count: > 0 })
 {
-    <Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
     <Table TItem="V1Pod" DataSource="@Pods"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
@@ -16,4 +16,8 @@
             <StatusView Status=@context.Status()></StatusView>
         </AntDesign.Column>
     </Table>
+}
+@if (Pods==null||Pods.Count == 0)
+{
+    <Empty Simple/>
 }

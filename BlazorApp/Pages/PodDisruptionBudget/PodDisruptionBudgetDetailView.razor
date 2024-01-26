@@ -1,5 +1,6 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PodDisruptionBudget>
@@ -25,5 +26,8 @@
         <PropertySimpleView Title="ExpectedPods" Item="@PodDisruptionBudget.Status.ExpectedPods" ExplainField="podDisruptionBudget.status.expectedPods"></PropertySimpleView>
         <PropertySimpleView Title="ObservedGeneration" Item="@PodDisruptionBudget.Status.ObservedGeneration" ExplainField="podDisruptionBudget.status.observedGeneration"></PropertySimpleView>
     </HTable>
+
+    <MiniPodListView Pods="PodList"></MiniPodListView>
+
     <MiniEventListView Uid="@PodDisruptionBudget.Metadata.Uid"></MiniEventListView>
 }

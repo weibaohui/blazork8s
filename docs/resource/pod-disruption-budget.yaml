@@ -6,7 +6,7 @@ spec:
   maxUnavailable: 3
   selector:
     matchLabels:
-      app: nginx-web
+      run: nginx-web
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -17,4 +17,4 @@ spec:
   unhealthyPodEvictionPolicy: IfHealthyBudget
   selector:
     matchLabels:
-      app: nginx-web
+      run: nginx-web
