@@ -34,7 +34,7 @@
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
 
                     <AntDesign.Column Title="ControllerBy" TData="string">
-                        <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
+                        <ControllerBy Owner="@context.OwnerReferences()" Namespace="@context.Namespace()"></ControllerBy>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Desired" TData="int"  Width="80px">
                         @context.Status.Replicas
