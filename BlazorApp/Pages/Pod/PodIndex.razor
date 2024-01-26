@@ -30,11 +30,11 @@
                        @bind-SelectedRows="TableData.SelectedRows"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name"  >
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
                         <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
-                    <AntDesign.Column Title="Containers" TData="string"  Width="100px">
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Title="Containers" TData="string" Width="100px">
                         <ContainerStatus Pod="@context"></ContainerStatus>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Restart" TData="string" Width="80px">
@@ -43,19 +43,22 @@
                     <AntDesign.Column Title="ControllerBy" TData="string">
                         <ControllerBy Owner="@context.OwnerReferences()"></ControllerBy>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Node" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Node" TData="string" Width="100px">
                         <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="QoS" TData="string"  Width="100px">
+                    <AntDesign.Column Title="QoS" TData="string" Width="100px">
                         @context.Status.QosClass
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Selector" TData="string">
+                        <SelectorView Selector="@context.Metadata.Labels"></SelectorView>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Status" TData="string">
                         <StatusView Status="@context.Status()"></StatusView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <PodAction PodItem="@context"></PodAction>
                     </ActionColumn>
                 </Table>
