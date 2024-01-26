@@ -14,17 +14,16 @@ namespace BlazorApp.Pages.PodDisruptionBudget
 
         [Inject]
         private IPodService PodService { get; set; }
-
         private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
-
 
         protected override async Task OnInitializedAsync()
         {
             PodDisruptionBudget = base.Options;
-            if (PodDisruptionBudget?.Spec?.Selector?.MatchLabels != null)
+            var matchLabels = PodDisruptionBudget?.Spec?.Selector?.MatchLabels;
+            if (matchLabels != null)
             {
-                PodList = await PodService.FilterPodByLabels(PodDisruptionBudget.Namespace(),
-                    PodSelectorHelper.ToFilter(PodDisruptionBudget.Spec.Selector.MatchLabels));
+                var filter = PodSelectorHelper.ToFilter(matchLabels);
+                PodList = await PodService.FilterPodByLabels(PodDisruptionBudget.Namespace(), filter);
             }
             await base.OnInitializedAsync();
         }
