@@ -61,11 +61,10 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
         var url     = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
         using (_webSocket = new ClientWebSocket())
         {
-            try
-            {
+
                 await _webSocket.ConnectAsync(new Uri(url), cancellation);
 
-                IXunFeiAiService.JsonRequest request = new IXunFeiAiService.JsonRequest
+                var request = new IXunFeiAiService.JsonRequest
                 {
                     header = new IXunFeiAiService.Header()
                     {
@@ -158,11 +157,7 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
                     result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
                 }
             }
-            catch (Exception e)
-            {
-                logger.LogInformation(e.Message);
-            }
-        }
+
 
         return resp;
     }

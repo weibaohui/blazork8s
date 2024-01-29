@@ -16,7 +16,10 @@ public partial class ChatDeployment : ComponentBase
 
     [Inject]
     private IXunFeiAiService XunFeiAi { get; set; }
-
+    [Inject]
+    private IOpenAiService OpenAi { get; set; }
+    [Inject]
+    private IQwenAiService QwenAi { get; set; }
     [Inject]
     private IKubectlService Kubectl { get; set; }
 
@@ -46,6 +49,7 @@ public partial class ChatDeployment : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         XunFeiAi.SetChatEventHandler(EventHandler);
+        QwenAi.SetChatEventHandler(QwenEventHandler);
         await base.OnInitializedAsync();
     }
 
@@ -53,6 +57,12 @@ public partial class ChatDeployment : ComponentBase
     {
         _advice     += resp;
         _yamlAdvice += resp;
+        await InvokeAsync(StateHasChanged);
+    }
+    private async void QwenEventHandler(object sender, string resp)
+    {
+        _advice     = resp;
+        _yamlAdvice = resp;
         await InvokeAsync(StateHasChanged);
     }
 
@@ -64,7 +74,9 @@ public partial class ChatDeployment : ComponentBase
 
         if (!string.IsNullOrEmpty(_txtValue))
         {
-            _advice     = await XunFeiAi.AIChat(_txtValue);
+            // _advice     = await XunFeiAi.AIChat(_txtValue);
+            // _advice     = await OpenAi.Chat(_txtValue);
+            _advice     = await QwenAi.AIChat(_txtValue);
             _yamlAdvice = GetRegexYaml(_advice);
         }
     }
