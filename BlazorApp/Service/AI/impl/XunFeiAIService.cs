@@ -6,16 +6,18 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
+public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiService> logger) : IXunFeiAiService
 {
-    static string          hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
-    static ClientWebSocket _webSocket0;
-    static CancellationToken cancellation;
+    static string                      hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
+    static ClientWebSocket             _webSocket;
+    static CancellationToken           cancellation;
+    private event EventHandler<string> ChatEventHandler;
 
     public bool Enabled()
     {
@@ -27,12 +29,12 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
         return configService.GetString("XunFeiAI", "APPID") ?? string.Empty;
     }
 
-    private string GetAPISecret()
+    private string GetApiSecret()
     {
         return configService.GetString("XunFeiAI", "APISecret") ?? string.Empty;
     }
 
-    private string GetAPIKey()
+    private string GetApiKey()
     {
         return configService.GetString("XunFeiAI", "APIKey") ?? string.Empty;
     }
@@ -47,20 +49,21 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
         return await Query(prompt);
     }
 
+    public void SetChatEventHandler(EventHandler<string> eventHandler)
+    {
+        ChatEventHandler += eventHandler;
+    }
+
     private async Task<string> Query(string promptAndText)
     {
-        Console.WriteLine($"XunFeiAI:prompt{promptAndText}");
         String resp = "";
-
-        string authUrl = GetAuthUrl();
-        string url     = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
-
-
-        using (_webSocket0 = new ClientWebSocket())
+        var authUrl = GetAuthUrl();
+        var url     = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
+        using (_webSocket = new ClientWebSocket())
         {
             try
             {
-                await _webSocket0.ConnectAsync(new Uri(url), cancellation);
+                await _webSocket.ConnectAsync(new Uri(url), cancellation);
 
                 IXunFeiAiService.JsonRequest request = new IXunFeiAiService.JsonRequest
                 {
@@ -100,13 +103,13 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
                 var frameData2 = Encoding.UTF8.GetBytes(jsonString.ToString());
 
 
-                await _webSocket0.SendAsync(new ArraySegment<byte>(frameData2), WebSocketMessageType.Text, true,
+                await _webSocket.SendAsync(new ArraySegment<byte>(frameData2), WebSocketMessageType.Text, true,
                     cancellation);
 
                 // 接收流式返回结果进行解析
                 byte[] receiveBuffer = new byte[1024];
                 WebSocketReceiveResult result =
-                    await _webSocket0.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
+                    await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
                 while (!result.CloseStatus.HasValue)
                 {
                     if (result.MessageType == WebSocketMessageType.Text)
@@ -124,39 +127,40 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
 
                             JArray textArray = (JArray)jsonObj["payload"]?["choices"]?["text"];
-                            string content   = (string)textArray?[0]["content"];
+                            var content   = (string)textArray?[0]["content"];
                             resp += content;
 
+                            ChatEventHandler?.Invoke(this, content);
                             if (status != 2)
                             {
-                                Console.WriteLine($"已接收到数据： {receivedMessage}");
+                                // logger.LogInformation("已接收到数据： {ReceivedMessage}", receivedMessage);
                             }
                             else
                             {
-                                Console.WriteLine($"最后一帧： {receivedMessage}");
-                                var totalTokens = (int)jsonObj["payload"]?["usage"]?["text"]?["total_tokens"];
-                                Console.WriteLine($"整体返回结果： {resp}");
-                                Console.WriteLine($"本次消耗token数： {totalTokens}");
+                                // logger.LogInformation("最后一帧： {ReceivedMessage}", receivedMessage);
+                                // var totalTokens = (int)jsonObj["payload"]?["usage"]?["text"]?["total_tokens"];
+                                // logger.LogInformation("整体返回结果： {Resp}", resp);
+                                // logger.LogInformation("本次消耗token数： {TotalTokens}", totalTokens);
                                 break;
                             }
                         }
                         else
                         {
-                            Console.WriteLine($"请求报错： {receivedMessage}");
+                            // logger.LogInformation("请求报错： {ReceivedMessage}", receivedMessage);
                         }
                     }
                     else if (result.MessageType == WebSocketMessageType.Close)
                     {
-                        Console.WriteLine("已关闭WebSocket连接");
+                        // logger.LogInformation("已关闭WebSocket连接");
                         break;
                     }
 
-                    result = await _webSocket0.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
+                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                logger.LogInformation(e.Message);
             }
         }
 
@@ -205,9 +209,9 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
             .Append("date: ").Append(date).Append("\n")
             .Append("GET ").Append(uri.LocalPath).Append(" HTTP/1.1");
 
-        string sha = HmaCsha256(GetAPISecret(), builder.ToString());
+        string sha = HmaCsha256(GetApiSecret(), builder.ToString());
         string authorization =
-            $"api_key=\"{GetAPIKey()}\", algorithm=\"hmac-sha256\", headers=\"host date request-line\", signature=\"{sha}\"";
+            $"api_key=\"{GetApiKey()}\", algorithm=\"hmac-sha256\", headers=\"host date request-line\", signature=\"{sha}\"";
 
         var newUrl = "https://" + uri.Host + uri.LocalPath;
 

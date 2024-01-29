@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@ public interface IXunFeiAiService
 
     bool         Enabled();
     Task<string> AIChat(string txtValue);
+
+    void SetChatEventHandler(EventHandler<string> eventHandler);
 
 //构造请求体
     public class JsonRequest

@@ -9,29 +9,27 @@ namespace BlazorApp.Pages.ai;
 
 public partial class ChatDeployment : ComponentBase
 {
-    public string txtValue;
-    public string Advice;
-    public string YamlAdvice;
-    bool          _loading = false;
-    public string ExecResult;
+    private string _txtValue;
+    private string _advice;
+    private string _yamlAdvice;
+    private string _execResult;
 
     [Inject]
-    private IXunFeiAiService XunFeiAI { get; set; }
+    private IXunFeiAiService XunFeiAi { get; set; }
 
     [Inject]
-    private IKubectlService kubectl { get; set; }
+    private IKubectlService Kubectl { get; set; }
 
-    
 
-    public List<string> data = new List<string>
-    {
+    private readonly List<string> _data =
+    [
         "部署一个k8s nginx应用",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问，域名为www.nginx.com，并使用```yaml ```包裹起来",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问",
-        "请给出一套部署2048小游戏的k8s yaml",
-    };
+        "请给出一套部署2048小游戏的k8s yaml"
+    ];
 
-    bool _visible = false;
+    private bool _visible = false;
 
     private Task Open()
     {
@@ -47,40 +45,43 @@ public partial class ChatDeployment : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        XunFeiAi.SetChatEventHandler(EventHandler);
         await base.OnInitializedAsync();
+    }
+
+    private async void EventHandler(object sender, string resp)
+    {
+        _advice     += resp;
+        _yamlAdvice += resp;
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task ChatBtnClicked()
     {
-        Advice     = "";
-        YamlAdvice = "";
-        ExecResult = "";
+        _advice     = "";
+        _yamlAdvice = "";
+        _execResult = "";
 
-        if (!string.IsNullOrEmpty(txtValue))
+        if (!string.IsNullOrEmpty(_txtValue))
         {
-            _loading = true;
-            Advice   = await XunFeiAI.AIChat(txtValue);
-            // Advice     = await RockAi.Chat(txtValue);
-            YamlAdvice = GetRegexYaml(Advice);
-            _loading   = false;
+            _advice     = await XunFeiAi.AIChat(_txtValue);
+            _yamlAdvice = GetRegexYaml(_advice);
         }
     }
 
     private string GetRegexYaml(string input)
     {
-        string pattern = "```yaml([^`]*)```";
-        var    tmp     = RegexYaml(input, pattern);
+        var pattern = "```yaml([^`]*)```";
+        var tmp     = RegexYaml(input, pattern);
         if (string.IsNullOrEmpty(tmp))
         {
             tmp = RegexYaml(input, "```([^`]*)```");
         }
 
-        if (string.IsNullOrEmpty(tmp))
+        if (!string.IsNullOrEmpty(tmp)) return tmp;
+        if (_advice.StartsWith("---") || _advice.StartsWith("apiVersion"))
         {
-            if (Advice.StartsWith("---") || Advice.StartsWith("apiVersion"))
-            {
-                return Advice;
-            }
+            return _advice;
         }
 
         return tmp;
@@ -88,8 +89,8 @@ public partial class ChatDeployment : ComponentBase
 
     private static string RegexYaml(string input, string pattern)
     {
-        var             result  = string.Empty;
-        MatchCollection matches = Regex.Matches(input, pattern);
+        var result  = string.Empty;
+        var matches = Regex.Matches(input, pattern);
         foreach (Match match in matches)
         {
             if (match.Success)
@@ -103,13 +104,18 @@ public partial class ChatDeployment : ComponentBase
 
     private async Task BtnApplyClicked()
     {
-        ExecResult = string.Empty;
-        ExecResult = await kubectl.Apply(YamlAdvice);
+        _execResult = string.Empty;
+        _execResult = await Kubectl.Apply(_yamlAdvice);
     }
 
     private async Task BtnDeleteClicked()
     {
-        ExecResult = string.Empty;
-        ExecResult = await kubectl.Delete(YamlAdvice);
+        _execResult = string.Empty;
+        _execResult = await Kubectl.Delete(_yamlAdvice);
+    }
+
+    private void CopyToSearch(string item)
+    {
+        _txtValue = item;
     }
 }

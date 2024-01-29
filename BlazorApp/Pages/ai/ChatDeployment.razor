@@ -5,10 +5,10 @@
 
         <Card>
             <Body>
-            <AntList Bordered DataSource="@data" Size="small">
+            <AntList Bordered DataSource="@_data" Size="small">
                 <Header>提示词</Header>
                 <ChildContent Context="item">
-                    <ListItem>
+                    <ListItem OnClick="@(()=>CopyToSearch(item))">
                         <Text Copyable>@item</Text>
                     </ListItem>
                 </ChildContent>
@@ -17,41 +17,36 @@
         </Card>
     </GridCol>
     <GridCol Span="6" Style="padding-left: 10px">
-        <TextArea Bordered AutoSize MinRows="20" @bind-Value="@txtValue"  ></TextArea>
+        <TextArea Bordered AutoSize MinRows="20" @bind-Value="@_txtValue"  ></TextArea>
         <Button OnClick="ChatBtnClicked">提交</Button>
     </GridCol>
     <GridCol Span="12" Style="padding-left: 10px">
-        <Skeleton Active="true" Loading="@_loading">
-            <Card>
-                <Body>
-                <Alert Type="@AlertType.Info">
-                    生成的Yaml可以按需编辑,确认后请点击应用生效。
-                    <Button Icon=@IconType.Fill.Eye OnClick="Open"></Button>
-                </Alert>
-                <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@YamlAdvice"></TextArea>
-                <Button OnClick="BtnApplyClicked">应用</Button>
-                <Button OnClick="BtnDeleteClicked">删除</Button>
-                @if (!string.IsNullOrEmpty(ExecResult))
-                {
-                    <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
-                    <div>
-                        <p>
-                            @((MarkupString)ExecResult.ToHtmlDisplay())
-                        </p>
-                    </div>
-                }
-                </Body>
-            </Card>
+        <Card>
+            <Body>
+            <Alert Type="@AlertType.Info">
+                生成的Yaml可以按需编辑,确认后请点击应用生效。
+                <Button Icon=@IconType.Fill.Eye OnClick="Open"></Button>
+            </Alert>
+            <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@_yamlAdvice"></TextArea>
+            <Button OnClick="BtnApplyClicked">应用</Button>
+            <Button OnClick="BtnDeleteClicked">删除</Button>
+            @if (!string.IsNullOrEmpty(_execResult))
+            {
+                <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                <div>
+                    <p>
+                        @((MarkupString)_execResult.ToHtmlDisplay())
+                    </p>
+                </div>
+            }
+            </Body>
+        </Card>
 
-        </Skeleton>
     </GridCol>
 </GridRow>
 
-
 <Drawer Closable="true" Visible="_visible" Placement="right" Title='("原始回答信息")' MaskClosable OnClose="Close" Width="800">
-    <Skeleton Active="true" Loading="@_loading">
-        <Body>
-        @((MarkupString)Advice.ToHtmlDisplay())
-        </Body>
-    </Skeleton>
+    <Body>
+    @((MarkupString)_advice.ToHtmlDisplay())
+    </Body>
 </Drawer>
