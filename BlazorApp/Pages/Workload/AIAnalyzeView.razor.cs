@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Service;
+using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using k8s;
 using Microsoft.AspNetCore.Components;

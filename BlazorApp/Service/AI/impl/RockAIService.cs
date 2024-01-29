@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Entity;
 using Newtonsoft.Json;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Service.AI.impl;
 
 public class RockAiService : IRockAiService
 {

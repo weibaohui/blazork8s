@@ -8,17 +8,10 @@ using OpenAI.GPT3.Managers;
 using OpenAI.GPT3.ObjectModels;
 using OpenAI.GPT3.ObjectModels.RequestModels;
 
-namespace BlazorApp.Service.impl;
+namespace BlazorApp.Service.AI.impl;
 
-public class OpenAiService : IOpenAiService
+public class OpenAiService(IConfigService configService) : IOpenAiService
 {
-    private readonly IConfigService _configService;
-
-    public OpenAiService(IConfigService configService)
-    {
-        _configService = configService;
-    }
-
     public bool Enabled()
     {
         return IsOpenAiEnabled();
@@ -26,7 +19,7 @@ public class OpenAiService : IOpenAiService
 
     private string GetOpenAiToken()
     {
-        return _configService.GetString("OpenAI", "Token") ?? string.Empty;
+        return configService.GetString("OpenAI", "Token") ?? string.Empty;
     }
 
     public async Task<string> Chat(string prompt)
@@ -70,7 +63,7 @@ public class OpenAiService : IOpenAiService
 
     private bool IsOpenAiEnabled()
     {
-        return _configService.GetBool("OpenAI", "Enable");
+        return configService.GetBool("OpenAI", "Enable");
     }
 
     public async Task<string> ExplainError(string text)
@@ -80,7 +73,7 @@ public class OpenAiService : IOpenAiService
             return string.Empty;
         }
 
-        var prompt  = _configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("error");
+        var prompt  = configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("error");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
@@ -92,7 +85,7 @@ public class OpenAiService : IOpenAiService
             return string.Empty;
         }
 
-        var prompt  = _configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("security");
+        var prompt  = configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }

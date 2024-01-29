@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using BlazorApp.Service;
+using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
 
@@ -16,13 +16,12 @@ public partial class ChatDeployment : ComponentBase
     public string ExecResult;
 
     [Inject]
-    private IOpenAiService OpenAi { get; set; }
+    private IXunFeiAiService XunFeiAI { get; set; }
 
     [Inject]
     private IKubectlService kubectl { get; set; }
 
-    [Inject]
-    private IRockAiService RockAi { get; set; }
+    
 
     public List<string> data = new List<string>
     {
@@ -60,7 +59,7 @@ public partial class ChatDeployment : ComponentBase
         if (!string.IsNullOrEmpty(txtValue))
         {
             _loading = true;
-            Advice   = await OpenAi.Chat(txtValue);
+            Advice   = await XunFeiAI.AIChat(txtValue);
             // Advice     = await RockAi.Chat(txtValue);
             YamlAdvice = GetRegexYaml(Advice);
             _loading   = false;

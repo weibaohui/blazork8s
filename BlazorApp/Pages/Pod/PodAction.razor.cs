@@ -4,6 +4,7 @@ using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
+using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;

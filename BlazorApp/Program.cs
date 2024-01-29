@@ -1,6 +1,8 @@
 using AntDesign.ProLayout;
 using BlazorApp.Chat;
 using BlazorApp.Service;
+using BlazorApp.Service.AI;
+using BlazorApp.Service.AI.impl;
 using BlazorApp.Service.impl;
 using BlazorApp.Service.k8s;
 using BlazorApp.Service.k8s.impl;
@@ -31,8 +33,9 @@ builder.Services.AddScoped<IReplicaSetService, ReplicaSetService>();
 builder.Services.AddScoped<IEventService, EventService>();
 builder.Services.AddScoped<INamespaceService, NamespaceService>();
 builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
-builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IKubectlService, KubectlService>();
+builder.Services.AddScoped<IXunFeiAiService, XunFeiAiService>();
+builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
 
 builder.Services.AddScoped<IJobService,JobService>();

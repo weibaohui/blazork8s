@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace BlazorApp.Service;
+namespace BlazorApp.Service.AI;
 
 public interface IRockAiService
 {
