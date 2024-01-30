@@ -1,4 +1,5 @@
 @typeparam            T
+@using Extension
 @using Entity
 @inherits FeedbackComponent<T, bool>
 <div>
@@ -10,13 +11,12 @@
     <Divider/>
     <div>
         <Button OnClick="ExpandAll">展开</Button>
-        <Button OnClick="CollapseAll">关闭</Button>
+        <Button OnClick="CollapseAll">收缩</Button>
     </div>
     <Divider/>
 
     <GridRow>
         <GridCol Flex=@("200px") Style="border-width: 1px">
-
             <div>
                 <Tree
                     ChildrenExpression="x => x.DataItem.ChildList"
@@ -34,13 +34,8 @@
             </div>
         </GridCol>
         <GridCol Flex=@("auto")>
-
             <Affix OffsetTop="60">
-
-
                 <div >
-
-
                     <Card Title="@_currentItem.Title" Style="max-width:600px">
                         <Body>
                         <p>@_currentItem.description</p>
@@ -56,6 +51,15 @@
                         </p>
                         </Body>
                     </Card>
+                    @if (!string.IsNullOrEmpty(_resultCn))
+                    {
+                        <Card Title="@(AiService.Name() + "Translation")" Style="max-width:600px">
+                            <p><Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link" OnClick="@ReTranslate">对这个翻译不满意，重新翻译</Button></p>
+                            <p>
+                                @((MarkupString)_resultCn.ToHtmlDisplay())
+                            </p>
+                        </Card>
+                    }
                 </div>
             </Affix>
         </GridCol>

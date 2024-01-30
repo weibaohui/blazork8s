@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Service.AI;
 using BlazorApp.Utils.Swagger;
 using Entity;
 using k8s;
@@ -14,7 +15,10 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
 {
     [Parameter]
     public T Item { get; set; }
+    [Inject]
+    IAiService AiService { get; set; }
 
+    private string _resultCn;
 
 
     [Inject]
@@ -25,7 +29,6 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
 
     private          TreeData _currentItem         = new();
     private          string   _currentRootKey      = "";
-    private readonly string[] _defaultSelectedKeys = new string[] { "apiVersion" };
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,9 +45,18 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         _currentRootKey = key;
         var definition = SwaggerHelper.Instance.GetEntityByName(key);
         _dataList.AddRange(definition.ToTreeData().ChildList);
+
+        if (AiService.Enabled())
+        {
+            AiService.SetChatEventHandler(EventHandler);
+        }
         await base.OnInitializedAsync();
     }
-
+    private async void EventHandler(object sender, string resp)
+    {
+        _resultCn += resp;
+        await InvokeAsync(StateHasChanged);
+    }
     private void ExpandAll()
     {
         _tree.ExpandAll();
@@ -82,14 +94,23 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         return $"{arg.DataItem.Title}";
     }
 
-    private void OnChecked(TreeEventArgs<TreeData> obj)
-    {
-        throw new NotImplementedException();
-    }
+
 
     private void OnItemClick(TreeEventArgs<TreeData> arg)
     {
         _currentItem = arg.Node.DataItem;
+        if (AiService.Enabled())
+        {
+            ReTranslate();
+        }
+    }
+    private async Task ReTranslate()
+    {
+        if (!AiService.Enabled()) return;
+
+        _resultCn = "";
+        await InvokeAsync(StateHasChanged);
+        _resultCn = await AiService.AIChat("请逐字翻译以下内容，注意请不要遗漏细节并保持原来的格式：" + _currentItem.description);
     }
 
 }
