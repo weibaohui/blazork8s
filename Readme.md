@@ -50,19 +50,38 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
  dotnet watch run
 ```
 
-## OpenAI 智能诊断 配置
+## AI 智能诊断 配置
 
 修改BlazorApp目录下的appsettings.json
-
 ```
-  "OpenAI": {
+  "AI": {
     "Enable": true, //是否开启
-    "Token": "sk-xxx", //openai secret
+    "Select": "QwenAI" //选择哪一个大模型。可选阿里通义千问、科大讯飞星火大模型
+  },
+   "QwenAI": {
+    "APIKey": "sk-xxxxxxx7dd3494880a7920axxxxxxxxx",
     "Prompt": {
-      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议："
+      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议：",
+      "security": "简明扼要地用Kubernetes安全专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议:"
     }
-  }
+  },
+  "XunFeiAI": {
+    "APPID": "xxxxxx",
+    "APISecret": "XXXjYzgzY2E0ZTkwxxxxxxYxMDJkYTBl",
+    "APIKey": "xxxxxxx7dd3494880a7920axxxxxxxxx",
+    "Prompt": {
+      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议：",
+      "security": "简明扼要地用Kubernetes安全专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议:"
+    }
+  },
 ```
+## AI 智能翻译
+### 点击资源详情页面上，字段前面的问号
+* 使用kubectl 获取k8s解释
+* 使用配置的AI大模型，进行智能解释，效果如下
+  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
+
+
 
 #预览
 <p align="left">
