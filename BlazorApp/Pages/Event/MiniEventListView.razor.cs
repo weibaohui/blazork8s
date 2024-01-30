@@ -28,6 +28,7 @@ namespace BlazorApp.Pages.Event
         public string Host { get; set; }
 
         private string Advice { get; set; }
+        private bool           _visible = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -61,7 +62,8 @@ namespace BlazorApp.Pages.Event
         }
         private async Task Ask(Corev1Event e)
         {
-            Advice = "";
+            _visible = true;
+            Advice   = "";
             await InvokeAsync(StateHasChanged);
             Advice = await  Ai.ExplainError(JsonSerializer.Serialize(e));
             await InvokeAsync(StateHasChanged);

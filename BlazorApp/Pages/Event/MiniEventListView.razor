@@ -20,7 +20,7 @@
                 }
                 @if (Ai.Enabled() && e.Type == "Warning")
                 {
-                    <Button Type="@ButtonType.Primary" OnClick="@(()=>Ask(e))">诊断</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="@(() => Ask(e))">诊断</Button>
                 }
             </HTableColumn>
             @if (e.Source != null)
@@ -68,4 +68,10 @@
     {
         <Empty Simple/>
     }
+
+    <Drawer Closable="true" Width="800" @bind-Visible="_visible" Placement="right" Title="@(Ai.Name() + "智能诊断")">
+        <div>
+            <p>@((MarkupString)Advice.ToHtmlDisplay())</p>
+        </div>
+    </Drawer>
 }
