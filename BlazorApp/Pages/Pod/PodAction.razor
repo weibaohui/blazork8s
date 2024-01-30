@@ -17,7 +17,7 @@
                 </MenuItem>
                 @if (_enable)
                 {
-                    <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
+                    <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">问题分析</MenuItem>
                     <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
                 }
             </Menu>
@@ -36,7 +36,7 @@
         <Button OnClick="@(() => OnDocClick(PodItem))">Doc</Button>
         @if (_enable)
         {
-            <Button OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</Button>
+            <Button OnClick="@(() => OnAnalyzeClick(PodItem))">问题分析</Button>
             <Button OnClick="@(() => OnSecurityClick(PodItem))">安全检测</Button>
         }
     </Alert>

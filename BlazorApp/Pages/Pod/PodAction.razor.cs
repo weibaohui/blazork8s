@@ -17,7 +17,7 @@ public partial class PodAction : ComponentBase
     public V1Pod PodItem { get; set; }
 
     [Parameter]
-    public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 
     [Inject]
     private IPodService PodService { get; set; }
@@ -63,22 +63,25 @@ public partial class PodAction : ComponentBase
 
     private async Task OnAnalyzeClick(V1Pod pod)
     {
+
         var options = PageDrawerService.DefaultOptions($"AI智能分析:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,   new IAiService.AiChatData
-        {
-            Data  = pod,
-            Style  = "error"
-        });
+        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
+            new IAiService.AiChatData
+            {
+                Data  =  pod,
+                Style = "error"
+            });
     }
 
     private async Task OnSecurityClick(V1Pod pod)
     {
         var options = PageDrawerService.DefaultOptions($"AI安全检测:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options, new IAiService.AiChatData
-        {
-            Data  = pod,
-            Style = "security"
-        });
+        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
+            new IAiService.AiChatData
+            {
+                Data  = pod,
+                Style = "security"
+            });
     }
 
     private async Task OnYamlClick(V1Pod item)
@@ -86,7 +89,7 @@ public partial class PodAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<YamlView<V1Pod>, V1Pod, bool>(options, item);
     }
-     
+
 
     private async Task OnDocClick(V1Pod item)
     {
