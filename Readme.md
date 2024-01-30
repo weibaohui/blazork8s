@@ -78,7 +78,8 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
 ## AI 智能翻译
 ### 点击资源详情页面上，字段前面的问号
 * 使用kubectl 获取k8s解释
-* 使用配置的AI大模型，进行智能解释，效果如下
+* 使用配置的AI大模型，进行智能解释，效果如下：
+<br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
 
 
