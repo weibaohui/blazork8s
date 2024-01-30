@@ -82,12 +82,14 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
 * 使用配置的AI大模型，进行智能解释，效果如下：
 <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
-  <br>
+<br>
+
 ### 生成部署yaml
 <br>
 通过提示词获得k8s部署yaml，并执行<br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
 <br>
+
 ### POD智能分析
 <br>
  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
