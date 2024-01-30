@@ -12,12 +12,11 @@
 尤其适合新手入门使用，提供多种便捷功能方便初学者掌握k8s知识。
 
 * 多彩直观显示k8s资源
-* Yaml定义字段按树形展开分析，自带文档，且有可使用大模型进行翻译
-* 详细的k8s资源字段解释
+* Yaml定义字段按树形展开分析，自带文档，且有可使用大模型进行翻译。再也不用担心记不住定义了。
+* 详细的k8s资源字段解释，再也不用担心不知道这个字段有几个选项，都是什么意思了。
 * 大模型生成yaml
 * 大模型问题分析
 * 大模型安全检测
-* 大模型k8s资源字段定义解释
 * 资源用量动态展示（需安装metric server）
 
 ## ☀️ 授权协议
@@ -93,7 +92,7 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
 
 ## 大模型加持
 
-### DocTree展开解释yaml含义
+### DocTree树状展开yaml定义，再也不用担心记不住定义了
 <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/doc-tree.gif">
   <br>
