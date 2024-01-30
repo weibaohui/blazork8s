@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
+using BlazorApp.Pages.Workload;
+using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Extension.k8s;
@@ -17,8 +18,9 @@ namespace BlazorApp.Pages.Event
 
         [Inject]
         private IAiService Ai { get; set; }
-
-        private IList<Corev1Event> Events { get; set; }
+        [Inject]
+        private IPageDrawerService PageDrawerService { get; set; }
+        private IList<Corev1Event> Events { get;            set; }
 
 
         [Parameter]
@@ -27,8 +29,6 @@ namespace BlazorApp.Pages.Event
         [Parameter]
         public string Host { get; set; }
 
-        private string Advice { get; set; }
-        private bool           _visible = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -38,35 +38,27 @@ namespace BlazorApp.Pages.Event
             Events = string.IsNullOrEmpty(Uid)
                 ? coreEventList.FilterBySourceHost(Host)
                 : coreEventList.FilterByUID(Uid);
-
-            if (Ai.Enabled())
-            {
-                Ai.SetChatEventHandler(EventHandler);
-
-                if (Events != null && Events.Any(x => x.Type == "Warning"))
-                {
-                    Advice = await Ai.ExplainError(
-                        JsonSerializer.Serialize(
-                            Events.Where(x => x.Type == "Warning").ToList()
-                        )
-                    );
-                }
-            }
         }
 
 
-        private async void EventHandler(object sender, string resp)
-        {
-            Advice += resp;
-            await InvokeAsync(StateHasChanged);
-        }
         private async Task Ask(Corev1Event e)
         {
-            _visible = true;
-            Advice   = "";
-            await InvokeAsync(StateHasChanged);
-            Advice = await  Ai.ExplainError(JsonSerializer.Serialize(e));
-            await InvokeAsync(StateHasChanged);
+            var options = PageDrawerService.DefaultOptions($"AI分析", width: 1000);
+            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options, new IAiService.AiChatData
+            {
+                Data  = e,
+                Style = "error"
+            });
+        }
+
+        private async Task AskAll()
+        {
+            var options = PageDrawerService.DefaultOptions($"AI分析", width: 1000);
+            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options, new IAiService.AiChatData
+            {
+                Data  = Events.Where(x => x.Type == "Warning").ToList(),
+                Style = "error"
+            });
         }
     }
 }

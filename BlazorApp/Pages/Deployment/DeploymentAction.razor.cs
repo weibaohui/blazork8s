@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
@@ -34,7 +33,7 @@ public partial class DeploymentAction : ComponentBase
     private IPageDrawerService PageDrawerService { get; set; }
 
     [Inject]
-    private IOpenAiService OpenAi { get; set; }
+    private IAiService Ai { get; set; }
 
     [Parameter]
     public EventCallback<V1Deployment> OnDeploymentDelete { get; set; }
@@ -43,7 +42,7 @@ public partial class DeploymentAction : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        Enable = OpenAi.Enabled();
+        Enable = Ai.Enabled();
         await base.OnInitializedAsync();
     }
 
@@ -51,27 +50,6 @@ public partial class DeploymentAction : ComponentBase
     {
         await DeploymentService.Delete(item.Namespace(), item.Name());
         await OnDeploymentDelete.InvokeAsync(item);
-    }
-
-
-    private async Task OnAnalyzeClick(V1Deployment item)
-    {
-        var options = PageDrawerService.DefaultOptions($"AI智能分析:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
-        {
-            data  = item,
-            style = "error"
-        });
-    }
-
-    private async Task OnSecurityClick(V1Deployment item)
-    {
-        var options = PageDrawerService.DefaultOptions($"AI安全检测:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
-        {
-            data  = item,
-            style = "security"
-        });
     }
 
     private async Task OnRestartClick(V1Deployment item)

@@ -1,0 +1,10 @@
+@using Extension
+@inherits FeedbackComponent<BlazorApp.Service.AI.IAiService.AiChatData, bool>
+
+<Card Title="@(Ai.Name())">
+    <div>
+        <p>
+            @((MarkupString)Advice.ToHtmlDisplay())
+        </p>
+    </div>
+</Card>

@@ -29,4 +29,10 @@ public interface IAiService
     /// <returns></returns>
     string Name();
 
+
+    public class AiChatData
+    {
+        public Object Data  { get; set; }
+        public string Style { get; set; }
+    }
 }

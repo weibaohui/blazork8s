@@ -1,10 +1,18 @@
-﻿@using Extension
-@using BlazorApp.Pages.Common.Html.HTable
+﻿@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html
 <Divider Orientation="left" Style="font-weight:bold">Events</Divider>
 @if (Events != null)
 {
+    if (Events.Any(x => x.Type == "Warning"))
+    {
+        <HTable>
+            <HTableColumn Title="AI分析">
+                <Button Type="@ButtonType.Primary" OnClick="@(() => AskAll())">诊断</Button>
+            </HTableColumn>
+        </HTable>
+    }
+
     foreach (var e in Events)
     {
         <HTable Bordered Column="1">
@@ -55,26 +63,8 @@
         </HTable>
     }
 
-    if (Ai.Enabled())
-    {
-        if (Events != null && Events.Any(x => x.Type == "Warning"))
-        {
-            <Card Title="@(Ai.Name() + "智能诊断")">
-                <div>
-                    <p>@((MarkupString)Advice.ToHtmlDisplay())</p>
-                </div>
-            </Card>
-        }
-    }
-
     if (Events.Count == 0)
     {
         <Empty Simple/>
     }
-
-    <Drawer Closable="true" Width="800" @bind-Visible="_visible" Placement="right" Title="@(Ai.Name() + "智能诊断")">
-        <div>
-            <p>@((MarkupString)Advice.ToHtmlDisplay())</p>
-        </div>
-    </Drawer>
 }

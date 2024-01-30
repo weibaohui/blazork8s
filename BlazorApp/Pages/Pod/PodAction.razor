@@ -15,8 +15,11 @@
                         删除
                     </Popconfirm>
                 </MenuItem>
-                <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
-                <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
+                @if (_enable)
+                {
+                    <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</MenuItem>
+                    <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
+                }
             </Menu>
         </Overlay>
         <ChildContent>
@@ -31,6 +34,10 @@
         <Button OnClick="@(() => OnPodExecClick(PodItem))">Exec</Button>
         <Button OnClick="@(() => OnYamlClick(PodItem))">Yaml</Button>
         <Button OnClick="@(() => OnDocClick(PodItem))">Doc</Button>
-
+        @if (_enable)
+        {
+            <Button OnClick="@(() => OnAnalyzeClick(PodItem))">故障分析</Button>
+            <Button OnClick="@(() => OnSecurityClick(PodItem))">安全检测</Button>
+        }
     </Alert>
 }

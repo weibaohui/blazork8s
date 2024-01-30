@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
@@ -28,17 +27,18 @@ public partial class PodAction : ComponentBase
     private IPageDrawerService PageDrawerService { get; set; }
 
     [Inject]
-    private IOpenAiService OpenAi { get; set; }
+    private IAiService Ai { get; set; }
 
 
     [Inject]
     private ILogger<PodAction> Logger { get; set; }
-    public bool Enable;
+
+    private bool _enable;
 
 
     protected override async Task OnInitializedAsync()
     {
-        Enable = OpenAi.Enabled();
+        _enable = Ai.Enabled();
         await base.OnInitializedAsync();
     }
 
@@ -64,20 +64,20 @@ public partial class PodAction : ComponentBase
     private async Task OnAnalyzeClick(V1Pod pod)
     {
         var options = PageDrawerService.DefaultOptions($"AI智能分析:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
+        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,   new IAiService.AiChatData
         {
-            data  = pod,
-            style = "error"
+            Data  = pod,
+            Style  = "error"
         });
     }
 
     private async Task OnSecurityClick(V1Pod pod)
     {
         var options = PageDrawerService.DefaultOptions($"AI安全检测:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AIAnalyzeView, Object, bool>(options, new IOpenAiService.AIChatData()
+        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options, new IAiService.AiChatData
         {
-            data  = pod,
-            style = "security"
+            Data  = pod,
+            Style = "security"
         });
     }
 
