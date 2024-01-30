@@ -27,7 +27,7 @@
 
             <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@_yamlAdvice"></TextArea>
             <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
-            <Button OnClick="BtnDeleteClicked">删除</Button>
+            <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">删除</Button>
             @if (!string.IsNullOrEmpty(_execResult))
             {
                 <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
