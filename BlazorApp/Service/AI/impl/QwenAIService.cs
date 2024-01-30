@@ -16,10 +16,6 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     private event EventHandler<string> ChatEventHandler;
 
-    public bool Enabled()
-    {
-        return IsQwenAiEnabled();
-    }
 
 
     private string GetApiKey()
@@ -29,11 +25,6 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     public async Task<string> AIChat(string prompt)
     {
-        if (!IsQwenAiEnabled())
-        {
-            return string.Empty;
-        }
-
         return await Query(prompt);
     }
 
@@ -113,18 +104,9 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         _lastResp = resp;
         if (ChatEventHandler != null) ChatEventHandler(this, _incrementResp);
     }
-    private bool IsQwenAiEnabled()
-    {
-        return configService.GetBool("QwenAI", "Enable");
-    }
 
     public async Task<string> ExplainError(string text)
     {
-        if (!IsQwenAiEnabled())
-        {
-            return string.Empty;
-        }
-
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
         var content = $"{prompt} \n {text}";
         return await Query(content);
@@ -132,13 +114,12 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     public async Task<string> ExplainSecurity(string text)
     {
-        if (!IsQwenAiEnabled())
-        {
-            return string.Empty;
-        }
-
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
+    }
+    public string Name()
+    {
+        return "阿里通义千问大模型";
     }
 }

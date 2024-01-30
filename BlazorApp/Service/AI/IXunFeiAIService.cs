@@ -1,23 +1,12 @@
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BlazorApp.Service.AI;
 
-public interface IXunFeiAiService
+/// <summary>
+/// 科大讯飞星火大模型
+/// </summary>
+public interface IXunFeiAiService : IAiService
 {
-    //解释错误
-    public Task<string> ExplainError(string text);
-
-    //解释安全问题
-    public Task<string> ExplainSecurity(string text);
-
-    bool         Enabled();
-    Task<string> AIChat(string txtValue);
-
-    void SetChatEventHandler(EventHandler<string> eventHandler);
-
-//构造请求体
     public class JsonRequest
     {
         public Header    header    { get; set; }

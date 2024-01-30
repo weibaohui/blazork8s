@@ -4,25 +4,38 @@ using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 using Entity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class RockAiService : IRockAiService
+public class RockAiService(IConfigService configService, ILogger<RockAiService> logger) : IRockAiService
 {
-    private readonly IConfigService _configService;
 
-    public RockAiService(IConfigService configService)
+    public async Task<string> AIChat(string prompt)
     {
-        _configService = configService;
+        return await Query(prompt);
     }
 
-
-    public async Task<string> Chat(string txtValue)
+    public async Task<string> ExplainError(string text)
     {
-        var url   = _configService.GetString("RockAI", "Url");
-        var appid = _configService.GetString("RockAI", "AppId");
-        var sid   = _configService.GetString("RockAI", "Sid");
+        var prompt  = configService.GetSection("RockAI")!.GetSection("Prompt").GetValue<string>("error");
+        var content = $"{prompt} \n {text}";
+        return await AIChat(content);    }
+
+    public async Task<string> ExplainSecurity(string text)
+    {
+        var prompt  = configService.GetSection("RockAI")!.GetSection("Prompt").GetValue<string>("security");
+        var content = $"{prompt} \n {text}";
+        return await AIChat(content);
+    }
+
+    private async Task<string> Query(string txtValue)
+    {
+        var url   = configService.GetString("RockAI", "Url");
+        var appid = configService.GetString("RockAI", "AppId");
+        var sid   = configService.GetString("RockAI", "Sid");
         Console.WriteLine(url);
         var chat = new RockAI.Chat()
         {
@@ -53,5 +66,14 @@ public class RockAiService : IRockAiService
             Console.WriteLine($"Error: {response.StatusCode}");
             return "";
         }
+    }
+
+    public void SetChatEventHandler(EventHandler<string> handler)
+    {
+        logger.LogInformation("SetChatEventHandler");
+    }
+    public string Name()
+    {
+        return "自研大模型";
     }
 }

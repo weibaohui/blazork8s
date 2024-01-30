@@ -19,11 +19,6 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
     static CancellationToken           cancellation;
     private event EventHandler<string> ChatEventHandler;
 
-    public bool Enabled()
-    {
-        return IsXunFeiAiEnabled();
-    }
-
     private string GetAppId()
     {
         return configService.GetString("XunFeiAI", "APPID") ?? string.Empty;
@@ -41,11 +36,6 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
 
     public async Task<string> AIChat(string prompt)
     {
-        if (!IsXunFeiAiEnabled())
-        {
-            return string.Empty;
-        }
-
         return await Query(prompt);
     }
 
@@ -162,18 +152,9 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
         return resp;
     }
 
-    private bool IsXunFeiAiEnabled()
-    {
-        return configService.GetBool("XunFeiAI", "Enable");
-    }
 
     public async Task<string> ExplainError(string text)
     {
-        if (!IsXunFeiAiEnabled())
-        {
-            return string.Empty;
-        }
-
         var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("error");
         var content = $"{prompt} \n {text}";
         return await Query(content);
@@ -181,11 +162,6 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
 
     public async Task<string> ExplainSecurity(string text)
     {
-        if (!IsXunFeiAiEnabled())
-        {
-            return string.Empty;
-        }
-
         var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
@@ -228,5 +204,9 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
         date = hMACSHA256.ComputeHash(date);
         hMACSHA256.Clear();
         return Convert.ToBase64String(date);
+    }
+    public string Name()
+    {
+        return "科大讯飞星火大模型";
     }
 }

@@ -38,6 +38,7 @@ builder.Services.AddScoped<IXunFeiAiService, XunFeiAiService>();
 builder.Services.AddScoped<IOpenAiService, OpenAiService>();
 builder.Services.AddScoped<IRockAiService, RockAiService>();
 builder.Services.AddScoped<IQwenAiService, QwenAiService>();
+builder.Services.AddScoped<IAiService, AiService>();
 
 builder.Services.AddScoped<IJobService,JobService>();
 builder.Services.AddScoped<IServiceService,ServiceService>();

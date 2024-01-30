@@ -13,15 +13,11 @@ public partial class ChatDeployment : ComponentBase
     private string _advice;
     private string _yamlAdvice;
     private string _execResult;
+    private string _aiName = "";
+
 
     [Inject]
-    private IXunFeiAiService XunFeiAi { get; set; }
-
-    [Inject]
-    private IOpenAiService OpenAi { get; set; }
-
-    [Inject]
-    private IQwenAiService QwenAi { get; set; }
+    private IAiService Ai { get; set; }
 
     [Inject]
     private IKubectlService Kubectl { get; set; }
@@ -35,30 +31,17 @@ public partial class ChatDeployment : ComponentBase
         "请给出一套部署2048小游戏的k8s yaml"
     ];
 
-    private bool _visible = false;
-
-    private Task Open()
-    {
-        this._visible = true;
-        return Task.CompletedTask;
-    }
-
-    private Task Close()
-    {
-        this._visible = false;
-        return Task.CompletedTask;
-    }
 
     protected override async Task OnInitializedAsync()
     {
-        XunFeiAi.SetChatEventHandler(EventHandler);
-        QwenAi.SetChatEventHandler(EventHandler);
+        _aiName = Ai.Name();
+        Ai.SetChatEventHandler(EventHandler);
         await base.OnInitializedAsync();
     }
 
     private async void EventHandler(object sender, string resp)
     {
-        _advice     += resp;
+        _advice += resp;
         await InvokeAsync(StateHasChanged);
     }
 
@@ -71,9 +54,7 @@ public partial class ChatDeployment : ComponentBase
 
         if (!string.IsNullOrEmpty(_txtValue))
         {
-            // _advice     = await XunFeiAi.AIChat(_txtValue);
-            // _advice     = await OpenAi.Chat(_txtValue);
-            _advice     = await QwenAi.AIChat(_txtValue);
+            _advice     = await Ai.AIChat(_txtValue);
             _yamlAdvice = GetRegexYaml(_advice);
         }
     }

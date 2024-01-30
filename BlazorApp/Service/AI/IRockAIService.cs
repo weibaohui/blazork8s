@@ -1,8 +1,5 @@
-using System.Threading.Tasks;
-
 namespace BlazorApp.Service.AI;
 
-public interface IRockAiService
+public interface IRockAiService: IAiService
 {
-    Task<string> Chat(string txtValue);
 }
