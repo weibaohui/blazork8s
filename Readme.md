@@ -1,14 +1,23 @@
 [![Build](https://github.com/weibaohui/blazork8s/actions/workflows/BlazorApp.yml/badge.svg)](https://github.com/weibaohui/blazork8s/actions/workflows/server.yml)
 
-使用C# Blazor 编写的kubernetes管理工具，集成了ChatGPT智能检测能力，用简单易用的操作界面，提升k8s管理效率。
 
 <p align="center">
   <a href="https://github.com/weibaohui/blazork8s">
     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/BlazorApp/wwwroot/pro_icon.svg">
   </a>
+  <h1 align="center"> Blazor k8s </h1>
 </p>
 
-<h1 align="center"> Blazor k8s </h1>
+使用C# Blazor 编写的kubernetes管理工具，集成了ChatGPT类大模型，用简单易用的操作界面，提升k8s管理效率。
+尤其适合新手入门使用，提供多种便捷功能方便初学者掌握k8s知识。
+
+* 多彩直观显示k8s资源
+* 详细的k8s资源字段解释
+* 大模型生成yaml
+* 大模型问题分析
+* 大模型安全检测
+* 大模型k8s资源字段定义解释
+* 资源用量动态展示（需安装metric server）
 
 ## ☀️ 授权协议
 
@@ -45,14 +54,19 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
 
 ```
  git clone git@github.com:weibaohui/blazork8s.git
- cd blazork8s
- cd BlazorApp
+ cd blazork8s/BlazorApp
  dotnet watch run
 ```
 
-## AI 智能诊断 配置
+## 大模型 配置
+
+* √ 阿里云通义千问
+* √ 科大讯飞星火大模型
+* √ openAI
+* 未完待续 (百度等模型...)
 
 修改BlazorApp目录下的appsettings.json
+
 ```
   "AI": {
     "Enable": true, //是否开启
@@ -75,26 +89,32 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
     }
   },
 ```
+
 ## 大模型加持
+
 ### 字段含义解释
+
 #### 点击资源详情页面上，字段前面的问号
+
 * 使用kubectl 获取k8s解释
 * 使用配置的AI大模型，进行智能解释，效果如下：
-<br>
+  <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
-<br>
+  <br>
 
 ### 生成部署yaml
+
 <br>
 通过提示词获得k8s部署yaml，并执行<br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
 <br>
 
 ### POD智能分析
+
 <br>
  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
 <br>
 
-
 ## 页面预览
+
 [click me](ui.md)
