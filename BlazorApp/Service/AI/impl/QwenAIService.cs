@@ -25,6 +25,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     public async Task<string> AIChat(string prompt)
     {
+        prompt = JsonConvert.SerializeObject(prompt).TrimStart('"').TrimEnd('"');
         return await Query(prompt);
     }
 
@@ -112,10 +113,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
     {
 
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
-        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"')
-            .Replace("\n", "")
-            .Replace("\r", "")
-            .ReplaceLineEndings().Trim();
+        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
         var content = $"{prompt}:{text}";
         return await Query(content);
     }
@@ -123,10 +121,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
     public async Task<string> ExplainSecurity(string text)
     {
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("security");
-        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"')
-            .Replace("\n", "")
-            .Replace("\r", "")
-            .ReplaceLineEndings().Trim();
+        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
         var content = $"{prompt}:{text}";
         return await Query(content);
     }

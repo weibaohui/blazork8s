@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
@@ -14,7 +15,11 @@ public partial class KubectlExplainView : DrawerPageBase<string>
     [Inject]
     IKubectlService Kubectl { get; set; }
 
-    public string Result { get; set; }
+    [Inject]
+    IAiService AiService    { get; set; }
+
+    private string _result;
+    private string _resultCn;
 
     protected override async Task OnInitializedAsync()
     {
@@ -22,7 +27,20 @@ public partial class KubectlExplainView : DrawerPageBase<string>
         await base.OnInitializedAsync();
         if (!Field.IsNullOrEmpty())
         {
-            Result = await Kubectl.Explain(Field);
+            _result = await Kubectl.Explain(Field);
         }
+
+        if (AiService.Enabled())
+        {
+            AiService.SetChatEventHandler(EventHandler);
+            _resultCn=await AiService.AIChat("请详细翻译下这段文字，不要遗漏细节：" + _result);
+        }
+    }
+
+
+    private async void EventHandler(object sender, string resp)
+    {
+        _resultCn += resp;
+        await InvokeAsync(StateHasChanged);
     }
 }

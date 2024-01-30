@@ -4,6 +4,16 @@
 
 
 <Divider>@Field</Divider>
-<p>
-    @((MarkupString)Result.ToHtmlDisplay())
-</p>
+<Card Title="k8s output">
+    <p>
+        @((MarkupString)_result.ToHtmlDisplay())
+    </p>
+</Card>
+@if (!string.IsNullOrEmpty(_resultCn))
+{
+    <Card Title="@(AiService.Name() + "Translation")">
+        <p>
+            @((MarkupString)_resultCn.ToHtmlDisplay())
+        </p>
+    </Card>
+}
