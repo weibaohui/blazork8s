@@ -16,7 +16,7 @@ namespace BlazorApp.Pages.Event
         private IEventService EventService { get; set; }
 
         [Inject]
-        private IOpenAiService OpenAi { get; set; }
+        private IAiService Ai { get; set; }
 
         private IList<Corev1Event> Events { get; set; }
 
@@ -32,17 +32,39 @@ namespace BlazorApp.Pages.Event
         protected override async Task OnInitializedAsync()
         {
             var coreEventList = EventService.List();
+            await base.OnInitializedAsync();
+
             Events = string.IsNullOrEmpty(Uid)
                 ? coreEventList.FilterBySourceHost(Host)
                 : coreEventList.FilterByUID(Uid);
 
-            if (OpenAi.Enabled())
+            if (Ai.Enabled())
             {
-                if (Events!.Any(x => x.Type == "Warning"))
+                Ai.SetChatEventHandler(EventHandler);
+
+                if (Events != null && Events.Any(x => x.Type == "Warning"))
                 {
-                    Advice = await OpenAi.ExplainError(JsonSerializer.Serialize(Events));
+                    Advice = await Ai.ExplainError(
+                        JsonSerializer.Serialize(
+                            Events.Where(x => x.Type == "Warning").ToList()
+                        )
+                    );
                 }
             }
+        }
+
+
+        private async void EventHandler(object sender, string resp)
+        {
+            Advice += resp;
+            await InvokeAsync(StateHasChanged);
+        }
+        private async Task Ask(Corev1Event e)
+        {
+            Advice = "";
+            await InvokeAsync(StateHasChanged);
+            Advice = await  Ai.ExplainError(JsonSerializer.Serialize(e));
+            await InvokeAsync(StateHasChanged);
         }
     }
 }

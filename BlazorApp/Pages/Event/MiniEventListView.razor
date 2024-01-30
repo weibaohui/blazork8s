@@ -12,12 +12,15 @@
             <HTableColumn Title="Message">
 
                 <span style="color: @(e.Type == "Warning" ? "red" : "black")">
-                    @e.Message
+                    [@e.Type] @e.Message
                 </span>
-
                 @if (e.Count > 1)
                 {
                     <Badge Count="@e.Count"></Badge>
+                }
+                @if (Ai.Enabled() && e.Type == "Warning")
+                {
+                    <Button Type="@ButtonType.Primary" OnClick="@(()=>Ask(e))">诊断</Button>
                 }
             </HTableColumn>
             @if (e.Source != null)
@@ -52,16 +55,16 @@
         </HTable>
     }
 
-    if (!String.IsNullOrEmpty(Advice))
+    if (Ai.Enabled())
     {
-        <Card Title="智能诊断">
-            <Body>
-            @((MarkupString)Advice.ToHtmlDisplay())
-            </Body>
+        <Card Title="@(Ai.Name() + "智能诊断")">
+            <div>
+                <p>@((MarkupString)Advice.ToHtmlDisplay())</p>
+            </div>
         </Card>
     }
 
-    if (Events.Count==0)
+    if (Events.Count == 0)
     {
         <Empty Simple/>
     }
