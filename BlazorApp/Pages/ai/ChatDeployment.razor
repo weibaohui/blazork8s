@@ -1,52 +1,44 @@
 @page "/ai/chatDeploy"
 @using Extension
-<GridRow>
-    <GridCol Span="6" Style="padding-left: 10px">
-
-        <Card>
-            <Body>
+<GridRow >
+    <GridCol Span="6" >
+        <Card Title="提示词">
             <AntList Bordered DataSource="@_data" Size="small">
-                <Header>提示词</Header>
                 <ChildContent Context="item">
-                    <ListItem OnClick="@(()=>CopyToSearch(item))">
+                    <ListItem OnClick="@(() => CopyToSearch(item))">
                         <Text Copyable>@item</Text>
                     </ListItem>
                 </ChildContent>
             </AntList>
-            </Body>
+            <TextArea Bordered AutoSize MinRows="20" @bind-Value="@_txtValue" Style="padding-top: 20px"  ></TextArea>
+            <Button OnClick="ChatBtnClicked" Type="@ButtonType.Primary">发送</Button>
         </Card>
     </GridCol>
-    <GridCol Span="6" Style="padding-left: 10px">
-        <TextArea Bordered AutoSize MinRows="20" @bind-Value="@_txtValue"  ></TextArea>
-        <Button OnClick="ChatBtnClicked">提交</Button>
+
+    <GridCol Span="12" >
+        <Card Title="反馈信息">
+            <Text Copyable>
+                @((MarkupString)_advice.ToHtmlDisplay())
+            </Text>
+        </Card>
     </GridCol>
-    <GridCol Span="12" Style="padding-left: 10px">
-        <Card>
-            <Body>
-            <Alert Type="@AlertType.Info">
-                生成的Yaml可以按需编辑,确认后请点击应用生效。
-                <Button Icon=@IconType.Fill.Eye OnClick="Open"></Button>
-            </Alert>
+    <GridCol Span="6" >
+        <Card Title="提取Yaml">
+
             <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@_yamlAdvice"></TextArea>
-            <Button OnClick="BtnApplyClicked">应用</Button>
-            <Button OnClick="BtnDeleteClicked">删除</Button>
+            <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
+            <Button OnClick="BtnDeleteClicked" >删除</Button>
             @if (!string.IsNullOrEmpty(_execResult))
             {
                 <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
                 <div>
                     <p>
-                        @((MarkupString)_execResult.ToHtmlDisplay())
+                        <Text Copyable>
+                            @((MarkupString)_execResult.ToHtmlDisplay())
+                        </Text>
                     </p>
                 </div>
             }
-            </Body>
         </Card>
-
     </GridCol>
 </GridRow>
-
-<Drawer Closable="true" Visible="_visible" Placement="right" Title='("原始回答信息")' MaskClosable OnClose="Close" Width="800">
-    <Body>
-    @((MarkupString)_advice.ToHtmlDisplay())
-    </Body>
-</Drawer>

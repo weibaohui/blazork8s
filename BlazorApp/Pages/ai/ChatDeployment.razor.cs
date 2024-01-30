@@ -16,10 +16,13 @@ public partial class ChatDeployment : ComponentBase
 
     [Inject]
     private IXunFeiAiService XunFeiAi { get; set; }
+
     [Inject]
     private IOpenAiService OpenAi { get; set; }
+
     [Inject]
     private IQwenAiService QwenAi { get; set; }
+
     [Inject]
     private IKubectlService Kubectl { get; set; }
 
@@ -49,27 +52,16 @@ public partial class ChatDeployment : ComponentBase
     protected override async Task OnInitializedAsync()
     {
         XunFeiAi.SetChatEventHandler(EventHandler);
-        QwenAi.SetChatEventHandler(QwenEventHandler);
+        QwenAi.SetChatEventHandler(EventHandler);
         await base.OnInitializedAsync();
     }
 
     private async void EventHandler(object sender, string resp)
     {
         _advice     += resp;
-        _yamlAdvice += resp;
         await InvokeAsync(StateHasChanged);
     }
 
-    private string _tmpQwenResp="";
-    private async void QwenEventHandler(object sender, string resp)
-    {
-
-        _tmpQwenResp =  string.IsNullOrEmpty(_tmpQwenResp) ? resp : resp.Replace(_tmpQwenResp,"");
-        _advice     += _tmpQwenResp ;
-        _yamlAdvice += _tmpQwenResp;
-
-        await InvokeAsync(StateHasChanged);
-    }
 
     private async Task ChatBtnClicked()
     {
