@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace BlazorApp.Service.AI.impl;
@@ -109,19 +110,24 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     public async Task<string> ExplainError(string text)
     {
-        logger.LogInformation(text);
 
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
-        var content = $"{prompt} \n {text}";
-        logger.LogInformation(content);
-
+        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"')
+            .Replace("\n", "")
+            .Replace("\r", "")
+            .ReplaceLineEndings().Trim();
+        var content = $"{prompt}:{text}";
         return await Query(content);
     }
 
     public async Task<string> ExplainSecurity(string text)
     {
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("security");
-        var content = $"{prompt} \n {text}";
+        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"')
+            .Replace("\n", "")
+            .Replace("\r", "")
+            .ReplaceLineEndings().Trim();
+        var content = $"{prompt}:{text}";
         return await Query(content);
     }
 
