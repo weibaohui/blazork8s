@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using AntDesign.Charts;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using Extension;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -182,8 +183,9 @@ public partial class MetricView : ComponentBase, IDisposable
         AutoFit = true,
         AreaStyle = new TextStyle()
         {
-            Fill = "#d6e3fd",
+            Fill = RandomColorHelper.RandomColorHexRgb(),
         },
+        Color = RandomColorHelper.RandomColorHexRgb(),
         XField = "index",
         YField = "value",
         XAxis = new Axis
@@ -202,6 +204,7 @@ public partial class MetricView : ComponentBase, IDisposable
         {
             Fill = "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
         },
+        Color = RandomColorHelper.RandomColorHexRgb(),
         XField = "index",
         YField = "value",
         XAxis = new ValueCatTimeAxis
