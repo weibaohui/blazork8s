@@ -17,7 +17,6 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
     private event EventHandler<string> ChatEventHandler;
 
 
-
     private string GetApiKey()
     {
         return configService.GetString("QwenAI", "APIKey") ?? string.Empty;
@@ -35,7 +34,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     private async Task<string> Query(string promptAndText)
     {
-        String    resp       = "";
+        var       resp       = "";
         using var httpClient = new HttpClient();
         var       request    = new HttpRequestMessage(HttpMethod.Post, sseEndpoint);
         request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
@@ -58,7 +57,6 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         while (!reader.EndOfStream)
         {
             var line = await reader.ReadLineAsync();
-
             if (string.IsNullOrWhiteSpace(line))
             {
             }
@@ -72,14 +70,17 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
                 {
                     resp = text;
                 }
+
                 if (text.IsNullOrEmpty())
                 {
                     continue;
                 }
 
                 IncrementHandler(text);
-
-
+            }
+            else
+            {
+                logger.LogInformation("received {Line}", line);
             }
         }
 
@@ -87,11 +88,10 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
     }
 
 
-
     private string _incrementResp = "";
-    private string _lastResp     = "";
+    private string _lastResp      = "";
 
-    private  void IncrementHandler(string resp)
+    private void IncrementHandler(string resp)
     {
         if (!string.IsNullOrWhiteSpace(_lastResp))
         {
@@ -101,14 +101,20 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         {
             _incrementResp = resp;
         }
+
         _lastResp = resp;
+        logger.LogInformation("{Ai} _incrementResp: {IncrementResp}", Name(), _incrementResp);
         if (ChatEventHandler != null) ChatEventHandler(this, _incrementResp);
     }
 
     public async Task<string> ExplainError(string text)
     {
+        logger.LogInformation(text);
+
         var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
         var content = $"{prompt} \n {text}";
+        logger.LogInformation(content);
+
         return await Query(content);
     }
 
@@ -118,6 +124,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
+
     public string Name()
     {
         return "阿里通义千问大模型";
