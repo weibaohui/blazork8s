@@ -51,7 +51,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         request.Headers.Add("Authorization", "Bearer " + GetApiKey());
         var json = """
                    {
-                       "model": "qwen-turbo",
+                       "model": "qwen-1.8b-chat",
                        "input": {
                            "prompt": "${promptAndText}"
                        },
@@ -86,15 +86,33 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
                     continue;
                 }
 
+                IncrementHandler(text);
 
 
-                if (ChatEventHandler != null) ChatEventHandler(this, text);
             }
         }
 
         return resp;
     }
 
+
+
+    private string _incrementResp = "";
+    private string _lastResp     = "";
+
+    private  void IncrementHandler(string resp)
+    {
+        if (!string.IsNullOrWhiteSpace(_lastResp))
+        {
+            _incrementResp = resp.Replace(_lastResp, "");
+        }
+        else
+        {
+            _incrementResp = resp;
+        }
+        _lastResp = resp;
+        if (ChatEventHandler != null) ChatEventHandler(this, _incrementResp);
+    }
     private bool IsQwenAiEnabled()
     {
         return configService.GetBool("QwenAI", "Enable");

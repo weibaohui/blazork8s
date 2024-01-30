@@ -34,7 +34,6 @@ public class OpenAiService(IConfigService configService) : IOpenAiService
 
     private async Task<string> Query(string prompt)
     {
-        Console.WriteLine($"OpenAI:prompt{prompt}");
         var           options = new OpenAiOptions() { ApiKey = GetOpenAiToken() };
         OpenAIService service       = new OpenAIService(options);
         var           chatMessage   = new ChatMessage(StaticValues.ChatMessageRoles.User, prompt);
