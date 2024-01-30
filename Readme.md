@@ -75,24 +75,28 @@ docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:808
     }
   },
 ```
-## AI 智能翻译
-### 点击资源详情页面上，字段前面的问号
+## 大模型加持
+### 字段含义解释
+#### 点击资源详情页面上，字段前面的问号
 * 使用kubectl 获取k8s解释
 * 使用配置的AI大模型，进行智能解释，效果如下：
 <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
-
-
-
-#预览
-<p align="left">
-对POD进行智能诊断<br>
- <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
+  <br>
+### 生成部署yaml
+<br>
 通过提示词获得k8s部署yaml，并执行<br>
-     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
+<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
+<br>
+### POD智能分析
+<br>
+ <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
 <br>
 
 
+
+# 页面预览
+<p align="left">
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-1.png"><br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-2.png"><br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-3.png"><br>
