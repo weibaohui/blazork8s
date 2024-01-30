@@ -23,7 +23,7 @@
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
-# 1 k8s 体验
+# k8s 体验
 
 ## 一键安装部署
 
