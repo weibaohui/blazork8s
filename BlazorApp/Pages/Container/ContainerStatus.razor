@@ -9,7 +9,7 @@
                     @if (cs.Ready)
                     {
                         <Badge Status="success"/>
-                    }else if (cs.State.Terminated!=null && cs.State.Terminated.ExitCode==0)
+                    }else if (cs.State.Terminated is { ExitCode: 0 })
                     {
                         <Badge Status="default"/>
                     }
