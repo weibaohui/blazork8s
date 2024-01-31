@@ -4,7 +4,7 @@
 <div>
     <GridRow Class="grid-table ">
         <GridCol Span="4">
-            C/M
+            <Icon Type="dashboard" Theme="twotone" TwotoneColor="#106ebe" Height="20px" Width="20px"/>
         </GridCol>
         <GridCol Span="10">
             <MetricView ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
@@ -30,10 +30,13 @@
                                 <Icon Type="play-square" Theme="twotone" TwotoneColor="#0f9b0f" Height="20px" Width="20px"/>
                                 break;
                             case "Terminating":
-                                <Icon Type="play-square" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
+                                <Icon Type="minus-square" Theme="twotone" TwotoneColor="#a19f9d" Height="20px" Width="20px"/>
                                 break;
                             case "CrashLoopBackOff":
-                                <Icon Type="close-square" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
+                                <Icon Type="close-square" Theme="twotone" TwotoneColor="#d83b01" Height="20px" Width="20px"/>
+                                break;
+                            case "error":
+                                <Icon Type="minus-square" Theme="twotone" TwotoneColor="#ffb900" Height="20px" Width="20px"/>
                                 break;
                             default:
                                 <Icon Type="play-square" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
