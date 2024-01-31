@@ -12,6 +12,7 @@ public static class SwaggerExtenstion
         td.description = item.description;
         td.type        = item.type;
         td.format      = item.format;
+        td.descriptionCN = item.descriptionCN;
         if (item.properties == null) return td;
         foreach (var (key, p) in item.properties)
         {
@@ -22,6 +23,7 @@ public static class SwaggerExtenstion
                 description = p.description,
                 format      = p.format,
                 RefKey      = p.Ref ?? p.items?.Ref,
+                descriptionCN = p.descriptionCN
             });
         }
 
