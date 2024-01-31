@@ -23,9 +23,9 @@ public enum RandomColor {
 }
 public enum RandomColorHexRgb {
 
-    MediumBlue       = 0x0000CD,
-    MediumSlateBlue  = 0x7B68EE,
-    DodgerBlue       = 0x1E90FF,
+    MediumBlue       = 0x0000CD, // #0000CD
+    MediumSlateBlue  = 0x7B68EE, // #7B68EE
+    DodgerBlue       = 0x1E90FF, // #1E90FF
     SteelBlue        = 0x4682B4,
     RoyalBlue        = 0x4169E1,
     DarkSlateBlue    = 0x483D8B,
