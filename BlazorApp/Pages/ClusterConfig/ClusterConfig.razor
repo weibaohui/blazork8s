@@ -45,20 +45,24 @@
             {
 
                     <GridRow Class="grid-table">
-                        <GridCol Span="6">Name</GridCol>
-                        <GridCol Span="6">Pods</GridCol>
-                        <GridCol Span="6">CPU</GridCol>
-                        <GridCol Span="6">Memory</GridCol>
+                        <GridCol Span="4">Name</GridCol>
+                        <GridCol Span="4">Pods</GridCol>
+                        <GridCol Span="4">MemoryStatus</GridCol>
+                        <GridCol Span="4">CpuStatus</GridCol>
+                        <GridCol Span="4">CPU</GridCol>
+                        <GridCol Span="4">Memory</GridCol>
                     </GridRow>
                     @foreach (var item in NodeList)
                     {
                         <GridRow Class="grid-table grid-table-first-row">
-                            <GridCol Span="6">@item.Name()</GridCol>
-                            <GridCol Span="6">@(NodeService.GetPodCapacityCount(item.Name()))</GridCol>
-                            <GridCol Span="6">
+                            <GridCol Span="4">@item.Name()</GridCol>
+                            <GridCol Span="4">@(NodeService.GetPodCapacity(item.Name()))</GridCol>
+                            <GridCol Span="4">@(NodeService.GetMemoryCapacity(item.Name()))</GridCol>
+                            <GridCol Span="4">@(NodeService.GetCpuCapacity(item.Name()))</GridCol>
+                            <GridCol Span="4">
                                 <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="cpu"></MetricView>
                             </GridCol>
-                            <GridCol Span="6">
+                            <GridCol Span="4">
                                 <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="memory"></MetricView>
                             </GridCol>
                         </GridRow>
