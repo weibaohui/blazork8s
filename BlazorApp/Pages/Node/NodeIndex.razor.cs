@@ -13,6 +13,8 @@ public partial class NodeIndex : TableBase<V1Node>
 {
     [Inject]
     private INodeService NodeService { get; set; }
+    [Inject]
+    private IPodService PodService { get; set; }
 
 
     private async Task OnResourceChanged(ResourceCache<V1Node> data)

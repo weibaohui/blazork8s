@@ -32,7 +32,7 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="string"  Width="200px">
+                    <AntDesign.Column Title="Ready" TData="string" Width="200px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Role" TData="string">
@@ -41,20 +41,23 @@
                             <ColorfulTag>@role</ColorfulTag>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="InternalIP" TData="string"  Width="100px">
-                       <ColorfulTag> @context.Status.Addresses.FirstOrDefault(x => x.Type == "InternalIP")?.Address</ColorfulTag>
+                    <AntDesign.Column Title="Pods" TData="string" Width="100px">
+                        <ColorfulTag>@PodService.ListByNodeName(context.Name()).Count()</ColorfulTag>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="InternalIP" TData="string" Width="100px">
+                        <ColorfulTag> @context.Status.Addresses.FirstOrDefault(x => x.Type == "InternalIP")?.Address</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title="ExternalIP" TData="string" Width="100px">
-                       <ColorfulTag> @context.Status.Addresses.FirstOrDefault(x => x.Type == "ExternalIP")?.Address</ColorfulTag>
+                        <ColorfulTag> @context.Status.Addresses.FirstOrDefault(x => x.Type == "ExternalIP")?.Address</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title="KubeletVersion" TData="string" Width="100px">
                         <ColorfulTag>@context.Status.NodeInfo.KubeletVersion</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title="ContainerVersion" TData="string" Width="100px">
-                       <ColorfulTag> @context.Status.NodeInfo.ContainerRuntimeVersion</ColorfulTag>
+                        <ColorfulTag> @context.Status.NodeInfo.ContainerRuntimeVersion</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title="KernelVersion" TData="string" Width="100px">
-                       <ColorfulTag> @context.Status.NodeInfo.KernelVersion</ColorfulTag>
+                        <ColorfulTag> @context.Status.NodeInfo.KernelVersion</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title="OsImage" TData="string" Width="100px">
                         <ColorfulTag>@context.Status.NodeInfo.OsImage</ColorfulTag>
@@ -62,7 +65,7 @@
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <NodeAction Item="@context"></NodeAction>
                     </ActionColumn>
                 </Table>
