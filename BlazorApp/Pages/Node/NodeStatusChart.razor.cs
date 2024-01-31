@@ -71,19 +71,19 @@ public partial class NodeStatusChart : ComponentBase, IDisposable
             {
                 new BulletViewConfigData
                 {
-                    Title    = "Pods",
+                    Title    = "Pods (%)",
                     Measures = new int[] { CalcMeasure(podCapacity) },
                     Ranges   = new double[] { 0, 0.5, 0.8, 1 },
                 },
                 new BulletViewConfigData
                 {
-                    Title    = "Memory",
+                    Title    = "Memory (%)",
                     Measures = new int[] {  CalcMeasure(memoryCapacity) },
                     Ranges   = new double[] { 0, 0.5, 0.8, 1 },
                 },
                 new BulletViewConfigData
                 {
-                    Title    = "CPU",
+                    Title    = "CPU (%)",
                     Measures = new int[] { CalcMeasure(cpuCapacity) },
                     Ranges   = new double[] { 0, 0.5, 0.8, 1 },
                 }
