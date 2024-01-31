@@ -30,7 +30,7 @@
                        @bind-SelectedRows="TableData.SelectedRows"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title="Name" Width="200px">
                         <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
@@ -43,7 +43,7 @@
                     <AntDesign.Column Title="ControllerBy" TData="string">
                         <ControllerBy Owner="@context.OwnerReferences()" Namespace="@context.Namespace()"></ControllerBy>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Node" TData="string" Width="100px">
+                    <AntDesign.Column Title="Node" TData="string" Width="120px">
                         <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
                     </AntDesign.Column>
                     <AntDesign.Column Title="QoS" TData="string" Width="100px">
@@ -55,7 +55,7 @@
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Status" TData="string">
+                    <AntDesign.Column Title="Status" TData="string" Width="100px">
                         <StatusView Status="@context.Status()"></StatusView>
                     </AntDesign.Column>
                     <ActionColumn Title="Action" Width="100px">

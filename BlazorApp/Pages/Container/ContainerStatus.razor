@@ -5,10 +5,13 @@
         @foreach (var cs in Pod.Status.ContainerStatuses)
         {
             <SpaceItem>
-                <Tooltip Title="@(cs.ReadySummary())">
+                <Tooltip Title="@(cs.ReadySummary())" ArrowPointAtCenter="true">
                     @if (cs.Ready)
                     {
                         <Badge Status="success"/>
+                    }else if (cs.State.Terminated!=null && cs.State.Terminated.ExitCode==0)
+                    {
+                        <Badge Status="default"/>
                     }
                     else
                     {

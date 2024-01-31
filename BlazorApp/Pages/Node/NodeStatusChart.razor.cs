@@ -27,19 +27,18 @@ public partial class NodeStatusChart : ComponentBase, IDisposable
     protected override async Task OnInitializedAsync()
     {
         _timer         =  new Timer(3000);
-        _timer.Elapsed += async (sender, eventArgs) =>await OnTimerCallback();
+        _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
         _timer.Start();
         _uiConfig  = GetConfig();
         podsOnNode = PodService.ListByNodeName(Node.Name());
         await base.OnInitializedAsync();
-
     }
 
     private async Task OnTimerCallback()
     {
         _uiConfig  = GetConfig();
         podsOnNode = PodService.ListByNodeName(Node.Name());
-       await InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
     }
 
     public void Dispose()
@@ -49,9 +48,21 @@ public partial class NodeStatusChart : ComponentBase, IDisposable
 
     private int CalcMeasure(string fullValue)
     {
-        var    strings = fullValue.Split("/");
-        var avg     = Math.Round( (double.Parse(strings[0]) / double.Parse(strings[1])), 2);
-        return (int)(avg*100);
+        var strings = fullValue.Split("/");
+        var s1      = strings[0];
+        var s2      = strings[1];
+        if (string.IsNullOrWhiteSpace(s1))
+        {
+            s1 = "0";
+        }
+
+        if (string.IsNullOrWhiteSpace(s2))
+        {
+            s1 = "1";
+        }
+
+        var avg = Math.Round((double.Parse(s1) / double.Parse(s2)), 2);
+        return (int)(avg * 100);
     }
 
     BulletConfig GetConfig()
@@ -78,7 +89,7 @@ public partial class NodeStatusChart : ComponentBase, IDisposable
                 new BulletViewConfigData
                 {
                     Title    = "Memory (%)",
-                    Measures = new int[] {  CalcMeasure(memoryCapacity) },
+                    Measures = new int[] { CalcMeasure(memoryCapacity) },
                     Ranges   = new double[] { 0, 0.5, 0.8, 1 },
                 },
                 new BulletViewConfigData

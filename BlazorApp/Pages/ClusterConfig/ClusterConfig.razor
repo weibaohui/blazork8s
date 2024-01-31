@@ -44,12 +44,16 @@
         {
             <GridRow Class="grid-table">
                 <GridCol Span="24">
-                    @foreach (var item in NodeList)
-                    {
-                        <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
-                            <NodeStatusChart Node="@item"></NodeStatusChart>
-                        </Card>
-                    }
+                    <Space Size="@("4")" Wrap>
+                        @foreach (var item in NodeList)
+                        {
+                            <SpaceItem>
+                                <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
+                                    <NodeStatusChart Node="@item"></NodeStatusChart>
+                                </Card>
+                            </SpaceItem>
+                        }
+                    </Space>
                 </GridCol>
             </GridRow>
         }
