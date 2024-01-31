@@ -27,6 +27,12 @@ public class SwaggerHelper
         internal static readonly SwaggerHelper Instance = new SwaggerHelper();
     }
 
+
+    public SwaggerEntity GetAllEntity()
+    {
+        return Entity;
+    }
+
     public Definition? GetEntityByName(string name)
     {
         if (Entity == null)
@@ -35,7 +41,7 @@ public class SwaggerHelper
         }
 
         Definition? d = null;
-        var         b = Entity.definitions?.TryGetValue(name, out  d);
+        var         b = Entity.definitions?.TryGetValue(name, out d);
         if (b == false)
         {
             return null;
@@ -45,6 +51,7 @@ public class SwaggerHelper
         {
             return null;
         }
+
         d.name = name;
         return d;
     }
