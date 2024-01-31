@@ -64,23 +64,23 @@ spec:
       value: fake
 status:
   allocatable:
-    cpu: 32
+    cpu: 64
     memory: 256Gi
     pods: 110
   capacity:
-    cpu: 32
+    cpu: 64
     memory: 256Gi
     pods: 110
   nodeInfo:
     architecture: amd64
     bootID: ''
     containerRuntimeVersion: ''
-    kernelVersion: ''
+    kernelVersion: '5.5.5'
     kubeProxyVersion: fake
     kubeletVersion: fake
     machineID: ''
     operatingSystem: linux
-    osImage: ''
+    osImage: 'fake-linux'
     systemUUID: ''
   phase: Running
 ---
