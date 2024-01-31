@@ -1,0 +1,47 @@
+@using k8s.Models
+@using Extension.k8s
+@using BlazorApp.Pages.Common
+<div>
+    <GridRow Class="grid-table ">
+        <GridCol Span="4">
+            C/M
+        </GridCol>
+        <GridCol Span="10">
+            <MetricView ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
+        </GridCol>
+        <GridCol Span="10">
+            <MetricView ResourceType="Node" ItemName="@Node.Name()" MetricType="memory"></MetricView>
+        </GridCol>
+    </GridRow>
+    <GridRow Class="grid-table ">
+        <GridCol Span="24">
+            <Bullet Config="_uiConfig"/>
+        </GridCol>
+    </GridRow>
+    <GridRow Class="grid-table ">
+        <GridCol Span="24">
+            <Space Size="@("4")" Wrap>
+                @foreach (var pod in podsOnNode)
+                {
+                    <SpaceItem>
+                        @switch (pod.Status())
+                        {
+                            case "Running":
+                                <Icon Type="play-square" Theme="twotone" TwotoneColor="#0f9b0f" Height="20px" Width="20px"/>
+                                break;
+                            case "Terminating":
+                                <Icon Type="play-square" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
+                                break;
+                            case "CrashLoopBackOff":
+                                <Icon Type="close-square" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
+                                break;
+                            default:
+                                <Icon Type="play-square" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
+                                break;
+                        }
+                    </SpaceItem>
+                }
+            </Space>
+        </GridCol>
+    </GridRow>
+</div>

@@ -2,9 +2,9 @@
 @using k8s.Models
 @using Mapster
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Node
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
-
 
 <Card Title="@KubeService.CurrentContext()" Style="width: 400px;margin: 50px">
     @if (ComponentStatus is { Count: > 0 })
@@ -20,76 +20,60 @@
     }
 </Card>
 
-
-    <Tabs Style="margin: 50px" DefaultActiveKey="1" Type="@TabType.Card" Size="@TabSize.Large">
-        <TabPane Key="1" Tab="API Status">
-            @if (ApiServicesList is { Count: > 0 })
+<Tabs Style="margin: 50px" DefaultActiveKey="1" Type="@TabType.Card" Size="@TabSize.Large">
+    <TabPane Key="1" Tab="API Status">
+        @if (ApiServicesList is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="8">Status</GridCol>
+            </GridRow>
+            @foreach (var item in ApiServicesList)
             {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="8">Name</GridCol>
-                        <GridCol Span="8">Status</GridCol>
-                    </GridRow>
-                    @foreach (var item in ApiServicesList)
-                    {
-                        <GridRow Class="grid-table grid-table-first-row">
-                            <GridCol Span="8"> @item.Name()</GridCol>
-                            <GridCol Span="8">
-                                <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-                            </GridCol>
-                        </GridRow>
-                    }
+                <GridRow Class="grid-table grid-table-first-row">
+                    <GridCol Span="8"> @item.Name()</GridCol>
+                    <GridCol Span="8">
+                        <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                    </GridCol>
+                </GridRow>
             }
-        </TabPane>
-        <TabPane Key="2" Tab="Nodes">
-            @if (NodeList is { Count: > 0 })
-            {
-
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">Name</GridCol>
-                        <GridCol Span="4">Pods</GridCol>
-                        <GridCol Span="4">MemoryStatus</GridCol>
-                        <GridCol Span="4">CpuStatus</GridCol>
-                        <GridCol Span="4">CPU</GridCol>
-                        <GridCol Span="4">Memory</GridCol>
-                    </GridRow>
+        }
+    </TabPane>
+    <TabPane Key="2" Tab="Nodes">
+        @if (NodeList is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="24">
                     @foreach (var item in NodeList)
                     {
-                        <GridRow Class="grid-table grid-table-first-row">
-                            <GridCol Span="4">@item.Name()</GridCol>
-                            <GridCol Span="4">@(NodeService.GetPodCapacity(item.Name()))</GridCol>
-                            <GridCol Span="4">@(NodeService.GetMemoryCapacity(item.Name()))</GridCol>
-                            <GridCol Span="4">@(NodeService.GetCpuCapacity(item.Name()))</GridCol>
-                            <GridCol Span="4">
-                                <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="cpu"></MetricView>
-                            </GridCol>
-                            <GridCol Span="4">
-                                <MetricView ResourceType="Node" ItemName="@item.Name()" MetricType="memory"></MetricView>
-                            </GridCol>
-                        </GridRow>
+                        <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
+                            <NodeStatusChart Node="@item"></NodeStatusChart>
+                        </Card>
                     }
-            }
-        </TabPane>
-        <TabPane Key="3" Tab="Pods">
-            @if (PodList is { Count: > 0 })
+                </GridCol>
+            </GridRow>
+        }
+    </TabPane>
+    <TabPane Key="3" Tab="Pods">
+        @if (PodList is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="8">CPU</GridCol>
+                <GridCol Span="8">Memory</GridCol>
+            </GridRow>
+            @foreach (var item in PodList)
             {
-
-                    <GridRow Class="grid-table">
-                        <GridCol Span="8">Name</GridCol>
-                        <GridCol Span="8">CPU</GridCol>
-                        <GridCol Span="8">Memory</GridCol>
-                    </GridRow>
-                    @foreach (var item in PodList)
-                    {
-                        <GridRow Class="grid-table grid-table-first-row">
-                            <GridCol Span="8">@item.Name()</GridCol>
-                            <GridCol Span="8">
-                                <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
-                            </GridCol>
-                            <GridCol Span="8">
-                                <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
-                            </GridCol>
-                        </GridRow>
-                    }
+                <GridRow Class="grid-table grid-table-first-row">
+                    <GridCol Span="8">@item.Name()</GridCol>
+                    <GridCol Span="8">
+                        <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                    </GridCol>
+                    <GridCol Span="8">
+                        <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                    </GridCol>
+                </GridRow>
             }
-        </TabPane>
-    </Tabs>
+        }
+    </TabPane>
+</Tabs>
