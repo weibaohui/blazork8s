@@ -10,6 +10,7 @@
     <ItemGroup>
       <PackageReference Include="JinianNet.JNTemplate" Version="2.4.2" />
       <PackageReference Include="KubernetesClient" Version="13.0.1" />
+      <PackageReference Include="Mapster" Version="7.4.0" />
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />

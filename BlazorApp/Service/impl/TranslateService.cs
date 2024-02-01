@@ -6,12 +6,15 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using BlazorApp.Service.AI;
+using BlazorApp.Service.k8s;
+using BlazorApp.Utils.KubeExplain;
 using BlazorApp.Utils.Swagger;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.impl;
 
-public class TranslateService(IAiService aiService, ILogger<TranslateService> logger) : ITranslateService
+public class TranslateService(IAiService aiService, ILogger<TranslateService> logger, IKubectlService Kubectl)
+    : ITranslateService
 {
     public async Task<string> Translate(string text)
     {
@@ -55,5 +58,35 @@ public class TranslateService(IAiService aiService, ILogger<TranslateService> lo
 
 
         Console.WriteLine(JsonSerializer.Serialize(entity));
+    }
+
+    public async Task ProcessKubeExplains()
+    {
+        // 配置序列化选项
+        var options = new JsonSerializerOptions
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+            WriteIndented          = true // 如果需要格式化输出，可以设置为true
+        };
+        var entity = KubeExplainHelper.Instance.GetAllKubeExplainList();
+        if (entity is { Count: 0 }) return;
+
+        var all     = entity.Count;
+        var current = 0;
+        foreach (var explain in entity)
+        {
+            current += 1;
+            Console.WriteLine($"处理 {current}/{all} {explain.ExplainFiled} ");
+            explain.Explain = await Kubectl.Explain(explain.ExplainFiled);
+            Console.WriteLine($"k8s  {current}/{all} {explain.ExplainFiled} ");
+            explain.ExplainCN = await Translate(explain.Explain);
+            Console.WriteLine($"翻译Over {current}/{all} {explain.ExplainCN} ");
+
+            Thread.Sleep(1000 * 2);
+            //及时保存，避免被中断
+            await File.WriteAllTextAsync("new.json", JsonSerializer.Serialize(entity, options));
+        }
+
+        Console.WriteLine(JsonSerializer.Serialize(entity, options));
     }
 }
