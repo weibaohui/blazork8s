@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 using AntDesign.Charts;
+using BlazorApp.Pages.Pod;
+using BlazorApp.Service;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -19,6 +22,9 @@ public partial class NodeStatusChart : ComponentBase, IDisposable
 
     [Inject]
     public IPodService PodService { get; set; }
+
+    [Inject]
+    protected IPageDrawerService PageDrawerService { get; set; }
 
     private BulletConfig _uiConfig;
     private Timer        _timer;
@@ -100,5 +106,13 @@ public partial class NodeStatusChart : ComponentBase, IDisposable
                 }
             }
         };
+    }
+
+
+    private async Task OnPodClick(V1Pod pod)
+    {
+        await PageDrawerHelper<V1Pod>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<PodDetailView, V1Pod, bool>(pod);
     }
 }
