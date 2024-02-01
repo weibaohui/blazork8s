@@ -53,11 +53,16 @@
                     </Card>
                     @if (!string.IsNullOrEmpty(_resultCn))
                     {
-                        <Card Title="@(AiService.Name() + "Translation")" Style="max-width:600px">
-                            <p><Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link" OnClick="@ReTranslate">对这个翻译不满意，重新翻译</Button></p>
+                        <Card Style="max-width:600px">
                             <p>
                                 @((MarkupString)_resultCn.ToHtmlDisplay())
                             </p>
+                            @if (AiService.Enabled())
+                            {
+                                <p>
+                                    <Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link" OnClick="@ReTranslate">对这个翻译不满意，重新翻译</Button>
+                                </p>
+                            }
                         </Card>
                     }
                 </div>

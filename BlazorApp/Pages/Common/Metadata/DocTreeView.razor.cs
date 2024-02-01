@@ -99,7 +99,8 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
     private void OnItemClick(TreeEventArgs<TreeData> arg)
     {
         _currentItem = arg.Node.DataItem;
-        if (AiService.Enabled())
+        _resultCn= _currentItem.descriptionCN;
+        if (AiService.Enabled() && string.IsNullOrWhiteSpace(_currentItem.descriptionCN))
         {
             ReTranslate();
         }

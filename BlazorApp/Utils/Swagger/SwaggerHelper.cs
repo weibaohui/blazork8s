@@ -13,7 +13,7 @@ public class SwaggerHelper
 
     public SwaggerHelper()
     {
-        Entity = KubernetesJson.Deserialize<SwaggerEntity>(SwaggerDefinition.KubeSwaggerDefinition);
+        Entity = KubernetesJson.Deserialize<SwaggerEntity>(SwaggerDefinition.KubeSwaggerDefinitionCN);
     }
 
     private class Nested
