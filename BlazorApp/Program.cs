@@ -1,3 +1,4 @@
+using System;
 using AntDesign.ProLayout;
 using BlazorApp.Chat;
 using BlazorApp.Service;
@@ -9,6 +10,7 @@ using BlazorApp.Service.k8s.impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SqlSugar;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddSignalR();
 builder.Services.AddAntDesign();
 builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSettings"));
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddSingleton<IMetricsService,MetricsService>();
 builder.Services.AddHostedService<HostedService>();
@@ -69,6 +73,31 @@ builder.Services.AddScoped<ICronJobService,CronJobService>();
 builder.Services.AddScoped<IStatefulSetService,StatefulSetService>();
 builder.Services.AddScoped<ICustomResourceDefinitionService,CustomResourceDefinitionService>();
 builder.Services.AddScoped<IReplicationControllerService,ReplicationControllerService>();
+
+builder.Services.AddScoped<ISqlSugarClient>(s =>
+{
+    //Scoped用SqlSugarClient
+    SqlSugarClient sqlSugar = new SqlSugarClient (new ConnectionConfig()
+        {
+            DbType                = SqlSugar.DbType.Sqlite,
+            ConnectionString      = "DataSource=docs.db",
+            IsAutoCloseConnection = true,
+            LanguageType = LanguageType.Chinese,
+        },
+        db =>
+        {
+            //每次上下文都会执行
+
+
+            db.Aop.OnLogExecuting = (sql, pars) =>
+            {
+                //获取原生SQL推荐 5.1.4.63  性能OK
+                Console.WriteLine(UtilMethods.GetNativeSql(sql, pars));
+            };
+        });
+    return sqlSugar;
+});
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
