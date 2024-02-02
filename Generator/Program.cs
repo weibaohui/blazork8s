@@ -126,7 +126,7 @@ class Program
             new JsonSerializerOptions
                 { WriteIndented = true, DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull });
         Console.WriteLine(json);
-        File.WriteAllText("list.json", json);
+        File.WriteAllText("fieldList.json", json);
         //使用TranslateService进行翻译
     }
 }
