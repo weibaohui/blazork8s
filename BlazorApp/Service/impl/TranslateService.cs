@@ -187,6 +187,7 @@ public class TranslateService(
 
             if (db.Queryable<KubeExplainCN>().Single(x => x.Id == cnId) != null)
             {
+                await db.Updateable(en).ExecuteCommandAsync();
                 continue;
             }
 
@@ -197,6 +198,7 @@ public class TranslateService(
                 Explain = cn
             }).ExecuteCommandAsync();
             Console.WriteLine($"保存 {current}/{all} {en.Id} {rest} ");
+            await db.Updateable(en).ExecuteCommandAsync();
 
             //及时保存，避免被中断
             Thread.Sleep(1000);
