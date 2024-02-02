@@ -126,7 +126,6 @@ public class TranslateService(
         // await db.Insertable(refList).ExecuteCommandAsync();
         // await db.Insertable(uniqCnList).ExecuteCommandAsync();
         // await db.Insertable(uniqEnList).ExecuteCommandAsync();
-
     }
 
     private async Task Connect()
@@ -166,9 +165,6 @@ public class TranslateService(
 
     public async Task ProcessKubeExplainsCN()
     {
-
-
-
         var enList = db.Queryable<KubeExplainEN>().Where(x => x.done == false).ToList();
         if (enList is { Count: 0 }) return;
 
@@ -189,20 +185,21 @@ public class TranslateService(
             en.done = true;
             Console.WriteLine($"翻译Over {current}/{all} {en.Id} ");
 
-            if (db.Queryable<KubeExplainCN>().Single(x=>x.Id==cnId)!=null)
+            if (db.Queryable<KubeExplainCN>().Single(x => x.Id == cnId) != null)
             {
                 continue;
             }
 
-            await db.Insertable(new KubeExplainCN()
+            var rest = await db.Insertable(new KubeExplainCN()
             {
                 Id      = cnId,
                 EnId    = en.Id,
                 Explain = cn
             }).ExecuteCommandAsync();
+            Console.WriteLine($"保存 {current}/{all} {en.Id} {rest} ");
 
             //及时保存，避免被中断
-             Thread.Sleep(1000);
+            Thread.Sleep(1000);
         }
     }
 
