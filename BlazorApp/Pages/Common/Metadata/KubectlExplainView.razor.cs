@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
-using BlazorApp.Utils.KubeExplain;
 using Microsoft.AspNetCore.Components;
 using Microsoft.IdentityModel.Tokens;
 
@@ -15,6 +14,9 @@ public partial class KubectlExplainView : DrawerPageBase<string>
 
     [Inject]
     IKubectlService Kubectl { get; set; }
+
+    [Inject]
+    IDocService DocService { get; set; }
 
     [Inject]
     IAiService AiService { get; set; }
@@ -32,18 +34,19 @@ public partial class KubectlExplainView : DrawerPageBase<string>
         //缓存中没有中文，执行AI翻译
         if (!Field.IsNullOrEmpty())
         {
-            var explainEntity = KubeExplainHelper.Instance.GetExplainByField(Field);
+            var explainEntity =await DocService.GetExplainByField(Field);
             _result   = explainEntity?.Explain;
             _resultCn = explainEntity?.ExplainCN;
-
         }
 
         if (string.IsNullOrWhiteSpace(_result))
-        {//没有解释，执行kubectl explain
+        {
+            //没有解释，执行kubectl explain
             _result = await Kubectl.Explain(Field);
 
             if (string.IsNullOrWhiteSpace(_resultCn))
-            {//没有中文解释，查询翻译
+            {
+                //没有中文解释，查询翻译
                 if (AiService.Enabled())
                 {
                     AiService.SetChatEventHandler(EventHandler);
