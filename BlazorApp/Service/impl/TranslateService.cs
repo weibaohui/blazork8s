@@ -84,7 +84,7 @@ public class TranslateService(
     private async Task Connect()
     {
         await db.Ado.ExecuteCommandAsync(
-            "update KubeExplainRef set CnId=(select CnId from KubeExplainCN where EnId=KubeExplainRef.EnId) where CnId is null or CnId=''");
+            "update KubeExplainRef set CnId=(select Id from KubeExplainCN where EnId=KubeExplainRef.EnId) where CnId is null or CnId=''");
     }
 
     private async Task ProcessKubeExplainsEn()
@@ -92,10 +92,11 @@ public class TranslateService(
         var rfList = db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToList();
         foreach (var rf in rfList)
         {
+
             var en   = await kubectl.Explain(rf.ExplainFiled);
             var enId = en.ToMd5Str();
             rf.EnId = enId;
-            db.Updateable<KubeExplainRef>();
+            await db.Updateable<KubeExplainRef>(rf).ExecuteCommandAsync();
 
 
             if (await db.Queryable<KubeExplainEN>().CountAsync(x => x.Id == enId) == 0)
