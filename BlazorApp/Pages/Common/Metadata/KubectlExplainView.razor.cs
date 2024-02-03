@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorApp.Pages.Common.Metadata;
@@ -21,13 +22,15 @@ public partial class KubectlExplainView : DrawerPageBase<string>
     [Inject]
     IAiService AiService { get; set; }
 
+    [Inject]
+    ILogger<KubectlExplainView> Logger { get; set; }
+
     private string _result;
     private string _resultCn;
 
     protected override async Task OnInitializedAsync()
     {
         Field = base.Options;
-        await base.OnInitializedAsync();
 
         //先查询缓存中有没有解释
         //没有解释执行kubectl explain
@@ -41,11 +44,14 @@ public partial class KubectlExplainView : DrawerPageBase<string>
 
         if (string.IsNullOrWhiteSpace(_result))
         {
+
+            Logger.LogWarning("no explain for {Field}", Field);
             //没有解释，执行kubectl explain
             _result = await Kubectl.Explain(Field);
 
             if (string.IsNullOrWhiteSpace(_resultCn))
             {
+                Logger.LogWarning("translate {Field},AI enable:{Enabled}", Field,AiService.Enabled());
                 //没有中文解释，查询翻译
                 if (AiService.Enabled())
                 {
@@ -54,6 +60,9 @@ public partial class KubectlExplainView : DrawerPageBase<string>
                 }
             }
         }
+
+        await base.OnInitializedAsync();
+
     }
 
 

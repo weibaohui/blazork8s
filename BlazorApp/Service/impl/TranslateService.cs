@@ -71,16 +71,46 @@ public class TranslateService(
         // db.CodeFirst.InitTables<KubeExplainCN>();
         // db.CodeFirst.InitTables<KubeExplainEN>();
         // db.CodeFirst.InitTables<KubeExplainRef>();
-        //第零步，通过generator子项目中Explain() 方法，获得所有的资源的fieldList.json，完成准备工作
-        // await ProcessKubeExplainsEn();
-        //第二步去重
-        // await DistinctEnList();
+        //第零步，通过generator子项目中Explain() 方法，获得所有的资源的explainField,插入Ref表，完成准备工作
+        await ProcessKubeExplainsEn();
         //第三步根据英文条目获得中文解释
         await ProcessKubeExplainsCn();
         //第四步将Field、中文解释和英文解释关联起来
-        // await Connect();
+        await Connect();
 
         // await SaveToDb();
+    }
+
+    private async Task Connect()
+    {
+        await db.Ado.ExecuteCommandAsync(
+            "update KubeExplainRef set CnId=(select CnId from KubeExplainCN where EnId=KubeExplainRef.EnId) where CnId is null or CnId=''");
+    }
+
+    private async Task ProcessKubeExplainsEn()
+    {
+        var rfList = db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToList();
+        foreach (var rf in rfList)
+        {
+            var en   = await kubectl.Explain(rf.ExplainFiled);
+            var enId = en.ToMd5Str();
+            rf.EnId = enId;
+            db.Updateable<KubeExplainRef>();
+
+
+            if (await db.Queryable<KubeExplainEN>().CountAsync(x => x.Id == enId) == 0)
+            {
+                await db.Insertable<KubeExplainEN>(new KubeExplainEN[]
+                {
+                    new KubeExplainEN()
+                    {
+                        Id      = enId,
+                        Explain = en,
+                        done    = false
+                    }
+                }).ExecuteCommandAsync();
+            }
+        }
     }
 
 
@@ -163,7 +193,6 @@ public class TranslateService(
             logger.LogInformation("保存 {Current}/{All} {EnId} {Rest} ", current, all, en.Id, rest);
             await db.Updateable(en).ExecuteCommandAsync();
 
-            //及时保存，避免被中断
             Thread.Sleep(1000);
         }
     }

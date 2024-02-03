@@ -9,15 +9,19 @@ public class DocService(ISqlSugarClient db, ILogger<DocService> logger) : IDocSe
 {
     public async Task<KubeExplainEntity> GetExplainByField(string fieldPath)
     {
-        var rf =await db.Queryable<KubeExplainRef>().SingleAsync(it => it.ExplainFiled == fieldPath);
-        var en =await db.Queryable<KubeExplainEN>().SingleAsync(it => it.Id == rf.EnId);
-        var cn =await db.Queryable<KubeExplainCN>().SingleAsync(it => it.Id == rf.CnId);
+        var rf = await db.Queryable<KubeExplainRef>().SingleAsync(it => it.ExplainFiled == fieldPath);
+        if (rf == null)
+        {
+            return null;
+        }
+
+        var en = await db.Queryable<KubeExplainEN>().SingleAsync(it => it.Id == rf.EnId);
+        var cn = await db.Queryable<KubeExplainCN>().SingleAsync(it => it.Id == rf.CnId);
         return new KubeExplainEntity
         {
             Explain      = en.Explain,
             ExplainCN    = cn.Explain,
             ExplainFiled = fieldPath
         };
-
     }
 }
