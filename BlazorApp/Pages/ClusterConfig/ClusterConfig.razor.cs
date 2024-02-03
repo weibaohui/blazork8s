@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s;
 using k8s.Models;
@@ -19,6 +20,10 @@ public partial class ClusterConfig : ComponentBase
     [Inject]
     public INodeService NodeService { get; set; }
 
+
+    [Inject]
+    public ITranslateService TranslateService { get; set; }
+
     private IList<V1ComponentStatus> ComponentStatus { get; set; }
     private IList<V1Pod>             PodList         { get; set; }
     private IList<V1Node>            NodeList        { get; set; }
@@ -34,6 +39,7 @@ public partial class ClusterConfig : ComponentBase
 
         var apiServiceList = await KubeService.Client().ListAPIServiceAsync();
         ApiServicesList = apiServiceList.Items.ToList();
+
         await base.OnInitializedAsync();
     }
 }

@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -26,9 +24,9 @@ public class TranslateService(
 {
     public async Task<string> Translate(string text)
     {
-        logger.LogInformation("translate {key}", text);
+        logger.LogInformation("translate {Key}", text);
         var cnTask = await aiService.AIChat("请完整的将文字翻译为中文，请不要遗漏细节。正文如下：" + text);
-        logger.LogInformation("translate {key} over", cnTask);
+        logger.LogInformation("translate {Key} over", cnTask);
         return cnTask;
     }
 
@@ -74,12 +72,11 @@ public class TranslateService(
         // db.CodeFirst.InitTables<KubeExplainEN>();
         // db.CodeFirst.InitTables<KubeExplainRef>();
         //第零步，通过generator子项目中Explain() 方法，获得所有的资源的fieldList.json，完成准备工作
-        //第一步获得explain的英文解释,并存储Field跟英文ID
         // await ProcessKubeExplainsEn();
         //第二步去重
         // await DistinctEnList();
         //第三步根据英文条目获得中文解释
-        await ProcessKubeExplainsCN();
+        await ProcessKubeExplainsCn();
         //第四步将Field、中文解释和英文解释关联起来
         // await Connect();
 
@@ -128,42 +125,8 @@ public class TranslateService(
         // await db.Insertable(uniqEnList).ExecuteCommandAsync();
     }
 
-    private async Task Connect()
-    {
-        var json    = await File.ReadAllTextAsync("ref.json");
-        var refList = JsonSerializer.Deserialize<List<KubeExplainRef>>(json);
 
-        var cnListJson = await File.ReadAllTextAsync("cnList.json");
-        var cnList     = JsonSerializer.Deserialize<List<KubeExplainCN>>(cnListJson);
-
-        foreach (var rf in refList)
-        {
-            var cn = cnList.Find(cn => cn.EnId == rf.EnId);
-            rf.CnId = cn.Id;
-        }
-
-        await File.WriteAllTextAsync("ref.json", JsonSerializer.Serialize(refList));
-    }
-
-    private async Task DistinctEnList()
-    {
-        var options = new JsonSerializerOptions
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            WriteIndented          = true // 如果需要格式化输出，可以设置为true
-        };
-        var                    json   = await File.ReadAllTextAsync("enList.json");
-        var                    enList = JsonSerializer.Deserialize<List<KubeExplainEN>>(json);
-        HashSet<KubeExplainEN> set    = [];
-        foreach (var en in enList.Where(en => set.All(x => x.Id != en.Id)))
-        {
-            set.Add(en);
-        }
-
-        await File.WriteAllTextAsync("enList.json", JsonSerializer.Serialize(set, options));
-    }
-
-    public async Task ProcessKubeExplainsCN()
+    private async Task ProcessKubeExplainsCn()
     {
         var enList = db.Queryable<KubeExplainEN>().Where(x => x.done == false).ToList();
         if (enList is { Count: 0 }) return;
@@ -183,7 +146,7 @@ public class TranslateService(
             var cn   = await Translate(en.Explain);
             var cnId = cn.ToMd5Str();
             en.done = true;
-            Console.WriteLine($"翻译Over {current}/{all} {en.Id} ");
+            logger.LogInformation("翻译Over {Current}/{All} {EnId} ", current, all, en.Id);
 
             if (db.Queryable<KubeExplainCN>().Single(x => x.Id == cnId) != null)
             {
@@ -197,59 +160,11 @@ public class TranslateService(
                 EnId    = en.Id,
                 Explain = cn
             }).ExecuteCommandAsync();
-            Console.WriteLine($"保存 {current}/{all} {en.Id} {rest} ");
+            logger.LogInformation("保存 {Current}/{All} {EnId} {Rest} ", current, all, en.Id, rest);
             await db.Updateable(en).ExecuteCommandAsync();
 
             //及时保存，避免被中断
             Thread.Sleep(1000);
-        }
-    }
-
-    public async Task ProcessKubeExplainsEn()
-    {
-        // 配置序列化选项
-        var options = new JsonSerializerOptions
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            WriteIndented          = true // 如果需要格式化输出，可以设置为true
-        };
-        IList<KubeExplainRef> fieldRef  = new List<KubeExplainRef>();
-        IList<KubeExplainEN>  enList    = new List<KubeExplainEN>();
-        var                   fieldJson = await File.ReadAllTextAsync("fieldList.json");
-        var                   fieldList = JsonSerializer.Deserialize<IList<KubeExplainEntity>>(fieldJson);
-        if (fieldList is { Count: 0 }) return;
-
-        var all     = fieldList.Count;
-        var current = 0;
-        foreach (var explain in fieldList)
-        {
-            current += 1;
-            Console.WriteLine($"处理 {current}/{all} {explain.ExplainFiled} ");
-            if (!string.IsNullOrWhiteSpace(explain.Explain))
-            {
-                continue;
-            }
-
-            var en   = await kubectl.Explain(explain.ExplainFiled);
-            var enId = en.ToMd5Str();
-            explain.Explain = enId; //填充一个记录，如果断了重新来可以避免再次执行kubectl explain,断点续传
-            enList.Add(new KubeExplainEN()
-            {
-                Id      = enId,
-                Explain = en
-            });
-            fieldRef.Add(new KubeExplainRef()
-            {
-                EnId         = enId,
-                ExplainFiled = explain.ExplainFiled
-            });
-            Console.WriteLine($"k8s  {current}/{all} {explain.ExplainFiled} ");
-
-            Thread.Sleep(100);
-            //及时保存，避免被中断
-            await File.WriteAllTextAsync("fieldList.json", JsonSerializer.Serialize(fieldList, options));
-            await File.WriteAllTextAsync("ref.json", JsonSerializer.Serialize(fieldRef, options));
-            await File.WriteAllTextAsync("enList.json", JsonSerializer.Serialize(enList, options));
         }
     }
 }
