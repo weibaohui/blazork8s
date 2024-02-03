@@ -40,6 +40,7 @@ public partial class ClusterConfig : ComponentBase
         var apiServiceList = await KubeService.Client().ListAPIServiceAsync();
         ApiServicesList = apiServiceList.Items.ToList();
 
+        // await TranslateService.ProcessKubeExplains();
         await base.OnInitializedAsync();
     }
 }
