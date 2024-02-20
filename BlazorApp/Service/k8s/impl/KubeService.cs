@@ -1,8 +1,6 @@
 #nullable enable
 using System;
-using BlazorApp.Chat;
 using k8s;
-using Microsoft.AspNetCore.SignalR;
 
 namespace BlazorApp.Service.k8s.impl;
 
@@ -10,7 +8,6 @@ public class KubeService : IKubeService
 {
     private          string?              ContextName { get; set; }
     private          Kubernetes?          _client     { get; set; }
-    private readonly IHubContext<ChatHub> _ctx;
 
     public void ChangeContext(string ctxName)
     {

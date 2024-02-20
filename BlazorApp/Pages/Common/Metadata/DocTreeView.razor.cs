@@ -96,13 +96,13 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
 
 
 
-    private void OnItemClick(TreeEventArgs<TreeData> arg)
+    private async Task OnItemClick(TreeEventArgs<TreeData> arg)
     {
         _currentItem = arg.Node.DataItem;
         _resultCn= _currentItem.descriptionCN;
         if (AiService.Enabled() && string.IsNullOrWhiteSpace(_currentItem.descriptionCN))
         {
-            ReTranslate();
+          await  ReTranslate();
         }
     }
     private async Task ReTranslate()

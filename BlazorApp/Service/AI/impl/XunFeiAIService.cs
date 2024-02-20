@@ -6,17 +6,16 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiService> logger) : IXunFeiAiService
+public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 {
-    static string                      hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
-    static ClientWebSocket             _webSocket;
-    static CancellationToken           cancellation;
+    private const  string              hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
+    static         ClientWebSocket     _webSocket;
+    private static CancellationToken   _cancellation;
     private event EventHandler<string> ChatEventHandler;
 
     private string GetAppId()
@@ -52,7 +51,7 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
         using (_webSocket = new ClientWebSocket())
         {
 
-                await _webSocket.ConnectAsync(new Uri(url), cancellation);
+                await _webSocket.ConnectAsync(new Uri(url), _cancellation);
 
                 var request = new IXunFeiAiService.JsonRequest
                 {
@@ -93,12 +92,12 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
 
 
                 await _webSocket.SendAsync(new ArraySegment<byte>(frameData2), WebSocketMessageType.Text, true,
-                    cancellation);
+                    _cancellation);
 
                 // 接收流式返回结果进行解析
                 byte[] receiveBuffer = new byte[1024];
                 WebSocketReceiveResult result =
-                    await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
+                    await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
                 while (!result.CloseStatus.HasValue)
                 {
                     if (result.MessageType == WebSocketMessageType.Text)
@@ -144,7 +143,7 @@ public class XunFeiAiService(IConfigService configService,ILogger<XunFeiAiServic
                         break;
                     }
 
-                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), cancellation);
+                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
                 }
             }
 

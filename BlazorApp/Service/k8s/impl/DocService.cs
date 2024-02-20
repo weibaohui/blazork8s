@@ -1,11 +1,10 @@
 using System.Threading.Tasks;
 using Entity;
-using Microsoft.Extensions.Logging;
 using SqlSugar;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class DocService(ISqlSugarClient db, ILogger<DocService> logger) : IDocService
+public class DocService(ISqlSugarClient db) : IDocService
 {
     public async Task<KubeExplainEntity> GetExplainByField(string fieldPath)
     {

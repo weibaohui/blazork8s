@@ -17,7 +17,7 @@ public class HorizontalPodAutoscalerService : CommonAction<V1HorizontalPodAutosc
         return await _kubeService.Client().AutoscalingV2.DeleteNamespacedHorizontalPodAutoscalerAsync(name, ns);
     }
 
-    public new async Task<object> V1Delete(string ns, string name)
+    public  async Task<object> V1Delete(string ns, string name)
     {
         return await _kubeService.Client().AutoscalingV1.DeleteNamespacedHorizontalPodAutoscalerAsync(name, ns);
     }

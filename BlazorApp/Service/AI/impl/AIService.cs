@@ -1,14 +1,13 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.AI.impl;
 
 public class AiService(
     IConfigService     configService,
     IQwenAiService     qwenAi,
-    IXunFeiAiService   xunFeiAi,
-    ILogger<AiService> logger) : IAiService
+    IXunFeiAiService   xunFeiAi
+    ) : IAiService
 {
     private IAiService GetAi()
     {
