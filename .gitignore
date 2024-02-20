@@ -53,7 +53,6 @@ fabric.properties
 *.sln.docstates
 *.userprefs
 mono_crash.*
-[Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
