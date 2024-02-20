@@ -1,6 +1,68 @@
 @page "/Example"
-<h3>Example</h3>
+@using Extension
+<div style="margin: 20px">
 
-@code {
-    
-}
+    <Breadcrumb>
+        <BreadcrumbItem>Example</BreadcrumbItem>
+    </Breadcrumb>
+    <Divider/>
+
+    <div>
+        <GridRow>
+            <GridCol Span="8" Style="overflow-scrolling: auto;overflow-x: hidden">
+                <div>
+                        <Button OnClick="ExpandAll">展开</Button>
+                        <Button OnClick="CollapseAll">收缩</Button>
+                    </div>
+                    <Divider/>
+                <div>
+                    <Tree
+                        ChildrenExpression="x => x.DataItem.ChildList"
+                        DataSource="_dataList"
+                        IsLeafExpression="x => x.DataItem.IsLeaf"
+                        KeyExpression="x => x.DataItem.Name"
+                        TitleExpression="x => x.DataItem.Name"
+                        OnClick="OnItemClick"
+                        SwitcherIcon="down"
+                        IconExpression="x => x.DataItem.Icon"
+                        @ref="_tree"
+                        ShowLeafIcon="false"
+                        ShowIcon="true"
+                        ShowLine="true"
+                        TItem="DirectoryNode"
+                        OnNodeLoadDelayAsync="OnNodeLoadDelayAsync">
+                        <SwitcherIconTemplate>
+                            <Icon Type="down"/>
+                        </SwitcherIconTemplate>
+                    </Tree>
+                </div>
+            </GridCol>
+            <GridCol Span="16">
+
+                <Affix OffsetTop="60">
+                    <div style="margin: 20px">
+                        <div style="height: 800px;width: 800px">
+                            <StandaloneCodeEditor
+                                @ref="_editor"
+                                Id="yaml-editor"
+                                ConstructionOptions="EditorConstructionOptions"/>
+                        </div>
+                        <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
+                        <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">删除</Button>
+                        @if (!string.IsNullOrEmpty(_execResult))
+                        {
+                            <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                            <div>
+                                <p>
+                                    <Text Copyable>
+                                        @((MarkupString)_execResult.ToHtmlDisplay())
+                                    </Text>
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </Affix>
+            </GridCol>
+        </GridRow>
+    </div>
+</div>

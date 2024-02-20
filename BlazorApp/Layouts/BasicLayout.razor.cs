@@ -12,7 +12,8 @@ public partial class BasicLayout : LayoutComponentBase
     protected override async Task OnInitializedAsync()
     {
         MenuData = new[]
-        {
+        {            GetMenuItem("Example","unordered-list"),
+
             GetMenuItem("Cluster","cluster"),
             new MenuDataItem
             {
