@@ -3,20 +3,20 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-      <PackageReference Include="AntDesign" Version="0.17.3.1" />
-      <PackageReference Include="AntDesign.Charts" Version="0.5.0" />
+      <PackageReference Include="AntDesign" Version="0.17.4" />
+      <PackageReference Include="AntDesign.Charts" Version="0.5.1" />
       <PackageReference Include="AntDesign.ProLayout" Version="0.17.3" />
       <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4" />
       <PackageReference Include="BlazorMonaco" Version="3.1.0" />
       <PackageReference Include="FluentScheduler" Version="5.5.1" />
-      <PackageReference Include="KubernetesClient" Version="13.0.1" />
+      <PackageReference Include="KubernetesClient" Version="13.0.11" />
       <PackageReference Include="Mapster" Version="7.4.0" />
-      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.1" />
-      <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.1" />
+      <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.2" />
       <PackageReference Include="Quick.PtyNet" Version="1.0.2" />
-      <PackageReference Include="SqlSugarCore" Version="5.1.4.140" />
-      <PackageReference Include="XtermBlazor" Version="1.10.0" />
+      <PackageReference Include="SqlSugarCore" Version="5.1.4.142" />
+      <PackageReference Include="XtermBlazor" Version="1.10.2" />
   </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />
