@@ -5,7 +5,7 @@ using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.crd;
+namespace BlazorApp.Pages.Crd;
 
 public partial class CrdIndex: TableBase<V1CustomResourceDefinition>
 {

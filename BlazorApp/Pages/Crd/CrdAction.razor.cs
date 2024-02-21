@@ -6,7 +6,7 @@ using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.crd;
+namespace BlazorApp.Pages.Crd;
 public partial class CrdAction : ComponentBase
 {
     [Parameter]

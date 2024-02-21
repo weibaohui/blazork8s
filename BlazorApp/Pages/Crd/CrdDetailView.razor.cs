@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using k8s.Models;
 
-namespace BlazorApp.Pages.crd
+namespace BlazorApp.Pages.Crd
 {
     public partial class CrdDetailView :  DrawerPageBase<V1CustomResourceDefinition>
     {
