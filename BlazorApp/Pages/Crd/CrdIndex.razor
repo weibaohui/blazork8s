@@ -32,12 +32,6 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Kind" TData="string" Width="100px">
-                        @if (context.Spec.Names?.Kind?.Length > 0)
-                        {
-                            <ColorfulTag> @context.Spec.Names.Kind</ColorfulTag>
-                        }
-                    </AntDesign.Column>
                     <AntDesign.Column Title="Group" TData="string" Width="180px">
                         @($"{context.Spec.Group}")
                     </AntDesign.Column>
@@ -48,6 +42,18 @@
                             {
                                 <ColorfulTag>@v.Name</ColorfulTag>
                             }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Kind" TData="string" Width="100px">
+                        @if (context.Spec.Names?.Kind?.Length > 0)
+                        {
+                            <ColorfulTag> @context.Spec.Names.Kind</ColorfulTag>
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Plural" TData="string" Width="100px">
+                        @if (context.Spec.Names?.Plural?.Length > 0)
+                        {
+                            <ColorfulTag> @context.Spec.Names.Plural</ColorfulTag>
                         }
                     </AntDesign.Column>
                     <AntDesign.Column Title="Scope" TData="string" Width="120px">

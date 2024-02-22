@@ -1,10 +1,11 @@
+@using k8s.Models
 @using Mapster
+@using Extension
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
-@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1CustomResourceDefinition>
 @if (CustomResourceDefinition != null)
 {
@@ -103,6 +104,27 @@
         }
 
     </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">CR Instance</Divider>
+    <HTable Bordered Column="1">
+        <HTr>
+            <HTd>Kind</HTd>
+            <HTd>Version</HTd>
+            <HTd>Name</HTd>
+            <HTd>Age</HTd>
+        </HTr>
+
+        @foreach (var cr in _crInstanceList)
+        {
+            <HTr>
+                <HTd>@cr.Kind</HTd>
+                <HTd>@cr.ApiVersion</HTd>
+                <HTd>@cr.Name()</HTd>
+                <HTd>@cr.CreationTimestamp().AgeFromUtc()</HTd>
+            </HTr>
+        }
+
+    </HTable>
+
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(CustomResourceDefinition.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="crd.status.conditions"></ConditionsView>
