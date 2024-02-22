@@ -44,12 +44,9 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
 
 ```docker
-docker run -d --name blazork8s  -v ~/.kube/:/root/.kube/ -p 4001:443 -p 4000:8080 ghcr.io/weibaohui/blazork8s:latest
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:latest
 ```
-
-## web
-
-[web ui](http://localhost:4000)
+访问[web ui](http://localhost:4000)
 
 # DEBUG 调试
 
