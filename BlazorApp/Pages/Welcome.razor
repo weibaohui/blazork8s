@@ -1,5 +1,11 @@
 ﻿@page "/"
+@inject NavigationManager NavigationManager
 
-<PageContainer Title="Welcome">
-
-</PageContainer>
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        NavigationManager.NavigateTo("/Cluster");
+    }
+}
