@@ -32,13 +32,17 @@ namespace BlazorApp.Pages.Crd
                 _crInstanceList.AddRange(list.Items);
             }
 
-            // foreach (var cr in list.Items)
-            // {
-            //     var customObject = await KubeService.Client()
-            //         .GetClusterCustomObjectAsync("kwok.x-k8s.io", "v1alpha1", "stages", cr.Metadata.Name);
-            //  }
-
             await base.OnInitializedAsync();
+        }
+
+        private async Task<string> GetCr(string group, string version, string plural, string name)
+        {
+            var customObject = await KubeService.Client()
+                .GetClusterCustomObjectAsync(group, version, plural, name);
+            var json    = KubernetesJson.Serialize(customObject);
+            var objects = KubernetesYaml.Deserialize<object>(json);
+            var yaml    = KubernetesYaml.Serialize(objects);
+            return yaml;
         }
 
 
