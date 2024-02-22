@@ -35,7 +35,7 @@
                     <AntDesign.Column Title="Group" TData="string" Width="180px">
                         @($"{context.Spec.Group}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Versions" TData="string" Width="100px">
+                    <AntDesign.Column Title="GroupVersions" TData="string" Width="100px">
                         @if (context.Spec.Versions is { Count: > 0 })
                         {
                             foreach (var v in context.Spec.Versions)
