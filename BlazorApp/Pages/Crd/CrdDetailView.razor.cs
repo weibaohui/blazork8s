@@ -35,7 +35,7 @@ namespace BlazorApp.Pages.Crd
             await base.OnInitializedAsync();
         }
 
-        private async Task<string> GetCr(string group, string version, string plural, string name)
+        private async Task<string> GetCrYaml(string group, string version, string plural, string name)
         {
             var customObject = await KubeService.Client()
                 .GetClusterCustomObjectAsync(group, version, plural, name);
