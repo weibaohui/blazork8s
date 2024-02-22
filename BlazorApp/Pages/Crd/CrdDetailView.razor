@@ -107,12 +107,20 @@
     <Divider Orientation="left" Style="font-weight:bold">CR Instance</Divider>
     <HTable Bordered Column="1">
         <HTr>
-            <HTd>Kind</HTd>
-            <HTd>Version</HTd>
-            <HTd>Name</HTd>
-            <HTd>Age</HTd>
+            <HTh>Kind</HTh>
+            <HTh>Version</HTh>
+            <HTh>Name</HTh>
+            <HTh>Age</HTh>
         </HTr>
 
+         @if (_crInstanceList.Count == 0)
+            {
+                <HTr>
+                    <HTd ColSpan="4"><Empty Simple/></HTd>
+
+                </HTr>
+
+            }
         @foreach (var cr in _crInstanceList)
         {
             <HTr>
