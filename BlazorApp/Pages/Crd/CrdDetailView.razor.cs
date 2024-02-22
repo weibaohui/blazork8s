@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
+using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Service.k8s;
 using k8s;
 using k8s.Models;
@@ -45,6 +46,22 @@ namespace BlazorApp.Pages.Crd
             return yaml;
         }
 
+        private async Task OnYamlClick(CustomResource cr)
+        {
+            var group    = CustomResourceDefinition.Spec.Group;
+            var versions = CustomResourceDefinition.Spec.Versions;
+            var plural   = CustomResourceDefinition.Spec.Names.Plural;
+
+            var customObject = await KubeService.Client()
+                .GetClusterCustomObjectAsync(group, cr.ApiGroupAndVersion().Item2, plural, cr.Name());
+            var json    = KubernetesJson.Serialize(customObject);
+            var item = KubernetesYaml.Deserialize<object>(json);
+
+
+            var options = PageDrawerService.DefaultOptions($"Yaml:{cr.Name()}", width: 1000);
+            await PageDrawerService
+                .ShowDrawerAsync<YamlView<object>, object, bool>(options, item);
+        }
 
         public class CustomResource : KubernetesObject, IMetadata<V1ObjectMeta>
         {

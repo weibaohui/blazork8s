@@ -2,12 +2,11 @@ using System.Threading.Tasks;
 using AntDesign;
 using BlazorMonaco.Editor;
 using k8s;
-using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class YamlView<T> : FeedbackComponent<T, bool> where T : IKubernetesObject<V1ObjectMeta>
+public partial class YamlView<T> : FeedbackComponent<T, bool>
 {
     [Parameter]
     public T Item { get; set; }

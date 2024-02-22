@@ -113,20 +113,23 @@
             <HTh>Age</HTh>
         </HTr>
 
-         @if (_crInstanceList.Count == 0)
-            {
-                <HTr>
-                    <HTd ColSpan="4"><Empty Simple/></HTd>
+        @if (_crInstanceList.Count == 0)
+        {
+            <HTr>
+                <HTd ColSpan="4">
+                    <Empty Simple/>
+                </HTd>
 
-                </HTr>
-
-            }
+            </HTr>
+        }
         @foreach (var cr in _crInstanceList)
         {
             <HTr>
                 <HTd>@cr.Kind</HTd>
                 <HTd>@cr.ApiVersion</HTd>
-                <HTd>@cr.Name()</HTd>
+                <HTd>
+                    <Button OnClick="@(() => OnYamlClick(cr))" Type="@ButtonType.Link">@cr.Name()</Button>
+                </HTd>
                 <HTd>@cr.CreationTimestamp().AgeFromUtc()</HTd>
             </HTr>
         }
