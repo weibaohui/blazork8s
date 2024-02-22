@@ -48,13 +48,23 @@ namespace BlazorApp.Pages.Crd
 
         private async Task OnYamlClick(CustomResource cr)
         {
-            var group    = CustomResourceDefinition.Spec.Group;
-            var versions = CustomResourceDefinition.Spec.Versions;
-            var plural   = CustomResourceDefinition.Spec.Names.Plural;
+            var    group        = CustomResourceDefinition.Spec.Group;
+            var    versions     = CustomResourceDefinition.Spec.Versions;
+            var    plural       = CustomResourceDefinition.Spec.Names.Plural;
+            object customObject = null;
+            if (CustomResourceDefinition.Spec.Scope == "Namespaced")
+            {
+                customObject = await KubeService.Client()
+                    .GetNamespacedCustomObjectAsync(group, cr.ApiGroupAndVersion().Item2, cr.Namespace(),plural, cr.Name());
+            }
+            else
+            {
+                customObject = await KubeService.Client()
+                    .GetClusterCustomObjectAsync(group, cr.ApiGroupAndVersion().Item2, plural, cr.Name());
+            }
 
-            var customObject = await KubeService.Client()
-                .GetClusterCustomObjectAsync(group, cr.ApiGroupAndVersion().Item2, plural, cr.Name());
-            var json    = KubernetesJson.Serialize(customObject);
+
+            var json = KubernetesJson.Serialize(customObject);
             var item = KubernetesYaml.Deserialize<object>(json);
 
 

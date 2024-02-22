@@ -1,0 +1,33 @@
+apiVersion: kwok.x-k8s.io/v1alpha1
+kind: Exec
+metadata:
+  name: test-exec
+  namespace: default
+spec:
+  execs:
+    - containers:
+        - nginx
+      local:
+        workDir: /app
+        envs:
+          - name: mode
+            value: dev
+---
+apiVersion: kwok.x-k8s.io/v1alpha1
+kind: ClusterExec
+metadata:
+  name: test-cluster-exec
+spec:
+  selector:
+    matchNamespaces:
+      - default
+    matchNames:
+      - exec
+  execs:
+    - containers:
+        - nginx
+      local:
+        workDir: /app
+        envs:
+          - name: mode
+            value: cluster-dev
