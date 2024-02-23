@@ -73,7 +73,8 @@ public partial class BasicLayout : LayoutComponentBase
                 Icon       = "robot",
                 HideInMenu = !Ai.Enabled(),
             },
-            GetMenuItem("Example", "unordered-list")
+            GetMenuItem("Example", "unordered-list"),
+            GetMenuItem("OpenSource", "github")
         ];
         await base.OnInitializedAsync();
     }
