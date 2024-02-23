@@ -15,14 +15,12 @@ public class KubectlService : IKubectlService
         }
 
         //yaml 存为文件
-        var    guid = Guid.NewGuid().ToString();
-        string path = $"{guid}.yaml";
-        Console.WriteLine($"文件名称{path}");
+        var guid = Guid.NewGuid().ToString();
+        var path = $"{guid}.yaml";
         await File.WriteAllTextAsync(path, yaml);
 
 
         var output = await Kubectl($"apply -f {path}");
-        Console.WriteLine(output);
         File.Delete(path);
         return output; // 输出命令输出结果
     }
@@ -37,6 +35,11 @@ public class KubectlService : IKubectlService
         return await Kubectl($" explain {filed}");
     }
 
+    public async Task<string> Describe(string resource, string name)
+    {
+        return await Kubectl($" describe {resource}  {name}");
+    }
+
     public async Task<string> Delete(string yaml)
     {
         if (string.IsNullOrWhiteSpace(yaml))
@@ -45,8 +48,8 @@ public class KubectlService : IKubectlService
         }
 
         //yaml 存为文件
-        var    guid = Guid.NewGuid().ToString();
-        string path = $"{guid}.yaml";
+        var guid = Guid.NewGuid().ToString();
+        var path = $"{guid}.yaml";
         Console.WriteLine($"文件名称{path}");
         await File.WriteAllTextAsync(path, yaml);
 
