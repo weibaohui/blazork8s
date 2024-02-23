@@ -40,6 +40,11 @@ public class KubectlService : IKubectlService
         return await Kubectl($" describe {resource}  {name}");
     }
 
+    public async Task<string> Describe(string resourceAndName)
+    {
+        return await Kubectl($" describe {resourceAndName}");
+    }
+
     public async Task<string> Delete(string yaml)
     {
         if (string.IsNullOrWhiteSpace(yaml))

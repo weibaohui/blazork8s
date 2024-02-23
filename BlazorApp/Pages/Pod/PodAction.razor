@@ -3,6 +3,7 @@
     <Dropdown >
         <Overlay >
             <Menu >
+                <MenuItem OnClick="@(() => OnPodDescribeClick(PodItem))">Describe</MenuItem>
                 <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
                 <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
                 <MenuItem OnClick="@(() => OnYamlClick(PodItem))">Yaml</MenuItem>
@@ -30,6 +31,7 @@
 @if (MenuMode == MenuMode.Horizontal)
 {
     <Alert Type="@AlertType.Success">
+        <Button OnClick="@(() => OnPodDescribeClick(PodItem))">Describe</Button>
         <Button OnClick="@(() => OnPodLogClick(PodItem))">日志</Button>
         <Button OnClick="@(() => OnPodExecClick(PodItem))">Exec</Button>
         <Button OnClick="@(() => OnYamlClick(PodItem))">Yaml</Button>

@@ -54,6 +54,12 @@ public partial class PodAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
     }
+    private async Task OnPodDescribeClick(V1Pod pod)
+    {
+        var resource=$"pod {pod.Name()} -n {pod.Namespace()}";
+        var options = PageDrawerService.DefaultOptions($"Describe:{pod.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<KubectlDescribeView, string,bool>(options, resource);
+    }
 
     private async Task OnPodExecClick(V1Pod pod)
     {
