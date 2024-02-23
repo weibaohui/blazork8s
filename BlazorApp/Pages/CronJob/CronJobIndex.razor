@@ -33,7 +33,7 @@
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
                     <AntDesign.Column Title="Schedule" TData="string">
-                        @(context.Spec.Schedule)
+                        <Button OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{context.Spec.Schedule}"))" Type="@ButtonType.Link">@context.Spec.Schedule</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Suspend" TData="string">
                         @(context.Spec.Suspend ?? false ? "True" : "False")
