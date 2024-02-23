@@ -6,7 +6,8 @@ namespace BlazorApp.Service.AI.impl;
 public class AiService(
     IConfigService     configService,
     IQwenAiService     qwenAi,
-    IXunFeiAiService   xunFeiAi
+    IXunFeiAiService   xunFeiAi,
+    IOpenAiService openAi
     ) : IAiService
 {
     private IAiService GetAi()
@@ -16,6 +17,7 @@ public class AiService(
         {
             "XunFeiAI" => xunFeiAi,
             "QwenAI"   => qwenAi,
+            "OpenAI"   => openAi,
             _        => qwenAi,
         };
     }
