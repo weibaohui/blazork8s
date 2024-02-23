@@ -35,10 +35,7 @@ public class KubectlService : IKubectlService
         return await Kubectl($" explain {filed}");
     }
 
-    public async Task<string> Describe(string resource, string name)
-    {
-        return await Kubectl($" describe {resource}  {name}");
-    }
+
 
     public async Task<string> Describe(string resourceAndName)
     {

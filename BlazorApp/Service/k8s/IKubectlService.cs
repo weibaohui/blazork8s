@@ -8,6 +8,5 @@ public interface IKubectlService
     public Task<string> Apply(string    yaml);
     public Task<string> Delete(string   yaml);
     public Task<string> Explain(string  filed);
-    public Task<string> Describe(string resource, string name);
     public Task<string> Describe(string resourceAndName);
 }
