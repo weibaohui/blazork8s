@@ -1,6 +1,8 @@
 using System.Threading.Tasks;
-using k8s.Models;
+using BlazorApp.Pages.ai;
 using BlazorApp.Pages.Common;
+using k8s.Models;
+
 namespace BlazorApp.Pages.CronJob
 {
     public partial class CronJobDetailView :  DrawerPageBase<V1CronJob>
@@ -10,6 +12,13 @@ namespace BlazorApp.Pages.CronJob
         {
             CronJob = base.Options;
             await base.OnInitializedAsync();
+        }
+
+
+        private async Task OnAnyChatClick(string item)
+        {
+            var options = PageDrawerService.DefaultOptions($"AI Chat", width: 1000);
+            await PageDrawerService.ShowDrawerAsync<AnyChat, string, bool>(options, item);
         }
     }
 }

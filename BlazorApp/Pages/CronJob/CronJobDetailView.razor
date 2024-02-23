@@ -11,9 +11,9 @@
     <MetadataView Item="CronJob.Metadata" ExplainFieldPrefix="cronJob"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <PropertyOptionView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" Options="@(new []{"Allow", "Forbid", "Replace"})"></PropertyOptionView>
+        <PropertyOptionView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" Options="@(new[] { "Allow", "Forbid", "Replace" })"></PropertyOptionView>
         <PropertySimpleView Title="FailedJobsHistoryLimit" Item="@CronJob.Spec.FailedJobsHistoryLimit" ExplainField="cronJob.spec.failedJobsHistoryLimit"></PropertySimpleView>
-        <PropertySimpleView Title="Schedule" Item="@CronJob.Spec.Schedule" ExplainField="cronJob.spec.schedule"></PropertySimpleView>
+        <PropertySimpleView Title="Schedule" Item="@CronJob.Spec.Schedule" ExplainField="cronJob.spec.schedule" OnClick=@(() => OnAnyChatClick($"请解释如下Cron表达式：{CronJob.Spec.Schedule}"))></PropertySimpleView>
         <PropertySimpleView Title="StartingDeadlineSeconds" Item="@CronJob.Spec.StartingDeadlineSeconds" ExplainField="cronJob.spec.startingDeadlineSeconds"></PropertySimpleView>
         <PropertySimpleView Title="SuccessfulJobsHistoryLimit" Item="@CronJob.Spec.SuccessfulJobsHistoryLimit" ExplainField="cronJob.spec.successfulJobsHistoryLimit"></PropertySimpleView>
         <PropertySimpleView Title="Suspend" Item="@CronJob.Spec.Suspend" ExplainField="cronJob.spec.suspend"></PropertySimpleView>
@@ -34,11 +34,11 @@
         }
         <HTableColumn Title="LastScheduleTime" ExplainField="cronJob.status.lastScheduleTime">
             <AgeView Age="@CronJob.Status.LastScheduleTime"></AgeView>
-             (@CronJob.Status.LastScheduleTime.GetValueOrDefault().ToLocalTime())
+            (@CronJob.Status.LastScheduleTime.GetValueOrDefault().ToLocalTime())
         </HTableColumn>
         <HTableColumn Title="LastSuccessfulTime" ExplainField="cronJob.status.lastSuccessfulTime">
             <AgeView Age="@CronJob.Status.LastSuccessfulTime"></AgeView>
-                         (@CronJob.Status.LastSuccessfulTime.GetValueOrDefault().ToLocalTime())
+            (@CronJob.Status.LastSuccessfulTime.GetValueOrDefault().ToLocalTime())
         </HTableColumn>
     </HTable>
     <MiniJobListView ControllerByUid="@CronJob.Metadata.Uid"></MiniJobListView>

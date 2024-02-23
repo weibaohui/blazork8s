@@ -1,0 +1,12 @@
+@using Extension
+@inherits BlazorApp.Pages.Common.DrawerPageBase<string>
+
+<Card >
+    <p>
+        Q:@_ask
+    </p>
+    <p>
+        A:
+        <p>@((MarkupString)_result.ToHtmlDisplay())</p>
+    </p>
+</Card>
