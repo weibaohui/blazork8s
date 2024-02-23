@@ -20,12 +20,17 @@ public partial class AnyChat : DrawerPageBase<string>
         if (AiService.Enabled())
         {
             AiService.SetChatEventHandler(EventHandler);
+
+            if (!string.IsNullOrWhiteSpace(_ask))
+            {
+                _result = await AiService.AIChat(_ask);
+            }
+        }
+        else
+        {
+            _result = "请先开启AI能力，并配置AI参数";
         }
 
-        if (!string.IsNullOrWhiteSpace(_ask))
-        {
-            _result = await AiService.AIChat(_ask);
-        }
 
         await base.OnInitializedAsync();
     }
