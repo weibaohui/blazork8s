@@ -1,0 +1,24 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crash-nginx
+  labels:
+    app: crash-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: crash-nginx
+  template:
+    metadata:
+      labels:
+        app: crash-nginx
+    spec:
+      containers:
+        - name: crash-nginx
+          image: nginx:1.14.2
+          ports:
+            - containerPort: 80
+          securityContext:
+            readOnlyRootFilesystem: true
