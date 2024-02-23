@@ -4,7 +4,7 @@
 <Divider Orientation="left" Style="font-weight:bold">Events</Divider>
 @if (Events != null)
 {
-    if (Events.Any(x => x.Type == "Warning"))
+    if (Events.Any(x => x.Type == "Warning" || x.Count > 5))
     {
         <HTable>
             <HTableColumn Title="AI分析">
@@ -26,7 +26,7 @@
                 {
                     <Badge Count="@e.Count"></Badge>
                 }
-                @if (Ai.Enabled() && e.Type == "Warning")
+                @if (Ai.Enabled() && (e.Type == "Warning" || e.Count > 5))
                 {
                     <Button Type="@ButtonType.Primary" OnClick="@(() => Ask(e))">诊断</Button>
                 }
