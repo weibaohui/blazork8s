@@ -33,46 +33,46 @@ jobs:
         # This is where you will update the PAT to GITHUB_TOKEN
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      #
-      #    - name: Build the Docker image
-      #      run: docker build . --file BlazorApp/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
-      #
 
-      #    - name: Push image
-      #      run: |
-      #          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-      #
-      #          # Change all uppercase to lowercase
-      #          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-      #          # Strip git ref prefix from version
-      #          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-      #          # Strip "v" prefix from tag name
-      #          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-      #          # Use Docker `latest` tag convention
-      #          [ "$VERSION" == "main" ] && VERSION=latest
-      #          echo IMAGE_ID=$IMAGE_ID
-      #          echo VERSION=$VERSION
-      #          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
-      #          docker push $IMAGE_ID:$VERSION
+      - name: Build the Docker image
+        run: docker build . --file BlazorApp/Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
 
-      - name: Docker BuildX install
-        run: docker run  --rm --privileged tonistiigi/binfmt --install all
-      - name: Docker BuildX Create
-        run: docker buildx create --use
-      - name: Docker BuildX Ls
-        run: docker buildx ls
-      - name: Build
+
+      - name: Push image
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
-          
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          docker buildx build -t  $IMAGE_ID --label "runnumber=${GITHUB_RUN_ID}"  -f BlazorApp/Dockerfile   --platform=linux/arm64,linux/amd64 . --push
+            IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+            # Change all uppercase to lowercase
+            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+            # Strip git ref prefix from version
+            VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+            # Strip "v" prefix from tag name
+            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+            # Use Docker `latest` tag convention
+            [ "$VERSION" == "main" ] && VERSION=latest
+            echo IMAGE_ID=$IMAGE_ID
+            echo VERSION=$VERSION
+            docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+            docker push $IMAGE_ID:$VERSION
+
+#      - name: Docker BuildX install
+#        run: docker run  --rm --privileged tonistiigi/binfmt --install all
+#      - name: Docker BuildX Create
+#        run: docker buildx create --use
+#      - name: Docker BuildX Ls
+#        run: docker buildx ls
+#      - name: Build
+#        run: |
+#          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+#
+#          # Change all uppercase to lowercase
+#          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+#          # Strip git ref prefix from version
+#          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+#          # Strip "v" prefix from tag name
+#          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+#          # Use Docker `latest` tag convention
+#          [ "$VERSION" == "main" ] && VERSION=latest
+#          echo IMAGE_ID=$IMAGE_ID
+#          echo VERSION=$VERSION
+#          docker buildx build -t  $IMAGE_ID --label "runnumber=${GITHUB_RUN_ID}"  -f BlazorApp/Dockerfile   --platform=linux/arm64,linux/amd64 . --push
