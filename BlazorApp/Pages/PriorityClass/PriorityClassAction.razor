@@ -1,30 +1,20 @@
-@if (MenuMode == MenuMode.Vertical)
-{
-    <Dropdown >
-        <Overlay >
-            <Menu >
-                <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
-                <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
-                <MenuItem >
-                    <Popconfirm Title="确定删除吗"
-                                OnConfirm="@(() => OnDeleteClick(Item))"
-                                OkText="Yes"
-                                CancelText="No">
-                        删除
-                    </Popconfirm>
-                </MenuItem>
-            </Menu>
-        </Overlay>
-        <ChildContent>
-            <Button>操作 <Icon Type="down"/></Button>
-        </ChildContent>
-    </Dropdown>
-}
-@if (MenuMode == MenuMode.Horizontal)
-{
-    <Alert Type="@AlertType.Success">
-        <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
-        <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
+@using BlazorApp.Pages.Common
+@using k8s.Models
+<ShareMenuItem T="V1PriorityClass" Item="Item" MenuMode="MenuMode">
+    @if (MenuMode == MenuMode.Vertical)
+    {
+        <MenuItem OnClick="@(() => OnCancelDefaultClick(Item))">CancelDefault</MenuItem>
+        <MenuItem >
+            <Popconfirm Title="确定删除吗"
+                        OnConfirm="@(() => OnDeleteClick(Item))"
+                        OkText="Yes"
+                        CancelText="No">
+                删除
+            </Popconfirm>
+        </MenuItem>
+    }
+    @if (MenuMode == MenuMode.Horizontal)
+    {
         <Button OnClick="@(() => OnCancelDefaultClick(Item))">CancelDefault</Button>
-    </Alert>
-}
+    }
+</ShareMenuItem>

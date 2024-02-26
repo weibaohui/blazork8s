@@ -1,13 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
-using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
+
 namespace BlazorApp.Pages.ValidatingWebhookConfiguration;
 public partial class ValidatingWebhookConfigurationAction : ComponentBase
 {
@@ -17,8 +13,7 @@ public partial class ValidatingWebhookConfigurationAction : ComponentBase
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
     [Inject]
     private IValidatingWebhookConfigurationService ValidatingWebhookConfigurationService { get; set; }
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -28,14 +23,5 @@ public partial class ValidatingWebhookConfigurationAction : ComponentBase
         await ValidatingWebhookConfigurationService.Delete(item.Namespace(), item.Name());
         StateHasChanged();
     }
-    private async Task OnYamlClick(V1ValidatingWebhookConfiguration item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<V1ValidatingWebhookConfiguration>, V1ValidatingWebhookConfiguration, bool>(options, item);
-    }
-    private async Task OnDocClick(V1ValidatingWebhookConfiguration item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1ValidatingWebhookConfiguration>, V1ValidatingWebhookConfiguration, bool>(options, item);
-    }
+
 }

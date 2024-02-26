@@ -1,0 +1,37 @@
+@typeparam            T
+
+@if (MenuMode == MenuMode.Vertical)
+{
+    <Dropdown >
+        <Overlay >
+            <Menu >
+                <MenuItem OnClick="@(() => OnDescribeClick(Item))">Describe</MenuItem>
+                <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
+                <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
+                 @if (_enable)
+                        {
+                            <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">智能分析</MenuItem>
+                            <MenuItem OnClick="@(() => OnSecurityClick(Item))">安全分析</MenuItem>
+                        }
+                @ChildContent
+            </Menu>
+        </Overlay>
+        <ChildContent>
+            <Button>操作 <Icon Type="down"/></Button>
+        </ChildContent>
+    </Dropdown>
+}
+@if (MenuMode == MenuMode.Horizontal)
+{
+    <Alert Type="@AlertType.Success">
+        <Button OnClick="@(() => OnDescribeClick(Item))">Describe</Button>
+        <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
+        <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
+         @if (_enable)
+                {
+                    <Button OnClick="@(() => OnAnalyzeClick(Item))">智能分析</Button>
+                    <Button OnClick="@(() => OnSecurityClick(Item))">安全分析</Button>
+                }
+        @ChildContent
+    </Alert>
+}

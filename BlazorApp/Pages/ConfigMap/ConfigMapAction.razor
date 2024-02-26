@@ -1,10 +1,11 @@
+@using BlazorApp.Pages.Common
+@using k8s.Models
 @if (MenuMode == MenuMode.Vertical)
 {
     <Dropdown >
         <Overlay >
             <Menu >
-                <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
-                <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
+                <ShareMenuItem T="V1ConfigMap" Item="Item" MenuMode="MenuMode"></ShareMenuItem>
                 <MenuItem >
                     <Popconfirm Title="确定删除吗"
                                 OnConfirm="@(() => OnDeleteClick(Item))"
@@ -23,7 +24,6 @@
 @if (MenuMode == MenuMode.Horizontal)
 {
     <Alert Type="@AlertType.Success">
-        <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
-        <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
+        <ShareMenuItem T="V1ConfigMap" Item="Item" MenuMode="MenuMode"></ShareMenuItem>
     </Alert>
 }

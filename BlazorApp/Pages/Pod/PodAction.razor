@@ -1,45 +1,32 @@
-@if (MenuMode == MenuMode.Vertical)
-{
-    <Dropdown >
-        <Overlay >
-            <Menu >
-                <MenuItem OnClick="@(() => OnPodDescribeClick(PodItem))">Describe</MenuItem>
-                <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
-                <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
-                <MenuItem OnClick="@(() => OnYamlClick(PodItem))">Yaml</MenuItem>
-                <MenuItem OnClick="@(() => OnDocClick(PodItem))">Doc</MenuItem>
-                <MenuItem >
-                    <Popconfirm Title="确定删除吗"
-                                OnConfirm="@(() => OnPodDeleteClick(PodItem))"
-                                OkText="Yes"
-                                CancelText="No">
-                        删除
-                    </Popconfirm>
-                </MenuItem>
-                @if (_enable)
-                {
-                    <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">问题分析</MenuItem>
-                    <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
-                }
-            </Menu>
-        </Overlay>
-        <ChildContent>
-            <Button>操作 <Icon Type="down"/></Button>
-        </ChildContent>
-    </Dropdown>
-}
-@if (MenuMode == MenuMode.Horizontal)
-{
-    <Alert Type="@AlertType.Success">
-        <Button OnClick="@(() => OnPodDescribeClick(PodItem))">Describe</Button>
+@using BlazorApp.Pages.Common
+@using k8s.Models
+<ShareMenuItem T="V1Pod" Item="PodItem" MenuMode="MenuMode">
+    @if (MenuMode == MenuMode.Vertical)
+    {
+        <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
+        <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
+        <MenuItem >
+            <Popconfirm Title="确定删除吗"
+                        OnConfirm="@(() => OnPodDeleteClick(PodItem))"
+                        OkText="Yes"
+                        CancelText="No">
+                删除
+            </Popconfirm>
+        </MenuItem>
+        @if (_enable)
+        {
+            <MenuItem OnClick="@(() => OnAnalyzeClick(PodItem))">问题分析</MenuItem>
+            <MenuItem OnClick="@(() => OnSecurityClick(PodItem))">安全检测</MenuItem>
+        }
+    }
+    @if (MenuMode == MenuMode.Horizontal)
+    {
         <Button OnClick="@(() => OnPodLogClick(PodItem))">日志</Button>
         <Button OnClick="@(() => OnPodExecClick(PodItem))">Exec</Button>
-        <Button OnClick="@(() => OnYamlClick(PodItem))">Yaml</Button>
-        <Button OnClick="@(() => OnDocClick(PodItem))">Doc</Button>
         @if (_enable)
         {
             <Button OnClick="@(() => OnAnalyzeClick(PodItem))">问题分析</Button>
             <Button OnClick="@(() => OnSecurityClick(PodItem))">安全检测</Button>
         }
-    </Alert>
-}
+    }
+</ShareMenuItem>

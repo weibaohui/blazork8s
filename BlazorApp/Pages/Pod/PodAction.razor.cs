@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
@@ -54,12 +53,7 @@ public partial class PodAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<PodLogsView, V1Pod, bool>(options, pod);
     }
-    private async Task OnPodDescribeClick(V1Pod pod)
-    {
-        var resource=$"pod {pod.Name()} -n {pod.Namespace()}";
-        var options = PageDrawerService.DefaultOptions($"Describe:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<KubectlDescribeView, string,bool>(options, resource);
-    }
+
 
     private async Task OnPodExecClick(V1Pod pod)
     {
@@ -90,16 +84,5 @@ public partial class PodAction : ComponentBase
             });
     }
 
-    private async Task OnYamlClick(V1Pod item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<V1Pod>, V1Pod, bool>(options, item);
-    }
 
-
-    private async Task OnDocClick(V1Pod item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1Pod>, V1Pod, bool>(options, item);
-    }
 }

@@ -3,8 +3,6 @@ using System.Globalization;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common;
-using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using k8s.Models;
@@ -28,9 +26,6 @@ public partial class DeploymentAction : ComponentBase
     [Parameter]
     public V1Deployment Item { get; set; }
 
-
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
 
     [Inject]
     private IAiService Ai { get; set; }
@@ -80,17 +75,5 @@ public partial class DeploymentAction : ComponentBase
             await DeploymentService.UpdateReplicas(item, Int32.Parse(result.ToString(CultureInfo.CurrentCulture)));
             await InvokeAsync(StateHasChanged);
         };
-    }
-
-    private async Task OnYamlClick(V1Deployment item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<V1Deployment>, V1Deployment, bool>(options, item);
-    }
-
-    private async Task OnDocClick(V1Deployment item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DocTreeView<V1Deployment>, V1Deployment, bool>(options, item);
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Extension;
 
@@ -124,7 +125,39 @@ public static class StringExtensions
     }
     public static int CountBy(this string str, string value)
     {
-        return str.Count(i => value.Contains(i));
+        return str.Count(value.Contains);
     }
 
+    /// <summary>
+    /// A function that takes a string input and returns the substring after the first digit found in the input string.
+    /// </summary>
+    /// <param name="input"></param>
+    /// <returns></returns>
+    public static string GetSubstringAfterFirstDigit(this string input)
+    {
+        // 使用正则表达式找到第一个数字的索引
+        var match = Regex.Match(input, @"\d");
+
+        if (match.Success)
+        {
+            // 找到第一个数字后面的部分
+            int index = match.Index + 1;
+            return input.Substring(index);
+        }
+        else
+        {
+            // 如果没有找到数字，返回空字符串或者其他适当的值
+            return string.Empty;
+        }
+    }
+
+
+    public static bool IsNullOrWhiteSpace(this string? str)
+    {
+        return string.IsNullOrWhiteSpace(str);
+    }
+    public static bool IsNullOrEmpty(this string? str)
+    {
+        return string.IsNullOrEmpty(str);
+    }
 }
