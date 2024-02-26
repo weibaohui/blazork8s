@@ -1,12 +1,9 @@
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
-using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Pod;
 
@@ -25,21 +22,6 @@ public partial class PodAction : ComponentBase
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
-    [Inject]
-    private IAiService Ai { get; set; }
-
-
-    [Inject]
-    private ILogger<PodAction> Logger { get; set; }
-
-    private bool _enable;
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        _enable = Ai.Enabled();
-        await base.OnInitializedAsync();
-    }
 
     private async Task OnPodDeleteClick(V1Pod pod)
     {
@@ -60,29 +42,4 @@ public partial class PodAction : ComponentBase
         var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<PodExecView, V1Pod, bool>(options, pod);
     }
-
-    private async Task OnAnalyzeClick(V1Pod pod)
-    {
-
-        var options = PageDrawerService.DefaultOptions($"AI智能分析:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
-            new IAiService.AiChatData
-            {
-                Data  =  pod,
-                Style = "error"
-            });
-    }
-
-    private async Task OnSecurityClick(V1Pod pod)
-    {
-        var options = PageDrawerService.DefaultOptions($"AI安全检测:{pod.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
-            new IAiService.AiChatData
-            {
-                Data  = pod,
-                Style = "security"
-            });
-    }
-
-
 }
