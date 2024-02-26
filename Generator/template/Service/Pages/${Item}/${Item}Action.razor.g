@@ -22,32 +22,9 @@ public partial class ${Item}Action : ComponentBase
     [Inject]
     private I${Item}Service ${Item}Service { get; set; }
 
-
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
-
     private async Task OnDeleteClick(${ItemType} item)
     {
         await ${Item}Service.Delete(item.Namespace(), item.Name());
         StateHasChanged();
-    }
-
- 
-
-    private async Task OnYamlClick(${ItemType} item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<${ItemType}>, ${ItemType}, bool>(options, item);
-    }
-
-    private async Task OnDocClick(${ItemType} item)
-    {
-        var options = PageDrawerService.DefaultOptions($"Doc:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<DocTreeView<${ItemType}>, ${ItemType}, bool>(options, item);
     }
 }
