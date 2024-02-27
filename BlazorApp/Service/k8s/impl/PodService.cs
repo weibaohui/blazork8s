@@ -143,7 +143,7 @@ namespace BlazorApp.Service.k8s.impl
                 var item = Result.NewResult();
                 item.Kind                       = "Pod";
                 item.Error                      = failures;
-                item.KubernetesDoc              = KubernetesYaml.Serialize(pod);
+                // item.KubernetesDoc              = KubernetesYaml.Serialize(pod);
                 item.Metadata.Name              = pod.Name();
                 item.Metadata.NamespaceProperty = pod.Namespace();
                 if (pod.OwnerReferences() is { Count: > 0 })
