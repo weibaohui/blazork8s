@@ -128,7 +128,7 @@ spec:
     spec:
       containers:
         - name: blazork8s
-          image: ghcr.io/weibaohui/blazork8s:0.0.8
+          image: ghcr.io/weibaohui/blazork8s:0.0.9
           env:
 #            - name: ASPNETCORE_ENVIRONMENT
 #              value: "Development"
@@ -138,6 +138,6 @@ spec:
             - containerPort: 8080
               protocol: TCP
               name: http-blazork8s
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
       restartPolicy: Always
       serviceAccountName: blazork8s
