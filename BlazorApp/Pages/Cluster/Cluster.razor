@@ -80,4 +80,36 @@
             }
         }
     </TabPane>
+
+    <TabPane Key="4" Tab="Error Analyze">
+        @if (AnalyzeResult is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="1">Kind</GridCol>
+                <GridCol Span="6">Name</GridCol>
+                <GridCol Span="9">Error</GridCol>
+                <GridCol Span="3">Parent</GridCol>
+                <GridCol Span="2">Action</GridCol>
+
+            </GridRow>
+            @foreach (var item in AnalyzeResult)
+            {
+                <GridRow Class="grid-table grid-table-first-row">
+
+                    <GridCol Span="1"> @item.Kind</GridCol>
+                    <GridCol Span="6">@($"{item.Namespace()}/{item.Name()}")</GridCol>
+                    <GridCol Span="9">
+                        @foreach (var failure in item.Error)
+                        {
+                            <li>@failure.Text</li>
+                        }
+                    </GridCol>
+                    <GridCol Span="3"> @item.ParentObject</GridCol>
+                    <GridCol Span="2">
+                        <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
+                    </GridCol>
+                </GridRow>
+            }
+        }
+    </TabPane>
 </Tabs>

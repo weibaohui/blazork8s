@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Entity.Analyze;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s
@@ -13,5 +14,7 @@ namespace BlazorApp.Service.k8s
 
         Task<IList<V1Pod>> FilterPodByLabels(string                ns, string labels);
         Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(string labels);
+
+        public Task<List<Result>> Analyze();
     }
 }
