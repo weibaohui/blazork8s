@@ -27,6 +27,7 @@ public partial class KubectlDescribeView : DrawerPageBase<string>
         if (!string.IsNullOrWhiteSpace(_resource))
         {
             _result = await Kubectl.Describe(_resource);
+            _result = _result.Replace("  ", " ");
         }
         await base.OnInitializedAsync();
     }
