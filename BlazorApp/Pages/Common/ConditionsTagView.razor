@@ -4,8 +4,8 @@
 {
     @foreach (var ns in Conditions.OrderBy(x => x.Type))
     {
-        @if(ns.Type.Contains("Pressure"))
-        { //压力 状态 反过来
+        @if(ns.Type.Contains("Pressure")||ns.Type.Contains("NetworkUnavailable"))
+        { //压力/网络不可达 状态 反过来
             @if (ns.Status == "False")
             {
                 <Tag Icon="check" PresetColor=@PresetColor.Green>@ns.Type</Tag>
