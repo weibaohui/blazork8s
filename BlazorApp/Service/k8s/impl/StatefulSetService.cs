@@ -74,13 +74,13 @@ public class StatefulSetService(IKubeService kubeService,
     {
         var items   = List();
         var results = new List<Result>();
-        var doc     = await docService.GetExplainByField("statefulSet.spec.serviceName");
         foreach (var item in items)
         {
             var failures = new List<Failure>();
             //check spec.serviceName
             if (item.Spec.ServiceName.IsNullOrWhiteSpace())
             {
+                var doc = await docService.GetExplainByField("statefulSet.spec.serviceName");
                 failures.Add(new Failure
                 {
                     Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName  not set",
@@ -94,10 +94,11 @@ public class StatefulSetService(IKubeService kubeService,
                 var svc = svcService.GetByName(item.Namespace(),svcName);
                 if (svc == null)
                 {
+
+                    var doc = await docService.GetExplainByField("statefulSet.spec.serviceName");
                     failures.Add(new Failure
                     {
                         Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName {svcName} not exist",
-                        KubernetesDoc = doc?.Explain
                     });
 
                 }
@@ -113,10 +114,10 @@ public class StatefulSetService(IKubeService kubeService,
                     var storageClass = storageClassService.GetByName(pvcTemplate.Spec.StorageClassName);
                     if (storageClass == null)
                     {
+
                         failures.Add(new Failure
                         {
                             Text          = $"StatefulSet  {item.Namespace()}/{item.Name()} use storageClass {pvcTemplate.Spec.StorageClassName} not exist",
-                            KubernetesDoc = doc?.Explain
                         });
                     }
                 }
