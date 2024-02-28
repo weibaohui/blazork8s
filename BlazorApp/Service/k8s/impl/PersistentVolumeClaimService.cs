@@ -1,19 +1,52 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using BlazorApp.Utils;
+using Entity.Analyze;
 using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class PersistentVolumeClaimService : CommonAction<V1PersistentVolumeClaim>, IPersistentVolumeClaimService
+public class PersistentVolumeClaimService(IKubeService kubeService,IEventService eventService)
+    : CommonAction<V1PersistentVolumeClaim>, IPersistentVolumeClaimService
 {
-    private readonly IKubeService                _kubeService;
-
-    public PersistentVolumeClaimService(IKubeService kubeService)
-    {
-        _kubeService = kubeService;
-    }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _kubeService.Client().DeleteNamespacedPersistentVolumeClaimAsync(name, ns);
+        return await kubeService.Client().DeleteNamespacedPersistentVolumeClaimAsync(name, ns);
     }
+
+    public async Task<List<Result>> Analyze()
+    {
+        var items   = List();
+        var results = new List<Result>();
+        foreach (var item in items)
+        {
+            var failures = new List<Failure>();
+
+            if (item.Status.Phase=="Pending")
+            {
+                var evt =await eventService.GetInvolvingObjectLatestEvent(item.Namespace(), item.Name());
+                if (evt == null){continue;}
+
+                if (evt.Reason=="ProvisioningFailed")
+                {
+                    failures.Add(new Failure()
+                    {
+                        Text = evt.Message
+                    });
+                }
+            }
+            
+
+
+            if (failures.Count <= 0) continue;
+            results.Add(Result.NewResult(item,failures));
+        }
+        if (results.Count == 0)
+        {
+            ClusterInspectionResultContainer.Instance.GetPassResources().Add("PVC");
+        }
+        return results;
+    }
+
 }

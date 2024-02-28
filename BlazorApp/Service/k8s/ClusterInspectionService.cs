@@ -22,7 +22,8 @@ public class ClusterInspectionService(
     INodeService                      nodeService,
     ICronJobService                   cronJobService,
     IIngressService                   ingressService,
-    IServiceService serviceService,
+    IServiceService                   serviceService,
+    IPersistentVolumeClaimService          persistentVolumeClaimService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -41,6 +42,7 @@ public class ClusterInspectionService(
         results.AddRange(await cronJobService.Analyze());
         results.AddRange(await ingressService.Analyze());
         results.AddRange(await serviceService.Analyze());
+        results.AddRange(await persistentVolumeClaimService.Analyze());
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
     }
