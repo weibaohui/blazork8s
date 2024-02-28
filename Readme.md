@@ -127,3 +127,10 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 ## 页面预览
 
 [click me](ui.md)
+
+## 巡检支持资源情况
+* Pod
+* Deployment
+* StatefulSet
+* ReplicaSet
+* 
