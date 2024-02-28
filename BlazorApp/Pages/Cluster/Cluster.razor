@@ -28,11 +28,11 @@
         <GridCol Span="14">
             <Card Title="实时巡检" Style="margin: 10px">
                 <GridRow Class="grid-table">
-                    <GridCol Span="4">异常汇总</GridCol>
-                    <GridCol Span="20">智能分析</GridCol>
+                    <GridCol Span="6">异常汇总</GridCol>
+                    <GridCol Span="18">智能分析</GridCol>
                 </GridRow>
                 <GridRow Class="grid-table">
-                    <GridCol Span="4">
+                    <GridCol Span="6">
 
                         <p>
                             last:<AgeView Age="@LastInspection"></AgeView> ago
@@ -56,7 +56,7 @@
                             }
                         }
                     </GridCol>
-                    <GridCol Span="20">
+                    <GridCol Span="18">
                         <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
                         @if (!_aiSummary.IsNullOrWhiteSpace())
                         {
