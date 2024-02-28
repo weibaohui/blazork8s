@@ -75,6 +75,8 @@ public partial class Cluster : ComponentBase
         PassResources  = ClusterInspectionResultContainer.Instance.GetPassResources();
         AnalyzeResult  = ClusterInspectionResultContainer.Instance.GetResults();
         LastInspection = ClusterInspectionResultContainer.Instance.LastInspection;
+        AnalyzeResult  = AnalyzeResult.OrderBy(x=>x.Kind).ThenBy(x=>x.Name()).ToList();
+
         await InvokeAsync(StateHasChanged);
 
     }
