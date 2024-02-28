@@ -22,14 +22,14 @@ public partial class AgeView : ComponentBase,IDisposable
     {
         await base.OnInitializedAsync();
         _timer         =  new Timer(1000);
-        _timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
+        _timer.Elapsed += async (sender, eventArgs) =>await OnTimerCallback();
         _timer.Start();
     }
 
-    private void OnTimerCallback()
+    private async Task OnTimerCallback()
     {
          _kubeAge = Age.AgeFromUtc();
-         InvokeAsync(StateHasChanged);
+        await InvokeAsync(StateHasChanged);
     }
     public void Dispose()
     {
