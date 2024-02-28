@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
@@ -31,33 +33,49 @@ public partial class Cluster : ComponentBase
     [Inject]
     private IAiService Ai { get; set; }
 
-    private IList<V1ComponentStatus> ComponentStatus { get; set; }
+    private List<V1ComponentStatus> ComponentStatus { get; set; }
     private IList<V1Pod>             PodList         { get; set; }
     private IList<V1Node>            NodeList        { get; set; }
-    private IList<V1APIService>      ApiServicesList { get; set; }
+    private List<V1APIService>      ApiServicesList { get; set; }
     private IList<Result>            AnalyzeResult   { get; set; }
+    private DateTime                 LastInspection  { get; set; }
+    private IList<string>            PassResources   { get; set; }
 
     private string _aiSummary = string.Empty;
 
+    private Timer _timer;
+
     protected override async Task OnInitializedAsync()
     {
-        PodList  = PodService.List();
-        NodeList = NodeService.List();
-        var statusList = await KubeService.Client().ListComponentStatusAsync();
-        ComponentStatus = statusList.Items;
 
-        var apiServiceList = await KubeService.Client().ListAPIServiceAsync();
-        ApiServicesList = apiServiceList.Items.ToList();
-
-        // await TranslateService.ProcessKubeExplains();
-
-        AnalyzeResult = ClusterInspectionResultContainer.Instance.GetResults();
         if (Ai.Enabled())
         {
             Ai.SetChatEventHandler(EventHandler);
         }
-
+        _timer         =  new Timer(1000);
+        _timer.Elapsed += async (sender, eventArgs) =>await OnTimerCallback();
+        _timer.Start();
         await base.OnInitializedAsync();
+    }
+
+    private async Task OnTimerCallback()
+    {
+        PodList  = PodService.List();
+        NodeList = NodeService.List();
+        var statusList = await KubeService.Client().ListComponentStatusAsync();
+        ComponentStatus = statusList.Items.ToList();
+        ComponentStatus.Sort((x, y) => string.Compare(x.Metadata.Name, y.Metadata.Name, StringComparison.Ordinal));
+
+        var apiServiceList = await KubeService.Client().ListAPIServiceAsync();
+        ApiServicesList = apiServiceList.Items.ToList();
+
+
+        //巡检信息
+        PassResources  = ClusterInspectionResultContainer.Instance.GetPassResources();
+        AnalyzeResult  = ClusterInspectionResultContainer.Instance.GetResults();
+        LastInspection = ClusterInspectionResultContainer.Instance.LastInspection;
+        await InvokeAsync(StateHasChanged);
+
     }
 
     private async void EventHandler(object sender, string resp)

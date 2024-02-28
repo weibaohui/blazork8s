@@ -5,7 +5,6 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Node
-@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 
@@ -37,18 +36,18 @@
                         @if (AnalyzeResult is { Count: > 0 })
                         {
                             <p>
-                               上次:<AgeView Age="@ClusterInspectionResultContainer.Instance.LastInspection" ></AgeView>
+                                last:<AgeView Age="@LastInspection"></AgeView> ago
                             </p>
                             @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                             {
                                 <li>@($"{kv.Kind}: {kv.Count}")</li>
                             }
-                            @foreach (var name in ClusterInspectionResultContainer.Instance.GetPassResources())
+
+                            @foreach (var name in PassResources)
                             {
                                 <li>@($"{name}: 0")</li>
                             }
                         }
-
                     </GridCol>
                     <GridCol Span="20">
                         <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
