@@ -14,6 +14,7 @@
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.SignalR.Common" Version="8.0.1" />
       <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.2" />
+      <PackageReference Include="NCrontab" Version="3.3.3" />
       <PackageReference Include="Quick.PtyNet" Version="1.0.2" />
       <PackageReference Include="SqlSugarCore" Version="5.1.4.142" />
       <PackageReference Include="XtermBlazor" Version="1.10.2" />
