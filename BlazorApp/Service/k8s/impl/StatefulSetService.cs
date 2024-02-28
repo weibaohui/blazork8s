@@ -9,7 +9,10 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class StatefulSetService(IKubeService kubeService, IDocService docService,IServiceService svcService) : CommonAction<V1StatefulSet>, IStatefulSetService
+public class StatefulSetService(IKubeService kubeService,
+    IDocService docService,
+    IServiceService svcService,
+    IStorageClassService storageClassService) : CommonAction<V1StatefulSet>, IStatefulSetService
 {
     public new async Task<object> Delete(string ns, string name)
     {
@@ -96,6 +99,25 @@ public class StatefulSetService(IKubeService kubeService, IDocService docService
                         KubernetesDoc = doc?.Explain
                     });
 
+                }
+            }
+
+
+            //检查存储配置，尤其是storageClassName
+            if(item.Spec.VolumeClaimTemplates  is {Count: > 0})
+            {
+                foreach (var pvcTemplate in item.Spec.VolumeClaimTemplates)
+                {
+                    if (pvcTemplate.Spec.StorageClassName.IsNullOrWhiteSpace()) continue;
+                    var storageClass = storageClassService.GetByName(pvcTemplate.Spec.StorageClassName);
+                    if (storageClass == null)
+                    {
+                        failures.Add(new Failure
+                        {
+                            Text          = $"StatefulSet  {item.Namespace()}/{item.Name()} use storageClass {pvcTemplate.Spec.StorageClassName} not exist",
+                            KubernetesDoc = doc?.Explain
+                        });
+                    }
                 }
             }
 
