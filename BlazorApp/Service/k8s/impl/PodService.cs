@@ -18,14 +18,22 @@ namespace BlazorApp.Service.k8s.impl
                 .ListNamespacedPodAsync(namespaceParameter: ns, labelSelector: labels);
             return pods?.Items;
         }
-
+        public async Task<IList<V1Pod>> FilterPodByLabels(string ns, IDictionary<string, string> labels)
+        {
+            var filter = PodSelectorHelper.ToFilter(labels);
+            return await FilterPodByLabels(ns, filter);
+        }
         public async Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(string labels)
         {
             var pods = await kubeService.Client()
                 .ListPodForAllNamespacesAsync(labelSelector: labels);
             return pods?.Items;
         }
-
+        public async Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(IDictionary<string, string> labels)
+        {
+            var filter = PodSelectorHelper.ToFilter(labels);
+            return await FilterPodByLabelsForAllNamespace(filter);
+        }
         public IList<V1Pod> ListByNodeName(string nodeName)
         {
             var list = List();
@@ -39,10 +47,7 @@ namespace BlazorApp.Service.k8s.impl
             var tuples = pods.GroupBy(s => s.Spec.NodeName)
                 .OrderBy(g => g.Key)
                 .Select(g => Tuple.Create(g.Key, g.Count()));
-            foreach (var tuple in tuples)
-            {
-                Console.WriteLine($"{tuple.Item1}={tuple.Item2}");
-            }
+
 
             return tuples;
         }
@@ -148,6 +153,7 @@ namespace BlazorApp.Service.k8s.impl
             {
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("Pod");
             }
+
             return results;
         }
 
@@ -178,5 +184,7 @@ namespace BlazorApp.Service.k8s.impl
 
             return failureReasons.Contains(reason);
         }
+
+
     }
 }

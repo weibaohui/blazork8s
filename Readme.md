@@ -138,3 +138,4 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * Ingress
 * Service/Endpoints
 * PersistentVolumeClaim
+* NetworkPolicy

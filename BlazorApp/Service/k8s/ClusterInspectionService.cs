@@ -24,6 +24,7 @@ public class ClusterInspectionService(
     IIngressService                   ingressService,
     IServiceService                   serviceService,
     IPersistentVolumeClaimService          persistentVolumeClaimService,
+    INetworkPolicyService networkPolicyService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -43,6 +44,7 @@ public class ClusterInspectionService(
         results.AddRange(await ingressService.Analyze());
         results.AddRange(await serviceService.Analyze());
         results.AddRange(await persistentVolumeClaimService.Analyze());
+        results.AddRange(await networkPolicyService.Analyze());
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
     }
