@@ -70,7 +70,7 @@ public class StatefulSetService(IKubeService kubeService, IDocService docService
     {
         var items   = List();
         var results = new List<Result>();
-        var doc     = await docService.GetExplainByField("statefulset.spec.serviceName");
+        var doc     = await docService.GetExplainByField("statefulSet.spec.serviceName");
         foreach (var item in items)
         {
             var failures = new List<Failure>();
