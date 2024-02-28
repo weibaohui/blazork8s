@@ -53,8 +53,8 @@ namespace BlazorApp.Service.k8s.impl
 
         public async Task<List<Result>> Analyze()
         {
-            var pods   = List();
-            var result = new List<Result>();
+            var pods    = List();
+            var results = new List<Result>();
             foreach (var pod in pods)
             {
                 var failures = new List<Failure>();
@@ -140,25 +140,10 @@ namespace BlazorApp.Service.k8s.impl
 
 
                 if (failures.Count <= 0) continue;
-                var item = Result.NewResult();
-                item.Kind                       = pod.Kind;
-                item.Error                      = failures;
-                // item.KubernetesDoc              = KubernetesYaml.Serialize(pod);
-                item.Metadata.Name              = pod.Name();
-                item.Metadata.NamespaceProperty = pod.Namespace();
-                if (pod.OwnerReferences() is { Count: > 0 })
-                {
-                    var owner = pod.OwnerReferences().FirstOrDefault();
-                    if (owner != null)
-                    {
-                        item.ParentObject = $"{owner.Kind}/{owner.Name}";
-                    }
-                }
-
-                result.Add(item);
+                results.Add(Result.NewResult(pod, failures));
             }
 
-            return result;
+            return results;
         }
 
 

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using Entity.Analyze;
 using k8s;
@@ -70,43 +69,29 @@ namespace BlazorApp.Service.k8s.impl
 
         public async Task<List<Result>> Analyze()
         {
-            var deploys = List();
-            var result  = new List<Result>();
-            foreach (var deploy in deploys)
+            var items    = List();
+            var results = new List<Result>();
+            foreach (var item in items)
             {
                 var failures = new List<Failure>();
 
-                if (deploy.Status.Replicas != deploy.Spec.Replicas)
+                if (item.Status.Replicas != item.Spec.Replicas)
                 {
                     var doc = await docService.GetExplainByField("deployment.spec.replicas");
                     failures.Add(new Failure
                     {
                         Text =
-                            $"Deployment {deploy.Namespace()}/{deploy.Name()} should have {deploy.Spec.Replicas} but {deploy.Status.Replicas} available",
+                            $"Deployment {item.Namespace()}/{item.Name()} should have {item.Spec.Replicas} but {item.Status.Replicas} available",
                         KubernetesDoc = doc.Explain
                     });
                 }
 
 
                 if (failures.Count <= 0) continue;
-                var item = Result.NewResult();
-                item.Kind  = deploy.Kind;
-                item.Error = failures;
-                item.Metadata.Name              = deploy.Name();
-                item.Metadata.NamespaceProperty = deploy.Namespace();
-                if (deploy.OwnerReferences() is { Count: > 0 })
-                {
-                    var owner = deploy.OwnerReferences().FirstOrDefault();
-                    if (owner != null)
-                    {
-                        item.ParentObject = $"{owner.Kind}/{owner.Name}";
-                    }
-                }
-
-                result.Add(item);
+                results.Add(Result.NewResult(item,failures));
             }
 
-            return result;
+            return results;
         }
     }
 }
