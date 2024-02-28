@@ -67,11 +67,18 @@ public partial class Cluster : ComponentBase
 
     private async Task OnSummaryClick()
     {
-        if (AnalyzeResult is { Count: > 0 })
+        if (Ai.Enabled())
         {
-            const string prompt = "请用中文归纳总结以下异常信息，并以一句话出统计k8s资源类型、错误类型、数量的概要汇总：";
-            var          json   = KubernetesJson.Serialize(AnalyzeResult);
-            _aiSummary = await Ai.AIChat(prompt + json);
+            if (AnalyzeResult is { Count: > 0 })
+            {
+                const string prompt = "请用中文归纳总结以下异常信息，并以一句话出统计k8s资源类型、错误类型、数量的概要汇总：";
+                var          json   = KubernetesJson.Serialize(AnalyzeResult);
+                _aiSummary = await Ai.AIChat(prompt + json);
+            }
+        }
+        else
+        {
+            _aiSummary = "AI服务未启用";
         }
     }
 
