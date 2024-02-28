@@ -5,6 +5,7 @@ using BlazorApp.Pages.ConfigMap;
 using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
+using BlazorApp.Pages.Ingress;
 using BlazorApp.Pages.Job;
 using BlazorApp.Pages.Namespace;
 using BlazorApp.Pages.Node;
@@ -96,7 +97,8 @@ public partial class RefView : ComponentBase
     [Inject]
     private INamespaceService NamespaceService { get; set; }
 
-
+    [Inject]
+    private IIngressService IngressService { get; set; }
     private string GetDelimiter()
     {
         return Ref.NamespaceProperty == null ? "" : "/";
@@ -126,6 +128,7 @@ public partial class RefView : ComponentBase
             "Role"                  => OnRoleClick(Ref),
             "ConfigMap"             => OnConfigMapClick(Ref),
             "Secret"                => OnSecretClick(Ref),
+            "Ingress"                => OnIngressClick(Ref),
             "Namespace"             => OnNamespaceClick(Ref),
             "PersistentVolumeClaim" => OnPersistentVolumeClaimClick(Ref),
             _                       => OnXClick(Ref)
@@ -149,7 +152,13 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<SecretDetailView, V1Secret, bool>(item);
     }
-
+    private async Task OnIngressClick(V1ObjectReference r)
+    {
+        var item = IngressService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Ingress>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<IngressDetailView, V1Ingress, bool>(item);
+    }
 
     private async Task OnConfigMapClick(V1ObjectReference r)
     {

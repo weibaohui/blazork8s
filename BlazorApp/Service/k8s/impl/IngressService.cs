@@ -73,6 +73,10 @@ public class IngressService(
                     {
                         //检查svcName是否存在
                         var svcName = path.Backend?.Service?.Name;
+                        if (svcName.IsNullOrWhiteSpace())
+                        {
+                            continue;
+                        }
                         var svc     = svcService.GetByName(item.Namespace(), svcName);
                         if (svc == null)
                         {
