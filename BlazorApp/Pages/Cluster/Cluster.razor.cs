@@ -51,12 +51,9 @@ public partial class Cluster : ComponentBase
         // await TranslateService.ProcessKubeExplains();
 
         AnalyzeResult = await PodService.Analyze();
-        if (Ai.Enabled() && AnalyzeResult.Count > 0)
+        if (Ai.Enabled())
         {
             Ai.SetChatEventHandler(EventHandler);
-            var prompt = "请用中文归纳总结以下信息，并以一句话出统计k8s资源类型、错误类型、数量的概要汇总：";
-            var json   = KubernetesJson.Serialize(AnalyzeResult);
-            _aiSummary = await Ai.AIChat(prompt + json);
         }
 
         await base.OnInitializedAsync();
@@ -68,7 +65,15 @@ public partial class Cluster : ComponentBase
         await InvokeAsync(StateHasChanged);
     }
 
-
+    private async Task OnSummaryClick()
+    {
+        if (AnalyzeResult is { Count: > 0 })
+        {
+            const string prompt = "请用中文归纳总结以下异常信息，并以一句话出统计k8s资源类型、错误类型、数量的概要汇总：";
+            var          json   = KubernetesJson.Serialize(AnalyzeResult);
+            _aiSummary = await Ai.AIChat(prompt + json);
+        }
+    }
 
     private async Task OnAnalyzeClick(object item)
     {
@@ -79,5 +84,22 @@ public partial class Cluster : ComponentBase
                 Data  = item,
                 Style = "error"
             });
+    }
+
+    private V1ObjectReference GetRef(Result item)
+    {
+        return new V1ObjectReference()
+        {
+            Kind              = item.Kind,
+            Name              = item.Name(),
+            NamespaceProperty = item.Namespace(),
+        };
+    }
+
+
+    public class GroupKindCount
+    {
+        public string Kind  { get; set; }
+        public int    Count { get; set; }
     }
 }
