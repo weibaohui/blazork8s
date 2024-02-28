@@ -55,6 +55,7 @@ public partial class Cluster : ComponentBase
         _timer         =  new Timer(10000);
         _timer.Elapsed += async (sender, eventArgs) =>await OnTimerCallback();
         _timer.Start();
+        await OnTimerCallback();//先执行一次
         await base.OnInitializedAsync();
     }
 

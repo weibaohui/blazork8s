@@ -33,19 +33,26 @@
                 </GridRow>
                 <GridRow Class="grid-table">
                     <GridCol Span="4">
+
+                        <p>
+                            last:<AgeView Age="@LastInspection"></AgeView> ago
+                        </p>
                         @if (AnalyzeResult is { Count: > 0 })
                         {
-                            <p>
-                                last:<AgeView Age="@LastInspection"></AgeView> ago
-                            </p>
                             @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                             {
-                                <li>@($"{kv.Kind}: {kv.Count}")</li>
+                                <div>
+                                    @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
+                                </div>
                             }
-
+                        }
+                        @if (PassResources is { Count: > 0 })
+                        {
                             @foreach (var name in PassResources)
                             {
-                                <li>@($"{name}: 0")</li>
+                                <div>
+                                    @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                                </div>
                             }
                         }
                     </GridCol>
