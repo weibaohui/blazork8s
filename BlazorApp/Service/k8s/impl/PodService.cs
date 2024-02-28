@@ -141,7 +141,7 @@ namespace BlazorApp.Service.k8s.impl
 
                 if (failures.Count <= 0) continue;
                 var item = Result.NewResult();
-                item.Kind                       = "Pod";
+                item.Kind                       = pod.Kind;
                 item.Error                      = failures;
                 // item.KubernetesDoc              = KubernetesYaml.Serialize(pod);
                 item.Metadata.Name              = pod.Name();
