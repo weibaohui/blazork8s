@@ -5,6 +5,7 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Node
+@using BlazorApp.Utils
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 
@@ -35,6 +36,9 @@
                     <GridCol Span="4">
                         @if (AnalyzeResult is { Count: > 0 })
                         {
+                            <p>
+                               上次:<AgeView Age="@ClusterInspectionResultContainer.Instance.LastInspection" ></AgeView>
+                            </p>
                             @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                             {
                                 <li>@($"{kv.Kind}: {kv.Count}")</li>

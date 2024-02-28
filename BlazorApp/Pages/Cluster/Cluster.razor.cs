@@ -5,6 +5,7 @@ using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils;
 using Entity.Analyze;
 using k8s;
 using k8s.Models;
@@ -50,7 +51,7 @@ public partial class Cluster : ComponentBase
 
         // await TranslateService.ProcessKubeExplains();
 
-        AnalyzeResult = await PodService.Analyze();
+        AnalyzeResult = ClusterInspectionResultContainer.Instance.GetResults();
         if (Ai.Enabled())
         {
             Ai.SetChatEventHandler(EventHandler);
