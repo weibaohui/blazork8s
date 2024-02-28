@@ -70,20 +70,17 @@ public class StatefulSetService(IKubeService kubeService, IDocService docService
     {
         var items   = List();
         var results = new List<Result>();
+        var doc     = await docService.GetExplainByField("statefulset.spec.serviceName");
         foreach (var item in items)
         {
             var failures = new List<Failure>();
-
-            var doc = await docService.GetExplainByField("statefulset.spec.serviceName");
-
             //check spec.serviceName
             if (item.Spec.ServiceName.IsNullOrWhiteSpace())
             {
-
                 failures.Add(new Failure
                 {
                     Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName  not set",
-                    KubernetesDoc = doc.Explain
+                    KubernetesDoc = doc?.Explain
                 });
             }
             else
@@ -96,21 +93,11 @@ public class StatefulSetService(IKubeService kubeService, IDocService docService
                     failures.Add(new Failure
                     {
                         Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName {svcName} not exist",
-                        KubernetesDoc = doc.Explain
+                        KubernetesDoc = doc?.Explain
                     });
 
                 }
             }
-            if (item.Status.Replicas != item.Spec.Replicas)
-            {
-                failures.Add(new Failure
-                {
-                    Text =
-                        $"Deployment {item.Namespace()}/{item.Name()} should have {item.Spec.Replicas} but {item.Status.Replicas} available",
-                    KubernetesDoc = doc.Explain
-                });
-            }
-
 
             if (failures.Count <= 0) continue;
             results.Add(Result.NewResult(item,failures));
