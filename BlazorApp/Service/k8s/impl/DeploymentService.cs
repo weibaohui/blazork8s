@@ -82,7 +82,7 @@ namespace BlazorApp.Service.k8s.impl
                     {
                         Text =
                             $"Deployment {item.Namespace()}/{item.Name()} should have {item.Spec.Replicas} but {item.Status.Replicas} available",
-                        KubernetesDoc = doc.Explain
+                        KubernetesDoc = doc?.Explain
                     });
                 }
 
