@@ -11,7 +11,6 @@ public class Result : IKubernetesObject<V1ObjectMeta>
     public string         Kind          { get; set; }
     public IList<Failure> Error         { get; set; }
     public string         ParentObject  { get; set; }
-    public string         KubernetesDoc { get; set; }
 
     public V1ObjectMeta Metadata { get; set; }
 
