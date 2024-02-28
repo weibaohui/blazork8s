@@ -23,8 +23,9 @@ public class ClusterInspectionService(
     ICronJobService                   cronJobService,
     IIngressService                   ingressService,
     IServiceService                   serviceService,
-    IPersistentVolumeClaimService          persistentVolumeClaimService,
-    INetworkPolicyService networkPolicyService,
+    IPersistentVolumeClaimService     persistentVolumeClaimService,
+    INetworkPolicyService             networkPolicyService,
+    IHorizontalPodAutoscalerService   horizontalPodAutoscalerService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -45,6 +46,7 @@ public class ClusterInspectionService(
         results.AddRange(await serviceService.Analyze());
         results.AddRange(await persistentVolumeClaimService.Analyze());
         results.AddRange(await networkPolicyService.Analyze());
+        results.AddRange(await horizontalPodAutoscalerService.Analyze());
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
     }
