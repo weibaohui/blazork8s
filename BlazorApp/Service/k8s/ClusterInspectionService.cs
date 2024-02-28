@@ -22,6 +22,7 @@ public class ClusterInspectionService(
     INodeService                      nodeService,
     ICronJobService                   cronJobService,
     IIngressService                   ingressService,
+    IServiceService serviceService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -39,7 +40,7 @@ public class ClusterInspectionService(
         results.AddRange(await nodeService.Analyze());
         results.AddRange(await cronJobService.Analyze());
         results.AddRange(await ingressService.Analyze());
-
+        results.AddRange(await serviceService.Analyze());
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
     }
