@@ -23,7 +23,7 @@ namespace BlazorApp.Service.k8s.impl
         public async Task<IList<Corev1Event>> GetInvolvingObject(string ns, string name)
         {
             var list = await _kubeService.Client().CoreV1
-                .ListNamespacedEventAsync(ns, fieldSelector: $"involvesObject.name={name}");
+                .ListNamespacedEventAsync(ns, fieldSelector: $"involvedObject.name={name}");
             return list.Items;
         }
 
