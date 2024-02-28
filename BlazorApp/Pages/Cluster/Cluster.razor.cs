@@ -68,6 +68,7 @@ public partial class Cluster : ComponentBase
 
     private async Task OnSummaryClick()
     {
+        _aiSummary = string.Empty;
         if (Ai.Enabled())
         {
             if (AnalyzeResult is { Count: > 0 })
