@@ -52,7 +52,7 @@ public partial class Cluster : ComponentBase
         {
             Ai.SetChatEventHandler(EventHandler);
         }
-        _timer         =  new Timer(1000);
+        _timer         =  new Timer(10000);
         _timer.Elapsed += async (sender, eventArgs) =>await OnTimerCallback();
         _timer.Start();
         await base.OnInitializedAsync();
