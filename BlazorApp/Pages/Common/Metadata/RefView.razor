@@ -1,3 +1,4 @@
+@using Extension
 @using BlazorApp.Utils
 @if (Ref != null)
 {
@@ -9,7 +10,15 @@
             <ChildContent>
                 @if (FullView)
                 {
-                    @($"{Ref.Kind} {Ref.Name}")
+                    @if (Ref.NamespaceProperty.IsNullOrWhiteSpace())
+                    {
+                        @($"{Ref.Kind} {Ref.Name}")
+                    }
+                    else
+                    {
+                        @($"{Ref.Kind} {Ref.NamespaceProperty}/{Ref.Name}")
+
+                    }
                 }
                 else
                 {
