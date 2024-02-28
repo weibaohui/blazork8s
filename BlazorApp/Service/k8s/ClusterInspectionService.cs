@@ -17,6 +17,7 @@ public class ClusterInspectionService(
     IKubeService                      kubeService,
     IPodService                       podService,
     IDeploymentService                deploymentService,
+    IReplicaSetService replicaSetService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -28,6 +29,7 @@ public class ClusterInspectionService(
         results.Clear();
         results.AddRange(await podService.Analyze());
         results.AddRange(await deploymentService.Analyze());
+        results.AddRange(await replicaSetService.Analyze());
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
 
