@@ -17,7 +17,8 @@ public class ClusterInspectionService(
     IKubeService                      kubeService,
     IPodService                       podService,
     IDeploymentService                deploymentService,
-    IReplicaSetService replicaSetService,
+    IStatefulSetService               statefulSetService,
+    IReplicaSetService                replicaSetService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -30,9 +31,9 @@ public class ClusterInspectionService(
         results.AddRange(await podService.Analyze());
         results.AddRange(await deploymentService.Analyze());
         results.AddRange(await replicaSetService.Analyze());
+        results.AddRange(await statefulSetService.Analyze());
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
-
     }
 
     public Task StartAsync()
@@ -42,5 +43,4 @@ public class ClusterInspectionService(
         JobManager.AddJob(Inspection, (s) => s.ToRunEvery(10).Seconds());
         return Task.CompletedTask;
     }
-
 }

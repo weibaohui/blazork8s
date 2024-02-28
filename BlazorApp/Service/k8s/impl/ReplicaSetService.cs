@@ -49,14 +49,17 @@ namespace BlazorApp.Service.k8s.impl
                 //create failed
                 if (item.Status.Replicas == 0)
                 {
-                    foreach (var status in item.Status.Conditions)
+                    if (item.Status.Conditions is {Count:>0})
                     {
-                        if (status.Type == "ReplicaFailure" && status.Reason == "FailedCreate")
+                        foreach (var status in item.Status.Conditions)
                         {
-                            failures.Add(new Failure
+                            if (status.Type == "ReplicaFailure" && status.Reason == "FailedCreate")
                             {
-                                Text = status.Message
-                            });
+                                failures.Add(new Failure
+                                {
+                                    Text = status.Message
+                                });
+                            }
                         }
                     }
                 }

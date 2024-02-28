@@ -1,22 +1,19 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using Entity.Analyze;
+using Extension;
 using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetService
+public class StatefulSetService(IKubeService kubeService, IDocService docService,IServiceService svcService) : CommonAction<V1StatefulSet>, IStatefulSetService
 {
-    private readonly IKubeService                _kubeService;
-
-    public StatefulSetService(IKubeService kubeService)
-    {
-        _kubeService = kubeService;
-    }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _kubeService.Client().DeleteNamespacedStatefulSetAsync(name, ns);
+        return await kubeService.Client().DeleteNamespacedStatefulSetAsync(name, ns);
     }
     public async Task UpdateReplicas(V1StatefulSet item, int? replicas)
     {
@@ -37,7 +34,7 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 """
                 .Replace("${replicas}", replicas.ToString())
             ;
-        var resp = await _kubeService.Client().PatchNamespacedStatefulSetScaleAsync(
+        var resp = await kubeService.Client().PatchNamespacedStatefulSetScaleAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
     }
@@ -63,8 +60,62 @@ public class StatefulSetService : CommonAction<V1StatefulSet>, IStatefulSetServi
                 """
                 .Replace("${now}", DateTime.Now.ToLocalTime().ToString(CultureInfo.CurrentCulture))
             ;
-        var resp = await _kubeService.Client().PatchNamespacedStatefulSetAsync(
+        var resp = await kubeService.Client().PatchNamespacedStatefulSetAsync(
             new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
             , item.Name(), item.Namespace());
+    }
+
+
+    public async Task<List<Result>> Analyze()
+    {
+        var items   = List();
+        var results = new List<Result>();
+        foreach (var item in items)
+        {
+            var failures = new List<Failure>();
+
+            var doc = await docService.GetExplainByField("statefulset.spec.serviceName");
+
+            //check spec.serviceName
+            if (item.Spec.ServiceName.IsNullOrWhiteSpace())
+            {
+
+                failures.Add(new Failure
+                {
+                    Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName  not set",
+                    KubernetesDoc = doc.Explain
+                });
+            }
+            else
+            {
+                var svcName = item.Spec.ServiceName;
+                //检查是否存在
+                var svc = svcService.GetByName(item.Namespace(),svcName);
+                if (svc == null)
+                {
+                    failures.Add(new Failure
+                    {
+                        Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName {svcName} not exist",
+                        KubernetesDoc = doc.Explain
+                    });
+
+                }
+            }
+            if (item.Status.Replicas != item.Spec.Replicas)
+            {
+                failures.Add(new Failure
+                {
+                    Text =
+                        $"Deployment {item.Namespace()}/{item.Name()} should have {item.Spec.Replicas} but {item.Status.Replicas} available",
+                    KubernetesDoc = doc.Explain
+                });
+            }
+
+
+            if (failures.Count <= 0) continue;
+            results.Add(Result.NewResult(item,failures));
+        }
+
+        return results;
     }
 }
