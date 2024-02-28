@@ -10,26 +10,23 @@ using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service;
 
-public class HostedService : IHostedService, IDisposable
+public class HostedService(ILogger<HostedService> logger,
+    IKubeService kubeService,
+    ClusterInspectionService k8sInspectionService,
+    IHubContext<ChatHub> ctx)
+    : IHostedService, IDisposable
 {
-    private readonly ILogger<HostedService>   _logger;
-    private readonly IKubeService             _kubeService;
-    private readonly IHubContext<ChatHub>     _ctx;
-
-
-    public HostedService(ILogger<HostedService> logger, IKubeService kubeService, IHubContext<ChatHub> ctx)
-    {
-        _logger                        = logger;
-        _kubeService                   = kubeService;
-        _ctx                           = ctx;
-    }
+    private readonly ILogger<HostedService> _logger = logger;
 
 
     public Task StartAsync(CancellationToken stoppingToken)
     {
-        var watchService = ListWatchHelper.Instance.Create(_kubeService, _ctx);
+        //启动list watch
+        var watchService = ListWatchHelper.Instance.Create(kubeService, ctx);
         watchService.StartAsync();
 
+        //启动集群巡检
+        k8sInspectionService.StartAsync();
 
         return Task.CompletedTask;
     }
