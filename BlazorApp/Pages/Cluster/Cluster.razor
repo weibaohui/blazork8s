@@ -1,6 +1,7 @@
 @page "/Cluster"
 @using k8s.Models
 @using Mapster
+@using Extension
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Node
 @using BlazorApp.Pages.Common.Html
@@ -82,6 +83,9 @@
     </TabPane>
 
     <TabPane Key="4" Tab="Error Analyze">
+        <Alert Type="@AlertType.Warning">
+            @((MarkupString)_aiSummary.ToHtmlDisplay())
+        </Alert>
         @if (AnalyzeResult is { Count: > 0 })
         {
             <GridRow Class="grid-table">

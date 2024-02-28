@@ -22,6 +22,7 @@ public partial class Cluster : ComponentBase
 
     [Inject]
     public INodeService NodeService { get; set; }
+
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
@@ -33,8 +34,9 @@ public partial class Cluster : ComponentBase
     private IList<V1Pod>             PodList         { get; set; }
     private IList<V1Node>            NodeList        { get; set; }
     private IList<V1APIService>      ApiServicesList { get; set; }
-    private IList<Result>            AnalyzeResult  { get; set; }
+    private IList<Result>            AnalyzeResult   { get; set; }
 
+    private string _aiSummary = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -48,8 +50,22 @@ public partial class Cluster : ComponentBase
 
         // await TranslateService.ProcessKubeExplains();
 
-         AnalyzeResult = await PodService.Analyze();
+        AnalyzeResult = await PodService.Analyze();
+        if (Ai.Enabled() && AnalyzeResult.Count > 0)
+        {
+            Ai.SetChatEventHandler(EventHandler);
+            var prompt = "请用中文归纳总结以下信息，并以一句话出统计k8s资源类型、错误类型、数量的概要汇总：";
+            var json   = KubernetesJson.Serialize(AnalyzeResult);
+            _aiSummary = await Ai.AIChat(prompt + json);
+        }
+
         await base.OnInitializedAsync();
+    }
+
+    private async void EventHandler(object sender, string resp)
+    {
+        _aiSummary += resp;
+        await InvokeAsync(StateHasChanged);
     }
 
 
@@ -60,7 +76,7 @@ public partial class Cluster : ComponentBase
         await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
             new IAiService.AiChatData
             {
-                Data  =  item,
+                Data  = item,
                 Style = "error"
             });
     }
