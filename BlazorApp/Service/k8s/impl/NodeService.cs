@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Utils;
 using Entity.Analyze;
 using Extension;
 using k8s;
@@ -81,7 +82,8 @@ namespace BlazorApp.Service.k8s.impl
                                     $"{item.Name()} has condition of type {status.Type}, reason {status.Reason} {status.Message}"
                             });
                         }
-                        if (status.Type.Contains("Pressure") &&status.Status == "True")
+
+                        if (status.Type.Contains("Pressure") && status.Status == "True")
                         {
                             //压力类型，正常应该为False，无压力为正常
                             failures.Add(new Failure
@@ -90,7 +92,8 @@ namespace BlazorApp.Service.k8s.impl
                                     $"{item.Name()} has condition of PressureType {status.Type}, reason {status.Reason} {status.Message}"
                             });
                         }
-                        if (status.Type.Contains("NetworkUnavailable") &&status.Status != "False")
+
+                        if (status.Type.Contains("NetworkUnavailable") && status.Status != "False")
                         {
                             //网络不可达状态，正常应该为False
                             failures.Add(new Failure
@@ -102,8 +105,15 @@ namespace BlazorApp.Service.k8s.impl
                     }
                 }
 
-                if (failures.Count <= 0) continue;
-                results.Add(Result.NewResult(item, failures));
+                if (failures.Count > 0)
+                {
+                    results.Add(Result.NewResult(item, failures));
+                }
+            }
+
+            if (results.Count == 0)
+            {
+                ClusterInspectionResultContainer.Instance.GetPassResources().Add("Node");
             }
 
             return results;

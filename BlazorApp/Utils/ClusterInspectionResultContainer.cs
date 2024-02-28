@@ -11,6 +11,8 @@ public class ClusterInspectionResultContainer
         LoggingHelper<ClusterInspectionResultContainer>.Logger();
 
     private static readonly List<Result> Results = [];
+    //巡检结果
+    private static readonly List<string> PassResources = [];
 
     public        DateTime                         LastInspection;
     public static ClusterInspectionResultContainer Instance => Nested.Instance;
@@ -29,5 +31,9 @@ public class ClusterInspectionResultContainer
     public List<Result> GetResults()
     {
         return Results;
+    }
+    public List<string> GetPassResources()
+    {
+        return PassResources ;
     }
 }

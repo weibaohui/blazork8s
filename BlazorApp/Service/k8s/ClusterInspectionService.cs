@@ -19,7 +19,7 @@ public class ClusterInspectionService(
     IDeploymentService                deploymentService,
     IStatefulSetService               statefulSetService,
     IReplicaSetService                replicaSetService,
-    INodeService nodeService,
+    INodeService                      nodeService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -29,6 +29,7 @@ public class ClusterInspectionService(
         logger.LogInformation("cluster inspection start at {Time}", DateTime.Now);
         var results = ClusterInspectionResultContainer.Instance.GetResults();
         results.Clear();
+        ClusterInspectionResultContainer.Instance.GetPassResources().Clear();
         results.AddRange(await podService.Analyze());
         results.AddRange(await deploymentService.Analyze());
         results.AddRange(await replicaSetService.Analyze());

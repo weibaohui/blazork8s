@@ -43,6 +43,10 @@
                             {
                                 <li>@($"{kv.Kind}: {kv.Count}")</li>
                             }
+                            @foreach (var name in ClusterInspectionResultContainer.Instance.GetPassResources())
+                            {
+                                <li>@($"{name}: 0")</li>
+                            }
                         }
 
                     </GridCol>

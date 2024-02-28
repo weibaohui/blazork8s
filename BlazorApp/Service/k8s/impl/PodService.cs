@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Utils;
 using Entity.Analyze;
 using Extension;
 using k8s;
@@ -143,6 +144,10 @@ namespace BlazorApp.Service.k8s.impl
                 results.Add(Result.NewResult(pod, failures));
             }
 
+            if (results.Count == 0)
+            {
+                ClusterInspectionResultContainer.Instance.GetPassResources().Add("Pod");
+            }
             return results;
         }
 

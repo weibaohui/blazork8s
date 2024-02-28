@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using BlazorApp.Utils;
 using Entity.Analyze;
 using k8s;
 using k8s.Models;
@@ -90,7 +91,10 @@ namespace BlazorApp.Service.k8s.impl
                 if (failures.Count <= 0) continue;
                 results.Add(Result.NewResult(item,failures));
             }
-
+            if (results.Count == 0)
+            {
+                ClusterInspectionResultContainer.Instance.GetPassResources().Add("Deployment");
+            }
             return results;
         }
     }

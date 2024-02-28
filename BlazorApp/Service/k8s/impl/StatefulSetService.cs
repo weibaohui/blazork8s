@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
+using BlazorApp.Utils;
 using Entity.Analyze;
 using Extension;
 using k8s;
@@ -125,6 +126,10 @@ public class StatefulSetService(IKubeService kubeService,
             results.Add(Result.NewResult(item,failures));
         }
 
+        if (results.Count == 0)
+        {
+            ClusterInspectionResultContainer.Instance.GetPassResources().Add("StatefulSet");
+        }
         return results;
     }
 }
