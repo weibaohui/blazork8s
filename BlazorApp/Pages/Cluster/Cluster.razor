@@ -128,7 +128,6 @@
         @if (AnalyzeResult is { Count: > 0 })
         {
             <GridRow Class="grid-table">
-                <GridCol Span="1">Kind</GridCol>
                 <GridCol Span="6">Name</GridCol>
                 <GridCol Span="9">Error</GridCol>
                 <GridCol Span="3">Parent</GridCol>
@@ -139,7 +138,6 @@
             {
                 <GridRow Class="grid-table grid-table-first-row">
 
-                    <GridCol Span="1"> @item.Kind</GridCol>
                     <GridCol Span="6">
                         <RefView Ref="@GetRef(item)" FullView="true"></RefView>
                     </GridCol>
