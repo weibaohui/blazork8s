@@ -20,7 +20,8 @@ public class ClusterInspectionService(
     IStatefulSetService               statefulSetService,
     IReplicaSetService                replicaSetService,
     INodeService                      nodeService,
-    ICronJobService  cronJobService,
+    ICronJobService                   cronJobService,
+    IIngressService                   ingressService,
     ILogger<ClusterInspectionService> logger
 )
 
@@ -37,6 +38,8 @@ public class ClusterInspectionService(
         results.AddRange(await statefulSetService.Analyze());
         results.AddRange(await nodeService.Analyze());
         results.AddRange(await cronJobService.Analyze());
+        results.AddRange(await ingressService.Analyze());
+
         ClusterInspectionResultContainer.Instance.LastInspection = DateTime.Now.ToUniversalTime();
         logger.LogInformation("cluster inspection ended at {Time}", DateTime.Now);
     }
