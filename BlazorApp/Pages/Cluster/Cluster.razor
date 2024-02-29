@@ -8,76 +8,74 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 
-<Card Title="集群信息" Style="margin: 20px">
-    <GridRow Class="wideTable">
-        <GridCol Span="10">
-            <Card Title="@KubeService.CurrentContext()" Style="margin: 10px">
-                @if (ComponentStatus is { Count: > 0 })
-                {
-                    <HTable>
-                        @if (ServerInfo != null)
-                        {
-                            <HTableColumn Title="version">
-                                <ColorfulTag>@ServerInfo.GitVersion</ColorfulTag>
-                                    <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
-                            </HTableColumn>
-                        }
+<GridRow Class="wideTable">
+    <GridCol Span="10">
+        <Card Title="@KubeService.CurrentContext()" Style="margin: 10px">
+            @if (ComponentStatus is { Count: > 0 })
+            {
+                <HTable>
+                    @if (ServerInfo != null)
+                    {
+                        <HTableColumn Title="version">
+                            <ColorfulTag>@ServerInfo.GitVersion</ColorfulTag>
+                            <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
+                        </HTableColumn>
+                    }
 
-                        @foreach (var status in ComponentStatus)
-                        {
-                            <HTableColumn Title="@status.Name()">
-                                <ConditionsTagView Conditions="@(status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-                            </HTableColumn>
-                        }
-                    </HTable>
-                }
-            </Card>
-        </GridCol>
-        <GridCol Span="14">
-            <Card Title="实时巡检" Style="margin: 10px">
-                <GridRow Class="grid-table">
-                    <GridCol Span="6">异常汇总</GridCol>
-                    <GridCol Span="18">智能分析</GridCol>
-                </GridRow>
-                <GridRow Class="grid-table">
-                    <GridCol Span="6">
+                    @foreach (var status in ComponentStatus)
+                    {
+                        <HTableColumn Title="@status.Name()">
+                            <ConditionsTagView Conditions="@(status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                        </HTableColumn>
+                    }
+                </HTable>
+            }
+        </Card>
+    </GridCol>
+    <GridCol Span="14">
+        <Card Title=@($"实时巡检 【最近一次：{LastInspection.ToLocalTime()}】") Style="margin: 10px">
+            <GridRow Class="grid-table">
+                <GridCol Span="6">异常汇总</GridCol>
+                <GridCol Span="18">智能分析</GridCol>
+            </GridRow>
+            <GridRow Class="grid-table">
+                <GridCol Span="6">
 
-                        <p>
-                            last:<AgeView Age="@LastInspection"></AgeView> ago
-                        </p>
-                        @if (AnalyzeResult is { Count: > 0 })
+                    <p>
+                        last:<AgeView Age="@LastInspection"></AgeView> ago
+                    </p>
+                    @if (AnalyzeResult is { Count: > 0 })
+                    {
+                        @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                         {
-                            @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
-                            {
-                                <div>
-                                    @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
-                                </div>
-                            }
+                            <div>
+                                @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
+                            </div>
                         }
-                        @if (PassResources is { Count: > 0 })
+                    }
+                    @if (PassResources is { Count: > 0 })
+                    {
+                        @foreach (var name in PassResources)
                         {
-                            @foreach (var name in PassResources)
-                            {
-                                <div>
-                                    @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
-                                </div>
-                            }
+                            <div>
+                                @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                            </div>
                         }
-                    </GridCol>
-                    <GridCol Span="18">
-                        <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
-                        @if (!_aiSummary.IsNullOrWhiteSpace())
-                        {
-                            <Alert Type="@AlertType.Warning">
-                                @((MarkupString)_aiSummary.ToHtmlDisplay())
-                            </Alert>
-                        }
-                    </GridCol>
-                </GridRow>
-            </Card>
-        </GridCol>
-    </GridRow>
-</Card>
+                    }
+                </GridCol>
+                <GridCol Span="18">
+                    <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
+                    @if (!_aiSummary.IsNullOrWhiteSpace())
+                    {
+                        <Alert Type="@AlertType.Warning">
+                            @((MarkupString)_aiSummary.ToHtmlDisplay())
+                        </Alert>
+                    }
+                </GridCol>
+            </GridRow>
+        </Card>
+    </GridCol>
+</GridRow>
 
 
 <Tabs Style="margin: 50px" DefaultActiveKey="1" Type="@TabType.Card" Size="@TabSize.Large">
@@ -98,6 +96,12 @@
                 </GridRow>
             }
         }
+    </TabPane>
+    <TabPane Key="Livez" Tab="Livez">
+        @((MarkupString)LivezResult.ToHtmlDisplay())
+    </TabPane>
+    <TabPane Key="Readyz" Tab="Readyz">
+        @((MarkupString)ReadyzResult.ToHtmlDisplay())
     </TabPane>
     <TabPane Key="2" Tab="Nodes">
         @if (NodeList is { Count: > 0 })

@@ -65,4 +65,14 @@ public class KubeService : IKubeService
         var json= await GetStringAsync("/version");
         return KubernetesJson.Deserialize<ServerInfo>(json);
     }
+
+    public async Task<string> GetReadyz()
+    {
+        return await GetStringAsync("/readyz?verbose");
+    }
+
+    public async Task<string> GetLivez()
+    {
+        return await GetStringAsync("/livez?verbose");
+    }
 }

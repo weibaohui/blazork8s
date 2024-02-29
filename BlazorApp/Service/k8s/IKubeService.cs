@@ -10,5 +10,7 @@ public interface IKubeService
     public string     CurrentContext();
 
     public Task<ServerInfo> GetServerVersion();
+    public Task<string> GetReadyz();
+    public Task<string> GetLivez();
 
 }

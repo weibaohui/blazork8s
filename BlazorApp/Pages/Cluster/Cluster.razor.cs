@@ -41,8 +41,9 @@ public partial class Cluster : ComponentBase
     private IList<Result>           AnalyzeResult   { get; set; }
     private DateTime                LastInspection  { get; set; }
     private IList<string>           PassResources   { get; set; }
-
-    private string _aiSummary = string.Empty;
+    public  string                  LivezResult     { get; set; }
+    public  string                  ReadyzResult    { get; set; }
+    private string                  _aiSummary = string.Empty;
 
     private Timer _timer;
 
@@ -82,6 +83,8 @@ public partial class Cluster : ComponentBase
         LastInspection = ClusterInspectionResultContainer.Instance.LastInspection;
         AnalyzeResult  = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
 
+        LivezResult  = ClusterInspectionResultContainer.Instance.LivezResult;
+        ReadyzResult = ClusterInspectionResultContainer.Instance.ReadyzResult;
         await InvokeAsync(StateHasChanged);
     }
 
