@@ -8,6 +8,7 @@ using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
+using Entity;
 using Entity.Analyze;
 using k8s;
 using k8s.Models;
@@ -34,16 +35,18 @@ public partial class Cluster : ComponentBase
     private IAiService Ai { get; set; }
 
     private List<V1ComponentStatus> ComponentStatus { get; set; }
-    private IList<V1Pod>             PodList         { get; set; }
-    private IList<V1Node>            NodeList        { get; set; }
+    private IList<V1Pod>            PodList         { get; set; }
+    private IList<V1Node>           NodeList        { get; set; }
     private List<V1APIService>      ApiServicesList { get; set; }
-    private IList<Result>            AnalyzeResult   { get; set; }
-    private DateTime                 LastInspection  { get; set; }
-    private IList<string>            PassResources   { get; set; }
+    private IList<Result>           AnalyzeResult   { get; set; }
+    private DateTime                LastInspection  { get; set; }
+    private IList<string>           PassResources   { get; set; }
 
     private string _aiSummary = string.Empty;
 
     private Timer _timer;
+
+    private ServerInfo ServerInfo { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,10 +55,12 @@ public partial class Cluster : ComponentBase
         {
             Ai.SetChatEventHandler(EventHandler);
         }
+
         _timer         =  new Timer(10000);
-        _timer.Elapsed += async (sender, eventArgs) =>await OnTimerCallback();
+        _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
         _timer.Start();
-        await OnTimerCallback();//先执行一次
+        await OnTimerCallback(); //先执行一次
+        ServerInfo = await KubeService.GetServerVersion();
         await base.OnInitializedAsync();
     }
 
@@ -75,10 +80,9 @@ public partial class Cluster : ComponentBase
         PassResources  = ClusterInspectionResultContainer.Instance.GetPassResources();
         AnalyzeResult  = ClusterInspectionResultContainer.Instance.GetResults();
         LastInspection = ClusterInspectionResultContainer.Instance.LastInspection;
-        AnalyzeResult  = AnalyzeResult.OrderBy(x=>x.Kind).ThenBy(x=>x.Name()).ToList();
+        AnalyzeResult  = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
 
         await InvokeAsync(StateHasChanged);
-
     }
 
     private async void EventHandler(object sender, string resp)
@@ -124,12 +128,5 @@ public partial class Cluster : ComponentBase
             Name              = item.Name(),
             NamespaceProperty = item.Namespace(),
         };
-    }
-
-
-    public class GroupKindCount
-    {
-        public string Kind  { get; set; }
-        public int    Count { get; set; }
     }
 }
