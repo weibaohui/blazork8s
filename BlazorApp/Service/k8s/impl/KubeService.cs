@@ -1,13 +1,14 @@
 #nullable enable
 using System;
+using System.Threading.Tasks;
 using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
 
 public class KubeService : IKubeService
 {
-    private          string?              ContextName { get; set; }
-    private          Kubernetes?          _client     { get; set; }
+    private string?     ContextName { get; set; }
+    private Kubernetes? _client     { get; set; }
 
     public void ChangeContext(string ctxName)
     {
@@ -26,7 +27,6 @@ public class KubeService : IKubeService
         //重新 list watch
         // var watchService = ListWatchHelper.Instance.Create(this, _ctx);
         // watchService.StartAsync();
-
     }
 
     public Kubernetes Client()
@@ -51,5 +51,16 @@ public class KubeService : IKubeService
     public string CurrentContext()
     {
         return ContextName ?? "";
+    }
+
+    private async Task<string> GetStringAsync(string requestUri)
+    {
+        var baseUrl     = Client().BaseUri.ToString();
+        requestUri = requestUri.StartsWith("/") ? requestUri.Remove(0, 1).Trim() : requestUri;
+        return await Client().HttpClient.GetStringAsync($"{baseUrl}{requestUri}");
+    }
+    public async Task<string> GetServerVersion()
+    {
+        return await GetStringAsync("/version");
     }
 }
