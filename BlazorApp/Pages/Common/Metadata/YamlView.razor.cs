@@ -22,7 +22,7 @@ public partial class YamlView<T> : FeedbackComponent<T, bool>
             Theme                      = "vs-dark",
             Contextmenu                = true,
             CopyWithSyntaxHighlighting = true,
-            CursorSmoothCaretAnimation = true,
+            CursorSmoothCaretAnimation = "true",
             FoldingImportsByDefault    = true,
             MouseWheelZoom             = true,
             SmoothScrolling            = true,

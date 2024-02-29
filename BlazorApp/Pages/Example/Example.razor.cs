@@ -128,7 +128,7 @@ public partial class Example : ComponentBase
             Theme                      = "vs-dark",
             Contextmenu                = true,
             CopyWithSyntaxHighlighting = true,
-            CursorSmoothCaretAnimation = true,
+            CursorSmoothCaretAnimation = "true",
             FoldingImportsByDefault    = true,
             MouseWheelZoom             = true,
             SmoothScrolling            = true,
