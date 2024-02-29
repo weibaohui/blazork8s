@@ -27,36 +27,50 @@
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
 # k8s 集群安装
-使用[KinD](https://kind.sigs.k8s.io/docs/user/quick-start/)、[MiniKube](https://minikube.sigs.k8s.io/docs/start/)安装一个小型k8s集群
+
+使用[KinD](https://kind.sigs.k8s.io/docs/user/quick-start/)、[MiniKube](https://minikube.sigs.k8s.io/docs/start/)
+安装一个小型k8s集群
+
 ## KinD方式
+
 * 创建 KinD Kubernetes 集群
+
 ```
 brew install kind
 ```
+
 * 创建新的 Kubernetes 集群：
+
 ```
 kind create cluster --name k8sgpt-demo
 ```
 
 # 将blazorK8s 部署到集群中体验
+
 ## 安装脚本
+
 ```docker
 kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
 ```
+
 * 访问：
-默认使用了nodePort开放，请访问31999端口。或自行配置Ingress
-[http://NodePortIP:31999](http://127.0.0.1:31999)
+  默认使用了nodePort开放，请访问31999端口。或自行配置Ingress
+  [http://NodePortIP:31999](http://127.0.0.1:31999)
 
 # 使用docker启动镜像进行体验
+
 ## 启动服务
+
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
+
 ```docker
 docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.1
 ```
+
 * 访问：[web ui](http://127.0.0.1:4000)
 
-
 # 源码 DEBUG 调试
+
 ```
  git clone git@github.com:weibaohui/blazork8s.git
  cd blazork8s/BlazorApp
@@ -64,6 +78,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 ```
 
 # 大模型 配置
+
 * √ 阿里云通义千问
 * √ 科大讯飞星火大模型
 * √ openAI
@@ -71,6 +86,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 
 修改源码BlazorApp目录下的appsettings.json
 或镜像/app/目录下的appsettings.json
+
 ```
   "AI": {
     "Enable": true, //是否开启
@@ -97,6 +113,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 ## 大模型应用效果
 
 ### DocTree树状展开yaml定义，再也不用担心记不住定义了
+
 <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/doc-tree.gif">
   <br>
@@ -119,16 +136,14 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 <br>
 
 ### 智能分析
+
 在每一个资源上面都增加了智能分析、安全分析两个按钮。
 <br>
- <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
+<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
 <br>
 
-## 页面预览
-
-[click me](ui.md)
-
 ## 巡检支持资源情况
+
 * Node
 * Pod
 * Deployment
@@ -140,3 +155,10 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * PersistentVolumeClaim
 * NetworkPolicy
 * HorizontalPodAutoscaler
+  <br>
+  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-inspection.png">
+  <br>
+
+## 页面预览
+
+[click me](ui.md)
