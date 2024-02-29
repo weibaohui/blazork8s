@@ -56,13 +56,14 @@ public class KubeService : IKubeService
 
     private async Task<string> GetStringAsync(string requestUri)
     {
-        var baseUrl     = Client().BaseUri.ToString();
+        var baseUrl = Client().BaseUri.ToString();
         requestUri = requestUri.StartsWith("/") ? requestUri.Remove(0, 1).Trim() : requestUri;
         return await Client().HttpClient.GetStringAsync($"{baseUrl}{requestUri}");
     }
+
     public async Task<ServerInfo> GetServerVersion()
     {
-        var json= await GetStringAsync("/version");
+        var json = await GetStringAsync("/version");
         return KubernetesJson.Deserialize<ServerInfo>(json);
     }
 
@@ -74,5 +75,15 @@ public class KubeService : IKubeService
     public async Task<string> GetLivez()
     {
         return await GetStringAsync("/livez?verbose");
+    }
+
+    /// <summary>
+    /// 获取节点kubelet配置
+    /// </summary>
+    /// <param name="nodeName"></param>
+    /// <returns></returns>
+    private async Task<string> GetNodesConfig(string nodeName)
+    {
+        return await GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/configz");
     }
 }
