@@ -11,7 +11,6 @@ using k8s.Models;
 namespace BlazorApp.Service.k8s.impl;
 
 public class StatefulSetService(IKubeService kubeService,
-    IDocService docService,
     IServiceService svcService,
     IStorageClassService storageClassService) : CommonAction<V1StatefulSet>, IStatefulSetService
 {
@@ -80,11 +79,10 @@ public class StatefulSetService(IKubeService kubeService,
             //check spec.serviceName
             if (item.Spec.ServiceName.IsNullOrWhiteSpace())
             {
-                var doc = await docService.GetExplainByField("statefulSet.spec.serviceName");
                 failures.Add(new Failure
                 {
                     Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName  not set",
-                    KubernetesDoc = doc?.Explain
+                    KubernetesDocField = "statefulSet.spec.serviceName",
                 });
             }
             else
@@ -95,10 +93,10 @@ public class StatefulSetService(IKubeService kubeService,
                 if (svc == null)
                 {
 
-                    var doc = await docService.GetExplainByField("statefulSet.spec.serviceName");
                     failures.Add(new Failure
                     {
                         Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName {svcName} not exist",
+                        KubernetesDocField = "statefulSet.spec.serviceName",
                     });
 
                 }

@@ -9,7 +9,7 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl
 {
-    public class DeploymentService(IKubeService kubeService, IDocService docService)
+    public class DeploymentService(IKubeService kubeService)
         : CommonAction<V1Deployment>, IDeploymentService
     {
         public new async Task<object> Delete(string ns, string name)
@@ -78,12 +78,11 @@ namespace BlazorApp.Service.k8s.impl
 
                 if (item.Status.Replicas != item.Spec.Replicas)
                 {
-                    var doc = await docService.GetExplainByField("deployment.spec.replicas");
                     failures.Add(new Failure
                     {
                         Text =
                             $"Deployment {item.Namespace()}/{item.Name()} should have {item.Spec.Replicas} but {item.Status.Replicas} available",
-                        KubernetesDoc = doc?.Explain
+                        KubernetesDocField = "deployment.spec.replicas"
                     });
                 }
 
