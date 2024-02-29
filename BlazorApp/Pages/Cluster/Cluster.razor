@@ -15,6 +15,14 @@
                 @if (ComponentStatus is { Count: > 0 })
                 {
                     <HTable>
+                        @if (ServerInfo != null)
+                        {
+                            <HTableColumn Title="version">
+                                <ColorfulTag>@ServerInfo.GitVersion</ColorfulTag>
+                                    <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
+                            </HTableColumn>
+                        }
+
                         @foreach (var status in ComponentStatus)
                         {
                             <HTableColumn Title="@status.Name()">

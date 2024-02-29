@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Threading.Tasks;
+using Entity;
 using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -59,8 +60,9 @@ public class KubeService : IKubeService
         requestUri = requestUri.StartsWith("/") ? requestUri.Remove(0, 1).Trim() : requestUri;
         return await Client().HttpClient.GetStringAsync($"{baseUrl}{requestUri}");
     }
-    public async Task<string> GetServerVersion()
+    public async Task<ServerInfo> GetServerVersion()
     {
-        return await GetStringAsync("/version");
+        var json= await GetStringAsync("/version");
+        return KubernetesJson.Deserialize<ServerInfo>(json);
     }
 }
