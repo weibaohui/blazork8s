@@ -24,7 +24,7 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
         //通过EndPoints反向看Service，1是subset为空，说明Service Label可能有问题
         //2是notReadyAddress，说明有问题
         var eps = endpointsService.List();
-        foreach (var ep in eps)
+        foreach (var ep in eps.ToList())
         {
             var failures = new List<Failure>();
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity.Analyze;
@@ -43,7 +44,7 @@ namespace BlazorApp.Service.k8s.impl
         {
             var items   = List();
             var results = new List<Result>();
-            foreach (var item in items)
+            foreach (var item in items.ToList())
             {
                 var failures = new List<Failure>();
 

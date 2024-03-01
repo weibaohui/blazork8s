@@ -25,7 +25,7 @@ public class IngressService(
     {
         var items   = List();
         var results = new List<Result>();
-        foreach (var item in items)
+        foreach (var item in items.ToList())
         {
             var failures = new List<Failure>();
 

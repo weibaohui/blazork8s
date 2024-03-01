@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity.Analyze;
@@ -73,7 +74,7 @@ public class StatefulSetService(IKubeService kubeService,
     {
         var items   = List();
         var results = new List<Result>();
-        foreach (var item in items)
+        foreach (var item in items.ToList())
         {
             var failures = new List<Failure>();
             //check spec.serviceName

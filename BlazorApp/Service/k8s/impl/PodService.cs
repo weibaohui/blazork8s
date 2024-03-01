@@ -61,7 +61,7 @@ namespace BlazorApp.Service.k8s.impl
         {
             var pods    = List();
             var results = new List<Result>();
-            foreach (var pod in pods)
+            foreach (var pod in pods.ToList())
             {
                 var failures = new List<Failure>();
                 //检查Pending Pods
