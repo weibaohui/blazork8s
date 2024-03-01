@@ -6,23 +6,16 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl
 {
-    public class EventService : CommonAction<Corev1Event>, IEventService
+    public class EventService(IKubeService kubeService) : CommonAction<Corev1Event>, IEventService
     {
-        private readonly IKubeService _kubeService;
-
-        public EventService(IKubeService kubeService)
-        {
-            _kubeService = kubeService;
-        }
-
         public new async Task<object> Delete(string ns, string name)
         {
-            return await _kubeService.Client().CoreV1.DeleteNamespacedEventAsync(name, ns);
+            return await kubeService.Client().CoreV1.DeleteNamespacedEventAsync(name, ns);
         }
 
         public async Task<IList<Corev1Event>> GetInvolvingObject(string ns, string name)
         {
-            var list = await _kubeService.Client().CoreV1
+            var list = await kubeService.Client().CoreV1
                 .ListNamespacedEventAsync(ns, fieldSelector: $"involvedObject.name={name}");
             return list.Items;
         }

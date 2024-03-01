@@ -6,20 +6,12 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class RoleService : CommonAction<V1Role>, IRoleService
+public class RoleService(IKubeService kubeService, IRoleBindingService roleBindingService)
+    : CommonAction<V1Role>, IRoleService
 {
-    private readonly IKubeService _kubeService;
-
-    private readonly IRoleBindingService _roleBindingService;
-
-    public RoleService(IKubeService kubeService, IRoleBindingService roleBindingService)
-    {
-        _kubeService        = kubeService;
-        _roleBindingService = roleBindingService;
-    }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _kubeService.Client().DeleteNamespacedRoleAsync(name, ns);
+        return await kubeService.Client().DeleteNamespacedRoleAsync(name, ns);
     }
 
     public IList<Rbacv1Subject> ListManagedSubjectByRole(V1Role role)
@@ -29,7 +21,7 @@ public class RoleService : CommonAction<V1Role>, IRoleService
 
     public IList<Rbacv1Subject> ListManagedSubjectByRoleName(string ns, string name)
     {
-        var bindings = _roleBindingService.List()
+        var bindings = roleBindingService.List()
             .Where(x =>
                 x.Namespace() == ns &&
                 x.RoleRef is not null && x.RoleRef.Name == name

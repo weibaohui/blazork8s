@@ -5,22 +5,16 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class IngressClassService : CommonAction<V1IngressClass>, IIngressClassService
+public class IngressClassService(IKubeService kubeService) : CommonAction<V1IngressClass>, IIngressClassService
 {
-    private readonly IKubeService                _kubeService;
-
-    public IngressClassService(IKubeService kubeService)
-    {
-        _kubeService = kubeService;
-    }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _kubeService.Client().DeleteIngressClassAsync(name);
+        return await kubeService.Client().DeleteIngressClassAsync(name);
     }
 
     public async Task SetDefault(V1IngressClass item)
     {
-        var list = await _kubeService.Client().ListIngressClassAsync();
+        var list = await kubeService.Client().ListIngressClassAsync();
         foreach (var pc in list.Items.Where(x => x.Name() != item.Name()))
         {
             await ChangeGlobalDefaultTo(pc, false);
@@ -44,7 +38,7 @@ public class IngressClassService : CommonAction<V1IngressClass>, IIngressClassSe
                     """
                     .Replace("${default}", status.ToString().ToLower())
                 ;
-         var x=   await _kubeService.Client().PatchIngressClassAsync(
+         var x=   await kubeService.Client().PatchIngressClassAsync(
                 new V1Patch(patchStr, V1Patch.PatchType.MergePatch)
                 , item.Name(), item.Namespace());
     }
