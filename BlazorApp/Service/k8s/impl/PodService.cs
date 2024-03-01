@@ -67,11 +67,15 @@ namespace BlazorApp.Service.k8s.impl
                 //检查Pending Pods
                 if (pod.Status.Phase == "Pending")
                 {
-                    failures.AddRange(
-                        from status in pod.Status.Conditions
-                        where status.Type == "PodScheduled" && status.Reason == "Unschedulable"
-                        where !status.Message.IsNullOrWhiteSpace()
-                        select new Failure { Text = status.Message });
+                    if (pod.Status.Conditions is {Count:>0})
+                    {
+                        failures.AddRange(
+                            from status in pod.Status.Conditions
+                            where status.Type == "PodScheduled" && status.Reason == "Unschedulable"
+                            where !status.Message.IsNullOrWhiteSpace()
+                            select new Failure { Text = status.Message });
+                    }
+
                 }
 
                 if (pod.Status.ContainerStatuses is { Count: > 0 })
