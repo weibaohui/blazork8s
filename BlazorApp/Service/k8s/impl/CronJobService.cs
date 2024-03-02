@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity.Analyze;
@@ -19,7 +20,7 @@ public class CronJobService(IKubeService kubeService) : CommonAction<V1CronJob>,
     {
         var items   = List();
         var results = new List<Result>();
-        foreach (var item in items)
+        foreach (var item in items.ToList())
         {
             var failures = new List<Failure>();
 
