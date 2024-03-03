@@ -27,7 +27,7 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title="Name" Width="110px">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
