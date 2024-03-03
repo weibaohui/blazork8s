@@ -23,11 +23,11 @@ public class EntityPrepare
 
 
         var list = zList
-            // .Where(x => (x.FieldLevel == 2 || x.FieldLevel == 3)
-            //             && !x.FullName.Contains(".Metadata")
-            //             && !x.FullName.Contains(".ApiVersion")
-            //             && !x.FullName.Contains(".Kind")
-            // )
+            .Where(x => (x.FieldLevel == 2 || x.FieldLevel == 3)
+                        && !x.FullName.Contains(".Metadata")
+                        && !x.FullName.Contains(".ApiVersion")
+                        && !x.FullName.Contains(".Kind")
+            )
             .ToList();
 
         // list = RemoveMultipleItem(list);

@@ -1,18 +1,13 @@
-using BlazorApp.Utils;
 using k8s.Models;
+using System.Threading.Tasks;
+using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class ${Item}Service : CommonAction<${ItemType}>, I${Item}Service
+public class ${Item}Service(IKubeService kubeService) : CommonAction<${ItemType}>, I${Item}Service
 {
-    private readonly IBaseService                _baseService;
-
-    public ${Item}Service(IBaseService baseService)
-    {
-        _baseService = baseService;
-    }
     public new async Task<object> Delete(string ns, string name)
     {
-        return await _baseService.Client().DeleteNamespaced${Item}Async(name, ns);
+        return await kubeService.Client().DeleteNamespaced${Item}Async(name, ns);
     }
 }
