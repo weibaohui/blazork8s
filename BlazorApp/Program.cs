@@ -49,6 +49,7 @@ builder.Services.AddSingleton<IAiService, AiService>();
 builder.Services.AddSingleton<ITranslateService, TranslateService>();
 builder.Services.AddSingleton<IDocService, DocService>();
 builder.Services.AddSingleton<IJobService,JobService>();
+builder.Services.AddSingleton<ILeaseService,LeaseService>();
 builder.Services.AddSingleton<IServiceService,ServiceService>();
 builder.Services.AddSingleton<IServiceAccountService,ServiceAccountService>();
 builder.Services.AddSingleton<IClusterRoleService,ClusterRoleService>();

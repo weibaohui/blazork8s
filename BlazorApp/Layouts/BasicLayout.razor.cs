@@ -124,6 +124,7 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItem("Secret", "file-protect"),
             GetMenuItem("ResourceQuota", "one-to-one"),
             GetMenuItem("LimitRange", "column-width"),
+            GetMenuItem("Lease", "credit-card"),
             GetMenuItemWithPath("HPA", "ungroup", "HorizontalPodAutoscaler"),
             GetMenuItemWithPath("PDB", "appstore-add", "PodDisruptionBudget"),
             GetMenuItem("PriorityClass", "insert-row-left"),

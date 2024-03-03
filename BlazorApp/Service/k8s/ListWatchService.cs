@@ -66,6 +66,7 @@ public class ListWatchService
         WatchClusterRoleBinding();
         WatchServiceAccount();
         WatchCrd();
+        WatchLease();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
@@ -82,6 +83,13 @@ public class ListWatchService
             .ListPodForAllNamespacesWithHttpMessagesAsync(watch: true);
         
         await new Watcher<V1Pod, V1PodList>(_ctx).Watch(listResp);
+    }
+    private async Task WatchLease()
+    {
+        var listResp = _kubeService.Client().CoordinationV1
+            .ListLeaseForAllNamespacesWithHttpMessagesAsync(watch: true);
+
+        await new Watcher<V1Lease, V1LeaseList>(_ctx).Watch(listResp);
     }
 
     private async Task WatchServiceAccount()
