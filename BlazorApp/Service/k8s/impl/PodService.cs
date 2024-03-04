@@ -18,22 +18,26 @@ namespace BlazorApp.Service.k8s.impl
                 .ListNamespacedPodAsync(namespaceParameter: ns, labelSelector: labels);
             return pods?.Items;
         }
+
         public async Task<IList<V1Pod>> FilterPodByLabels(string ns, IDictionary<string, string> labels)
         {
             var filter = PodSelectorHelper.ToFilter(labels);
             return await FilterPodByLabels(ns, filter);
         }
+
         public async Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(string labels)
         {
             var pods = await kubeService.Client()
                 .ListPodForAllNamespacesAsync(labelSelector: labels);
             return pods?.Items;
         }
+
         public async Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(IDictionary<string, string> labels)
         {
             var filter = PodSelectorHelper.ToFilter(labels);
             return await FilterPodByLabelsForAllNamespace(filter);
         }
+
         public IList<V1Pod> ListByNodeName(string nodeName)
         {
             var list = List();
@@ -67,7 +71,7 @@ namespace BlazorApp.Service.k8s.impl
                 //检查Pending Pods
                 if (pod.Status.Phase == "Pending")
                 {
-                    if (pod.Status.Conditions is {Count:>0})
+                    if (pod.Status.Conditions is { Count: > 0 })
                     {
                         failures.AddRange(
                             from status in pod.Status.Conditions
@@ -76,8 +80,21 @@ namespace BlazorApp.Service.k8s.impl
                             select new Failure { Text = status.Message });
                     }
 
-                }
 
+                }
+                if (pod.Status.Conditions is { Count: > 0 })
+                {
+                    foreach (var condition in pod.Status.Conditions.ToList())
+                    {
+                        if (condition.Type == "ContainersReady" && condition.Status == "False")
+                        {
+                            failures.Add(new Failure()
+                            {
+                                Text = condition.Message
+                            });
+                        }
+                    }
+                }
                 if (pod.Status.ContainerStatuses is { Count: > 0 })
                 {
                     //通过遍历pod container status 判断是否正常
@@ -188,7 +205,5 @@ namespace BlazorApp.Service.k8s.impl
 
             return failureReasons.Contains(reason);
         }
-
-
     }
 }
