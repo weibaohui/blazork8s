@@ -60,7 +60,6 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
   By default, it uses NodePort for access. Please visit port 31999, or configure Ingress on your own.
   [http://NodePortIP:31999](http://127.0.0.1:31999)
 
-# 使用docker启动镜像进行体验
 # Start a Docker image to experience it
 ## Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
