@@ -11,68 +11,66 @@
     <a href="https://gitee.com/weibaohui/blazork8s/blob/main/Readme_cn.md">中文</a>
  </h4>
 </p>
-使用C# Blazor 编写的kubernetes管理工具，集成了ChatGPT类大模型，用简单易用的操作界面，提升k8s管理效率。
-尤其适合新手入门使用，提供多种便捷功能方便初学者掌握k8s知识。
+A Kubernetes management tool written in C# Blazor, integrating the ChatGPT large models. 
+It features a user-friendly interface for easy and efficient Kubernetes administration. 
+Particularly suitable for beginners, it offers various convenient functionalities to help novices grasp Kubernetes knowledge.
 
-* 多彩直观显示k8s资源
-* Yaml定义字段按树形展开分析，自带文档，且有可使用大模型进行翻译。再也不用担心记不住定义了。
-* 详细的k8s资源字段解释，再也不用担心不知道这个字段有几个选项、都是什么意思了。
-* 官方示例集成，以目录树的形式呈现k8s官方示例，可以随时浏览参考，复制字段了。
-* 大模型生成yaml
-* 大模型问题分析
-* 大模型安全检测
-* 资源用量动态展示（需安装metric server）
-* 页面功能集成kubectl Describe、kubectl explain等高频命令，使用界面点击即可查看。
-* 集群页面增加巡检功能，对主要资源对象的常见错误进行巡检，并给出明细列表。
 
-## ☀️ 授权协议
+* Colorful and intuitive display of Kubernetes resources.
+* Yaml-defined fields are analyzed and displayed in a tree structure, accompanied by documentation. Additionally, translation using a large model is available, eliminating concerns about forgetting definitions.
+* Detailed explanations of Kubernetes resource fields, ensuring no ambiguity about the number of options and their meanings.
+* Integration of official examples in a directory tree format, allowing easy browsing, reference, and field copying.
+* Generation of Yaml using a large model.
+* Problem analysis using a large model.
+* Security checks using a large model.
+* Dynamic display of resource usage (requires installation of the metric server).
+* Integration of page functionalities such as kubectl Describe, kubectl explain, and other high-frequency commands. These can be accessed with a simple click on the user interface.
+* Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
+
+## ☀️ License
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
 
-# k8s 集群安装
+# k8s install
 
-使用[KinD](https://kind.sigs.k8s.io/docs/user/quick-start/)、[MiniKube](https://minikube.sigs.k8s.io/docs/start/)
-安装一个小型k8s集群
+Create a small Kubernetes cluster using [KinD](https://kind.sigs.k8s.io/docs/user/quick-start/)、[MiniKube](https://minikube.sigs.k8s.io/docs/start/)
 
-## KinD方式
+## KinD way
 
-* 创建 KinD Kubernetes 集群
-
+* install KinD on mac with `brew`.
 ```
 brew install kind
 ```
 
-* 创建新的 Kubernetes 集群：
+* Create a new Kubernetes cluster. 
 
 ```
 kind create cluster --name k8sgpt-demo
 ```
 
-# 将blazorK8s 部署到集群中体验
+#  Deploy BlazorK8s to a cluster and experience it:
 
-## 安装脚本
+## kubectl apply yaml
 
 ```docker
 kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
 ```
 
-* 访问：
-  默认使用了nodePort开放，请访问31999端口。或自行配置Ingress
+* View the ui：
+  By default, it uses NodePort for access. Please visit port 31999, or configure Ingress on your own.
   [http://NodePortIP:31999](http://127.0.0.1:31999)
 
 # 使用docker启动镜像进行体验
-
-## 启动服务
-
-使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
-
+# Start a Docker image to experience it
+## Run
+Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
 docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.1
 ```
 
-* 访问：[web ui](http://127.0.0.1:4000)
+* View：[web ui](http://127.0.0.1:4000)
 
-# 源码 DEBUG 调试
+# Debug
 
 ```
  git clone git@github.com:weibaohui/blazork8s.git
@@ -80,26 +78,25 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
  dotnet watch run
 ```
 
-# 大模型 配置
+# ChatGPT config 
 
-* √ 阿里云通义千问
-* √ 科大讯飞星火大模型
-* √ openAI
-* 未完待续 (百度等模型...)
+* √ ali Qwen
+* √ iFlytek Spark
+* √ OpenAI
+* TBD (Baidu and other models...)
 
-修改源码BlazorApp目录下的appsettings.json
-或镜像/app/目录下的appsettings.json
+Modify the appsettings.json in the BlazorApp directory or /app/ directory of the image.
 
 ```
   "AI": {
-    "Enable": true, //是否开启
-    "Select": "QwenAI" //选择哪一个大模型。可选阿里通义千问、科大讯飞星火大模型
+    "Enable": true, //enabled
+    "Select": "QwenAI" //choose a model
   },
    "QwenAI": {
     "APIKey": "sk-xxxxxxx7dd3494880a7920axxxxxxxxx",
     "Prompt": {
-      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议：",
-      "security": "简明扼要地用Kubernetes安全专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议:"
+      "error": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:",
+      "security": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:"
     }
   },
   "XunFeiAI": {
@@ -107,45 +104,45 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
     "APISecret": "XXXjYzgzY2E0ZTkwxxxxxxYxMDJkYTBl",
     "APIKey": "xxxxxxx7dd3494880a7920axxxxxxxxx",
     "Prompt": {
-      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议：",
-      "security": "简明扼要地用Kubernetes安全专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议:"
+      "error": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:",
+      "security": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:"
     }
   },
 ```
 
-## 大模型应用效果
+## Effectiveness
 
-### DocTree树状展开yaml定义，再也不用担心记不住定义了
+### DocTree expands YAML definitions in a tree-like structure, no longer worry about forgetting the definitions.
 
 <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/doc-tree.gif">
   <br>
 
-### 字段含义解释
+### Explanation of Field Meanings
 
-#### 点击资源详情页面上，字段前面的问号
+#### Click on the question mark next to the field on the resource details page.
 
-* 使用kubectl 获取k8s解释
-* 使用配置的AI大模型，进行智能解释，效果如下：
+* Use kubectl to obtain Kubernetes explanations
+* Using a configured AI large model for intelligent interpretation, the results are as follows:
   <br>
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
   <br>
 
-### 生成部署yaml
+### Generate deployment YAML
 
 <br>
-通过提示词获得k8s部署yaml，并执行<br>
+Obtain k8s deployment YAML through prompts and execute <br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
 <br>
 
-### 智能分析
+### Intelligent Analysis
 
-在每一个资源上面都增加了智能分析、安全分析两个按钮。
+Added intelligent analysis and security analysis buttons on each resource.
 <br>
 <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
 <br>
 
-## 巡检支持资源情况
+## List of inspectable resources
 
 * Node
 * Pod
@@ -162,6 +159,6 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
   <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-inspection.png">
   <br>
 
-## 页面预览
+## UI preview
 
 [click me](docs/ui.md)
