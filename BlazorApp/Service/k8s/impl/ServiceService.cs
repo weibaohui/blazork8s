@@ -81,8 +81,9 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
         }
         if (results.Count == 0)
         {
-            ClusterInspectionResultContainer.Instance.GetPassResources().Add("Service");
+            ClusterInspectionResultContainer.Instance.GetPassResources().Add("Endpoints");
         }
+        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("Endpoints", items.ToList().Count);
 
         return results;
     }

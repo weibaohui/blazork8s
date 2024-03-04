@@ -130,6 +130,8 @@ public class StatefulSetService(IKubeService kubeService,
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("StatefulSet");
         }
+        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("StatefulSet", items.ToList().Count);
+
         return results;
     }
 }

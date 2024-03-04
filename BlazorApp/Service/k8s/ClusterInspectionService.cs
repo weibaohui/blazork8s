@@ -36,6 +36,7 @@ public class ClusterInspectionService(
         var results = ClusterInspectionResultContainer.Instance.GetResults();
         results.Clear();
         ClusterInspectionResultContainer.Instance.GetPassResources().Clear();
+        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Clear();
         results.AddRange(await podService.Analyze());
         results.AddRange(await deploymentService.Analyze());
         results.AddRange(await replicaSetService.Analyze());

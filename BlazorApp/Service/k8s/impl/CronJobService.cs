@@ -64,7 +64,7 @@ public class CronJobService(IKubeService kubeService) : CommonAction<V1CronJob>,
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("CronJob");
         }
-
+        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("CronJob", items.ToList().Count);
         return results;
     }
 

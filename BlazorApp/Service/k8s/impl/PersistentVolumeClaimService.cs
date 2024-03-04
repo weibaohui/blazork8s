@@ -47,6 +47,8 @@ public class PersistentVolumeClaimService(IKubeService kubeService,IEventService
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("PVC");
         }
+        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("PVC", items.ToList().Count);
+
         return results;
     }
 

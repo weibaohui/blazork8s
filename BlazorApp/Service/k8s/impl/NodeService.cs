@@ -116,6 +116,7 @@ namespace BlazorApp.Service.k8s.impl
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("Node");
             }
 
+            ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("Node", items.ToList().Count);
             return results;
         }
     }

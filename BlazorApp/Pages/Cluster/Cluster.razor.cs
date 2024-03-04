@@ -34,16 +34,18 @@ public partial class Cluster : ComponentBase
     [Inject]
     private IAiService Ai { get; set; }
 
-    private List<V1ComponentStatus> ComponentStatus { get; set; }
-    private IList<V1Pod>            PodList         { get; set; }
-    private IList<V1Node>           NodeList        { get; set; }
-    private List<V1APIService>      ApiServicesList { get; set; }
-    private IList<Result>           AnalyzeResult   { get; set; }
-    private DateTime                LastInspection  { get; set; }
-    private IList<string>           PassResources   { get; set; }
-    public  string                  LivezResult     { get; set; }
-    public  string                  ReadyzResult    { get; set; }
-    private string                  _aiSummary = string.Empty;
+    private List<V1ComponentStatus> ComponentStatus   { get; set; }
+    private IList<V1Pod>            PodList           { get; set; }
+    private IList<V1Node>           NodeList          { get; set; }
+    private List<V1APIService>      ApiServicesList   { get; set; }
+    private IList<Result>           AnalyzeResult     { get; set; }
+    private DateTime                LastInspection    { get; set; }
+    private IList<string>           PassResources     { get; set; }
+    private Dictionary<string, int> AllResourcesCount { get; set; }
+
+    public  string LivezResult  { get; set; }
+    public  string ReadyzResult { get; set; }
+    private string _aiSummary = string.Empty;
 
     private Timer _timer;
 
@@ -51,7 +53,6 @@ public partial class Cluster : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-
         if (Ai.Enabled())
         {
             Ai.SetChatEventHandler(EventHandler);
@@ -78,13 +79,15 @@ public partial class Cluster : ComponentBase
 
 
         //巡检信息
-        PassResources  = ClusterInspectionResultContainer.Instance.GetPassResources();
-        AnalyzeResult  = ClusterInspectionResultContainer.Instance.GetResults();
-        LastInspection = ClusterInspectionResultContainer.Instance.LastInspection;
-        AnalyzeResult  = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
+        PassResources     = ClusterInspectionResultContainer.Instance.GetPassResources();
+        AnalyzeResult     = ClusterInspectionResultContainer.Instance.GetResults();
+        LastInspection    = ClusterInspectionResultContainer.Instance.LastInspection;
+        AllResourcesCount = ClusterInspectionResultContainer.Instance.GetAllResourcesCount();
+        LivezResult       = ClusterInspectionResultContainer.Instance.LivezResult;
+        ReadyzResult      = ClusterInspectionResultContainer.Instance.ReadyzResult;
+        AnalyzeResult     = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
+        AllResourcesCount = AllResourcesCount.OrderBy(x => x.Key).ToList().ToDictionary(x => x.Key, x => x.Value);
 
-        LivezResult  = ClusterInspectionResultContainer.Instance.LivezResult;
-        ReadyzResult = ClusterInspectionResultContainer.Instance.ReadyzResult;
         await InvokeAsync(StateHasChanged);
     }
 

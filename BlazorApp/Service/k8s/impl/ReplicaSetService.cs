@@ -74,6 +74,8 @@ namespace BlazorApp.Service.k8s.impl
             {
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("ReplicaSet");
             }
+            ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("ReplicaSet", items.ToList().Count);
+
             return results;
         }
     }

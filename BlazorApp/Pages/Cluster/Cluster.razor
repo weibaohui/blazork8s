@@ -145,7 +145,7 @@
         }
     </TabPane>
 
-    <TabPane Key="4" Tab="Error">
+    <TabPane Key="4" Tab="Errors">
 
         @if (AnalyzeResult is { Count: > 0 })
         {
@@ -177,4 +177,42 @@
             }
         }
     </TabPane>
+
+    <TabPane Key="Inspection" Tab="Inspection">
+
+            @if (AllResourcesCount is { Count: > 0 })
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="6">Name</GridCol>
+                    <GridCol Span="4">All</GridCol>
+                    <GridCol Span="4">Error</GridCol>
+
+                </GridRow>
+                @foreach (var item in AllResourcesCount)
+                {
+                    <GridRow Class="grid-table grid-table-first-row">
+
+                        <GridCol Span="6">
+                             @item.Key
+                        </GridCol>
+                        <GridCol Span="4">
+                             @item.Value
+                        </GridCol>
+                        <GridCol Span="4">
+                            @{ var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;}
+                            @if (errors > 0)
+                            {
+                                <Badge Count="@errors"/>
+                            }
+                            else
+                            {
+                                <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                            }
+
+                        </GridCol>
+
+                    </GridRow>
+                }
+            }
+        </TabPane>
 </Tabs>

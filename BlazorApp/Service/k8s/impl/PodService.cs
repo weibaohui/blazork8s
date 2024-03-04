@@ -63,9 +63,9 @@ namespace BlazorApp.Service.k8s.impl
 
         public async Task<List<Result>> Analyze()
         {
-            var pods    = List();
+            var items   = List();
             var results = new List<Result>();
-            foreach (var pod in pods.ToList())
+            foreach (var pod in items.ToList())
             {
                 var failures = new List<Failure>();
                 //检查Pending Pods
@@ -174,6 +174,7 @@ namespace BlazorApp.Service.k8s.impl
             {
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("Pod");
             }
+            ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("Pod", items.ToList().Count);
 
             return results;
         }
