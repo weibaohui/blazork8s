@@ -35,6 +35,9 @@
                     <AntDesign.Column Title="Ready" TData="string" Width="200px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
+                    <AntDesign.Column Title="Usage" TData="string" Width="200px">
+                        <NodeStatusBulletChart Node="@context"></NodeStatusBulletChart>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="Role" TData="string">
                         @foreach (var role in GetNodeRole(context))
                         {
