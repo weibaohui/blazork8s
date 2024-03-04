@@ -8,7 +8,7 @@
 {
     <PodAction PodItem="Item" MenuMode="MenuMode.Horizontal"></PodAction>
 
-    @if (_isMetricsServerReady)
+    @if (_isMetricsServerReady && Item.Status.Phase == "Running")
     {
         <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
         <Tabs  Animated>
@@ -27,6 +27,10 @@
     <PodSpecView PodSpec="@Item.Spec" PodName="@Item.Metadata.Name" PodNamespace="@Item.Metadata.NamespaceProperty"></PodSpecView>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <PodStatusView PodStatus="@Item.Status"></PodStatusView>
-    <ContainerMetricsView PodName="@Item.Name()" Containers="@Item.Spec.Containers"></ContainerMetricsView>
+    @if (_isMetricsServerReady && Item.Status.Phase == "Running")
+    {
+        <ContainerMetricsView PodName="@Item.Name()" Containers="@Item.Spec.Containers"></ContainerMetricsView>
+    }
+
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }
