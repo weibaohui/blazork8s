@@ -157,15 +157,29 @@ public class HorizontalPodAutoscalerService(
                 }
             }
 
+            if (item.Status.Conditions is {Count:>0})
+            {
+                foreach (var condition in item.Status.Conditions)
+                {
+                    if (condition.Type=="ScalingActive" && condition.Status=="False")
+                    {
+                        failures.Add(new Failure()
+                        {
+                            Text =  $"HPA {item.Namespace()}/{item.Name()} {condition.Reason} {condition.Message}"
+                        });
+                    }
+                }
+            }
+
             if (failures.Count <= 0) continue;
             results.Add(Result.NewResult(item, failures));
         }
 
         if (results.Count == 0)
         {
-            ClusterInspectionResultContainer.Instance.GetPassResources().Add("HPA");
+            ClusterInspectionResultContainer.Instance.GetPassResources().Add("HorizontalPodAutoscaler");
         }
-        ClusterInspectionResultContainer.Instance.AddResourcesCount("HPA", items.ToList().Count);
+        ClusterInspectionResultContainer.Instance.AddResourcesCount("HorizontalPodAutoscaler", items.ToList().Count);
 
         return results;
     }
