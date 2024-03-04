@@ -12,12 +12,15 @@
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title="Namespace" Field="@context.Namespace()"/>
         <AntDesign.Column Sortable="true" TData="string" Title="Ready">@context.ReadySummary()</AntDesign.Column>
+        <AntDesign.Column Title="Restart" TData="string">
+            @context.RestartCount()
+        </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title="Status">
             <StatusView Status=@context.Status()></StatusView>
         </AntDesign.Column>
     </Table>
 }
-@if (Pods==null||Pods.Count == 0)
+@if (Pods == null || Pods.Count == 0)
 {
     <Empty Simple/>
 }
