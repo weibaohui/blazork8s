@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common;
@@ -19,9 +20,11 @@ namespace BlazorApp.Pages.Service
         private V1Service Item { get; set; }
         [Inject]
         private IPodService PodService { get; set; }
+        [Inject]
+        private IEndpointsService EndpointsService { get; set; }
 
-
-        private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
+        private IList<V1Pod>       PodList       { get; set; } = new List<V1Pod>();
+        private IList<V1Endpoints> EndpointsList { get; set; } = new List<V1Endpoints>();
         protected override async Task OnInitializedAsync()
         {
             Item    = base.Options;
@@ -30,6 +33,8 @@ namespace BlazorApp.Pages.Service
                 PodList = await PodService.FilterPodByLabels(Item.Namespace(),
                     PodSelectorHelper.ToFilter(Item.Spec.Selector));
             }
+
+            EndpointsList= EndpointsService.List().Where(x=>x.Name()==Item.Name() && x.Namespace()==Item.Namespace()).ToList();
 
             await base.OnInitializedAsync();
         }

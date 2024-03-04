@@ -1,0 +1,35 @@
+@using k8s.Models
+@using BlazorApp.Service
+@using BlazorApp.Utils
+<Divider Orientation="left" Style="font-weight:bold">EndPoints</Divider>
+@if (Items is { Count: > 0 })
+{
+    <Table TItem="V1Endpoints" DataSource="@Items"
+           HidePagination="true" PageSize="5000"
+           Size=@TableSize.Small Bordered="true">
+        <AntDesign.Column Title="Name" TData="string">
+            <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+        </AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title="Namespace" Field="@context.Namespace()"/>
+    </Table>
+}
+@if (Items==null||Items.Count == 0)
+{
+    <Empty Simple/>
+}
+@code
+{
+    [Inject]
+    protected IPageDrawerService PageDrawerService { get; set; }
+
+    [Parameter]
+    public IList<V1Endpoints> Items { get; set; } = new List<V1Endpoints>();
+
+    private async Task OnItemNameClick(V1Endpoints item)
+    {
+        await PageDrawerHelper<V1Endpoints>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<EndpointsDetailView, V1Endpoints, bool>(item);
+    }
+
+}
