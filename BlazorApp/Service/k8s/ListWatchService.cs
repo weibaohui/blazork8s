@@ -45,7 +45,6 @@ public class ListWatchService
         WatchSecret();
         WatchResourceQuota();
         WatchLimitRange();
-        WatchV1HorizontalPodAutoscaler();
         WatchV2HorizontalPodAutoscaler();
         WatchMutatingWebhookConfiguration();
         WatchValidatingWebhookConfiguration();

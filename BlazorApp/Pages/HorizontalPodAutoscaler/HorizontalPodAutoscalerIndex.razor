@@ -3,7 +3,7 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
-@inherits BlazorApp.Pages.Common.TableBase<k8s.Models.V1HorizontalPodAutoscaler>
+@inherits BlazorApp.Pages.Common.TableBase<k8s.Models.V2HorizontalPodAutoscaler>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
@@ -19,7 +19,7 @@
         </HTr>
         <HTr>
             <HTd >
-                <Table TItem="V1HorizontalPodAutoscaler"
+                <Table TItem="V2HorizontalPodAutoscaler"
                        DataSource="@TableData.PagedItems"
                        Size=@TableSize.Small Bordered="true"
                        Total="TableData.Total"
@@ -45,5 +45,5 @@
         </HTr>
     </HTable>
 
-    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1HorizontalPodAutoscaler"></ResourceWatcher>
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V2HorizontalPodAutoscaler"></ResourceWatcher>
 }

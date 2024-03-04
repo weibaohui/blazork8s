@@ -4,12 +4,13 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+
 namespace BlazorApp.Pages.HorizontalPodAutoscaler;
-public partial class HorizontalPodAutoscalerIndex : TableBase<V1HorizontalPodAutoscaler>
+public partial class HorizontalPodAutoscalerIndex : TableBase<V2HorizontalPodAutoscaler>
 {
     [Inject]
     private IHorizontalPodAutoscalerService HorizontalPodAutoscalerService { get; set; }
-    private async Task OnResourceChanged(ResourceCache<V1HorizontalPodAutoscaler> data)
+    private async Task OnResourceChanged(ResourceCache<V2HorizontalPodAutoscaler> data)
     {
         ItemList = data;
         TableData.CopyData(ItemList);
@@ -21,10 +22,10 @@ public partial class HorizontalPodAutoscalerIndex : TableBase<V1HorizontalPodAut
         TableData.CopyData(ItemList);
         await InvokeAsync(StateHasChanged);
     }
-    private async Task OnItemNameClick(V1HorizontalPodAutoscaler item)
+    private async Task OnItemNameClick(V2HorizontalPodAutoscaler item)
     {
-        await PageDrawerHelper<V1HorizontalPodAutoscaler>.Instance
+        await PageDrawerHelper<V2HorizontalPodAutoscaler>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<HorizontalPodAutoscalerDetailView, V1HorizontalPodAutoscaler, bool>(item);
+            .ShowDrawerAsync<HorizontalPodAutoscalerDetailView, V2HorizontalPodAutoscaler, bool>(item);
     }
 }

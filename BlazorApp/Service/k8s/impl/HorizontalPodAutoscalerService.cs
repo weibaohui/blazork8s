@@ -14,7 +14,7 @@ public class HorizontalPodAutoscalerService(
     IReplicaSetService            replicaSetService,
     IStatefulSetService           statefulSetService,
     IReplicationControllerService replicationControllerService)
-    : CommonAction<V1HorizontalPodAutoscaler>, IHorizontalPodAutoscalerService
+    : CommonAction<V2HorizontalPodAutoscaler>, IHorizontalPodAutoscalerService
 {
     public new async Task<object> Delete(string ns, string name)
     {

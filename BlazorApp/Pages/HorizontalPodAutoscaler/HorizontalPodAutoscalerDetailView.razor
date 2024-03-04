@@ -1,8 +1,11 @@
+@using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1HorizontalPodAutoscaler>
+@using BlazorApp.Pages.Common
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V2HorizontalPodAutoscaler>
 @if (HorizontalPodAutoscaler != null)
 {
     <HorizontalPodAutoscalerAction Item="HorizontalPodAutoscaler" MenuMode="MenuMode.Horizontal"></HorizontalPodAutoscalerAction>
@@ -15,11 +18,11 @@
         <HTableColumn Title="ScaleTarget">
             <RefView FullView="true" Ref="@TransferToRef()"></RefView>
         </HTableColumn>
-        <PropertySimpleView Title="TargetCPUUtilizationPercentage" Item="@HorizontalPodAutoscaler.Spec.TargetCPUUtilizationPercentage" ExplainField="horizontalPodAutoscaler.spec.targetCPUUtilizationPercentage"></PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="CurrentCPUUtilizationPercentage" Item="@HorizontalPodAutoscaler.Status.CurrentCPUUtilizationPercentage" ExplainField="horizontalPodAutoscaler.status.currentCPUUtilizationPercentage"></PropertySimpleView>
+        <ConditionsView Conditions="@(HorizontalPodAutoscaler.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
+
         <PropertySimpleView Title="CurrentReplicas" Item="@HorizontalPodAutoscaler.Status.CurrentReplicas" ExplainField="horizontalPodAutoscaler.status.currentReplicas"></PropertySimpleView>
         <PropertySimpleView Title="DesiredReplicas" Item="@HorizontalPodAutoscaler.Status.DesiredReplicas" ExplainField="horizontalPodAutoscaler.status.desiredReplicas"></PropertySimpleView>
         @if (HorizontalPodAutoscaler.Status.LastScaleTime != null)

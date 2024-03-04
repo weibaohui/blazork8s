@@ -5,9 +5,9 @@ using Mapster;
 
 namespace BlazorApp.Pages.HorizontalPodAutoscaler
 {
-    public partial class HorizontalPodAutoscalerDetailView : DrawerPageBase<V1HorizontalPodAutoscaler>
+    public partial class HorizontalPodAutoscalerDetailView : DrawerPageBase<V2HorizontalPodAutoscaler>
     {
-        private V1HorizontalPodAutoscaler HorizontalPodAutoscaler { get; set; }
+        private V2HorizontalPodAutoscaler HorizontalPodAutoscaler { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
