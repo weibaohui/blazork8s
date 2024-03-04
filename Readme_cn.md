@@ -7,8 +7,8 @@
   </a>
   <h1 align="center"> Blazor k8s </h1>
   <h4 align="center"> 
-    <a href="https://github.com/weibaohui/blazork8s/blob/main/Readme.md">Github</a>
-    <a href="https://gitee.com/weibaohui/blazork8s/blob/main/Readme_gitee.md">Gitee</a>
+    <a href="https://github.com/weibaohui/blazork8s/blob/main/Readme.md">English</a>
+    <a href="https://gitee.com/weibaohui/blazork8s/blob/main/Readme_cn.md">中文</a>
  </h4>
 </p>
 
@@ -165,4 +165,4 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 
 ## 页面预览
 
-[click me](doc/ui_gitee.md)
+[click me](https://gitee.com/weibaohui/blazork8s/blob/main/docs/ui_gitee.md)
