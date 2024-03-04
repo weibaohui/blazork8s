@@ -32,10 +32,10 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="string" Width="200px">
+                    <AntDesign.Column Title="Ready" TData="string" >
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Usage" TData="string" Width="200px">
+                    <AntDesign.Column Title="Usage" TData="string">
                         <NodeStatusBulletChart Node="@context"></NodeStatusBulletChart>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Role" TData="string">
