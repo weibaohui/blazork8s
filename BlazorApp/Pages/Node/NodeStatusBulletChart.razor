@@ -9,12 +9,17 @@
     public INodeService NodeService { get; set; }
     [Parameter]
     public V1Node Node { get; set; }
+    [Inject]
+    private IMetricsService MetricsService { get; set; }
 
+    private bool         _isMetricsServerReady;
     private BulletConfig _uiConfig;
     private Timer        _timer;
 
     protected override async Task OnInitializedAsync()
     {
+        _isMetricsServerReady = await MetricsService.MetricsServerReady();
+
         _timer         =  new Timer(10000);
         _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
         _timer.Start();
@@ -51,7 +56,7 @@
         var cpuCapacity    = NodeService.GetCpuCapacity(nodeName);
         var memoryCapacity = NodeService.GetMemoryCapacity(nodeName);
 
-        return new BulletConfig
+        var config= new BulletConfig
         {
             Width       = 300,
             Height      = 150,
@@ -64,21 +69,25 @@
                     Title    = "Pods (%)",
                     Measures = new int[] { CalcMeasure(podCapacity) },
                     Ranges   = new double[] { 0, 0.5, 0.8, 1 },
-                },
-                new BulletViewConfigData
-                {
-                    Title    = "Memory (%)",
-                    Measures = new int[] { CalcMeasure(memoryCapacity) },
-                    Ranges   = new double[] { 0, 0.5, 0.8, 1 },
-                },
-                new BulletViewConfigData
-                {
-                    Title    = "CPU (%)",
-                    Measures = new int[] { CalcMeasure(cpuCapacity) },
-                    Ranges   = new double[] { 0, 0.5, 0.8, 1 },
                 }
             }
         };
+        if (_isMetricsServerReady)
+        {
+            config.Data.Append(new BulletViewConfigData
+            {
+                Title    = "CPU (%)",
+                Measures = new int[] { CalcMeasure(cpuCapacity) },
+                Ranges   = new double[] { 0, 0.5, 0.8, 1 },
+            });
+            config.Data.Append(new BulletViewConfigData
+            {
+                Title    = "Memory (%)",
+                Measures = new int[] { CalcMeasure(memoryCapacity) },
+                Ranges   = new double[] { 0, 0.5, 0.8, 1 },
+            });
+        }
+        return config;
     }
 
 }
