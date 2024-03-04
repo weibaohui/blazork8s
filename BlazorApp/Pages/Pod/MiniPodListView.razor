@@ -10,7 +10,7 @@
         <AntDesign.Column Title="Name" TData="string">
             <Button OnClick="@(() => OnPodNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
         </AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="NameSpace" Field="@context.Namespace()"/>
+        <AntDesign.Column Sortable="true" TData="string" Title="Namespace" Field="@context.Namespace()"/>
         <AntDesign.Column Sortable="true" TData="string" Title="Ready">@context.ReadySummary()</AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title="Status">
             <StatusView Status=@context.Status()></StatusView>
