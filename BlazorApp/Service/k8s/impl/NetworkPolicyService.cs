@@ -51,7 +51,7 @@ public class NetworkPolicyService(IKubeService kubeService,IPodService podServic
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("NetworkPolicy");
         }
 
-        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("NetworkPolicy", items.ToList().Count);
+        ClusterInspectionResultContainer.Instance.AddResourcesCount("NetworkPolicy", items.ToList().Count);
 
         return results;
     }

@@ -174,7 +174,7 @@ namespace BlazorApp.Service.k8s.impl
             {
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("Pod");
             }
-            ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("Pod", items.ToList().Count);
+            ClusterInspectionResultContainer.Instance.AddResourcesCount("Pod", items.ToList().Count);
 
             return results;
         }

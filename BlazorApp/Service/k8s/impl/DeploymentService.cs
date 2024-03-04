@@ -96,7 +96,7 @@ public class DeploymentService(IKubeService kubeService)
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("Deployment");
         }
 
-        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("Deployment", items.ToList().Count);
+        ClusterInspectionResultContainer.Instance.AddResourcesCount("Deployment", items.ToList().Count);
         return results;
     }
 }

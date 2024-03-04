@@ -116,7 +116,7 @@ public class IngressService(
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("Ingress");
         }
-        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("Ingress", items.ToList().Count);
+        ClusterInspectionResultContainer.Instance.AddResourcesCount("Ingress", items.ToList().Count);
 
         return results;
     }

@@ -1,0 +1,27 @@
+<RingProgress Data="@CalcLoad()" Config="_loadConfig"></RingProgress>
+
+@code {
+
+    [Parameter]
+    public double Numerator { get; set; } = 1;
+
+    [Parameter]
+    public double Denominator { get; set; } = 1;
+
+
+    private double CalcLoad()
+    {
+        return Numerator / Denominator;
+    }
+
+    private RingProgressConfig _loadConfig = new RingProgressConfig
+    {
+        Width   = 50,
+        Height  = 50,
+        Color = new[]
+        {
+            "#F4664A","#E8EDF3"
+        },
+    };
+
+}

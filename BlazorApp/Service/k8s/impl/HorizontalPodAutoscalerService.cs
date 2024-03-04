@@ -165,7 +165,7 @@ public class HorizontalPodAutoscalerService(
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("HPA");
         }
-        ClusterInspectionResultContainer.Instance.GetAllResourcesCount().Add("HPA", items.ToList().Count);
+        ClusterInspectionResultContainer.Instance.AddResourcesCount("HPA", items.ToList().Count);
 
         return results;
     }

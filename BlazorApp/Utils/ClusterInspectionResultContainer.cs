@@ -13,7 +13,8 @@ public class ClusterInspectionResultContainer
     private static readonly List<Result> Results = [];
 
     //巡检结果
-    private static readonly List<string> PassResources = [];
+    private static readonly List<string>            PassResources     = [];
+    private static readonly Dictionary<string, int> AllResourcesCount = new();
 
     public        DateTime                         LastInspection;
     public        string                           LivezResult;
@@ -39,5 +40,15 @@ public class ClusterInspectionResultContainer
     public List<string> GetPassResources()
     {
         return PassResources;
+    }
+
+    public Dictionary<string, int> GetAllResourcesCount()
+    {
+        return AllResourcesCount;
+    }
+
+    public void AddResourcesCount(string resource, int count)
+    {
+        AllResourcesCount[resource] = count;
     }
 }
