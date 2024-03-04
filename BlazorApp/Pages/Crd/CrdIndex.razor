@@ -59,6 +59,13 @@
                     <AntDesign.Column Title="Scope" TData="string" Width="120px">
                         @($"{context.Spec.Scope}")
                     </AntDesign.Column>
+                    <AntDesign.Column Title="Count" TData="string" Width="100px">
+
+                        @if (CrCount.Keys.Contains(context.Name()))
+                        {
+                            @CrCount[context.Name()]
+                        }
+                    </AntDesign.Column>
                     <AntDesign.Column Title="Condition" TData="string" Width="100px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
@@ -13,7 +14,10 @@ public partial class CrdIndex : TableBase<V1CustomResourceDefinition>
     public IKubeService KubeService { get; set; }
 
     [Inject]
-    private ICustomResourceDefinitionService CustomResourceDefinitionService { get; set; }
+    private ICustomResourceDefinitionService CrdService { get; set; }
+
+
+    public IDictionary<string, int> CrCount { get; set; } = new Dictionary<string, int>(); // <name,count>
 
     private async Task OnResourceChanged(ResourceCache<V1CustomResourceDefinition> data)
     {
@@ -24,32 +28,20 @@ public partial class CrdIndex : TableBase<V1CustomResourceDefinition>
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         TableData.CopyData(ItemList);
+        await CalcCrCount(ItemList.Get());
+        await base.OnInitializedAsync();
         await InvokeAsync(StateHasChanged);
     }
-    //
-    // private async Task<string> GetCrCount(V1CustomResourceDefinition context)
-    // {
-    //     var ret = string.Empty;
-    //
-    //     // var ret      = new Dictionary<string, int>();
-    //     var group    = context.Spec.Group;
-    //     var versions = context.Spec.Versions;
-    //     var plural   = context.Spec.Names.Plural;
-    //
-    //     foreach (var v in versions)
-    //     {
-    //         var generic = new GenericClient(KubeService.Client(), group, v.Name, plural);
-    //         var list    = await generic.ListAsync<CustomResourceList<CustomResource>>();
-    //         // ret.Add(v.Name, list.Items.Count);
-    //         ret += $"{v.Name}={list.Items.Count}, ";
-    //     }
-    //
-    //     //
-    //     // return ret;
-    //     return ret;
-    // }
+
+    private async Task CalcCrCount(IEnumerable<V1CustomResourceDefinition> crds)
+    {
+        foreach (var crd in crds)
+        {
+            var crInstanceList = await CrdService.GetCrInstanceList(crd);
+            CrCount.Add(crd.Name(), crInstanceList.Count);
+        }
+    }
 
     private async Task OnItemNameClick(V1CustomResourceDefinition item)
     {
@@ -57,6 +49,4 @@ public partial class CrdIndex : TableBase<V1CustomResourceDefinition>
             .SetDrawerService(PageDrawerService.DrawerService)
             .ShowDrawerAsync<CrdDetailView, V1CustomResourceDefinition, bool>(item);
     }
-
-
 }
