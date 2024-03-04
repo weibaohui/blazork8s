@@ -35,4 +35,9 @@ public partial class CronJobIndex : TableBase<V1CronJob>
         var options = PageDrawerService.DefaultOptions($"AI Chat", width: 1000);
         await PageDrawerService.ShowDrawerAsync<AnyChat, string, bool>(options, item);
     }
+    private async Task OnNextCronDateClick(string item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Next Cron Date", width: 500);
+        await PageDrawerService.ShowDrawerAsync<NextCronDateView, string, bool>(options, item);
+    }
 }

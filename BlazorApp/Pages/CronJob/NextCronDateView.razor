@@ -1,0 +1,71 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using NCrontab
+@inherits BlazorApp.Pages.Common.DrawerPageBase<string>
+
+@if (_nextCronDate is { Count: > 0 })
+{
+    <div>
+        <p>Cron Expression: @CronExpression</p>
+    </div>
+    <div>
+        <p>Next Cron Date:</p>
+
+        <HTable>
+            <HTr>
+                <HTd>Index</HTd>
+                <HTd>Date</HTd>
+            </HTr>
+            @{int i = 0;}
+            @foreach (var date in _nextCronDate)
+            {
+                <HTr>
+                    <HTd>
+                        @(++i)
+                    </HTd>
+                    <HTd>@date</HTd>
+                </HTr>
+            }
+        </HTable>
+    </div>
+}
+
+@code {
+
+    [Parameter]
+    public string CronExpression { get; set; }
+
+    private List<string> _nextCronDate = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        CronExpression = base.Options;
+        Console.WriteLine(CronExpression);
+        _nextCronDate = GetNextCron();
+        await base.OnInitializedAsync();
+    }
+
+
+    private List<string> GetNextCron()
+    {
+        var nextCronDate = new List<string>();
+        // 解析 cron 表达式
+        var schedule = CrontabSchedule.Parse(CronExpression);
+        // 获取当前时间
+        var now = DateTime.Now;
+
+        // 计算最近的 10 个时间计划
+        for (int i = 0; i < 10; i++)
+        {
+            // 获取下一个时间点
+            DateTime nextOccurrence = schedule.GetNextOccurrence(now);
+            // 打印下一个时间点
+            nextCronDate.Add($"{nextOccurrence}");
+
+            // 更新当前时间为下一个时间点，以便计算下一个时间计划
+            now = nextOccurrence;
+        }
+
+        return nextCronDate;
+    }
+
+}

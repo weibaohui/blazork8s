@@ -31,9 +31,10 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
                     <AntDesign.Column Title="Schedule" TData="string">
                         <Button OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{context.Spec.Schedule}"))" Type="@ButtonType.Link">@context.Spec.Schedule</Button>
+                        <Button Type="@ButtonType.Default" Icon="@IconType.Outline.ClockCircle" OnClick="@(()=>OnNextCronDateClick(context.Spec.Schedule))"></Button>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Suspend" TData="string">
                         @(context.Spec.Suspend ?? false ? "True" : "False")
@@ -50,10 +51,10 @@
                     <AntDesign.Column Title="Images" TData="string">
                         <ImagesListView PodSpec="@context.Spec.JobTemplate.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <CronJobAction Item="@context"></CronJobAction>
                     </ActionColumn>
                 </Table>
