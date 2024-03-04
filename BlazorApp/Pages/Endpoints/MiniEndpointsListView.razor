@@ -1,7 +1,7 @@
 @using k8s.Models
 @using BlazorApp.Service
 @using BlazorApp.Utils
-<Divider Orientation="left" Style="font-weight:bold">EndPoints</Divider>
+<Divider Orientation="left" Style="font-weight:bold">Endpoints</Divider>
 @if (Items is { Count: > 0 })
 {
     <Table TItem="V1Endpoints" DataSource="@Items"
