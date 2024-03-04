@@ -42,7 +42,7 @@
                     </AntDesign.Column>
                     <AntDesign.Column Title="Role" TData="string">
                         <div>
-                            <RefView Ref="@(context.RoleRef.Adapt<V1ObjectReference>())" FullView="true"></RefView>
+                            <RefView Ref="@GetRef(context)" FullView="true"></RefView>
                         </div>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
