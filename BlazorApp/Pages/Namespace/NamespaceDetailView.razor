@@ -1,6 +1,7 @@
 @using Mapster
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common
 @using k8s.Models
@@ -19,5 +20,8 @@
         <ConditionsView Conditions="@(Namespace.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="namespace.status.conditions"></ConditionsView>
         <PropertyOptionView Title="Phase" Item="@Namespace.Status.Phase" ExplainField="namespace.status.phase" Options="@(new []{"Active", "Terminating"})"></PropertyOptionView>
     </HTable>
+
+    <MiniPodListView Pods="@PodList"></MiniPodListView>
+
     <MiniEventListView Uid="@Namespace.Metadata.Uid"></MiniEventListView>
 }
