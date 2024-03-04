@@ -2,8 +2,8 @@
 
 
 <p align="center">
-  <a href="https://github.com/weibaohui/blazork8s">
-    <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/BlazorApp/wwwroot/pro_icon.svg">
+  <a href="https://gitee.com/weibaohui/blazork8s">
+    <img src="https://gitee.com/weibaohui/blazork8s/raw/main/BlazorApp/wwwroot/pro_icon.svg">
   </a>
   <h1 align="center"> Blazor k8s </h1>
   <h4 align="center"> [GitHub](https://github.com/weibaohui/blazork8s/blob/main/Readme.md) [GitEE](https://gitee.com/weibaohui/blazork8s/blob/main/Readme_gitee.md) </h4>
@@ -51,7 +51,7 @@ kind create cluster --name k8sgpt-demo
 ## 安装脚本
 
 ```docker
-kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/deploy/deployment.yaml
+kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deployment.yaml
 ```
 
 * 访问：
@@ -116,7 +116,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 ### DocTree树状展开yaml定义，再也不用担心记不住定义了
 
 <br>
-  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/doc-tree.gif">
+  <img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/doc-tree.gif">
   <br>
 
 ### 字段含义解释
@@ -126,21 +126,21 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * 使用kubectl 获取k8s解释
 * 使用配置的AI大模型，进行智能解释，效果如下：
   <br>
-  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
+  <img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/kubectl-explain.gif">
   <br>
 
 ### 生成部署yaml
 
 <br>
 通过提示词获得k8s部署yaml，并执行<br>
-<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
+<img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/gpt-deploy.gif">
 <br>
 
 ### 智能分析
 
 在每一个资源上面都增加了智能分析、安全分析两个按钮。
 <br>
-<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
+<img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/POD-analyze.gif">
 <br>
 
 ## 巡检支持资源情况
@@ -157,9 +157,9 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * NetworkPolicy
 * HorizontalPodAutoscaler
   <br>
-  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-inspection.png">
+  <img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/cluster-inspection.png">
   <br>
 
 ## 页面预览
 
-[click me](doc/ui.md)
+[click me](doc/ui_gitee.md)
