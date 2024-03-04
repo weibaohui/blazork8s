@@ -5,6 +5,7 @@ using BlazorApp.Pages.ConfigMap;
 using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
+using BlazorApp.Pages.Endpoints;
 using BlazorApp.Pages.Ingress;
 using BlazorApp.Pages.Job;
 using BlazorApp.Pages.Namespace;
@@ -81,6 +82,8 @@ public partial class RefView : ComponentBase
     [Inject]
     private IConfigMapService ConfigMapService { get; set; }
 
+    [Inject]
+    private IEndpointsService EndpointsService { get; set; }
 
     [Inject]
     private ISecretService SecretService { get; set; }
@@ -99,6 +102,7 @@ public partial class RefView : ComponentBase
 
     [Inject]
     private IIngressService IngressService { get; set; }
+
     private string GetDelimiter()
     {
         return Ref.NamespaceProperty == null ? "" : "/";
@@ -121,6 +125,7 @@ public partial class RefView : ComponentBase
             "Job"                   => OnJobClick(Ref),
             "CronJob"               => OnCronJobClick(Ref),
             "Pod"                   => OnPodClick(Ref),
+            "Endpoints"             => OnEndpointsClick(Ref),
             "Group"                 => OnGroupClick(Ref),
             "User"                  => OnUserClick(Ref),
             "ServiceAccount"        => OnServiceAccountClick(Ref),
@@ -128,7 +133,7 @@ public partial class RefView : ComponentBase
             "Role"                  => OnRoleClick(Ref),
             "ConfigMap"             => OnConfigMapClick(Ref),
             "Secret"                => OnSecretClick(Ref),
-            "Ingress"                => OnIngressClick(Ref),
+            "Ingress"               => OnIngressClick(Ref),
             "Namespace"             => OnNamespaceClick(Ref),
             "PersistentVolumeClaim" => OnPersistentVolumeClaimClick(Ref),
             _                       => OnXClick(Ref)
@@ -152,6 +157,7 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<SecretDetailView, V1Secret, bool>(item);
     }
+
     private async Task OnIngressClick(V1ObjectReference r)
     {
         var item = IngressService.GetByName(r.NamespaceProperty, r.Name);
@@ -261,7 +267,13 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<RoleDetailView, V1Role, bool>(item);
     }
-
+    private async Task OnEndpointsClick(V1ObjectReference r)
+    {
+        var item = EndpointsService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Endpoints>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<EndpointsDetailView, V1Endpoints, bool>(item);
+    }
     private async Task OnPodClick(V1ObjectReference r)
     {
         var item = PodService.GetByName(r.NamespaceProperty, r.Name);
