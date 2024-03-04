@@ -53,7 +53,7 @@ namespace BlazorApp.Service.k8s.impl
             var capacity = GetNodeCapacity(nodeName);
             var all      = capacity?.FirstOrDefault(x => x.Key == type).Value.HumanizeValue();
 
-            var current = metricsService.NodeMetricsQueue(nodeName).GetList()
+            var current = metricsService.NodeMetricsQueue(nodeName).GetList().ToList()
                 .FirstOrDefault()?.Usage
                 .FirstOrDefault(x => x.Key == type).Value.HumanizeValue();
 
