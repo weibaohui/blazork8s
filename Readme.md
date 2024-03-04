@@ -6,9 +6,11 @@
     <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/BlazorApp/wwwroot/pro_icon.svg">
   </a>
   <h1 align="center"> Blazor k8s </h1>
-  <h4 align="center"> [GitHub](https://github.com/weibaohui/blazork8s/blob/main/Readme.md) [GitEE](https://gitee.com/weibaohui/blazork8s/blob/main/Readme_gitee.md) </h4>
+  <h4 align="center"> 
+    <a href="https://github.com/weibaohui/blazork8s/blob/main/Readme.md">Github</a>
+    <a href="https://gitee.com/weibaohui/blazork8s/blob/main/Readme_gitee.md">Gitee</a>
+ </h4>
 </p>
-
 使用C# Blazor 编写的kubernetes管理工具，集成了ChatGPT类大模型，用简单易用的操作界面，提升k8s管理效率。
 尤其适合新手入门使用，提供多种便捷功能方便初学者掌握k8s知识。
 
