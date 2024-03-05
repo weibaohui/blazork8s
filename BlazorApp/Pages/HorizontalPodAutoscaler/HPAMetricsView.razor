@@ -94,76 +94,76 @@
     {
         CurrentMetrics = Hpa.Status.CurrentMetrics;
         // FOR TEST
-        CurrentMetrics = new List<V2MetricStatus>()
-        {
-            new V2MetricStatus()
-            {
-                Pods = new V2PodsMetricStatus()
-                {
-                    Current = new V2MetricValueStatus()
-                    {
-                        AverageValue = new ResourceQuantity("100k")
-                    },
-                    Metric = new V2MetricIdentifier()
-                    {
-                        Name = "packets-per-second"
-                    }
-                }
-            },
-            new V2MetricStatus()
-            {
-                External = new V2ExternalMetricStatus()
-                {
-                    Current = new V2MetricValueStatus()
-                    {
-                        AverageValue = new ResourceQuantity("30")
-                    },
-                    Metric = new V2MetricIdentifier()
-                    {
-                        Name = "queue_messages_ready",
-                    },
-                }
-            },
-            new V2MetricStatus()
-            {
-                Resource = new V2ResourceMetricStatus()
-                {
-                    Current = new V2MetricValueStatus()
-                    {
-                        AverageValue       = new ResourceQuantity("30"),
-                        Value              = new ResourceQuantity("30"),
-                        AverageUtilization = 30
-                    },
-                    Name = "cpu"
-                }
-            },
-            new V2MetricStatus()
-            {
-                ObjectProperty = new V2ObjectMetricStatus()
-                {
-                    Current = new V2MetricValueStatus()
-                    {
-                        Value = new ResourceQuantity("11k")
-                    },
-                    Metric = new V2MetricIdentifier()
-                    {
-                        Name = "requests-per-second"
-                    }
-                }
-            },
-            new V2MetricStatus()
-            {
-                ContainerResource = new V2ContainerResourceMetricStatus()
-                {
-                    Current = new V2MetricValueStatus()
-                    {
-                        AverageValue       = new ResourceQuantity("40"),
-                        AverageUtilization = 40,
-                    },
-                    Name = "cpu"
-                }
-            }
-        };
+        // CurrentMetrics = new List<V2MetricStatus>()
+        // {
+        //     new V2MetricStatus()
+        //     {
+        //         Pods = new V2PodsMetricStatus()
+        //         {
+        //             Current = new V2MetricValueStatus()
+        //             {
+        //                 AverageValue = new ResourceQuantity("100k")
+        //             },
+        //             Metric = new V2MetricIdentifier()
+        //             {
+        //                 Name = "packets-per-second"
+        //             }
+        //         }
+        //     },
+        //     new V2MetricStatus()
+        //     {
+        //         External = new V2ExternalMetricStatus()
+        //         {
+        //             Current = new V2MetricValueStatus()
+        //             {
+        //                 AverageValue = new ResourceQuantity("30")
+        //             },
+        //             Metric = new V2MetricIdentifier()
+        //             {
+        //                 Name = "queue_messages_ready",
+        //             },
+        //         }
+        //     },
+        //     new V2MetricStatus()
+        //     {
+        //         Resource = new V2ResourceMetricStatus()
+        //         {
+        //             Current = new V2MetricValueStatus()
+        //             {
+        //                 AverageValue       = new ResourceQuantity("30"),
+        //                 Value              = new ResourceQuantity("30"),
+        //                 AverageUtilization = 30
+        //             },
+        //             Name = "cpu"
+        //         }
+        //     },
+        //     new V2MetricStatus()
+        //     {
+        //         ObjectProperty = new V2ObjectMetricStatus()
+        //         {
+        //             Current = new V2MetricValueStatus()
+        //             {
+        //                 Value = new ResourceQuantity("11k")
+        //             },
+        //             Metric = new V2MetricIdentifier()
+        //             {
+        //                 Name = "requests-per-second"
+        //             }
+        //         }
+        //     },
+        //     new V2MetricStatus()
+        //     {
+        //         ContainerResource = new V2ContainerResourceMetricStatus()
+        //         {
+        //             Current = new V2MetricValueStatus()
+        //             {
+        //                 AverageValue       = new ResourceQuantity("40"),
+        //                 AverageUtilization = 40,
+        //             },
+        //             Name = "cpu"
+        //         }
+        //     }
+        // };
         await base.OnInitializedAsync();
     }
 
