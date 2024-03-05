@@ -1,0 +1,24 @@
+@using k8s.Models
+@using BlazorApp.Pages.Common
+@if (MetricTarget != null)
+{
+    if (MetricTarget.Type=="Utilization")
+    {
+        @($"{MetricTarget.AverageUtilization}%")
+        <ColorfulTag>avg</ColorfulTag>
+
+    }
+    else if (MetricTarget.Type=="Value")
+    {
+        @($"{MetricTarget.Value}")
+    }
+    else if (MetricTarget.Type=="AverageValue") {
+        @($"{ MetricTarget.AverageValue}")
+        <ColorfulTag>avg</ColorfulTag>
+    }
+}
+
+@code {
+    [Parameter]
+    public V2MetricTarget MetricTarget { get; set; }
+}

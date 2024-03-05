@@ -1,0 +1,52 @@
+@using Mapster
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Common
+@if (Metric.Pods != null)
+{
+    @($"{Metric.Pods.Metric.Name} = ")
+    <HPAMetricsTargetView MetricTarget="Metric.Pods.Target"></HPAMetricsTargetView>
+}
+@if (Metric.Resource != null)
+{
+    @($"{Metric.Resource.Name} = ")
+    <HPAMetricsTargetView MetricTarget="Metric.Resource.Target"></HPAMetricsTargetView>
+}
+@if (Metric.ObjectProperty != null)
+{
+    //DescribedObject
+    @($"{Metric.ObjectProperty.Metric.Name} = ")
+    <HPAMetricsTargetView MetricTarget="Metric.ObjectProperty.Target"></HPAMetricsTargetView>
+    <RefView Ref="@(GetObjectRef(Metric.ObjectProperty.DescribedObject))"></RefView>
+}
+@if (Metric.External != null)
+{
+    @($"{Metric.External.Metric.Name} = ")
+    <HPAMetricsTargetView MetricTarget="Metric.External.Target"></HPAMetricsTargetView>
+    @if (Metric.External.Metric.Selector != null)
+    {
+        <LabelSelectorView  LabelSelector="@Metric.External.Metric.Selector" Title="Match Pods"></LabelSelectorView>
+    }
+}
+@if (Metric.ContainerResource != null)
+{
+    @($"Container {Metric.ContainerResource.Container} {Metric.ContainerResource.Name} = ")
+    <HPAMetricsTargetView MetricTarget="Metric.ContainerResource.Target"></HPAMetricsTargetView>
+}
+
+@code {
+
+    [Parameter]
+    public string Namespace { get; set; }
+
+    [Parameter]
+    public V2MetricSpec Metric { get; set; }
+
+    private V1ObjectReference GetObjectRef(V2CrossVersionObjectReference obj)
+    {
+        var reference = obj.Adapt<V1ObjectReference>();
+        reference.NamespaceProperty = Namespace;
+        return reference;
+    }
+
+}

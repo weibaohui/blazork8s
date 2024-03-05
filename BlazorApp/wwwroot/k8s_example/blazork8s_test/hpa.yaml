@@ -9,6 +9,23 @@ spec:
     name: nginx-web
   minReplicas: 1
   maxReplicas: 10
+  behavior:
+    scaleDown:
+      stabilizationWindowSeconds: 300
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+    scaleUp:
+      stabilizationWindowSeconds: 0
+      policies:
+        - type: Percent
+          value: 100
+          periodSeconds: 15
+        - type: Pods
+          value: 4
+          periodSeconds: 15
+      selectPolicy: Max
   metrics:
     - type: Resource
       resource:
@@ -30,7 +47,7 @@ spec:
         describedObject:
           apiVersion: networking.k8s.io/v1
           kind: Ingress
-          name: main-route
+          name: tls-example-ingress
         target:
           type: Value
           value: 2k
@@ -44,10 +61,10 @@ spec:
         target:
           type: AverageValue
           averageValue: '30'
-#    - type: ContainerResource
-#      containerResource:
-#        name: cpu
-#        container: application
-#        target:
-#          type: Utilization
-#          averageUtilization: 60
+    - type: ContainerResource
+      containerResource:
+        name: cpu
+        container: application
+        target:
+          type: Utilization
+          averageUtilization: 60

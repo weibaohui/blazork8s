@@ -18,6 +18,8 @@
             <RefView FullView="true" Ref="@TransferToRef()"></RefView>
         </PropertySimpleView>
     </HTable>
+    <HPAMetricsView Hpa="@HorizontalPodAutoscaler"></HPAMetricsView>
+
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(HorizontalPodAutoscaler.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
