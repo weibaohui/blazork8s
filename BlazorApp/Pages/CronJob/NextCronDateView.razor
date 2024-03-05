@@ -39,7 +39,6 @@
     protected override async Task OnInitializedAsync()
     {
         CronExpression = base.Options;
-        Console.WriteLine(CronExpression);
         _nextCronDate = GetNextCron();
         await base.OnInitializedAsync();
     }

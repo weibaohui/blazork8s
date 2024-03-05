@@ -13,7 +13,11 @@
     <HTable Bordered Column="1">
         <PropertyOptionView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" Options="@(new[] { "Allow", "Forbid", "Replace" })"></PropertyOptionView>
         <PropertySimpleView Title="FailedJobsHistoryLimit" Item="@CronJob.Spec.FailedJobsHistoryLimit" ExplainField="cronJob.spec.failedJobsHistoryLimit"></PropertySimpleView>
-        <PropertySimpleView Title="Schedule" Item="@CronJob.Spec.Schedule" ExplainField="cronJob.spec.schedule" OnClick=@(() => OnAnyChatClick($"请解释如下Cron表达式：{CronJob.Spec.Schedule}"))></PropertySimpleView>
+        <PropertySimpleView Title="Schedule"   ExplainField="cronJob.spec.schedule">
+            @CronJob.Spec.Schedule
+            <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Robot" OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{CronJob.Spec.Schedule}"))"></Button>
+            <Button Type="@ButtonType.Default" Icon="@IconType.Outline.ClockCircle" OnClick="@(() => OnNextCronDateClick(CronJob.Spec.Schedule))"></Button>
+        </PropertySimpleView>
         <PropertySimpleView Title="StartingDeadlineSeconds" Item="@CronJob.Spec.StartingDeadlineSeconds" ExplainField="cronJob.spec.startingDeadlineSeconds"></PropertySimpleView>
         <PropertySimpleView Title="SuccessfulJobsHistoryLimit" Item="@CronJob.Spec.SuccessfulJobsHistoryLimit" ExplainField="cronJob.spec.successfulJobsHistoryLimit"></PropertySimpleView>
         <PropertySimpleView Title="Suspend" Item="@CronJob.Spec.Suspend" ExplainField="cronJob.spec.suspend"></PropertySimpleView>
