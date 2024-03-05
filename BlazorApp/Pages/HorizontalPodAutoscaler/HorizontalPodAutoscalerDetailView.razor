@@ -2,7 +2,6 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V2HorizontalPodAutoscaler>
@@ -15,9 +14,9 @@
     <HTable Bordered Column="1">
         <PropertySimpleView Title="MaxReplicas" Item="@HorizontalPodAutoscaler.Spec.MaxReplicas" ExplainField="horizontalPodAutoscaler.spec.maxReplicas"></PropertySimpleView>
         <PropertySimpleView Title="MinReplicas" Item="@HorizontalPodAutoscaler.Spec.MinReplicas" ExplainField="horizontalPodAutoscaler.spec.minReplicas"></PropertySimpleView>
-        <HTableColumn Title="ScaleTarget">
+        <PropertySimpleView Title="ScaleTargetRef" ExplainField="horizontalPodAutoscaler.spec.scaleTargetRef">
             <RefView FullView="true" Ref="@TransferToRef()"></RefView>
-        </HTableColumn>
+        </PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
@@ -27,10 +26,10 @@
         <PropertySimpleView Title="DesiredReplicas" Item="@HorizontalPodAutoscaler.Status.DesiredReplicas" ExplainField="horizontalPodAutoscaler.status.desiredReplicas"></PropertySimpleView>
         @if (HorizontalPodAutoscaler.Status.LastScaleTime != null)
         {
-            <HTableColumn Title="LastScaleTime" ExplainField="horizontalPodAutoscaler.status.lastScaleTime">
+            <PropertySimpleView Title="LastScaleTime" ExplainField="horizontalPodAutoscaler.status.lastScaleTime">
                 <AgeView Age="@HorizontalPodAutoscaler.Status.LastScaleTime"></AgeView>
                 (@HorizontalPodAutoscaler.Status.LastScaleTime.GetValueOrDefault().ToLocalTime())
-            </HTableColumn>
+            </PropertySimpleView>
         }
         <PropertySimpleView Title="ObservedGeneration" Item="@HorizontalPodAutoscaler.Status.ObservedGeneration" ExplainField="horizontalPodAutoscaler.status.observedGeneration"></PropertySimpleView>
     </HTable>
