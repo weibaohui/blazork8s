@@ -78,8 +78,8 @@
 </GridRow>
 
 
-<Tabs Style="margin: 50px" DefaultActiveKey="1" Type="@TabType.Card" Size="@TabSize.Large">
-    <TabPane Key="1" Tab="API Status">
+<Tabs Style="margin: 50px" DefaultActiveKey="Nodes" Type="@TabType.Card" Size="@TabSize.Large">
+    <TabPane Key="Status" Tab="API Status">
         @if (ApiServicesList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
@@ -103,7 +103,7 @@
     <TabPane Key="Readyz" Tab="Readyz">
         @((MarkupString)ReadyzResult.ToHtmlDisplay())
     </TabPane>
-    <TabPane Key="2" Tab="Nodes">
+    <TabPane Key="Nodes" Tab="Nodes">
         @if (NodeList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
@@ -122,7 +122,7 @@
             </GridRow>
         }
     </TabPane>
-    <TabPane Key="3" Tab="Pods">
+    <TabPane Key="Pods" Tab="Pods">
         @if (PodList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
@@ -145,7 +145,7 @@
         }
     </TabPane>
 
-    <TabPane Key="4" Tab="Errors">
+    <TabPane Key="Errors" Tab="Errors">
 
         @if (AnalyzeResult is { Count: > 0 })
         {
@@ -183,8 +183,6 @@
         @if (AllResourcesCount is { Count: > 0 })
         {
             <Space Wrap>
-
-
                 @foreach (var item in AllResourcesCount)
                 {
                     var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;
