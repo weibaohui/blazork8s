@@ -8,6 +8,9 @@ namespace BlazorApp.Pages.Common.Metadata;
 public partial class PropertySimpleView : ComponentBase
 {
     [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    [Parameter]
     public object? Item { get; set; }
 
     [Parameter]

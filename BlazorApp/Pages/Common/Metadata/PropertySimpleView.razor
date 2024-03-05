@@ -1,20 +1,29 @@
 @using Extension
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
-@if (Item != null && !Item.ToJson().Equals("{}"))
+@if (ChildContent != null || (Item != null && !Item.ToJson().Equals("{}")))
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
-        @if (ShowInJson)
+
+        @if (ChildContent != null)
         {
-            <p >
-                 @((MarkupString)PrettyJson())
-            </p>
+            @ChildContent
         }
         else
         {
-            <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
-                @Item
-            </Tag>
+            @if (ShowInJson)
+            {
+                <p >
+                    @((MarkupString)PrettyJson())
+                </p>
+            }
+            else
+            {
+                <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
+                    @Item
+                </Tag>
+            }
         }
+
     </HTableColumn>
 }
