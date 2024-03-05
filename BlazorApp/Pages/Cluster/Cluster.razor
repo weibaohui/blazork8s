@@ -189,7 +189,7 @@
                 {
                     var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;
                     <SpaceItem>
-                        <Card Style="width: 300px;margin: 10px">
+                        <Card Style="width: 300px;margin: 5px">
                             <GridRow Class="grid-table">
                                 <GridCol Span="16">
                                     <div >
@@ -197,9 +197,9 @@
                                     </div >
                                     <div >
                                         @($"{errors}  / {item.Value}  ")
-                                    </div >
-                                    <div style="color: gray">
-                                        @($"errors /  all ")
+                                        <span style="color: gray">
+                                            @($"[err/all]")
+                                        </span >
                                     </div >
                                 </GridCol >
                                 <GridCol Span="8">
