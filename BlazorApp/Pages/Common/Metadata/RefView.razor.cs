@@ -6,6 +6,7 @@ using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Endpoints;
+using BlazorApp.Pages.HorizontalPodAutoscaler;
 using BlazorApp.Pages.Ingress;
 using BlazorApp.Pages.Job;
 using BlazorApp.Pages.Namespace;
@@ -103,6 +104,9 @@ public partial class RefView : ComponentBase
     [Inject]
     private IIngressService IngressService { get; set; }
 
+    [Inject]
+    private IHorizontalPodAutoscalerService HpaService { get; set; }
+
     private string GetDelimiter()
     {
         return Ref.NamespaceProperty == null ? "" : "/";
@@ -131,6 +135,7 @@ public partial class RefView : ComponentBase
             "ServiceAccount"        => OnServiceAccountClick(Ref),
             "ClusterRole"           => OnClusterRoleClick(Ref),
             "Role"                  => OnRoleClick(Ref),
+            "HorizontalPodAutoscaler"                  => OnHorizontalPodAutoscalerClick(Ref),
             "ConfigMap"             => OnConfigMapClick(Ref),
             "Secret"                => OnSecretClick(Ref),
             "Ingress"               => OnIngressClick(Ref),
@@ -266,6 +271,13 @@ public partial class RefView : ComponentBase
         await PageDrawerHelper<V1Role>.Instance
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<RoleDetailView, V1Role, bool>(item);
+    }
+    private async Task OnHorizontalPodAutoscalerClick(V1ObjectReference r)
+    {
+        var item = HpaService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V2HorizontalPodAutoscaler>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<HorizontalPodAutoscalerDetailView, V2HorizontalPodAutoscaler, bool>(item);
     }
     private async Task OnEndpointsClick(V1ObjectReference r)
     {
