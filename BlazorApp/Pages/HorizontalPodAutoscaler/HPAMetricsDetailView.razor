@@ -1,37 +1,58 @@
 @using Mapster
 @using k8s.Models
-@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
 @if (Metric.Pods != null)
 {
     @($"{Metric.Pods.Metric.Name} = ")
     <HPAMetricsTargetView MetricTarget="Metric.Pods.Target"></HPAMetricsTargetView>
+    @if (CurrentMetrics is { Count: > 0 } && CurrentMetrics.Any(x => x.Pods?.Metric.Name == Metric.Pods.Metric.Name))
+    {
+        <ColorfulTag>Current: @GetCurrentMetrics("Pods", Metric.Pods.Metric.Name, Metric.Pods.Target.Type)</ColorfulTag>
+    }
 }
 @if (Metric.Resource != null)
 {
     @($"{Metric.Resource.Name} = ")
     <HPAMetricsTargetView MetricTarget="Metric.Resource.Target"></HPAMetricsTargetView>
+    @if (CurrentMetrics is { Count: > 0 } && CurrentMetrics.Any(x => x.Resource?.Name == Metric.Resource.Name))
+    {
+        <ColorfulTag>Current: @GetCurrentMetrics("Resource", Metric.Resource.Name, Metric.Resource.Target.Type)</ColorfulTag>
+    }
 }
 @if (Metric.ObjectProperty != null)
 {
-    //DescribedObject
     @($"{Metric.ObjectProperty.Metric.Name} = ")
     <HPAMetricsTargetView MetricTarget="Metric.ObjectProperty.Target"></HPAMetricsTargetView>
+    @if (CurrentMetrics is { Count: > 0 } && CurrentMetrics.Any(x => x.ObjectProperty?.Metric?.Name == Metric.ObjectProperty.Metric.Name))
+    {
+        <ColorfulTag>Current: @GetCurrentMetrics("ObjectProperty", Metric.ObjectProperty.Metric.Name, Metric.ObjectProperty.Target.Type)</ColorfulTag>
+    }
+
     <RefView Ref="@(GetObjectRef(Metric.ObjectProperty.DescribedObject))"></RefView>
 }
 @if (Metric.External != null)
 {
     @($"{Metric.External.Metric.Name} = ")
     <HPAMetricsTargetView MetricTarget="Metric.External.Target"></HPAMetricsTargetView>
+    @if (CurrentMetrics is { Count: > 0 } && CurrentMetrics.Any(x => x.External?.Metric?.Name == Metric.External.Metric.Name))
+    {
+        <ColorfulTag>Current: @(GetCurrentMetrics("External", Metric.External.Metric.Name, Metric.External.Target.Type))</ColorfulTag>
+    }
+
     @if (Metric.External.Metric.Selector != null)
     {
-        <LabelSelectorView  LabelSelector="@Metric.External.Metric.Selector" Title="Match Pods"></LabelSelectorView>
+        <LabelSelectorView LabelSelector="@Metric.External.Metric.Selector" Title="Match Pods"></LabelSelectorView>
     }
 }
 @if (Metric.ContainerResource != null)
 {
     @($"Container {Metric.ContainerResource.Container} {Metric.ContainerResource.Name} = ")
     <HPAMetricsTargetView MetricTarget="Metric.ContainerResource.Target"></HPAMetricsTargetView>
+    @if (CurrentMetrics is { Count: > 0 } && CurrentMetrics.Any(x => x.ContainerResource?.Name == Metric.ContainerResource.Name))
+    {
+        <ColorfulTag>Current: @GetCurrentMetrics("ContainerResource", Metric.ContainerResource.Name, Metric.ContainerResource.Target.Type) </ColorfulTag>
+    }
 }
 
 @code {
@@ -42,11 +63,42 @@
     [Parameter]
     public V2MetricSpec Metric { get; set; }
 
+    [Parameter]
+    public IList<V2MetricStatus> CurrentMetrics { get; set; }
+
+
     private V1ObjectReference GetObjectRef(V2CrossVersionObjectReference obj)
     {
         var reference = obj.Adapt<V1ObjectReference>();
         reference.NamespaceProperty = Namespace;
         return reference;
+    }
+
+    private ResourceQuantity GetCurrentMetrics(string type, string metricName, string targetType)
+    {
+        if (CurrentMetrics is not { Count: > 0 })
+        {
+            return new ResourceQuantity();
+        }
+
+        var current = type switch
+        {
+            "ObjectProperty"    => CurrentMetrics.FirstOrDefault(x => x.ObjectProperty?.Metric?.Name == metricName)?.ObjectProperty?.Current,
+            "Resource"          => CurrentMetrics.FirstOrDefault(x => x.Resource?.Name == metricName)?.Resource?.Current,
+            "External"          => CurrentMetrics.FirstOrDefault(x => x.External?.Metric?.Name == metricName)?.External?.Current,
+            "Pods"              => CurrentMetrics.FirstOrDefault(x => x.Pods?.Metric?.Name == metricName)?.Pods?.Current,
+            "ContainerResource" => CurrentMetrics.FirstOrDefault(x => x.ContainerResource?.Name == metricName)?.ContainerResource?.Current,
+            _                   => null
+        };
+
+
+        return targetType switch
+        {
+            "Utilization"  => current?.AverageUtilization,
+            "AverageValue" => current?.AverageValue,
+            "Value"        => current?.Value,
+            _              => null
+        };
     }
 
 }
