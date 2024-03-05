@@ -11,7 +11,24 @@
                 <HTable >
                     <PropertySimpleView Title="Name" Item="@hook.Name" ExplainField=@(ExplainFieldPrefix + ".name")></PropertySimpleView>
                     <PropertyListView Title="AdmissionReviewVersions" Items="@hook.AdmissionReviewVersions" ExplainField=@(ExplainFieldPrefix + ".admissionReviewVersions") T="string"></PropertyListView>
-                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField=@(ExplainFieldPrefix + ".clientConfig") ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField=@(ExplainFieldPrefix + ".clientConfig") >
+                        @if (hook.ClientConfig != null)
+                        {
+                            <PropertySimpleView Title="CaBundle" Item="@hook.ClientConfig.CaBundle" ExplainField=@(ExplainFieldPrefix + ".clientConfig.caBundle") ShowInJson="true"></PropertySimpleView>
+                            <PropertySimpleView Title="Url" Item="@hook.ClientConfig.Url" ExplainField=@(ExplainFieldPrefix + ".clientConfig.url")></PropertySimpleView>
+                            @if (hook.ClientConfig.Service != null)
+                            {
+                                <PropertySimpleView Title="Service" Item="@hook.ClientConfig.Service" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service")>
+                                    @if (hook.ClientConfig.Service != null)
+                                    {
+                                        <RefView Ref="@GetRef(hook.ClientConfig.Service)" FullView="true"></RefView>
+                                    }
+                                </PropertySimpleView>
+                                <PropertySimpleView Title="Path" Item="@hook.ClientConfig.Service.Path" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.path")></PropertySimpleView>
+                                <PropertySimpleView Title="Port" Item="@hook.ClientConfig.Service.Port" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.port")></PropertySimpleView>
+                            }
+                        }
+                    </PropertySimpleView>
                     <PropertyOptionView Title="FailurePolicy" Item="@hook.FailurePolicy" ExplainField=@(ExplainFieldPrefix + ".failurePolicy") Options="@(new[] { "Fail", "Ignore" })"></PropertyOptionView>
                     <PropertySimpleView Title="MatchConditions" Item="@hook.MatchConditions" ExplainField=@(ExplainFieldPrefix + ".matchConditions") ShowInJson="true"></PropertySimpleView>
                     <PropertyOptionView Title="MatchPolicy" Item="@hook.MatchPolicy" ExplainField=@(ExplainFieldPrefix + ".matchPolicy") Options="@(new[] { "Equivalent", "Exact" })"></PropertyOptionView>
@@ -35,5 +52,18 @@
 
     [Parameter]
     public string ExplainFieldPrefix { get; set; }
+
+    private V1ObjectReference GetRef(Admissionregistrationv1ServiceReference service)
+    {
+        var ret = new V1ObjectReference()
+        {
+            Kind = "Service",
+            Name = service.Name,
+            NamespaceProperty =service.NamespaceProperty,
+        };
+
+
+        return ret;
+    }
 
 }
