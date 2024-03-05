@@ -17,6 +17,7 @@ using BlazorApp.Pages.ReplicaSet;
 using BlazorApp.Pages.ReplicationController;
 using BlazorApp.Pages.Role;
 using BlazorApp.Pages.Secret;
+using BlazorApp.Pages.Service;
 using BlazorApp.Pages.ServiceAccount;
 using BlazorApp.Pages.StatefulSet;
 using BlazorApp.Service.k8s;
@@ -103,7 +104,8 @@ public partial class RefView : ComponentBase
 
     [Inject]
     private IIngressService IngressService { get; set; }
-
+    [Inject]
+    private IServiceService ServiceService { get; set; }
     [Inject]
     private IHorizontalPodAutoscalerService HpaService { get; set; }
 
@@ -129,6 +131,7 @@ public partial class RefView : ComponentBase
             "Job"                   => OnJobClick(Ref),
             "CronJob"               => OnCronJobClick(Ref),
             "Pod"                   => OnPodClick(Ref),
+            "Service"                   => OnServiceClick(Ref),
             "Endpoints"             => OnEndpointsClick(Ref),
             "Group"                 => OnGroupClick(Ref),
             "User"                  => OnUserClick(Ref),
@@ -293,7 +296,13 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<PodDetailView, V1Pod, bool>(item);
     }
-
+    private async Task OnServiceClick(V1ObjectReference r)
+    {
+        var item = ServiceService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Service>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ServiceDetailView, V1Service, bool>(item);
+    }
     private async Task OnCronJobClick(V1ObjectReference r)
     {
         var item = CronJobService.GetByName(r.NamespaceProperty, r.Name);
