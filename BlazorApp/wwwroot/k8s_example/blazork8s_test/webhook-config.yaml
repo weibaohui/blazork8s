@@ -18,8 +18,8 @@ webhooks:
     failurePolicy: Ignore # 失败时继续处理请求但跳过 Webhook (可选值)
     clientConfig:
       service:
-        namespace: example-namespace
-        name: example-service
+        namespace: default
+        name: nginx-web
       caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
     rules:
       - operations: [CREATE]
@@ -76,8 +76,8 @@ webhooks:
     failurePolicy: Ignore # 失败时继续处理请求但跳过 Webhook (可选值)
     clientConfig:
       service:
-        namespace: example-namespace
-        name: example-service
+        namespace: default
+        name: nginx-web
       caBundle: Nzc3Nzc3Nzc3Nzc3Nw==
     rules:
       - operations: [ CREATE ]
