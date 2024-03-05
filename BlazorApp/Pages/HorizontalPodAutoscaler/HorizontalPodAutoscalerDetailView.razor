@@ -18,6 +18,25 @@
             <RefView FullView="true" Ref="@TransferToRef()"></RefView>
         </PropertySimpleView>
     </HTable>
+    @if (HorizontalPodAutoscaler.Spec.Behavior != null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">Behavior</Divider>
+        <HTable Bordered Column="1">
+            <PropertySimpleView Title="ScaleUp" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp">
+                @if (HorizontalPodAutoscaler.Spec.Behavior.ScaleUp != null)
+                {
+                    <HPABehaviorView Behavior="@HorizontalPodAutoscaler.Spec.Behavior.ScaleUp"></HPABehaviorView>
+                }
+            </PropertySimpleView>
+            <PropertySimpleView Title="ScaleDown" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleDown">
+                            @if (HorizontalPodAutoscaler.Spec.Behavior.ScaleDown != null)
+                            {
+                                <HPABehaviorView Behavior="@HorizontalPodAutoscaler.Spec.Behavior.ScaleDown"></HPABehaviorView>
+                            }
+                        </PropertySimpleView>
+        </HTable>
+    }
+
     <HPAMetricsView Hpa="@HorizontalPodAutoscaler"></HPAMetricsView>
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
