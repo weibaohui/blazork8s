@@ -3,45 +3,78 @@
 @using BlazorApp.Pages.Common.Metadata
 @if (Hpa != null)
 {
-    <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
-    @if (Hpa.Spec.Metrics is { Count: > 0 })
+    @if (SimpleView)
     {
         @foreach (var metric in Hpa.Spec.Metrics)
         {
-            <HTable Bordered Column="1">
-                <PropertyOptionView Title="Type" ExplainField="horizontalPodAutoscaler.spec.metrics.type" Item="@metric.Type" Options='@(new[] { "ContainerResource", "External", "Object", "Pods", "Resource" })'></PropertyOptionView>
+            @if (metric.Pods != null)
+            {
+                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+            }
 
-                @if (metric.Pods != null)
-                {
-                    <PropertySimpleView Title="Pods" ExplainField="horizontalPodAutoscaler.spec.metrics.pods" Item="@metric.Pods" ShowInJson="true">
-                        <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
-                    </PropertySimpleView>
-                }
-                @if (metric.Resource != null)
-                {
-                    <PropertySimpleView Title="Resource" ExplainField="horizontalPodAutoscaler.spec.metrics.resource" Item="@metric.Resource" ShowInJson="true">
-                        <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
-                    </PropertySimpleView>
-                }
-                @if (metric.ObjectProperty != null)
-                {
-                    <PropertySimpleView Title="Object" ExplainField="horizontalPodAutoscaler.spec.metrics.object" Item="@metric.ObjectProperty" ShowInJson="true">
-                        <HPAMetricsDetailView Metric="@metric" Namespace="@Hpa.Namespace()" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
-                    </PropertySimpleView>
-                }
-                @if (metric.External != null)
-                {
-                    <PropertySimpleView Title="External" ExplainField="horizontalPodAutoscaler.spec.metrics.external" Item="@metric.External" ShowInJson="true">
-                        <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
-                    </PropertySimpleView>
-                }
-                @if (metric.ContainerResource != null)
-                {
-                    <PropertySimpleView Title="ContainerResource" ExplainField="horizontalPodAutoscaler.spec.metrics.containerResource" Item="@metric.ContainerResource" ShowInJson="true">
-                        <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
-                    </PropertySimpleView>
-                }
-            </HTable>
+            @if (metric.Resource != null)
+            {
+                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+            }
+
+            @if (metric.ObjectProperty != null)
+            {
+                <div> <HPAMetricsDetailView Metric="@metric" Namespace="@Hpa.Namespace()" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+            }
+
+            @if (metric.External != null)
+            {
+                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+            }
+
+            @if (metric.ContainerResource != null)
+            {
+                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+            }
+        }
+    }
+    else
+    {
+        <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
+        @if (Hpa.Spec.Metrics is { Count: > 0 })
+        {
+            @foreach (var metric in Hpa.Spec.Metrics)
+            {
+                <HTable Bordered Column="1">
+                    <PropertyOptionView Title="Type" ExplainField="horizontalPodAutoscaler.spec.metrics.type" Item="@metric.Type" Options='@(new[] { "ContainerResource", "External", "Object", "Pods", "Resource" })'></PropertyOptionView>
+
+                    @if (metric.Pods != null)
+                    {
+                        <PropertySimpleView Title="Pods" ExplainField="horizontalPodAutoscaler.spec.metrics.pods" Item="@metric.Pods" ShowInJson="true">
+                            <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
+                        </PropertySimpleView>
+                    }
+                    @if (metric.Resource != null)
+                    {
+                        <PropertySimpleView Title="Resource" ExplainField="horizontalPodAutoscaler.spec.metrics.resource" Item="@metric.Resource" ShowInJson="true">
+                            <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
+                        </PropertySimpleView>
+                    }
+                    @if (metric.ObjectProperty != null)
+                    {
+                        <PropertySimpleView Title="Object" ExplainField="horizontalPodAutoscaler.spec.metrics.object" Item="@metric.ObjectProperty" ShowInJson="true">
+                            <HPAMetricsDetailView Metric="@metric" Namespace="@Hpa.Namespace()" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
+                        </PropertySimpleView>
+                    }
+                    @if (metric.External != null)
+                    {
+                        <PropertySimpleView Title="External" ExplainField="horizontalPodAutoscaler.spec.metrics.external" Item="@metric.External" ShowInJson="true">
+                            <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
+                        </PropertySimpleView>
+                    }
+                    @if (metric.ContainerResource != null)
+                    {
+                        <PropertySimpleView Title="ContainerResource" ExplainField="horizontalPodAutoscaler.spec.metrics.containerResource" Item="@metric.ContainerResource" ShowInJson="true">
+                            <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
+                        </PropertySimpleView>
+                    }
+                </HTable>
+            }
         }
     }
 }
@@ -52,82 +85,85 @@
     [Parameter]
     public V2HorizontalPodAutoscaler Hpa { get; set; }
 
+    [Parameter]
+    public bool SimpleView { get; set; } = false;
+
     private IList<V2MetricStatus> CurrentMetrics { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         CurrentMetrics = Hpa.Status.CurrentMetrics;
         // FOR TEST
-        // CurrentMetrics = new List<V2MetricStatus>()
-        // {
-        //     new V2MetricStatus()
-        //     {
-        //         Pods = new V2PodsMetricStatus()
-        //         {
-        //             Current = new V2MetricValueStatus()
-        //             {
-        //                 AverageValue = new ResourceQuantity("100k")
-        //             },
-        //             Metric = new V2MetricIdentifier()
-        //             {
-        //                 Name = "packets-per-second"
-        //             }
-        //         }
-        //     },
-        //     new V2MetricStatus()
-        //     {
-        //         External = new V2ExternalMetricStatus()
-        //         {
-        //             Current = new V2MetricValueStatus()
-        //             {
-        //                 AverageValue = new ResourceQuantity("30")
-        //             },
-        //             Metric = new V2MetricIdentifier()
-        //             {
-        //                 Name = "queue_messages_ready222222",
-        //             },
-        //         }
-        //     },
-        //     new V2MetricStatus()
-        //     {
-        //         Resource = new V2ResourceMetricStatus()
-        //         {
-        //             Current = new V2MetricValueStatus()
-        //             {
-        //                 AverageValue       = new ResourceQuantity("30"),
-        //                 Value              = new ResourceQuantity("30"),
-        //                 AverageUtilization = 30
-        //             },
-        //             Name = "cpu222222"
-        //         }
-        //     },
-        //     new V2MetricStatus()
-        //     {
-        //         ObjectProperty = new V2ObjectMetricStatus()
-        //         {
-        //             Current = new V2MetricValueStatus()
-        //             {
-        //                 Value = new ResourceQuantity("11k")
-        //             },
-        //             Metric = new V2MetricIdentifier()
-        //             {
-        //                 Name = "requests-per-second222222"
-        //             }
-        //         }
-        //     },
-        //     new V2MetricStatus()
-        //     {
-        //         ContainerResource = new V2ContainerResourceMetricStatus()
-        //         {
-        //             Current = new V2MetricValueStatus()
-        //             {
-        //                 AverageValue       = new ResourceQuantity("40"),
-        //                 AverageUtilization = 40,
-        //             },
-        //             Name = "cpu222222"
-        //         }
-        //     }
-        // };
+        CurrentMetrics = new List<V2MetricStatus>()
+        {
+            new V2MetricStatus()
+            {
+                Pods = new V2PodsMetricStatus()
+                {
+                    Current = new V2MetricValueStatus()
+                    {
+                        AverageValue = new ResourceQuantity("100k")
+                    },
+                    Metric = new V2MetricIdentifier()
+                    {
+                        Name = "packets-per-second"
+                    }
+                }
+            },
+            new V2MetricStatus()
+            {
+                External = new V2ExternalMetricStatus()
+                {
+                    Current = new V2MetricValueStatus()
+                    {
+                        AverageValue = new ResourceQuantity("30")
+                    },
+                    Metric = new V2MetricIdentifier()
+                    {
+                        Name = "queue_messages_ready",
+                    },
+                }
+            },
+            new V2MetricStatus()
+            {
+                Resource = new V2ResourceMetricStatus()
+                {
+                    Current = new V2MetricValueStatus()
+                    {
+                        AverageValue       = new ResourceQuantity("30"),
+                        Value              = new ResourceQuantity("30"),
+                        AverageUtilization = 30
+                    },
+                    Name = "cpu"
+                }
+            },
+            new V2MetricStatus()
+            {
+                ObjectProperty = new V2ObjectMetricStatus()
+                {
+                    Current = new V2MetricValueStatus()
+                    {
+                        Value = new ResourceQuantity("11k")
+                    },
+                    Metric = new V2MetricIdentifier()
+                    {
+                        Name = "requests-per-second"
+                    }
+                }
+            },
+            new V2MetricStatus()
+            {
+                ContainerResource = new V2ContainerResourceMetricStatus()
+                {
+                    Current = new V2MetricValueStatus()
+                    {
+                        AverageValue       = new ResourceQuantity("40"),
+                        AverageUtilization = 40,
+                    },
+                    Name = "cpu"
+                }
+            }
+        };
         await base.OnInitializedAsync();
     }
 

@@ -3,6 +3,7 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
+using Mapster;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.HorizontalPodAutoscaler;
@@ -27,5 +28,11 @@ public partial class HorizontalPodAutoscalerIndex : TableBase<V2HorizontalPodAut
         await PageDrawerHelper<V2HorizontalPodAutoscaler>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
             .ShowDrawerAsync<HorizontalPodAutoscalerDetailView, V2HorizontalPodAutoscaler, bool>(item);
+    }
+    private V1ObjectReference TransferToRef(V2HorizontalPodAutoscaler hpa)
+    {
+        var _ref = hpa.Spec.ScaleTargetRef.Adapt<V1ObjectReference>();
+        _ref.NamespaceProperty = hpa.Metadata.NamespaceProperty;
+        return _ref;
     }
 }

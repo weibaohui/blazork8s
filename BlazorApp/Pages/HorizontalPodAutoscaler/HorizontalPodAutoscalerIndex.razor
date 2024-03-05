@@ -12,8 +12,7 @@
                 <SearchToolBar Title="HorizontalPodAutoscaler" Count="@TableData.Total"
                                OnSearch="OnSearchHandler"
                                OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true"
-                               >
+                               HideNsSelector="true">
                 </SearchToolBar>
             </HTd>
         </HTr>
@@ -32,11 +31,25 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Title="Metrics" TData="string">
+                        <HPAMetricsView Hpa="@context" SimpleView="true"></HPAMetricsView>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Targets" TData="string">
+                        <RefView FullView="true" Ref="@TransferToRef(context)"></RefView>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Min" TData="string" Width="80px">
+                        @context.Spec.MinReplicas
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Max" TData="string" Width="80px">
+                        @context.Spec.MaxReplicas
+                    </AntDesign.Column>
+
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+
+                    <ActionColumn Title="Action" Width="100px">
                         <HorizontalPodAutoscalerAction Item="@context"></HorizontalPodAutoscalerAction>
                     </ActionColumn>
                 </Table>
