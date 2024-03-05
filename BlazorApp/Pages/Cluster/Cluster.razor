@@ -150,9 +150,8 @@
         @if (AnalyzeResult is { Count: > 0 })
         {
             <GridRow Class="grid-table">
-                <GridCol Span="6">Name</GridCol>
-                <GridCol Span="9">Error</GridCol>
-                <GridCol Span="3">Parent</GridCol>
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="12">Error</GridCol>
                 <GridCol Span="2">Action</GridCol>
 
             </GridRow>
@@ -160,16 +159,17 @@
             {
                 <GridRow Class="grid-table grid-table-first-row">
 
-                    <GridCol Span="6">
+                    <GridCol Span="8">
                         <RefView Ref="@GetRef(item)" FullView="true"></RefView>
                     </GridCol>
-                    <GridCol Span="9">
+                    <GridCol Span="12">
+                        <div>
                         @foreach (var failure in item.Error)
                         {
-                            <li>@failure.Text</li>
+                            <li style="list-style: decimal">@failure.Text</li>
                         }
+                        </div>
                     </GridCol>
-                    <GridCol Span="3"> @item.ParentObject</GridCol>
                     <GridCol Span="2">
                         <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
                     </GridCol>
