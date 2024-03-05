@@ -17,7 +17,7 @@
             {
                     @if (expression.Values is { Count: > 0 })
                     {
-                       <ColorfulTag> @($"`{expression.Key}` {expression.OperatorProperty} [{string.Join(" ", expression.Values)}]   ")</ColorfulTag>
+                       <ColorfulTag> @($"`{expression.Key}` {expression.OperatorProperty} [{string.Join(",", expression.Values)}]   ")</ColorfulTag>
                     }
                     else
                     {
