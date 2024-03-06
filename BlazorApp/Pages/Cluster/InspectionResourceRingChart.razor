@@ -11,6 +11,15 @@
 
     private double CalcLoad()
     {
+        if (Denominator==null)
+        {
+            return 0;
+        }
+
+        if (Denominator==0)
+        {
+            return 0;
+        }
         return Numerator / Denominator;
     }
 
