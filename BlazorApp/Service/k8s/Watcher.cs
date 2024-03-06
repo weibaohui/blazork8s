@@ -26,7 +26,7 @@ public class Watcher<T, TL>(IHubContext<ChatHub> ctx)
                 Type    = type,
                 Item    = item
             };
-            Logger.LogInformation("{Type}:{ItemKind}:{MetadataName}", type, item.Kind, item.Metadata.Name);
+            // Logger.LogInformation("{Type}:{ItemKind}:{MetadataName}", type, item.Kind, item.Metadata.Name);
             cache.Update(type, item);
             await ctx.Clients.All.SendAsync("ReceiveMessage", data);
         }
