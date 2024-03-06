@@ -1,6 +1,11 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
+using BlazorApp.Utils.Prometheus;
+using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity;
 using k8s;
 
@@ -61,6 +66,13 @@ public class KubeService : IKubeService
         return await Client().HttpClient.GetStringAsync($"{baseUrl}{requestUri}");
     }
 
+    private async Task<Stream> GetStreamAsync(string requestUri)
+    {
+        var baseUrl = Client().BaseUri.ToString();
+        requestUri = requestUri.StartsWith("/") ? requestUri.Remove(0, 1).Trim() : requestUri;
+        return await Client().HttpClient.GetStreamAsync($"{baseUrl}{requestUri}");
+    }
+
     public async Task<ServerInfo> GetServerVersion()
     {
         var json = await GetStringAsync("/version");
@@ -75,6 +87,15 @@ public class KubeService : IKubeService
     public async Task<string> GetLivez()
     {
         return await GetStringAsync("/livez?verbose");
+    }
+
+    public async Task<List<IMetric>> GetMetrics()
+    {
+        var             metricString = await GetStringAsync("/metrics");
+        var             byteArray    = Encoding.UTF8.GetBytes(metricString);
+        await using var ms           = new MemoryStream(byteArray);
+        var             metric       = await PrometheusMetricsParser.ParseAsync(ms);
+        return metric;
     }
 
     /// <summary>
