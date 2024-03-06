@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,16 +6,16 @@ namespace BlazorApp.Utils;
 
 public class MetricsQueue<T>
 {
-    private const    int      MetricCount = 60;
-    private readonly Queue<T> _queue      = new(MetricCount);
+    private const    int                MetricCount = 60;
+    private readonly ConcurrentQueue<T> _queue      = new();
 
     public void Enqueue(T item)
     {
         if (_queue.Count > MetricCount)
         {
-            for (int i = 0; i < _queue.Count - MetricCount; i++)
+            for (var i = 0; i < _queue.Count - MetricCount; i++)
             {
-                _queue.Dequeue();
+                _queue.TryDequeue(out _);
             }
         }
 
