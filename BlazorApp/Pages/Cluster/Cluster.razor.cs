@@ -64,6 +64,15 @@ public partial class Cluster : ComponentBase
         await OnTimerCallback(); //先执行一次
         ServerInfo = await KubeService.GetServerVersion();
         await base.OnInitializedAsync();
+
+        // var ss = await KubeService.GetMetrics();
+        // foreach (var metric in ss )
+        // {
+        //     Console.WriteLine($"{metric.Name}  ---  {metric.Type} ----- ----    {metric.Measurements.Count} ");
+        // }
+        //
+        // var yyy = ss.Find(x=>x.Name=="workqueue_adds_total");
+        // Console.WriteLine(KubernetesJson.Serialize(yyy));
     }
 
     private async Task OnTimerCallback()
