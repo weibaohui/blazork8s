@@ -64,7 +64,7 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 ## Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.1
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.2
 ```
 
 * View：[web ui](http://127.0.0.1:4000)
