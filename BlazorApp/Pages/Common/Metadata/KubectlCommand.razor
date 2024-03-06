@@ -1,0 +1,13 @@
+@using Extension
+@inherits DrawerPageBase<string>
+<Card >
+    <p>
+        <Alert
+            Type="@AlertType.Success">
+            kubectl @_command
+        </Alert>
+    </p>
+    <p style="background-color: black;color: white">
+        @((MarkupString)_result.ToHtmlDisplay())
+    </p>
+</Card>
