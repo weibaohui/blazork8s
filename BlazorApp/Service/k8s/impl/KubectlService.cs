@@ -1,7 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using CliWrap;
+using CliWrap.EventStream;
 
 namespace BlazorApp.Service.k8s.impl;
 
@@ -77,22 +78,54 @@ public class KubectlService : IKubectlService
 
     private async Task<string> Kubectl(string command)
     {
-        var process = new Process();
-        process.StartInfo.FileName               = "kubectl"; // 设置要执行的 kubectl 命令
-        process.StartInfo.Arguments              = command;   // 设置命令参数
-        process.StartInfo.UseShellExecute        = false;     // 不使用操作系统的 shell
-        process.StartInfo.RedirectStandardOutput = true;      // 重定向输出
-        process.StartInfo.RedirectStandardError  = true;      // 重定向输出
-        process.Start();                                      // 启动进程
+        var cmd = Cli.Wrap("kubectl")
+            .WithArguments(command);
 
         var result = string.Empty;
-        process.OutputDataReceived += (sender, e) => { result += OnResponseProcess(sender, e.Data); };
-        process.ErrorDataReceived  += (sender, e) => { result += OnResponseProcess(sender, e.Data); };
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-        await process.WaitForExitAsync();
+        await foreach (var cmdEvent in cmd.ListenAsync())
+        {
+            switch (cmdEvent)
+            {
+                case StartedCommandEvent started:
+                    // Console.WriteLine($"Process started; ID: {started.ProcessId}");
+                    // result += OnResponseProcess(this, $"Process exited; Code: {started.ProcessId}");
+                    break;
+                case StandardOutputCommandEvent stdOut:
+                    // Console.WriteLine($"Out> {stdOut.Text}");
+                    result += OnResponseProcess(this, stdOut.Text);
+                    break;
+                case StandardErrorCommandEvent stdErr:
+                    // Console.WriteLine($"Err> {stdErr.Text}");
+                    result += OnResponseProcess(this, stdErr.Text);
+                    break;
+                case ExitedCommandEvent exited:
+                    // Console.WriteLine($"Process exited; Code: {exited.ExitCode}");
+                    // result += OnResponseProcess(this, $"Process exited; Code: {exited.ExitCode}");
+                    break;
+            }
+        }
         return result;
     }
+
+
+    // private async Task<string> Kubectl2(string command)
+    // {
+    //     var process = new Process();
+    //     process.StartInfo.FileName               = "kubectl"; // 设置要执行的 kubectl 命令
+    //     process.StartInfo.Arguments              = command;   // 设置命令参数
+    //     process.StartInfo.UseShellExecute        = false;     // 不使用操作系统的 shell
+    //     process.StartInfo.RedirectStandardOutput = true;      // 重定向输出
+    //     process.StartInfo.RedirectStandardError  = true;      // 重定向输出
+    //     process.Start();                                      // 启动进程
+    //
+    //     var result = string.Empty;
+    //     process.OutputDataReceived += (sender, e) => { result += OnResponseProcess(sender, e.Data); };
+    //     process.ErrorDataReceived  += (sender, e) => { result += OnResponseProcess(sender, e.Data); };
+    //     process.BeginOutputReadLine();
+    //     process.BeginErrorReadLine();
+    //     await process.WaitForExitAsync();
+    //     return result;
+    // }
 
     private string OnResponseProcess(object sender, string data)
     {
