@@ -3,6 +3,9 @@
 <ShareMenuItem T="V1Node" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
+        <MenuItem OnClick="@(() => OnCordonClick(Item))">Cordon</MenuItem>
+        <MenuItem OnClick="@(() => OnUnCordonClick(Item))">UnCordon</MenuItem>
+
         <MenuItem >
             <Popconfirm Title="确定删除吗"
                         OnConfirm="@(() => OnNodeDeleteClick(Item))"
@@ -11,5 +14,11 @@
                 删除
             </Popconfirm>
         </MenuItem>
+    }
+    else
+    {
+        <Button OnClick="@(() => OnCordonClick(Item))">Cordon</Button>
+        <Button OnClick="@(() => OnUnCordonClick(Item))">UnCordon</Button>
+
     }
 </ShareMenuItem>

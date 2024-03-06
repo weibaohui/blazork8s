@@ -8,11 +8,14 @@ namespace BlazorApp.Pages.Node;
 
 public partial class NodeAction : ComponentBase
 {
+    [Inject]
+    IMessageService MessageService { get; set; }
+
     [Parameter]
     public V1Node Item { get; set; }
 
     [Parameter]
-    public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 
     [Inject]
     private INodeService NodeService { get; set; }
@@ -23,7 +26,16 @@ public partial class NodeAction : ComponentBase
         StateHasChanged();
     }
 
- 
 
+    private async Task OnCordonClick(V1Node item)
+    {
+        await NodeService.Cordon(item.Name());
+       await MessageService.Success("Cordon Success");
+    }
+    private async Task OnUnCordonClick(V1Node item)
+    {
+        await NodeService.UnCordon(item.Name());
+        await MessageService.Success("UnCordon Success");
 
+    }
 }

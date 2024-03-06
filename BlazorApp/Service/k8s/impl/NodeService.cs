@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity.Analyze;
 using Extension;
+using Json.Patch;
 using k8s;
 using k8s.Models;
 
@@ -15,6 +17,27 @@ namespace BlazorApp.Service.k8s.impl
         public new async Task<V1Status> Delete(string ns, string name)
         {
             return await kubeService.Client().DeleteNodeAsync(name: name);
+        }
+
+        public async Task Cordon(string nodeName)
+        {
+            await SetSchedulable(nodeName, false); //cordon()
+        }
+        public async Task UnCordon(string nodeName)
+        {
+            await SetSchedulable(nodeName, true); //uncordon()
+        }
+        private async Task SetSchedulable(string nodeName, bool schedulable)
+        {
+            var node = GetByName(nodeName);
+            node.Spec.Unschedulable = schedulable;
+            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true };
+            var old = JsonSerializer.SerializeToDocument(node, options);
+            var expected = JsonSerializer.SerializeToDocument(node);
+
+            var patch = old.CreatePatch(expected);
+            await kubeService.Client().PatchNodeAsync(new V1Patch(patch, V1Patch.PatchType.JsonPatch), nodeName);
+
         }
 
         public long GetPodCount(string nodeName)
