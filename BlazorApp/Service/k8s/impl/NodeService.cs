@@ -1,11 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity.Analyze;
 using Extension;
-using Json.Patch;
 using k8s;
 using k8s.Models;
 
@@ -23,21 +21,30 @@ namespace BlazorApp.Service.k8s.impl
         {
             await SetSchedulable(nodeName, false); //cordon()
         }
+
         public async Task UnCordon(string nodeName)
         {
             await SetSchedulable(nodeName, true); //uncordon()
         }
+
         private async Task SetSchedulable(string nodeName, bool schedulable)
         {
             var node = GetByName(nodeName);
-            node.Spec.Unschedulable = schedulable;
-            var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true };
-            var old = JsonSerializer.SerializeToDocument(node, options);
-            var expected = JsonSerializer.SerializeToDocument(node);
-
-            var patch = old.CreatePatch(expected);
-            await kubeService.Client().PatchNodeAsync(new V1Patch(patch, V1Patch.PatchType.JsonPatch), nodeName);
-
+            var unScheduleStr = """
+                                       {
+                                           "spec": {
+                                               "unschedulable":  true
+                                           }
+                                       }
+                                       """;
+            var scheduleStr = """
+                                {
+                                    "spec": {
+                                        "unschedulable":  false
+                                    }
+                                }
+                                """;
+            await kubeService.Client().PatchNodeAsync(new V1Patch(schedulable?scheduleStr:unScheduleStr, V1Patch.PatchType.MergePatch), node.Name());
         }
 
         public long GetPodCount(string nodeName)

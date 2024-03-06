@@ -32,11 +32,21 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="string" >
+                    <AntDesign.Column Title="Ready" TData="string">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Usage" TData="string">
                         <NodeStatusBulletChart Node="@context"></NodeStatusBulletChart>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="Cordoned" TData="string" Width="100px">
+                        @if (context.Spec.Unschedulable is true)
+                        {
+                            <Tag Color="@PresetColor.Red.ToString()">Cordoned</Tag>
+                        }
+                        else
+                        {
+                            <Tag Color="@PresetColor.Green.ToString()">Normal</Tag>
+                        }
                     </AntDesign.Column>
                     <AntDesign.Column Title="Role" TData="string">
                         @foreach (var role in GetNodeRole(context))
