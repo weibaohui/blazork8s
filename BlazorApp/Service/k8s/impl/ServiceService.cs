@@ -36,7 +36,7 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
                 {
                     //排除使用endpoint做选举的情况
                     //TODO 还有其他情况吗
-                    if (ep.Annotations().Any(x => x.Key == "control-plane.alpha.kubernetes.io/leader"))
+                    if (ep.Metadata?.Annotations?.Any(x => x.Key == "control-plane.alpha.kubernetes.io/leader") is true)
                     {
                         continue;
                     }
