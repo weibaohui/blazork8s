@@ -6,14 +6,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using BlazorApp.Utils.Prometheus.Models;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
-using k8s;
 
 namespace BlazorApp.Utils.Prometheus;
 
 public class PrometheusMetricsParser
 {
-    const string MetricInfoRegex  = @"# (\w+) (\w*) (.*)";
-    const string MeasurementRegex = "([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)+ *(\\d*)*";
+    private const string MetricInfoRegex  = @"# (\w+) (\w*) (.*)";
+    private const string MeasurementRegex = "([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)+ *(\\d*)*";
 
     public static async Task<List<IMetric>> ParseAsync(Stream rawMetricsStream)
     {
@@ -42,9 +41,8 @@ public class PrometheusMetricsParser
         var metrics      = new List<IMetric>();
         var streamReader = new StreamReader(rawMetricsStream);
 
-        Gauge       lastGauge        = null;
-        MetricTypes currentMetricType      = MetricTypes.NotSpecified;
-        var         done = false;
+        Metric lastMetric = null;
+        var    done       = false;
         //逐行进行处理
         var line = await streamReader.ReadLineAsync();
         if (string.IsNullOrWhiteSpace(line))
@@ -54,20 +52,19 @@ public class PrometheusMetricsParser
 
         do
         {
-
-
             if (line.StartsWith('#'))
             {
                 //TYPE 或者 HELP 行
                 if (done == true)
-                {//如果done，说明上一行的数据已经处理完了，现在碰到#开头，说明上一个大段已经处理完了。
+                {
+                    //如果done，说明上一行的数据已经处理完了，现在碰到#开头，说明上一个大段已经处理完了。
                     //那么就把这个Gauge添加到列表中
                     // We're done, starting to interpret the next gauge
-                    metrics.Add(lastGauge);
-                    lastGauge = null;
+                    metrics.Add(lastMetric);
+                    lastMetric = null;
                 }
 
-                lastGauge ??= new Gauge();
+                lastMetric ??= new Metric();
 
                 var metricInfoMatch = Regex.Match(line, MetricInfoRegex);
                 if (metricInfoMatch.Success == false)
@@ -79,34 +76,28 @@ public class PrometheusMetricsParser
                 switch (scenario)
                 {
                     case "HELP":
-                        lastGauge.Description = metricInfoMatch.Groups[3].Value;
+                        lastMetric.Description = metricInfoMatch.Groups[3].Value;
                         break;
                     case "TYPE":
-                        lastGauge.Name = metricInfoMatch.Groups[2].Value;
-                        currentMetricType = Enum.Parse<MetricTypes>(metricInfoMatch.Groups[3].Value, ignoreCase: true);
+                        lastMetric.Name    = metricInfoMatch.Groups[2].Value;
+                        var currentMetricType = Enum.Parse<MetricTypes>(metricInfoMatch.Groups[3].Value, ignoreCase: true);
+                        lastMetric.Type    = currentMetricType;
+
                         break;
                 }
+
                 // 标记为未完成，此时只是读取了2行说明行
                 done = false;
             }
             else
             {
-                if (currentMetricType != MetricTypes.Gauge)
+                if (!line.EndsWith("NaN") && !line.EndsWith("+Inf"))
                 {
-                    Console.WriteLine($"Current metric type {currentMetricType} is not a gauge, ignoring.");
+                    //一行数据以+Inf正无穷大或者NaN表示，就不处理了
+                    var measurement = ParseMeasurement(line);
+                    lastMetric?.Measurements.Add(measurement);
                 }
-                else
-                {
-                    if (!line.EndsWith("NaN") && !line.EndsWith("+Inf"))
-                    {
-                        //一行数据以+Inf正无穷大或者NaN表示，就不处理了
-                        Console.WriteLine("line {0}", line);
-                        GaugeMeasurement measurement = ParseMeasurement(line);
-                        Console.WriteLine(
-                            $"measurement {KubernetesJson.Serialize(measurement.Labels)} {measurement.Value} {measurement.Timestamp}");
-                        lastGauge?.Measurements.Add(measurement);
-                    }
-                }
+
                 //读完一行,标记为已完成。只有再碰到#开头的行，才可以将lastGauge添加到metrics
                 done = true;
             }
@@ -116,9 +107,9 @@ public class PrometheusMetricsParser
         } while (rawMetricsStream.Position <= rawMetricsStream.Length && string.IsNullOrWhiteSpace(line) == false);
 
         //如果是最后一行都处理完了，不会再有#开头的了，那么应该把这个加入到metircs中
-        if (metrics.Find(f => f.Name == lastGauge.Name) == null)
+        if (metrics.Find(f => f.Name == lastMetric?.Name) == null)
         {
-            metrics.Add(lastGauge);
+            metrics.Add(lastMetric);
         }
 
         return metrics;
@@ -130,11 +121,9 @@ public class PrometheusMetricsParser
     /// <param name="line"></param>
     /// <returns></returns>
     /// <exception cref="Exception"></exception>
-    private static GaugeMeasurement ParseMeasurement(string line)
+    private static Measurement ParseMeasurement(string line)
     {
-        Console.WriteLine($"ParseMeasurement line {line}");
-
-        var measurement  = new GaugeMeasurement();
+        var measurement  = new Measurement();
         var regexOutcome = Regex.Match(line, MeasurementRegex);
         if (regexOutcome.Success == false)
         {
@@ -143,7 +132,6 @@ public class PrometheusMetricsParser
         }
 
 
-        Console.WriteLine($"ParseMeasurement regexOutcome = {regexOutcome}");
         // Assign value
         measurement.Value = ParseMetricValue(regexOutcome);
 
@@ -159,8 +147,6 @@ public class PrometheusMetricsParser
     private static double ParseMetricValue(Match regexOutcome)
     {
         var rawMetricValue = regexOutcome.Groups[3].Captures.FirstOrDefault()?.Value;
-        Console.WriteLine($"ParseMetricValue rawMetricValue {rawMetricValue}");
-        Console.WriteLine($"regexOutcome.Groups.Count {regexOutcome.Groups.Count}");
 
         if (regexOutcome.Groups.Count < 4 || string.IsNullOrWhiteSpace(rawMetricValue))
         {
@@ -182,7 +168,7 @@ public class PrometheusMetricsParser
         return DateTimeOffset.FromUnixTimeMilliseconds(unixTimeInSeconds);
     }
 
-    private static void ParseMetricLabels(Match regexOutcome, GaugeMeasurement measurement)
+    private static void ParseMetricLabels(Match regexOutcome, Measurement measurement)
     {
         var rawLabels = regexOutcome.Groups[2].Value;
 
