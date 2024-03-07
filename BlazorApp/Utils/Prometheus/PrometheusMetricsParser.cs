@@ -132,6 +132,8 @@ public class PrometheusMetricsParser
                 $"Measurement doesn't follow the required Regex statement '{MeasurementRegex}' for entry '{line}'");
         }
 
+        // Assign name
+        measurement.Name = regexOutcome.Groups[1].Value;
 
         // Assign value
         measurement.Value = ParseMetricValue(regexOutcome);
