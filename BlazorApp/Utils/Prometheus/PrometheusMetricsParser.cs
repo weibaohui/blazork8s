@@ -12,7 +12,8 @@ namespace BlazorApp.Utils.Prometheus;
 public class PrometheusMetricsParser
 {
     private const string MetricInfoRegex  = @"# (\w+) (\w*) (.*)";
-    private const string MeasurementRegex = "([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)+ *(\\d*)*";
+    private const string MeasurementRegex1 = "([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)+ *(\\d*)*";
+    private const string MeasurementRegex = @"([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)(\d+\.?\d*(?:e[+-]?\d+)?)";
 
     public static async Task<List<IMetric>> ParseAsync(Stream rawMetricsStream)
     {
@@ -146,20 +147,35 @@ public class PrometheusMetricsParser
 
     private static double ParseMetricValue(Match regexOutcome)
     {
-        var rawMetricValue = regexOutcome.Groups[3].Captures.FirstOrDefault()?.Value;
-
-        if (regexOutcome.Groups.Count < 4 || string.IsNullOrWhiteSpace(rawMetricValue))
+        var rawMetricValue = regexOutcome.Groups[4].Captures.FirstOrDefault()?.Value;
+        if (regexOutcome.Groups.Count < 5 || string.IsNullOrWhiteSpace(rawMetricValue))
         {
             throw new Exception($"No metric value was found {rawMetricValue} {regexOutcome.Groups.Count}");
         }
 
+        if (rawMetricValue.Contains("e+"))
+        {
+            var numbers = rawMetricValue.Split("e+");
+            var before  = numbers[0];
+            var after   = numbers[1];
+            // Console.WriteLine($"{rawMetricValue} = {before} * 10 的{after}次方");
+            return double.Parse(before) * Math.Pow(10, int.Parse(after));
+        }
+        if (rawMetricValue.Contains("e-"))
+        {
+            var numbers = rawMetricValue.Split("e-");
+            var before  = numbers[0];
+            var after   = numbers[1];
+            // Console.WriteLine($"{rawMetricValue} = {before} * 10 的 -{after}次方");
+            return double.Parse(before) * Math.Pow(10, -int.Parse(after));
+        }
         return double.Parse(rawMetricValue);
     }
 
     private static DateTimeOffset? ParseMetricTimestamp(Match regexOutcome)
     {
-        var rawUnixTimeInSeconds = regexOutcome.Groups[4].Captures.FirstOrDefault()?.Value;
-        if (regexOutcome.Groups.Count < 5 || string.IsNullOrWhiteSpace(rawUnixTimeInSeconds))
+        var rawUnixTimeInSeconds = regexOutcome.Groups[5].Captures.FirstOrDefault()?.Value;
+        if (regexOutcome.Groups.Count < 6 || string.IsNullOrWhiteSpace(rawUnixTimeInSeconds))
         {
             return null;
         }

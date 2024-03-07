@@ -35,15 +35,16 @@ public partial class Cluster : ComponentBase
     [Inject]
     private IAiService Ai { get; set; }
 
-    private List<V1ComponentStatus> ComponentStatus   { get; set; }
-    private IList<V1Pod>            PodList           { get; set; }
-    private IList<V1Node>           NodeList          { get; set; }
-    private List<V1APIService>      ApiServicesList   { get; set; }
-    private IList<Result>           AnalyzeResult     { get; set; }
-    private DateTime                LastInspection    { get; set; }
-    private IList<string>           PassResources     { get; set; }
-    private Dictionary<string, int> AllResourcesCount { get; set; }
-    private IList<Measurement>      Features          { get; set; }
+    private List<V1ComponentStatus> ComponentStatus      { get; set; }
+    private IList<V1Pod>            PodList              { get; set; }
+    private IList<V1Node>           NodeList             { get; set; }
+    private List<V1APIService>      ApiServicesList      { get; set; }
+    private IList<Result>           AnalyzeResult        { get; set; }
+    private DateTime                LastInspection       { get; set; }
+    private IList<string>           PassResources        { get; set; }
+    private Dictionary<string, int> AllResourcesCount    { get; set; }
+    private IList<Measurement>      Features             { get; set; }
+    private IList<Measurement>      EtcdSize { get; set; }
 
     public  string LivezResult  { get; set; }
     public  string ReadyzResult { get; set; }
@@ -90,15 +91,15 @@ public partial class Cluster : ComponentBase
         AnalyzeResult     = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
         AllResourcesCount = AllResourcesCount.OrderBy(x => x.Key).ToList().ToDictionary(x => x.Key, x => x.Value);
 
-        Features = await GetMeasurements("kubernetes_feature_enabled");
-
+        Features             = await GetMeasurements("kubernetes_feature_enabled");
+        EtcdSize = await GetMeasurements("apiserver_storage_size_bytes");
 
         await InvokeAsync(StateHasChanged);
     }
 
     private async Task<IList<Measurement>> GetMeasurements(string name)
     {
-        var metrics = await KubeService.GetMetrics();
+        var metrics      = await KubeService.GetMetrics();
         var measurements = metrics.FirstOrDefault(x => x.Name == name)?.Measurements;
         return measurements;
     }

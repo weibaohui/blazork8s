@@ -231,7 +231,7 @@
                         @item.Labels["stage"]
                     </GridCol>
                     <GridCol Span="6">
-                        @if (item is { Value: > 0 } )
+                        @if (item is { Value: > 0 })
                         {
                             <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
                         }
@@ -244,4 +244,28 @@
             }
         }
     </TabPane>
+    <TabPane Key="EtcdStorage" Tab="Etcd">
+
+        @if (EtcdSize is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Cluster</GridCol>
+                <GridCol Span="6">Size</GridCol>
+
+            </GridRow>
+            @foreach (var item in EtcdSize)
+            {
+                <GridRow Class="grid-table grid-table-first-row">
+
+                    <GridCol Span="8">
+                        @item.Labels["cluster"]
+                    </GridCol>
+                    <GridCol Span="8">
+                        @((item.Value / 1024 / 1024).ToString("0.00")) MB
+                    </GridCol>
+                </GridRow>
+            }
+        }
+    </TabPane>
+
 </Tabs>
