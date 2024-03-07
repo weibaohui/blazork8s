@@ -211,8 +211,7 @@
         }
     </TabPane>
     <TabPane Key="k8sFeature" Tab="Feature">
-
-        @if (Features is { Count: > 0 })
+        @if (AllMetrics?.Any(x => x.Name == "kubernetes_feature_enabled") is true)
         {
             <GridRow Class="grid-table">
                 <GridCol Span="8">Name</GridCol>
@@ -220,54 +219,97 @@
                 <GridCol Span="6">Status</GridCol>
 
             </GridRow>
-            @foreach (var item in Features)
+            var measurements = AllMetrics.FirstOrDefault(x => x.Name == "kubernetes_feature_enabled")?.Measurements;
+            if (measurements is { Count: > 0 })
             {
-                <GridRow Class="grid-table grid-table-first-row">
+                foreach (var item in measurements)
+                {
+                    <GridRow Class="grid-table grid-table-first-row">
 
-                    <GridCol Span="8">
-                        @item.Labels["name"]
-                    </GridCol>
+                        <GridCol Span="8">
+                            @item.Labels["name"]
+                        </GridCol>
+                        <GridCol Span="6">
+                            @item.Labels["stage"]
+                        </GridCol>
+                        <GridCol Span="6">
+                            @if (item is { Value: > 0 })
+                            {
+                                <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
+                            }
+                            else
+                            {
+                                <Tag >Disabled</Tag>
+                            }
+                        </GridCol>
+                    </GridRow>
+                }
+            }
+        }
+    </TabPane >
+    <TabPane Key="Etcd" Tab="Etcd">
+        @if (AllMetrics?.Any(x => x.Name == "apiserver_storage_size_bytes") is true)
+        {
+            var measurements = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_storage_size_bytes")?.Measurements;
+            if (measurements is { Count: > 0 })
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="4">Storage Size</GridCol>
                     <GridCol Span="6">
-                        @item.Labels["stage"]
-                    </GridCol>
-                    <GridCol Span="6">
-                        @if (item is { Value: > 0 })
+                        @foreach (var item in measurements)
                         {
-                            <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
-                        }
-                        else
-                        {
-                            <Tag >Disabled</Tag>
+                            <div>
+                                <span> @item.Labels["cluster"] : @((item.Value / 1024 / 1024).ToString("0.00"))MB</span>
+                            </div>
                         }
                     </GridCol>
                 </GridRow>
             }
         }
-    </TabPane>
-    <TabPane Key="Etcd" Tab="Etcd">
-        @if (EtcdSize is { Count: > 0 })
+        @if (AllMetrics?.Any(x => x.Name == "etcd_lease_object_counts") is true)
         {
             <GridRow Class="grid-table">
-                <GridCol Span="8">Storage</GridCol>
+                <GridCol Span="4">Object Count</GridCol>
                 <GridCol Span="6">
-                    @foreach (var item in EtcdSize)
-                    {
-                        <div>
-                            <span> @item.Labels["cluster"] : @((item.Value / 1024 / 1024).ToString("0.00"))MB</span>
-                        </div>
-                    }
+                    @(AllMetrics
+                        .FirstOrDefault(x => x.Name == "etcd_lease_object_counts")?
+                        .Measurements
+                        .FirstOrDefault(x => x.Name == "etcd_lease_object_counts_count")?.Value)
                 </GridCol>
             </GridRow>
         }
-        @if (EtcdRequestTotal is { Count: > 0 })
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="8">Request</GridCol>
-                <GridCol Span="6">
-                    @EtcdRequestTotal.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
-    </TabPane>
 
-</Tabs>
+        @if (AllMetrics?.Any(x => x.Name == "etcd_requests_total") is true)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="4">Request Count</GridCol>
+                <GridCol Span="6">
+                    @AllMetrics.FirstOrDefault(x => x.Name == "etcd_requests_total")?.Measurements.Sum(x => x.Value)
+                </GridCol>
+            </GridRow>
+        }
+
+        @if (AllMetrics?.Any(x => x.Name == "etcd_request_duration_seconds") is true)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="4">Request Latency</GridCol>
+                <GridCol Span="6">
+                    @{
+                        var count = AllMetrics
+                            .FirstOrDefault(x => x.Name == "etcd_request_duration_seconds")?
+                            .Measurements
+                            .Where(x => x.Name == "etcd_request_duration_seconds_count")
+                            .Sum(x => x.Value);
+                        var seconds = AllMetrics
+                            .FirstOrDefault(x => x.Name == "etcd_request_duration_seconds")?
+                            .Measurements
+                            .Where(x => x.Name == "etcd_request_duration_seconds_sum")
+                            .Sum(x => x.Value);
+                        var avg = seconds / count * 1000;
+                    }
+                    @(avg?.ToString("0.0000")) ms
+                </GridCol>
+            </GridRow>
+        }
+    </TabPane >
+</Tabs >
