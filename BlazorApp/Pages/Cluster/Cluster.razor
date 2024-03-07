@@ -164,10 +164,10 @@
                     </GridCol>
                     <GridCol Span="12">
                         <div>
-                        @foreach (var failure in item.Error)
-                        {
-                            <li style="list-style: decimal">@failure.Text</li>
-                        }
+                            @foreach (var failure in item.Error)
+                            {
+                                <li style="list-style: decimal">@failure.Text</li>
+                            }
                         </div>
                     </GridCol>
                     <GridCol Span="2">
@@ -208,6 +208,40 @@
                     </SpaceItem>
                 }
             </Space>
+        }
+    </TabPane>
+    <TabPane Key="k8sFeature" Tab="Feature">
+
+        @if (Features is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="6">Stage</GridCol>
+                <GridCol Span="6">Status</GridCol>
+
+            </GridRow>
+            @foreach (var item in Features)
+            {
+                <GridRow Class="grid-table grid-table-first-row">
+
+                    <GridCol Span="8">
+                        @item.Labels["name"]
+                    </GridCol>
+                    <GridCol Span="6">
+                        @item.Labels["stage"]
+                    </GridCol>
+                    <GridCol Span="6">
+                        @if (item is { Value: > 0 } )
+                        {
+                            <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
+                        }
+                        else
+                        {
+                            <Tag >Disabled</Tag>
+                        }
+                    </GridCol>
+                </GridRow>
+            }
         }
     </TabPane>
 </Tabs>

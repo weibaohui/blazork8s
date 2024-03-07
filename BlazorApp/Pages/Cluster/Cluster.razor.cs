@@ -8,6 +8,7 @@ using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
+using BlazorApp.Utils.Prometheus.Models;
 using Entity;
 using Entity.Analyze;
 using k8s;
@@ -42,6 +43,7 @@ public partial class Cluster : ComponentBase
     private DateTime                LastInspection    { get; set; }
     private IList<string>           PassResources     { get; set; }
     private Dictionary<string, int> AllResourcesCount { get; set; }
+    private IList<Measurement>      Features          { get; set; }
 
     public  string LivezResult  { get; set; }
     public  string ReadyzResult { get; set; }
@@ -88,7 +90,26 @@ public partial class Cluster : ComponentBase
         AnalyzeResult     = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
         AllResourcesCount = AllResourcesCount.OrderBy(x => x.Key).ToList().ToDictionary(x => x.Key, x => x.Value);
 
+        Features = await GetMeasurements("kubernetes_feature_enabled");
+
+
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task<IList<Measurement>> GetMeasurements(string name)
+    {
+        var metrics = await KubeService.GetMetrics();
+        // Console.WriteLine($"metrics.count={metrics.Count}");
+        var measurements = metrics.FirstOrDefault(x => x.Name == name)?.Measurements;
+        // Console.WriteLine($"measurements.count={measurements.Count}");
+        // if (measurements != null)
+        // {
+        //     foreach (var measurement in measurements)
+        //     {
+        //         Console.WriteLine($"{measurement.Labels["name"]} {measurement.Labels["stage"]} = {measurement.Value}");
+        //     }
+        // }
+        return measurements;
     }
 
     private async void EventHandler(object sender, string resp)
