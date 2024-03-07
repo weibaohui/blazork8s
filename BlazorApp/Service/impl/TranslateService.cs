@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
+using BlazorApp.Utils.Prometheus.Models;
 using BlazorApp.Utils.Swagger;
 using Entity;
 using Extension;
@@ -92,7 +93,6 @@ public class TranslateService(
         var rfList = db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToList();
         foreach (var rf in rfList)
         {
-
             var en   = await kubectl.Explain(rf.ExplainFiled);
             var enId = en.ToMd5Str();
             rf.EnId = enId;
@@ -157,9 +157,27 @@ public class TranslateService(
     }
 
 
+    /// <summary>
+    /// 翻译指标
+    /// </summary>
+    public async Task TranslateMetrics()
+    {
+        var list = await db.Queryable<Metric>().Where(x => x.Cn == null).ToListAsync();
+        foreach (var metric in list)
+        {
+            var cn = await Translate(metric.Description);
+            metric.Cn = cn;
+            await db.Updateable<Metric>()
+                .SetColumns(x => x.Cn == cn)
+                .Where(x => x.Name == metric.Name)
+                .ExecuteCommandAsync();
+        }
+    }
+
+
     private async Task ProcessKubeExplainsCn()
     {
-        var enList = db.Queryable<KubeExplainEN>().Where(x => x.done == false).ToList();
+        var enList = await db.Queryable<KubeExplainEN>().Where(x => x.done == false).ToListAsync();
         if (enList is { Count: 0 }) return;
 
         var all     = enList.Count;
@@ -179,7 +197,7 @@ public class TranslateService(
             en.done = true;
             logger.LogInformation("翻译Over {Current}/{All} {EnId} ", current, all, en.Id);
 
-            if (db.Queryable<KubeExplainCN>().Single(x => x.Id == cnId) != null)
+            if (await db.Queryable<KubeExplainCN>().SingleAsync(x => x.Id == cnId) != null)
             {
                 await db.Updateable(en).ExecuteCommandAsync();
                 continue;
