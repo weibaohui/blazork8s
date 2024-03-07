@@ -99,16 +99,7 @@ public partial class Cluster : ComponentBase
     private async Task<IList<Measurement>> GetMeasurements(string name)
     {
         var metrics = await KubeService.GetMetrics();
-        // Console.WriteLine($"metrics.count={metrics.Count}");
         var measurements = metrics.FirstOrDefault(x => x.Name == name)?.Measurements;
-        // Console.WriteLine($"measurements.count={measurements.Count}");
-        // if (measurements != null)
-        // {
-        //     foreach (var measurement in measurements)
-        //     {
-        //         Console.WriteLine($"{measurement.Labels["name"]} {measurement.Labels["stage"]} = {measurement.Value}");
-        //     }
-        // }
         return measurements;
     }
 
