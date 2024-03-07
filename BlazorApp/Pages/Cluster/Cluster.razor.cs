@@ -9,6 +9,7 @@ using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using BlazorApp.Utils.Prometheus.Models;
+using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity;
 using Entity.Analyze;
 using k8s;
@@ -35,16 +36,18 @@ public partial class Cluster : ComponentBase
     [Inject]
     private IAiService Ai { get; set; }
 
-    private List<V1ComponentStatus> ComponentStatus      { get; set; }
-    private IList<V1Pod>            PodList              { get; set; }
-    private IList<V1Node>           NodeList             { get; set; }
-    private List<V1APIService>      ApiServicesList      { get; set; }
-    private IList<Result>           AnalyzeResult        { get; set; }
-    private DateTime                LastInspection       { get; set; }
-    private IList<string>           PassResources        { get; set; }
-    private Dictionary<string, int> AllResourcesCount    { get; set; }
-    private IList<Measurement>      Features             { get; set; }
-    private IList<Measurement>      EtcdSize { get; set; }
+    private List<V1ComponentStatus> ComponentStatus   { get; set; }
+    private IList<V1Pod>            PodList           { get; set; }
+    private IList<V1Node>           NodeList          { get; set; }
+    private List<V1APIService>      ApiServicesList   { get; set; }
+    private IList<Result>           AnalyzeResult     { get; set; }
+    private DateTime                LastInspection    { get; set; }
+    private IList<string>           PassResources     { get; set; }
+    private Dictionary<string, int> AllResourcesCount { get; set; }
+    private IList<IMetric>          AllMetrics        { get; set; }
+    private IList<Measurement>      Features          { get; set; }
+    private IList<Measurement>      EtcdSize          { get; set; }
+    private IList<Measurement>      EtcdRequestTotal  { get; set; }
 
     public  string LivezResult  { get; set; }
     public  string ReadyzResult { get; set; }
@@ -91,17 +94,17 @@ public partial class Cluster : ComponentBase
         AnalyzeResult     = AnalyzeResult.OrderBy(x => x.Kind).ThenBy(x => x.Name()).ToList();
         AllResourcesCount = AllResourcesCount.OrderBy(x => x.Key).ToList().ToDictionary(x => x.Key, x => x.Value);
 
-        Features             = await GetMeasurements("kubernetes_feature_enabled");
-        EtcdSize = await GetMeasurements("apiserver_storage_size_bytes");
+        AllMetrics = await KubeService.GetMetrics();
+        Features   = GetMeasurements("kubernetes_feature_enabled");
+        EtcdSize   = GetMeasurements("apiserver_storage_size_bytes");
+        EtcdRequestTotal   = GetMeasurements("etcd_requests_total");
 
         await InvokeAsync(StateHasChanged);
     }
 
-    private async Task<IList<Measurement>> GetMeasurements(string name)
+    private IList<Measurement> GetMeasurements(string name)
     {
-        var metrics      = await KubeService.GetMetrics();
-        var measurements = metrics.FirstOrDefault(x => x.Name == name)?.Measurements;
-        return measurements;
+        return AllMetrics.FirstOrDefault(x => x.Name == name)?.Measurements;
     }
 
     private async void EventHandler(object sender, string resp)

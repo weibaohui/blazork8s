@@ -244,27 +244,29 @@
             }
         }
     </TabPane>
-    <TabPane Key="EtcdStorage" Tab="Etcd">
-
+    <TabPane Key="Etcd" Tab="Etcd">
         @if (EtcdSize is { Count: > 0 })
         {
             <GridRow Class="grid-table">
-                <GridCol Span="8">Cluster</GridCol>
-                <GridCol Span="6">Size</GridCol>
-
+                <GridCol Span="8">Storage</GridCol>
+                <GridCol Span="6">
+                    @foreach (var item in EtcdSize)
+                    {
+                        <div>
+                            <span> @item.Labels["cluster"] : @((item.Value / 1024 / 1024).ToString("0.00"))MB</span>
+                        </div>
+                    }
+                </GridCol>
             </GridRow>
-            @foreach (var item in EtcdSize)
-            {
-                <GridRow Class="grid-table grid-table-first-row">
-
-                    <GridCol Span="8">
-                        @item.Labels["cluster"]
-                    </GridCol>
-                    <GridCol Span="8">
-                        @((item.Value / 1024 / 1024).ToString("0.00")) MB
-                    </GridCol>
-                </GridRow>
-            }
+        }
+        @if (EtcdRequestTotal is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Request</GridCol>
+                <GridCol Span="6">
+                    @EtcdRequestTotal.Sum(x => x.Value)
+                </GridCol>
+            </GridRow>
         }
     </TabPane>
 
