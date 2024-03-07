@@ -46,6 +46,9 @@
                     <AntDesign.Column Title="Node" TData="string" Width="120px">
                         <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
                     </AntDesign.Column>
+                    <AntDesign.Column Title="PodIP" TData="string" Width="100px">
+                        <ColorfulTag> @context.Status.PodIP</ColorfulTag>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="QoS" TData="string" Width="100px">
                         @context.Status.QosClass
                     </AntDesign.Column>
