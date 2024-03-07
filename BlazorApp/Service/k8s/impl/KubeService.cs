@@ -59,17 +59,17 @@ public class KubeService : IKubeService
         return ContextName ?? "";
     }
 
-    private async Task<string> GetStringAsync(string requestUri)
+    public async Task<string> GetStringAsync(string requestUri)
     {
         var baseUrl = Client().BaseUri.ToString();
-        requestUri = requestUri.StartsWith("/") ? requestUri.Remove(0, 1).Trim() : requestUri;
+        requestUri = requestUri.StartsWith('/') ? requestUri.Remove(0, 1).Trim() : requestUri;
         return await Client().HttpClient.GetStringAsync($"{baseUrl}{requestUri}");
     }
 
     private async Task<Stream> GetStreamAsync(string requestUri)
     {
         var baseUrl = Client().BaseUri.ToString();
-        requestUri = requestUri.StartsWith("/") ? requestUri.Remove(0, 1).Trim() : requestUri;
+        requestUri = requestUri.StartsWith('/') ? requestUri.Remove(0, 1).Trim() : requestUri;
         return await Client().HttpClient.GetStreamAsync($"{baseUrl}{requestUri}");
     }
 
@@ -91,7 +91,30 @@ public class KubeService : IKubeService
 
     public async Task<List<IMetric>> GetMetrics()
     {
-        var             metricString = await GetStringAsync("/metrics");
+        var metricString = await GetStringAsync("/metrics");
+        return await ConvertStringToMetrics(metricString);
+    }
+
+    public async Task<List<IMetric>> ConvertStringToMetrics(string metricString)
+    {
+        var             byteArray = Encoding.UTF8.GetBytes(metricString);
+        await using var ms        = new MemoryStream(byteArray);
+        var             metric    = await PrometheusMetricsParser.ParseAsync(ms);
+        return metric;
+    }
+
+    /// <summary>
+    /// Service Level Indicators，服务水平指标
+    /// kubernetes_healthcheck 相关指标
+    /// SLIs 是衡量服务水平目标（SLOs）和服务水平协议（SLAs）中定义的性能标准的具体指标。
+    /// SLIs 关注于服务的特定方面，如可用性、延迟、吞吐量等，它们为评估服务的性能提供了定量的基础。
+    /// 在 Kubernetes API 服务器的上下文中，SLIs 可以包括响应时间、错误率、API 调用的成功率等指标。
+    /// 通过监控这些 SLIs，集群运维人员可以评估 API 服务器是否满足既定的服务水平目标（SLOs），从而确保用户获得一致且可靠的服务体验。
+    /// </summary>
+    /// <returns></returns>
+    public async Task<List<IMetric>> GetMetricsSlis()
+    {
+        var             metricString = await GetStringAsync("/metrics/slis");
         var             byteArray    = Encoding.UTF8.GetBytes(metricString);
         await using var ms           = new MemoryStream(byteArray);
         var             metric       = await PrometheusMetricsParser.ParseAsync(ms);

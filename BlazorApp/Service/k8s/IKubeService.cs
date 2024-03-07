@@ -15,6 +15,7 @@ public interface IKubeService
     public Task<string>        GetReadyz();
     public Task<string>        GetLivez();
     public Task<List<IMetric>> GetMetrics();
-
-
+    public Task<List<IMetric>> GetMetricsSlis();
+    public Task<string>        GetStringAsync(string         requestUri);
+    public Task<List<IMetric>> ConvertStringToMetrics(string metricString);
 }

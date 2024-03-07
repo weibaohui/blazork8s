@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
+using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity.Analyze;
 using Extension;
 using k8s;
@@ -31,20 +32,22 @@ namespace BlazorApp.Service.k8s.impl
         {
             var node = GetByName(nodeName);
             var unScheduleStr = """
-                                       {
-                                           "spec": {
-                                               "unschedulable":  true
-                                           }
-                                       }
-                                       """;
-            var scheduleStr = """
                                 {
                                     "spec": {
-                                        "unschedulable":  false
+                                        "unschedulable":  true
                                     }
                                 }
                                 """;
-            await kubeService.Client().PatchNodeAsync(new V1Patch(schedulable?scheduleStr:unScheduleStr, V1Patch.PatchType.MergePatch), node.Name());
+            var scheduleStr = """
+                              {
+                                  "spec": {
+                                      "unschedulable":  false
+                                  }
+                              }
+                              """;
+            await kubeService.Client()
+                .PatchNodeAsync(new V1Patch(schedulable ? scheduleStr : unScheduleStr, V1Patch.PatchType.MergePatch),
+                    node.Name());
         }
 
         public long GetPodCount(string nodeName)
@@ -90,6 +93,29 @@ namespace BlazorApp.Service.k8s.impl
             return $"{current}/{all}";
         }
 
+        public async Task<List<IMetric>> GetMetrics(string nodeName)
+        {
+            var             metricString = await kubeService.GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/metrics");
+            return await kubeService.ConvertStringToMetrics(metricString);
+        }
+
+        public async Task<List<IMetric>> GetCadvisorMetrics(string nodeName)
+        {
+            var metricString = await kubeService.GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/metrics/cadvisor");
+            return await kubeService.ConvertStringToMetrics(metricString);
+        }
+
+        public async Task<List<IMetric>> GetResourceMetrics(string nodeName)
+        {
+            var metricString = await kubeService.GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/metrics/resource");
+            return await kubeService.ConvertStringToMetrics(metricString);
+        }
+
+        public async Task<List<IMetric>> GetProbesMetrics(string nodeName)
+        {
+            var metricString = await kubeService.GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/metrics/probes");
+            return await kubeService.ConvertStringToMetrics(metricString);
+        }
 
         public async Task<List<Result>> Analyze()
         {
