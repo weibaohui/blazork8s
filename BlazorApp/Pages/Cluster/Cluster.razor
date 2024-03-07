@@ -314,7 +314,15 @@
 
 </TabPane >
 <TabPane Key="ApiServer" Tab="ApiServer">
-
+ @if (AllMetrics?.Any(x => x.Name == "authentication_attempts") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Auth Counts</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "authentication_attempts")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
     @if (AllMetrics?.Any(x => x.Name == "apiserver_request_duration_seconds") is true)
     {
         <GridRow Class="grid-table">
