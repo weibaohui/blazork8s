@@ -323,6 +323,28 @@
             </GridCol>
         </GridRow>
     }
+     @if (AllMetrics?.Any(x => x.Name == "authentication_duration_seconds") is true)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="4">Auth Latency (avg)</GridCol>
+                <GridCol Span="6">
+                    @{
+                        var count = AllMetrics
+                            .FirstOrDefault(x => x.Name == "authentication_duration_seconds")?
+                            .Measurements
+                            .Where(x => x.Name == "authentication_duration_seconds_count")
+                            .Sum(x => x.Value);
+                        var seconds = AllMetrics
+                            .FirstOrDefault(x => x.Name == "authentication_duration_seconds")?
+                            .Measurements
+                            .Where(x => x.Name == "authentication_duration_seconds_sum")
+                            .Sum(x => x.Value);
+                        var avg = seconds / count * 1000;
+                    }
+                    @(avg?.ToString("0.0000")) ms
+                </GridCol>
+            </GridRow>
+        }
     @if (AllMetrics?.Any(x => x.Name == "apiserver_request_duration_seconds") is true)
     {
         <GridRow Class="grid-table">
