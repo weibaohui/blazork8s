@@ -292,7 +292,7 @@
         @if (AllMetrics?.Any(x => x.Name == "etcd_request_duration_seconds") is true)
         {
             <GridRow Class="grid-table">
-                <GridCol Span="4">Request Latency</GridCol>
+                <GridCol Span="4">Request Latency  (avg)</GridCol>
                 <GridCol Span="6">
                     @{
                         var count = AllMetrics
@@ -311,10 +311,32 @@
                 </GridCol>
             </GridRow>
         }
+
     </TabPane >
     <TabPane Key="ApiServer" Tab="ApiServer">
 
-
+@if (AllMetrics?.Any(x => x.Name == "apiserver_request_duration_seconds") is true)
+                {
+                    <GridRow Class="grid-table">
+                        <GridCol Span="4">Request Latency (avg)</GridCol>
+                        <GridCol Span="6">
+                            @{
+                                var count = AllMetrics
+                                    .FirstOrDefault(x => x.Name == "apiserver_request_duration_seconds")?
+                                    .Measurements
+                                    .Where(x => x.Name == "apiserver_request_duration_seconds_count")
+                                    .Sum(x => x.Value);
+                                var seconds = AllMetrics
+                                    .FirstOrDefault(x => x.Name == "apiserver_request_duration_seconds")?
+                                    .Measurements
+                                    .Where(x => x.Name == "apiserver_request_duration_seconds_sum")
+                                    .Sum(x => x.Value);
+                                var avg = seconds / count * 1000;
+                            }
+                            @(avg?.ToString("0.0000")) ms
+                        </GridCol>
+                    </GridRow>
+                }
         @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inflight_requests") is true)
         {
             <GridRow Class="grid-table">
