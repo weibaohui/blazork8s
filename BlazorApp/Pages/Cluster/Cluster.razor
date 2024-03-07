@@ -79,377 +79,393 @@
 
 
 <Tabs Style="margin: 50px" DefaultActiveKey="Nodes" Type="@TabType.Card" Size="@TabSize.Large">
-    <TabPane Key="Status" Tab="API Status">
-        @if (ApiServicesList is { Count: > 0 })
+<TabPane Key="Status" Tab="API Status">
+    @if (ApiServicesList is { Count: > 0 })
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="8">Name</GridCol>
+            <GridCol Span="8">Status</GridCol>
+        </GridRow>
+        @foreach (var item in ApiServicesList)
         {
-            <GridRow Class="grid-table">
-                <GridCol Span="8">Name</GridCol>
-                <GridCol Span="8">Status</GridCol>
-            </GridRow>
-            @foreach (var item in ApiServicesList)
-            {
-                <GridRow Class="grid-table grid-table-first-row">
-                    <GridCol Span="8"> @item.Name()</GridCol>
-                    <GridCol Span="8">
-                        <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-                    </GridCol>
-                </GridRow>
-            }
-        }
-    </TabPane>
-    <TabPane Key="Livez" Tab="Livez">
-        @((MarkupString)LivezResult.ToHtmlDisplay())
-    </TabPane>
-    <TabPane Key="Readyz" Tab="Readyz">
-        @((MarkupString)ReadyzResult.ToHtmlDisplay())
-    </TabPane>
-    <TabPane Key="Nodes" Tab="Nodes">
-        @if (NodeList is { Count: > 0 })
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="24">
-                    <Space Size="@("4")" Wrap>
-                        @foreach (var item in NodeList)
-                        {
-                            <SpaceItem>
-                                <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
-                                    <NodeStatusChart Node="@item"></NodeStatusChart>
-                                </Card>
-                            </SpaceItem>
-                        }
-                    </Space>
+            <GridRow Class="grid-table grid-table-first-row">
+                <GridCol Span="8"> @item.Name()</GridCol>
+                <GridCol Span="8">
+                    <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                 </GridCol>
             </GridRow>
         }
-    </TabPane>
-    <TabPane Key="Pods" Tab="Pods">
-        @if (PodList is { Count: > 0 })
+    }
+</TabPane>
+<TabPane Key="Livez" Tab="Livez">
+    @((MarkupString)LivezResult.ToHtmlDisplay())
+</TabPane>
+<TabPane Key="Readyz" Tab="Readyz">
+    @((MarkupString)ReadyzResult.ToHtmlDisplay())
+</TabPane>
+<TabPane Key="Nodes" Tab="Nodes">
+    @if (NodeList is { Count: > 0 })
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="24">
+                <Space Size="@("4")" Wrap>
+                    @foreach (var item in NodeList)
+                    {
+                        <SpaceItem>
+                            <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
+                                <NodeStatusChart Node="@item"></NodeStatusChart>
+                            </Card>
+                        </SpaceItem>
+                    }
+                </Space>
+            </GridCol>
+        </GridRow>
+    }
+</TabPane>
+<TabPane Key="Pods" Tab="Pods">
+    @if (PodList is { Count: > 0 })
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="8">Name</GridCol>
+            <GridCol Span="8">CPU</GridCol>
+            <GridCol Span="8">Memory</GridCol>
+        </GridRow>
+        @foreach (var item in PodList)
         {
-            <GridRow Class="grid-table">
-                <GridCol Span="8">Name</GridCol>
-                <GridCol Span="8">CPU</GridCol>
-                <GridCol Span="8">Memory</GridCol>
+            <GridRow Class="grid-table grid-table-first-row">
+                <GridCol Span="8">@item.Name()</GridCol>
+                <GridCol Span="8">
+                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                </GridCol>
+                <GridCol Span="8">
+                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                </GridCol>
             </GridRow>
-            @foreach (var item in PodList)
+        }
+    }
+</TabPane>
+
+<TabPane Key="Errors" Tab="Errors">
+
+    @if (AnalyzeResult is { Count: > 0 })
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="8">Name</GridCol>
+            <GridCol Span="12">Error</GridCol>
+            <GridCol Span="2">Action</GridCol>
+
+        </GridRow>
+        @foreach (var item in AnalyzeResult)
+        {
+            <GridRow Class="grid-table grid-table-first-row">
+
+                <GridCol Span="8">
+                    <RefView Ref="@GetRef(item)" FullView="true"></RefView>
+                </GridCol>
+                <GridCol Span="12">
+                    <div>
+                        @foreach (var failure in item.Error)
+                        {
+                            <li style="list-style: decimal">@failure.Text</li>
+                        }
+                    </div>
+                </GridCol>
+                <GridCol Span="2">
+                    <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
+                </GridCol>
+            </GridRow>
+        }
+    }
+</TabPane>
+
+<TabPane Key="Inspection" Tab="Inspection">
+
+    @if (AllResourcesCount is { Count: > 0 })
+    {
+        <Space Wrap>
+            @foreach (var item in AllResourcesCount)
+            {
+                var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;
+                <SpaceItem>
+                    <Card Style="width: 300px;margin: 5px">
+                        <GridRow Class="grid-table">
+                            <GridCol Span="16">
+                                <div >
+                                    @item.Key
+                                </div >
+                                <div >
+                                    @($"{errors}  / {item.Value}  ")
+                                    <span style="color: gray">
+                                        @($"[err/all]")
+                                    </span >
+                                </div >
+                            </GridCol >
+                            <GridCol Span="8">
+                                <InspectionResourceRingChart Denominator="@item.Value" Numerator="@errors"></InspectionResourceRingChart >
+                            </GridCol >
+                        </GridRow>
+                    </Card>
+                </SpaceItem>
+            }
+        </Space>
+    }
+</TabPane>
+<TabPane Key="k8sFeature" Tab="Feature">
+    @if (AllMetrics?.Any(x => x.Name == "kubernetes_feature_enabled") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="8">Name</GridCol>
+            <GridCol Span="6">Stage</GridCol>
+            <GridCol Span="6">Status</GridCol>
+
+        </GridRow>
+        var measurements = AllMetrics.FirstOrDefault(x => x.Name == "kubernetes_feature_enabled")?.Measurements;
+        if (measurements is { Count: > 0 })
+        {
+            foreach (var item in measurements)
             {
                 <GridRow Class="grid-table grid-table-first-row">
-                    <GridCol Span="8">@item.Name()</GridCol>
+
                     <GridCol Span="8">
-                        <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                        @item.Labels["name"]
                     </GridCol>
-                    <GridCol Span="8">
-                        <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                    <GridCol Span="6">
+                        @item.Labels["stage"]
+                    </GridCol>
+                    <GridCol Span="6">
+                        @if (item is { Value: > 0 })
+                        {
+                            <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
+                        }
+                        else
+                        {
+                            <Tag >Disabled</Tag>
+                        }
                     </GridCol>
                 </GridRow>
             }
         }
-    </TabPane>
-
-    <TabPane Key="Errors" Tab="Errors">
-
-        @if (AnalyzeResult is { Count: > 0 })
+    }
+</TabPane >
+<TabPane Key="Etcd" Tab="Etcd">
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_storage_size_bytes") is true)
+    {
+        var measurements = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_storage_size_bytes")?.Measurements;
+        if (measurements is { Count: > 0 })
         {
             <GridRow Class="grid-table">
-                <GridCol Span="8">Name</GridCol>
-                <GridCol Span="12">Error</GridCol>
-                <GridCol Span="2">Action</GridCol>
-
-            </GridRow>
-            @foreach (var item in AnalyzeResult)
-            {
-                <GridRow Class="grid-table grid-table-first-row">
-
-                    <GridCol Span="8">
-                        <RefView Ref="@GetRef(item)" FullView="true"></RefView>
-                    </GridCol>
-                    <GridCol Span="12">
+                <GridCol Span="4">Storage Size</GridCol>
+                <GridCol Span="6">
+                    @foreach (var item in measurements)
+                    {
                         <div>
-                            @foreach (var failure in item.Error)
-                            {
-                                <li style="list-style: decimal">@failure.Text</li>
-                            }
+                            <span> @item.Labels["cluster"] : @((item.Value / 1024 / 1024).ToString("0.00"))MB</span>
                         </div>
-                    </GridCol>
-                    <GridCol Span="2">
-                        <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
-                    </GridCol>
-                </GridRow>
-            }
-        }
-    </TabPane>
-
-    <TabPane Key="Inspection" Tab="Inspection">
-
-        @if (AllResourcesCount is { Count: > 0 })
-        {
-            <Space Wrap>
-                @foreach (var item in AllResourcesCount)
-                {
-                    var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;
-                    <SpaceItem>
-                        <Card Style="width: 300px;margin: 5px">
-                            <GridRow Class="grid-table">
-                                <GridCol Span="16">
-                                    <div >
-                                        @item.Key
-                                    </div >
-                                    <div >
-                                        @($"{errors}  / {item.Value}  ")
-                                        <span style="color: gray">
-                                            @($"[err/all]")
-                                        </span >
-                                    </div >
-                                </GridCol >
-                                <GridCol Span="8">
-                                    <InspectionResourceRingChart Denominator="@item.Value" Numerator="@errors"></InspectionResourceRingChart >
-                                </GridCol >
-                            </GridRow>
-                        </Card>
-                    </SpaceItem>
-                }
-            </Space>
-        }
-    </TabPane>
-    <TabPane Key="k8sFeature" Tab="Feature">
-        @if (AllMetrics?.Any(x => x.Name == "kubernetes_feature_enabled") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="8">Name</GridCol>
-                <GridCol Span="6">Stage</GridCol>
-                <GridCol Span="6">Status</GridCol>
-
+                    }
+                </GridCol>
             </GridRow>
-            var measurements = AllMetrics.FirstOrDefault(x => x.Name == "kubernetes_feature_enabled")?.Measurements;
-            if (measurements is { Count: > 0 })
-            {
-                foreach (var item in measurements)
-                {
-                    <GridRow Class="grid-table grid-table-first-row">
-
-                        <GridCol Span="8">
-                            @item.Labels["name"]
-                        </GridCol>
-                        <GridCol Span="6">
-                            @item.Labels["stage"]
-                        </GridCol>
-                        <GridCol Span="6">
-                            @if (item is { Value: > 0 })
-                            {
-                                <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
-                            }
-                            else
-                            {
-                                <Tag >Disabled</Tag>
-                            }
-                        </GridCol>
-                    </GridRow>
-                }
-            }
         }
-    </TabPane >
-    <TabPane Key="Etcd" Tab="Etcd">
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_storage_size_bytes") is true)
+    }
+    @if (AllMetrics?.Any(x => x.Name == "etcd_lease_object_counts") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Object Count</GridCol>
+            <GridCol Span="6">
+                @(AllMetrics
+                    .FirstOrDefault(x => x.Name == "etcd_lease_object_counts")?
+                    .Measurements
+                    .FirstOrDefault(x => x.Name == "etcd_lease_object_counts_count")?.Value)
+            </GridCol>
+        </GridRow>
+    }
+
+    @if (AllMetrics?.Any(x => x.Name == "etcd_requests_total") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Request Total</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "etcd_requests_total")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+
+    @if (AllMetrics?.Any(x => x.Name == "etcd_request_duration_seconds") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Request Latency (avg)</GridCol>
+            <GridCol Span="6">
+                @{
+                    var count = AllMetrics
+                        .FirstOrDefault(x => x.Name == "etcd_request_duration_seconds")?
+                        .Measurements
+                        .Where(x => x.Name == "etcd_request_duration_seconds_count")
+                        .Sum(x => x.Value);
+                    var seconds = AllMetrics
+                        .FirstOrDefault(x => x.Name == "etcd_request_duration_seconds")?
+                        .Measurements
+                        .Where(x => x.Name == "etcd_request_duration_seconds_sum")
+                        .Sum(x => x.Value);
+                    var avg = seconds / count * 1000;
+                }
+                @(avg?.ToString("0.0000")) ms
+            </GridCol>
+        </GridRow>
+    }
+
+</TabPane >
+<TabPane Key="ApiServer" Tab="ApiServer">
+
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_request_duration_seconds") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Request Latency (avg)</GridCol>
+            <GridCol Span="6">
+                @{
+                    var count = AllMetrics
+                        .FirstOrDefault(x => x.Name == "apiserver_request_duration_seconds")?
+                        .Measurements
+                        .Where(x => x.Name == "apiserver_request_duration_seconds_count")
+                        .Sum(x => x.Value);
+                    var seconds = AllMetrics
+                        .FirstOrDefault(x => x.Name == "apiserver_request_duration_seconds")?
+                        .Measurements
+                        .Where(x => x.Name == "apiserver_request_duration_seconds_sum")
+                        .Sum(x => x.Value);
+                    var avg = seconds / count * 1000;
+                }
+                @(avg?.ToString("0.0000")) ms
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_response_sizes") is true)
+    {
+        var sizes = AllMetrics
+            .FirstOrDefault(x => x.Name == "apiserver_response_sizes")?
+            .Measurements
+            .Where(x => x.Name == "apiserver_response_sizes_sum")
+            .Sum(x => x.Value);
+
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Response Size</GridCol>
+            <GridCol Span="6">
+                @((sizes / 1024 / 1024)?.ToString("0.00")) MB
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inflight_requests") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Request InFlight</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_current_inflight_requests")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inqueue_requests") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Request InQueue</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_current_inqueue_requests")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+
+    @if (AllMetrics?.Any(x => x.Name == "workqueue_adds_total") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Workqueue Added</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "workqueue_adds_total")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "workqueue_retries_total") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Workqueue Retries</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "workqueue_retries_total")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_flowcontrol_current_inqueue_requests") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Flowcontrol InQueue</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_flowcontrol_current_inqueue_requests")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_flowcontrol_current_executing_requests") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Flowcontrol Executing</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_flowcontrol_current_executing_requests")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">Request Total</GridCol>
+            <GridCol Span="6">
+                @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?.Measurements.Sum(x => x.Value)
+            </GridCol>
+        </GridRow>
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
+    {
+        var reqGroupByCode = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?
+            .Measurements?
+            .GroupBy(x => x.Labels["code"])?
+            .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
+            .OrderByDescending(x => x.Count)
+            .ToList();
+
+        if (reqGroupByCode != null)
         {
-            var measurements = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_storage_size_bytes")?.Measurements;
-            if (measurements is { Count: > 0 })
+            foreach (var gb in reqGroupByCode)
             {
                 <GridRow Class="grid-table">
-                    <GridCol Span="4">Storage Size</GridCol>
+                    <GridCol Span="4">
+                        Http Code
+                        @(gb.Code)
+                    </GridCol>
                     <GridCol Span="6">
-                        @foreach (var item in measurements)
-                        {
-                            <div>
-                                <span> @item.Labels["cluster"] : @((item.Value / 1024 / 1024).ToString("0.00"))MB</span>
-                            </div>
-                        }
+                        @(gb.Count)
                     </GridCol>
                 </GridRow>
             }
         }
-        @if (AllMetrics?.Any(x => x.Name == "etcd_lease_object_counts") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Object Count</GridCol>
-                <GridCol Span="6">
-                    @(AllMetrics
-                        .FirstOrDefault(x => x.Name == "etcd_lease_object_counts")?
-                        .Measurements
-                        .FirstOrDefault(x => x.Name == "etcd_lease_object_counts_count")?.Value)
-                </GridCol>
-            </GridRow>
-        }
+    }
+    @if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
+    {
+        var reqGroupByCode = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?
+            .Measurements?
+            .GroupBy(x => x.Labels["verb"])?
+            .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
+            .OrderByDescending(x => x.Count)
+            .ToList();
 
-        @if (AllMetrics?.Any(x => x.Name == "etcd_requests_total") is true)
+        if (reqGroupByCode != null)
         {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Request Total</GridCol>
-                <GridCol Span="6">
-                    @AllMetrics.FirstOrDefault(x => x.Name == "etcd_requests_total")?.Measurements.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
-
-        @if (AllMetrics?.Any(x => x.Name == "etcd_request_duration_seconds") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Request Latency  (avg)</GridCol>
-                <GridCol Span="6">
-                    @{
-                        var count = AllMetrics
-                            .FirstOrDefault(x => x.Name == "etcd_request_duration_seconds")?
-                            .Measurements
-                            .Where(x => x.Name == "etcd_request_duration_seconds_count")
-                            .Sum(x => x.Value);
-                        var seconds = AllMetrics
-                            .FirstOrDefault(x => x.Name == "etcd_request_duration_seconds")?
-                            .Measurements
-                            .Where(x => x.Name == "etcd_request_duration_seconds_sum")
-                            .Sum(x => x.Value);
-                        var avg = seconds / count * 1000;
-                    }
-                    @(avg?.ToString("0.0000")) ms
-                </GridCol>
-            </GridRow>
-        }
-
-    </TabPane >
-    <TabPane Key="ApiServer" Tab="ApiServer">
-
-@if (AllMetrics?.Any(x => x.Name == "apiserver_request_duration_seconds") is true)
-                {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">Request Latency (avg)</GridCol>
-                        <GridCol Span="6">
-                            @{
-                                var count = AllMetrics
-                                    .FirstOrDefault(x => x.Name == "apiserver_request_duration_seconds")?
-                                    .Measurements
-                                    .Where(x => x.Name == "apiserver_request_duration_seconds_count")
-                                    .Sum(x => x.Value);
-                                var seconds = AllMetrics
-                                    .FirstOrDefault(x => x.Name == "apiserver_request_duration_seconds")?
-                                    .Measurements
-                                    .Where(x => x.Name == "apiserver_request_duration_seconds_sum")
-                                    .Sum(x => x.Value);
-                                var avg = seconds / count * 1000;
-                            }
-                            @(avg?.ToString("0.0000")) ms
-                        </GridCol>
-                    </GridRow>
-                }
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inflight_requests") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Request InFlight</GridCol>
-                <GridCol Span="6">
-                    @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_current_inflight_requests")?.Measurements.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inqueue_requests") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Request InQueue</GridCol>
-                <GridCol Span="6">
-                    @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_current_inqueue_requests")?.Measurements.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
-
-        @if (AllMetrics?.Any(x => x.Name == "workqueue_adds_total") is true)
-                {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">Workqueue Added</GridCol>
-                        <GridCol Span="6">
-                            @AllMetrics.FirstOrDefault(x => x.Name == "workqueue_adds_total")?.Measurements.Sum(x => x.Value)
-                        </GridCol>
-                    </GridRow>
-                }
-        @if (AllMetrics?.Any(x => x.Name == "workqueue_retries_total") is true)
-                        {
-                            <GridRow Class="grid-table">
-                                <GridCol Span="4">Workqueue Retries</GridCol>
-                                <GridCol Span="6">
-                                    @AllMetrics.FirstOrDefault(x => x.Name == "workqueue_retries_total")?.Measurements.Sum(x => x.Value)
-                                </GridCol>
-                            </GridRow>
-                        }
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_flowcontrol_current_inqueue_requests") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Flowcontrol InQueue</GridCol>
-                <GridCol Span="6">
-                    @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_flowcontrol_current_inqueue_requests")?.Measurements.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
-         @if (AllMetrics?.Any(x => x.Name == "apiserver_flowcontrol_current_executing_requests") is true)
-                {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">Flowcontrol Executing</GridCol>
-                        <GridCol Span="6">
-                            @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_flowcontrol_current_executing_requests")?.Measurements.Sum(x => x.Value)
-                        </GridCol>
-                    </GridRow>
-                }
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Request Total</GridCol>
-                <GridCol Span="6">
-                    @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?.Measurements.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
-        {
-            var reqGroupByCode = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?
-                .Measurements?
-                .GroupBy(x => x.Labels["code"])?
-                .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
-                .OrderByDescending(x => x.Count)
-                .ToList();
-
-            if (reqGroupByCode != null)
+            foreach (var gb in reqGroupByCode)
             {
-                foreach (var gb in reqGroupByCode)
-                {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">
-                            Http Code
-                            @(gb.Code)
-                        </GridCol>
-                        <GridCol Span="6">
-                            @(gb.Count)
-                        </GridCol>
-                    </GridRow>
-                }
+                <GridRow Class="grid-table">
+                    <GridCol Span="4">
+                        Http Verb
+                        @(gb.Code)
+                    </GridCol>
+                    <GridCol Span="6">
+                        @(gb.Count)
+                    </GridCol>
+                </GridRow>
             }
         }
-@if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
-        {
-            var reqGroupByCode = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?
-                .Measurements?
-                .GroupBy(x => x.Labels["verb"])?
-                .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
-                .OrderByDescending(x => x.Count)
-                .ToList();
-
-            if (reqGroupByCode != null)
-            {
-                foreach (var gb in reqGroupByCode)
-                {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">
-                            Http Verb
-                            @(gb.Code)
-                        </GridCol>
-                        <GridCol Span="6">
-                            @(gb.Count)
-                        </GridCol>
-                    </GridRow>
-                }
-            }
-        }
-    </TabPane >
+    }
+</TabPane >
 </Tabs >
