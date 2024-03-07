@@ -318,7 +318,7 @@
         @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inflight_requests") is true)
         {
             <GridRow Class="grid-table">
-                <GridCol Span="4">InFlight</GridCol>
+                <GridCol Span="4">Request InFlight</GridCol>
                 <GridCol Span="6">
                     @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_current_inflight_requests")?.Measurements.Sum(x => x.Value)
                 </GridCol>
@@ -327,25 +327,17 @@
         @if (AllMetrics?.Any(x => x.Name == "apiserver_current_inqueue_requests") is true)
         {
             <GridRow Class="grid-table">
-                <GridCol Span="4">InQueue</GridCol>
+                <GridCol Span="4">Request InQueue</GridCol>
                 <GridCol Span="6">
                     @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_current_inqueue_requests")?.Measurements.Sum(x => x.Value)
                 </GridCol>
             </GridRow>
         }
-        @if (AllMetrics?.Any(x => x.Name == "apiserver_flowcontrol_current_executing_requests") is true)
-        {
-            <GridRow Class="grid-table">
-                <GridCol Span="4">Flowcontrol Executing</GridCol>
-                <GridCol Span="6">
-                    @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_flowcontrol_current_executing_requests")?.Measurements.Sum(x => x.Value)
-                </GridCol>
-            </GridRow>
-        }
+
         @if (AllMetrics?.Any(x => x.Name == "workqueue_adds_total") is true)
                 {
                     <GridRow Class="grid-table">
-                        <GridCol Span="4">workqueue_adds</GridCol>
+                        <GridCol Span="4">Workqueue Added</GridCol>
                         <GridCol Span="6">
                             @AllMetrics.FirstOrDefault(x => x.Name == "workqueue_adds_total")?.Measurements.Sum(x => x.Value)
                         </GridCol>
@@ -354,7 +346,7 @@
         @if (AllMetrics?.Any(x => x.Name == "workqueue_retries_total") is true)
                         {
                             <GridRow Class="grid-table">
-                                <GridCol Span="4">workqueue_retries</GridCol>
+                                <GridCol Span="4">Workqueue Retries</GridCol>
                                 <GridCol Span="6">
                                     @AllMetrics.FirstOrDefault(x => x.Name == "workqueue_retries_total")?.Measurements.Sum(x => x.Value)
                                 </GridCol>
@@ -369,6 +361,15 @@
                 </GridCol>
             </GridRow>
         }
+         @if (AllMetrics?.Any(x => x.Name == "apiserver_flowcontrol_current_executing_requests") is true)
+                {
+                    <GridRow Class="grid-table">
+                        <GridCol Span="4">Flowcontrol Executing</GridCol>
+                        <GridCol Span="6">
+                            @AllMetrics.FirstOrDefault(x => x.Name == "apiserver_flowcontrol_current_executing_requests")?.Measurements.Sum(x => x.Value)
+                        </GridCol>
+                    </GridRow>
+                }
         @if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
         {
             <GridRow Class="grid-table">
@@ -393,7 +394,7 @@
                 {
                     <GridRow Class="grid-table">
                         <GridCol Span="4">
-                            HTTP CODE
+                            Http Code
                             @(gb.Code)
                         </GridCol>
                         <GridCol Span="6">
@@ -403,6 +404,30 @@
                 }
             }
         }
+@if (AllMetrics?.Any(x => x.Name == "apiserver_request_total") is true)
+        {
+            var reqGroupByCode = AllMetrics.FirstOrDefault(x => x.Name == "apiserver_request_total")?
+                .Measurements?
+                .GroupBy(x => x.Labels["verb"])?
+                .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
+                .OrderByDescending(x => x.Count)
+                .ToList();
 
+            if (reqGroupByCode != null)
+            {
+                foreach (var gb in reqGroupByCode)
+                {
+                    <GridRow Class="grid-table">
+                        <GridCol Span="4">
+                            Http Verb
+                            @(gb.Code)
+                        </GridCol>
+                        <GridCol Span="6">
+                            @(gb.Count)
+                        </GridCol>
+                    </GridRow>
+                }
+            }
+        }
     </TabPane >
 </Tabs >
