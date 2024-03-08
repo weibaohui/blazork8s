@@ -267,12 +267,13 @@
             <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="type" Unit="seconds"></MetircsHistogramGroupByAvgView>
             <Divider Orientation="left" Style="font-weight:bold">Operation</Divider>
             <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="operation" Unit="seconds"></MetircsHistogramGroupByAvgView>
-<Divider Orientation="left" Style="font-weight:bold">Union</Divider>
+            <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
             <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
                                                     MetricName="etcd_request_duration_seconds"
                                                     GroupBy="verb"
-                                                    MultipleGroupBy="@(new List<string> {  "operation", "type" })"
-                                                    Unit="seconds"></MetircsHistogramGroupByMultipleAvgView>
+                                                    MultipleGroupBy="@(new List<string> { "operation", "type" })"
+                                                    Unit="seconds">
+            </MetircsHistogramGroupByMultipleAvgView>
         </Drawer>
     </TabPane>
     <TabPane Key="ApiServer" Tab="ApiServer">
@@ -293,12 +294,13 @@
             <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="subresource" Unit="seconds"></MetircsHistogramGroupByAvgView>
             <Divider Orientation="left" Style="font-weight:bold">Scope</Divider>
             <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="scope" Unit="seconds"></MetircsHistogramGroupByAvgView>
-<Divider Orientation="left" Style="font-weight:bold">Union</Divider>
+            <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
             <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
                                                     MetricName="apiserver_request_duration_seconds"
                                                     GroupBy="verb"
-                                                    MultipleGroupBy="@(new List<string> {  "group", "resource","verb" })"
-                                                    Unit="seconds"></MetircsHistogramGroupByMultipleAvgView>
+                                                    MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
+                                                    Unit="seconds">
+            </MetircsHistogramGroupByMultipleAvgView>
         </Drawer>
 
         <MetircsHistogramSumView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" Title="Response Size" CalcField="sum" Unit="bytes"></MetircsHistogramSumView>
@@ -348,8 +350,9 @@
             <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
                                                     MetricName="apiserver_request_sli_duration_seconds"
                                                     GroupBy="verb"
-                                                    MultipleGroupBy="@(new List<string> {  "group", "resource","verb" })"
-                                                    Unit="seconds"></MetircsHistogramGroupByMultipleAvgView>
+                                                    MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
+                                                    Unit="seconds">
+            </MetircsHistogramGroupByMultipleAvgView>
 
         </Drawer>
     </TabPane>
