@@ -4,7 +4,12 @@
     {
         var ret = Unit switch
         {
-            "bytes" => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
+            "bytes" => Number switch
+            {
+                > 1024 * 1024 * 1024                     => $"{Math.Round((double)Number / 1024 / 1024 / 1024, 2)} GB",
+                >= 1024 * 1024 and <= 1024 * 1024 * 1024 => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
+                _                                        => $"{Math.Round((double)Number / 1024, 2)} KB"
+            },
             "seconds" => Number switch
             {
                 > 60           => $"{Math.Round((double)Number / 60, 2)} min",

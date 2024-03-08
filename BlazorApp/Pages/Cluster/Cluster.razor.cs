@@ -47,6 +47,7 @@ public partial class Cluster : ComponentBase
 
     private bool _apiServerRequestDetailVisible = false;
     private bool _apiServerRequestLatencyDetailVisible = false;
+    private bool _apiServerResponseSizeDetailVisible = false;
     private bool _apiServerRequestSliDetailVisible = false;
     private bool _etcdStorageDetailVisible      = false;
     private bool _etcdRequestLatencyDetailVisible      = false;
