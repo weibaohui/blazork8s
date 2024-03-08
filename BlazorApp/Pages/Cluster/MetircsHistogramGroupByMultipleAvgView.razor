@@ -1,0 +1,107 @@
+@using Extension
+@using k8s
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@if (AllMetrics.Any(x => x.Name == MetricName))
+{
+    //将group by 的字段值找出来，后面根据这个值，逐个计算 sum/count
+    var groups = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
+        .Measurements?
+        .Select(x => x.Labels.Where(lb => MultipleGroupBy.Contains(lb.Key))
+            .ToDictionary(kv => kv.Key, kv => kv.Value)
+        )
+        .Distinct()
+        .ToList();
+
+
+    //去重
+    IDictionary<string, Dictionary<string, string>> distinctList = new Dictionary<string, Dictionary<string, string>>();
+    if (groups != null)
+    {
+        foreach (var enumerable in groups)
+        {
+            var hash = KubernetesJson.Serialize(enumerable).ToMd5Str();
+            if (!distinctList.ContainsKey(hash))
+            {
+                distinctList.Add(hash, enumerable);
+            }
+        }
+    }
+
+    //去重完毕
+    var group = distinctList.Values;
+    if (group is { Count: > 0 })
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="12">item</GridCol>
+            <GridCol Span="12">value</GridCol>
+        </GridRow>
+        foreach (var item in group)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="12">
+                    @{
+                        var ui = "";
+                        foreach (var (k, v) in item)
+                        {
+                            ui += $"/{v}";
+                        }
+                    }
+                    @ui
+
+                </GridCol>
+                <GridCol Span="12">
+                    @{
+                        var countLinq = AllMetrics
+                            .FirstOrDefault(x => x.Name == MetricName)?
+                            .Measurements
+                            .Where(x => x.Name == $"{MetricName}_count");
+                        foreach (var (k, v) in item)
+                        {
+                            countLinq = countLinq?.Where(x => x.Labels[k] == v);
+                        }
+
+                        var count = countLinq?
+                            .Sum(x => x.Value);
+                        var sumLinq = AllMetrics
+                            .FirstOrDefault(x => x.Name == MetricName)?
+                            .Measurements
+                            .Where(x => x.Name == $"{MetricName}_sum");
+                        foreach (var (k, v) in item)
+                        {
+                            sumLinq = sumLinq?.Where(x => x.Labels[k] == v);
+                        }
+
+                        var sum = sumLinq?
+                            .Sum(x => x.Value);
+                        var avg = sum / count;
+                    }
+                    <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
+                </GridCol>
+            </GridRow>
+        }
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter]
+    public string MetricName { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+
+    [Parameter]
+    public string Unit { get; set; }
+
+
+    [Parameter]
+    public string GroupBy { get; set; }
+
+    [Parameter]
+    public List<string> MultipleGroupBy { get; set; } = new List<string>() { "verb", "group", "resource" };
+
+}
