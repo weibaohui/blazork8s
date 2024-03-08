@@ -13,14 +13,14 @@
     if (group != null)
     {
         <GridRow Class="grid-table">
-            <GridCol Span="12">item</GridCol>
-            <GridCol Span="12">value</GridCol>
+            <GridCol Span="16">Item</GridCol>
+            <GridCol Span="8">Value</GridCol>
         </GridRow>
         foreach (var item in group)
         {
             <GridRow Class="grid-table">
-                <GridCol Span="12"> @(item)</GridCol>
-                <GridCol Span="12">
+                <GridCol Span="16"> @(item)</GridCol>
+                <GridCol Span="8">
                     @{
                         var count = AllMetrics
                             .FirstOrDefault(x => x.Name == MetricName)?
