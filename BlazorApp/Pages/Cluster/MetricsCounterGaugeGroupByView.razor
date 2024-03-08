@@ -13,11 +13,10 @@
         foreach (var gb in group)
         {
             <GridRow Class="grid-table">
-                <GridCol Span="4">
-                    @GroupBy
+                <GridCol Span="12">
                     @(gb.Code)
                 </GridCol>
-                <GridCol Span="6">
+                <GridCol Span="12">
                     <NumberFormat Number="@(gb.Count)" Unit="@Unit"></NumberFormat>
                 </GridCol>
             </GridRow>

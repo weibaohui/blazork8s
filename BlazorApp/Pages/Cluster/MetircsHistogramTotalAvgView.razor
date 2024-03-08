@@ -18,6 +18,11 @@
                 var avg = seconds / count ;
             }
             <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
+
+             @if (OnDetailClick.HasDelegate)
+                        {
+                            <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">detail</Button>
+                        }
         </GridCol>
     </GridRow>
 }
@@ -36,5 +41,9 @@
 
     [Parameter]
     public string Unit { get; set; }
+
+
+    [Parameter]
+    public EventCallback OnDetailClick { get; set; }
 
 }

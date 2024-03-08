@@ -45,11 +45,14 @@ public partial class Cluster : ComponentBase
     private Dictionary<string, int> AllResourcesCount { get; set; }
     private IList<IMetric>          AllMetrics        { get; set; }
 
-    bool apiserver_request_detail_visible = false;
-    bool etcd_storage_detail_visible      = false;
+    private bool _apiServerRequestDetailVisible = false;
+    private bool _apiServerRequestLatencyDetailVisible = false;
+    private bool _apiServerRequestSliDetailVisible = false;
+    private bool _etcdStorageDetailVisible      = false;
+    private bool _etcdRequestLatencyDetailVisible      = false;
 
-    public  string LivezResult  { get; set; }
-    public  string ReadyzResult { get; set; }
+    private string LivezResult  { get; set; }
+    private string ReadyzResult { get; set; }
     private string _aiSummary = string.Empty;
 
     private Timer _timer;

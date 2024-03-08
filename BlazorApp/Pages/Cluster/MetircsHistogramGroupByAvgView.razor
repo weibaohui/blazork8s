@@ -1,0 +1,63 @@
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@if (AllMetrics.Any(x => x.Name == MetricName))
+{
+    //将group by 的字段值找出来，后面根据这个值，逐个计算 sum/count
+    var group = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
+        .Measurements?
+        .Select(x => x.Labels[GroupBy])
+        .Distinct()
+        .ToList();
+    group?.Sort((x, y) => string.Compare(x, y, StringComparison.Ordinal));
+
+
+    if (group != null)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="12">item</GridCol>
+            <GridCol Span="12">value</GridCol>
+        </GridRow>
+        foreach (var item in group)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="12"> @(item)</GridCol>
+                <GridCol Span="12">
+                    @{
+                        var count = AllMetrics
+                            .FirstOrDefault(x => x.Name == MetricName)?
+                            .Measurements
+                            .Where(x => x.Name == $"{MetricName}_count" && x.Labels[GroupBy] == item)
+                            .Sum(x => x.Value);
+                        var sum = AllMetrics
+                            .FirstOrDefault(x => x.Name == MetricName)?
+                            .Measurements
+                            .Where(x => x.Name == $"{MetricName}_sum" && x.Labels[GroupBy] == item)
+                            .Sum(x => x.Value);
+                        var avg = sum / count;
+                    }
+                    <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
+                </GridCol>
+            </GridRow>
+        }
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter]
+    public string MetricName { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+
+    [Parameter]
+    public string Unit { get; set; }
+
+
+    [Parameter]
+    public string GroupBy { get; set; }
+
+}
