@@ -1,0 +1,35 @@
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@if (AllMetrics.Any(x => x.Name == MetricName))
+{
+    <GridRow Class="grid-table">
+        <GridCol Span="4">@Title</GridCol>
+        <GridCol Span="6">
+            <NumberFormat Unit="@Unit" Number="@AllMetrics.FirstOrDefault(x => x.Name == MetricName)?.Measurements.Sum(x => x.Value)"></NumberFormat>
+
+            @if (OnDetailClick.HasDelegate)
+            {
+                <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">detail</Button>
+            }
+        </GridCol>
+    </GridRow>
+}
+
+@code {
+
+    [Parameter]
+    public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter]
+    public string MetricName { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Unit { get; set; }
+
+    [Parameter]
+    public EventCallback OnDetailClick { get; set; }
+
+
+}

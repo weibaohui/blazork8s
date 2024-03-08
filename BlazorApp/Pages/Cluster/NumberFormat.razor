@@ -1,0 +1,26 @@
+@{
+    if (Number!=null)
+    {
+        var ret = Unit switch
+        {
+            "bytes"   => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
+            "seconds" => $"{Math.Round((double)Number * 1000, 2)} ms",
+            _         => $"{Number}"
+        };
+        @ret
+    }
+
+
+
+}
+
+
+@code {
+
+    [Parameter]
+    public double? Number { get; set; } = 0;
+
+    [Parameter]
+    public string Unit { get; set; }
+
+}

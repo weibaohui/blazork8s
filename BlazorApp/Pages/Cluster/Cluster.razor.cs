@@ -45,6 +45,8 @@ public partial class Cluster : ComponentBase
     private Dictionary<string, int> AllResourcesCount { get; set; }
     private IList<IMetric>          AllMetrics        { get; set; }
 
+    bool apiserver_request_detail_visible = false;
+    bool etcd_storage_detail_visible      = false;
 
     public  string LivezResult  { get; set; }
     public  string ReadyzResult { get; set; }

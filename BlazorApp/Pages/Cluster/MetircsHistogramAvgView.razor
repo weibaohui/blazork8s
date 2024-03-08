@@ -1,0 +1,40 @@
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@if (AllMetrics.Any(x => x.Name == MetricName))
+{
+    <GridRow Class="grid-table">
+        <GridCol Span="4">@Title</GridCol>
+        <GridCol Span="6">
+            @{
+                var count = AllMetrics
+                    .FirstOrDefault(x => x.Name == MetricName)?
+                    .Measurements
+                    .Where(x => x.Name == $"{MetricName}_count")
+                    .Sum(x => x.Value);
+                var seconds = AllMetrics
+                    .FirstOrDefault(x => x.Name == MetricName)?
+                    .Measurements
+                    .Where(x => x.Name == $"{MetricName}_sum")
+                    .Sum(x => x.Value);
+                var avg = seconds / count ;
+            }
+            <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
+        </GridCol>
+    </GridRow>
+}
+
+@code {
+
+    [Parameter]
+    public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter]
+    public string MetricName { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+
+    [Parameter]
+    public string Unit { get; set; }
+
+}

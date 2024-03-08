@@ -1,0 +1,45 @@
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@if (AllMetrics.Any(x => x.Name == MetricName))
+{
+    var group = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
+        .Measurements?
+        .GroupBy(x => x.Labels[GroupBy])?
+        .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
+        .OrderByDescending(x => x.Count)
+        .ToList();
+
+    if (group != null)
+    {
+        foreach (var gb in group)
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="4">
+                    @GroupBy
+                    @(gb.Code)
+                </GridCol>
+                <GridCol Span="6">
+                    <NumberFormat Number="@(gb.Count)" Unit="@Unit"></NumberFormat>
+                </GridCol>
+            </GridRow>
+        }
+    }
+}
+
+@code {
+
+    [Parameter]
+    public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter]
+    public string MetricName { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string GroupBy { get; set; }
+
+    [Parameter]
+    public string Unit { get; set; }
+
+}
