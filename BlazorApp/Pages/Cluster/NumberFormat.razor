@@ -1,17 +1,32 @@
+@using BlazorApp.Pages.Common
 @{
-    if (Number!=null)
+    if (Number != null)
     {
         var ret = Unit switch
         {
-            "bytes"   => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
-            "seconds" => $"{Math.Round((double)Number * 1000, 2)} ms",
-            _         => $"{Number}"
+            "bytes" => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
+            "seconds" => Number switch
+            {
+                > 60           => $"{Math.Round((double)Number / 60, 2)} min",
+                >= 1 and <= 60 => $"{Math.Round((double)Number, 2)} s",
+                _              => $"{Math.Round((double)Number * 1000, 2)} ms"
+            },
+
+            _ => $"{Number}"
         };
-        @ret
+        var strings = ret.Split(" ");
+        if (strings.Length == 2)
+        {
+            <span>
+                @strings[0]
+                <ColorfulTag>@strings[1]</ColorfulTag>
+            </span>
+        }
+        else
+        {
+            @ret
+        }
     }
-
-
-
 }
 
 
