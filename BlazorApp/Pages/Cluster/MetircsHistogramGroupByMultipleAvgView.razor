@@ -1,7 +1,7 @@
 @using Extension
 @using k8s
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
-@if (AllMetrics.Any(x => x.Name == MetricName))
+@if (MultipleGroupBy is { Count: > 0 } && AllMetrics.Any(x => x.Name == MetricName))
 {
     //将group by 的字段值找出来，后面根据这个值，逐个计算 sum/count
     var groups = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
@@ -46,7 +46,7 @@
                             ui += $"/{v}";
                         }
                     }
-                    @ui.Replace("///","/").Replace("//","/").TrimEnd('/')
+                    @ui.Replace("///", "/").Replace("//", "/").TrimEnd('/')
 
                 </GridCol>
                 <GridCol Span="8">
@@ -99,9 +99,6 @@
 
 
     [Parameter]
-    public string GroupBy { get; set; }
-
-    [Parameter]
-    public List<string> MultipleGroupBy { get; set; } = new List<string>() { "verb", "group", "resource" };
+    public List<string> MultipleGroupBy { get; set; }
 
 }
