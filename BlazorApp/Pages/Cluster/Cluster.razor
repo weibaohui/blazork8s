@@ -1,10 +1,7 @@
 @page "/Cluster"
 @using k8s.Models
 @using Mapster
-@using Extension
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Node
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
 
@@ -32,351 +29,70 @@
             }
         </Card>
     </GridCol>
-    <GridCol Span="14">
-        <Card Title=@($"实时巡检 【最近一次：{LastInspection.ToLocalTime()}】") Style="margin: 10px">
-            <GridRow Class="grid-table">
-                <GridCol Span="6">异常汇总</GridCol>
-                <GridCol Span="18">智能分析</GridCol>
-            </GridRow>
-            <GridRow Class="grid-table">
-                <GridCol Span="6">
 
-                    <p>
-                        last:<AgeView Age="@LastInspection"></AgeView> ago
-                    </p>
-                    @if (AnalyzeResult is { Count: > 0 })
-                    {
-                        @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
-                        {
-                            <div>
-                                @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
-                            </div>
-                        }
-                    }
-                    @if (PassResources is { Count: > 0 })
-                    {
-                        @foreach (var name in PassResources)
-                        {
-                            <div>
-                                @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
-                            </div>
-                        }
-                    }
-                </GridCol>
-                <GridCol Span="18">
-                    <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
-                    @if (!_aiSummary.IsNullOrWhiteSpace())
-                    {
-                        <Alert Type="@AlertType.Warning">
-                            @((MarkupString)_aiSummary.ToHtmlDisplay())
-                        </Alert>
-                    }
-                </GridCol>
-            </GridRow>
-        </Card>
-    </GridCol>
 </GridRow>
 
 
-<Tabs Style="margin: 50px" DefaultActiveKey="Nodes" Type="@TabType.Card" Size="@TabSize.Large">
-<TabPane Key="Status" Tab="API Status">
-    @if (ApiServicesList is { Count: > 0 })
-    {
-        <GridRow Class="grid-table">
-            <GridCol Span="8">Name</GridCol>
-            <GridCol Span="8">Status</GridCol>
-        </GridRow>
-        @foreach (var item in ApiServicesList)
-        {
-            <GridRow Class="grid-table grid-table-first-row">
-                <GridCol Span="8"> @item.Name()</GridCol>
-                <GridCol Span="8">
-                    <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
-                </GridCol>
-            </GridRow>
-        }
-    }
-</TabPane>
-<TabPane Key="Livez" Tab="Livez">
-    @((MarkupString)LivezResult.ToHtmlDisplay())
-</TabPane>
-<TabPane Key="Readyz" Tab="Readyz">
-    @((MarkupString)ReadyzResult.ToHtmlDisplay())
-</TabPane>
-<TabPane Key="Nodes" Tab="Nodes">
-    @if (NodeList is { Count: > 0 })
-    {
-        <GridRow Class="grid-table">
-            <GridCol Span="24">
-                <Space Size="@("4")" Wrap>
-                    @foreach (var item in NodeList)
-                    {
-                        <SpaceItem>
-                            <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
-                                <NodeStatusChart Node="@item"></NodeStatusChart>
-                            </Card>
-                        </SpaceItem>
-                    }
-                </Space>
-            </GridCol>
-        </GridRow>
-    }
-</TabPane>
-<TabPane Key="Pods" Tab="Pods">
-    @if (PodList is { Count: > 0 })
-    {
-        <GridRow Class="grid-table">
-            <GridCol Span="8">Name</GridCol>
-            <GridCol Span="8">CPU</GridCol>
-            <GridCol Span="8">Memory</GridCol>
-        </GridRow>
-        @foreach (var item in PodList)
-        {
-            <GridRow Class="grid-table grid-table-first-row">
-                <GridCol Span="8">@item.Name()</GridCol>
-                <GridCol Span="8">
-                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
-                </GridCol>
-                <GridCol Span="8">
-                    <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
-                </GridCol>
-            </GridRow>
-        }
-    }
-</TabPane>
-
-<TabPane Key="Errors" Tab="Errors">
-
-    @if (AnalyzeResult is { Count: > 0 })
-    {
-        <GridRow Class="grid-table">
-            <GridCol Span="8">Name</GridCol>
-            <GridCol Span="12">Error</GridCol>
-            <GridCol Span="2">Action</GridCol>
-
-        </GridRow>
-        @foreach (var item in AnalyzeResult)
-        {
-            <GridRow Class="grid-table grid-table-first-row">
-
-                <GridCol Span="8">
-                    <RefView Ref="@GetRef(item)" FullView="true"></RefView>
-                </GridCol>
-                <GridCol Span="12">
-                    <div>
-                        @foreach (var failure in item.Error)
-                        {
-                            <li style="list-style: decimal">@failure.Text</li>
-                        }
-                    </div>
-                </GridCol>
-                <GridCol Span="2">
-                    <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
-                </GridCol>
-            </GridRow>
-        }
-    }
-</TabPane>
-
-<TabPane Key="Inspection" Tab="Inspection">
-
-    @if (AllResourcesCount is { Count: > 0 })
-    {
-        <Space Wrap>
-            @foreach (var item in AllResourcesCount)
-            {
-                var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;
-                <SpaceItem>
-                    <Card Style="width: 300px;margin: 5px">
-                        <GridRow Class="grid-table">
-                            <GridCol Span="16">
-                                <div >
-                                    @item.Key
-                                </div >
-                                <div >
-                                    @($"{errors}  / {item.Value}  ")
-                                    <span style="color: gray">
-                                        @($"[err/all]")
-                                    </span >
-                                </div >
-                            </GridCol >
-                            <GridCol Span="8">
-                                <InspectionResourceRingChart Denominator="@item.Value" Numerator="@errors"></InspectionResourceRingChart >
-                            </GridCol >
-                        </GridRow>
-                    </Card>
-                </SpaceItem>
-            }
-        </Space>
-    }
-</TabPane>
-
-@if (AllMetrics != null)
-{
-    <TabPane Key="k8sFeature" Tab="Feature">
-        @if (AllMetrics.Any(x => x.Name == "kubernetes_feature_enabled") is true)
+<Tabs Style="margin: 50px" DefaultActiveKey="Status" Type="@TabType.Card" Size="@TabSize.Large">
+    <TabPane Key="Status" Tab="API Status">
+        @if (ApiServicesList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
                 <GridCol Span="8">Name</GridCol>
-                <GridCol Span="6">Stage</GridCol>
-                <GridCol Span="6">Status</GridCol>
-
+                <GridCol Span="8">Status</GridCol>
             </GridRow>
-            var measurements = AllMetrics.FirstOrDefault(x => x.Name == "kubernetes_feature_enabled")?.Measurements;
-            if (measurements is { Count: > 0 })
+            @foreach (var item in ApiServicesList)
             {
-                foreach (var item in measurements)
-                {
-                    <GridRow Class="grid-table grid-table-first-row">
-
-                        <GridCol Span="8">
-                            @item.Labels["name"]
-                        </GridCol>
-                        <GridCol Span="6">
-                            @item.Labels["stage"]
-                        </GridCol>
-                        <GridCol Span="6">
-                            @if (item is { Value: > 0 })
-                            {
-                                <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
-                            }
-                            else
-                            {
-                                <Tag >Disabled</Tag>
-                            }
-                        </GridCol>
-                    </GridRow>
-                }
+                <GridRow Class="grid-table grid-table-first-row">
+                    <GridCol Span="8"> @item.Name()</GridCol>
+                    <GridCol Span="8">
+                        <ConditionsTagView Conditions="@(item.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
+                    </GridCol>
+                </GridRow>
             }
         }
     </TabPane>
-    <TabPane Key="Etcd" Tab="Etcd">
 
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" MetricName="apiserver_storage_size_bytes" Title="Storage Size" Unit="bytes" OnDetailClick="@(() => _etcdStorageDetailVisible = true)"></MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_etcdStorageDetailVisible" Placement="right" Width="800" Title='("Etcd Storage Detail")'>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_storage_size_bytes" GroupBy="cluster" Unit="bytes"></MetricsCounterGaugeGroupByView>
-        </Drawer>
+    @if (AllMetrics != null)
+    {
+        <TabPane Key="k8sFeature" Tab="Feature">
+            @if (AllMetrics.Any(x => x.Name == "kubernetes_feature_enabled") is true)
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="8">Name</GridCol>
+                    <GridCol Span="6">Stage</GridCol>
+                    <GridCol Span="6">Status</GridCol>
 
-        <MetircsHistogramSumView AllMetrics="@AllMetrics" MetricName="etcd_lease_object_counts" Title="Object Count" CalcField="count"></MetircsHistogramSumView>
+                </GridRow>
+                var measurements = AllMetrics.FirstOrDefault(x => x.Name == "kubernetes_feature_enabled")?.Measurements;
+                if (measurements is { Count: > 0 })
+                {
+                    foreach (var item in measurements)
+                    {
+                        <GridRow Class="grid-table grid-table-first-row">
 
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request Total" MetricName="etcd_requests_total"> </MetricsCounterGaugeSumView>
-
-        <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Latency (avg)" MetricName="etcd_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _etcdRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
-        <Drawer Closable="true" @bind-Visible="@_etcdRequestLatencyDetailVisible" Placement="right" Width="800" Title='("Request Detail")'>
-            <Divider Orientation="left" Style="font-weight:bold">Type</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="type" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Operation</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="operation" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
-            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
-                                                    MetricName="etcd_request_duration_seconds"
-                                                    GroupBy="verb"
-                                                    MultipleGroupBy="@(new List<string> { "operation", "type" })"
-                                                    Unit="seconds">
-            </MetircsHistogramGroupByMultipleAvgView>
-        </Drawer>
-    </TabPane>
-    <TabPane Key="ApiServer" Tab="ApiServer">
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Auth Counts" MetricName="authentication_attempts"> </MetricsCounterGaugeSumView>
-        <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Auth Latency (avg)" MetricName="authentication_duration_seconds" Unit="seconds"></MetircsHistogramTotalAvgView>
-        <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Latency (avg)" MetricName="apiserver_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _apiServerRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
-
-        <Drawer Closable="true" @bind-Visible="@_apiServerRequestLatencyDetailVisible" Placement="right" Width="800" Title='("Request Latency GroupBy")'>
-            <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="component" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="verb" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="group" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="resource" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="subresource" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Scope</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="scope" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
-            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
-                                                    MetricName="apiserver_request_duration_seconds"
-                                                    MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
-                                                    Unit="seconds">
-            </MetircsHistogramGroupByMultipleAvgView>
-        </Drawer>
-
-        <MetircsHistogramSumView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" Title="Response Size (total)" CalcField="sum" Unit="bytes" ></MetircsHistogramSumView>
-        <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Response Size (avg)" MetricName="apiserver_response_sizes" Unit="bytes" OnDetailClick="@(() => _apiServerResponseSizeDetailVisible = true)" ></MetircsHistogramTotalAvgView>
-
-        <Drawer Closable="true" @bind-Visible="@_apiServerResponseSizeDetailVisible" Placement="right" Width="800" Title='("Response Size GroupBy Avg")'>
-            <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="component" Unit="bytes"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="verb" Unit="bytes"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="group" Unit="bytes"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="resource" Unit="bytes"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="subresource" Unit="bytes"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Scope</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="scope" Unit="bytes"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
-            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
-                                                    MetricName="apiserver_response_sizes"
-                                                    MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
-                                                    Unit="bytes">
-            </MetircsHistogramGroupByMultipleAvgView>
-        </Drawer>
-
-
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request InFlight" MetricName="apiserver_current_inflight_requests"> </MetricsCounterGaugeSumView>
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request InQueue" MetricName="apiserver_current_inqueue_requests"> </MetricsCounterGaugeSumView>
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Workqueue Added" MetricName="workqueue_adds_total"> </MetricsCounterGaugeSumView>
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Workqueue Retries" MetricName="workqueue_retries_total"> </MetricsCounterGaugeSumView>
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Flowcontrol InQueue" MetricName="apiserver_flowcontrol_current_inqueue_requests"> </MetricsCounterGaugeSumView>
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Flowcontrol Executing" MetricName="apiserver_flowcontrol_current_executing_requests"> </MetricsCounterGaugeSumView>
-        <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request Total" MetricName="apiserver_request_total" OnDetailClick="@(() => _apiServerRequestDetailVisible = true)"></MetricsCounterGaugeSumView>
-
-        <Drawer Closable="true" @bind-Visible="@_apiServerRequestDetailVisible" Placement="right" Width="800" Title='("Request Detail GroupBy")'>
-            <Divider Orientation="left" Style="font-weight:bold">Code</Divider>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="code"></MetricsCounterGaugeGroupByView>
-            <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="verb"></MetricsCounterGaugeGroupByView>
-            <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="component"></MetricsCounterGaugeGroupByView>
-            <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="group"></MetricsCounterGaugeGroupByView>
-            <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="resource"></MetricsCounterGaugeGroupByView>
-            <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
-            <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="subresource"></MetricsCounterGaugeGroupByView>
-
-        </Drawer>
-
-
-        <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Sli Latency (avg)" MetricName="apiserver_request_sli_duration_seconds" OnDetailClick="@(() => _apiServerRequestSliDetailVisible = true)" Unit="seconds"></MetircsHistogramTotalAvgView>
-
-        <Drawer Closable="true" @bind-Visible="@_apiServerRequestSliDetailVisible" Placement="right" Width="800" Title='("Request Latency GroupBy")'>
-            <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="component" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="group" Unit="seconds"></MetircsHistogramGroupByAvgView>
-
-            <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="resource" Unit="seconds"></MetircsHistogramGroupByAvgView>
-
-            <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="subresource" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
-            <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="verb" Unit="seconds"></MetircsHistogramGroupByAvgView>
-            <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
-            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
-                                                    MetricName="apiserver_request_sli_duration_seconds"
-                                                    MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
-                                                    Unit="seconds">
-            </MetircsHistogramGroupByMultipleAvgView>
-
-        </Drawer>
-    </TabPane>
-}
+                            <GridCol Span="8">
+                                @item.Labels["name"]
+                            </GridCol>
+                            <GridCol Span="6">
+                                @item.Labels["stage"]
+                            </GridCol>
+                            <GridCol Span="6">
+                                @if (item is { Value: > 0 })
+                                {
+                                    <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
+                                }
+                                else
+                                {
+                                    <Tag >Disabled</Tag>
+                                }
+                            </GridCol>
+                        </GridRow>
+                    }
+                }
+            }
+        </TabPane>
+    }
 
 
 </Tabs >

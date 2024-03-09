@@ -17,7 +17,13 @@ public partial class BasicLayout : LayoutComponentBase
     {
         MenuData =
         [
-            GetMenuItem("Cluster", "cluster"),
+            new MenuDataItem
+            {
+                Name     = "Cluster",
+                Key      = "Cluster",
+                Icon     = "cluster",
+                Children = ClusterMenu(),
+            },
             new MenuDataItem
             {
                 Path       = "/PortForward",
@@ -77,6 +83,16 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItem("OpenSource", "github")
         ];
         await base.OnInitializedAsync();
+    }
+
+    private MenuDataItem[] ClusterMenu()
+    {
+        return new[]
+        {
+            GetMenuItemWithPath("Overview", "cluster", "/Cluster"),
+            GetMenuItemWithPath("Inspection", "cluster", "/Cluster/Inspection"),
+            GetMenuItemWithPath("Metrics", "cluster", "/Cluster/Metrics"),
+        };
     }
 
     private MenuDataItem GetMenuItem(string item, string icon)

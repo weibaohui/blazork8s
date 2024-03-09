@@ -1,0 +1,183 @@
+@page "/Cluster/Inspection"
+@using Extension
+@using k8s.Models
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Node
+@using BlazorApp.Pages.Common
+
+<div style="margin: 50px">
+<GridRow Class="grid-table">
+    <GridCol Span="6">异常汇总</GridCol>
+    <GridCol Span="18">智能分析</GridCol>
+</GridRow>
+<GridRow Class="grid-table">
+    <GridCol Span="6">
+
+        <p>
+            last:<AgeView Age="@LastInspection"></AgeView> ago
+        </p>
+        @if (AnalyzeResult is { Count: > 0 })
+        {
+            @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
+            {
+                <div>
+                    @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
+                </div>
+            }
+        }
+        @if (PassResources is { Count: > 0 })
+        {
+            @foreach (var name in PassResources)
+            {
+                <div>
+                    @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                </div>
+            }
+        }
+    </GridCol>
+    <GridCol Span="18">
+        <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
+        @if (!_aiSummary.IsNullOrWhiteSpace())
+        {
+            <Alert Type="@AlertType.Warning">
+                @((MarkupString)_aiSummary.ToHtmlDisplay())
+            </Alert>
+        }
+    </GridCol>
+</GridRow>
+</div>
+
+<Tabs Style="margin: 50px" DefaultActiveKey="Overview" Type="@TabType.Card" Size="@TabSize.Large">
+
+    <TabPane Key="Overview" Tab="Overview">
+
+        @if (AllResourcesCount is { Count: > 0 })
+        {
+            <Space Wrap>
+                @foreach (var item in AllResourcesCount)
+                {
+                    var errors = AnalyzeResult.Where(x => x.Kind == item.Key).ToList().Count;
+                    <SpaceItem>
+                        <Card Style="width: 300px;margin: 5px">
+                            <GridRow Class="grid-table">
+                                <GridCol Span="16">
+                                    <div >
+                                        @item.Key
+                                    </div >
+                                    <div >
+                                        @($"{errors}  / {item.Value}  ")
+                                        <span style="color: gray">
+                                            @($"[err/all]")
+                                        </span >
+                                    </div >
+                                </GridCol >
+                                <GridCol Span="8">
+                                    <InspectionResourceRingChart Denominator="@item.Value" Numerator="@errors"></InspectionResourceRingChart >
+                                </GridCol >
+                            </GridRow>
+                        </Card>
+                    </SpaceItem>
+                }
+            </Space>
+        }
+        else
+        {
+            <Empty Simple/>
+        }
+    </TabPane>
+
+    <TabPane Key="Livez" Tab="Livez">
+        @((MarkupString)LivezResult.ToHtmlDisplay())
+    </TabPane>
+    <TabPane Key="Readyz" Tab="Readyz">
+        @((MarkupString)ReadyzResult.ToHtmlDisplay())
+    </TabPane>
+    <TabPane Key="Nodes" Tab="Nodes">
+        @if (NodeList is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="24">
+                    <Space Size="@("4")" Wrap>
+                        @foreach (var item in NodeList)
+                        {
+                            <SpaceItem>
+                                <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
+                                    <NodeStatusChart Node="@item"></NodeStatusChart>
+                                </Card>
+                            </SpaceItem>
+                        }
+                    </Space>
+                </GridCol>
+            </GridRow>
+        }
+        else
+                {
+                    <Empty Simple/>
+                }
+    </TabPane>
+    <TabPane Key="Pods" Tab="Pods">
+        @if (PodList is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="8">CPU</GridCol>
+                <GridCol Span="8">Memory</GridCol>
+            </GridRow>
+            @foreach (var item in PodList)
+            {
+                <GridRow Class="grid-table grid-table-first-row">
+                    <GridCol Span="8">@item.Name()</GridCol>
+                    <GridCol Span="8">
+                        <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="cpu"></MetricView>
+                    </GridCol>
+                    <GridCol Span="8">
+                        <MetricView ResourceType="Pod" ItemName="@item.Name()" MetricType="memory"></MetricView>
+                    </GridCol>
+                </GridRow>
+            }
+        }
+        else
+                {
+                    <Empty Simple/>
+                }
+    </TabPane>
+
+    <TabPane Key="Errors" Tab="Errors">
+
+        @if (AnalyzeResult is { Count: > 0 })
+        {
+            <GridRow Class="grid-table">
+                <GridCol Span="8">Name</GridCol>
+                <GridCol Span="12">Error</GridCol>
+                <GridCol Span="2">Action</GridCol>
+
+            </GridRow>
+            @foreach (var item in AnalyzeResult)
+            {
+                <GridRow Class="grid-table grid-table-first-row">
+
+                    <GridCol Span="8">
+                        <RefView Ref="@GetRef(item)" FullView="true"></RefView>
+                    </GridCol>
+                    <GridCol Span="12">
+                        <div>
+                            @foreach (var failure in item.Error)
+                            {
+                                <li style="list-style: decimal">@failure.Text</li>
+                            }
+                        </div>
+                    </GridCol>
+                    <GridCol Span="2">
+                        <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
+                    </GridCol>
+                </GridRow>
+            }
+        }
+        else
+                {
+                    <Empty Simple/>
+                }
+    </TabPane>
+
+
+</Tabs >

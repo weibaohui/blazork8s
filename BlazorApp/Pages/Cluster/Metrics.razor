@@ -1,0 +1,134 @@
+@page "/Cluster/Metrics"
+<Tabs Style="margin: 50px" DefaultActiveKey="Etcd" Type="@TabType.Card" Size="@TabSize.Large">
+
+    @if (AllMetrics != null)
+    {
+        <TabPane Key="Etcd" Tab="Etcd">
+
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" MetricName="apiserver_storage_size_bytes" Title="Storage Size" Unit="bytes" OnDetailClick="@(() => _etcdStorageDetailVisible = true)"></MetricsCounterGaugeSumView>
+            <Drawer Closable="true" @bind-Visible="@_etcdStorageDetailVisible" Placement="right" Width="800" Title='("Etcd Storage Detail")'>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_storage_size_bytes" GroupBy="cluster" Unit="bytes"></MetricsCounterGaugeGroupByView>
+            </Drawer>
+
+            <MetircsHistogramSumView AllMetrics="@AllMetrics" MetricName="etcd_lease_object_counts" Title="Object Count" CalcField="count"></MetircsHistogramSumView>
+
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request Total" MetricName="etcd_requests_total"> </MetricsCounterGaugeSumView>
+
+            <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Latency (avg)" MetricName="etcd_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _etcdRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
+            <Drawer Closable="true" @bind-Visible="@_etcdRequestLatencyDetailVisible" Placement="right" Width="800" Title='("Request Detail")'>
+                <Divider Orientation="left" Style="font-weight:bold">Type</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="type" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Operation</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="operation" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
+                <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
+                                                        MetricName="etcd_request_duration_seconds"
+                                                        MultipleGroupBy="@(new List<string> { "operation", "type" })"
+                                                        Unit="seconds">
+                </MetircsHistogramGroupByMultipleAvgView>
+            </Drawer>
+        </TabPane>
+        <TabPane Key="ApiServer" Tab="ApiServer">
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Auth Counts" MetricName="authentication_attempts"> </MetricsCounterGaugeSumView>
+            <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Auth Latency (avg)" MetricName="authentication_duration_seconds" Unit="seconds"></MetircsHistogramTotalAvgView>
+            <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Latency (avg)" MetricName="apiserver_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _apiServerRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
+
+            <Drawer Closable="true" @bind-Visible="@_apiServerRequestLatencyDetailVisible" Placement="right" Width="800" Title='("Request Latency GroupBy")'>
+                <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="component" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="verb" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="group" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="resource" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="subresource" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Scope</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="scope" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
+                <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
+                                                        MetricName="apiserver_request_duration_seconds"
+                                                        MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
+                                                        Unit="seconds">
+                </MetircsHistogramGroupByMultipleAvgView>
+            </Drawer>
+
+            <MetircsHistogramSumView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" Title="Response Size (total)" CalcField="sum" Unit="bytes"></MetircsHistogramSumView>
+            <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Response Size (avg)" MetricName="apiserver_response_sizes" Unit="bytes" OnDetailClick="@(() => _apiServerResponseSizeDetailVisible = true)"></MetircsHistogramTotalAvgView>
+
+            <Drawer Closable="true" @bind-Visible="@_apiServerResponseSizeDetailVisible" Placement="right" Width="800" Title='("Response Size GroupBy Avg")'>
+                <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="component" Unit="bytes"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="verb" Unit="bytes"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="group" Unit="bytes"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="resource" Unit="bytes"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="subresource" Unit="bytes"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Scope</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="scope" Unit="bytes"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
+                <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
+                                                        MetricName="apiserver_response_sizes"
+                                                        MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
+                                                        Unit="bytes">
+                </MetircsHistogramGroupByMultipleAvgView>
+            </Drawer>
+
+
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request InFlight" MetricName="apiserver_current_inflight_requests"> </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request InQueue" MetricName="apiserver_current_inqueue_requests"> </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Workqueue Added" MetricName="workqueue_adds_total"> </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Workqueue Retries" MetricName="workqueue_retries_total"> </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Flowcontrol InQueue" MetricName="apiserver_flowcontrol_current_inqueue_requests"> </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Flowcontrol Executing" MetricName="apiserver_flowcontrol_current_executing_requests"> </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Request Total" MetricName="apiserver_request_total" OnDetailClick="@(() => _apiServerRequestDetailVisible = true)"></MetricsCounterGaugeSumView>
+
+            <Drawer Closable="true" @bind-Visible="@_apiServerRequestDetailVisible" Placement="right" Width="800" Title='("Request Detail GroupBy")'>
+                <Divider Orientation="left" Style="font-weight:bold">Code</Divider>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="code"></MetricsCounterGaugeGroupByView>
+                <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="verb"></MetricsCounterGaugeGroupByView>
+                <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="component"></MetricsCounterGaugeGroupByView>
+                <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="group"></MetricsCounterGaugeGroupByView>
+                <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="resource"></MetricsCounterGaugeGroupByView>
+                <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
+                <MetricsCounterGaugeGroupByView AllMetrics="@AllMetrics" MetricName="apiserver_request_total" GroupBy="subresource"></MetricsCounterGaugeGroupByView>
+
+            </Drawer>
+
+
+            <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Sli Latency (avg)" MetricName="apiserver_request_sli_duration_seconds" OnDetailClick="@(() => _apiServerRequestSliDetailVisible = true)" Unit="seconds"></MetircsHistogramTotalAvgView>
+
+            <Drawer Closable="true" @bind-Visible="@_apiServerRequestSliDetailVisible" Placement="right" Width="800" Title='("Request Latency GroupBy")'>
+                <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="component" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Group</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="group" Unit="seconds"></MetircsHistogramGroupByAvgView>
+
+                <Divider Orientation="left" Style="font-weight:bold">Resource</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="resource" Unit="seconds"></MetircsHistogramGroupByAvgView>
+
+                <Divider Orientation="left" Style="font-weight:bold">Subresource</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="subresource" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
+                <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_sli_duration_seconds" GroupBy="verb" Unit="seconds"></MetircsHistogramGroupByAvgView>
+                <Divider Orientation="left" Style="font-weight:bold">Union</Divider>
+                <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
+                                                        MetricName="apiserver_request_sli_duration_seconds"
+                                                        MultipleGroupBy="@(new List<string> { "group", "resource", "verb" })"
+                                                        Unit="seconds">
+                </MetircsHistogramGroupByMultipleAvgView>
+
+            </Drawer>
+        </TabPane>
+    }
+
+
+</Tabs >
