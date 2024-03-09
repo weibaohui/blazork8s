@@ -6,45 +6,51 @@
 @using BlazorApp.Pages.Common
 
 <div style="margin: 50px">
-<GridRow Class="grid-table">
-    <GridCol Span="6">异常汇总</GridCol>
-    <GridCol Span="18">智能分析</GridCol>
-</GridRow>
-<GridRow Class="grid-table">
-    <GridCol Span="6">
+    <GridRow Class="wideTable">
+            <GridCol Span="2">Latest：</GridCol>
+            <GridCol Span="5">@LastInspection.ToLocalTime()</GridCol>
+            <GridCol Span="5"></GridCol>
+            <GridCol Span="12"></GridCol>
+        </GridRow>
+    <GridRow Class="grid-table">
+        <GridCol Span="6">异常汇总</GridCol>
+        <GridCol Span="18">智能分析</GridCol>
+    </GridRow>
+    <GridRow Class="grid-table">
+        <GridCol Span="6">
 
-        <p>
-            last:<AgeView Age="@LastInspection"></AgeView> ago
-        </p>
-        @if (AnalyzeResult is { Count: > 0 })
-        {
-            @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
+            <p>
+                last:<AgeView Age="@LastInspection"></AgeView> ago
+            </p>
+            @if (AnalyzeResult is { Count: > 0 })
             {
-                <div>
-                    @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
-                </div>
+                @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
+                {
+                    <div>
+                        @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
+                    </div>
+                }
             }
-        }
-        @if (PassResources is { Count: > 0 })
-        {
-            @foreach (var name in PassResources)
+            @if (PassResources is { Count: > 0 })
             {
-                <div>
-                    @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
-                </div>
+                @foreach (var name in PassResources)
+                {
+                    <div>
+                        @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                    </div>
+                }
             }
-        }
-    </GridCol>
-    <GridCol Span="18">
-        <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
-        @if (!_aiSummary.IsNullOrWhiteSpace())
-        {
-            <Alert Type="@AlertType.Warning">
-                @((MarkupString)_aiSummary.ToHtmlDisplay())
-            </Alert>
-        }
-    </GridCol>
-</GridRow>
+        </GridCol>
+        <GridCol Span="18">
+            <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
+            @if (!_aiSummary.IsNullOrWhiteSpace())
+            {
+                <Alert Type="@AlertType.Warning">
+                    @((MarkupString)_aiSummary.ToHtmlDisplay())
+                </Alert>
+            }
+        </GridCol>
+    </GridRow>
 </div>
 
 <Tabs Style="margin: 50px" DefaultActiveKey="Overview" Type="@TabType.Card" Size="@TabSize.Large">
