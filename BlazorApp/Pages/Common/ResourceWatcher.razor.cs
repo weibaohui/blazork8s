@@ -39,12 +39,14 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
         HubConnection = new HubConnectionBuilder()
             .WithUrl(MyUriHelper.ToAbsoluteUri("/chathub"))
             .Build();
-        HubConnection.On<ResourceWatchEntity<T>>("ReceiveMessage", UpdateMessage);
-        HubConnection.On<PodLogEntity>("PodLog", UpdatePodLog);
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender) await HubConnection.StartAsync();
+        if (firstRender)
+        {
+            HubConnection.On<ResourceWatchEntity<T>>("ReceiveMessage", UpdateMessage);
+            await HubConnection.StartAsync();
+        }
     }
 }
