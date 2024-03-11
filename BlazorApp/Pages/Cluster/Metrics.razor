@@ -1,4 +1,14 @@
 @page "/Cluster/Metrics"
+
+<div Style="margin: 50px">
+    <p>
+        <Alert Type="@AlertType.Success">
+            Metrics data from /metrics <br>
+            Refresh every 10 seconds.
+        </Alert>
+    </p>
+</div>
+
 <Tabs Style="margin: 50px" DefaultActiveKey="Etcd" Type="@TabType.Card" Size="@TabSize.Large">
 
     @if (AllMetrics != null)
@@ -28,7 +38,7 @@
                 </MetircsHistogramGroupByMultipleAvgView>
             </Drawer>
         </TabPane>
-        <TabPane Key="ApiServer" Tab="ApiServer">
+        <TabPane Key="ApiServer" Tab="API Server">
             <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title="Auth Counts" MetricName="authentication_attempts"> </MetricsCounterGaugeSumView>
             <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Auth Latency (avg)" MetricName="authentication_duration_seconds" Unit="seconds"></MetircsHistogramTotalAvgView>
             <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title="Request Latency (avg)" MetricName="apiserver_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _apiServerRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
