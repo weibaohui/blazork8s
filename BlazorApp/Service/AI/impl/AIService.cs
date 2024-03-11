@@ -4,24 +4,13 @@ using System.Threading.Tasks;
 namespace BlazorApp.Service.AI.impl;
 
 public class AiService(
-    IConfigService     configService,
-    IQwenAiService     qwenAi,
-    IXunFeiAiService   xunFeiAi,
-    IOpenAiService openAi
-    ) : IAiService
+    IConfigService   configService,
+    IQwenAiService   qwenAi,
+    IXunFeiAiService xunFeiAi,
+    IOpenAiService   openAi,
+    IGeminiAiService geminiAi
+) : IAiService
 {
-    private IAiService GetAi()
-    {
-        var selected = Selected();
-        return selected switch
-        {
-            "XunFeiAI" => xunFeiAi,
-            "QwenAI"   => qwenAi,
-            "OpenAI"   => openAi,
-            _        => qwenAi,
-        };
-    }
-
     public bool Enabled()
     {
         return configService.GetBool("AI", "Enable");
@@ -56,5 +45,18 @@ public class AiService(
     public void SetChatEventHandler(EventHandler<string> handler)
     {
         GetAi().SetChatEventHandler(handler);
+    }
+
+    private IAiService GetAi()
+    {
+        var selected = Selected();
+        return selected switch
+        {
+            "XunFeiAI" => xunFeiAi,
+            "QwenAI"   => qwenAi,
+            "OpenAI"   => openAi,
+            "GeminiAI" => geminiAi,
+            _          => qwenAi
+        };
     }
 }
