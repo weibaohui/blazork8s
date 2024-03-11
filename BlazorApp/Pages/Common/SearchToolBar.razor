@@ -19,7 +19,7 @@
     </GridCol>
     <GridCol Span="5">
         <div style="@_style">
-            <Search Placeholder="@($"Search {Title}")" OnSearch="OnSearchHandler" @bind-Value="@TxtValue" ClassicSearchIcon/>
+            <Search Placeholder="@($"Search {Title}")" OnSearch="@OnSearchHandler" OnChange="@OnSearchHandler" @bind-Value="@TxtValue" AllowClear EnterButton="@("Search")" ClassicSearchIcon/>
         </div>
     </GridCol>
     <GridCol Span="1"></GridCol>
