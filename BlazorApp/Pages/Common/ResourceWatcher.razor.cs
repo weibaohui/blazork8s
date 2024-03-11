@@ -12,6 +12,8 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
 {
     private ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
 
+    private HubConnection HubConnection { get; set; }
+
     [Inject]
     protected NavigationManager MyUriHelper { get; set; }
 
@@ -34,9 +36,15 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
 
     protected override async Task OnInitializedAsync()
     {
-        var conn = await UIEventHub.Instance().Build(MyUriHelper.ToAbsoluteUri("/chathub"));
-        //todo 一种类型维持一个链接，否则只有一个页面能进行页面响应，其他的不响应。bug
-        conn.On<ResourceWatchEntity<T>>("ReceiveMessage", UpdateMessage);
-        conn.On<PodLogEntity>("PodLog", UpdatePodLog);
+        HubConnection = new HubConnectionBuilder()
+            .WithUrl(MyUriHelper.ToAbsoluteUri("/chathub"))
+            .Build();
+        HubConnection.On<ResourceWatchEntity<T>>("ReceiveMessage", UpdateMessage);
+        HubConnection.On<PodLogEntity>("PodLog", UpdatePodLog);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await HubConnection.StartAsync();
     }
 }
