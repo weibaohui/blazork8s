@@ -1,5 +1,5 @@
-@using BlazorApp.Pages.Namespace
 @using k8s.Models
+@using BlazorApp.Pages.Namespace
 @typeparam            TItem
 
 <GridRow >
@@ -27,32 +27,34 @@
 
 @ChildContent
 
-
-<GridRow Class="grid-table">
-    <GridCol Span="2">
-        操作：
-    </GridCol>
-    <GridCol Span="4">
-        <Button Type="@ButtonType.Primary" Size="small">添加</Button>
-        @if (TableData?.SelectedRows?.Count() > 0)
-        {
-            <Button Type="@ButtonType.Primary" Danger Size="small" OnClick="@DeleteHandler">删除</Button>
-            <Button Size="small" OnClick="@RemoveAllSelectedHandler">取消选择</Button>
-        }
-    </GridCol>
-    <GridCol Span="2">
-        @if (TableData?.SelectedRows?.Count() > 0)
-        {
-            @($"已选({TableData.SelectedRows.Count()})：")
-        }
-    </GridCol>
-    <GridCol Span="15">
-        @if (TableData?.SelectedRows?.Count() > 0)
-        {
-            @foreach (var selected in TableData.SelectedRows)
+@if (TableData?.SelectedRows?.Count() > 0)
+{
+    <GridRow Class="grid-table">
+        <GridCol Span="2">
+            操作：
+        </GridCol>
+        <GridCol Span="4">
+            @* <Button Type="@ButtonType.Primary" Size="small">添加</Button> *@
+            @if (TableData?.SelectedRows?.Count() > 0)
             {
-                <Tag @key="selected" Closable OnClose="@(() => CloseSelectedItemHandler($"{selected.Namespace()}/{selected.Name()}"))">@selected.Name()</Tag>
+                <Button Type="@ButtonType.Primary" Danger Size="small" OnClick="@DeleteHandler">删除</Button>
+                <Button Size="small" OnClick="@RemoveAllSelectedHandler">取消选择</Button>
             }
-        }
-    </GridCol>
-</GridRow>
+        </GridCol>
+        <GridCol Span="2">
+            @if (TableData?.SelectedRows?.Count() > 0)
+            {
+                @($"已选({TableData.SelectedRows.Count()})：")
+            }
+        </GridCol>
+        <GridCol Span="15">
+            @if (TableData?.SelectedRows?.Count() > 0)
+            {
+                @foreach (var selected in TableData.SelectedRows)
+                {
+                    <Tag @key="selected" Closable OnClose="@(() => CloseSelectedItemHandler($"{selected.Namespace()}/{selected.Name()}"))">@selected.Name()</Tag>
+                }
+            }
+        </GridCol>
+    </GridRow>
+}
