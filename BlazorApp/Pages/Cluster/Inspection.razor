@@ -8,9 +8,10 @@
 <div style="margin: 50px">
     <GridRow Class="grid-table">
         <GridCol Span="2">Latest:</GridCol>
-        <GridCol Span="6">@LastInspection.ToLocalTime()
+        <GridCol Span="6">
+            @LastInspection.ToLocalTime()
             (<AgeView Age="@LastInspection"></AgeView> ago)
-            </GridCol>
+        </GridCol>
         <GridCol Span="2">Errors:</GridCol>
         <GridCol Span="6">
             <Badge Count="@AnalyzeResult.Sum(x => x.Error.Count)"/>
@@ -40,12 +41,15 @@
             }
         </GridCol>
         <GridCol Span="16">
-            <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
-            @if (!_aiSummary.IsNullOrWhiteSpace())
+            @if (Ai.Enabled())
             {
-                <Alert Type="@AlertType.Warning">
-                    @((MarkupString)_aiSummary.ToHtmlDisplay())
-                </Alert>
+                <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
+                @if (!_aiSummary.IsNullOrWhiteSpace())
+                {
+                    <Alert Type="@AlertType.Warning">
+                        @((MarkupString)_aiSummary.ToHtmlDisplay())
+                    </Alert>
+                }
             }
         </GridCol>
     </GridRow>

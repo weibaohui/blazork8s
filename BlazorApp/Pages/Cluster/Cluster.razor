@@ -4,21 +4,29 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
-
-<GridRow Class="wideTable">
-    <GridCol Span="10">
-        <Card Title="@KubeService.CurrentContext()" Style="margin: 10px">
+<Card Title="@KubeService.CurrentContext()" Style="margin: 50px">
+    <GridRow >
+        <GridCol Span="10" Style="padding: 10px">
+            <HTable >
+                <HTableColumn Title="Address">
+                    <ColorfulTag>@KubeService.Client().BaseUri</ColorfulTag>
+                </HTableColumn>
+                <HTableColumn Title="Context">
+                    <ColorfulTag>@KubeService.CurrentContext()</ColorfulTag>
+                </HTableColumn>
+                @if (ServerInfo != null)
+                {
+                    <HTableColumn Title="version">
+                        <ColorfulTag>@ServerInfo.GitVersion</ColorfulTag>
+                        <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
+                    </HTableColumn>
+                }
+            </HTable>
+        </GridCol>
+        <GridCol Span="10" Style="padding: 10px">
             @if (ComponentStatus is { Count: > 0 })
             {
-                <HTable>
-                    @if (ServerInfo != null)
-                    {
-                        <HTableColumn Title="version">
-                            <ColorfulTag>@ServerInfo.GitVersion</ColorfulTag>
-                            <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
-                        </HTableColumn>
-                    }
-
+                <HTable >
                     @foreach (var status in ComponentStatus)
                     {
                         <HTableColumn Title="@status.Name()">
@@ -27,10 +35,9 @@
                     }
                 </HTable>
             }
-        </Card>
-    </GridCol>
-
-</GridRow>
+        </GridCol>
+    </GridRow>
+</Card>
 
 
 <Tabs Style="margin: 50px" DefaultActiveKey="Status" Type="@TabType.Card" Size="@TabSize.Large">
