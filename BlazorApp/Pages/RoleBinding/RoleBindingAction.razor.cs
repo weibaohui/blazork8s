@@ -11,14 +11,6 @@ public partial class RoleBindingAction : ComponentBase
     public V1RoleBinding Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IRoleBindingService RoleBindingService { get; set; }
 
-
-    private async Task OnDeleteClick(V1RoleBinding item)
-    {
-        await RoleBindingService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

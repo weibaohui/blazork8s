@@ -11,10 +11,12 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="ClusterRole" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection"
+                               TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1ClusterRole"
                                OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true"
-                               >
+                               HideNsSelector="true">
                 </SearchToolBar>
             </HTd>
         </HTr>
@@ -39,10 +41,10 @@
                             <RefView Ref="@(subject.Adapt<V1ObjectReference>())" FullView="true"></RefView>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <ClusterRoleAction Item="@context"></ClusterRoleAction>
                     </ActionColumn>
                 </Table>

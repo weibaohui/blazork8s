@@ -14,7 +14,11 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="Pods" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection"
+
+                               TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1Pod"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>

@@ -22,11 +22,6 @@ public partial class ReplicaSetAction : ComponentBase
     [Inject]
     private IReplicaSetService ReplicaSetService { get; set; }
 
-    private async Task OnReplicaSetDeleteClick(V1ReplicaSet item)
-    {
-        await ReplicaSetService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
  
 

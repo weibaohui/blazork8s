@@ -23,11 +23,7 @@ public partial class ConfigMapAction : ComponentBase
     {
         await base.OnInitializedAsync();
     }
-    private async Task OnDeleteClick(V1ConfigMap item)
-    {
-        await ConfigMapService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
+    
     private async Task OnYamlClick(V1ConfigMap item)
     {
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);

@@ -11,13 +11,5 @@ public partial class NetworkPolicyAction : ComponentBase
     public V1NetworkPolicy Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private INetworkPolicyService NetworkPolicyService { get; set; }
-
-    private async Task OnDeleteClick(V1NetworkPolicy item)
-    {
-        await NetworkPolicyService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

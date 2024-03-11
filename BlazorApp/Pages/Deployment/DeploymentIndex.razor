@@ -10,13 +10,17 @@
 {
     <HTable Class="wideTable">
         <HTr>
-            <HTd >
+            <HTd>
                 <SearchToolBar Title="Deployments" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1Deployment"
                                OnNsSelected="OnNsSelectedHandler">
+
                 </SearchToolBar>
             </HTd>
         </HTr>
+
         <HTr>
             <HTd >
                 <Table TItem="V1Deployment"
@@ -29,17 +33,17 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name" >
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnDeployClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
 
 
                     <AntDesign.Column Title="Ready" TData="int" Width="80px">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas ?? 0}")
                     </AntDesign.Column>
                     <AntDesign.Column Title="Desired" Width="80px" TData="string">
-                        <ColorfulTag>@(context.Spec.Replicas??0)</ColorfulTag>
+                        <ColorfulTag>@(context.Spec.Replicas ?? 0)</ColorfulTag>
                         @* <Button OnClick="@(() => BtnMinusClick(context))" Icon=Minus Size="small"></Button> *@
                         @* <Button OnClick="@(() => BtnIncreaseClick(context))"  Icon=Plus Size="small"></Button> *@
                     </AntDesign.Column>
@@ -56,14 +60,14 @@
                         <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
 
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         @context.CreationTimestamp()?.AgeFromUtc()
                     </AntDesign.Column>
                     <AntDesign.Column Title="Condition" TData="string" Width="150px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
 
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <DeploymentAction Item="@context"></DeploymentAction>
                     </ActionColumn>
                 </Table>

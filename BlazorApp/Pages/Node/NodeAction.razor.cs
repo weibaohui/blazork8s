@@ -25,11 +25,6 @@ public partial class NodeAction : ComponentBase
     [Inject]
     private INodeService NodeService { get; set; }
 
-    private async Task OnNodeDeleteClick(V1Node item)
-    {
-        await NodeService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 
     private async Task OnCordonClick(V1Node item)

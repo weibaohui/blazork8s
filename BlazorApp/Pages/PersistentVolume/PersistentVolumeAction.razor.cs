@@ -11,13 +11,6 @@ public partial class PersistentVolumeAction : ComponentBase
     public V1PersistentVolume Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IPersistentVolumeService PersistentVolumeService { get; set; }
 
-    private async Task OnDeleteClick(V1PersistentVolume item)
-    {
-        await PersistentVolumeService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

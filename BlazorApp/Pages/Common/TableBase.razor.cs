@@ -54,6 +54,6 @@ public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1
 
     public void RemoveSelection(string uid)
     {
-        TableData.SelectedRows = TableData.SelectedRows.Where(x => x.Metadata.Uid != uid);
+        TableData.SelectedRows = TableData.SelectedRows.Where(x => x.Metadata.Uid != uid).ToList();
     }
 }

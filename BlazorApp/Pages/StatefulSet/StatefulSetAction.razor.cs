@@ -26,11 +26,7 @@ public partial class StatefulSetAction : ComponentBase
     {
         await base.OnInitializedAsync();
     }
-    private async Task OnDeleteClick(V1StatefulSet item)
-    {
-        await StatefulSetService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
+
 
     private async Task OnScaleClick(V1StatefulSet item)
     {

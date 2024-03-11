@@ -11,14 +11,6 @@ public partial class SecretAction : ComponentBase
     public V1Secret Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private ISecretService SecretService { get; set; }
 
-
-    private async Task OnDeleteClick(V1Secret item)
-    {
-        await SecretService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

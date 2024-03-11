@@ -11,12 +11,5 @@ public partial class EndpointsAction : ComponentBase
     public V1Endpoints Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IEndpointsService EndpointsService { get; set; }
 
-    private async Task OnDeleteClick(V1Endpoints item)
-    {
-        await EndpointsService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 }

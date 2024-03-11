@@ -104,8 +104,10 @@ public partial class RefView : ComponentBase
 
     [Inject]
     private IIngressService IngressService { get; set; }
+
     [Inject]
     private IServiceService ServiceService { get; set; }
+
     [Inject]
     private IHorizontalPodAutoscalerService HpaService { get; set; }
 
@@ -122,29 +124,29 @@ public partial class RefView : ComponentBase
 
         var task = kind switch
         {
-            "Deployment"            => OnDeploymentClick(Ref),
-            "DaemonSet"             => OnDaemonSetClick(Ref),
-            "StatefulSet"           => OnStatefulSetClick(Ref),
-            "ReplicationController" => OnReplicationControllerClick(Ref),
-            "ReplicaSet"            => OnRsClick(Ref),
-            "Node"                  => OnNodeClick(Ref),
-            "Job"                   => OnJobClick(Ref),
-            "CronJob"               => OnCronJobClick(Ref),
-            "Pod"                   => OnPodClick(Ref),
-            "Service"                   => OnServiceClick(Ref),
-            "Endpoints"             => OnEndpointsClick(Ref),
-            "Group"                 => OnGroupClick(Ref),
-            "User"                  => OnUserClick(Ref),
-            "ServiceAccount"        => OnServiceAccountClick(Ref),
-            "ClusterRole"           => OnClusterRoleClick(Ref),
-            "Role"                  => OnRoleClick(Ref),
-            "HorizontalPodAutoscaler"                  => OnHorizontalPodAutoscalerClick(Ref),
-            "ConfigMap"             => OnConfigMapClick(Ref),
-            "Secret"                => OnSecretClick(Ref),
-            "Ingress"               => OnIngressClick(Ref),
-            "Namespace"             => OnNamespaceClick(Ref),
-            "PersistentVolumeClaim" => OnPersistentVolumeClaimClick(Ref),
-            _                       => OnXClick(Ref)
+            "Deployment"              => OnDeploymentClick(Ref),
+            "DaemonSet"               => OnDaemonSetClick(Ref),
+            "StatefulSet"             => OnStatefulSetClick(Ref),
+            "ReplicationController"   => OnReplicationControllerClick(Ref),
+            "ReplicaSet"              => OnRsClick(Ref),
+            "Node"                    => OnNodeClick(Ref),
+            "Job"                     => OnJobClick(Ref),
+            "CronJob"                 => OnCronJobClick(Ref),
+            "Pod"                     => OnPodClick(Ref),
+            "Service"                 => OnServiceClick(Ref),
+            "Endpoints"               => OnEndpointsClick(Ref),
+            "Group"                   => OnGroupClick(Ref),
+            "User"                    => OnUserClick(Ref),
+            "ServiceAccount"          => OnServiceAccountClick(Ref),
+            "ClusterRole"             => OnClusterRoleClick(Ref),
+            "Role"                    => OnRoleClick(Ref),
+            "HorizontalPodAutoscaler" => OnHorizontalPodAutoscalerClick(Ref),
+            "ConfigMap"               => OnConfigMapClick(Ref),
+            "Secret"                  => OnSecretClick(Ref),
+            "Ingress"                 => OnIngressClick(Ref),
+            "Namespace"               => OnNamespaceClick(Ref),
+            "PersistentVolumeClaim"   => OnPersistentVolumeClaimClick(Ref),
+            _                         => OnXClick(Ref)
         };
 
         return task;
@@ -275,6 +277,7 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<RoleDetailView, V1Role, bool>(item);
     }
+
     private async Task OnHorizontalPodAutoscalerClick(V1ObjectReference r)
     {
         var item = HpaService.GetByName(r.NamespaceProperty, r.Name);
@@ -282,6 +285,7 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<HorizontalPodAutoscalerDetailView, V2HorizontalPodAutoscaler, bool>(item);
     }
+
     private async Task OnEndpointsClick(V1ObjectReference r)
     {
         var item = EndpointsService.GetByName(r.NamespaceProperty, r.Name);
@@ -289,6 +293,7 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<EndpointsDetailView, V1Endpoints, bool>(item);
     }
+
     private async Task OnPodClick(V1ObjectReference r)
     {
         var item = PodService.GetByName(r.NamespaceProperty, r.Name);
@@ -296,6 +301,7 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<PodDetailView, V1Pod, bool>(item);
     }
+
     private async Task OnServiceClick(V1ObjectReference r)
     {
         var item = ServiceService.GetByName(r.NamespaceProperty, r.Name);
@@ -303,6 +309,7 @@ public partial class RefView : ComponentBase
             .SetDrawerService(DrawerService)
             .ShowDrawerAsync<ServiceDetailView, V1Service, bool>(item);
     }
+
     private async Task OnCronJobClick(V1ObjectReference r)
     {
         var item = CronJobService.GetByName(r.NamespaceProperty, r.Name);

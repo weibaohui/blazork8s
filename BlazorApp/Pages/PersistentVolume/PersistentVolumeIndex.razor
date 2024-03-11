@@ -10,7 +10,10 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="PersistentVolume" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection"
+                               TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1PersistentVolume"
                                OnNsSelected="OnNsSelectedHandler"
                                HideNsSelector="true">
                 </SearchToolBar>

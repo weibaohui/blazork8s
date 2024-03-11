@@ -77,6 +77,7 @@ builder.Services.AddSingleton<ICronJobService,CronJobService>();
 builder.Services.AddSingleton<IStatefulSetService,StatefulSetService>();
 builder.Services.AddSingleton<ICustomResourceDefinitionService,CustomResourceDefinitionService>();
 builder.Services.AddSingleton<IReplicationControllerService,ReplicationControllerService>();
+builder.Services.AddSingleton<IResourceCrudService, ResourceCrudService>();
 
 builder.Services.AddSingleton
     <ISqlSugarClient>(s =>

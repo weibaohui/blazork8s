@@ -10,7 +10,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="ReplicationController" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1ReplicationController"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>

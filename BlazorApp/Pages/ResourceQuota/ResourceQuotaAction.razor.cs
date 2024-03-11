@@ -11,13 +11,6 @@ public partial class ResourceQuotaAction : ComponentBase
     public V1ResourceQuota Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IResourceQuotaService ResourceQuotaService { get; set; }
-
-    private async Task OnDeleteClick(V1ResourceQuota item)
-    {
-        await ResourceQuotaService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
-
+   
+   
 }

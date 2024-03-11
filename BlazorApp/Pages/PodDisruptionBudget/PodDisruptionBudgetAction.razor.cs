@@ -11,13 +11,6 @@ public partial class PodDisruptionBudgetAction : ComponentBase
     public V1PodDisruptionBudget Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IPodDisruptionBudgetService PodDisruptionBudgetService { get; set; }
 
-    private async Task OnDeleteClick(V1PodDisruptionBudget item)
-    {
-        await PodDisruptionBudgetService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

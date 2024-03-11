@@ -4,14 +4,7 @@
     @if (MenuMode == MenuMode.Vertical)
     {
         <MenuItem OnClick="@(() => OnDefaultClick(Item))">SetDefault</MenuItem>
-        <MenuItem >
-            <Popconfirm Title="确定删除吗"
-                        OnConfirm="@(() => OnDeleteClick(Item))"
-                        OkText="Yes"
-                        CancelText="No">
-                删除
-            </Popconfirm>
-        </MenuItem>
+
     }
     @if (MenuMode == MenuMode.Horizontal)
     {

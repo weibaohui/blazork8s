@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using AntDesign.TableModels;
 using k8s;
 using k8s.Models;
@@ -40,7 +41,7 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
     {
         _originItems = data.Get().ToList();
         _originItems.Sort((x, y) => y.CreationTimestamp()?.CompareTo(x.CreationTimestamp()) ?? 0);
-        PagedItems   = _originItems;
+        PagedItems = _originItems;
         FilterNsAndKey();
     }
 
@@ -76,6 +77,11 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
         FilterNsAndKey();
     }
 
+    public string GetCurrentSearchKey()
+    {
+        return _searchKey;
+    }
+
     private void FilterNsAndKey()
     {
         Loading    = true;
@@ -107,5 +113,27 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
         {
             PagedItems = PagedItems.Where(w => w.Name().Contains(_searchKey)).ToList();
         }
+    }
+
+    public void RemoveSelection(string ns, string name)
+    {
+        var tmp = SelectedRows.ToList();
+        tmp.RemoveAll(x => x.Name() == name && x.Namespace() == ns);
+        SelectedRows = tmp;
+    }
+
+    public void RemoveSelection(string nsAndName)
+    {
+        var strings = nsAndName.Split("/");
+        var ns      = strings[0];
+        var name    = strings[1];
+        var tmp     = SelectedRows.ToList();
+        tmp.RemoveAll(x => x.Name() == name && x.Namespace() == ns);
+        SelectedRows = tmp;
+    }
+
+    public void RemoveAllSelection()
+    {
+        SelectedRows = new List<T>();
     }
 }

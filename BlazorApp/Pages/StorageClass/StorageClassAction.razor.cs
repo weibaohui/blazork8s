@@ -20,11 +20,7 @@ public partial class StorageClassAction : ComponentBase
     {
         await base.OnInitializedAsync();
     }
-    private async Task OnDeleteClick(V1StorageClass item)
-    {
-        await StorageClassService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
+
 
     private async Task OnDefaultClick(V1StorageClass item)
     {

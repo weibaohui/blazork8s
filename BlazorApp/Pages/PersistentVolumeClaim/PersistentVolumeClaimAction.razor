@@ -1,15 +1,3 @@
 @using BlazorApp.Pages.Common
 @using k8s.Models
-<ShareMenuItem T="V1PersistentVolumeClaim" Item="Item" MenuMode="MenuMode">
-    @if (MenuMode == MenuMode.Vertical)
-    {
-        <MenuItem >
-            <Popconfirm Title="确定删除吗"
-                        OnConfirm="@(() => OnDeleteClick(Item))"
-                        OkText="Yes"
-                        CancelText="No">
-                删除
-            </Popconfirm>
-        </MenuItem>
-    }
-</ShareMenuItem>
+<ShareMenuItem T="V1PersistentVolumeClaim" Item="Item" MenuMode="MenuMode"></ShareMenuItem>

@@ -3,14 +3,7 @@
 <ShareMenuItem T="V1ConfigMap" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
-        <MenuItem >
-            <Popconfirm Title="确定删除吗"
-                        OnConfirm="@(() => OnDeleteClick(Item))"
-                        OkText="Yes"
-                        CancelText="No">
-                删除
-            </Popconfirm>
-        </MenuItem>
+
 
     }
 </ShareMenuItem>

@@ -16,11 +16,6 @@ public partial class IngressClassAction : ComponentBase
     [Inject]
     IMessageService MessageService { get; set; }
 
-    private async Task OnDeleteClick(V1IngressClass item)
-    {
-        await IngressClassService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
     private async Task OnDefaultClick(V1IngressClass item)
     {

@@ -41,11 +41,7 @@ public partial class DeploymentAction : ComponentBase
         await base.OnInitializedAsync();
     }
 
-    private async Task OnDeleteClick(V1Deployment item)
-    {
-        await DeploymentService.Delete(item.Namespace(), item.Name());
-        await OnDeploymentDelete.InvokeAsync(item);
-    }
+
 
     private async Task OnRestartClick(V1Deployment item)
     {

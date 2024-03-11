@@ -10,7 +10,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="Endpoints" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1Endpoints"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>

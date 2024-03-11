@@ -11,7 +11,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="RoleBinding" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1RoleBinding"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>

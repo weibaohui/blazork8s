@@ -23,11 +23,6 @@ public partial class PodAction : ComponentBase
     private IPageDrawerService PageDrawerService { get; set; }
 
 
-    private async Task OnPodDeleteClick(V1Pod pod)
-    {
-        await PodService.Delete(pod.Namespace(), pod.Name());
-        StateHasChanged();
-    }
 
 
     private async Task OnPodLogClick(V1Pod pod)

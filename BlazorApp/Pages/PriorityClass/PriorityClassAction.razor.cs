@@ -17,11 +17,6 @@ public partial class PriorityClassAction : ComponentBase
     [Inject]
     private IPriorityClassService PriorityClassService { get; set; }
 
-    private async Task OnDeleteClick(V1PriorityClass item)
-    {
-        await PriorityClassService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 
     private async Task OnCancelDefaultClick(V1PriorityClass item)

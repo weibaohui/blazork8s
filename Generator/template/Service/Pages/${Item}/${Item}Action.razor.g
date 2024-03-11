@@ -19,12 +19,4 @@ public partial class ${Item}Action : ComponentBase
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
-    [Inject]
-    private I${Item}Service ${Item}Service { get; set; }
-
-    private async Task OnDeleteClick(${ItemType} item)
-    {
-        await ${Item}Service.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 }

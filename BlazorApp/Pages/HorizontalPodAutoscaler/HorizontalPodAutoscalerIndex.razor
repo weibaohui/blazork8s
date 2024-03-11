@@ -10,7 +10,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="HorizontalPodAutoscaler" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V2HorizontalPodAutoscaler"
                                OnNsSelected="OnNsSelectedHandler"
                                HideNsSelector="false">
                 </SearchToolBar>

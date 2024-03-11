@@ -11,12 +11,5 @@ public partial class CrdAction : ComponentBase
     public V1CustomResourceDefinition Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private ICustomResourceDefinitionService CustomResourceDefinitionService { get; set; }
 
-    private async Task OnDeleteClick(V1CustomResourceDefinition item)
-    {
-        await CustomResourceDefinitionService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 }

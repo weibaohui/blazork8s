@@ -10,7 +10,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="ValidatingWebhookConfiguration" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1ValidatingWebhookConfiguration"
                                OnNsSelected="OnNsSelectedHandler"
                                HideNsSelector="true"
                                >

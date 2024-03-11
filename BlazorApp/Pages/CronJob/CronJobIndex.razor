@@ -11,7 +11,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="CronJob" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1CronJob"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>
@@ -33,9 +35,9 @@
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
                     <AntDesign.Column Title="Schedule" TData="string">
-                         @context.Spec.Schedule
+                        @context.Spec.Schedule
                         <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Robot" OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{context.Spec.Schedule}"))"></Button>
-                        <Button Type="@ButtonType.Default" Icon="@IconType.Outline.ClockCircle" OnClick="@(()=>OnNextCronDateClick(context.Spec.Schedule))"></Button>
+                        <Button Type="@ButtonType.Default" Icon="@IconType.Outline.ClockCircle" OnClick="@(() => OnNextCronDateClick(context.Spec.Schedule))"></Button>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Suspend" TData="string">
                         @(context.Spec.Suspend ?? false ? "True" : "False")

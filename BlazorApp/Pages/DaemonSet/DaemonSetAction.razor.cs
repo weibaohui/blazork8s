@@ -21,11 +21,7 @@ public partial class DaemonSetAction : ComponentBase
     private IDaemonSetService DaemonSetService { get; set; }
 
 
-    private async Task OnDeleteClick(V1DaemonSet item)
-    {
-        await DaemonSetService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
+
     private async Task OnRestartClick(V1DaemonSet item)
     {
         await DaemonSetService.Restart(item);

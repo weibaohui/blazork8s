@@ -11,7 +11,9 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="Job" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1Job"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>
@@ -31,7 +33,7 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
                     <AntDesign.Column Title="Completions" TData="string" Width="80px">
                         @($"{context.Status.Succeeded ?? 0}/{context.Spec.Completions}")
                     </AntDesign.Column>
@@ -52,10 +54,10 @@
                         <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
 
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <JobAction Item="@context"></JobAction>
                     </ActionColumn>
                 </Table>

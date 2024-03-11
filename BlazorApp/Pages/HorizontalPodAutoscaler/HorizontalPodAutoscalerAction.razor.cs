@@ -11,12 +11,5 @@ public partial class HorizontalPodAutoscalerAction : ComponentBase
     public V2HorizontalPodAutoscaler Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IHorizontalPodAutoscalerService HorizontalPodAutoscalerService { get; set; }
 
-    private async Task OnDeleteClick(V2HorizontalPodAutoscaler item)
-    {
-        await HorizontalPodAutoscalerService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 }

@@ -44,6 +44,7 @@ public partial class Cluster : ComponentBase
         _timer.Start();
         await OnTimerCallback(); //先执行一次
         ServerInfo = await KubeService.GetServerVersion();
+
         await base.OnInitializedAsync();
     }
 

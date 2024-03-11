@@ -14,18 +14,4 @@ public partial class ServiceAction : ComponentBase
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
-    [Inject]
-    private IServiceService ServiceService { get; set; }
-
-
-
-    private async Task OnDeleteClick(V1Service item)
-    {
-        await ServiceService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
-
- 
-
-
 }

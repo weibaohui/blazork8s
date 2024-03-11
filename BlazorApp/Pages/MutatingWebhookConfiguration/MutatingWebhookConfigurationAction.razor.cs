@@ -11,13 +11,6 @@ public partial class MutatingWebhookConfigurationAction : ComponentBase
     public V1MutatingWebhookConfiguration Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IMutatingWebhookConfigurationService MutatingWebhookConfigurationService { get; set; }
 
-    private async Task OnDeleteClick(V1MutatingWebhookConfiguration item)
-    {
-        await MutatingWebhookConfigurationService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

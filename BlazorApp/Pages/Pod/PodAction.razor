@@ -5,15 +5,6 @@
     {
         <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
         <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
-        <MenuItem >
-            <Popconfirm Title="确定删除吗"
-                        OnConfirm="@(() => OnPodDeleteClick(PodItem))"
-                        OkText="Yes"
-                        CancelText="No">
-                删除
-            </Popconfirm>
-        </MenuItem>
-
     }
     @if (MenuMode == MenuMode.Horizontal)
     {

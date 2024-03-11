@@ -11,12 +11,5 @@ public partial class IngressAction : ComponentBase
     public V1Ingress Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IIngressService IngressService { get; set; }
 
-    private async Task OnDeleteClick(V1Ingress item)
-    {
-        await IngressService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 }

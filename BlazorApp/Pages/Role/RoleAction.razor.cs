@@ -11,13 +11,5 @@ public partial class RoleAction : ComponentBase
     public V1Role Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IRoleService RoleService { get; set; }
-
-    private async Task OnDeleteClick(V1Role item)
-    {
-        await RoleService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

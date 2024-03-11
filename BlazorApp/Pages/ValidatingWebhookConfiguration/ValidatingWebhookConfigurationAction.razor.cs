@@ -11,17 +11,5 @@ public partial class ValidatingWebhookConfigurationAction : ComponentBase
     public V1ValidatingWebhookConfiguration Item { get; set; }
     [Parameter]
     public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
-    [Inject]
-    private IValidatingWebhookConfigurationService ValidatingWebhookConfigurationService { get; set; }
-
-    protected override async Task OnInitializedAsync()
-    {
-        await base.OnInitializedAsync();
-    }
-    private async Task OnDeleteClick(V1ValidatingWebhookConfiguration item)
-    {
-        await ValidatingWebhookConfigurationService.Delete(item.Namespace(), item.Name());
-        StateHasChanged();
-    }
 
 }

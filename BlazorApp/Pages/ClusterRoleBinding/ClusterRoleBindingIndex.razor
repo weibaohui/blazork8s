@@ -11,10 +11,12 @@
         <HTr>
             <HTd >
                 <SearchToolBar Title="ClusterRoleBinding" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection"
+                               TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1ClusterRoleBinding"
                                OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true"
-                               >
+                               HideNsSelector="true">
                 </SearchToolBar>
             </HTd>
         </HTr>
@@ -52,7 +54,7 @@
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <ClusterRoleBindingAction Item="@context"></ClusterRoleBindingAction>
                     </ActionColumn>
                 </Table>
