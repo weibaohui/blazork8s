@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Service.k8s;
@@ -6,12 +5,13 @@ using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 
 namespace BlazorApp.Pages.Common;
 
 public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKubernetesObject<V1ObjectMeta>
 {
+    private string _style = " padding: 8px 0;";
+
     [Parameter]
     public string Title { get; set; }
 
@@ -46,7 +46,6 @@ public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKuberne
     private IResourceCrudService ResourceCrudService { get; set; }
 
     private string TxtValue { get; set; }
-    private string _style = " padding: 8px 0;";
 
     protected override async Task OnInitializedAsync()
     {
@@ -85,5 +84,8 @@ public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKuberne
                 await OnSelectedItemCloseClicked.InvokeAsync($"{item.Namespace()}/{item.Name()}");
             if (OnItemDeletedCallback.HasDelegate) await OnItemDeletedCallback.InvokeAsync();
         }
+
+        //清空已选
+        TableData.SelectedRows = new List<TItem>();
     }
 }

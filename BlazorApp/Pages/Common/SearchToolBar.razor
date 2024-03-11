@@ -37,7 +37,10 @@
             @* <Button Type="@ButtonType.Primary" Size="small">添加</Button> *@
             @if (TableData?.SelectedRows?.Count() > 0)
             {
-                <Button Type="@ButtonType.Primary" Danger Size="small" OnClick="@DeleteHandler">删除</Button>
+                <Popconfirm Title="Are you sure delete this item?" OnConfirm="@DeleteHandler">
+                    <Button Type="@ButtonType.Primary" Danger Size="small">删除</Button>
+                </Popconfirm>
+
                 <Button Size="small" OnClick="@RemoveAllSelectedHandler">取消选择</Button>
             }
         </GridCol>
