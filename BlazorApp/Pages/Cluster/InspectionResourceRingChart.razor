@@ -11,25 +11,21 @@
 
     private double CalcLoad()
     {
-        if (Denominator==null)
+        if (Denominator == 0)
         {
             return 0;
         }
 
-        if (Denominator==0)
-        {
-            return 0;
-        }
         return Numerator / Denominator;
     }
 
     private RingProgressConfig _loadConfig = new RingProgressConfig
     {
-        Width   = 50,
-        Height  = 50,
+        Width  = 50,
+        Height = 50,
         Color = new[]
         {
-            "#FF4D4F","#53C419"
+            "#FF4D4F", "#53C419"
         },
     };
 
