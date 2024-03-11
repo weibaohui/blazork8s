@@ -4,6 +4,6 @@ metadata:
   name: configmap
   namespace: default
 data:
-  s-config: Value
+  s-config: "Value"
   y-config: |
     test=test
