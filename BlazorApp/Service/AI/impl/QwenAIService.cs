@@ -4,7 +4,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -12,16 +11,11 @@ namespace BlazorApp.Service.AI.impl;
 
 public class QwenAiService(IConfigService configService, ILogger<QwenAiService> logger) : IQwenAiService
 {
+    private string _incrementResp = "";
+    private string _lastResp      = "";
+
     string sseEndpoint =
         "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
-
-    private event EventHandler<string> ChatEventHandler;
-
-
-    private string GetApiKey()
-    {
-        return configService.GetString("QwenAI", "APIKey") ?? string.Empty;
-    }
 
     public async Task<string> AIChat(string prompt)
     {
@@ -32,6 +26,35 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
     public void SetChatEventHandler(EventHandler<string> eventHandler)
     {
         ChatEventHandler += eventHandler;
+    }
+
+    public async Task<string> ExplainError(string text)
+    {
+        var prompt = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
+        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
+        var content = $"{prompt}:{text}";
+        return await Query(content);
+    }
+
+    public async Task<string> ExplainSecurity(string text)
+    {
+        var prompt = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("security");
+        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
+        var content = $"{prompt}:{text}";
+        return await Query(content);
+    }
+
+    public string Name()
+    {
+        return "阿里通义千问大模型";
+    }
+
+    private event EventHandler<string> ChatEventHandler;
+
+
+    private string GetApiKey()
+    {
+        return configService.GetString("QwenAI", "APIKey") ?? string.Empty;
     }
 
     private async Task<string> Query(string promptAndText)
@@ -73,7 +96,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
                     resp = text;
                 }
 
-                if (text.IsNullOrEmpty())
+                if (string.IsNullOrEmpty(text))
                 {
                     continue;
                 }
@@ -89,10 +112,6 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         return resp;
     }
 
-
-    private string _incrementResp = "";
-    private string _lastResp      = "";
-
     private void IncrementHandler(string resp)
     {
         if (!string.IsNullOrWhiteSpace(_lastResp))
@@ -107,27 +126,5 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         _lastResp = resp;
         logger.LogInformation("{Ai} _incrementResp: {IncrementResp}", Name(), _incrementResp);
         if (ChatEventHandler != null) ChatEventHandler(this, _incrementResp);
-    }
-
-    public async Task<string> ExplainError(string text)
-    {
-
-        var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
-        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
-        var content = $"{prompt}:{text}";
-        return await Query(content);
-    }
-
-    public async Task<string> ExplainSecurity(string text)
-    {
-        var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("security");
-        text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
-        var content = $"{prompt}:{text}";
-        return await Query(content);
-    }
-
-    public string Name()
-    {
-        return "阿里通义千问大模型";
     }
 }
