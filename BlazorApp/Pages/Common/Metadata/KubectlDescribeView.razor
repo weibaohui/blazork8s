@@ -7,7 +7,9 @@
             kubectl describe @_resource
         </Alert>
     </p>
-    <p style="background-color: black;color: white">
-        @((MarkupString)_result.ToHtmlDisplay())
-    </p>
+    <div style="background-color: black;color: white;">
+        <p style="margin: 15px">
+            @((MarkupString)_result.ToHtmlDisplay())
+        </p>
+    </div>
 </Card>
