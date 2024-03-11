@@ -9,13 +9,12 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="PriorityClass" Count="@TableData.Total"
+                <SearchToolBar Title="PriorityClass" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1PriorityClass"
                                OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true"
-                               >
+                               HideNsSelector="true">
                 </SearchToolBar>
             </HTd>
         </HTr>
@@ -38,7 +37,7 @@
                         @context.Value
                     </AntDesign.Column>
                     <AntDesign.Column Title="Default" TData="string" Width="100px">
-                        <Switch  Value="@(context.GlobalDefault??false)" OnChange="@(()=>OnDefaultChange(context))"></Switch>
+                        <Switch Value="@(context.GlobalDefault ?? false)" OnChange="@(() => OnDefaultChange(context))"></Switch>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>

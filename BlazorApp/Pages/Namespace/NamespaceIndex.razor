@@ -9,7 +9,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Namespace" Count="@TableData.Total"
+                <SearchToolBar Title="Namespace" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Namespace"

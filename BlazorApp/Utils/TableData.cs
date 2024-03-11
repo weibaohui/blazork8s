@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AntDesign.TableModels;
@@ -124,12 +125,27 @@ public class TableData<T> where T : IKubernetesObject<V1ObjectMeta>
 
     public void RemoveSelection(string nsAndName)
     {
-        var strings = nsAndName.Split("/");
-        var ns      = strings[0];
-        var name    = strings[1];
-        var tmp     = SelectedRows.ToList();
-        tmp.RemoveAll(x => x.Name() == name && x.Namespace() == ns);
-        SelectedRows = tmp;
+        var tmp = SelectedRows.ToList();
+
+        nsAndName = nsAndName.Trim();
+        if (nsAndName.StartsWith('/'))
+        {
+            //说明是cluster级别，不区分ns的
+            var name = nsAndName.Replace("/", "");
+            // key 为name，cluster级别的资源
+            tmp.RemoveAll(x => x.Name() == name);
+            SelectedRows = tmp;
+        }
+        else
+        {
+            var strings = nsAndName.Split("/");
+            if (strings.Length != 2) return;
+            // key为ns/name 格式
+            var ns   = strings[0];
+            var name = strings[1];
+            tmp.RemoveAll(x => x.Name() == name && x.Namespace() == ns);
+            SelectedRows = tmp;
+        }
     }
 
     public void RemoveAllSelection()

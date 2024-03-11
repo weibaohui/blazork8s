@@ -31,6 +31,9 @@ public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKuberne
     public EventCallback OnRemoveAllClicked { get; set; }
 
     [Parameter]
+    public EventCallback OnItemDeletedCallback { get; set; }
+
+    [Parameter]
     public EventCallback<string> OnSelectedItemCloseClicked { get; set; }
 
     [Parameter]
@@ -78,7 +81,9 @@ public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKuberne
         {
             // Console.WriteLine($"DeleteHandler 删除 {item.Kind} {item.Namespace()}/{item.Name()}");
             await ResourceCrudService.DeleteItem(item.Kind, item.Namespace(), item.Name());
-            await OnSelectedItemCloseClicked.InvokeAsync($"{item.Namespace()}/{item.Name()}");
+            if (OnSelectedItemCloseClicked.HasDelegate)
+                await OnSelectedItemCloseClicked.InvokeAsync($"{item.Namespace()}/{item.Name()}");
+            if (OnItemDeletedCallback.HasDelegate) await OnItemDeletedCallback.InvokeAsync();
         }
     }
 }

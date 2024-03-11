@@ -8,7 +8,7 @@
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="PortForward" Count="@TableData.Total"
+            <SearchToolBar Title="PortForward" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                            OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                            OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                            OnSearch="OnSearchHandler" TItem="PortForward"

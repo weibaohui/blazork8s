@@ -9,10 +9,11 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="ConfigMap" Count="@TableData.Total"
+                <SearchToolBar Title="ConfigMap" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection"
                                TableData="@TableData"
+
                                OnSearch="OnSearchHandler" TItem="V1ConfigMap"
                                OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>

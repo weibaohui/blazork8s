@@ -13,7 +13,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Pods" Count="@TableData.Total"
+                <SearchToolBar Title="Pods" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection"
 

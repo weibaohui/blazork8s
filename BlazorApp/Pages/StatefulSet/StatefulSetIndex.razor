@@ -9,7 +9,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="StatefulSet" Count="@TableData.Total"
+                <SearchToolBar Title="StatefulSet" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1StatefulSet"
@@ -32,17 +32,17 @@
                     <AntDesign.Column Field="@context.Name()" Title="Name">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
                     <AntDesign.Column Title="Ready" TData="int">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas}")
                     </AntDesign.Column>
                     <AntDesign.Column Title="Images" TData="string">
                         <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title="Action" Width="100px">
                         <StatefulSetAction Item="@context"></StatefulSetAction>
                     </ActionColumn>
                 </Table>
