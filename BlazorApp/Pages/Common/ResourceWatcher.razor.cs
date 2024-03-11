@@ -34,11 +34,12 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
         await OnPodLogChanged.InvokeAsync(data);
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override Task OnInitializedAsync()
     {
         HubConnection = new HubConnectionBuilder()
             .WithUrl(MyUriHelper.ToAbsoluteUri("/chathub"))
             .Build();
+        return Task.CompletedTask;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
