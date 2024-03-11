@@ -6,28 +6,7 @@ using k8s.Models;
 namespace BlazorApp.Service.k8s.impl;
 
 public class ResourceCrudService(
-    IServiceAccountService          ServiceAccountService,
-    IPersistentVolumeService        PersistentVolumeService,
-    IPersistentVolumeClaimService   PersistentVolumeClaimService,
-    IClusterRoleService             ClusterRoleService,
-    IRoleService                    RoleService,
-    IReplicaSetService              ReplicaSetService,
-    INodeService                    NodeService,
-    IJobService                     JobService,
-    ICronJobService                 CronJobService,
-    IPodService                     PodService,
-    IDeploymentService              DeploymentService,
-    IDaemonSetService               DaemonSetService,
-    IStatefulSetService             StatefulSetService,
-    IReplicationControllerService   ReplicationControllerService,
-    IConfigMapService               ConfigMapService,
-    IEndpointsService               EndpointsService,
-    ISecretService                  SecretService,
-    INamespaceService               NamespaceService,
-    IIngressService                 IngressService,
-    IServiceService                 ServiceService,
-    IHorizontalPodAutoscalerService HpaService,
-    IKubeService                    KubeService
+    IKubeService KubeService
 ) : IResourceCrudService
 {
     public async Task<object> DeleteItem(string kind, string ns, string name)
