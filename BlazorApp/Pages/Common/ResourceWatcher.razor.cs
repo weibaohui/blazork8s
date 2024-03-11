@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Entity;
@@ -24,7 +23,6 @@ public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObj
 
     private async Task UpdateMessage(ResourceWatchEntity<T> data)
     {
-        Console.WriteLine("page收到消息" + data.Message);
         await OnResourceChanged.InvokeAsync(_cache);
     }
 
