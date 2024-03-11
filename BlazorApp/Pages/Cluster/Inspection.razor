@@ -6,22 +6,20 @@
 @using BlazorApp.Pages.Common
 
 <div style="margin: 50px">
-    <GridRow Class="wideTable">
-            <GridCol Span="2">Latest：</GridCol>
-            <GridCol Span="5">@LastInspection.ToLocalTime()</GridCol>
-            <GridCol Span="5"></GridCol>
-            <GridCol Span="12"></GridCol>
-        </GridRow>
     <GridRow Class="grid-table">
-        <GridCol Span="6">异常汇总</GridCol>
-        <GridCol Span="18">智能分析</GridCol>
-    </GridRow>
-    <GridRow Class="grid-table">
+        <GridCol Span="2">Latest:</GridCol>
+        <GridCol Span="6">@LastInspection.ToLocalTime()
+            (<AgeView Age="@LastInspection"></AgeView> ago)
+            </GridCol>
+        <GridCol Span="2">Errors:</GridCol>
         <GridCol Span="6">
+            <Badge Count="@AnalyzeResult.Sum(x => x.Error.Count)"/>
+        </GridCol>
+        <GridCol Span="8"></GridCol>
+    </GridRow>
 
-            <p>
-                last:<AgeView Age="@LastInspection"></AgeView> ago
-            </p>
+    <GridRow Class="grid-table">
+        <GridCol Span="8">
             @if (AnalyzeResult is { Count: > 0 })
             {
                 @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
@@ -41,7 +39,7 @@
                 }
             }
         </GridCol>
-        <GridCol Span="18">
+        <GridCol Span="16">
             <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
             @if (!_aiSummary.IsNullOrWhiteSpace())
             {
@@ -117,9 +115,9 @@
             </GridRow>
         }
         else
-                {
-                    <Empty Simple/>
-                }
+        {
+            <Empty Simple/>
+        }
     </TabPane>
     <TabPane Key="Pods" Tab="Pods">
         @if (PodList is { Count: > 0 })
@@ -143,9 +141,9 @@
             }
         }
         else
-                {
-                    <Empty Simple/>
-                }
+        {
+            <Empty Simple/>
+        }
     </TabPane>
 
     <TabPane Key="Errors" Tab="Errors">
@@ -180,9 +178,9 @@
             }
         }
         else
-                {
-                    <Empty Simple/>
-                }
+        {
+            <Empty Simple/>
+        }
     </TabPane>
 
 
