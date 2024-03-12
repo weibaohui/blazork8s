@@ -12,10 +12,36 @@ public static class StringExtensions
     public static string ToHtmlDisplay(this string? str)
     {
         if (str == null) return "";
-        str = Markdown.ToHtml(str);
-        return str.Replace("\\n", "<br/>")
-            .Replace("\\r", "<br/>")
-            .Replace(" ", "&nbsp;&nbsp;");
+        //强化link类型的字符串识别
+        str = str.Replace("https://", " https://")
+            .Replace("http://", " http://")
+            .Replace("ftp://", " ftp://")
+            .Replace("www.", " www.");
+        var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+        str = Markdown.ToHtml(str, pipeline);
+        str = str.Replace("\\n", "<br/>")
+                .Replace("\\r", "<br/>")
+                .Replace("\r", "<br/>")
+                .Replace("\n", "<br/>")
+                .Replace("\\r\\n", "<br/>")
+                .Replace("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+            ;
+        return str;
+    }
+
+    public static string ToHtmlDisplayNoMarkdown(this string? str)
+    {
+        if (str == null) return "";
+        str = str.Replace("\\n", "<br/>")
+                .Replace("\\r", "<br/>")
+                .Replace("\r", "<br/>")
+                .Replace("\n", "<br/>")
+                .Replace("\\r\\n", "<br/>")
+                .Replace(" ", "&nbsp;&nbsp;")
+                .Replace("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+                .Replace("\t", "&nbsp;&nbsp;&nbsp;&nbsp;")
+            ;
+        return str;
     }
 
     public static string ToMd5Str(this string input)
