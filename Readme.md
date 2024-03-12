@@ -18,7 +18,7 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 
 * Colorful and intuitive display of Kubernetes resources.
 * Yaml-defined fields are analyzed and displayed in a tree structure, accompanied by documentation. Additionally, translation using a large model is available, eliminating concerns about forgetting definitions.
-* Detailed explanations of Kubernetes resource fields, ensuring no ambiguity about the number of options and their meanings.
+* Detailed explanations of Kubernetes resource fields, ensuring no ambiguity about the number of options and their meanings.Official documentation with clickable links.
 * Integration of official examples in a directory tree format, allowing easy browsing, reference, and field copying.
 * Generation of Yaml using a large model.
 * Problem analysis using a large model.
