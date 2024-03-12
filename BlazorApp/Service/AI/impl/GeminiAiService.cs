@@ -78,9 +78,10 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
                        ]
                    }
                    """;
+        request.Headers.Add("Cache-Control", "no-cache");
         request.Content = new StringContent(json.Replace("${promptAndText}", promptAndText), Encoding.UTF8,
             "application/json");
-        // httpClient.MaxResponseContentBufferSize = 0;
+        httpClient.MaxResponseContentBufferSize = 1;
         using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
         await using var body     = await response.Content.ReadAsStreamAsync();
         using var       reader   = new System.IO.StreamReader(body);
