@@ -13,8 +13,8 @@ public static class StringExtensions
     {
         if (str == null) return "";
         str = Markdown.ToHtml(str);
-        return str.Replace("\n", "<br/>")
-            .Replace("\r", "<br/>")
+        return str.Replace("\\n", "<br/>")
+            .Replace("\\r", "<br/>")
             .Replace(" ", "&nbsp;&nbsp;");
     }
 
