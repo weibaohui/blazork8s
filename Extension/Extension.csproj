@@ -8,6 +8,7 @@
     <ItemGroup>
         <PackageReference Include="AntDesign" Version="0.18.0" />
         <PackageReference Include="KubernetesClient" Version="13.0.11" />
+        <PackageReference Include="Markdig" Version="0.35.0"/>
     </ItemGroup>
 
 </Project>

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Markdig;
 
 namespace Extension;
 
@@ -10,15 +11,17 @@ public static class StringExtensions
 {
     public static string ToHtmlDisplay(this string? str)
     {
-        return str?.Replace("\n", "<br/>")
-                   .Replace("\r", "<br/>")
-                   .Replace(" ", "&nbsp;&nbsp;")
-               ?? string.Empty;
+        if (str == null) return "";
+        str = Markdown.ToHtml(str);
+        return str.Replace("\n", "<br/>")
+            .Replace("\r", "<br/>")
+            .Replace(" ", "&nbsp;&nbsp;");
     }
+
     public static string ToMd5Str(this string input)
     {
         // Use input string to calculate MD5 hash
-        MD5    md5        = MD5.Create();
+        MD5 md5        = MD5.Create();
         var inputBytes = Encoding.ASCII.GetBytes(input);
         var hashBytes  = md5.ComputeHash(inputBytes);
 
@@ -31,12 +34,15 @@ public static class StringExtensions
             // upper-case, use he following line instead:
             // sb.Append(hashBytes[i].ToString("x2"));
         }
+
         return sb.ToString();
     }
+
     public static long ToMd5Digits(this string str)
     {
         return Convert.ToInt64(str.ToMd5Str().RemoveStringOfNonDigits());
     }
+
     /// <summary>
     /// 去除非数字字符，只保留数字
     /// </summary>
@@ -55,8 +61,10 @@ public static class StringExtensions
     /// <returns></returns>
     public static string ToSnakeCaseLower(this string str)
     {
-        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString())).ToLower();
+        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "_" + x.ToString() : x.ToString()))
+            .ToLower();
     }
+
     /// <summary>
     /// 字符串转换为中划线
     /// SelfLink=>self-link
@@ -65,7 +73,8 @@ public static class StringExtensions
     /// <returns></returns>
     public static string ToKebabCaseLower(this string str)
     {
-        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "-" + x.ToString() : x.ToString())).ToLower();
+        return string.Concat(str.Select((x, i) => i > 0 && char.IsUpper(x) ? "-" + x.ToString() : x.ToString()))
+            .ToLower();
     }
 
     /// <summary>
@@ -80,8 +89,10 @@ public static class StringExtensions
         {
             return char.ToLowerInvariant(str[0]) + str[1..];
         }
+
         return str.ToLowerInvariant();
     }
+
     /// <summary>
     /// 字符串转换为帕斯卡
     /// selfLink=>SelfLink
@@ -97,12 +108,14 @@ public static class StringExtensions
 
         return str.ToUpperInvariant();
     }
+
     public static string ToCamelCase(this string str, bool hasDot)
     {
         if (!hasDot)
         {
             return str.ToCamelCase();
         }
+
         return string.Join(".",
             str.Split('.')
                 .AsEnumerable()
@@ -110,12 +123,14 @@ public static class StringExtensions
                 .ToArray()
         );
     }
+
     public static string ToPascalCase(this string str, bool hasDot)
     {
         if (!hasDot)
         {
             return str.ToPascalCase();
         }
+
         return string.Join(".",
             str.Split('.')
                 .AsEnumerable()
@@ -123,6 +138,7 @@ public static class StringExtensions
                 .ToArray()
         );
     }
+
     public static int CountBy(this string str, string value)
     {
         return str.Count(value.Contains);
@@ -156,6 +172,7 @@ public static class StringExtensions
     {
         return string.IsNullOrWhiteSpace(str);
     }
+
     public static bool IsNullOrEmpty(this string? str)
     {
         return string.IsNullOrEmpty(str);
