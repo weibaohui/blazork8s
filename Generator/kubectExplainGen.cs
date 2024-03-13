@@ -48,7 +48,8 @@ public class kubectExplainGen
         // dictList.AddItem("HorizontalPodAutoscaler", typeof(V1HorizontalPodAutoscaler));
         // dictList.AddItem("ResourceQuota", typeof(V1ResourceQuota));
         // dictList.AddItem("CustomResourceDefinition", typeof(V1CustomResourceDefinition));
-        dictList.AddItem("Pod", typeof(V1Pod));
+        // dictList.AddItem("Pod", typeof(V1Pod));
+        dictList.AddItem("Lease", typeof(V1Lease));
 
         Console.WriteLine("AddList Over");
 
@@ -63,7 +64,6 @@ public class kubectExplainGen
         }
 
 
-        
         //使用TranslateService进行翻译
 
         var db    = new kubectExplainGen().DB();
@@ -72,8 +72,8 @@ public class kubectExplainGen
 
         foreach (var kt in list)
         {
-            var rfCount = db.Queryable<KubeExplainRef>().Count(x=>x.ExplainFiled==kt.ExplainFiled);
-            if (rfCount>0)
+            var rfCount = db.Queryable<KubeExplainRef>().Count(x => x.ExplainFiled == kt.ExplainFiled);
+            if (rfCount > 0)
             {
                 continue;
             }
@@ -83,7 +83,6 @@ public class kubectExplainGen
                 ExplainFiled = kt.ExplainFiled,
             }).ExecuteCommand();
         }
-
     }
 
 

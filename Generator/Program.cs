@@ -45,12 +45,11 @@ class Program
 
     public static void Main()
     {
-        MakeTemplate();
+        // MakeTemplate();
         // EntityPrepare.PrepareK8SEntity();
         // RazorEngineProcessor.Process();
         // Volume();
-        // kubectExplainGen.Explain();
-
+        kubectExplainGen.Explain();
     }
 
     public static void Volume()
@@ -62,7 +61,4 @@ class Program
         // var list = EntityPrepare.GetK8SEntity(typeof(V1Volume), "Volume");
         // File.WriteAllText("volume.json",KubernetesJson.Serialize(list));
     }
-
-
-
 }
