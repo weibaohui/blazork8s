@@ -11,7 +11,7 @@
 </Card>
 @if (!string.IsNullOrEmpty(_resultCn))
 {
-    <Card Title="@(AiService.Name() + "Translation")">
+    <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + " Translation")">
         @if (AiService.Enabled())
         {
             <p>
