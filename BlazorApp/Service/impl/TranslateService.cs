@@ -73,13 +73,31 @@ public class TranslateService(
         // db.CodeFirst.InitTables<KubeExplainEN>();
         // db.CodeFirst.InitTables<KubeExplainRef>();
         //第零步，通过generator子项目中Explain() 方法，获得所有的资源的explainField,插入Ref表，完成准备工作
-        await ProcessKubeExplainsEn();
+        // await ProcessKubeExplainsEn();
         //第三步根据英文条目获得中文解释
         await ProcessKubeExplainsCn();
         //第四步将Field、中文解释和英文解释关联起来
         await Connect();
 
         // await SaveToDb();
+    }
+
+
+    /// <summary>
+    /// 翻译指标
+    /// </summary>
+    public async Task TranslateMetrics()
+    {
+        var list = await db.Queryable<Metric>().Where(x => x.Cn == null).ToListAsync();
+        foreach (var metric in list)
+        {
+            var cn = await Translate(metric.Description);
+            metric.Cn = cn;
+            await db.Updateable<Metric>()
+                .SetColumns(x => x.Cn == cn)
+                .Where(x => x.Name == metric.Name)
+                .ExecuteCommandAsync();
+        }
     }
 
     private async Task Connect()
@@ -154,24 +172,6 @@ public class TranslateService(
         // await db.Insertable(refList).ExecuteCommandAsync();
         // await db.Insertable(uniqCnList).ExecuteCommandAsync();
         // await db.Insertable(uniqEnList).ExecuteCommandAsync();
-    }
-
-
-    /// <summary>
-    /// 翻译指标
-    /// </summary>
-    public async Task TranslateMetrics()
-    {
-        var list = await db.Queryable<Metric>().Where(x => x.Cn == null).ToListAsync();
-        foreach (var metric in list)
-        {
-            var cn = await Translate(metric.Description);
-            metric.Cn = cn;
-            await db.Updateable<Metric>()
-                .SetColumns(x => x.Cn == cn)
-                .Where(x => x.Name == metric.Name)
-                .ExecuteCommandAsync();
-        }
     }
 
 
