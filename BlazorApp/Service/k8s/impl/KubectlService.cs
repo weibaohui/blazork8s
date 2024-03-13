@@ -3,13 +3,12 @@ using System.IO;
 using System.Threading.Tasks;
 using CliWrap;
 using CliWrap.EventStream;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class KubectlService : IKubectlService
+public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 {
-    public event EventHandler<string> OnCommandExecutedHandler;
-
     public async Task<string> Apply(string yaml)
     {
         if (string.IsNullOrWhiteSpace(yaml))
@@ -75,6 +74,8 @@ public class KubectlService : IKubectlService
         return output; // 输出命令输出结果
     }
 
+    public event EventHandler<string> OnCommandExecutedHandler;
+
 
     private async Task<string> Kubectl(string command)
     {
@@ -82,28 +83,35 @@ public class KubectlService : IKubectlService
             .WithArguments(command);
 
         var result = string.Empty;
-        await foreach (var cmdEvent in cmd.ListenAsync())
+        try
         {
-            switch (cmdEvent)
-            {
-                case StartedCommandEvent started:
-                    // Console.WriteLine($"Process started; ID: {started.ProcessId}");
-                    // result += OnResponseProcess(this, $"Process exited; Code: {started.ProcessId}");
-                    break;
-                case StandardOutputCommandEvent stdOut:
-                    // Console.WriteLine($"Out> {stdOut.Text}");
-                    result += OnResponseProcess(this, stdOut.Text);
-                    break;
-                case StandardErrorCommandEvent stdErr:
-                    // Console.WriteLine($"Err> {stdErr.Text}");
-                    result += OnResponseProcess(this, stdErr.Text);
-                    break;
-                case ExitedCommandEvent exited:
-                    // Console.WriteLine($"Process exited; Code: {exited.ExitCode}");
-                    // result += OnResponseProcess(this, $"Process exited; Code: {exited.ExitCode}");
-                    break;
-            }
+            await foreach (var cmdEvent in cmd.ListenAsync())
+                switch (cmdEvent)
+                {
+                    case StartedCommandEvent started:
+                        // Console.WriteLine($"Process started; ID: {started.ProcessId}");
+                        // result += OnResponseProcess(this, $"Process exited; Code: {started.ProcessId}");
+                        break;
+                    case StandardOutputCommandEvent stdOut:
+                        // Console.WriteLine($"Out> {stdOut.Text}");
+                        result += OnResponseProcess(this, stdOut.Text);
+                        break;
+                    case StandardErrorCommandEvent stdErr:
+                        // Console.WriteLine($"Err> {stdErr.Text}");
+                        result += OnResponseProcess(this, stdErr.Text);
+                        break;
+                    case ExitedCommandEvent exited:
+                        // Console.WriteLine($"Process exited; Code: {exited.ExitCode}");
+                        // result += OnResponseProcess(this, $"Process exited; Code: {exited.ExitCode}");
+                        break;
+                }
         }
+        catch (Exception e)
+        {
+            result = e.Message;
+            logger.LogError("{Message}", e.Message);
+        }
+
         return result;
     }
 

@@ -5,7 +5,7 @@ namespace BlazorApp.Service;
 public interface ITranslateService
 {
     Task<string> Translate(string text);
-    Task         ProcessAll();
+    Task         ProcessDocTree();
     Task         ProcessKubeExplains();
     Task         TranslateMetrics();
 }

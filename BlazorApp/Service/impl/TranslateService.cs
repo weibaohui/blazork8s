@@ -34,7 +34,7 @@ public class TranslateService(
     /// <summary>
     /// 使用大模型将docTree中的字段进行翻译，保存到descriptionCN中
     /// </summary>
-    public async Task ProcessAll()
+    public async Task ProcessDocTree()
     {
         // 配置序列化选项
         var options = new JsonSerializerOptions
@@ -73,7 +73,9 @@ public class TranslateService(
         // db.CodeFirst.InitTables<KubeExplainEN>();
         // db.CodeFirst.InitTables<KubeExplainRef>();
         //第零步，通过generator子项目中Explain() 方法，获得所有的资源的explainField,插入Ref表，完成准备工作
-        // await ProcessKubeExplainsEn();
+        //第一步，重置翻译错误的记录
+        await FixTranslateAllError();
+        await ProcessKubeExplainsEn();
         //第三步根据英文条目获得中文解释
         await ProcessKubeExplainsCn();
         //第四步将Field、中文解释和英文解释关联起来
@@ -106,6 +108,34 @@ public class TranslateService(
             "update KubeExplainRef set CnId=(select Id from KubeExplainCN where EnId=KubeExplainRef.EnId) where CnId is null or CnId=''");
     }
 
+
+    private async Task FixTranslateAllError()
+    {
+        await FixNoneTranslateButSetOk();
+        await FixTranslateError();
+    }
+
+    /// <summary>
+    /// 修复EN表中翻译条目没有将翻译结果保存到CN表，但是EN表标准了Done
+    /// </summary>
+    private async Task FixNoneTranslateButSetOk()
+    {
+        await db.Ado.ExecuteCommandAsync(
+            "update KubeExplainEN set done=0 where  not exists(select 1 from KubeExplainCN where EnId=KubeExplainEN.Id)");
+    }
+
+    /// <summary>
+    /// 重置翻译报错的条目
+    /// </summary>
+    private async Task FixTranslateError()
+    {
+        // update KubeExplainEN set done=0 where exists(select 1 from KubeExplainCN where EnId=KubeExplainEN.Id and KubeExplainCN.Explain like 'Error%');
+        // delete from KubeExplainCN where Explain like 'Error%';
+        await db.Ado.ExecuteCommandAsync(
+            "update KubeExplainEN set done=0 where exists(select 1 from KubeExplainCN where EnId=KubeExplainEN.Id and KubeExplainCN.Explain like 'Error%')");
+        await db.Ado.ExecuteCommandAsync("delete from KubeExplainCN where Explain like 'Error%'");
+    }
+
     private async Task ProcessKubeExplainsEn()
     {
         var rfList = db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToList();
@@ -131,49 +161,6 @@ public class TranslateService(
             }
         }
     }
-
-
-    private async Task SaveToDb()
-    {
-        // var json    = await File.ReadAllTextAsync("ref.json");
-        // var refList = JsonSerializer.Deserialize<List<KubeExplainRef>>(json);
-        //
-        // var cnListJson = await File.ReadAllTextAsync("cnList_all.json");
-        // var cnList     = JsonSerializer.Deserialize<List<KubeExplainCN>>(cnListJson);
-        //
-        // var enListJson = await File.ReadAllTextAsync("enList.json");
-        // var enList     = JsonSerializer.Deserialize<List<KubeExplainEN>>(enListJson);
-        //
-        // List<KubeExplainEN> uniqEnList = new List<KubeExplainEN>();
-        // foreach (var en in enList)
-        // {
-        //     if (uniqEnList.Any(x => x.Id == en.Id))
-        //     {
-        //         continue;
-        //     }
-        //
-        //     uniqEnList.Add(en);
-        // }
-        //
-        // List<KubeExplainCN> uniqCnList = new List<KubeExplainCN>();
-        // foreach (var cn in cnList)
-        // {
-        //     if (uniqCnList.Any(x => x.Id == cn.Id))
-        //     {
-        //         continue;
-        //     }
-        //
-        //     uniqCnList.Add(cn);
-        // }
-        //
-        // await db.Ado.ExecuteCommandAsync("delete from KubeExplainRef");
-        // await db.Ado.ExecuteCommandAsync("delete from KubeExplainCN");
-        // await db.Ado.ExecuteCommandAsync("delete from KubeExplainEN");
-        // await db.Insertable(refList).ExecuteCommandAsync();
-        // await db.Insertable(uniqCnList).ExecuteCommandAsync();
-        // await db.Insertable(uniqEnList).ExecuteCommandAsync();
-    }
-
 
     private async Task ProcessKubeExplainsCn()
     {
