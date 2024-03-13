@@ -81,23 +81,30 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
         request.Headers.Add("Cache-Control", "no-cache");
         request.Content = new StringContent(json.Replace("${promptAndText}", promptAndText), Encoding.UTF8,
             "application/json");
-        httpClient.MaxResponseContentBufferSize = 1;
-        using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-        await using var body     = await response.Content.ReadAsStreamAsync();
-        using var       reader   = new System.IO.StreamReader(body);
-        while (!reader.EndOfStream)
+        try
         {
-            var line = await reader.ReadLineAsync();
-            if (string.IsNullOrWhiteSpace(line)) continue;
-            line = line.Trim();
-            if (line.StartsWith("\"text\":"))
+            using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            await using var body     = await response.Content.ReadAsStreamAsync();
+            using var       reader   = new System.IO.StreamReader(body);
+            while (!reader.EndOfStream)
             {
-                var data = line.Split("\"text\":")[1].Trim();
-                data =  data.Trim('"');
-                resp += data;
-                ChatEventHandler?.Invoke(this, data);
+                var line = await reader.ReadLineAsync();
+                if (string.IsNullOrWhiteSpace(line)) continue;
+                line = line.Trim();
+                if (line.StartsWith("\"text\":"))
+                {
+                    var data = line.Split("\"text\":")[1].Trim();
+                    data =  data.Trim('"');
+                    resp += data;
+                    ChatEventHandler?.Invoke(this, data);
+                }
+                // logger.LogInformation("received  {Line}",  line);
             }
-            // logger.LogInformation("received  {Line}",  line);
+        }
+        catch (Exception e)
+        {
+            resp = "Error" + e.Message;
+            logger.LogError(e, "Error");
         }
 
         return resp;
