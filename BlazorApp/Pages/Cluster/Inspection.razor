@@ -14,7 +14,7 @@
         </GridCol>
         <GridCol Span="2">Errors:</GridCol>
         <GridCol Span="6">
-            <Badge Count="@AnalyzeResult.Sum(x => x.Error.Count)"/>
+            <Badge Count="@AnalyzeResult.Count"/>
         </GridCol>
         <GridCol Span="8"></GridCol>
     </GridRow>
@@ -157,7 +157,7 @@
             <GridRow Class="grid-table">
                 <GridCol Span="8">Name</GridCol>
                 <GridCol Span="12">Error</GridCol>
-                <GridCol Span="2">Action</GridCol>
+                <GridCol Span="4">Action</GridCol>
 
             </GridRow>
             @foreach (var item in AnalyzeResult)
@@ -175,7 +175,7 @@
                             }
                         </div>
                     </GridCol>
-                    <GridCol Span="2">
+                    <GridCol Span="4">
                         <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
                     </GridCol>
                 </GridRow>
