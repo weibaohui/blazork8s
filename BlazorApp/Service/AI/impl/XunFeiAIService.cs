@@ -13,9 +13,40 @@ namespace BlazorApp.Service.AI.impl;
 
 public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 {
-    private const  string              hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
-    static         ClientWebSocket     _webSocket;
-    private static CancellationToken   _cancellation;
+    private const  string            hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
+    static         ClientWebSocket   _webSocket;
+    private static CancellationToken _cancellation;
+
+    public async Task<string> AIChat(string prompt)
+    {
+        return await Query(prompt);
+    }
+
+    public void SetChatEventHandler(EventHandler<string> eventHandler)
+    {
+        ChatEventHandler += eventHandler;
+    }
+
+
+    public async Task<string> ExplainError(string text)
+    {
+        var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("error");
+        var content = $"{prompt} \n {text}";
+        return await Query(content);
+    }
+
+    public async Task<string> ExplainSecurity(string text)
+    {
+        var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("security");
+        var content = $"{prompt} \n {text}";
+        return await Query(content);
+    }
+
+    public string Name()
+    {
+        return "科大讯飞星火大模型";
+    }
+
     private event EventHandler<string> ChatEventHandler;
 
     private string GetAppId()
@@ -33,137 +64,111 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
         return configService.GetString("XunFeiAI", "APIKey") ?? string.Empty;
     }
 
-    public async Task<string> AIChat(string prompt)
-    {
-        return await Query(prompt);
-    }
-
-    public void SetChatEventHandler(EventHandler<string> eventHandler)
-    {
-        ChatEventHandler += eventHandler;
-    }
-
     private async Task<string> Query(string promptAndText)
     {
-        String resp = "";
+        var resp    = "";
         var authUrl = GetAuthUrl();
         var url     = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
         using (_webSocket = new ClientWebSocket())
         {
+            await _webSocket.ConnectAsync(new Uri(url), _cancellation);
 
-                await _webSocket.ConnectAsync(new Uri(url), _cancellation);
-
-                var request = new IXunFeiAiService.JsonRequest
+            var request = new IXunFeiAiService.JsonRequest
+            {
+                header = new IXunFeiAiService.Header()
                 {
-                    header = new IXunFeiAiService.Header()
+                    app_id = GetAppId(),
+                    uid    = "12345"
+                },
+                parameter = new IXunFeiAiService.Parameter()
+                {
+                    chat = new IXunFeiAiService.Chat()
                     {
-                        app_id = GetAppId(),
-                        uid    = "12345"
-                    },
-                    parameter = new IXunFeiAiService.Parameter()
+                        domain           = "generalv3", //模型领域，默认为星火通用大模型
+                        temperature      = 0.5,         //温度采样阈值，用于控制生成内容的随机性和多样性，值越大多样性越高；范围（0，1）
+                        max_tokens       = 1024,        //生成内容的最大长度，范围（0，4096）
+                        auditing         = "default",
+                        random_threshold = 0.5,
+                    }
+                },
+                payload = new IXunFeiAiService.Payload()
+                {
+                    message = new IXunFeiAiService.Message()
                     {
-                        chat = new IXunFeiAiService.Chat()
+                        text = new List<IXunFeiAiService.Content>
                         {
-                            domain           = "generalv3", //模型领域，默认为星火通用大模型
-                            temperature      = 0.5,         //温度采样阈值，用于控制生成内容的随机性和多样性，值越大多样性越高；范围（0，1）
-                            max_tokens       = 1024,        //生成内容的最大长度，范围（0，4096）
-                            auditing         = "default",
-                            random_threshold = 0.5,
-                        }
-                    },
-                    payload = new IXunFeiAiService.Payload()
-                    {
-                        message = new IXunFeiAiService.Message()
-                        {
-                            text = new List<IXunFeiAiService.Content>
-                            {
-                                new() { role = "user", content = promptAndText },
-                                // new Content() { role = "assistant", content = "....." }, // AI的历史回答结果，这里省略了具体内容，可以根据需要添加更多历史对话信息和最新问题的内容。
-                            }
+                            new() { role = "user", content = promptAndText },
+                            // new Content() { role = "assistant", content = "....." }, // AI的历史回答结果，这里省略了具体内容，可以根据需要添加更多历史对话信息和最新问题的内容。
                         }
                     }
-                };
+                }
+            };
 
-                string jsonString = JsonConvert.SerializeObject(request);
-                //连接成功，开始发送数据
-
-
-                var frameData2 = Encoding.UTF8.GetBytes(jsonString.ToString());
+            string jsonString = JsonConvert.SerializeObject(request);
+            //连接成功，开始发送数据
 
 
-                await _webSocket.SendAsync(new ArraySegment<byte>(frameData2), WebSocketMessageType.Text, true,
-                    _cancellation);
+            var frameData2 = Encoding.UTF8.GetBytes(jsonString.ToString());
 
-                // 接收流式返回结果进行解析
-                byte[] receiveBuffer = new byte[1024];
-                WebSocketReceiveResult result =
-                    await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
-                while (!result.CloseStatus.HasValue)
+
+            await _webSocket.SendAsync(new ArraySegment<byte>(frameData2), WebSocketMessageType.Text, true,
+                _cancellation);
+
+            // 接收流式返回结果进行解析
+            byte[] receiveBuffer = new byte[1024];
+            WebSocketReceiveResult result =
+                await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
+            while (!result.CloseStatus.HasValue)
+            {
+                if (result.MessageType == WebSocketMessageType.Text)
                 {
-                    if (result.MessageType == WebSocketMessageType.Text)
+                    string receivedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
+                    //将结果构造为json
+
+                    JObject jsonObj = JObject.Parse(receivedMessage);
+                    int     code    = (int)jsonObj["header"]?["code"];
+
+
+                    if (0 == code)
                     {
-                        string receivedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
-                        //将结果构造为json
-
-                        JObject jsonObj = JObject.Parse(receivedMessage);
-                        int     code    = (int)jsonObj["header"]?["code"];
+                        int status = (int)jsonObj["payload"]?["choices"]?["status"];
 
 
-                        if (0 == code)
+                        JArray textArray = (JArray)jsonObj["payload"]?["choices"]?["text"];
+                        var    content   = (string)textArray?[0]["content"];
+                        resp += content;
+
+                        ChatEventHandler?.Invoke(this, content);
+                        if (status != 2)
                         {
-                            int status = (int)jsonObj["payload"]?["choices"]?["status"];
-
-
-                            JArray textArray = (JArray)jsonObj["payload"]?["choices"]?["text"];
-                            var content   = (string)textArray?[0]["content"];
-                            resp += content;
-
-                            ChatEventHandler?.Invoke(this, content);
-                            if (status != 2)
-                            {
-                                // logger.LogInformation("已接收到数据： {ReceivedMessage}", receivedMessage);
-                            }
-                            else
-                            {
-                                // logger.LogInformation("最后一帧： {ReceivedMessage}", receivedMessage);
-                                // var totalTokens = (int)jsonObj["payload"]?["usage"]?["text"]?["total_tokens"];
-                                // logger.LogInformation("整体返回结果： {Resp}", resp);
-                                // logger.LogInformation("本次消耗token数： {TotalTokens}", totalTokens);
-                                break;
-                            }
+                            // logger.LogInformation("已接收到数据： {ReceivedMessage}", receivedMessage);
                         }
                         else
                         {
-                            // logger.LogInformation("请求报错： {ReceivedMessage}", receivedMessage);
+                            // logger.LogInformation("最后一帧： {ReceivedMessage}", receivedMessage);
+                            // var totalTokens = (int)jsonObj["payload"]?["usage"]?["text"]?["total_tokens"];
+                            // logger.LogInformation("整体返回结果： {Resp}", resp);
+                            // logger.LogInformation("本次消耗token数： {TotalTokens}", totalTokens);
+                            break;
                         }
                     }
-                    else if (result.MessageType == WebSocketMessageType.Close)
+                    else
                     {
-                        // logger.LogInformation("已关闭WebSocket连接");
-                        break;
+                        // logger.LogInformation("请求报错： {ReceivedMessage}", receivedMessage);
                     }
-
-                    result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
                 }
+                else if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    // logger.LogInformation("已关闭WebSocket连接");
+                    break;
+                }
+
+                result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
             }
+        }
 
 
         return resp;
-    }
-
-
-    public async Task<string> ExplainError(string text)
-    {
-        var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("error");
-        var content = $"{prompt} \n {text}";
-        return await Query(content);
-    }
-
-    public async Task<string> ExplainSecurity(string text)
-    {
-        var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("security");
-        var content = $"{prompt} \n {text}";
-        return await Query(content);
     }
 
     /// <summary>
@@ -203,9 +208,5 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
         date = hMACSHA256.ComputeHash(date);
         hMACSHA256.Clear();
         return Convert.ToBase64String(date);
-    }
-    public string Name()
-    {
-        return "科大讯飞星火大模型";
     }
 }
