@@ -79,22 +79,26 @@ namespace BlazorApp.Service.k8s.impl
                             where !status.Message.IsNullOrWhiteSpace()
                             select new Failure { Text = status.Message });
                     }
-
-
                 }
+
                 if (pod.Status.Conditions is { Count: > 0 })
                 {
                     foreach (var condition in pod.Status.Conditions.ToList())
                     {
                         if (condition.Type == "ContainersReady" && condition.Status == "False")
                         {
-                            failures.Add(new Failure()
-                            {
-                                Text = condition.Message
-                            });
+                            //检查是否因为job complated而导致的
+                            //任何一个container是这个情况，都会导致进入此分支
+                            if (!pod.Status.ContainerStatuses.Any(x =>
+                                    x.Ready == false && x.State?.Terminated?.Reason == "Completed"))
+                                failures.Add(new Failure()
+                                {
+                                    Text = condition.Message
+                                });
                         }
                     }
                 }
+
                 if (pod.Status.ContainerStatuses is { Count: > 0 })
                 {
                     //通过遍历pod container status 判断是否正常
@@ -174,6 +178,7 @@ namespace BlazorApp.Service.k8s.impl
             {
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("Pod");
             }
+
             ClusterInspectionResultContainer.Instance.AddResourcesCount("Pod", items.ToList().Count);
 
             return results;
