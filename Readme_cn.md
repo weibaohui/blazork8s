@@ -83,6 +83,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 
 # 大模型 配置
 
+* √ 月之暗面MoonShot AI
 * √ 谷歌 Gemini
 * √ 阿里云通义千问
 * √ 科大讯飞星火大模型
