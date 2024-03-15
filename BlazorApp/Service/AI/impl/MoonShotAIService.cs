@@ -81,7 +81,6 @@ public class MoonShotAiService(IConfigService configService, ILogger<MoonShotAiS
         var jsonStr = json.Replace("${promptAndText}", promptAndText)
             .Replace("${model}", GetModel());
         request.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
-        Console.WriteLine(jsonStr);
         using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
         await using var body     = await response.Content.ReadAsStreamAsync();
         using var       reader   = new System.IO.StreamReader(body);
