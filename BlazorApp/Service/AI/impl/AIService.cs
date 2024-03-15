@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 namespace BlazorApp.Service.AI.impl;
 
 public class AiService(
-    IConfigService   configService,
-    IQwenAiService   qwenAi,
-    IXunFeiAiService xunFeiAi,
-    IOpenAiService   openAi,
-    IGeminiAiService geminiAi
+    IConfigService     configService,
+    IQwenAiService     qwenAi,
+    IXunFeiAiService   xunFeiAi,
+    IOpenAiService     openAi,
+    IGeminiAiService   geminiAi,
+    IMoonShotAiService moonShotAi
 ) : IAiService
 {
     public bool Enabled()
@@ -52,11 +53,12 @@ public class AiService(
         var selected = Selected();
         return selected switch
         {
-            "XunFeiAI" => xunFeiAi,
-            "QwenAI"   => qwenAi,
-            "OpenAI"   => openAi,
-            "GeminiAI" => geminiAi,
-            _          => qwenAi
+            "XunFeiAI"   => xunFeiAi,
+            "QwenAI"     => qwenAi,
+            "OpenAI"     => openAi,
+            "GeminiAI"   => geminiAi,
+            "MoonShotAI" => moonShotAi,
+            _            => qwenAi
         };
     }
 }

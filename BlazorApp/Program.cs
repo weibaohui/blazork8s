@@ -46,6 +46,7 @@ builder.Services.AddSingleton<IOpenAiService, OpenAiService>();
 builder.Services.AddSingleton<IRockAiService, RockAiService>();
 builder.Services.AddSingleton<IQwenAiService, QwenAiService>();
 builder.Services.AddSingleton<IGeminiAiService, GeminiAiService>();
+builder.Services.AddSingleton<IMoonShotAiService, MoonShotAiService>();
 builder.Services.AddSingleton<IAiService, AiService>();
 builder.Services.AddSingleton<ITranslateService, TranslateService>();
 builder.Services.AddSingleton<IDocService, DocService>();
