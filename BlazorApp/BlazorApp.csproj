@@ -6,7 +6,7 @@
       <PackageReference Include="AntDesign" Version="0.18.0" />
       <PackageReference Include="AntDesign.Charts" Version="0.5.1" />
       <PackageReference Include="AntDesign.ProLayout" Version="0.17.3" />
-      <PackageReference Include="Betalgo.OpenAI.GPT3" Version="6.8.4" />
+      <PackageReference Include="Betalgo.OpenAI" Version="7.4.6"/>
       <PackageReference Include="BlazorMonaco" Version="3.2.0" />
       <PackageReference Include="CliWrap" Version="3.6.6" />
       <PackageReference Include="FluentScheduler" Version="5.5.1" />
