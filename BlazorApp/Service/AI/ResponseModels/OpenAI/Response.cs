@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace BlazorApp.Service.AI.ResponseModels.MoonShot;
+namespace BlazorApp.Service.AI.ResponseModels.OpenAI;
 
-public record CompletionCreateResponse
+public record Response
 {
     [JsonPropertyName("object")]
     public string Object { get; set; }

@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using BlazorApp.Service.AI.ResponseModels.OpenAI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using OpenAI;
-using OpenAI.Managers;
-using OpenAI.ObjectModels.RequestModels;
 
 namespace BlazorApp.Service.AI.impl;
 
@@ -61,35 +62,51 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
     private event EventHandler<string> ChatEventHandler;
 
 
-    private async Task<string> Query(string prompt)
+    private async Task<string> Query(string promptAndText)
     {
-        var options = new OpenAiOptions()
-        {
-            ApiKey     = GetToken(),
-            BaseDomain = GetBaseUrl()
-        };
-        var service = new OpenAIService(options);
+        promptAndText = JsonSerializer.Serialize(promptAndText).TrimStart('"').TrimEnd('"');
 
-        var createRequest = new CompletionCreateRequest()
+        var       resp       = "";
+        using var httpClient = new HttpClient();
+        var       request    = new HttpRequestMessage(HttpMethod.Post, GetBaseUrl() + "/chat/completions");
+        request.Headers.Add("Authorization", "Bearer " + GetToken());
+        const string json = """
+                            {
+                              "model": "${model}",
+                              "messages": [
+                                 {"role": "user", "content": "${promptAndText}"}
+                              ],
+                              "temperature": 0.7,
+                              "stream": true
+                            }
+                            """;
+        var jsonStr = json.Replace("${promptAndText}", promptAndText)
+            .Replace("${model}", GetModel());
+        request.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
+        using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+        await using var body     = await response.Content.ReadAsStreamAsync();
+        using var       reader   = new System.IO.StreamReader(body);
+        while (!reader.EndOfStream)
         {
-            Prompt = prompt,
-            Stream = true
-        };
-        var resp             = "";
-        var completionResult = service.Completions.CreateCompletionAsStream(createRequest, GetModel());
-
-        await foreach (var completion in completionResult)
-            if (completion.Successful)
+            var line = await reader.ReadLineAsync();
+            if (string.IsNullOrWhiteSpace(line))
             {
-                resp += completion.Choices.FirstOrDefault()?.Text;
-                ChatEventHandler?.Invoke(this, completion.Choices.FirstOrDefault()?.Text);
+            }
+            else if (line.StartsWith("data:"))
+            {
+                var eventData = line["data:".Length..].Trim();
+                if (eventData == "[DONE]") break;
+
+                var completion = JsonSerializer.Deserialize<Response>(eventData);
+                var text       = completion?.Choices?.FirstOrDefault()?.Delta?.Content;
+                resp += text;
+                ChatEventHandler?.Invoke(this, text);
             }
             else
             {
-                if (completion.Error == null) logger.LogError("Unknown Error");
-
-                logger.LogError("{ErrorCode}: {ErrorMessage}", completion.Error?.Code, completion.Error?.Message);
+                logger.LogInformation("received {Line}", line);
             }
+        }
 
         return resp;
     }

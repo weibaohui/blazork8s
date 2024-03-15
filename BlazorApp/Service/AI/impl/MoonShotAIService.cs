@@ -95,7 +95,7 @@ public class MoonShotAiService(IConfigService configService, ILogger<MoonShotAiS
                 var eventData = line["data:".Length..].Trim();
                 if (eventData == "[DONE]") break;
 
-                var completion = JsonSerializer.Deserialize<CompletionCreateResponse>(eventData);
+                var completion = JsonSerializer.Deserialize<Response>(eventData);
                 var text       = completion?.Choices?.FirstOrDefault()?.Delta?.Content;
                 resp += text;
                 ChatEventHandler?.Invoke(this, text);
