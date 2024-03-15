@@ -83,11 +83,12 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 
 # 大模型 配置
 
-* √ 月之暗面MoonShot AI
+* √ [月之暗面 MoonShot AI](https://kimi.moonshot.cn/)
 * √ 谷歌 Gemini
 * √ 阿里云通义千问
 * √ 科大讯飞星火大模型
 * √ openAI
+* √ [One-API](https://github.com/songquanpeng/one-api)
 * 未完待续 (百度等模型...)
 
 修改源码BlazorApp目录下的appsettings.json
