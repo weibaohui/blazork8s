@@ -21,7 +21,7 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
 
     public void SetChatEventHandler(EventHandler<string> eventHandler)
     {
-        ChatEventHandler += eventHandler;
+        ChatEventHandler = eventHandler;
     }
 
     public async Task<string> ExplainError(string text)

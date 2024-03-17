@@ -24,7 +24,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
     public void SetChatEventHandler(EventHandler<string> eventHandler)
     {
-        ChatEventHandler += eventHandler;
+        ChatEventHandler = eventHandler;
     }
 
 

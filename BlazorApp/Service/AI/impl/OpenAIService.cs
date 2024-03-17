@@ -36,7 +36,7 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
 
     public void SetChatEventHandler(EventHandler<string> eventHandler)
     {
-        ChatEventHandler += eventHandler;
+        ChatEventHandler = eventHandler;
     }
 
     public string Name()

@@ -22,7 +22,7 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     public void SetChatEventHandler(EventHandler<string> eventHandler)
     {
-        ChatEventHandler += eventHandler;
+        ChatEventHandler = eventHandler;
     }
 
     public async Task<string> ExplainError(string text)

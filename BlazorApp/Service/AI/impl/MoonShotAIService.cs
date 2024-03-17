@@ -35,7 +35,7 @@ public class MoonShotAiService(IConfigService configService, ILogger<MoonShotAiS
 
     public void SetChatEventHandler(EventHandler<string> eventHandler)
     {
-        ChatEventHandler += eventHandler;
+        ChatEventHandler = eventHandler;
     }
 
     public string Name()
@@ -84,6 +84,10 @@ public class MoonShotAiService(IConfigService configService, ILogger<MoonShotAiS
         using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
         await using var body     = await response.Content.ReadAsStreamAsync();
         using var       reader   = new System.IO.StreamReader(body);
+
+        var isCacheActive = true;
+        var buffer        = "";
+
         while (!reader.EndOfStream)
         {
             var line = await reader.ReadLineAsync();
@@ -98,7 +102,21 @@ public class MoonShotAiService(IConfigService configService, ILogger<MoonShotAiS
                 var completion = JsonSerializer.Deserialize<Response>(eventData);
                 var text       = completion?.Choices?.FirstOrDefault()?.Delta?.Content;
                 resp += text;
-                ChatEventHandler?.Invoke(this, text);
+
+                //针对MoonShot 单字出的情况进行缓存处理
+                if (isCacheActive)
+                {
+                    buffer += text;
+                    if (buffer.Length <= 30) continue;
+                    isCacheActive = false;
+                    ChatEventHandler?.Invoke(this, buffer);
+                    buffer = "";
+                }
+                else
+                {
+                    //非缓存模式，直接输出
+                    ChatEventHandler?.Invoke(this, text);
+                }
             }
             else
             {
