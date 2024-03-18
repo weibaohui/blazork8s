@@ -49,7 +49,8 @@ public class kubectExplainGen
         // dictList.AddItem("ResourceQuota", typeof(V1ResourceQuota));
         // dictList.AddItem("CustomResourceDefinition", typeof(V1CustomResourceDefinition));
         // dictList.AddItem("Pod", typeof(V1Pod));
-        dictList.AddItem("Lease", typeof(V1Lease));
+        // dictList.AddItem("Lease", typeof(V1Lease));
+        dictList.AddItem("Namespace", typeof(V1Namespace));
 
         Console.WriteLine("AddList Over");
 
