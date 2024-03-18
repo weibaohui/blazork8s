@@ -1,12 +1,12 @@
 @using BlazorApp.Pages.Common.Html
-@if (Annotations != null && Annotations.Count > 0)
+@if (Annotations is { Count: > 0 })
 {
-    <HTableColumn Title="Annotations">
+    <HTableColumn Title="Annotations" ExplainField="@ExplainField">
         @foreach (var label in Annotations)
         {
             <Paragraph >
                 <Text Code Copyable>
-                    <span  >@label.Key = @label.Value</span>
+                    <span >@label.Key = @label.Value</span>
                 </Text>
             </Paragraph>
         }

@@ -1,7 +1,7 @@
 @using BlazorApp.Pages.Common.Html
 @if (Owner != null)
 {
-    <HTableColumn Title="ControllerBy">
+    <HTableColumn Title="ControllerBy" ExplainField="@ExplainField">
         @foreach (var r in Refs)
         {
             <RefView Ref="r" FullView="true"></RefView>

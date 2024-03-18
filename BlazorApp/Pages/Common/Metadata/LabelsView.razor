@@ -2,18 +2,22 @@
 @using BlazorApp.Utils
 @if (Labels != null)
 {
-        <HTableColumn Title="Labels">
-            @foreach (var label in Labels)
-            {
-                <Paragraph Copyable>
-                    <Tag Color="@RandomColorHelper.RandomInverseColor()">@label.Key = @label.Value</Tag>
-                </Paragraph>
-            }
-        </HTableColumn>
+    <HTableColumn Title="Labels" ExplainField="@ExplainField">
+        @foreach (var label in Labels)
+        {
+            <Paragraph Copyable>
+                <Tag Color="@RandomColorHelper.RandomInverseColor()">@label.Key = @label.Value</Tag>
+            </Paragraph>
+        }
+    </HTableColumn>
 }
+
 @code {
 
     [Parameter]
     public IDictionary<string, string> Labels { get; set; }
+
+    [Parameter]
+    public string ExplainField { get; set; }
 
 }

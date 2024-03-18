@@ -9,12 +9,16 @@ public partial class AnnotationsView : ComponentBase
     [Parameter]
     public IDictionary<string, string> Annotations { get; set; }
 
+    [Parameter]
+    public string ExplainField { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         if (Annotations != null)
         {
             Annotations.Remove("kubectl.kubernetes.io/last-applied-configuration");
         }
+
         await base.OnInitializedAsync();
     }
 }

@@ -14,6 +14,8 @@ public partial class ControllerByView : ComponentBase
     [Parameter]
     public string Namespace { get; set; }
 
+    [Parameter]
+    public string ExplainField { get; set; }
 
     private IList<V1ObjectReference> Refs { get; set; }
 
@@ -32,5 +34,4 @@ public partial class ControllerByView : ComponentBase
 
         await base.OnInitializedAsync();
     }
-
 }
