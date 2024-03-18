@@ -138,7 +138,7 @@ public class TranslateService(
 
     private async Task ProcessKubeExplainsEn()
     {
-        var rfList = db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToList();
+        var rfList = await db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToListAsync();
         foreach (var rf in rfList)
         {
             var en   = await kubectl.Explain(rf.ExplainFiled);
@@ -183,6 +183,7 @@ public class TranslateService(
             var cnId = cn.ToMd5Str();
             en.done = true;
             logger.LogInformation("翻译Over {Current}/{All} {EnId} ", current, all, en.Id);
+            logger.LogInformation("翻译Over  {EnId} {Cn} ", en.Id, cn);
 
             if (await db.Queryable<KubeExplainCN>().SingleAsync(x => x.Id == cnId) != null)
             {
