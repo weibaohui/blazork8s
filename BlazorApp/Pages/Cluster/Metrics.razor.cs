@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
-using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Microsoft.AspNetCore.Components;
@@ -19,9 +18,6 @@ public partial class Metrics : ComponentBase
     private Timer _timer;
 
     [Inject]
-    private ITranslateService TranslateService { get; set; }
-
-    [Inject]
     public IKubeService KubeService { get; set; }
 
     private IList<IMetric> AllMetrics { get; set; }
@@ -34,7 +30,6 @@ public partial class Metrics : ComponentBase
         _timer.Start();
         await OnTimerCallback(); //先执行一次
         await base.OnInitializedAsync();
-        await TranslateService.ProcessKubeExplains();
     }
 
     private async Task OnTimerCallback()
