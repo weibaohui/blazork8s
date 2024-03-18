@@ -98,7 +98,8 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
                     resp += data;
                     ChatEventHandler?.Invoke(this, data);
                 }
-                // logger.LogInformation("received  {Line}",  line);
+
+                logger.LogInformation("received  {Line}", line);
             }
         }
         catch (Exception e)
@@ -108,17 +109,5 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
         }
 
         return resp;
-    }
-
-    private void IncrementHandler(string resp)
-    {
-        if (!string.IsNullOrWhiteSpace(_lastResp))
-            _incrementResp = resp.Replace(_lastResp, "");
-        else
-            _incrementResp = resp;
-
-        _lastResp = resp;
-        logger.LogInformation("{Ai} _incrementResp: {IncrementResp}", Name(), _incrementResp);
-        if (ChatEventHandler != null) ChatEventHandler(this, _incrementResp);
     }
 }
