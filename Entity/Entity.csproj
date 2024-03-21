@@ -6,8 +6,8 @@
 
     <ItemGroup>
         <PackageReference Include="KubernetesClient" Version="13.0.26"/>
-        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="8.0.3"/>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="SqlSugarCore" Version="5.1.4.142" />
+        <PackageReference Include="SqlSugarCore" Version="5.1.4.146"/>
     </ItemGroup>
 </Project>
