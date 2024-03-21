@@ -80,12 +80,12 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 # ChatGPT config 
 
 * √ [MoonShot AI](https://kimi.moonshot.cn/)
-* √ Google Gemini
-* √ ali Qwen
-* √ iFlytek Spark
-* √ OpenAI
-* √ [One-API](https://github.com/songquanpeng/one-api) 
-* TBD (Baidu and other models...)
+* √ [Ollama](https://ollama.com/)
+* √ [Google Gemini](https://gemini.google.com/)
+* √ [Ali Qwen](https://tongyi.aliyun.com/qianwen/)
+* √ [iFlytek Spark](https://xinghuo.xfyun.cn/spark)
+* √ [OpenAI](https://openai.com/)
+* √ [One-API](https://github.com/songquanpeng/one-api) same as OpenAI 
 
 Modify the appsettings.json in the BlazorApp directory or /app/ directory of the image.
 
