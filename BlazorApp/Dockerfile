@@ -21,7 +21,7 @@ FROM busybox:latest as nc
 FROM base AS final
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT Production
-ENV ASPNETCORE_URLS=http://*:4000
+ENV ASPNETCORE_URLS=http://*:8080
 COPY --from=build /src/BlazorApp/docs.db .
 COPY --from=publish /app/publish .
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/kubectl
