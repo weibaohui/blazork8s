@@ -71,7 +71,7 @@ kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deploymen
 docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.4
 ```
 
-* 访问：http://IP:4000
+* 访问：http://IP:4000  (!不要使用 127.0.0.1/localhost!)
 
 # 源码 DEBUG 调试
 
