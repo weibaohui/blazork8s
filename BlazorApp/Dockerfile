@@ -1,7 +1,6 @@
 FROM  mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 443
+EXPOSE 4000
 
 FROM  mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
@@ -22,6 +21,7 @@ FROM busybox:latest as nc
 FROM base AS final
 WORKDIR /app
 ENV ASPNETCORE_ENVIRONMENT Production
+ENV ASPNETCORE_URLS=http://*:4000
 COPY --from=build /src/BlazorApp/docs.db .
 COPY --from=publish /app/publish .
 COPY --from=kubectl /opt/bitnami/kubectl/bin/kubectl /usr/bin/kubectl
