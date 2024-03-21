@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Chat;
@@ -15,6 +16,35 @@ namespace BlazorApp.Pages.Pod;
 
 public partial class PodExecView : FeedbackComponent<V1Pod, bool>
 {
+    private HashSet<string> _addons =
+    [
+        "addon-fit"
+    ];
+
+
+    private int            _columns, _rows;
+    private string         _containerName;
+    private PodLogExecutor _logHelper;
+
+    private TerminalOptions _options = new TerminalOptions
+    {
+        CursorBlink = true,
+        CursorStyle = CursorStyle.Bar,
+        Rows        = 20,
+        Columns     = 100,
+        Theme =
+        {
+            Background = "#17615e",
+        },
+    };
+
+
+    private V1Pod _podItem;
+
+    private Xterm _terminal;
+
+    private string _tmpCommand = "";
+
     [Inject]
     private IPodService PodService { get; set; }
 
@@ -22,9 +52,8 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     private IHubContext<ChatHub> _ctx { get; set; }
 
 
-    private V1Pod          _podItem;
-    private string         _containerName;
-    private PodLogExecutor _logHelper;
+    [Inject]
+    protected IJSRuntime JSRuntime { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,39 +90,12 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         }
     }
 
-
-    [Inject]
-    protected IJSRuntime JSRuntime { get; set; }
-
-    private Xterm _terminal;
-
-    private TerminalOptions _options = new TerminalOptions
-    {
-        CursorBlink = true,
-        CursorStyle = CursorStyle.Bar,
-        Rows        = 20,
-        Columns     = 100,
-        Theme =
-        {
-            Background = "#17615e",
-        },
-    };
-
-
-    private int      _columns, _rows;
-    private string[] _addonIds = new string[]
-    {
-        // "xterm-addon-attach",
-        "xterm-addon-fit"
-    };
     private async Task OnFirstRender()
     {
-        await _terminal.InvokeAddonFunctionVoidAsync("xterm-addon-fit", "fit");
+        // await _terminal.Addon("addon-fit").InvokeVoidAsync("fit");
         _columns = await _terminal.GetColumns();
         _rows    = await _terminal.GetRows();
     }
-
-    private string _tmpCommand = "";
 
     private async Task OnData(string data)
     {
@@ -101,7 +103,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         await _terminal.Write(_tmpCommand);
     }
 
-    private async Task OnKey(KeyboardEventArgs args)
+    private async Task OnKey(KeyEventArgs args)
     {
         if (args.Key == "Enter")
         {
@@ -113,25 +115,14 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     }
 
 
-
-
-
-    private async Task Search(MouseEventArgs args)
-    {
-        bool searchSuccess =
-            await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", "");
-    }
+    // private async Task Search(MouseEventArgs args)
+    // {
+    //     bool searchSuccess =
+    //         await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", "");
+    // }
 
     private async Task Resize(MouseEventArgs args)
     {
         await _terminal.Resize(_columns, _rows);
     }
-
-
-
-
-
-
-
-
 }

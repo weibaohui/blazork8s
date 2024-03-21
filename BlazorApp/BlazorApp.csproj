@@ -17,7 +17,7 @@
       <PackageReference Include="NCrontab" Version="3.3.3" />
       <PackageReference Include="Quick.PtyNet" Version="1.0.2" />
       <PackageReference Include="SqlSugarCore" Version="5.1.4.146"/>
-      <PackageReference Include="XtermBlazor" Version="1.10.2" />
+      <PackageReference Include="XtermBlazor" Version="2.0.0"/>
   </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />

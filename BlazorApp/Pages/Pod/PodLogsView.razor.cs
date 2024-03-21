@@ -14,20 +14,38 @@ namespace BlazorApp.Pages.Pod;
 
 public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 {
+    private string[] _addonIds = new string[]
+    {
+        // "xterm-addon-attach",
+        // "xterm-addon-fit"
+    };
+
+    private int            _columns, _rows;
+    private string         _containerName;
+    private PodLogExecutor _logHelper;
+
+    private TerminalOptions _options = new TerminalOptions
+    {
+        CursorBlink = true,
+        CursorStyle = CursorStyle.Bar,
+        Columns     = 100,
+        Rows        = 50,
+        Theme =
+        {
+            Background = "#17615e",
+        },
+    };
+
+    private V1Pod  _podItem;
+    private string _searchInput = "";
+
+    private Xterm _terminal;
+
     [Inject]
     private IPodService PodService { get; set; }
 
     [Inject]
     private IHubContext<ChatHub> _ctx { get; set; }
-
-    private Xterm _terminal;
-
-    private int    _columns, _rows;
-    private string _searchInput = "";
-
-    private V1Pod          _podItem;
-    private string         _containerName;
-    private PodLogExecutor _logHelper;
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,24 +70,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         await _logHelper.StartLog();
     }
 
-    private TerminalOptions _options = new TerminalOptions
-    {
-        CursorBlink = true,
-        CursorStyle = CursorStyle.Bar,
-        Columns     = 100,
-        Rows        = 50,
-        Theme =
-        {
-            Background = "#17615e",
-        },
-    };
-
-    private string[] _addonIds = new string[]
-    {
-        // "xterm-addon-attach",
-        // "xterm-addon-fit"
-    };
-
 
     private async Task OnFirstRender()
     {
@@ -93,11 +93,11 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     }
 
 
-    private async Task OnSearchClicked(MouseEventArgs args)
-    {
-        bool searchSuccess =
-            await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", _searchInput);
-    }
+    // private async Task OnSearchClicked(MouseEventArgs args)
+    // {
+    //     bool searchSuccess =
+    //         await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", _searchInput);
+    // }
 
 
     /// <summary>
