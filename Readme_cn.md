@@ -66,9 +66,13 @@ kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deploymen
 ## 启动服务
 
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
-
+### X86架构环境
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.4
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.5
+```
+### ARM Run (Mac M1/2/3等ARM架构)
+```docker
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.5-arm
 ```
 
 * 访问：http://IP:4000  (!不要使用 127.0.0.1/localhost!)
