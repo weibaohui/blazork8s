@@ -13,9 +13,7 @@ namespace BlazorApp.Service.AI.impl;
 
 public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 {
-    private const  string            hostUrl = "https://spark-api.xf-yun.com/v3.1/chat";
-    static         ClientWebSocket   _webSocket;
-    private static CancellationToken _cancellation;
+    private static ClientWebSocket _webSocket;
 
     public async Task<string> AIChat(string prompt)
     {
@@ -49,6 +47,11 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
     private event EventHandler<string> ChatEventHandler;
 
+    private string GetHostUrl()
+    {
+        return $"https://spark-api.xf-yun.com/{GetVersion()}/chat";
+    }
+
     private string GetAppId()
     {
         return configService.GetString("XunFeiAI", "APPID") ?? string.Empty;
@@ -64,6 +67,16 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
         return configService.GetString("XunFeiAI", "APIKey") ?? string.Empty;
     }
 
+    private string GetVersion()
+    {
+        return configService.GetString("XunFeiAI", "Version") ?? string.Empty;
+    }
+
+    private string GetDomain()
+    {
+        return configService.GetString("XunFeiAI", "Domain") ?? string.Empty;
+    }
+
     private async Task<string> Query(string promptAndText)
     {
         var resp    = "";
@@ -71,7 +84,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
         var url     = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
         using (_webSocket = new ClientWebSocket())
         {
-            await _webSocket.ConnectAsync(new Uri(url), _cancellation);
+            await _webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
 
             var request = new IXunFeiAiService.JsonRequest
             {
@@ -84,7 +97,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
                 {
                     chat = new IXunFeiAiService.Chat()
                     {
-                        domain           = "generalv3", //模型领域，默认为星火通用大模型
+                        domain           = GetDomain(), //模型领域，默认为星火通用大模型
                         temperature      = 0.5,         //温度采样阈值，用于控制生成内容的随机性和多样性，值越大多样性越高；范围（0，1）
                         max_tokens       = 1024,        //生成内容的最大长度，范围（0，4096）
                         auditing         = "default",
@@ -112,17 +125,17 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
 
             await _webSocket.SendAsync(new ArraySegment<byte>(frameData2), WebSocketMessageType.Text, true,
-                _cancellation);
+                CancellationToken.None);
 
             // 接收流式返回结果进行解析
-            byte[] receiveBuffer = new byte[1024];
-            WebSocketReceiveResult result =
-                await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
+            var receiveBuffer = new byte[1024];
+            var result =
+                await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
             while (!result.CloseStatus.HasValue)
             {
                 if (result.MessageType == WebSocketMessageType.Text)
                 {
-                    string receivedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
+                    var receivedMessage = Encoding.UTF8.GetString(receiveBuffer, 0, result.Count);
                     //将结果构造为json
 
                     JObject jsonObj = JObject.Parse(receivedMessage);
@@ -131,7 +144,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
                     if (0 == code)
                     {
-                        int status = (int)jsonObj["payload"]?["choices"]?["status"];
+                        var status = (int)jsonObj["payload"]?["choices"]?["status"];
 
 
                         JArray textArray = (JArray)jsonObj["payload"]?["choices"]?["text"];
@@ -163,7 +176,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
                     break;
                 }
 
-                result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), _cancellation);
+                result = await _webSocket.ReceiveAsync(new ArraySegment<byte>(receiveBuffer), CancellationToken.None);
             }
         }
 
@@ -177,15 +190,15 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
     /// <returns></returns>
     string GetAuthUrl()
     {
-        string date = DateTime.UtcNow.ToString("r");
+        var date = DateTime.UtcNow.ToString("r");
 
-        Uri uri = new Uri(hostUrl);
-        StringBuilder builder = new StringBuilder("host: ").Append(uri.Host).Append("\n")
+        var uri = new Uri(GetHostUrl());
+        var builder = new StringBuilder("host: ").Append(uri.Host).Append("\n")
             .Append("date: ").Append(date).Append("\n")
             .Append("GET ").Append(uri.LocalPath).Append(" HTTP/1.1");
 
-        string sha = HmaCsha256(GetApiSecret(), builder.ToString());
-        string authorization =
+        var sha = HmaCsha256(GetApiSecret(), builder.ToString());
+        var authorization =
             $"api_key=\"{GetApiKey()}\", algorithm=\"hmac-sha256\", headers=\"host date request-line\", signature=\"{sha}\"";
 
         var newUrl = "https://" + uri.Host + uri.LocalPath;
@@ -202,9 +215,9 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
     string HmaCsha256(string apiSecretIsKey, string buider)
     {
-        byte[]     bytes      = Encoding.UTF8.GetBytes(apiSecretIsKey);
-        HMACSHA256 hMACSHA256 = new HMACSHA256(bytes);
-        byte[]     date       = Encoding.UTF8.GetBytes(buider);
+        var bytes      = Encoding.UTF8.GetBytes(apiSecretIsKey);
+        var hMACSHA256 = new HMACSHA256(bytes);
+        var date       = Encoding.UTF8.GetBytes(buider);
         date = hMACSHA256.ComputeHash(date);
         hMACSHA256.Clear();
         return Convert.ToBase64String(date);

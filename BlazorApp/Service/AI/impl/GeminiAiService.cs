@@ -50,8 +50,14 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
     private string GetSseEndpoint()
     {
         return
-            $"https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:streamGenerateContent?key={GetApiKey()}";
+            $"https://generativelanguage.googleapis.com/v1beta/models/{GetModel()}:streamGenerateContent?key={GetApiKey()}";
     }
+
+    private string GetModel()
+    {
+        return configService.GetString("GeminiAI", "Model") ?? string.Empty;
+    }
+
 
     private string GetApiKey()
     {
