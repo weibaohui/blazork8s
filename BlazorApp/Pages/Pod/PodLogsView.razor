@@ -3,22 +3,23 @@
 @if (_podItem != null)
 {
     <div>
-        <SimpleSelect Style="width:120px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
+        <SimpleSelect Style="width:250px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
             <SelectOptions>
                 @foreach (var c in _podItem.Spec.Containers)
                 {
                     <SimpleSelectOption Value="@c.Name" Label="@c.Name"></SimpleSelectOption>
                 }
+                <SimpleSelectOption Value="all-containers" Label="All"></SimpleSelectOption>
             </SelectOptions>
         </SimpleSelect>
-        <Button Type="@ButtonType.Primary" OnClick="OnOkBtnClicked">确定</Button>
+        <Button Type="@ButtonType.Primary" OnClick="@(() => OnOkBtnClicked())">确定</Button>
 
     </div>
     <div class="mb-2">
 
         <Button Type="@ButtonType.Primary" OnClick="ScrollToTop">顶端</Button>
         <Button Type="@ButtonType.Primary" OnClick="ScrollToBottom">底端</Button>
-        <Search Placeholder="input search text"    @bind-value="@_searchInput"/>
+        <Search Placeholder="input search text" @bind-value="@_searchInput"/>
     </div>
     <Xterm
         @ref="_terminal"

@@ -65,7 +65,9 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     {
         _containerName = name;
         await _terminal.Clear();
-        _logHelper.SetContainerName(_containerName);
+        var _ = _containerName == "all-containers"
+            ? _logHelper.SetAllContainers(true)
+            : _logHelper.SetAllContainers(false);
         _logHelper.BuildLogCommand();
         await _logHelper.StartLog();
     }

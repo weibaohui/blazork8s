@@ -11,22 +11,23 @@ namespace BlazorApp.Utils;
 
 public class PodLogExecutor
 {
-    private static readonly ILogger<PodLogExecutor> Logger = LoggingHelper<PodLogExecutor>.Logger();
+    private static readonly ILogger<PodLogExecutor> Logger  = LoggingHelper<PodLogExecutor>.Logger();
+    private readonly        bool                    _follow = true;
+    private readonly        string                  _name;
 
-    private string  _namespace;
-    private string  _name;
-    private string  _containerName;
+    private readonly string _namespace;
+    private readonly bool   _showTimestamp  = true;
+    private          bool   _all_containers = false;
+
+    private int     _columns;
     private string? _command;
-    private bool    _showTimestamp = true;
-    private bool    _follow        = true;
-    private string? _sinceTimestamp;
-    private bool    _showAll = true;
-
-    private int _columns;
-    private int _rows;
+    private string  _containerName;
 
     //返回的日志内容
     private IHubContext<ChatHub>? _ctx;
+    private int                   _rows;
+    private bool                  _showAll = true;
+    private string?               _sinceTimestamp;
 
     public PodLogExecutor(string ns, string name, string containerName)
     {
@@ -34,6 +35,8 @@ public class PodLogExecutor
         _name          = name;
         _containerName = containerName;
     }
+
+    public string Key => $"{_namespace}/{_name}/{_containerName}";
 
 
     public PodLogExecutor SetHubContext(IHubContext<ChatHub> ctx)
@@ -54,7 +57,9 @@ public class PodLogExecutor
         if (_showAll && !_sinceTimestamp.IsNullOrEmpty())
             extCmd += $" --since-time='{_sinceTimestamp}' ";
 
-        _command = $"logs -n {_namespace} {_name} -c {_containerName} {extCmd}";
+        extCmd += _all_containers ? " --all-containers=true " : $" -c {_containerName}  ";
+
+        _command = $"logs -n {_namespace} {_name} {extCmd}";
         return this;
     }
 
@@ -64,12 +69,10 @@ public class PodLogExecutor
         return this;
     }
 
-    public string Key => $"{_namespace}/{_name}/{_containerName}";
-
     public void Kill()
     {
         TerminalHelper.Instance.Kill(Key);
-        Logger.LogInformation($"{Key} killed");
+        Logger.LogInformation("{Key} killed", Key);
     }
 
 
@@ -81,10 +84,10 @@ public class PodLogExecutor
         }
 
         //log 每次获取前都杀死一次
-        Logger.LogInformation($"{Key} killed before log");
+        Logger.LogInformation("{Key} killed before log", Key);
 
         TerminalHelper.Instance.Kill(Key);
-        Logger.LogInformation("Log " + _command);
+        Logger.LogInformation("Command: {Command}", _command);
 
         var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
         if (!terminalService.IsStandardOutPutSet)
@@ -107,6 +110,7 @@ public class PodLogExecutor
         {
             await terminalService.Start();
         }
+
         await terminalService.Write($"kubectl {_command} \r");
     }
 
@@ -117,8 +121,8 @@ public class PodLogExecutor
             return;
         }
 
-        Logger.LogInformation("Exec " + _command);
-        Logger.LogInformation($"{Key} killed before exec");
+        Logger.LogInformation("Exec {Command}", _command);
+        Logger.LogInformation("{Key} killed before exec", Key);
 
         TerminalHelper.Instance.Kill(Key);
 
@@ -144,6 +148,7 @@ public class PodLogExecutor
         {
             await terminalService.Start();
         }
+
         await terminalService.Write($"kubectl {_command} \r");
     }
 
@@ -169,6 +174,12 @@ public class PodLogExecutor
     public PodLogExecutor SetContainerName(string containerName)
     {
         _containerName = containerName;
+        return this;
+    }
+
+    public PodLogExecutor SetAllContainers(bool flag)
+    {
+        _all_containers = flag;
         return this;
     }
 }
