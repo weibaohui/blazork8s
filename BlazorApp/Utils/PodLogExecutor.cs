@@ -11,13 +11,11 @@ namespace BlazorApp.Utils;
 
 public class PodLogExecutor
 {
-    private static readonly ILogger<PodLogExecutor> Logger  = LoggingHelper<PodLogExecutor>.Logger();
-    private readonly        bool                    _follow = true;
+    private static readonly ILogger<PodLogExecutor> Logger = LoggingHelper<PodLogExecutor>.Logger();
     private readonly        string                  _name;
 
     private readonly string _namespace;
-    private readonly bool   _showTimestamp  = true;
-    private          bool   _all_containers = false;
+    private          bool   _allContainers = false;
 
     private int     _columns;
     private string? _command;
@@ -25,8 +23,10 @@ public class PodLogExecutor
 
     //返回的日志内容
     private IHubContext<ChatHub>? _ctx;
+    private bool                  _follow;
     private int                   _rows;
     private bool                  _showAll = true;
+    private bool                  _showTimestamp;
     private string?               _sinceTimestamp;
 
     public PodLogExecutor(string ns, string name, string containerName)
@@ -57,7 +57,7 @@ public class PodLogExecutor
         if (_showAll && !_sinceTimestamp.IsNullOrEmpty())
             extCmd += $" --since-time='{_sinceTimestamp}' ";
 
-        extCmd += _all_containers ? " --all-containers=true " : $" -c {_containerName}  ";
+        extCmd += _allContainers ? " --all-containers=true " : $" -c {_containerName}  ";
 
         _command = $"logs -n {_namespace} {_name} {extCmd}";
         return this;
@@ -179,7 +179,19 @@ public class PodLogExecutor
 
     public PodLogExecutor SetAllContainers(bool flag)
     {
-        _all_containers = flag;
+        _allContainers = flag;
+        return this;
+    }
+
+    public PodLogExecutor SetShowTimestamp(bool showTimestamp)
+    {
+        _showTimestamp = showTimestamp;
+        return this;
+    }
+
+    public PodLogExecutor SetFollow(bool follow)
+    {
+        _follow = follow;
         return this;
     }
 }

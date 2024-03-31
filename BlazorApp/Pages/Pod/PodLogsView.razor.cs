@@ -14,17 +14,7 @@ namespace BlazorApp.Pages.Pod;
 
 public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 {
-    private string[] _addonIds = new string[]
-    {
-        // "xterm-addon-attach",
-        // "xterm-addon-fit"
-    };
-
-    private int            _columns, _rows;
-    private string         _containerName;
-    private PodLogExecutor _logHelper;
-
-    private TerminalOptions _options = new TerminalOptions
+    private readonly TerminalOptions _options = new()
     {
         CursorBlink = true,
         CursorStyle = CursorStyle.Bar,
@@ -36,8 +26,20 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         },
     };
 
+    private string[] _addonIds = new string[]
+    {
+        // "xterm-addon-attach",
+        // "xterm-addon-fit"
+    };
+
+    private int            _columns, _rows;
+    private string         _containerName;
+    private bool           _follow;
+    private PodLogExecutor _logHelper;
+
     private V1Pod  _podItem;
     private string _searchInput = "";
+    private bool   _showTimestamp;
 
     private Xterm _terminal;
 
@@ -68,6 +70,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         var _ = _containerName == "all-containers"
             ? _logHelper.SetAllContainers(true)
             : _logHelper.SetAllContainers(false);
+        _logHelper.SetShowTimestamp(_showTimestamp);
+        _logHelper.SetFollow(_follow);
         _logHelper.BuildLogCommand();
         await _logHelper.StartLog();
     }

@@ -12,6 +12,8 @@
                 <SimpleSelectOption Value="all-containers" Label="All"></SimpleSelectOption>
             </SelectOptions>
         </SimpleSelect>
+        <Checkbox bind-Value="@_showTimestamp" OnChange="@(() => _showTimestamp = !_showTimestamp)">显示时间戳</Checkbox>
+        <Checkbox bind-Value="@_follow" OnChange="@(() => _follow = !_follow)">跟随</Checkbox>
         <Button Type="@ButtonType.Primary" OnClick="@(() => OnOkBtnClicked())">确定</Button>
 
     </div>
