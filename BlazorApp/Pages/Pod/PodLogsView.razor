@@ -14,6 +14,10 @@
         </SimpleSelect>
         <Checkbox bind-Value="@_showTimestamp" OnChange="@(() => _showTimestamp = !_showTimestamp)">显示时间戳</Checkbox>
         <Checkbox bind-Value="@_follow" OnChange="@(() => _follow = !_follow)">跟随</Checkbox>
+        <Checkbox bind-Value="@_prefix" OnChange="@(() => _prefix = !_prefix)">显名</Checkbox>
+        <Checkbox bind-Value="@_previous" OnChange="@(() => _previous = !_previous)">前世</Checkbox>
+        <Checkbox bind-Value="@_ignoreErrors" OnChange="@(() => _ignoreErrors = !_ignoreErrors)">忽略错误</Checkbox>
+        <DatePicker TValue="DateTime?" OnChange="@DatePickerChanged" bind-Value="@_sinceTimestamp" ShowTime="@true" Format="yyyy-MM-ddTHH:mm ss" Mask="yyyy-MM-ddTHH:mm ss" Placeholder="@("自从")"/>
         <Button Type="@ButtonType.Primary" OnClick="@(() => OnOkBtnClicked())">确定</Button>
 
     </div>

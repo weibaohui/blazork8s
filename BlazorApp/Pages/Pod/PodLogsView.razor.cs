@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Chat;
@@ -35,11 +36,15 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     private int            _columns, _rows;
     private string         _containerName;
     private bool           _follow;
+    private bool           _ignoreErrors;
     private PodLogExecutor _logHelper;
 
-    private V1Pod  _podItem;
-    private string _searchInput = "";
-    private bool   _showTimestamp;
+    private V1Pod     _podItem;
+    private bool      _prefix;
+    private bool      _previous;
+    private string    _searchInput = "";
+    private bool      _showTimestamp;
+    private DateTime? _sinceTimestamp;
 
     private Xterm _terminal;
 
@@ -65,13 +70,22 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 
     private async Task OnContainerSelectChanged(string name)
     {
+        Console.WriteLine(_sinceTimestamp);
+        Console.WriteLine(_sinceTimestamp);
+        Console.WriteLine(_sinceTimestamp);
+        Console.WriteLine(_sinceTimestamp);
+        Console.WriteLine(_sinceTimestamp);
         _containerName = name;
         await _terminal.Clear();
         var _ = _containerName == "all-containers"
             ? _logHelper.SetAllContainers(true)
             : _logHelper.SetAllContainers(false);
-        _logHelper.SetShowTimestamp(_showTimestamp);
-        _logHelper.SetFollow(_follow);
+        _logHelper.SetShowTimestamp(_showTimestamp)
+            .SetSinceTimestamp(_sinceTimestamp)
+            .SetFollow(_follow)
+            .SetPrefix(_prefix)
+            .SetPrevious(_previous)
+            .SetIgnoreErrors(_ignoreErrors);
         _logHelper.BuildLogCommand();
         await _logHelper.StartLog();
     }
@@ -116,5 +130,11 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         {
             await _terminal.WriteLine(obj.LogLineContent);
         }
+    }
+
+    private Task DatePickerChanged(DateTimeChangedEventArgs<DateTime?> arg)
+    {
+        _sinceTimestamp = arg.Date;
+        return Task.CompletedTask;
     }
 }

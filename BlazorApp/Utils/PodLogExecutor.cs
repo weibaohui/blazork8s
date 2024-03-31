@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Threading.Tasks;
 using BlazorApp.Chat;
 using BlazorApp.Utils.Terminal;
@@ -24,10 +25,12 @@ public class PodLogExecutor
     //返回的日志内容
     private IHubContext<ChatHub>? _ctx;
     private bool                  _follow;
+    private bool                  _ignoreErrors;
+    private bool                  _prefix;
+    private bool                  _previous;
     private int                   _rows;
-    private bool                  _showAll = true;
     private bool                  _showTimestamp;
-    private string?               _sinceTimestamp;
+    private DateTime?             _sinceTimestamp;
 
     public PodLogExecutor(string ns, string name, string containerName)
     {
@@ -52,10 +55,16 @@ public class PodLogExecutor
         var extCmd = "";
         if (_follow)
             extCmd += " --follow ";
+        if (_prefix)
+            extCmd += " --prefix=true ";
+        if (_previous)
+            extCmd += " --previous=true ";
+        if (_ignoreErrors)
+            extCmd += " --ignore-errors=true ";
         if (_showTimestamp)
             extCmd += " --timestamps ";
-        if (_showAll && !_sinceTimestamp.IsNullOrEmpty())
-            extCmd += $" --since-time='{_sinceTimestamp}' ";
+        if (_sinceTimestamp != null)
+            extCmd += $" --since-time='{new DateTimeOffset(_sinceTimestamp.Value):yyyy-MM-dd'T'HH:mm:ss.fffK}' ";
 
         extCmd += _allContainers ? " --all-containers=true " : $" -c {_containerName}  ";
 
@@ -192,6 +201,30 @@ public class PodLogExecutor
     public PodLogExecutor SetFollow(bool follow)
     {
         _follow = follow;
+        return this;
+    }
+
+    public PodLogExecutor SetPrefix(bool prefix)
+    {
+        _prefix = prefix;
+        return this;
+    }
+
+    public PodLogExecutor SetPrevious(bool previous)
+    {
+        _previous = previous;
+        return this;
+    }
+
+    public PodLogExecutor SetIgnoreErrors(bool ignoreErrors)
+    {
+        _ignoreErrors = ignoreErrors;
+        return this;
+    }
+
+    public PodLogExecutor SetSinceTimestamp(DateTime? sinceTimestamp)
+    {
+        _sinceTimestamp = sinceTimestamp;
         return this;
     }
 }
