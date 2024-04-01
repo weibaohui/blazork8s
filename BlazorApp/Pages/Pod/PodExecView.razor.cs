@@ -9,7 +9,7 @@ using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.JSInterop;
+using Microsoft.Extensions.Logging;
 using XtermBlazor;
 
 namespace BlazorApp.Pages.Pod;
@@ -24,6 +24,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
 
     private int            _columns, _rows;
     private string         _containerName;
+    private string         _lastCommand = "";
     private PodLogExecutor _logHelper;
 
     private TerminalOptions _options = new TerminalOptions
@@ -45,15 +46,17 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
 
     private string _tmpCommand = "";
 
+    private int index = 0;
+
+    [Inject]
+    private ILogger<PodExecView> Logger { get; set; }
+
     [Inject]
     private IPodService PodService { get; set; }
 
     [Inject]
-    private IHubContext<ChatHub> _ctx { get; set; }
+    private IHubContext<ChatHub> Ctx { get; set; }
 
-
-    [Inject]
-    protected IJSRuntime JSRuntime { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,7 +64,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         _podItem       = base.Options;
         _containerName = _podItem.Spec.Containers[0].Name;
         _logHelper = new PodLogExecutorHelper().GetOrCreate(_podItem.Namespace(), _podItem.Name(), _containerName)
-            .SetHubContext(_ctx);
+            .SetHubContext(Ctx);
     }
 
     private async Task OnOkBtnClicked()
@@ -86,7 +89,9 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     {
         if (obj.Namespace == _podItem.Namespace() && obj.Name == _podItem.Name())
         {
-            await _terminal.Write(obj.LogLineContent);
+            var resp = obj.LogLineContent;
+            // resp = resp.Replace(_lastCommand, "");
+            await _terminal.Write(resp);
         }
     }
 
@@ -97,29 +102,75 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         _rows    = await _terminal.GetRows();
     }
 
-    private async Task OnData(string data)
-    {
-        _tmpCommand += data;
-        await _terminal.Write(_tmpCommand);
-    }
-
     private async Task OnKey(KeyEventArgs args)
     {
-        if (args.Key == "Enter")
+        switch (args.DomEvent.Key)
         {
-            _logHelper.Write(_tmpCommand);
-            _tmpCommand = "";
+            case "Enter":
+                _lastCommand = _tmpCommand;
+                for (var i = 0; i < _tmpCommand.Length; i++) await _terminal.Write("\b");
+
+                _logHelper.Write(_tmpCommand);
+                _tmpCommand = "";
+                index       = 0;
+                break;
+            case "Escape":
+                _tmpCommand = "";
+                await _terminal.Clear();
+                break;
+            case "Backspace":
+                for (var i = 0; i < _tmpCommand.Length; i++) await _terminal.Write("\b");
+
+                _tmpCommand = _tmpCommand[..^1];
+                await _terminal.Write(_tmpCommand);
+                break;
+            case "ArrowLeft":
+                index -= 1;
+                await _terminal.Write("\x1B[D");
+                break;
+            case "ArrowRight":
+                index += 1;
+                await _terminal.Write("\x1B[C");
+                break;
+            default:
+                if (index == _tmpCommand.Length - 1 || _tmpCommand.Length == 0)
+                {
+                    index       += 1;
+                    _tmpCommand += args.DomEvent.Key;
+                    await _terminal.Write(args.DomEvent.Key);
+                }
+                else
+                {
+                    //使用了左右光标进行移动，左移+1，右移-1，,0为最后
+                    //将新字符串插入到光标位置
+                    var prefix = _tmpCommand.Substring(0, index);
+                    var suffix = _tmpCommand.Substring(index, _tmpCommand.Length - index);
+                    _tmpCommand = prefix + args.DomEvent.Key + suffix;
+
+                    //光标移动到最后
+                    for (var i = index; i <= _tmpCommand.Length; i++) await _terminal.Write("\x1B[C");
+
+
+                    // 清除之前的
+                    for (var i = 0; i < _tmpCommand.Length; i++) await _terminal.Write("\b");
+
+                    //重新写入最新的
+                    await _terminal.Write(_tmpCommand);
+                    index += 1;
+                    //光标复原到插入新字符串的位置
+                    for (var i = 0; i < index; i++) await _terminal.Write("\x1B[D");
+                }
+
+                break;
         }
 
-        await _terminal.Write("\r");
+        if (args.DomEvent is { Key: "c", CtrlKey: true })
+        {
+            await _terminal.Write("Ctrl+C");
+            await _terminal.Clear();
+        }
     }
 
-
-    // private async Task Search(MouseEventArgs args)
-    // {
-    //     bool searchSuccess =
-    //         await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", "");
-    // }
 
     private async Task Resize(MouseEventArgs args)
     {
