@@ -86,6 +86,19 @@ public static class StringExtensions
     }
 
     /// <summary>
+    /// 去除字符串最后的换行符
+    /// </summary>
+    /// <param name="str"></param>
+    /// <returns></returns>
+    public static string TrimEndNewLine(this string str)
+    {
+        var ret = Regex.Replace(str, @"\r\n$", string.Empty);
+        ret = Regex.Replace(str, @"\r$", string.Empty);
+        ret = Regex.Replace(str, @"\n$", string.Empty);
+        return ret;
+    }
+
+    /// <summary>
     /// 字符串转换为下划线
     /// SelfLink=>self_link
     /// </summary>

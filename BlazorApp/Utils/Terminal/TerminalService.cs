@@ -10,26 +10,29 @@ namespace BlazorApp.Utils.Terminal;
 public class TerminalService
 {
     /// <summary>
-    /// 退出事件
+    /// 任务完成的标记
     /// </summary>
-    event EventHandler<PtyExitedEventArgs>? StandardExited;
+    private readonly TaskCompletionSource<uint> _processExitedTcs = new();
 
     /// <summary>
-    /// 异常输出
+    /// 编码
     /// </summary>
-    public event EventHandler<Exception>? StandardError;
+    public readonly UTF8Encoding Encoding = new(encoderShouldEmitUTF8Identifier: false);
 
     /// <summary>
-    /// 正常输出（String）
+    /// 构造函数
     /// </summary>
-    public event EventHandler<string>? StandardOutput;
+    public TerminalService(TerminalOptions terminalOptions)
+    {
+        TerminalOptions = terminalOptions;
+    }
+
+    public TerminalService()
+    {
+        TerminalOptions = null;
+    }
 
     public bool IsStandardOutPutSet => StandardOutput != null;
-
-    /// <summary>
-    /// 流输出
-    /// </summary>
-    public event EventHandler<byte[]>? StandardBytesOutput;
 
 
     /// <summary>
@@ -85,16 +88,6 @@ public class TerminalService
     /// </summary>
     public bool IsRunning { get; private set; }
 
-    /// <summary>
-    /// 任务完成的标记
-    /// </summary>
-    private readonly TaskCompletionSource<uint> _processExitedTcs = new();
-
-    /// <summary>
-    /// 编码
-    /// </summary>
-    public readonly UTF8Encoding Encoding = new(encoderShouldEmitUTF8Identifier: false);
-
 
     public int GerProcessId => Terminal?.Pid ?? -1;
 
@@ -103,20 +96,27 @@ public class TerminalService
     /// </summary>
     public IPtyConnection? Terminal { get; private set; }
 
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    public TerminalService(TerminalOptions terminalOptions)
-    {
-        TerminalOptions = terminalOptions;
-    }
-
-    public TerminalService()
-    {
-        TerminalOptions = null;
-    }
-
     private PtyOptions _options { get; set; }
+
+    /// <summary>
+    /// 退出事件
+    /// </summary>
+    event EventHandler<PtyExitedEventArgs>? StandardExited;
+
+    /// <summary>
+    /// 异常输出
+    /// </summary>
+    public event EventHandler<Exception>? StandardError;
+
+    /// <summary>
+    /// 正常输出（String）
+    /// </summary>
+    public event EventHandler<string>? StandardOutput;
+
+    /// <summary>
+    /// 流输出
+    /// </summary>
+    public event EventHandler<byte[]>? StandardBytesOutput;
 
 
     public void Dispose()
@@ -135,8 +135,6 @@ public class TerminalService
         {
             Console.WriteLine(e);
         }
-
-
     }
 
     /// <summary>
@@ -223,15 +221,9 @@ public class TerminalService
 
     private void CheckTerminal()
     {
-        if (!IsRunning || Terminal == null)
-        {
-            var exception = new Exception("Terminal not running");
-
-            StandardError?.Invoke(this, exception);
-
-            throw exception;
-        }
+        if (IsRunning && Terminal != null) return;
+        var exception = new Exception("Terminal not running");
+        StandardError?.Invoke(this, exception);
+        throw exception;
     }
-
-
 }

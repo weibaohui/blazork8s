@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using BlazorApp.Chat;
 using BlazorApp.Utils.Terminal;
 using Entity;
+using Extension;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorApp.Utils;
 
@@ -53,16 +53,14 @@ public class PodLogExecutor
 
     public async Task StartExec()
     {
-        if (CollectionUtilities.IsNullOrEmpty(_command))
+        if (_command.IsNullOrEmpty())
         {
             return;
         }
 
         Logger.LogInformation("Exec {Command}", _command);
-        Logger.LogInformation("{Key} killed before exec", Key);
-
         TerminalHelper.Instance.Kill(Key);
-        //
+
         var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
         if (!terminalService.IsStandardOutPutSet)
         {
@@ -92,8 +90,8 @@ public class PodLogExecutor
     public async void Write(string content)
     {
         var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
-        // await terminalService.Write(content);
-        // await terminalService.Write('\r');
+        await terminalService.Write(content);
+        await terminalService.Write('\r');
     }
 
     #region Getter Setter
@@ -105,4 +103,9 @@ public class PodLogExecutor
     }
 
     #endregion
+
+    public string? GetCommand()
+    {
+        return _command;
+    }
 }
