@@ -11,10 +11,10 @@
         <GridRow>
             <GridCol Span="8" Style="overflow-scrolling: auto;overflow-x: hidden">
                 <div>
-                        <Button OnClick="ExpandAll">展开</Button>
-                        <Button OnClick="CollapseAll">收缩</Button>
-                    </div>
-                    <Divider/>
+                    <Button OnClick="ExpandAll">展开</Button>
+                    <Button OnClick="CollapseAll">收缩</Button>
+                </div>
+                <Divider/>
                 <div>
                     <Tree
                         ChildrenExpression="x => x.DataItem.ChildList"
@@ -47,7 +47,7 @@
                                 Id="yaml-editor"
                                 ConstructionOptions="EditorConstructionOptions"/>
                         </div>
-                        <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
+                        <Button OnClick="@BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
                         <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">删除</Button>
                         @if (!string.IsNullOrEmpty(_execResult))
                         {
