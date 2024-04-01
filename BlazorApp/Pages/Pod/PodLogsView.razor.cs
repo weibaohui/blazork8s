@@ -28,6 +28,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
 
     private string _command = "";
 
+    private PodLogCommandBuilder _commander;
+
     private string    _containerName;
     private bool      _follow;
     private bool      _ignoreErrors;
@@ -42,8 +44,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
 
 
     private Xterm _terminal;
-
-    private PodLogCommandBuilder commander;
 
     [Inject]
     private IKubectlService Kubectl { get; set; }
@@ -65,7 +65,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
         _tail          = "2";
         Kubectl.SetOutputEventHandler(EventHandler);
         Kubectl.SetCancellationToken(_gracefulCts.Token);
-        commander = new PodLogCommandBuilder();
+        _commander = new PodLogCommandBuilder();
     }
 
     private async void EventHandler(object sender, string resp)
@@ -79,7 +79,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
     {
         await _terminal.Clear();
 
-        commander
+        _commander
             .SetNamespace(_podItem.Namespace())
             .SetPodName(_podItem.Name())
             .SetContainerName(_containerName)
@@ -93,8 +93,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
             .SetTail(_tail)
             .SetPodRunningTimeout(_podRunningTimeout)
             .SetIgnoreErrors(_ignoreErrors);
-        commander.Build();
-        _command = commander.GetCommand();
+        _commander.Build();
+        _command = _commander.GetCommand();
         if (!string.IsNullOrWhiteSpace(_command)) await Kubectl.Command(_command);
     }
 
