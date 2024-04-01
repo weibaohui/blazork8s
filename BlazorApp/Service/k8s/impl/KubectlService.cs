@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using CliWrap;
 using CliWrap.EventStream;
@@ -9,6 +10,13 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 {
+    /// <summary>
+    ///  var gracefulCts = new CancellationTokenSource();
+    ///  var token = gracefulCts.Token;
+    ///  gracefulCts.CancelAfter(TimeSpan.FromSeconds(7));
+    /// </summary>
+    private CancellationToken Token { get; set; } = CancellationToken.None;
+
     public async Task<string> Apply(string yaml)
     {
         if (string.IsNullOrWhiteSpace(yaml))
@@ -19,7 +27,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         //yaml 存为文件
         var guid = Guid.NewGuid().ToString();
         var path = $"{guid}.yaml";
-        await File.WriteAllTextAsync(path, yaml);
+        await File.WriteAllTextAsync(path, yaml, Token);
         var output = await Kubectl($"apply -f {path}");
         File.Delete(path);
         return output; // 输出命令输出结果
@@ -56,6 +64,11 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         OnCommandExecutedHandler = eventHandler;
     }
 
+    public void SetCancellationToken(CancellationToken token)
+    {
+        Token = token;
+    }
+
     public async Task<string> Delete(string yaml)
     {
         if (string.IsNullOrWhiteSpace(yaml))
@@ -66,7 +79,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         //yaml 存为文件
         var guid = Guid.NewGuid().ToString();
         var path = $"{guid}.yaml";
-        await File.WriteAllTextAsync(path, yaml);
+        await File.WriteAllTextAsync(path, yaml, Token);
 
         var output = await Kubectl($"delete -f {path}");
 
@@ -85,7 +98,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         var result = string.Empty;
         try
         {
-            await foreach (var cmdEvent in cmd.ListenAsync())
+            await foreach (var cmdEvent in cmd.ListenAsync(Token))
                 switch (cmdEvent)
                 {
                     case StartedCommandEvent started:
@@ -116,34 +129,14 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
     }
 
 
-    // private async Task<string> Kubectl2(string command)
-    // {
-    //     var process = new Process();
-    //     process.StartInfo.FileName               = "kubectl"; // 设置要执行的 kubectl 命令
-    //     process.StartInfo.Arguments              = command;   // 设置命令参数
-    //     process.StartInfo.UseShellExecute        = false;     // 不使用操作系统的 shell
-    //     process.StartInfo.RedirectStandardOutput = true;      // 重定向输出
-    //     process.StartInfo.RedirectStandardError  = true;      // 重定向输出
-    //     process.Start();                                      // 启动进程
-    //
-    //     var result = string.Empty;
-    //     process.OutputDataReceived += (sender, e) => { result += OnResponseProcess(sender, e.Data); };
-    //     process.ErrorDataReceived  += (sender, e) => { result += OnResponseProcess(sender, e.Data); };
-    //     process.BeginOutputReadLine();
-    //     process.BeginErrorReadLine();
-    //     await process.WaitForExitAsync();
-    //     return result;
-    // }
-
     private string OnResponseProcess(object sender, string data)
     {
-        var ret = data;
-        if (data?.EndsWith('\n') is not true)
-        {
-            ret = data + "\n";
-        }
+        // if (data?.EndsWith('\n') is not true)
+        // {
+        //     data = data + "\n";
+        // }
 
-        OnCommandExecutedHandler?.Invoke(sender, ret);
-        return ret;
+        OnCommandExecutedHandler?.Invoke(sender, data);
+        return data;
     }
 }

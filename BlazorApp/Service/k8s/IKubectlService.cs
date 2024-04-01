@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorApp.Service.k8s;
@@ -12,4 +13,5 @@ public interface IKubectlService
     public Task<string> Command(string                             command);
     public Task<string> Describe(string                            resourceAndName);
     void                SetOutputEventHandler(EventHandler<string> eventHandler);
+    void                SetCancellationToken(CancellationToken     token);
 }
