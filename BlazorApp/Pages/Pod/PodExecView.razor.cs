@@ -108,7 +108,11 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         {
             case "Enter":
                 _lastCommand = _tmpCommand;
-                for (var i = 0; i < _tmpCommand.Length; i++) await _terminal.Write("\b");
+                //光标移动到最后
+                for (var i = index; i < _tmpCommand.Length; i++)
+                    await _terminal.Write("\x1B[C");
+                for (var i = 0; i < _tmpCommand.Length; i++)
+                    await _terminal.Write("\b");
 
                 _logHelper.Write(_tmpCommand);
                 _tmpCommand = "";
@@ -119,9 +123,9 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 await _terminal.Clear();
                 break;
             case "Backspace":
-                for (var i = 0; i < _tmpCommand.Length; i++) await _terminal.Write("\b");
 
-                _tmpCommand = _tmpCommand[..^1];
+                //TODO 删除光标前的一个
+
                 await _terminal.Write(_tmpCommand);
                 break;
             case "ArrowLeft":
@@ -133,7 +137,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 await _terminal.Write("\x1B[C");
                 break;
             default:
-                if (index == _tmpCommand.Length - 1 || _tmpCommand.Length == 0)
+                if (index == _tmpCommand.Length || _tmpCommand.Length == 0)
                 {
                     index       += 1;
                     _tmpCommand += args.DomEvent.Key;
@@ -141,6 +145,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 }
                 else
                 {
+                    var offset = _tmpCommand.Length - index;
                     //使用了左右光标进行移动，左移+1，右移-1，,0为最后
                     //将新字符串插入到光标位置
                     var prefix = _tmpCommand.Substring(0, index);
@@ -148,17 +153,22 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                     _tmpCommand = prefix + args.DomEvent.Key + suffix;
 
                     //光标移动到最后
-                    for (var i = index; i <= _tmpCommand.Length; i++) await _terminal.Write("\x1B[C");
+                    for (var i = index; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\x1B[C");
 
 
                     // 清除之前的
-                    for (var i = 0; i < _tmpCommand.Length; i++) await _terminal.Write("\b");
+                    for (var i = 0; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\b");
 
                     //重新写入最新的
                     await _terminal.Write(_tmpCommand);
+
+                    //光标复原到插入新字符串的位置,中长度-索引=向左偏移
+                    for (var i = 0; i <= offset - 1; i++)
+                        await _terminal.Write("\x1B[D");
+
                     index += 1;
-                    //光标复原到插入新字符串的位置
-                    for (var i = 0; i < index; i++) await _terminal.Write("\x1B[D");
                 }
 
                 break;
