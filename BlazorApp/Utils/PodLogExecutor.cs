@@ -43,13 +43,7 @@ public class PodLogExecutor
         _containerName = containerName;
     }
 
-    public string Key => $"{_namespace}/{_name}/{_containerName}";
-
-    public string PodRunningTimeout
-    {
-        get => _podRunningTimeout;
-        set => _podRunningTimeout = value;
-    }
+    private string Key => $"{_namespace}/{_name}/{_containerName}";
 
 
     public PodLogExecutor SetHubContext(IHubContext<ChatHub> ctx)
@@ -192,6 +186,13 @@ public class PodLogExecutor
         await terminalService.Write('\r');
     }
 
+    #region Getter Setter
+
+    public string? GetCommand()
+    {
+        return _command;
+    }
+
     public PodLogExecutor SetColumns(int columns)
     {
         _columns = columns;
@@ -269,4 +270,6 @@ public class PodLogExecutor
         _tail = tail;
         return this;
     }
+
+    #endregion
 }
