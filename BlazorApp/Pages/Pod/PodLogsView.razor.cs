@@ -62,6 +62,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
         await base.OnInitializedAsync();
         _podItem       = base.Options;
         _containerName = _podItem.Spec.Containers[0].Name;
+        _tail          = "2";
         Kubectl.SetOutputEventHandler(EventHandler);
         Kubectl.SetCancellationToken(_gracefulCts.Token);
         commander = new PodLogCommandBuilder();
