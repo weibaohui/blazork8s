@@ -40,11 +40,14 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     private PodLogExecutor _logHelper;
 
     private V1Pod     _podItem;
+    private string    _podRunningTimeout = "";
     private bool      _prefix;
     private bool      _previous;
     private string    _searchInput = "";
     private bool      _showTimestamp;
+    private string    _since = "";
     private DateTime? _sinceTimestamp;
+    private string    _tail = "";
 
     private Xterm _terminal;
 
@@ -65,17 +68,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
 
     private async Task OnOkBtnClicked()
     {
-        await OnContainerSelectChanged(_containerName);
-    }
-
-    private async Task OnContainerSelectChanged(string name)
-    {
-        Console.WriteLine(_sinceTimestamp);
-        Console.WriteLine(_sinceTimestamp);
-        Console.WriteLine(_sinceTimestamp);
-        Console.WriteLine(_sinceTimestamp);
-        Console.WriteLine(_sinceTimestamp);
-        _containerName = name;
         await _terminal.Clear();
         var _ = _containerName == "all-containers"
             ? _logHelper.SetAllContainers(true)
@@ -85,9 +77,17 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
             .SetFollow(_follow)
             .SetPrefix(_prefix)
             .SetPrevious(_previous)
+            .SetSince(_since)
+            .SetTail(_tail)
+            .SetPodRunningTimeout(_podRunningTimeout)
             .SetIgnoreErrors(_ignoreErrors);
         _logHelper.BuildLogCommand();
         await _logHelper.StartLog();
+    }
+
+    private void OnContainerSelectChanged(string name)
+    {
+        _containerName = name;
     }
 
 
@@ -132,9 +132,23 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         }
     }
 
-    private Task DatePickerChanged(DateTimeChangedEventArgs<DateTime?> arg)
+    private void DatePickerChanged(DateTimeChangedEventArgs<DateTime?> arg)
     {
         _sinceTimestamp = arg.Date;
-        return Task.CompletedTask;
+    }
+
+    private void OnSinceSelectChanged(string since)
+    {
+        _since = since;
+    }
+
+    private void OnTimeoutSelectChanged(string timeout)
+    {
+        _podRunningTimeout = timeout;
+    }
+
+    private void OnTailSelectChanged(string tail)
+    {
+        _tail = tail;
     }
 }

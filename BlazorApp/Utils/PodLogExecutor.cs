@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using BlazorApp.Chat;
 using BlazorApp.Utils.Terminal;
 using Entity;
+using Extension;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
@@ -26,11 +27,14 @@ public class PodLogExecutor
     private IHubContext<ChatHub>? _ctx;
     private bool                  _follow;
     private bool                  _ignoreErrors;
+    private string                _podRunningTimeout;
     private bool                  _prefix;
     private bool                  _previous;
     private int                   _rows;
     private bool                  _showTimestamp;
+    private string                _since;
     private DateTime?             _sinceTimestamp;
+    private string                _tail;
 
     public PodLogExecutor(string ns, string name, string containerName)
     {
@@ -40,6 +44,12 @@ public class PodLogExecutor
     }
 
     public string Key => $"{_namespace}/{_name}/{_containerName}";
+
+    public string PodRunningTimeout
+    {
+        get => _podRunningTimeout;
+        set => _podRunningTimeout = value;
+    }
 
 
     public PodLogExecutor SetHubContext(IHubContext<ChatHub> ctx)
@@ -54,7 +64,7 @@ public class PodLogExecutor
         _command = "";
         var extCmd = "";
         if (_follow)
-            extCmd += " --follow ";
+            extCmd += " --follow=true ";
         if (_prefix)
             extCmd += " --prefix=true ";
         if (_previous)
@@ -62,10 +72,24 @@ public class PodLogExecutor
         if (_ignoreErrors)
             extCmd += " --ignore-errors=true ";
         if (_showTimestamp)
-            extCmd += " --timestamps ";
-        if (_sinceTimestamp != null)
+            extCmd += " --timestamps=true ";
+        if (!_podRunningTimeout.IsNullOrEmpty())
+            extCmd += $" --pod-running-timeout={_podRunningTimeout} ";
+        if (!_tail.IsNullOrEmpty())
+            extCmd += $" --tail={_tail} ";
+
+        //设置了since并且不是指定
+        if (!_since.IsNullOrEmpty() && _since != "specified") extCmd += $" --since={_since} ";
+
+        //只设置了sinceTimestamp的情况
+        if (_since.IsNullOrEmpty() && _sinceTimestamp != null)
             extCmd += $" --since-time='{new DateTimeOffset(_sinceTimestamp.Value):yyyy-MM-dd'T'HH:mm:ss.fffK}' ";
 
+        //since设置为指定，同时也设置了sinceTimestamp的情况
+        if (!_since.IsNullOrEmpty() && _since == "specified" && _sinceTimestamp != null)
+            extCmd += $" --since-time='{new DateTimeOffset(_sinceTimestamp.Value):yyyy-MM-dd'T'HH:mm:ss.fffK}' ";
+
+        //是否显示所有容器
         extCmd += _allContainers ? " --all-containers=true " : $" -c {_containerName}  ";
 
         _command = $"logs -n {_namespace} {_name} {extCmd}";
@@ -87,7 +111,7 @@ public class PodLogExecutor
 
     public async Task StartLog()
     {
-        if (_command.IsNullOrEmpty())
+        if (CollectionUtilities.IsNullOrEmpty(_command))
         {
             return;
         }
@@ -125,7 +149,7 @@ public class PodLogExecutor
 
     public async Task StartExec()
     {
-        if (_command.IsNullOrEmpty())
+        if (CollectionUtilities.IsNullOrEmpty(_command))
         {
             return;
         }
@@ -225,6 +249,24 @@ public class PodLogExecutor
     public PodLogExecutor SetSinceTimestamp(DateTime? sinceTimestamp)
     {
         _sinceTimestamp = sinceTimestamp;
+        return this;
+    }
+
+    public PodLogExecutor SetSince(string since)
+    {
+        _since = since;
+        return this;
+    }
+
+    public PodLogExecutor SetPodRunningTimeout(string timeout)
+    {
+        _podRunningTimeout = timeout;
+        return this;
+    }
+
+    public PodLogExecutor SetTail(string tail)
+    {
+        _tail = tail;
         return this;
     }
 }

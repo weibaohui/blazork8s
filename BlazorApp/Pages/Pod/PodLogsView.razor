@@ -2,31 +2,76 @@
 @inherits FeedbackComponent<k8s.Models.V1Pod, bool>
 @if (_podItem != null)
 {
-    <div>
-        <SimpleSelect Style="width:250px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
-            <SelectOptions>
-                @foreach (var c in _podItem.Spec.Containers)
-                {
-                    <SimpleSelectOption Value="@c.Name" Label="@c.Name"></SimpleSelectOption>
-                }
-                <SimpleSelectOption Value="all-containers" Label="All"></SimpleSelectOption>
-            </SelectOptions>
-        </SimpleSelect>
-        <Checkbox bind-Value="@_showTimestamp" OnChange="@(() => _showTimestamp = !_showTimestamp)">显示时间戳</Checkbox>
-        <Checkbox bind-Value="@_follow" OnChange="@(() => _follow = !_follow)">跟随</Checkbox>
-        <Checkbox bind-Value="@_prefix" OnChange="@(() => _prefix = !_prefix)">显名</Checkbox>
-        <Checkbox bind-Value="@_previous" OnChange="@(() => _previous = !_previous)">前世</Checkbox>
-        <Checkbox bind-Value="@_ignoreErrors" OnChange="@(() => _ignoreErrors = !_ignoreErrors)">忽略错误</Checkbox>
-        <DatePicker TValue="DateTime?" OnChange="@DatePickerChanged" bind-Value="@_sinceTimestamp" ShowTime="@true" Format="yyyy-MM-ddTHH:mm ss" Mask="yyyy-MM-ddTHH:mm ss" Placeholder="@("自从")"/>
-        <Button Type="@ButtonType.Primary" OnClick="@(() => OnOkBtnClicked())">确定</Button>
+    <GridRow>
+        <GridCol>
+            <SimpleSelect Style="width:250px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
 
-    </div>
-    <div class="mb-2">
+                <SelectOptions>
+                    @foreach (var c in _podItem.Spec.Containers)
+                    {
+                        <SimpleSelectOption Value="@c.Name" Label="@c.Name"></SimpleSelectOption>
+                    }
+                    <SimpleSelectOption Value="all-containers" Label="All"></SimpleSelectOption>
+                </SelectOptions>
+            </SimpleSelect>
 
-        <Button Type="@ButtonType.Primary" OnClick="ScrollToTop">顶端</Button>
-        <Button Type="@ButtonType.Primary" OnClick="ScrollToBottom">底端</Button>
-        <Search Placeholder="input search text" @bind-value="@_searchInput"/>
-    </div>
+            <SimpleSelect Style="width:100px;" Placeholder="时间范围" OnSelectedItemChanged="OnSinceSelectChanged">
+                <SelectOptions>
+                    <SimpleSelectOption Value="1m" Label="1m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="5m" Label="5m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="10m" Label="10m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="30m" Label="30m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="45m" Label="45m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="1h" Label="1h"></SimpleSelectOption>
+                    <SimpleSelectOption Value="specified" Label="指定"></SimpleSelectOption>
+                </SelectOptions>
+            </SimpleSelect>
+            <DatePicker Disabled="@(_since != "specified")" TValue="DateTime?" ShowToday="true" OnChange="@DatePickerChanged" bind-Value="@_sinceTimestamp" ShowTime="@true" Format="yyyy-MM-ddTHH:mm ss" Mask="yyyy-MM-ddTHH:mm ss" Placeholder="@("自从")">
+                <SuffixIcon>
+                    <Icon Type="clock-circle" Theme="twotone"/>
+                </SuffixIcon>
+            </DatePicker>
+
+        </GridCol>
+    </GridRow>
+    <GridRow>
+        <GridCol>
+            <Checkbox bind-Value="@_showTimestamp" OnChange="@(() => _showTimestamp = !_showTimestamp)">显示时间戳</Checkbox>
+            <Checkbox bind-Value="@_follow" OnChange="@(() => _follow = !_follow)">跟随</Checkbox>
+            <Checkbox bind-Value="@_prefix" OnChange="@(() => _prefix = !_prefix)">显名</Checkbox>
+            <Checkbox bind-Value="@_previous" OnChange="@(() => _previous = !_previous)">前世</Checkbox>
+            <Checkbox bind-Value="@_ignoreErrors" OnChange="@(() => _ignoreErrors = !_ignoreErrors)">忽略错误</Checkbox>
+            <SimpleSelect Style="width:100px;" Placeholder="Pod超时" OnSelectedItemChanged="OnTimeoutSelectChanged">
+                <SelectOptions>
+                    <SimpleSelectOption Value="1m" Label="1m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="5m" Label="5m"></SimpleSelectOption>
+                    <SimpleSelectOption Value="10m" Label="10m"></SimpleSelectOption>
+                </SelectOptions>
+            </SimpleSelect>
+            <SimpleSelect Style="width:100px;" Placeholder="Tail" OnSelectedItemChanged="OnTailSelectChanged">
+                <SelectOptions>
+                    <SimpleSelectOption Value="-1" Label="-1"></SimpleSelectOption>
+                    <SimpleSelectOption Value="1" Label="1"></SimpleSelectOption>
+                    <SimpleSelectOption Value="2" Label="2"></SimpleSelectOption>
+                    <SimpleSelectOption Value="5" Label="5"></SimpleSelectOption>
+                    <SimpleSelectOption Value="10" Label="10"></SimpleSelectOption>
+                    <SimpleSelectOption Value="20" Label="20"></SimpleSelectOption>
+                    <SimpleSelectOption Value="30" Label="30"></SimpleSelectOption>
+                    <SimpleSelectOption Value="40" Label="40"></SimpleSelectOption>
+                    <SimpleSelectOption Value="50" Label="50"></SimpleSelectOption>
+                </SelectOptions>
+            </SimpleSelect>
+            <Button Type="@ButtonType.Primary" OnClick="@(() => OnOkBtnClicked())">确定</Button>
+
+        </GridCol>
+    </GridRow>
+    <GridRow>
+        <GridCol>
+            <Search Placeholder="input search text" @bind-value="@_searchInput"/>
+        </GridCol>
+        <GridCol></GridCol>
+    </GridRow>
+
     <Xterm
         @ref="_terminal"
         Options="_options"
