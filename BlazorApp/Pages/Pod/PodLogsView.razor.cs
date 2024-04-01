@@ -7,7 +7,6 @@ using BlazorApp.Utils;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR;
 using XtermBlazor;
 
@@ -27,11 +26,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         },
     };
 
-    private string[] _addonIds = new string[]
-    {
-        // "xterm-addon-attach",
-        // "xterm-addon-fit"
-    };
 
     private int            _columns, _rows;
     private string         _containerName;
@@ -43,7 +37,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     private string    _podRunningTimeout = "";
     private bool      _prefix;
     private bool      _previous;
-    private string    _searchInput = "";
     private bool      _showTimestamp;
     private string    _since = "";
     private DateTime? _sinceTimestamp;
@@ -55,7 +48,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     private IPodService PodService { get; set; }
 
     [Inject]
-    private IHubContext<ChatHub> _ctx { get; set; }
+    private IHubContext<ChatHub> Ctx { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -63,7 +56,7 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
         _podItem       = base.Options;
         _containerName = _podItem.Spec.Containers[0].Name;
         _logHelper = new PodLogExecutorHelper().GetOrCreate(_podItem.Namespace(), _podItem.Name(), _containerName)
-            .SetHubContext(_ctx);
+            .SetHubContext(Ctx);
     }
 
     private async Task OnOkBtnClicked()
@@ -102,24 +95,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     }
 
 
-    private async Task ScrollToTop(MouseEventArgs args)
-    {
-        await _terminal.ScrollToTop();
-    }
-
-    private async Task ScrollToBottom(MouseEventArgs args)
-    {
-        await _terminal.ScrollToBottom();
-    }
-
-
-    // private async Task OnSearchClicked(MouseEventArgs args)
-    // {
-    //     bool searchSuccess =
-    //         await _terminal.InvokeAddonFunctionAsync<bool>("xterm-addon-search", "findNext", _searchInput);
-    // }
-
-
     /// <summary>
     /// 接收到SignalR后端发送过来的日志，回显到Xterm
     /// </summary>
@@ -131,6 +106,8 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
             await _terminal.WriteLine(obj.LogLineContent);
         }
     }
+
+    #region Getter Setter
 
     private void DatePickerChanged(DateTimeChangedEventArgs<DateTime?> arg)
     {
@@ -151,4 +128,6 @@ public partial class PodLogsView : FeedbackComponent<V1Pod, bool>
     {
         _tail = tail;
     }
+
+    #endregion
 }
