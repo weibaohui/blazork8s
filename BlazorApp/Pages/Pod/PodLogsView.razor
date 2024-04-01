@@ -1,4 +1,4 @@
-@using BlazorApp.Pages.Common
+@using Extension
 @inherits FeedbackComponent<k8s.Models.V1Pod, bool>
 @if (_podItem != null)
 {
@@ -62,13 +62,19 @@
                 </SelectOptions>
             </SimpleSelect>
             <Button Type="@ButtonType.Primary" OnClick="@(() => OnOkBtnClicked())">确定</Button>
-
         </GridCol>
     </GridRow>
+    @if (!_command.IsNullOrEmpty())
+    {
+        <div>
+            <Alert Type="@AlertType.Success" Style="width: 100%">
+                kubectl @_command
+            </Alert>
+        </div>
+    }
+
 
     <Xterm
         @ref="_terminal"
-        Options="_options"
-        OnFirstRender="@OnFirstRender"/>
-    <PodLogWatcher OnPodLogChanged="@OnPodLogChanged" PodItem="@_podItem" ContainerName="@_containerName"></PodLogWatcher>
+        Options="_options"/>
 }
