@@ -139,14 +139,16 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
             default:
                 if (index == _tmpCommand.Length || _tmpCommand.Length == 0)
                 {
+                    //在末尾插入字符
                     index       += 1;
                     _tmpCommand += args.DomEvent.Key;
                     await _terminal.Write(args.DomEvent.Key);
                 }
                 else
                 {
+                    //在光标后插入一个字符
                     var offset = _tmpCommand.Length - index;
-                    //使用了左右光标进行移动，左移+1，右移-1，,0为最后
+                    //使用了左右光标进行移动，左移-1，右移+1，0为最前
                     //将新字符串插入到光标位置
                     var prefix = _tmpCommand.Substring(0, index);
                     var suffix = _tmpCommand.Substring(index, _tmpCommand.Length - index);
