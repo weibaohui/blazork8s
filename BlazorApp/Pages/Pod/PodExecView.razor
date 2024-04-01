@@ -1,7 +1,7 @@
 @using BlazorApp.Pages.Common
 @inherits FeedbackComponent<k8s.Models.V1Pod, bool>
 
-@if(_podItem!=null)
+@if (_podItem != null)
 {
     <div>
         <SimpleSelect Style="width:120px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
@@ -15,15 +15,13 @@
         <Button Type="@ButtonType.Primary" OnClick="OnOkBtnClicked">确定</Button>
 
     </div>
-<Xterm
-    @ref="_terminal"
-    Options="_options"
-    OnFirstRender="@OnFirstRender"
-    OnData="@OnData"
-    OnKey="@OnKey"
-    />
-
+    <div style="height: 100%;min-height: 400px">
+        <Xterm
+            @ref="_terminal"
+            Options="_options"
+            OnFirstRender="@OnFirstRender"
+            OnKey="@OnKey"/>
+    </div>
 
     <PodLogWatcher OnPodLogChanged="@OnPodLogChanged" PodItem="@_podItem" ContainerName="@_containerName"></PodLogWatcher>
-
 }
