@@ -17,6 +17,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
     /// </summary>
     private CancellationToken Token { get; set; } = CancellationToken.None;
 
+
     public async Task<string> Apply(string yaml)
     {
         if (string.IsNullOrWhiteSpace(yaml))
@@ -94,7 +95,6 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
     {
         var cmd = Cli.Wrap("kubectl")
             .WithArguments(command);
-
         var result = string.Empty;
         try
         {
