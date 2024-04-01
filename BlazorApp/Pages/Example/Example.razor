@@ -39,29 +39,27 @@
             </GridCol>
             <GridCol Span="16">
 
-                <Affix OffsetTop="60">
-                    <div style="margin: 20px">
-                        <div style="height: 800px;width: 800px">
-                            <StandaloneCodeEditor
-                                @ref="_editor"
-                                Id="yaml-editor"
-                                ConstructionOptions="EditorConstructionOptions"/>
-                        </div>
-                        <Button OnClick="@BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
-                        <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">删除</Button>
-                        @if (!string.IsNullOrEmpty(_execResult))
-                        {
-                            <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
-                            <div>
-                                <p>
-                                    <Text Copyable>
-                                        @((MarkupString)_execResult.ToHtmlDisplay())
-                                    </Text>
-                                </p>
-                            </div>
-                        }
+                <div style="margin: 20px">
+                    <div style="height: 300px;width: 800px">
+                        <StandaloneCodeEditor
+                            @ref="_editor"
+                            Id="yaml-editor"
+                            ConstructionOptions="EditorConstructionOptions"/>
                     </div>
-                </Affix>
+                    <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
+                    <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">删除</Button>
+                    @if (!string.IsNullOrEmpty(_execResult))
+                    {
+                        <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                        <div>
+                            <p>
+                                <Text Copyable>
+                                    @((MarkupString)_execResult.ToHtmlDisplay())
+                                </Text>
+                            </p>
+                        </div>
+                    }
+                </div>
             </GridCol>
         </GridRow>
     </div>

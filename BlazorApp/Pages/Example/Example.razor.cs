@@ -12,18 +12,20 @@ namespace BlazorApp.Pages.Example;
 
 public partial class Example : ComponentBase
 {
+    private DirectoryNode _currentItem = new();
+    private string        _currentYaml = "";
+
+    private List<DirectoryNode> _dataList = new();
+
+    private StandaloneCodeEditor _editor = null!;
+    private string               _execResult;
+    private Tree<DirectoryNode>  _tree;
+
     [Inject]
     private IWebHostEnvironment HostingEnvironment { get; set; }
 
     [Inject]
     private IKubectlService Kubectl { get; set; }
-
-    private List<DirectoryNode> _dataList = new();
-    private Tree<DirectoryNode> _tree;
-
-    private DirectoryNode _currentItem = new();
-    private string        _currentYaml = "";
-    private string        _execResult;
 
 
     protected override Task OnInitializedAsync()
@@ -31,8 +33,15 @@ public partial class Example : ComponentBase
         var wwwRootPath   = HostingEnvironment.WebRootPath;
         var rootDirectory = wwwRootPath + "/k8s_example";
         _dataList = GetDirectoryTree(rootDirectory);
+        Kubectl.SetOutputEventHandler(EventHandler);
 
         return base.OnInitializedAsync();
+    }
+
+    private async void EventHandler(object sender, string resp)
+    {
+        _execResult += resp;
+        await InvokeAsync(StateHasChanged);
     }
 
 
@@ -105,19 +114,17 @@ public partial class Example : ComponentBase
 
     private async Task BtnApplyClicked()
     {
-        _execResult = string.Empty;
-        _currentYaml= await _editor.GetValue();
-        _execResult = await Kubectl.Apply(_currentYaml);
+        _execResult  = string.Empty;
+        _currentYaml = await _editor.GetValue();
+        _execResult  = await Kubectl.Apply(_currentYaml);
     }
 
     private async Task BtnDeleteClicked()
     {
         _execResult  = string.Empty;
         _currentYaml = await _editor.GetValue();
-        _execResult = await Kubectl.Delete(_currentYaml);
+        _execResult  = await Kubectl.Delete(_currentYaml);
     }
-
-    private StandaloneCodeEditor _editor = null!;
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
