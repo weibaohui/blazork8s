@@ -112,7 +112,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 for (var i = index; i < _tmpCommand.Length; i++)
                     await _terminal.Write("\x1B[C");
                 for (var i = 0; i < _tmpCommand.Length; i++)
-                    await _terminal.Write("\b");
+                    await _terminal.Write("\b \b");
 
                 _logHelper.Write(_tmpCommand);
                 _tmpCommand = "";
@@ -123,10 +123,32 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 await _terminal.Clear();
                 break;
             case "Backspace":
+            {
+                //退格前的字符全文长度
+                var oldLength = _tmpCommand.Length;
+                var prefix    = _tmpCommand[..index];
+                var suffix    = _tmpCommand.Substring(index, _tmpCommand.Length - index);
+                _tmpCommand = prefix[..^1] + suffix;
 
-                //TODO 删除光标前的一个
+                //光标移动到最后
+                for (var i = 0; i <= suffix.Length + 1; i++)
+                    await _terminal.Write("\x1B[C");
 
+
+                // 退格删除原来的全部字符
+                for (var i = 0; i <= oldLength + 1; i++)
+                    await _terminal.Write("\b \b");
+
+                //新的字符串重新写入
                 await _terminal.Write(_tmpCommand);
+
+                //光标重新回到删除字符前的位置
+                for (var i = 0; i < suffix.Length; i++)
+                    await _terminal.Write("\x1B[D");
+
+                //重新计算index位置
+                index -= 1;
+            }
                 break;
             case "ArrowLeft":
                 index -= 1;
@@ -150,7 +172,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                     var offset = _tmpCommand.Length - index;
                     //使用了左右光标进行移动，左移-1，右移+1，0为最前
                     //将新字符串插入到光标位置
-                    var prefix = _tmpCommand.Substring(0, index);
+                    var prefix = _tmpCommand[..index];
                     var suffix = _tmpCommand.Substring(index, _tmpCommand.Length - index);
                     _tmpCommand = prefix + args.DomEvent.Key + suffix;
 
@@ -161,7 +183,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
 
                     // 清除之前的
                     for (var i = 0; i < _tmpCommand.Length; i++)
-                        await _terminal.Write("\b");
+                        await _terminal.Write("\b \b");
 
                     //重新写入最新的
                     await _terminal.Write(_tmpCommand);
