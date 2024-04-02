@@ -181,11 +181,11 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                         await _terminal.Write("\x1B[C");
 
 
-                    // 清除之前的
+                    // 清除之前的所有字符串
                     for (var i = 0; i < _tmpCommand.Length; i++)
                         await _terminal.Write("\b \b");
 
-                    //重新写入最新的
+                    //重新写入最新的字符串
                     await _terminal.Write(_tmpCommand);
 
                     //光标复原到插入新字符串的位置,中长度-索引=向左偏移
