@@ -244,6 +244,12 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 await _terminal.Write("\x1B[C");
                 break;
             default:
+                if (args.DomEvent.CtrlKey || args.DomEvent.MetaKey || args.DomEvent.ShiftKey || args.DomEvent.AltKey)
+                {
+                    if (args.DomEvent is { Key: "c", CtrlKey: true }) await _terminal.Write("Ctrl+C\n");
+                    break;
+                }
+
                 if (_cursorIndex == _tmpCommand.Length || _tmpCommand.Length == 0)
                 {
                     //在末尾插入字符
@@ -281,12 +287,6 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                 }
 
                 break;
-        }
-
-        if (args.DomEvent is { Key: "c", CtrlKey: true })
-        {
-            await _terminal.Write("Ctrl+C");
-            await _terminal.Clear();
         }
     }
 
