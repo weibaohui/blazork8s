@@ -10,9 +10,6 @@ namespace BlazorApp.Service.AI.impl;
 
 public class GeminiAiService(IConfigService configService, ILogger<GeminiAiService> logger) : IGeminiAiService
 {
-    private string _incrementResp = "";
-    private string _lastResp      = "";
-
     public async Task<string> AIChat(string prompt)
     {
         prompt = JsonConvert.SerializeObject(prompt).TrimStart('"').TrimEnd('"');
