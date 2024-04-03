@@ -1,0 +1,17 @@
+{
+  "HomePage": "https://github.com/BrunoCremaFerreira/SimpleI18n",
+  "Welcome": "Welcome",
+  "Welcome {0}": "Welcome {0}",
+  "Mary": "Mary",
+  "Fork": "Fork",
+  "{0} example": {
+    "Zero": "no example",
+    "One": "{0} example",
+    "Other": "{0} examples"
+  },
+  "Animal": {
+    "Zero": "Animal",
+    "One": "Animal",
+    "Other": "Animals"
+  }
+}

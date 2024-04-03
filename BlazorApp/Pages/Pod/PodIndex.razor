@@ -16,7 +16,6 @@
                 <SearchToolBar Title="Pods" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection"
-
                                TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Pod"
                                OnNsSelected="OnNsSelectedHandler">
@@ -34,10 +33,10 @@
                        @bind-SelectedRows="TableData.SelectedRows"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())" Width="40" Fixed="left"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name" Width="200px">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"] Width="200px">
                         <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
                     <AntDesign.Column Title="Containers" TData="string" Width="100px">
                         <ContainerStatus Pod="@context"></ContainerStatus>
                     </AntDesign.Column>
@@ -59,13 +58,13 @@
                     <AntDesign.Column Title="Selector" TData="string">
                         <SelectorView Selector="@context.Metadata.Labels"></SelectorView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Status" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Status"] TData="string" Width="100px">
                         <StatusView Status="@context.Status()"></StatusView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px">
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <PodAction PodItem="@context"></PodAction>
                     </ActionColumn>
                 </Table>
