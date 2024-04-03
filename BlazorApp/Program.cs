@@ -10,10 +10,12 @@ using BlazorApp.Service.k8s.impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SimpleI18n.DependencyInjection;
 using SqlSugar;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSimpleI18n(); // 设置多语言.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
@@ -106,7 +108,6 @@ builder.Services.AddSingleton
         return sqlSugar;
     });
 
-
 var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -125,5 +126,6 @@ app.UseRouting();
 app.MapHub<ChatHub>("/chathub");
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
+
 
 app.Run();
