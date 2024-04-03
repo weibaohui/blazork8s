@@ -3,15 +3,19 @@ using AntDesign.ProLayout;
 using BlazorApp.Service.AI;
 using k8s;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Layouts;
 
 public partial class BasicLayout : LayoutComponentBase
 {
+    public MenuDataItem[] MenuData;
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Inject]
     private IAiService Ai { get; set; }
-
-    public MenuDataItem[] MenuData;
 
     protected override async Task OnInitializedAsync()
     {
@@ -19,7 +23,7 @@ public partial class BasicLayout : LayoutComponentBase
         [
             new MenuDataItem
             {
-                Name     = "Cluster",
+                Name     = L["Cluster"],
                 Key      = "Cluster",
                 Icon     = "cluster",
                 Children = ClusterMenu(),
@@ -27,60 +31,60 @@ public partial class BasicLayout : LayoutComponentBase
             new MenuDataItem
             {
                 Path       = "/PortForward",
-                Name       = "PortForward",
+                Name       = L["PortForward"],
                 Key        = "PortForward",
                 Icon       = "pic-center",
                 HideInMenu = KubernetesClientConfiguration.IsInCluster()
             },
 
-            GetMenuItem("Namespace", "book"),
-            GetMenuItem("Node", "database"),
+            GetMenuItemWithPath(L["Namespace"], "book", "/Namespace"),
+            GetMenuItemWithPath(L["Node"], "database", "/Node"),
             new MenuDataItem
             {
-                Name     = "Workloads",
+                Name     = L["Workloads"],
                 Key      = "Workloads",
                 Icon     = "appstore",
                 Children = WorkloadsMenu(),
             },
             new MenuDataItem
             {
-                Name     = "Config",
+                Name     = L["Config"],
                 Key      = "Config",
                 Icon     = "control",
                 Children = ConfigMenu(),
             },
             new MenuDataItem
             {
-                Name     = "Network",
+                Name     = L["Network"],
                 Key      = "Network",
                 Icon     = "apartment",
                 Children = NetworkMenu(),
             },
             new MenuDataItem
             {
-                Name     = "Storage",
+                Name     = L["Storage"],
                 Key      = "Storage",
                 Icon     = "inbox",
                 Children = StorageMenu(),
             },
             new MenuDataItem
             {
-                Name     = "AccessControl",
+                Name     = L["AccessControl"],
                 Key      = "AccessControl",
                 Icon     = "verified",
                 Children = AccessControlMenu(),
             },
-            GetMenuItem("Crd", "code"),
+            GetMenuItem(L["CRD"], "code"),
             new MenuDataItem
             {
                 Path       = "/ChatDeploy",
-                Name       = "ChatDeploy",
+                Name       = L["ChatDeploy"],
                 Key        = "ChatDeploy",
                 Icon       = "robot",
                 HideInMenu = !Ai.Enabled(),
             },
-            GetMenuItem("Example", "unordered-list"),
-            GetMenuItem("OpenSource", "github")
+            GetMenuItemWithPath(L["Example"], "unordered-list", "/Example"),
+            GetMenuItemWithPath(L["OpenSource"], "github", "/OpenSource")
         ];
         await base.OnInitializedAsync();
     }
@@ -121,14 +125,14 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("Pods", "block"),
-            GetMenuItem("Deployments", "deployment-unit"),
-            GetMenuItem("ReplicaSets", "build"),
-            GetMenuItem("DaemonSet", "partition"),
-            GetMenuItem("StatefulSet", "project"),
-            GetMenuItemWithPath("RC", "split-cells", "ReplicationController"),
-            GetMenuItem("Job", "container"),
-            GetMenuItem("CronJob", "history"),
+            GetMenuItemWithPath(L["Pod"], "block", "/Pods"),
+            GetMenuItemWithPath(L["Deployment"], "deployment-unit", "Deployments"),
+            GetMenuItemWithPath(L["ReplicaSet"], "build", "/ReplicaSets"),
+            GetMenuItemWithPath(L["DaemonSet"], "partition", "/DaemonSet"),
+            GetMenuItemWithPath(L["StatefulSet"], "project", "/StatefulSet"),
+            GetMenuItemWithPath(L["ReplicationController"], "split-cells", "/ReplicationController"),
+            GetMenuItemWithPath(L["Job"], "container", "/Job"),
+            GetMenuItemWithPath(L["CronJob"], "history", "/CronJob")
         };
     }
 
@@ -136,16 +140,17 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("ConfigMap", "table"),
-            GetMenuItem("Secret", "file-protect"),
-            GetMenuItem("ResourceQuota", "one-to-one"),
-            GetMenuItem("LimitRange", "column-width"),
-            GetMenuItem("Lease", "credit-card"),
-            GetMenuItemWithPath("HPA", "ungroup", "HorizontalPodAutoscaler"),
-            GetMenuItemWithPath("PDB", "appstore-add", "PodDisruptionBudget"),
-            GetMenuItem("PriorityClass", "insert-row-left"),
-            GetMenuItemWithPath("Validating", "security-scan", "ValidatingWebhookConfiguration"),
-            GetMenuItemWithPath("Mutating", "sisternode", "MutatingWebhookConfiguration"),
+            GetMenuItemWithPath(L["ConfigMap"], "table", "/ConfigMap"),
+            GetMenuItemWithPath(L["Secret"], "file-protect", "/Secret"),
+            GetMenuItemWithPath(L["ResourceQuota"], "one-to-one", "/ResourceQuota"),
+            GetMenuItemWithPath(L["LimitRange"], "column-width", "/LimitRange"),
+            GetMenuItemWithPath(L["Lease"], "credit-card", "/Lease"),
+            GetMenuItemWithPath(L["HorizontalPodAutoscaler"], "ungroup", "/HorizontalPodAutoscaler"),
+            GetMenuItemWithPath(L["PodDisruptionBudget"], "appstore-add", "/PodDisruptionBudget"),
+            GetMenuItemWithPath(L["PriorityClass"], "insert-row-left", "/PriorityClass"),
+            GetMenuItemWithPath(L["ValidatingWebhookConfiguration"], "security-scan",
+                "/ValidatingWebhookConfiguration"),
+            GetMenuItemWithPath(L["MutatingWebhookConfiguration"], "sisternode", "/MutatingWebhookConfiguration")
         };
     }
 
