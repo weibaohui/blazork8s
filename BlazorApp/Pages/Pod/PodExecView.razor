@@ -4,7 +4,7 @@
 @if (_podItem != null)
 {
     <div>
-        <SimpleSelect Style="width:120px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
+        <SimpleSelect Style="width:250px;" DefaultValue="@_podItem.Spec.Containers[0].Name" OnSelectedItemChanged="OnContainerSelectChanged">
             <SelectOptions>
                 @foreach (var c in _podItem.Spec.Containers)
                 {
