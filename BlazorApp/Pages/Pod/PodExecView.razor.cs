@@ -22,9 +22,16 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     ];
 
 
-    private int            _columns, _rows;
-    private string         _containerName;
-    private string         _lastCommand = "";
+    private int    _columns, _rows;
+    private string _containerName;
+
+    //光标index
+    private int           _cursorIndex = 0;
+    private IList<string> _history     = new List<string>();
+
+
+    //历史记录索引index
+    private int            _historyIndex = 0;
     private PodLogExecutor _logHelper;
 
     private TerminalOptions _options = new TerminalOptions
@@ -45,8 +52,6 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
     private Xterm _terminal;
 
     private string _tmpCommand = "";
-
-    private int index = 0;
 
     [Inject]
     private ILogger<PodExecView> Logger { get; set; }
@@ -90,7 +95,6 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         if (obj.Namespace == _podItem.Namespace() && obj.Name == _podItem.Name())
         {
             var resp = obj.LogLineContent;
-            // resp = resp.Replace(_lastCommand, "");
             await _terminal.Write(resp);
         }
     }
@@ -107,16 +111,97 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
         switch (args.DomEvent.Key)
         {
             case "Enter":
-                _lastCommand = _tmpCommand;
-                //光标移动到最后
-                for (var i = index; i < _tmpCommand.Length; i++)
-                    await _terminal.Write("\x1B[C");
-                for (var i = 0; i < _tmpCommand.Length; i++)
-                    await _terminal.Write("\b \b");
 
+
+                if (_tmpCommand.Length > 0)
+                {
+                    //光标移动到最后
+                    for (var i = _cursorIndex; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\x1B[C");
+                    for (var i = 0; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\b \b");
+
+                    //存入history
+                    _history.Add(_tmpCommand);
+                    //重置historyIndex
+                    _historyIndex = _history.Count - 1;
+                    if (_historyIndex < 0) _historyIndex = 0;
+                }
+
+                //发送命令
                 _logHelper.Write(_tmpCommand);
-                _tmpCommand = "";
-                index       = 0;
+                //重置
+                _tmpCommand  = "";
+                _cursorIndex = 0;
+                break;
+            case "ArrowDown":
+                if (_historyIndex == _history.Count - 1)
+                {
+                    //此时是最后一个命令，命令已经显示在xterm上了。再按一次就清空屏幕
+                    //此时光标在最后
+                    // 退格删除原来的全部字符
+                    for (var i = 0; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\b \b");
+
+                    _tmpCommand = "";
+                    //重新计算光标位置
+                    _cursorIndex = _tmpCommand.Length;
+                }
+
+                if (_historyIndex < _history.Count - 1)
+                {
+                    //已经按过向上键，才能向下。否则不需要向下，向下没有命令了。
+                    _historyIndex += 1;
+
+                    //此时光标在最后
+                    // 退格删除原来的全部字符
+                    for (var i = 0; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\b \b");
+
+                    _tmpCommand = _history[_historyIndex];
+                    //按一次向后移动一个历史记录
+                    if (_historyIndex > _history.Count - 1) _historyIndex = _history.Count - 1;
+
+                    //重新计算光标位置
+                    _cursorIndex = _tmpCommand.Length;
+                    await _terminal.Write(_tmpCommand);
+                }
+
+                break;
+            case "ArrowUp":
+                if (_tmpCommand.Length > 0 && _historyIndex < _history.Count - 1)
+                {
+                    //通过向上按键已经拿到了一个历史记录，此时再次按下向上键，应该清除已经写到屏幕上的命令
+
+                    //此时光标在最后
+                    // 退格删除原来的全部字符
+                    for (var i = 0; i < _tmpCommand.Length; i++)
+                        await _terminal.Write("\b \b");
+
+                    _tmpCommand = _history[_historyIndex];
+                    //按一次向前移动一个历史记录
+                    _historyIndex -= 1;
+                    if (_historyIndex < 0) _historyIndex = 0;
+
+                    //重新计算光标位置
+                    _cursorIndex = _tmpCommand.Length;
+                    await _terminal.Write(_tmpCommand);
+                }
+
+                if (_tmpCommand.Length == 0 && _historyIndex == _history.Count - 1)
+                    //没有输入命令的情况下，并且是第一次按键。此时可以按向上键获取历史记录，已经有输入则不可以再按
+                    if (_history.Count > 0)
+                    {
+                        _tmpCommand = _history[_historyIndex];
+                        //按一次向前移动一个历史记录
+                        _historyIndex -= 1;
+                        if (_historyIndex < 0) _historyIndex = 0;
+
+                        //重新计算光标位置
+                        _cursorIndex = _tmpCommand.Length;
+                        await _terminal.Write(_tmpCommand);
+                    }
+
                 break;
             case "Escape":
                 _tmpCommand = "";
@@ -126,8 +211,8 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
             {
                 //退格前的字符全文长度
                 var oldLength = _tmpCommand.Length;
-                var prefix    = _tmpCommand[..index];
-                var suffix    = _tmpCommand.Substring(index, _tmpCommand.Length - index);
+                var prefix    = _tmpCommand[.._cursorIndex];
+                var suffix    = _tmpCommand.Substring(_cursorIndex, _tmpCommand.Length - _cursorIndex);
                 _tmpCommand = prefix[..^1] + suffix;
 
                 //光标移动到最后
@@ -147,37 +232,37 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                     await _terminal.Write("\x1B[D");
 
                 //重新计算index位置
-                index -= 1;
+                _cursorIndex -= 1;
             }
                 break;
             case "ArrowLeft":
-                index -= 1;
+                _cursorIndex -= 1;
                 await _terminal.Write("\x1B[D");
                 break;
             case "ArrowRight":
-                index += 1;
+                _cursorIndex += 1;
                 await _terminal.Write("\x1B[C");
                 break;
             default:
-                if (index == _tmpCommand.Length || _tmpCommand.Length == 0)
+                if (_cursorIndex == _tmpCommand.Length || _tmpCommand.Length == 0)
                 {
                     //在末尾插入字符
-                    index       += 1;
-                    _tmpCommand += args.DomEvent.Key;
+                    _cursorIndex += 1;
+                    _tmpCommand  += args.DomEvent.Key;
                     await _terminal.Write(args.DomEvent.Key);
                 }
                 else
                 {
                     //在光标后插入一个字符
-                    var offset = _tmpCommand.Length - index;
+                    var offset = _tmpCommand.Length - _cursorIndex;
                     //使用了左右光标进行移动，左移-1，右移+1，0为最前
                     //将新字符串插入到光标位置
-                    var prefix = _tmpCommand[..index];
-                    var suffix = _tmpCommand.Substring(index, _tmpCommand.Length - index);
+                    var prefix = _tmpCommand[.._cursorIndex];
+                    var suffix = _tmpCommand.Substring(_cursorIndex, _tmpCommand.Length - _cursorIndex);
                     _tmpCommand = prefix + args.DomEvent.Key + suffix;
 
                     //光标移动到最后
-                    for (var i = index; i < _tmpCommand.Length; i++)
+                    for (var i = _cursorIndex; i < _tmpCommand.Length; i++)
                         await _terminal.Write("\x1B[C");
 
 
@@ -192,7 +277,7 @@ public partial class PodExecView : FeedbackComponent<V1Pod, bool>
                     for (var i = 0; i <= offset - 1; i++)
                         await _terminal.Write("\x1B[D");
 
-                    index += 1;
+                    _cursorIndex += 1;
                 }
 
                 break;
