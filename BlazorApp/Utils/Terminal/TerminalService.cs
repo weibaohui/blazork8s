@@ -7,117 +7,18 @@ using Pty.Net;
 
 namespace BlazorApp.Utils.Terminal;
 
-public class TerminalService
+public class TerminalService(PtyOptions options)
 {
-    /// <summary>
-    /// 任务完成的标记
-    /// </summary>
+    private readonly UTF8Encoding               _encoding         = new(false);
     private readonly TaskCompletionSource<uint> _processExitedTcs = new();
-
-    /// <summary>
-    /// 编码
-    /// </summary>
-    public readonly UTF8Encoding Encoding = new(encoderShouldEmitUTF8Identifier: false);
-
-    /// <summary>
-    /// 构造函数
-    /// </summary>
-    public TerminalService(TerminalOptions terminalOptions)
-    {
-        TerminalOptions = terminalOptions;
-    }
-
-    public TerminalService()
-    {
-        TerminalOptions = null;
-    }
-
-    public bool IsStandardOutPutSet => StandardOutput != null;
-
-
-    /// <summary>
-    /// 配置
-    /// </summary>
-    public TerminalOptions? TerminalOptions
-    {
-        get => new()
-        {
-            Name                = _options.Name,
-            Rows                = _options.Rows,
-            Cols                = _options.Cols,
-            Cwd                 = _options.Cwd,
-            App                 = _options.App,
-            CommandLine         = _options.CommandLine,
-            VerbatimCommandLine = _options.VerbatimCommandLine,
-            ForceWinPty         = _options.ForceWinPty,
-            Environment         = _options.Environment,
-        };
-        set
-        {
-            if (IsRunning)
-            {
-                throw new Exception("Terminal is running, can not change options");
-            }
-
-            value ??= new TerminalOptions();
-
-            _options = new PtyOptions
-            {
-                Name                = value.Name,
-                Rows                = value.Rows,
-                Cols                = value.Cols,
-                Cwd                 = value.Cwd,
-                App                 = value.App,
-                CommandLine         = value.CommandLine,
-                VerbatimCommandLine = value.VerbatimCommandLine,
-                ForceWinPty         = value.ForceWinPty,
-                Environment         = value.Environment,
-            };
-        }
-    }
-
-    /// <summary>
-    /// 取消令牌
-    /// </summary>
-    public CancellationTokenSource TerminalCancellationTokenSource { get; } = new();
-
-    private CancellationToken CancellationToken { get; set; }
-
-    /// <summary>
-    /// 是否在运行
-    /// </summary>
-    public bool IsRunning { get; private set; }
-
-
-    public int GerProcessId => Terminal?.Pid ?? -1;
-
-    /// <summary>
-    /// Pty
-    /// </summary>
-    public IPtyConnection? Terminal { get; private set; }
-
-    private PtyOptions _options { get; set; }
-
-    /// <summary>
-    /// 退出事件
-    /// </summary>
-    event EventHandler<PtyExitedEventArgs>? StandardExited;
-
-    /// <summary>
-    /// 异常输出
-    /// </summary>
-    public event EventHandler<Exception>? StandardError;
-
-    /// <summary>
-    /// 正常输出（String）
-    /// </summary>
-    public event EventHandler<string>? StandardOutput;
-
-    /// <summary>
-    /// 流输出
-    /// </summary>
-    public event EventHandler<byte[]>? StandardBytesOutput;
-
+    public           bool                       IsRunning                       { get; private set; }
+    public           bool                       IsStandardOutPutSet             => StandardOutput != null;
+    private          CancellationTokenSource    TerminalCancellationTokenSource { get; } = new();
+    private          CancellationToken          CancellationToken               { get; set; }
+    public           int                        GerProcessId                    => Terminal?.Pid ?? -1;
+    private          IPtyConnection?            Terminal                        { get; set; }
+    private          PtyOptions                 Options                         { get; set; } = options;
+    public event EventHandler<string>?          StandardOutput;
 
     public void Dispose()
     {
@@ -133,7 +34,7 @@ public class TerminalService
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            // ignored
         }
     }
 
@@ -147,11 +48,11 @@ public class TerminalService
             try
             {
                 CancellationToken = TerminalCancellationTokenSource.Token;
-                Terminal          = await PtyProvider.SpawnAsync(_options, CancellationToken).ConfigureAwait(false);
+                Terminal          = await PtyProvider.SpawnAsync(Options, CancellationToken);
                 Terminal.ProcessExited += (sender, e) =>
                 {
                     _processExitedTcs.TrySetResult((uint)Terminal.ExitCode);
-                    StandardExited?.Invoke(sender, e);
+
                     TerminalCancellationTokenSource.Cancel();
                 };
                 OutputMessage();
@@ -159,9 +60,9 @@ public class TerminalService
             }
             catch (Exception e)
             {
-                StandardError?.Invoke(this, e);
+                Console.WriteLine($"Start failed:{e.Message}");
                 IsRunning = false;
-                throw;
+                await TerminalCancellationTokenSource.CancelAsync();
             }
         }
     }
@@ -173,57 +74,27 @@ public class TerminalService
         {
             while (!CancellationToken.IsCancellationRequested && !_processExitedTcs.Task.IsCompleted)
             {
-                try
-                {
-                    var bytes = new byte[4096];
-                    var count = await Terminal!.ReaderStream.ReadAsync(bytes, CancellationToken).ConfigureAwait(false);
-                    if (count == 0)
-                    {
-                        break;
-                    }
+                if (Terminal == null) continue;
+                var bytes = new byte[4096];
+                var count = await Terminal.ReaderStream.ReadAsync(bytes, CancellationToken).ConfigureAwait(false);
+                if (count == 0) break;
 
-                    StandardBytesOutput?.Invoke(this, bytes);
-                    StandardOutput?.Invoke(this, Encoding.GetString(bytes, 0, count));
-                }
-                catch (Exception e)
-                {
-                    StandardError?.Invoke(this, e);
-                    IsRunning = false;
-                    throw;
-                }
+                StandardOutput?.Invoke(this, _encoding.GetString(bytes, 0, count));
             }
-        }, CancellationToken).ConfigureAwait(false);
+        }, CancellationToken);
     }
 
     public async Task Write(string data)
     {
-        await Write(Encoding.GetBytes(data)).ConfigureAwait(false);
+        await Write(_encoding.GetBytes(data));
     }
 
-    public async Task Write(char data)
+    private async Task Write(byte[] data)
     {
-        await Write(Convert.ToByte(data)).ConfigureAwait(false);
-    }
-
-    public async Task Write(byte data)
-    {
-        CheckTerminal();
-        Terminal!.WriterStream.WriteByte(data);
-        await Terminal.WriterStream.FlushAsync(CancellationToken).ConfigureAwait(false);
-    }
-
-    public async Task Write(byte[] data)
-    {
-        CheckTerminal();
-        await Terminal!.WriterStream.WriteAsync(data, CancellationToken).ConfigureAwait(false);
-        await Terminal.WriterStream.FlushAsync(CancellationToken).ConfigureAwait(false);
-    }
-
-    private void CheckTerminal()
-    {
-        if (IsRunning && Terminal != null) return;
-        var exception = new Exception("Terminal not running");
-        StandardError?.Invoke(this, exception);
-        throw exception;
+        if (IsRunning && Terminal != null)
+        {
+            await Terminal.WriterStream.WriteAsync(data, CancellationToken);
+            await Terminal.WriterStream.FlushAsync(CancellationToken);
+        }
     }
 }

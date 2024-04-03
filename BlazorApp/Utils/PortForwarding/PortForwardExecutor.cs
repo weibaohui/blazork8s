@@ -9,19 +9,19 @@ namespace BlazorApp.Utils.PortForwarding;
 public class PortForwardExecutor
 {
     private static readonly ILogger<PortForwardExecutor> Logger = LoggingHelper<PortForwardExecutor>.Logger();
-    public                  PortForward           PortForward { get; set; }
+
+    public PortForwardExecutor(PortForward portForward)
+    {
+        PortForward = portForward;
+    }
+
+    public PortForward PortForward { get; set; }
 
     private string Command()
     {
         var command =
             $"kubectl port-forward -n {PortForward.KubeNamespace}  --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.KubeName} {PortForward.LocalPort}:{PortForward.KubePort} \r";
         return command;
-    }
-
-    public PortForwardExecutor(PortForward portForward)
-    {
-        PortForward = portForward;
-
     }
 
     public async Task Start()
@@ -71,28 +71,28 @@ public class PortForwardExecutor
                 {
                     PortForward.Status = "failed";
                 }
+
                 if (e.Contains("succeeded"))
                 {
                     PortForward.Status = "succeeded";
                 }
+
                 PortForward.StatusTimestamp = DateTime.Now;
             };
-            service.StandardError += (sender, e) =>
-            {
-                Logger.LogInformation("PortForwardExecutor Probe StandardError:  {Command}::::{Data}", GetNcProbeCommand(),e.Message);
-            };
         }
+
         await service.Write(command);
     }
 
     public void Dispose()
     {
-         if (PortForward == null)
-         {
-             return;
-         }
-         //释放探测终端、转发命令执行终端
-         TerminalHelper.Instance.GetOrCreate(GetNcProbeCommand()).Dispose();
-         TerminalHelper.Instance.GetOrCreate(Command()).Dispose();
+        if (PortForward == null)
+        {
+            return;
+        }
+
+        //释放探测终端、转发命令执行终端
+        TerminalHelper.Instance.GetOrCreate(GetNcProbeCommand()).Dispose();
+        TerminalHelper.Instance.GetOrCreate(Command()).Dispose();
     }
 }

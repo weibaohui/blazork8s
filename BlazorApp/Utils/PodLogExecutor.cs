@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Threading.Tasks;
 using BlazorApp.Chat;
 using BlazorApp.Utils.Terminal;
@@ -84,6 +85,8 @@ public class PodLogExecutor
             await terminalService.Start();
         }
 
+        Console.WriteLine("terminalService.IsRunning {0}", terminalService.IsRunning);
+
         await terminalService.Write($"kubectl {_command} \r");
     }
 
@@ -91,7 +94,7 @@ public class PodLogExecutor
     {
         var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
         await terminalService.Write(content);
-        await terminalService.Write('\r');
+        await terminalService.Write("\r");
     }
 
     #region Getter Setter
