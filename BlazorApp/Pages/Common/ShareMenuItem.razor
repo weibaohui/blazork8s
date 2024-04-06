@@ -5,14 +5,14 @@
     <Dropdown >
         <Overlay >
             <Menu >
-                <MenuItem OnClick="@(() => OnDescribeClick(Item))">Describe</MenuItem>
-                <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
-                <MenuItem OnClick="@(() => OnDocClick(Item))">Doc</MenuItem>
-                 @if (_enable)
-                        {
-                            <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">智能分析</MenuItem>
-                            <MenuItem OnClick="@(() => OnSecurityClick(Item))">安全分析</MenuItem>
-                        }
+                <MenuItem OnClick="@(() => OnDescribeClick(Item))">@L["Describe"]</MenuItem>
+                <MenuItem OnClick="@(() => OnYamlClick(Item))">@L["Yaml"]</MenuItem>
+                <MenuItem OnClick="@(() => OnDocClick(Item))">@L["Doc"]</MenuItem>
+                @if (_enable)
+                {
+                    <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">智能分析</MenuItem>
+                    <MenuItem OnClick="@(() => OnSecurityClick(Item))">安全分析</MenuItem>
+                }
                 @ChildContent
             </Menu>
         </Overlay>
@@ -24,14 +24,14 @@
 @if (MenuMode == MenuMode.Horizontal)
 {
     <Alert Type="@AlertType.Success">
-        <Button OnClick="@(() => OnDescribeClick(Item))">Describe</Button>
-        <Button OnClick="@(() => OnYamlClick(Item))">Yaml</Button>
-        <Button OnClick="@(() => OnDocClick(Item))">Doc</Button>
-         @if (_enable)
-                {
-                    <Button OnClick="@(() => OnAnalyzeClick(Item))">智能分析</Button>
-                    <Button OnClick="@(() => OnSecurityClick(Item))">安全分析</Button>
-                }
+        <Button OnClick="@(() => OnDescribeClick(Item))">@L["Describe"]</Button>
+        <Button OnClick="@(() => OnYamlClick(Item))">@L["Yaml"]</Button>
+        <Button OnClick="@(() => OnDocClick(Item))">@L["Doc"]</Button>
+        @if (_enable)
+        {
+            <Button OnClick="@(() => OnAnalyzeClick(Item))">智能分析</Button>
+            <Button OnClick="@(() => OnSecurityClick(Item))">安全分析</Button>
+        }
         @ChildContent
     </Alert>
 }

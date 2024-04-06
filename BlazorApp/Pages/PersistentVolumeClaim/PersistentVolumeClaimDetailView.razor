@@ -31,7 +31,7 @@
 
         <ContainerResourceRequestLimitsView RequestLimits="@(PersistentVolumeClaim.Spec.Resources.Adapt<V1ResourceRequirements>())" ExplainField="persistentVolumeClaim.spec.resources"></ContainerResourceRequestLimitsView>
 
-        <LabelSelectorView Title="Selector" LabelSelector="@PersistentVolumeClaim.Spec.Selector" ExplainField="persistentVolumeClaim.spec.selector"></LabelSelectorView>
+        <LabelSelectorView Title=@L["Selector"] LabelSelector="@PersistentVolumeClaim.Spec.Selector" ExplainField="persistentVolumeClaim.spec.selector"></LabelSelectorView>
         <PropertySimpleView Title="StorageClassName" Item="@PersistentVolumeClaim.Spec.StorageClassName" ExplainField="persistentVolumeClaim.spec.storageClassName"></PropertySimpleView>
         <PropertySimpleView Title="VolumeName" Item="@PersistentVolumeClaim.Spec.VolumeName" ExplainField="persistentVolumeClaim.spec.volumeName"></PropertySimpleView>
         <PropertyOptionView Title="VolumeMode" Item="@PersistentVolumeClaim.Spec.VolumeMode" ExplainField="persistentVolumeClaim.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>

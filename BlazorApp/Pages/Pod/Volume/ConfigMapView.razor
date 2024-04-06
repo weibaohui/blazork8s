@@ -16,7 +16,7 @@
                     <HTableColumn Title="Volume" ExplainField="pod.spec.volumes.secret">
                         <RefView Ref="@TransferToRef(Volume)" FullView="true"></RefView>
                     </HTableColumn>
-                    <PropertySimpleView Title="Name" ExplainField="pod.spec.volumes.configMap.name" Item="@Volume.ConfigMap.Name"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["Name"] ExplainField="pod.spec.volumes.configMap.name" Item="@Volume.ConfigMap.Name"></PropertySimpleView>
                     <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.configMap.defaultMode" Item="@Volume.ConfigMap.DefaultMode"></PropertySimpleView>
                     <PropertySimpleView Title="Optional" ExplainField="pod.spec.volumes.configMap.optional" Item="@Volume.ConfigMap.Optional"></PropertySimpleView>
                     @if (Volume.ConfigMap.Items != null)
@@ -41,6 +41,9 @@
 
 
 @code {
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     [Parameter]
     public V1Volume Volume { get; set; }

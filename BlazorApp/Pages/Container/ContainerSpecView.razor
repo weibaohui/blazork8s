@@ -10,7 +10,7 @@
         <BadgeRibbon Text="@c.Name" Placement="start">
             <Card Bordered>
                 <HTable Title="" Bordered Column="1">
-                    <HTableColumn Title="Name">
+                    <HTableColumn Title=@L["Name"]>
                         <ContainerType Type="@Type"></ContainerType>
                         @c.Name
                     </HTableColumn>
@@ -99,6 +99,9 @@
 }
 
 @code {
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     [Inject]
     IMessageService MessageService { get; set; }

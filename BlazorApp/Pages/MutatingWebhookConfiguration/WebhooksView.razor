@@ -9,9 +9,9 @@
         <BadgeRibbon Text="@hook.Name" Placement="start" Color="#832">
             <Card Bordered>
                 <HTable >
-                    <PropertySimpleView Title="Name" Item="@hook.Name" ExplainField=@(ExplainFieldPrefix + ".name")></PropertySimpleView>
+                    <PropertySimpleView Title=@L["Name"] Item="@hook.Name" ExplainField=@(ExplainFieldPrefix + ".name")></PropertySimpleView>
                     <PropertyListView Title="AdmissionReviewVersions" Items="@hook.AdmissionReviewVersions" ExplainField=@(ExplainFieldPrefix + ".admissionReviewVersions") T="string"></PropertyListView>
-                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField=@(ExplainFieldPrefix + ".clientConfig") >
+                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField=@(ExplainFieldPrefix + ".clientConfig")>
                         @if (hook.ClientConfig != null)
                         {
                             <PropertySimpleView Title="CaBundle" Item="@hook.ClientConfig.CaBundle" ExplainField=@(ExplainFieldPrefix + ".clientConfig.caBundle") ShowInJson="true"></PropertySimpleView>
@@ -47,6 +47,9 @@
 
 @code {
 
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Parameter]
     public IList<V1MutatingWebhook> Webhooks { get; set; }
 
@@ -57,9 +60,9 @@
     {
         var ret = new V1ObjectReference()
         {
-            Kind = "Service",
-            Name = service.Name,
-            NamespaceProperty =service.NamespaceProperty,
+            Kind              = "Service",
+            Name              = service.Name,
+            NamespaceProperty = service.NamespaceProperty,
         };
 
 

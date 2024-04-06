@@ -1,17 +1,16 @@
 using System.Threading.Tasks;
-using AntDesign;
 using BlazorMonaco.Editor;
 using k8s;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class YamlView<T> : FeedbackComponent<T, bool>
+public partial class YamlView<T> : DrawerPageBase<T>
 {
+    private StandaloneCodeEditor _editor = null!;
+
     [Parameter]
     public T Item { get; set; }
-
-    private StandaloneCodeEditor _editor = null!;
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {

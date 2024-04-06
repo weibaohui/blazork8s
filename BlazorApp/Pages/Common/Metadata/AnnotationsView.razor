@@ -1,7 +1,7 @@
 @using BlazorApp.Pages.Common.Html
 @if (Annotations is { Count: > 0 })
 {
-    <HTableColumn Title="Annotations" ExplainField="@ExplainField">
+    <HTableColumn Title=@L["Annotations"] ExplainField="@ExplainField">
         @foreach (var label in Annotations)
         {
             <Paragraph >

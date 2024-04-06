@@ -11,24 +11,25 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKubernetesObject<V1ObjectMeta>
+public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObject<V1ObjectMeta>
 {
+    private readonly List<TreeData> _dataList = new();
+
+    private TreeData _currentItem    = new();
+    private string   _currentRootKey = "";
+
+    private string         _resultCn;
+    private Tree<TreeData> _tree;
+
     [Parameter]
     public T Item { get; set; }
+
     [Inject]
     IAiService AiService { get; set; }
-
-    private string _resultCn;
 
 
     [Inject]
     private IMessageService MessageService { get; set; }
-
-    private readonly List<TreeData> _dataList = new();
-    private          Tree<TreeData> _tree;
-
-    private          TreeData _currentItem         = new();
-    private          string   _currentRootKey      = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -42,6 +43,7 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         {
             key = "io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.CustomResourceDefinition";
         }
+
         _currentRootKey = key;
         var definition = SwaggerHelper.Instance.GetEntityByName(key);
         _dataList.AddRange(definition.ToTreeData().ChildList);
@@ -50,13 +52,16 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         {
             AiService.SetChatEventHandler(EventHandler);
         }
+
         await base.OnInitializedAsync();
     }
+
     private async void EventHandler(object sender, string resp)
     {
         _resultCn += resp;
         await InvokeAsync(StateHasChanged);
     }
+
     private void ExpandAll()
     {
         _tree.ExpandAll();
@@ -95,16 +100,16 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
     }
 
 
-
     private async Task OnItemClick(TreeEventArgs<TreeData> arg)
     {
         _currentItem = arg.Node.DataItem;
-        _resultCn= _currentItem.descriptionCN;
+        _resultCn    = _currentItem.descriptionCN;
         if (AiService.Enabled() && string.IsNullOrWhiteSpace(_currentItem.descriptionCN))
         {
-          await  ReTranslate();
+            await ReTranslate();
         }
     }
+
     private async Task ReTranslate()
     {
         if (!AiService.Enabled()) return;
@@ -113,5 +118,4 @@ public partial class DocTreeView<T> : FeedbackComponent<T, bool> where T : IKube
         await InvokeAsync(StateHasChanged);
         _resultCn = await AiService.AIChat("请逐字翻译以下内容，注意请不要遗漏细节并保持原来的格式：" + _currentItem.description);
     }
-
 }

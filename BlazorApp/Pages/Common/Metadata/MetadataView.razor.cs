@@ -1,10 +1,14 @@
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class MetadataView : ComponentBase
 {
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Parameter]
     public V1ObjectMeta Item { get; set; }
 
@@ -15,8 +19,8 @@ public partial class MetadataView : ComponentBase
     {
         return new V1ObjectReference()
         {
-            Name              = Item.Namespace(),
-            Kind              = "Namespace"
+            Name = Item.Namespace(),
+            Kind = "Namespace"
         };
     }
 }

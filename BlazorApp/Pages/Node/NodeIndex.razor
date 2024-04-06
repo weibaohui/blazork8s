@@ -10,7 +10,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Node" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["Node"] Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Node"
@@ -31,7 +31,7 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Ready" TData="string">
@@ -77,10 +77,10 @@
                     <AntDesign.Column Title="OsImage" TData="string" Width="100px">
                         <ColorfulTag>@context.Status.NodeInfo.OsImage</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px">
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <NodeAction Item="@context"></NodeAction>
                     </ActionColumn>
                 </Table>

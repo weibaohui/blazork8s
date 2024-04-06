@@ -29,15 +29,15 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
 
                     <AntDesign.Column Title="Type" TData="string">
                         <ColorfulTag>@context.Spec.Type</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ClusterIP" TData="string"  Width="100px">
+                    <AntDesign.Column Title="ClusterIP" TData="string" Width="100px">
                         @if (context.Spec.ClusterIPs is { Count: > 0 })
                         {
                             @foreach (var p in context.Spec.ClusterIPs)
@@ -53,7 +53,7 @@
                             <ColorfulTag>@($"{p.Port}{(p.NodePort != null ? ":" + p.NodePort : "")}/{p.Protocol}")</ColorfulTag>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Selector" TData="string"  Width="100px">
+                    <AntDesign.Column Title=@L["Selector"] TData="string" Width="100px">
                         <SelectorView Selector="@context.Spec.Selector"></SelectorView>
                     </AntDesign.Column>
                     <AntDesign.Column Title="ExternalIP" TData="string" Width="100px">
@@ -65,10 +65,10 @@
                             }
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px">
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <ServiceAction Item="@context"></ServiceAction>
                     </ActionColumn>
                 </Table>

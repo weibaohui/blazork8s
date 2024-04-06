@@ -30,10 +30,10 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
                     <AntDesign.Column Title="Metrics" TData="string">
                         <HPAMetricsView Hpa="@context" SimpleView="true"></HPAMetricsView>
                     </AntDesign.Column>
@@ -47,11 +47,11 @@
                         @context.Spec.MaxReplicas
                     </AntDesign.Column>
 
-                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
 
-                    <ActionColumn Title="Action" Width="100px">
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <HorizontalPodAutoscalerAction Item="@context"></HorizontalPodAutoscalerAction>
                     </ActionColumn>
                 </Table>

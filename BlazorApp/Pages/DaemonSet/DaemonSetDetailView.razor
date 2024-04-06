@@ -13,7 +13,7 @@
     <MetadataView Item="DaemonSet.Metadata" ExplainFieldPrefix="daemonSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <SelectorView Title="Selector" Selector="@DaemonSet.Spec.Selector.MatchLabels"></SelectorView>
+        <SelectorView Title=@L["Selector"] Selector="@DaemonSet.Spec.Selector.MatchLabels"></SelectorView>
         <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit"></PropertySimpleView>
         <PropertyOptionView Title="StrategyType" Item="@DaemonSet.Spec.UpdateStrategy.Type" ExplainField="daemonSet.spec.updateStrategy" Options=@(new[] { "OnDelete", "RollingUpdate" })></PropertyOptionView>

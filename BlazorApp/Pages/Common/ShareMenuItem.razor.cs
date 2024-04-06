@@ -8,16 +8,22 @@ using Extension;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;
 
 public partial class ShareMenuItem<T> : ComponentBase where T : IKubernetesObject<V1ObjectMeta>
 {
+    private bool _enable;
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
 
     [Parameter]
-    public MenuMode MenuMode { get; set; } =MenuMode.Vertical;
+    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 
     [Parameter]
     public T Item { get; set; }
@@ -29,7 +35,6 @@ public partial class ShareMenuItem<T> : ComponentBase where T : IKubernetesObjec
     [Inject]
     private IAiService Ai { get; set; }
 
-    private bool _enable;
     protected override async Task OnInitializedAsync()
     {
         _enable = Ai.Enabled();
@@ -50,13 +55,14 @@ public partial class ShareMenuItem<T> : ComponentBase where T : IKubernetesObjec
 
     private async Task OnDescribeClick(T item)
     {
-        var type     = typeof(T).Name.GetSubstringAfterFirstDigit().ToLower();
+        var type    = typeof(T).Name.GetSubstringAfterFirstDigit().ToLower();
         var command = $"{type} {item.Name()} ";
         if (!item.Namespace().IsNullOrWhiteSpace())
         {
             command = $"{type} {item.Name()} -n {item.Namespace()}";
         }
-        var options  = PageDrawerService.DefaultOptions($"Describe:{item.Name()}", width: 1000);
+
+        var options = PageDrawerService.DefaultOptions($"Describe:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<KubectlDescribeView, string, bool>(options, command);
     }
 
@@ -67,7 +73,7 @@ public partial class ShareMenuItem<T> : ComponentBase where T : IKubernetesObjec
         await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
             new IAiService.AiChatData
             {
-                Data  =  item,
+                Data  = item,
                 Style = "error"
             });
     }

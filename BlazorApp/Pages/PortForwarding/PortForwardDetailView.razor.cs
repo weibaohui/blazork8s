@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using AntDesign;
+using BlazorApp.Pages.Common;
 using Entity;
 
 namespace BlazorApp.Pages.PortForwarding
 {
-    public partial class PortForwardDetailView : FeedbackComponent<PortForward, bool>
+    public partial class PortForwardDetailView : DrawerPageBase<PortForward>
     {
         private PortForward Item { get; set; }
 

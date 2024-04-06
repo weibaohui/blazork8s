@@ -3,12 +3,12 @@
 <ShareMenuItem T="V1Pod" Item="PodItem" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
-        <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">日志</MenuItem>
-        <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">Exec</MenuItem>
+        <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">@L["ViewLog"]</MenuItem>
+        <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">@L["RunExec"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
-        <Button OnClick="@(() => OnPodLogClick(PodItem))">日志</Button>
-        <Button OnClick="@(() => OnPodExecClick(PodItem))">Exec</Button>
+        <Button OnClick="@(() => OnPodLogClick(PodItem))">@L["ViewLog"]</Button>
+        <Button OnClick="@(() => OnPodExecClick(PodItem))">@L["RunExec"]</Button>
     }
 </ShareMenuItem>

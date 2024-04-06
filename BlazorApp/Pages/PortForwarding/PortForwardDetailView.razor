@@ -2,14 +2,14 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits FeedbackComponent<Entity.PortForward, bool>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.PortForward>
 @if (Item != null)
 {
     <PortForwardAction Item="Item" MenuMode="MenuMode.Horizontal"></PortForwardAction>
-    <MetadataView Item="Item.Metadata" ></MetadataView>
+    <MetadataView Item="Item.Metadata"></MetadataView>
     <HTable Bordered Column="1">
 
-        <HTableColumn Title="KubePort" >
+        <HTableColumn Title="KubePort">
             <Tag Color="#2db7f5"> @Item.Type </Tag>
             <Tag Color="#2db7f5"> @Item.KubeName </Tag>
             <Tag Color="#2db7f5">@Item.KubePort</Tag>
@@ -18,7 +18,7 @@
 
         </HTableColumn>
 
-        <HTableColumn Title="status">
+        <HTableColumn Title=@L["Status"]>
             @Item.Status (@Item.StatusTimestamp)
         </HTableColumn>
         <HTableColumn Title="访问">

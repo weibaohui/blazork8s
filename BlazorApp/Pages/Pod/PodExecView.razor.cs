@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AntDesign;
 using BlazorApp.Chat;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using Entity;
@@ -14,7 +14,7 @@ using XtermBlazor;
 
 namespace BlazorApp.Pages.Pod;
 
-public partial class PodExecView : FeedbackComponent<V1Pod, bool>
+public partial class PodExecView : DrawerPageBase<V1Pod>
 {
     private HashSet<string> _addons =
     [

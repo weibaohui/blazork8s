@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using k8s;
@@ -7,16 +7,17 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Workload;
 
-public partial class AiAnalyzeView : FeedbackComponent<IAiService.AiChatData, bool>
+public partial class AiAnalyzeView : DrawerPageBase<IAiService.AiChatData>
 {
+    private IAiService.AiChatData _item;
+
     [Inject]
     private IPodService PodService { get; set; }
 
     [Inject]
     private IAiService Ai { get; set; }
 
-    string                        Advice { get; set; }
-    private IAiService.AiChatData _item;
+    string Advice { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

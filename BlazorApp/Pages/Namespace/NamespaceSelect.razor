@@ -1,7 +1,7 @@
 ﻿@using k8s.Models
 <SimpleSelect DefaultValue="" Style="width:200px;" OnSelectedItemChanged="HandleChange">
     <SelectOptions>
-        <SimpleSelectOption Value="" Label="All Namespace"></SimpleSelectOption>
+        <SimpleSelectOption Value="" Label=@(L["All Namespace"])></SimpleSelectOption>
         @if (_ns != null)
         {
             foreach (var n in _ns)

@@ -20,7 +20,7 @@
                 <HTable>
                     @foreach (var selector in ClusterRole.AggregationRule.ClusterRoleSelectors)
                     {
-                        <LabelSelectorView LabelSelector="selector" Title="selector"></LabelSelectorView>
+                        <LabelSelectorView LabelSelector="selector" Title=@L["Selector"]></LabelSelectorView>
                     }
                 </HTable>
             </HTableColumn>

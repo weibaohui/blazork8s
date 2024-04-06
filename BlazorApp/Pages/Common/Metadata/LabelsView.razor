@@ -2,7 +2,7 @@
 @using BlazorApp.Utils
 @if (Labels != null)
 {
-    <HTableColumn Title="Labels" ExplainField="@ExplainField">
+    <HTableColumn Title=@L["Labels"] ExplainField="@ExplainField">
         @foreach (var label in Labels)
         {
             <Paragraph Copyable>
@@ -13,6 +13,9 @@
 }
 
 @code {
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     [Parameter]
     public IDictionary<string, string> Labels { get; set; }

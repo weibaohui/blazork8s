@@ -5,12 +5,17 @@ using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;
 
 public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKubernetesObject<V1ObjectMeta>
 {
     private string _style = " padding: 8px 0;";
+
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     [Parameter]
     public string Title { get; set; }

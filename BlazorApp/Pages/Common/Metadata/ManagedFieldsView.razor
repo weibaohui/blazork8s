@@ -4,7 +4,7 @@
 @using BlazorApp.Utils
 @if (ManagedFields is { Count: > 0 })
 {
-    <HTableColumn Title="ManagedFields" ExplainField="@ExplainField">
+    <HTableColumn Title=@L["ManagedFields"] ExplainField="@ExplainField">
         @foreach (var entry in ManagedFields)
         {
             <div>
@@ -18,6 +18,9 @@
 }
 
 @code {
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     [Parameter]
     public IList<V1ManagedFieldsEntry> ManagedFields { get; set; }

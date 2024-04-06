@@ -13,7 +13,7 @@
     <MetadataView Item="Item.Metadata"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <SelectorView Title="Selector" Selector="@Item.Spec.Selector"></SelectorView>
+        <SelectorView Title=@L["Selector"] Selector="@Item.Spec.Selector"></SelectorView>
         <PropertyOptionView Title="Type" Item="@Item.Spec.Type" Options='@(new[] { "ClusterIP", "NodePort", "ExternalName", "LoadBalancer" })' ExplainField="service.spec.type"></PropertyOptionView>
         <PropertyOptionView Title="SessionAffinity" Item="@Item.Spec.SessionAffinity" Options='@(new[] { "ClientIP", "None" })' ExplainField="service.spec.sessionAffinity"></PropertyOptionView>
         @if (Item.Spec.SessionAffinityConfig != null)

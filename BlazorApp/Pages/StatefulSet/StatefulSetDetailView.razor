@@ -14,7 +14,7 @@
     <MetadataView Item="StatefulSet.Metadata" ExplainFieldPrefix="statefulSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <SelectorView Title="Selector" Selector="@StatefulSet.Spec.Selector.MatchLabels"></SelectorView>
+        <SelectorView Title=@L["Selector"] Selector="@StatefulSet.Spec.Selector.MatchLabels"></SelectorView>
         <PropertySimpleView Title="ServiceName" Item="@StatefulSet.Spec.ServiceName" ExplainField="statefulSet.spec.serviceName"></PropertySimpleView>
         <PropertySimpleView Title="Replicas" Item="@StatefulSet.Spec.Replicas" ExplainField="statefulSet.spec.replicas"></PropertySimpleView>
         <PropertySimpleView Title="MinReadySeconds" Item="@StatefulSet.Spec.MinReadySeconds" ExplainField="statefulSet.spec.minReadySeconds"></PropertySimpleView>

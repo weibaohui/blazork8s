@@ -6,38 +6,41 @@ using BlazorApp.Service.k8s;
 using Entity.Crd;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
-namespace BlazorApp.Pages.Crd
+namespace BlazorApp.Pages.Crd;
+
+public partial class CrdDetailView : DrawerPageBase<V1CustomResourceDefinition>
 {
-    public partial class CrdDetailView : DrawerPageBase<V1CustomResourceDefinition>
+    private List<CustomResource> _crInstanceList = new();
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
+    [Inject]
+    public IKubeService KubeService { get; set; }
+
+    [Inject]
+    public ICustomResourceDefinitionService CrdService { get; set; }
+
+    private V1CustomResourceDefinition CustomResourceDefinition { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        [Inject]
-        public IKubeService KubeService { get; set; }
+        CustomResourceDefinition = Options;
 
-        [Inject]
-        public ICustomResourceDefinitionService CrdService { get; set; }
+        _crInstanceList = await CrdService.GetCrInstanceList(CustomResourceDefinition);
 
-        private V1CustomResourceDefinition CustomResourceDefinition { get; set; }
-
-        private List<CustomResource> _crInstanceList = new List<CustomResource>();
-
-        protected override async Task OnInitializedAsync()
-        {
-            CustomResourceDefinition = base.Options;
-
-            _crInstanceList = await CrdService.GetCrInstanceList(CustomResourceDefinition);
-
-            await base.OnInitializedAsync();
-        }
+        await base.OnInitializedAsync();
+    }
 
 
-        private async Task OnYamlClick(CustomResource cr)
-        {
-            var item = await CrdService.GetCrInstanceWithSpec(CustomResourceDefinition, cr);
+    private async Task OnYamlClick(CustomResource cr)
+    {
+        var item = await CrdService.GetCrInstanceWithSpec(CustomResourceDefinition, cr);
 
-            var options = PageDrawerService.DefaultOptions($"Yaml:{cr.Name()}", width: 1000);
-            await PageDrawerService
-                .ShowDrawerAsync<YamlView<object>, object, bool>(options, item);
-        }
+        var options = PageDrawerService.DefaultOptions($"Yaml:{cr.Name()}", 1000);
+        await PageDrawerService
+            .ShowDrawerAsync<YamlView<object>, object, bool>(options, item);
     }
 }

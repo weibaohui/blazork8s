@@ -9,7 +9,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Namespace" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["Namespace"] Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Namespace"
@@ -30,25 +30,25 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                      <AntDesign.Column Title="Finalizers" TData="string">
-                                            @if (context.Spec.Finalizers is { Count: > 0 })
-                                            {
-                                                @foreach (var p in context.Spec.Finalizers)
-                                                {
-                                                    <ColorfulTag>@p</ColorfulTag>
-                                                }
-                                            }
-                                        </AntDesign.Column>
-                    <AntDesign.Column Title="Status" TData="string" >
+                    <AntDesign.Column Title="Finalizers" TData="string">
+                        @if (context.Spec.Finalizers is { Count: > 0 })
+                        {
+                            @foreach (var p in context.Spec.Finalizers)
+                            {
+                                <ColorfulTag>@p</ColorfulTag>
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Status"] TData="string">
                         <ColorfulTag> @context.Status.Phase</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <NamespaceAction Item="@context"></NamespaceAction>
                     </ActionColumn>
                 </Table>

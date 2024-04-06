@@ -30,10 +30,10 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
                     <AntDesign.Column Title="Schedule" TData="string">
                         @context.Spec.Schedule
                         <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Robot" OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{context.Spec.Schedule}"))"></Button>
@@ -48,16 +48,16 @@
                     <AntDesign.Column Title="Last Schedule" TData="string">
                         @(context.Status.LastScheduleTime.AgeFromUtc())
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Selector" TData="string">
+                    <AntDesign.Column Title=@L["Selector"] TData="string">
                         <LabelSelectorView LabelSelector="@context.Spec.JobTemplate.Spec.Selector"></LabelSelectorView>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Images" TData="string">
                         <ImagesListView PodSpec="@context.Spec.JobTemplate.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px">
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <CronJobAction Item="@context"></CronJobAction>
                     </ActionColumn>
                 </Table>

@@ -7,13 +7,13 @@
     <HTable Bordered Column="1">
         @if (Item.Name != null)
         {
-            <HTableColumn Title="Name" ExplainField=@(ExplainFieldPrefix + ".metadata.name")>
+            <HTableColumn Title=@L["Name"] ExplainField=@(ExplainFieldPrefix + ".metadata.name")>
                 <Text Copyable>@Item.Name</Text>
             </HTableColumn>
         }
         @if (Item.CreationTimestamp != null)
         {
-            <HTableColumn Title="Creation" ExplainField=@(ExplainFieldPrefix + ".metadata.creationTimestamp")>
+            <HTableColumn Title=@L["Creation"] ExplainField=@(ExplainFieldPrefix + ".metadata.creationTimestamp")>
                 <AgeView Age="@Item.CreationTimestamp"></AgeView>
                 (@Item.CreationTimestamp.GetValueOrDefault().ToLocalTime())
             </HTableColumn>
@@ -21,7 +21,7 @@
 
         @if (!Item.Namespace().IsNullOrEmpty())
         {
-            <HTableColumn Title="Namespace" ExplainField=@(ExplainFieldPrefix + ".metadata.namespace")>
+            <HTableColumn Title=@L["Namespace"] ExplainField=@(ExplainFieldPrefix + ".metadata.namespace")>
                 <RefView FullView="true" Ref="@NsRef(Item.Namespace())"></RefView>
             </HTableColumn>
         }
@@ -30,12 +30,12 @@
         <ControllerByView Owner=@Item.OwnerReferences Namespace=@Item.NamespaceProperty ExplainField=@(ExplainFieldPrefix + ".metadata.ownerReferences")></ControllerByView>
         <FinalizersView Finalizers="@Item.Finalizers" ExplainField=@(ExplainFieldPrefix + ".metadata.finalizers")></FinalizersView>
         <ManagedFieldsView ManagedFields="@Item.ManagedFields" ExplainField=@(ExplainFieldPrefix + ".metadata.managedFields")></ManagedFieldsView>
-        <PropertySimpleView Title="DeletionGracePeriodSeconds" Item="@Item.DeletionGracePeriodSeconds" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionGracePeriodSeconds")></PropertySimpleView>
-        <PropertySimpleView Title="DeletionTimestamp" Item="@Item.DeletionTimestamp" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionTimestamp")></PropertySimpleView>
-        <PropertySimpleView Title="GenerateName" Item="@Item.GenerateName" ExplainField=@(ExplainFieldPrefix + ".metadata.generateName")></PropertySimpleView>
-        <PropertySimpleView Title="Generation" Item="@Item.Generation" ExplainField=@(ExplainFieldPrefix + ".metadata.generation")></PropertySimpleView>
-        <PropertySimpleView Title="ResourceVersion" Item="@Item.ResourceVersion" ExplainField=@(ExplainFieldPrefix + ".metadata.resourceVersion")></PropertySimpleView>
-        <PropertySimpleView Title="SelfLink" Item="@Item.SelfLink" ExplainField=@(ExplainFieldPrefix + ".metadata.selfLink")></PropertySimpleView>
-        <PropertySimpleView Title="Uid" Item="@Item.Uid" ExplainField=@(ExplainFieldPrefix + ".metadata.uid")></PropertySimpleView>
+        <PropertySimpleView Title=@L["DeletionGracePeriodSeconds"] Item="@Item.DeletionGracePeriodSeconds" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionGracePeriodSeconds")></PropertySimpleView>
+        <PropertySimpleView Title=@L["DeletionTimestamp"] Item="@Item.DeletionTimestamp" ExplainField=@(ExplainFieldPrefix + ".metadata.deletionTimestamp")></PropertySimpleView>
+        <PropertySimpleView Title=@L["GenerateName"] Item="@Item.GenerateName" ExplainField=@(ExplainFieldPrefix + ".metadata.generateName")></PropertySimpleView>
+        <PropertySimpleView Title=@L["Generation"] Item="@Item.Generation" ExplainField=@(ExplainFieldPrefix + ".metadata.generation")></PropertySimpleView>
+        <PropertySimpleView Title=@L["ResourceVersion"] Item="@Item.ResourceVersion" ExplainField=@(ExplainFieldPrefix + ".metadata.resourceVersion")></PropertySimpleView>
+        <PropertySimpleView Title=@L["SelfLink"] Item="@Item.SelfLink" ExplainField=@(ExplainFieldPrefix + ".metadata.selfLink")></PropertySimpleView>
+        <PropertySimpleView Title=@L["Uid"] Item="@Item.Uid" ExplainField=@(ExplainFieldPrefix + ".metadata.uid")></PropertySimpleView>
     </HTable>
 }

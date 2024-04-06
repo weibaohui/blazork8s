@@ -10,7 +10,7 @@
     <MetadataView Item="ReplicationController.Metadata" ExplainFieldPrefix="replicationController"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <SelectorView Title="Selector" Selector="@ReplicationController.Spec.Selector"></SelectorView>
+        <SelectorView Title=@L["Selector"] Selector="@ReplicationController.Spec.Selector"></SelectorView>
         <PropertySimpleView Title="MinReadySeconds" Item="@ReplicationController.Spec.MinReadySeconds" ExplainField="replicationController.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="Replicas" Item="@ReplicationController.Spec.Replicas" ExplainField="replicationController.spec.replicas"></PropertySimpleView>
     </HTable>

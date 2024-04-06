@@ -3,15 +3,15 @@
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Html
-@inherits FeedbackComponent<k8s.Models.V1ReplicaSet, bool>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ReplicaSet>
 @if (ReplicaSet != null)
 {
     <ReplicaSetAction Item="ReplicaSet" MenuMode="MenuMode.Horizontal"></ReplicaSetAction>
     <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="ReplicaSet.Metadata"  ExplainFieldPrefix="replicaSet"></MetadataView>
+    <MetadataView Item="ReplicaSet.Metadata" ExplainFieldPrefix="replicaSet"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
     <HTable Bordered Column="1">
-        <SelectorView Title="Selector" Selector="@ReplicaSet.Spec.Selector.MatchLabels"></SelectorView>
+        <SelectorView Title=@L["Selector"] Selector="@ReplicaSet.Spec.Selector.MatchLabels"></SelectorView>
         <SelectorView Title="Node Selector" Selector="@ReplicaSet.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@ReplicaSet.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@ReplicaSet.Spec.Template.Spec.Tolerations"></TolerationsView>
@@ -22,7 +22,7 @@
 
     <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Replicas" >
+        <HTableColumn Title="Replicas">
             @($"{ReplicaSet.Status.AvailableReplicas ?? 0} current / {ReplicaSet.Status.Replicas} desired")
         </HTableColumn>
         <ConditionView ConditionList="@ReplicaSet.Status.Conditions" ExplainField="replicaSet.status.conditions"></ConditionView>

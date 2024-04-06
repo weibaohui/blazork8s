@@ -7,7 +7,7 @@
         <div style="@_style">@Title</div>
     </GridCol>
     <GridCol Span="6">
-        <div style="@_style">@Count Items</div>
+        <div style="@_style">@Count @L["Items"]</div>
     </GridCol>
     <GridCol Span="6">
         <div style="@_style">
@@ -19,7 +19,7 @@
     </GridCol>
     <GridCol Span="5">
         <div style="@_style">
-            <Search Placeholder="@($"Search {Title}")" OnSearch="@OnSearchHandler" OnChange="@OnSearchHandler" @bind-Value="@TxtValue" AllowClear EnterButton="@("Search")" ClassicSearchIcon/>
+            <Search Placeholder="@($"{L["Search"]} {Title}")" OnSearch="@OnSearchHandler" OnChange="@OnSearchHandler" @bind-Value="@TxtValue" AllowClear EnterButton="@("Search")" ClassicSearchIcon/>
         </div>
     </GridCol>
     <GridCol Span="1"></GridCol>

@@ -14,8 +14,7 @@
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1ValidatingWebhookConfiguration"
                                OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true"
-                               >
+                               HideNsSelector="true">
                 </SearchToolBar>
             </HTd>
         </HTr>
@@ -31,16 +30,16 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Webhooks" TData="string">
                         <ColorfulTag>@context.Webhooks.Count</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column  Title="Age" TData="string"  Width="100px">
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
-                    <ActionColumn Title="Action" Width="100px" >
+                    <ActionColumn Title=@L["Action"] Width="100px">
                         <ValidatingWebhookConfigurationAction Item="@context"></ValidatingWebhookConfigurationAction>
                     </ActionColumn>
                 </Table>

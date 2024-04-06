@@ -4,11 +4,15 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.ReplicaSet
 {
     public partial class ReplicaSetIndex : TableBase<V1ReplicaSet>
     {
+        [Inject]
+        public IStringLocalizer L { get; set; }
+
         [Inject]
         private IReplicaSetService ReplicaSetService { get; set; }
 

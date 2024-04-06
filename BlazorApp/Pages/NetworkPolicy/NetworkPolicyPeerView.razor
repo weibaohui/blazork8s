@@ -12,7 +12,7 @@
 
         if (peer.NamespaceSelector != null)
         {
-            <LabelSelectorView LabelSelector="peer.NamespaceSelector" ExplainField="@ExplainField" Title="Namespace"></LabelSelectorView>
+            <LabelSelectorView LabelSelector="peer.NamespaceSelector" ExplainField="@ExplainField" Title=@L["Namespace"]></LabelSelectorView>
         }
 
         if (peer.IpBlock != null)
@@ -39,6 +39,9 @@
 }
 
 @code {
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     [Parameter]
     public IList<V1NetworkPolicyPeer> Peers { get; set; }

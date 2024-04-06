@@ -1,11 +1,12 @@
 @using BlazorApp.Pages.Common.Html
-@if(Finalizers!=null){
-<HTableColumn Title="Finalizers">
-    @foreach (var label in Finalizers)
-    {
-        <Paragraph Copyable>
-            <ColorfulTag>@label</ColorfulTag>
-        </Paragraph>
-    }
-</HTableColumn>
+@if (Finalizers != null)
+{
+    <HTableColumn Title=@L["Finalizers"]>
+        @foreach (var label in Finalizers)
+        {
+            <Paragraph Copyable>
+                <ColorfulTag>@label</ColorfulTag>
+            </Paragraph>
+        }
+    </HTableColumn>
 }

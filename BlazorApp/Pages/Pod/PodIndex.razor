@@ -13,7 +13,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Pods" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@($"{L["Pod"]} Pod") Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection"
                                TableData="@TableData"
@@ -37,25 +37,25 @@
                         <a onclick="@(() => OnPodClick(context))">@context.Name()</a>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
-                    <AntDesign.Column Title="Containers" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Containers"] TData="string" Width="100px">
                         <ContainerStatus Pod="@context"></ContainerStatus>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Restart" TData="string" Width="80px">
+                    <AntDesign.Column Title=@L["Restart"] TData="string" Width="80px">
                         @context.RestartCount()
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ControllerBy" TData="string">
+                    <AntDesign.Column Title=@L["ControllerBy"] TData="string">
                         <ControllerBy Owner="@context.OwnerReferences()" Namespace="@context.Namespace()"></ControllerBy>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Node" TData="string" Width="120px">
+                    <AntDesign.Column Title=@L["Node"] TData="string" Width="120px">
                         <div onclick="@(() => OnNodeNameClick(context.Spec.NodeName))">@context.Spec.NodeName</div>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="PodIP" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["PodIP"] TData="string" Width="100px">
                         <ColorfulTag> @context.Status.PodIP</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="QoS" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["QoS"] TData="string" Width="100px">
                         @context.Status.QosClass
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Selector" TData="string">
+                    <AntDesign.Column Title=@L["Selector"] TData="string">
                         <SelectorView Selector="@context.Metadata.Labels"></SelectorView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">

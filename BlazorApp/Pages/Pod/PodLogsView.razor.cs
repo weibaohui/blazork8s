@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
@@ -10,7 +11,7 @@ using XtermBlazor;
 
 namespace BlazorApp.Pages.Pod;
 
-public partial class PodLogsView : FeedbackComponent<V1Pod, bool>, IDisposable
+public partial class PodLogsView : DrawerPageBase<V1Pod>, IDisposable
 {
     private readonly CancellationTokenSource _gracefulCts = new();
 

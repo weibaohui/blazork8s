@@ -1,11 +1,15 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class AnnotationsView : ComponentBase
 {
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Parameter]
     public IDictionary<string, string> Annotations { get; set; }
 

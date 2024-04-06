@@ -3,11 +3,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class ControllerByView : ComponentBase
 {
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Parameter]
     public IList<V1OwnerReference> Owner { get; set; }
 

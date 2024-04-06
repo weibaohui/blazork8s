@@ -7,15 +7,15 @@
     <Table TItem="V1Pod" DataSource="@Pods"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
-        <AntDesign.Column Title="Name" TData="string">
+        <AntDesign.Column Title=@L["Name"] TData="string">
             <Button OnClick="@(() => OnPodNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
         </AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="Namespace" Field="@context.Namespace()"/>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
         <AntDesign.Column Sortable="true" TData="string" Title="Ready">@context.ReadySummary()</AntDesign.Column>
         <AntDesign.Column Title="Restart" TData="string">
             @context.RestartCount()
         </AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="Status">
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Status"]>
             <StatusView Status=@context.Status()></StatusView>
         </AntDesign.Column>
     </Table>

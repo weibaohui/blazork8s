@@ -4,11 +4,15 @@ using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Pod;
 
 public partial class PodAction : ComponentBase
 {
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Parameter]
     public V1Pod PodItem { get; set; }
 
@@ -21,8 +25,6 @@ public partial class PodAction : ComponentBase
 
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }
-
-
 
 
     private async Task OnPodLogClick(V1Pod pod)

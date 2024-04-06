@@ -1,9 +1,9 @@
-﻿using AntDesign;
+﻿using BlazorApp.Pages.Common;
 using k8s.Models;
 
-namespace  BlazorApp.Pages.ReplicaSet
+namespace BlazorApp.Pages.ReplicaSet
 {
-    public  partial class ReplicaSetDetailView : FeedbackComponent<V1ReplicaSet, bool>
+    public partial class ReplicaSetDetailView : DrawerPageBase<V1ReplicaSet>
     {
         private V1ReplicaSet ReplicaSet { get; set; }
 

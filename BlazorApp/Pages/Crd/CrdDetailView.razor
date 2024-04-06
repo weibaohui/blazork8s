@@ -46,7 +46,7 @@
                 @foreach (var version in CustomResourceDefinition.Spec.Versions)
                 {
                     <HTable >
-                        <PropertySimpleView Title="Name" Item="version.Name" ExplainField="crd.spec.versions.name"></PropertySimpleView>
+                        <PropertySimpleView Title=@L["Name"] Item="version.Name" ExplainField="crd.spec.versions.name"></PropertySimpleView>
                         <PropertySimpleView Title="Served" Item="version.Served" ExplainField="crd.spec.versions.served"></PropertySimpleView>
                         <PropertySimpleView Title="Storage" Item="version.Storage" ExplainField="crd.spec.versions.storage"></PropertySimpleView>
                         <PropertySimpleView Title="Deprecated" Item="version.Deprecated" ExplainField="crd.spec.versions.deprecated"></PropertySimpleView>
@@ -55,7 +55,7 @@
                         {
                             <HTableColumn Title="SubResources">
                                 <HTable>
-                                    <PropertySimpleView Title="Status" Item="version.Subresources.Status" ExplainField="crd.spec.versions.subresources.status" ShowInJson="true"></PropertySimpleView>
+                                    <PropertySimpleView Title=@L["Status"] Item="version.Subresources.Status" ExplainField="crd.spec.versions.subresources.status" ShowInJson="true"></PropertySimpleView>
                                     @if (version.Subresources.Scale != null)
                                     {
                                         if (version.Subresources.Scale.LabelSelectorPath != null)
@@ -75,7 +75,7 @@
                                     }
                                 </HTable>
                             </HTableColumn>
-                            <PropertySimpleView Title="Status" Item="version.Subresources.Status" ExplainField="crd.spec.versions.subresources.status" ShowInJson="true"></PropertySimpleView>
+                            <PropertySimpleView Title=@L["Status"] Item="version.Subresources.Status" ExplainField="crd.spec.versions.subresources.status" ShowInJson="true"></PropertySimpleView>
                         }
 
                         @if (version.AdditionalPrinterColumns is { Count: > 0 })
@@ -85,7 +85,7 @@
                                 @foreach (var col in version.AdditionalPrinterColumns)
                                 {
                                     <HTable>
-                                        <PropertySimpleView Title="Name" Item="col.Name" ExplainField="crd.spec.versions.printerColumns.name"></PropertySimpleView>
+                                        <PropertySimpleView Title=@L["Name"] Item="col.Name" ExplainField="crd.spec.versions.printerColumns.name"></PropertySimpleView>
                                         <PropertySimpleView Title="Priority" Item="col.Priority" ExplainField="crd.spec.versions.printerColumns.priority"></PropertySimpleView>
                                         <PropertySimpleView Title="Type" Item="col.Type" ExplainField="crd.spec.versions.printerColumns.type"></PropertySimpleView>
                                         <PropertySimpleView Title="JsonPath" Item="col.JsonPath" ExplainField="crd.spec.versions.printerColumns.jsonPath"></PropertySimpleView>

@@ -6,7 +6,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@inherits FeedbackComponent<V1Node, bool>
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Node>
 @if (Node != null)
 {
     <NodeAction Item="Node" MenuMode="MenuMode.Horizontal"></NodeAction>
@@ -113,7 +113,7 @@
                             @foreach (var attached in Node.Status.VolumesAttached)
                             {
                                 <HTable>
-                                    <HTableColumn Title="Name" ExplainField="node.status.volumesAttached.name">
+                                    <HTableColumn Title=@L["Name"] ExplainField="node.status.volumesAttached.name">
                                         <div > @(attached.Name)</div>
                                     </HTableColumn>
                                     <PropertySimpleView Title="DevicePath" Item="@attached.DevicePath" ExplainField="node.status.volumesAttached.devicePath"></PropertySimpleView>

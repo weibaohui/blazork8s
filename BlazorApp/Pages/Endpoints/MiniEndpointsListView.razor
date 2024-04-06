@@ -7,18 +7,22 @@
     <Table TItem="V1Endpoints" DataSource="@Items"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
-        <AntDesign.Column Title="Name" TData="string">
+        <AntDesign.Column Title=@L["Name"] TData="string">
             <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
         </AntDesign.Column>
-        <AntDesign.Column Sortable="true" TData="string" Title="Namespace" Field="@context.Namespace()"/>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
     </Table>
 }
-@if (Items==null||Items.Count == 0)
+@if (Items == null || Items.Count == 0)
 {
     <Empty Simple/>
 }
+
 @code
 {
+    [Inject]
+    public IStringLocalizer L { get; set; }
+
     [Inject]
     protected IPageDrawerService PageDrawerService { get; set; }
 
