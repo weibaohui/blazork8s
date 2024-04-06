@@ -158,12 +158,12 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("Service", "partition"),
-            GetMenuItem("EndpointSlice", "format-painter"),
-            GetMenuItem("Endpoints", "node-expand"),
-            GetMenuItem("NetworkPolicy", "partition"),
-            GetMenuItem("IngressClass", "reconciliation"),
-            GetMenuItem("Ingress", "gateway"),
+            GetMenuItemWithPath(L["Service"], "partition", "/Service"),
+            GetMenuItemWithPath(L["EndpointSlice"], "format-painter", "/EndpointSlice"),
+            GetMenuItemWithPath(L["Endpoints"], "node-expand", "/Endpoints"),
+            GetMenuItemWithPath(L["NetworkPolicy"], "partition", "/NetworkPolicy"),
+            GetMenuItemWithPath(L["IngressClass"], "reconciliation", "/IngressClass"),
+            GetMenuItemWithPath(L["Ingress"], "gateway", "/Ingress")
         };
     }
 
@@ -171,9 +171,9 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("StorageClass", "file-sync"),
-            GetMenuItemWithPath("PV", "file-done", "PersistentVolume"),
-            GetMenuItemWithPath("PVC", "delivered-procedure", "PersistentVolumeClaim"),
+            GetMenuItemWithPath(L["StorageClass"], "file-sync", "/StorageClass"),
+            GetMenuItemWithPath(L["PersistentVolume"], "file-done", "PersistentVolume"),
+            GetMenuItemWithPath(L["PersistentVolumeClaim"], "delivered-procedure", "PersistentVolumeClaim")
         };
     }
 
@@ -181,11 +181,11 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItem("ServiceAccount", "team"),
-            GetMenuItem("ClusterRole", "audit"),
-            GetMenuItem("ClusterRoleBinding", "api"),
-            GetMenuItem("Role", "idcard"),
-            GetMenuItem("RoleBinding", "contacts"),
+            GetMenuItemWithPath(L["ServiceAccount"], "team", "/ServiceAccount"),
+            GetMenuItemWithPath(L["ClusterRole"], "audit", "/ClusterRole"),
+            GetMenuItemWithPath(L["ClusterRoleBinding"], "api", "/ClusterRoleBinding"),
+            GetMenuItemWithPath(L["Role"], "idcard", "/Role"),
+            GetMenuItemWithPath(L["RoleBinding"], "contacts", "/RoleBinding")
         };
     }
 }
