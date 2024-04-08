@@ -14,5 +14,4 @@ public interface IKubectlService
     public Task<string> Describe(string                            resourceAndName);
     void                SetOutputEventHandler(EventHandler<string> eventHandler);
     void                SetCancellationToken(CancellationToken     token);
-    void                SetOutputNewLineAppend(bool                append);
 }

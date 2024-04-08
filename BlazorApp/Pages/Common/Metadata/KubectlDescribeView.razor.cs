@@ -22,7 +22,6 @@ public partial class KubectlDescribeView : DrawerPageBase<string>
     {
         _resource = base.Options;
         Kubectl.SetOutputEventHandler(EventHandler);
-        Kubectl.SetOutputNewLineAppend(true);
         if (!string.IsNullOrWhiteSpace(_resource))
         {
             _result = await Kubectl.Describe(_resource);

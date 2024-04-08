@@ -58,8 +58,11 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 
     public async Task<string> Describe(string resourceAndName)
     {
-        return await Kubectl($" describe {resourceAndName}");
+        //执行Describe 命令需要再每行后面增加换行符
+        _outPutAppendNewLine = true;
+        return await Kubectl($" describe {resourceAndName}", _outPutAppendNewLine);
     }
+
 
     public void SetOutputEventHandler(EventHandler<string> eventHandler)
     {
@@ -69,12 +72,6 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
     public void SetCancellationToken(CancellationToken token)
     {
         Token = token;
-    }
-
-
-    public void SetOutputNewLineAppend(bool append)
-    {
-        _outPutAppendNewLine = append;
     }
 
     public async Task<string> Delete(string yaml)
@@ -95,11 +92,21 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         return output; // 输出命令输出结果
     }
 
+
+    private void SetOutputNewLineAppend(bool append)
+    {
+        _outPutAppendNewLine = append;
+    }
+
     public event EventHandler<string> OnCommandExecutedHandler;
 
 
-    private async Task<string> Kubectl(string command)
+    private async Task<string> Kubectl(string command, bool outPutAppendNewLine = false)
     {
+        SetOutputNewLineAppend(outPutAppendNewLine);
+
+        if (Token.IsCancellationRequested) Token = CancellationToken.None;
+
         var cmd = Cli.Wrap("kubectl")
             .WithArguments(command);
         var result = string.Empty;
@@ -129,7 +136,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         catch (Exception e)
         {
             result = e.Message;
-            logger.LogError("{Message}", e.Message);
+            logger.LogInformation("{Message}", e.Message);
         }
 
         return result;
