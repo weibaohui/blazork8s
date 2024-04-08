@@ -7,28 +7,27 @@ namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class KubectlDescribeView : DrawerPageBase<string>
 {
+    private string _resource = string.Empty;
+    private string _result   = string.Empty;
 
 
     [Inject]
     IKubectlService Kubectl { get; set; }
 
 
-
-
     [Inject]
     ILogger<KubectlExplainView> Logger { get; set; }
 
-    private string _resource =string.Empty;
-    private string _result   =string.Empty;
-
     protected override async Task OnInitializedAsync()
     {
-        _resource=base.Options;
+        _resource = base.Options;
         Kubectl.SetOutputEventHandler(EventHandler);
+        Kubectl.SetOutputNewLineAppend(true);
         if (!string.IsNullOrWhiteSpace(_resource))
         {
-             await Kubectl.Describe(_resource);
+            _result = await Kubectl.Describe(_resource);
         }
+
         await base.OnInitializedAsync();
     }
 

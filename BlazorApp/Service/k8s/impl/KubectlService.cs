@@ -10,13 +10,14 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 {
+    private bool _outPutAppendNewLine = false;
+
     /// <summary>
     ///  var gracefulCts = new CancellationTokenSource();
     ///  var token = gracefulCts.Token;
     ///  gracefulCts.CancelAfter(TimeSpan.FromSeconds(7));
     /// </summary>
     private CancellationToken Token { get; set; } = CancellationToken.None;
-
 
     public async Task<string> Apply(string yaml)
     {
@@ -68,6 +69,12 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
     public void SetCancellationToken(CancellationToken token)
     {
         Token = token;
+    }
+
+
+    public void SetOutputNewLineAppend(bool append)
+    {
+        _outPutAppendNewLine = append;
     }
 
     public async Task<string> Delete(string yaml)
@@ -131,10 +138,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 
     private string OnResponseProcess(object sender, string data)
     {
-        // if (data?.EndsWith('\n') is not true)
-        // {
-        //     data = data + "\n";
-        // }
+        if (_outPutAppendNewLine && data?.EndsWith('\n') is not true) data += "\n";
 
         OnCommandExecutedHandler?.Invoke(sender, data);
         return data;
