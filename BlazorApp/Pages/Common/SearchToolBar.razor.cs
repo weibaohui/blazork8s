@@ -9,7 +9,7 @@ using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class SearchToolBar<TItem> : ComponentBase where TItem : IKubernetesObject<V1ObjectMeta>
+public partial class SearchToolBar<TItem> : PageBase where TItem : IKubernetesObject<V1ObjectMeta>
 {
     private string _style = " padding: 8px 0;";
 
