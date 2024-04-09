@@ -5,20 +5,24 @@
 <Divider Orientation="left" Style="font-weight:bold">@L["Events"]</Divider>
 @if (Events != null)
 {
-    if (Events.Any(x => x.Type == "Warning" || x.Count > 5))
+    @if (Ai.Enabled())
     {
-        <HTable>
-            <HTableColumn Title="AI分析">
-                <Button Type="@ButtonType.Primary" OnClick="@(() => AskAll())">诊断</Button>
-            </HTableColumn>
-        </HTable>
+        if (Events.Any(x => x.Type == "Warning" || x.Count > 5))
+        {
+            <HTable>
+                <HTableColumn Title=@L["AI Analysis"]>
+                    <Button Type="@ButtonType.Primary" OnClick="@(() => AskAll())">@L["Diagnosis"]</Button>
+                </HTableColumn>
+            </HTable>
+        }
     }
+
 
     foreach (var e in Events)
     {
         <HTable Bordered Column="1">
 
-            <HTableColumn Title="Message">
+            <HTableColumn Title=@L["Message"]>
 
                 <span style="color: @(e.Type == "Warning" ? "red" : "black")">
                     [@e.Type] @e.Message
@@ -29,12 +33,12 @@
                 }
                 @if (Ai.Enabled() && (e.Type == "Warning" || e.Count > 5))
                 {
-                    <Button Type="@ButtonType.Primary" OnClick="@(() => Ask(e))">诊断</Button>
+                    <Button Type="@ButtonType.Primary" OnClick="@(() => Ask(e))">@L["Diagnosis"]</Button>
                 }
             </HTableColumn>
             @if (e.Source != null)
             {
-                <HTableColumn Title="Source">
+                <HTableColumn Title=@L["Source"]>
                     @if (e.Source.Host != null)
                     {
                         <Tag >@e.Source.Host</Tag>
@@ -44,14 +48,14 @@
             }
             @if (e.LastTimestamp != null)
             {
-                <HTableColumn Title="LastSeen">
+                <HTableColumn Title=@L["LastSeen"]>
                     <AgeView Age="@e.LastTimestamp"></AgeView>
                     ( @e.LastTimestamp.GetValueOrDefault().ToLocalTime() )
                 </HTableColumn>
             }
             @if (e.InvolvedObject != null)
             {
-                <HTableColumn Title="Involved">
+                <HTableColumn Title=@L["Involved"]>
                     <Tag PresetColor="PresetColor.Blue">@e.InvolvedObject.NamespaceProperty</Tag>
                     <Tag PresetColor="PresetColor.Purple">@e.InvolvedObject.Kind</Tag>
                     <Tag PresetColor="PresetColor.Orange">@e.InvolvedObject.Name</Tag>
