@@ -32,7 +32,7 @@
   "Annotations": "Annotations",
   "Containers": "Containers",
   "PodIP": "Pod IP",
-  "PodIPs": "Pod IP",
+  "PodIPs": "Pod IPs",
   "QoS": "QoS",
   "Restart": "Restart",
   "Describe": "Run Describe",
