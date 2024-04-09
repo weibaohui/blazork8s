@@ -100,6 +100,8 @@
   "Command": "命令",
   "Args": "参数",
   "VolumeMounts": "挂载卷",
+  "Image": "镜像",
+  "Images": "镜像",
   "ABAC": "ABAC",
   "ActualState": "实际状态",
   "AddonManager": "插件管理器",
