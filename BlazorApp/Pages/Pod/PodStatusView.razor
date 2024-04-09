@@ -4,20 +4,21 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
 <HTable Bordered Column="1">
     <ConditionsView Conditions="@(PodStatus.Conditions.Adapt<IList<V1Condition>>())" ExplainField="pod.status.conditions"></ConditionsView>
     <HTableColumn Title="StartTime">
         <AgeView Age="@PodStatus.StartTime"></AgeView>
         (@PodStatus.StartTime.GetValueOrDefault().ToLocalTime())
     </HTableColumn>
-    <PropertyOptionView Title="Phase" ExplainField="pod.status.phase" Item="@PodStatus.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
-    <PropertySimpleView Title="Resize" ExplainField="pod.status.resize" Item="@PodStatus.Resize"></PropertySimpleView>
+    <PropertyOptionView Title=@L["Phase"] ExplainField="pod.status.phase" Item="@PodStatus.Phase" Options='@(new[] { "Failed", "Pending", "Running", "Succeeded", "Unknown" })'></PropertyOptionView>
+    <PropertySimpleView Title=@L["Resize"] ExplainField="pod.status.resize" Item="@PodStatus.Resize"></PropertySimpleView>
     <PropertySimpleView Title="HostIP" ExplainField="pod.status.hostIP" Item="@PodStatus.HostIP"></PropertySimpleView>
     <PropertyListView Title="HostIPs" ExplainField="pod.status.hostIPs" Key="Ip" Items="@PodStatus.HostIPs" T="V1HostIP"></PropertyListView>
-    <PropertySimpleView Title="PodIP" ExplainField="pod.status.podIP" Item="@PodStatus.PodIP"></PropertySimpleView>
-    <PropertyListView Title="PodIPs" ExplainField="pod.status.podIPs" Key="Ip" Items="@PodStatus.PodIPs" T="V1PodIP"></PropertyListView>
+    <PropertySimpleView Title=@L["PodIP"] ExplainField="pod.status.podIP" Item="@PodStatus.PodIP"></PropertySimpleView>
+    <PropertyListView Title=@L["PodIPs"] ExplainField="pod.status.podIPs" Key="Ip" Items="@PodStatus.PodIPs" T="V1PodIP"></PropertyListView>
     <PropertySimpleView Title="NominatedNodeName" Item="@PodStatus.NominatedNodeName" ExplainField="pod.status.nominatedNodeName"></PropertySimpleView>
-    <PropertyOptionView Title="QosClass" ExplainField="pod.status.qosClass" Item="@PodStatus.QosClass" Options='@(new[] { "BestEffort", "Burstable", "Guaranteed" })'></PropertyOptionView>
+    <PropertyOptionView Title=@L["QosClass"] ExplainField="pod.status.qosClass" Item="@PodStatus.QosClass" Options='@(new[] { "BestEffort", "Burstable", "Guaranteed" })'></PropertyOptionView>
 
 </HTable>
 

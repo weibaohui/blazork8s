@@ -18,7 +18,7 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(Namespace.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="namespace.status.conditions"></ConditionsView>
-        <PropertyOptionView Title="Phase" Item="@Namespace.Status.Phase" ExplainField="namespace.status.phase" Options="@(new[] { "Active", "Terminating" })"></PropertyOptionView>
+        <PropertyOptionView Title=@L["Phase"] Item="@Namespace.Status.Phase" ExplainField="namespace.status.phase" Options="@(new[] { "Active", "Terminating" })"></PropertyOptionView>
     </HTable>
 
     <MiniPodListView Pods="@PodList"></MiniPodListView>

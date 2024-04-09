@@ -71,7 +71,7 @@
     <HTable Bordered Column="1">
         <PropertySimpleView Title="LastPhaseTransitionTime" Item="@PersistentVolume.Status.LastPhaseTransitionTime" ExplainField="persistentVolume.status.lastPhaseTransitionTime"></PropertySimpleView>
         <PropertySimpleView Title="Message" Item="@PersistentVolume.Status.Message" ExplainField="persistentVolume.status.message"></PropertySimpleView>
-        <PropertySimpleView Title="Phase" Item="@PersistentVolume.Status.Phase" ExplainField="persistentVolume.status.phase"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Phase"] Item="@PersistentVolume.Status.Phase" ExplainField="persistentVolume.status.phase"></PropertySimpleView>
         <PropertySimpleView Title="Reason" Item="@PersistentVolume.Status.Reason" ExplainField="persistentVolume.status.reason"></PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@PersistentVolume.Metadata.Uid"></MiniEventListView>

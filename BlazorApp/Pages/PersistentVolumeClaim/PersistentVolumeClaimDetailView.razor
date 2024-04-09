@@ -38,7 +38,7 @@
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertyOptionView Title="Phase" Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" Options='@(new[] { "Bound", "Lost", "Pending" })'></PropertyOptionView>
+        <PropertyOptionView Title=@L["Phase"] Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" Options='@(new[] { "Bound", "Lost", "Pending" })'></PropertyOptionView>
         @if (PersistentVolumeClaim.Status.Conditions != null)
         {
             <ConditionsView Conditions="@(PersistentVolumeClaim.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="persistentVolumeClaim.status.conditions"></ConditionsView>

@@ -48,7 +48,7 @@
                     <AntDesign.Column Title="Available" TData="int" Width="80px">
                         @(context.Status.NumberAvailable ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="NodeSelector" TData="string">
+                    <AntDesign.Column Title=@L["NodeSelector"] TData="string">
                         <SelectorView Selector="@context.Spec.Template.Spec.NodeSelector"></SelectorView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Selector"] TData="string">
