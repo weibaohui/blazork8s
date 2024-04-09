@@ -92,6 +92,7 @@
   "SchedulerName": "调度器",
   "Phase": "阶段",
   "Resize": "调整",
+  "StartTime": "开始时间",
   "ABAC": "ABAC",
   "ActualState": "实际状态",
   "AddonManager": "插件管理器",

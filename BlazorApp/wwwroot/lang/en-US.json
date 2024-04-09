@@ -92,6 +92,7 @@
   "SchedulerName": "SchedulerName",
   "Phase": "Phase",
   "Resize": "Resize",
+  "StartTime": "Start Time",
   "ABAC": "ABAC",
   "ActualState": "Actual State",
   "AddonManager": "Addon Manager",
