@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Workload;
-using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Extension.k8s;
@@ -11,16 +11,15 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Event
 {
-    public partial class MiniEventListView : ComponentBase
+    public partial class MiniEventListView : PageBase
     {
         [Inject]
         private IEventService EventService { get; set; }
 
         [Inject]
         private IAiService Ai { get; set; }
-        [Inject]
-        private IPageDrawerService PageDrawerService { get; set; }
-        private IList<Corev1Event> Events { get;            set; }
+
+        private IList<Corev1Event> Events { get; set; }
 
 
         [Parameter]
@@ -44,21 +43,23 @@ namespace BlazorApp.Pages.Event
         private async Task Ask(Corev1Event e)
         {
             var options = PageDrawerService.DefaultOptions($"AI分析", width: 1000);
-            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options, new IAiService.AiChatData
-            {
-                Data  = e,
-                Style = "error"
-            });
+            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
+                new IAiService.AiChatData
+                {
+                    Data  = e,
+                    Style = "error"
+                });
         }
 
         private async Task AskAll()
         {
             var options = PageDrawerService.DefaultOptions($"AI分析", width: 1000);
-            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options, new IAiService.AiChatData
-            {
-                Data  = Events.Where(x => x.Type == "Warning").ToList(),
-                Style = "error"
-            });
+            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
+                new IAiService.AiChatData
+                {
+                    Data  = Events.Where(x => x.Type == "Warning").ToList(),
+                    Style = "error"
+                });
         }
     }
 }

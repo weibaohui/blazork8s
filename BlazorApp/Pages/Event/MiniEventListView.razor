@@ -1,7 +1,8 @@
 ﻿@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html
-<Divider Orientation="left" Style="font-weight:bold">Events</Divider>
+@inherits BlazorApp.Pages.Common.PageBase
+<Divider Orientation="left" Style="font-weight:bold">@L["Events"]</Divider>
 @if (Events != null)
 {
     if (Events.Any(x => x.Type == "Warning" || x.Count > 5))
