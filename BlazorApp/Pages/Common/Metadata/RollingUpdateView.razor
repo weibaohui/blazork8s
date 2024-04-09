@@ -9,14 +9,14 @@
         @if (RollingUpdate.MaxSurge != null)
         {
             <Tag Color="@RandomColorHelper.RandomColor()">
-                MaxSurge = @RollingUpdate.MaxSurge
+                @L["MaxSurge"] = @RollingUpdate.MaxSurge
             </Tag>
         }
 
         @if (RollingUpdate.MaxUnavailable != null)
         {
             <Tag Color="@RandomColorHelper.RandomColor()">
-                MaxUnavailable = @RollingUpdate.MaxUnavailable
+                @L["MaxUnavailable"] = @RollingUpdate.MaxUnavailable
             </Tag>
         }
         @if (ChildContent != null)

@@ -11,11 +11,11 @@
 </Card>
 @if (!string.IsNullOrEmpty(_resultCn))
 {
-    <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + " Translation")">
+    <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + @L["Translation"])">
         @if (AiService.Enabled())
         {
             <p>
-                <Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link" OnClick="@ReTranslate">对这个翻译不满意，重新翻译</Button>
+                <Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link" OnClick="@ReTranslate">@L["Not satisfied with this translation, retranslate."]</Button>
             </p>
         }
         <p>

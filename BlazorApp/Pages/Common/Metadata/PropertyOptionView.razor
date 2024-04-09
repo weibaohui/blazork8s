@@ -4,6 +4,6 @@
 @if (Item != null)
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
-        <OptionsView Options='@Options' SelectOption="@(Item.ToString())"></OptionsView>
+        <OptionsView Options='@Options' SelectOption="@($"{Item}")"></OptionsView>
     </HTableColumn>
 }

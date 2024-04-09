@@ -15,7 +15,7 @@
 
         @if (ClusterRoleBinding.RoleRef is not null)
         {
-            <HTableColumn Title="ClusterRole" ExplainField="clusterRoleBinding.roleRef">
+            <HTableColumn Title=@L["ClusterRole"] ExplainField="clusterRoleBinding.roleRef">
                 <RefView Ref="@(ClusterRoleBinding.RoleRef.Adapt<V1ObjectReference>())" FullView="true"></RefView>
             </HTableColumn>
         }

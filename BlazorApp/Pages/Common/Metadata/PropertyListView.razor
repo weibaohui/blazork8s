@@ -1,6 +1,6 @@
+@inherits BlazorApp.Pages.Common.PageBase
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
 @typeparam            T
 @if (Items != null)
 {
@@ -15,7 +15,6 @@
                 else
                 {
                     @GetValue(p)
-                    ;
                 }
             </Tag>
         }

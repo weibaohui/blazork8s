@@ -1,16 +1,21 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Conditions != null)
 {
-    <HTableColumn Title="Conditions" ExplainField="@ExplainField">
+    <HTableColumn Title=@L["Conditions"] ExplainField="@ExplainField">
         <ConditionsTagView Conditions="@Conditions"></ConditionsTagView>
     </HTableColumn>
 }
 
 
 @code {
+
     [Parameter]
     public IList<V1Condition> Conditions { get; set; }
+
     [Parameter]
     public string ExplainField { get; set; }
+
 }

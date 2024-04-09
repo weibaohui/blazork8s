@@ -1,8 +1,10 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Taints != null)
 {
-    <HTableColumn Title="Taints">
+    <HTableColumn Title=@L["Taints"]>
 
         <Collapse>
             <Panel Key="1">

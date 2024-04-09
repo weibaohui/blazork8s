@@ -32,23 +32,22 @@
 {
     <GridRow Class="grid-table">
         <GridCol Span="2">
-            操作：
+            @L["Action"]:
         </GridCol>
         <GridCol Span="4">
-            @* <Button Type="@ButtonType.Primary" Size="small">添加</Button> *@
             @if (TableData?.SelectedRows?.Count() > 0)
             {
                 <Popconfirm Title="Are you sure delete this item?" OnConfirm="@DeleteHandler">
-                    <Button Type="@ButtonType.Primary" Danger Size="small">删除</Button>
+                    <Button Type="@ButtonType.Primary" Danger Size="small">@L["Delete"]</Button>
                 </Popconfirm>
 
-                <Button Size="small" OnClick="@RemoveAllSelectedHandler">取消选择</Button>
+                <Button Size="small" OnClick="@RemoveAllSelectedHandler">@L["UnSelect"]</Button>
             }
         </GridCol>
         <GridCol Span="2">
             @if (TableData?.SelectedRows?.Count() > 0)
             {
-                @($"已选({TableData.SelectedRows.Count()})：")
+                @($"{@L["Selected"]}({TableData.SelectedRows.Count()}):")
             }
         </GridCol>
         <GridCol Span="15">

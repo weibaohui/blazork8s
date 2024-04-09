@@ -1,7 +1,6 @@
 using AntDesign;
 using BlazorApp.Service;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;

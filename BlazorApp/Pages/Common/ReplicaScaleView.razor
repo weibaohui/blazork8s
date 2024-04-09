@@ -18,7 +18,7 @@
                     <div style="float: left">@_value</div>
                 </SpaceItem>
                 <SpaceItem>
-                    <Slider Style="float:left;width: 150px"  Min="1" Max="100" Step="1"   @bind-Value="@_value"/>
+                    <Slider Style="float:left;width: 150px" Min="1" Max="100" Step="1" @bind-Value="@_value"/>
                 </SpaceItem>
             </Space>
         </HTd>
@@ -27,15 +27,17 @@
     {
         <HTr>
             <HTd ColSpan="2">
-                <Alert Message="High number of replicas may cause cluster performance issues" Type="@AlertType.Warning" />
+                <Alert Message=@L["High number of replicas may cause cluster performance issues"] Type="@AlertType.Warning"/>
             </HTd>
         </HTr>
-
     }
 </HTable>
 
 
 @code{
+
+    [Inject]
+    public IStringLocalizer L { get; set; }
 
     private double _replicas;
 

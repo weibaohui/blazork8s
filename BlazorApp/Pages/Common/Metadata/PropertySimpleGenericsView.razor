@@ -1,7 +1,7 @@
+@typeparam            T
 @using Microsoft.IdentityModel.Tokens
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
-@typeparam            T
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Item != null)
@@ -16,7 +16,7 @@
 
             @if (!Key.IsNullOrEmpty())
             {
-                @GetValue(Item);
+                @GetValue(Item)
             }
 
         </Tag>

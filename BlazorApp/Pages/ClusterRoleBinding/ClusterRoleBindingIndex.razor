@@ -45,7 +45,7 @@
                             </div>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ClusterRole" TData="string">
+                    <AntDesign.Column Title=@L["ClusterRole"] TData="string">
                         <div>
                             <RefView Ref="@(context.RoleRef.Adapt<V1ObjectReference>())" FullView="true"></RefView>
                         </div>

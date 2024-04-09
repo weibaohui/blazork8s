@@ -2,28 +2,30 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
+using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Pod;
-using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Node;
 
 public partial class NodeStatusChart : PageBase, IDisposable
 {
+    private Timer        _timer;
+    private IList<V1Pod> podsOnNode;
+
     [Parameter]
     public V1Node Node { get; set; }
+
     [Inject]
     public IPodService PodService { get; set; }
 
-    [Inject]
-    protected IPageDrawerService PageDrawerService { get; set; }
-
-    private Timer        _timer;
-    private IList<V1Pod> podsOnNode;
+    public void Dispose()
+    {
+        _timer.Dispose();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -40,10 +42,6 @@ public partial class NodeStatusChart : PageBase, IDisposable
         await InvokeAsync(StateHasChanged);
     }
 
-    public void Dispose()
-    {
-        _timer.Dispose();
-    }
     private async Task OnPodClick(V1Pod pod)
     {
         await PageDrawerHelper<V1Pod>.Instance

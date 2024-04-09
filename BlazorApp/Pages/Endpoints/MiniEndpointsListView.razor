@@ -1,5 +1,4 @@
 @using k8s.Models
-@using BlazorApp.Service
 @using BlazorApp.Utils
 @inherits BlazorApp.Pages.Common.PageBase
 
@@ -23,9 +22,6 @@
 @code
 {
 
-
-    [Inject]
-    protected IPageDrawerService PageDrawerService { get; set; }
 
     [Parameter]
     public IList<V1Endpoints> Items { get; set; } = new List<V1Endpoints>();

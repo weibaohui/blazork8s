@@ -11,8 +11,8 @@
                 <MenuItem OnClick="@(() => OnDocClick(Item))">@L["Doc"]</MenuItem>
                 @if (_enable)
                 {
-                    <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">智能分析</MenuItem>
-                    <MenuItem OnClick="@(() => OnSecurityClick(Item))">安全分析</MenuItem>
+                    <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</MenuItem>
+                    <MenuItem OnClick="@(() => OnSecurityClick(Item))">@L["Security"]</MenuItem>
                 }
                 @ChildContent
             </Menu>
@@ -30,8 +30,8 @@
         <Button OnClick="@(() => OnDocClick(Item))">@L["Doc"]</Button>
         @if (_enable)
         {
-            <Button OnClick="@(() => OnAnalyzeClick(Item))">智能分析</Button>
-            <Button OnClick="@(() => OnSecurityClick(Item))">安全分析</Button>
+            <Button OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</Button>
+            <Button OnClick="@(() => OnSecurityClick(Item))">@L["Security"]</Button>
         }
         @ChildContent
     </Alert>
