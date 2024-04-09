@@ -77,7 +77,7 @@
                         <HTableColumn Title=@L["VolumeMounts"]>
                             @foreach (var vm in c.VolumeMounts)
                             {
-                                @if (vm.ReadOnlyProperty != null && vm.ReadOnlyProperty == true)
+                                @if (vm.ReadOnlyProperty is true)
                                 {
                                     <Tag PresetColor="@PresetColor.Gold">RO</Tag>
                                 }
