@@ -44,7 +44,7 @@
                     }
                     @if (c.Command != null)
                     {
-                        <HTableColumn Title="Command">
+                        <HTableColumn Title=@L["Command"]>
                             @foreach (var cc in c.Command)
                             {
                                 @cc
@@ -54,7 +54,7 @@
                     }
                     @if (c.Args != null)
                     {
-                        <HTableColumn Title="Args">
+                        <HTableColumn Title=@L["Args"]>
                             @foreach (var cc in c.Args)
                             {
                                 @cc
@@ -68,7 +68,7 @@
 
                     @if (c.VolumeMounts != null)
                     {
-                        <HTableColumn Title="VolumeMounts">
+                        <HTableColumn Title=@L["VolumeMounts"]>
                             @foreach (var vm in c.VolumeMounts)
                             {
                                 @if (vm.ReadOnlyProperty != null && vm.ReadOnlyProperty == true)

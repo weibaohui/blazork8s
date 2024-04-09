@@ -4,7 +4,9 @@
 
 @if (PodSpec.Volumes != null)
 {
-    <Divider Orientation="left" Style="font-weight:bold"> Volumes <span style="color:#DCDCDC">(@PodSpec.Volumes.Count)</span></Divider>
+    <Divider Orientation="left" Style="font-weight:bold">
+        @L["Volumes"]<span style="color:#DCDCDC">(@PodSpec.Volumes.Count)</span>
+    </Divider>
 
     @for (var i = 0; i < PodSpec.Volumes.Count; i++)
     {
@@ -12,7 +14,7 @@
         var index = i + 1;
 
         <HostPathView Volume="@v" Index="@index"></HostPathView>
-        <ProjectedView Volume="@v" Index="@index"  Namespace="@Namespace"></ProjectedView>
+        <ProjectedView Volume="@v" Index="@index" Namespace="@Namespace"></ProjectedView>
         <ConfigMapView Volume="@v" Index="@index" Namespace="@Namespace"></ConfigMapView>
         <EmptyDirView Volume="@v" Index="@index"></EmptyDirView>
         <SecretView Volume="@v" Index="@index" Namespace="@Namespace"></SecretView>
@@ -21,6 +23,6 @@
         <IscsiView Volume="@v" Index="@index"></IscsiView>
         <FcView Volume="@v" Index="@index"></FcView>
         <CsiView Volume="@v" Index="@index"></CsiView>
-        <PropertySimpleView Title="Ephemeral" Item="@v.Ephemeral" ExplainField="volume.ephemeral" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["EphemeralVolumes"] Item="@v.Ephemeral" ExplainField="volume.ephemeral" ShowInJson="true"></PropertySimpleView>
     }
 }
