@@ -7,7 +7,7 @@
 @inherits BlazorApp.Pages.Common.PageBase
 <HTable Bordered Column="1">
     <ConditionsView Conditions="@(PodStatus.Conditions.Adapt<IList<V1Condition>>())" ExplainField="pod.status.conditions"></ConditionsView>
-    <HTableColumn Title=@L["StartTime"]>
+    <HTableColumn Title=@L["StartTime"] ExplainField="pod.status.startTime">
         <AgeView Age="@PodStatus.StartTime"></AgeView>
         (@PodStatus.StartTime.GetValueOrDefault().ToLocalTime())
     </HTableColumn>
