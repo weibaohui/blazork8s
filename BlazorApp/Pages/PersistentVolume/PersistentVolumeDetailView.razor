@@ -10,9 +10,9 @@
 @if (PersistentVolume != null)
 {
     <PersistentVolumeAction Item="PersistentVolume" MenuMode="MenuMode.Horizontal"></PersistentVolumeAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="PersistentVolume.Metadata" ExplainFieldPrefix="persistentVolume"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName"></PropertySimpleView>
         <PropertyListView Title="AccessModes" Items="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" T="string"></PropertyListView>
@@ -67,7 +67,7 @@
         <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
 
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="LastPhaseTransitionTime" Item="@PersistentVolume.Status.LastPhaseTransitionTime" ExplainField="persistentVolume.status.lastPhaseTransitionTime"></PropertySimpleView>
         <PropertySimpleView Title="Message" Item="@PersistentVolume.Status.Message" ExplainField="persistentVolume.status.message"></PropertySimpleView>

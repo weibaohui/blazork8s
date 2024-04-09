@@ -11,21 +11,22 @@
     @if (_isMetricsServerReady && Item.Status.Phase == "Running")
     {
         <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
-        <Tabs  Animated>
+        <Tabs Animated>
             <TabPane Tab="CPU" Key="1">
                 <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="cpu"></MetricView>
             </TabPane>
             <TabPane Tab="Memory" Key="2">
-               <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="memory"></MetricView>
+                <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="memory"></MetricView>
             </TabPane>
         </Tabs>
     }
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="Item.Metadata" ExplainFieldPrefix="pod"></MetadataView>
 
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <PodSpecView PodSpec="@Item.Spec" PodName="@Item.Metadata.Name" PodNamespace="@Item.Metadata.NamespaceProperty"></PodSpecView>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <PodStatusView PodStatus="@Item.Status"></PodStatusView>
     @if (_isMetricsServerReady && Item.Status.Phase == "Running")
     {

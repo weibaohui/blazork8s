@@ -10,9 +10,9 @@
 @if (StatefulSet != null)
 {
     <StatefulSetAction Item="StatefulSet" MenuMode="MenuMode.Horizontal"></StatefulSetAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="StatefulSet.Metadata" ExplainFieldPrefix="statefulSet"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@StatefulSet.Spec.Selector.MatchLabels"></SelectorView>
         <PropertySimpleView Title="ServiceName" Item="@StatefulSet.Spec.ServiceName" ExplainField="statefulSet.spec.serviceName"></PropertySimpleView>
@@ -47,7 +47,7 @@
     <Divider Orientation="left" Style="font-weight:bold">PodTemplate</Divider>
     <MetadataView Item="@StatefulSet.Spec.Template.Metadata" ExplainFieldPrefix="statefulSet"></MetadataView>
     <PodSpecView PodSpec="@StatefulSet.Spec.Template.Spec"></PodSpecView>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="AvailableReplicas" Item="@StatefulSet.Status.AvailableReplicas" ExplainField="statefulSet.status.availableReplicas"></PropertySimpleView>
         <PropertySimpleView Title="CollisionCount" Item="@StatefulSet.Status.CollisionCount" ExplainField="statefulSet.status.collisionCount"></PropertySimpleView>

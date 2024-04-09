@@ -9,9 +9,9 @@
 @if (ClusterRole != null)
 {
     <ClusterRoleAction Item="ClusterRole" MenuMode="MenuMode.Horizontal"></ClusterRoleAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="ClusterRole.Metadata" ExplainFieldPrefix="clusterRole"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
 
     <HTable Bordered Column="1">
         @if (ClusterRole.AggregationRule is { ClusterRoleSelectors.Count: > 0 })

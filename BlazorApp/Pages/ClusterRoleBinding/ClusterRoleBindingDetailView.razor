@@ -8,9 +8,9 @@
 @if (ClusterRoleBinding != null)
 {
     <ClusterRoleBindingAction Item="ClusterRoleBinding" MenuMode="MenuMode.Horizontal"></ClusterRoleBindingAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="ClusterRoleBinding.Metadata" ExplainFieldPrefix="clusterRoleBinding"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
 
         @if (ClusterRoleBinding.RoleRef is not null)

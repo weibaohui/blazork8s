@@ -8,9 +8,9 @@
 @if (ValidatingWebhookConfiguration != null)
 {
     <ValidatingWebhookConfigurationAction Item="ValidatingWebhookConfiguration" MenuMode="MenuMode.Horizontal"></ValidatingWebhookConfigurationAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="ValidatingWebhookConfiguration.Metadata" ExplainFieldPrefix="validatingWebhookConfiguration"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <WebhooksView Webhooks="ValidatingWebhookConfiguration.Webhooks.Adapt<IList<V1MutatingWebhook>>()" ExplainFieldPrefix="validatingWebhookConfiguration.webhooks"></WebhooksView>
     </HTable>

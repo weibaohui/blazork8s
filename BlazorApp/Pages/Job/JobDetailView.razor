@@ -9,13 +9,13 @@
 @if (Job != null)
 {
     <JobAction Item="Job" MenuMode="MenuMode.Horizontal"></JobAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="Job.Metadata" ExplainFieldPrefix="job"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
 
     <JobSpecView JobSpec="@Job.Spec"></JobSpecView>
 
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(Job.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
         <PropertySimpleView Title="Active" Item="@Job.Status.Active" ExplainField="job.status.active"></PropertySimpleView>

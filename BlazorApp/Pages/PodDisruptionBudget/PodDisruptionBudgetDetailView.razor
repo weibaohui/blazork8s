@@ -7,16 +7,16 @@
 @if (PodDisruptionBudget != null)
 {
     <PodDisruptionBudgetAction Item="PodDisruptionBudget" MenuMode="MenuMode.Horizontal"></PodDisruptionBudgetAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="PodDisruptionBudget.Metadata" ExplainFieldPrefix="podDisruptionBudget"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="MaxUnavailable" Item="@PodDisruptionBudget.Spec.MaxUnavailable" ExplainField="podDisruptionBudget.spec.maxUnavailable" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="MinAvailable" Item="@PodDisruptionBudget.Spec.MinAvailable" ExplainField="podDisruptionBudget.spec.minAvailable" ShowInJson="true"></PropertySimpleView>
         <LabelSelectorView Title=@L["Selector"] LabelSelector="@PodDisruptionBudget.Spec.Selector" ExplainField="podDisruptionBudget.spec.selector"></LabelSelectorView>
         <PropertyOptionView Title="UnhealthyPodEvictionPolicy" Item="@PodDisruptionBudget.Spec.UnhealthyPodEvictionPolicy" ExplainField="podDisruptionBudget.spec.unhealthyPodEvictionPolicy" Options="@(new[] { "AlwaysAllow", "IfHealthyBudget" })"></PropertyOptionView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@PodDisruptionBudget.Status.Conditions" ExplainField="podDisruptionBudget.status.conditions"></ConditionsView>
         <PropertySimpleView Title="CurrentHealthy" Item="@PodDisruptionBudget.Status.CurrentHealthy" ExplainField="podDisruptionBudget.status.currentHealthy"></PropertySimpleView>

@@ -10,9 +10,9 @@
 @if (PersistentVolumeClaim != null)
 {
     <PersistentVolumeClaimAction Item="PersistentVolumeClaim" MenuMode="MenuMode.Horizontal"></PersistentVolumeClaimAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="PersistentVolumeClaim.Metadata" ExplainFieldPrefix="persistentVolumeClaim"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
 
         <PropertyListView Title="AccessModes" Items="@PersistentVolumeClaim.Spec.AccessModes" ExplainField="persistentVolumeClaim.spec.accessModes" T="string"></PropertyListView>
@@ -36,7 +36,7 @@
         <PropertySimpleView Title="VolumeName" Item="@PersistentVolumeClaim.Spec.VolumeName" ExplainField="persistentVolumeClaim.spec.volumeName"></PropertySimpleView>
         <PropertyOptionView Title="VolumeMode" Item="@PersistentVolumeClaim.Spec.VolumeMode" ExplainField="persistentVolumeClaim.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <PropertyOptionView Title="Phase" Item="@PersistentVolumeClaim.Status.Phase" ExplainField="persistentVolumeClaim.status.phase" Options='@(new[] { "Bound", "Lost", "Pending" })'></PropertyOptionView>
         @if (PersistentVolumeClaim.Status.Conditions != null)

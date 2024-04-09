@@ -5,9 +5,9 @@
 @if (Lease != null)
 {
     <LeaseAction Item="Lease" MenuMode="MenuMode.Horizontal"></LeaseAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="Lease.Metadata" ExplainFieldPrefix="lease"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title="AcquireTime" Item="@Lease.Spec.AcquireTime?.ToLocalTime()" ExplainField="lease.spec.acquireTime"></PropertySimpleView>
         <PropertySimpleView Title="HolderIdentity" Item="@Lease.Spec.HolderIdentity" ExplainField="lease.spec.holderIdentity"></PropertySimpleView>

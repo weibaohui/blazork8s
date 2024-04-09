@@ -9,9 +9,9 @@
 @if (DaemonSet != null)
 {
     <DaemonSetAction Item="DaemonSet" MenuMode="MenuMode.Horizontal"></DaemonSetAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="DaemonSet.Metadata" ExplainFieldPrefix="daemonSet"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@DaemonSet.Spec.Selector.MatchLabels"></SelectorView>
         <PropertySimpleView Title="MinReadySeconds" Item="@DaemonSet.Spec.MinReadySeconds" ExplainField="daemonSet.spec.minReadySeconds"></PropertySimpleView>
@@ -20,7 +20,7 @@
         <RollingUpdateView Title="RollingUpdate" RollingUpdate="@(DaemonSet.Spec.UpdateStrategy.RollingUpdate.Adapt<V1RollingUpdateDeployment>())" ExplainField="daemonSet.spec.updateStrategy.rollingUpdate"></RollingUpdateView>
     </HTable>
     <PodTemplateView PodTemplate="@DaemonSet.Spec.Template" MetadataExplainFieldPrefix="statefulSet"></PodTemplateView>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(DaemonSet.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="daemonSet.status.conditions"></ConditionsView>
         <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount"></PropertySimpleView>

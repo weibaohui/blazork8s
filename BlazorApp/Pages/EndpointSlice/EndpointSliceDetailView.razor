@@ -4,12 +4,12 @@
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1EndpointSlice>
 @if (EndpointSlice != null)
 {
-    <EndpointSliceAction Item="EndpointSlice" MenuMode="MenuMode.Horizontal"  ></EndpointSliceAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <EndpointSliceAction Item="EndpointSlice" MenuMode="MenuMode.Horizontal"></EndpointSliceAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="EndpointSlice.Metadata" ExplainFieldPrefix="endpointSlice"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="AddressType" Item="@EndpointSlice.AddressType" ExplainField="endpointSlice.addressType" ></PropertySimpleView>
+        <PropertySimpleView Title="AddressType" Item="@EndpointSlice.AddressType" ExplainField="endpointSlice.addressType"></PropertySimpleView>
     </HTable>
 
     <EndpointSliceAddressView Title="Addresses" Endpoints="@(EndpointSlice.Endpoints)"></EndpointSliceAddressView>

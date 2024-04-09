@@ -46,6 +46,8 @@
   "Involved": "Involved",
   "AI Analysis": "AI Analysis",
   "Diagnosis": "Diagnosis",
+  "Metadata": "Metadata",
+  "Spec": "Spec",
   "ABAC": "ABAC",
   "ActualState": "Actual State",
   "AddonManager": "Addon Manager",

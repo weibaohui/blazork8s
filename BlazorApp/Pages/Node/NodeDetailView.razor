@@ -23,9 +23,9 @@
         </Tabs>
     }
 
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="Node.Metadata" ExplainFieldPrefix="node"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <TaintsView Taints="@Node.Spec.Taints"></TaintsView>
         <PropertySimpleView Title="ConfigSource" Item="@Node.Spec.ConfigSource" ExplainField="node.spec.configSource" ShowInJson="true"></PropertySimpleView>
@@ -35,7 +35,7 @@
         <PropertySimpleView Title="ProviderID" Item="@Node.Spec.ProviderID" ExplainField="node.spec.providerID"></PropertySimpleView>
         <PropertySimpleView Title="Unschedulable" Item="@Node.Spec.Unschedulable" ExplainField="node.spec.unschedulable"></PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">Status</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <PropertyOptionView Title="Phase" Item="@Node.Status.Phase" ExplainField="node.status.phase" Options="@(new[] { "Pending", "Running", "Terminated" })"></PropertyOptionView>
         <ConditionsView Conditions="@(Node.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsView>

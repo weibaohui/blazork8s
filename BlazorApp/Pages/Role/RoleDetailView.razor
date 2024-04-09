@@ -7,10 +7,10 @@
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Role>
 @if (Role != null)
 {
-    <RoleAction Item="Role" MenuMode="MenuMode.Horizontal"  ></RoleAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
-    <MetadataView Item="Role.Metadata"  ExplainFieldPrefix="role"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">Spec</Divider>
+    <RoleAction Item="Role" MenuMode="MenuMode.Horizontal"></RoleAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
+    <MetadataView Item="Role.Metadata" ExplainFieldPrefix="role"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
 
     <HTable Bordered Column="1">
 
@@ -44,5 +44,6 @@
 
         </HTable>
     }
+
     <MiniEventListView Uid="@Role.Metadata.Uid"></MiniEventListView>
 }

@@ -4,7 +4,7 @@
 @if (Endpoints != null)
 {
     <EndpointsAction Item="Endpoints" MenuMode="MenuMode.Horizontal"></EndpointsAction>
-    <Divider Orientation="left" Style="font-weight:bold">Metadata</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="Endpoints.Metadata" ExplainFieldPrefix="endpoints"></MetadataView>
     @if (Endpoints.Subsets != null)
     {
