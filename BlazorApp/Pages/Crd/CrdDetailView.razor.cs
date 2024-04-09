@@ -6,6 +6,7 @@ using BlazorApp.Service.k8s;
 using Entity.Crd;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Crd;
@@ -14,8 +15,7 @@ public partial class CrdDetailView : DrawerPageBase<V1CustomResourceDefinition>
 {
     private List<CustomResource> _crInstanceList = new();
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Inject]
     public IKubeService KubeService { get; set; }

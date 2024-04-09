@@ -1,4 +1,6 @@
 ﻿@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
 <SimpleSelect DefaultValue="" Style="width:200px;" OnSelectedItemChanged="HandleChange">
     <SelectOptions>
         <SimpleSelectOption Value="" Label=@(L["All Namespace"])></SimpleSelectOption>

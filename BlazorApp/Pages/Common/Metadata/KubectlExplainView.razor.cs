@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 

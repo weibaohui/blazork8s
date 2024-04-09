@@ -6,11 +6,12 @@ using AntDesign;
 using BlazorApp.Service.k8s;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.AspNetCore.Hosting;
 
 namespace BlazorApp.Pages.Example;
 
-public partial class Example : ComponentBase
+public partial class Example : PageBase
 {
     private DirectoryNode _currentItem = new();
     private string        _currentYaml = "";

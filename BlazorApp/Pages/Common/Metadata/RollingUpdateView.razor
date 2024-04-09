@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (RollingUpdate != null)
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">

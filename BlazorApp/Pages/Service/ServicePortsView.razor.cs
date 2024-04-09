@@ -5,10 +5,11 @@ using BlazorApp.Utils.PortForwarding;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Service;
 
-public partial class ServicePortsView : ComponentBase
+public partial class ServicePortsView : PageBase
 {
     [Inject]
     IMessageService MessageService { get; set; }

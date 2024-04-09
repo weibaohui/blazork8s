@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace  BlazorApp.Pages.Container
 {
-    public partial class EnvView : ComponentBase
+    public partial class EnvView : PageBase
     {
 
 

@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;

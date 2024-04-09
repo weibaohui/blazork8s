@@ -1,5 +1,7 @@
 @using Extension
 @using Extension.k8s
+@inherits BlazorApp.Pages.Common.PageBase
+
 <div>
     @if (Node.Status.Conditions.IsReady())
     {

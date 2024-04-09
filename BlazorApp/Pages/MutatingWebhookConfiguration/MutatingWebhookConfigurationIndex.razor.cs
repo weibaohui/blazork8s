@@ -4,6 +4,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.MutatingWebhookConfiguration;
 public partial class MutatingWebhookConfigurationIndex : TableBase<V1MutatingWebhookConfiguration>
 {

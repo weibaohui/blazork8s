@@ -6,6 +6,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Node;
 
@@ -13,6 +14,7 @@ public partial class NodeIndex : TableBase<V1Node>
 {
     [Inject]
     private INodeService NodeService { get; set; }
+
     [Inject]
     private IPodService PodService { get; set; }
 

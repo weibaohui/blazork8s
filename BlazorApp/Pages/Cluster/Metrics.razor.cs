@@ -4,10 +4,11 @@ using System.Timers;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Cluster;
 
-public partial class Metrics : ComponentBase
+public partial class Metrics : PageBase
 {
     private bool  _apiServerRequestDetailVisible        = false;
     private bool  _apiServerRequestLatencyDetailVisible = false;

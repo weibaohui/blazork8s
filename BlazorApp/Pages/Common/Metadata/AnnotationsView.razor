@@ -1,4 +1,6 @@
 @using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Annotations is { Count: > 0 })
 {
     <HTableColumn Title=@L["Annotations"] ExplainField="@ExplainField">

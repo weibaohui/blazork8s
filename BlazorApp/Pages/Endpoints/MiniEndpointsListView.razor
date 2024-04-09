@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Service
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 <Divider Orientation="left" Style="font-weight:bold">Endpoints</Divider>
 @if (Items is { Count: > 0 })
 {
@@ -20,8 +22,7 @@
 
 @code
 {
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Inject]
     protected IPageDrawerService PageDrawerService { get; set; }

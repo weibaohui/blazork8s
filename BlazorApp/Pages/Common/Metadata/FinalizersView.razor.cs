@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class FinalizersView : ComponentBase
+public partial class FinalizersView : PageBase
 {
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public IList<string> Finalizers { get; set; }

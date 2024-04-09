@@ -4,6 +4,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.DaemonSet;
 public partial class DaemonSetIndex : TableBase<V1DaemonSet>
 {

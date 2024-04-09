@@ -3,10 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class ControllerBy : ComponentBase
+public partial class ControllerBy : PageBase
 {
      private IList<V1ObjectReference> Refs { get; set; }
 

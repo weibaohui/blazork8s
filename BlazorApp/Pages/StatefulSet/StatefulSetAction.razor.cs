@@ -6,9 +6,11 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.StatefulSet;
-public partial class StatefulSetAction : ComponentBase
+
+public partial class StatefulSetAction : PageBase
 {
     [Parameter]
     public V1StatefulSet Item { get; set; }

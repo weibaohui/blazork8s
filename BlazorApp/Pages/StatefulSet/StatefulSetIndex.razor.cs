@@ -4,6 +4,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.StatefulSet;
 public partial class StatefulSetIndex : TableBase<V1StatefulSet>
 {

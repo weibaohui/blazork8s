@@ -5,10 +5,11 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Pod
 {
-    public partial class PodSumView : ComponentBase
+    public partial class PodSumView : PageBase
     {
         [Parameter]
         public string NodeName { get; set; }

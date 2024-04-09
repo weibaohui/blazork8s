@@ -6,20 +6,20 @@ using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class TableBase<T> : ComponentBase where T : IKubernetesObject<V1ObjectMeta>
+public partial class TableBase<T> : PageBase where T : IKubernetesObject<V1ObjectMeta>
 {
     protected readonly TableData<T> TableData   = TableDataHelper<T>.Instance.Build();
     private            string       _selectedNs = "";
 
     protected ResourceCache<T> ItemList = ResourceCacheHelper<T>.Instance.Build();
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Inject]
     protected IPageDrawerService PageDrawerService { get; set; }

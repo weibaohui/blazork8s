@@ -2,10 +2,11 @@ using System;
 using System.Threading.Tasks;
 using AntDesign;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class RandomColorHr : ComponentBase
+public partial class RandomColorHr : PageBase
 {
     [Parameter]
     public PresetColor? Color { get; set; }

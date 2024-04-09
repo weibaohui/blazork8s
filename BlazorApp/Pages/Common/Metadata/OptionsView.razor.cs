@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class OptionsView : ComponentBase
+public partial class OptionsView : PageBase
 {
     [Parameter]
     public string[] Options { get; set; }

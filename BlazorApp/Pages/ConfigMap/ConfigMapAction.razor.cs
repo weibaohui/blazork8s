@@ -7,9 +7,11 @@ using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 namespace BlazorApp.Pages.ConfigMap;
-public partial class ConfigMapAction : ComponentBase
+
+public partial class ConfigMapAction : PageBase
 {
     [Parameter]
     public V1ConfigMap Item { get; set; }

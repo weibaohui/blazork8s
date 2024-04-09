@@ -5,6 +5,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.CronJob;
 public partial class CronJobIndex : TableBase<V1CronJob>

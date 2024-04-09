@@ -8,6 +8,7 @@ using BlazorApp.Utils.PortForwarding;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Pod;
 

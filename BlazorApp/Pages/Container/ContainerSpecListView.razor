@@ -1,4 +1,6 @@
 @using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (PodSpec != null)
 {
     <Divider Orientation="left" Style="font-weight:bold"> Containers <span style="color:#DCDCDC">(@Count())</span> </Divider>

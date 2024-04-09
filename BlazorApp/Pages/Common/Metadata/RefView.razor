@@ -1,5 +1,7 @@
 @using Extension
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Ref != null)
 {
     <Tag Color="@RandomColorHelper.RandomColor()" OnClick="@OnObjClick" Style="cursor: pointer">

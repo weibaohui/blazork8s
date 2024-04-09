@@ -3,9 +3,11 @@ using AntDesign;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.PriorityClass;
-public partial class PriorityClassAction : ComponentBase
+
+public partial class PriorityClassAction : PageBase
 {
     [Parameter]
     public V1PriorityClass Item { get; set; }

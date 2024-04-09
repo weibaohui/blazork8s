@@ -2,6 +2,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (ManagedFields is { Count: > 0 })
 {
     <HTableColumn Title=@L["ManagedFields"] ExplainField="@ExplainField">
@@ -19,8 +21,7 @@
 
 @code {
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public IList<V1ManagedFieldsEntry> ManagedFields { get; set; }

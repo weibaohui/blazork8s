@@ -3,6 +3,7 @@ using AntDesign.ProLayout;
 using BlazorApp.Service.AI;
 using k8s;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Layouts;

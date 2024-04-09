@@ -5,6 +5,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 namespace BlazorApp.Pages.ConfigMap;
 public partial class ConfigMapIndex : TableBase<V1ConfigMap>
 {

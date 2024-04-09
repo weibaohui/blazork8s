@@ -1,5 +1,7 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Selector != null && Selector.Keys.Count>0)
 {
     <HTableColumn Title="@Title">

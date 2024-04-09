@@ -4,14 +4,14 @@ using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Pod;
 
-public partial class PodAction : ComponentBase
+public partial class PodAction : PageBase
 {
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public V1Pod PodItem { get; set; }

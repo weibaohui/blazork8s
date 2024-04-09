@@ -1,5 +1,7 @@
 @using Extension.k8s
 @using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Pods != null)
 {
     <p>@NodeName @Pods.ReadySummary()</p>

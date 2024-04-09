@@ -4,10 +4,11 @@ using System.Threading.Tasks;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.ai;
 
-public partial class ChatDeployment : ComponentBase
+public partial class ChatDeployment : PageBase
 {
     private string _txtValue;
     private string _advice;

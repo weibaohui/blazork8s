@@ -5,10 +5,11 @@ using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Node;
 
-public partial class NodeAction : ComponentBase
+public partial class NodeAction : PageBase
 {
 
     [Inject]

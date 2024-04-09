@@ -5,26 +5,32 @@ using BlazorApp.Utils;
 using k8s.Models;
 using Mapster;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.RoleBinding;
+
 public partial class RoleBindingIndex : TableBase<V1RoleBinding>
 {
     [Inject]
     private IRoleService RoleService { get; set; }
+
     [Inject]
     private IRoleBindingService RoleBindingService { get; set; }
+
     private async Task OnResourceChanged(ResourceCache<V1RoleBinding> data)
     {
         ItemList = data;
         TableData.CopyData(ItemList);
         await InvokeAsync(StateHasChanged);
     }
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         TableData.CopyData(ItemList);
         await InvokeAsync(StateHasChanged);
     }
+
     private async Task OnItemNameClick(V1RoleBinding item)
     {
         await PageDrawerHelper<V1RoleBinding>.Instance

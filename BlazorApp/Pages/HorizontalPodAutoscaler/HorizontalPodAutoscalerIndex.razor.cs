@@ -5,6 +5,7 @@ using BlazorApp.Utils;
 using k8s.Models;
 using Mapster;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.HorizontalPodAutoscaler;
 public partial class HorizontalPodAutoscalerIndex : TableBase<V2HorizontalPodAutoscaler>

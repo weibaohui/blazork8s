@@ -3,13 +3,15 @@ using AntDesign;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.ClusterRole;
-public partial class ClusterRoleAction : ComponentBase
+
+public partial class ClusterRoleAction : PageBase
 {
     [Parameter]
     public V1ClusterRole Item { get; set; }
-    [Parameter]
-    public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
 
+    [Parameter]
+    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 }

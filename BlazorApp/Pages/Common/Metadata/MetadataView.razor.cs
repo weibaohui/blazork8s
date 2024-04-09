@@ -1,13 +1,13 @@
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class MetadataView : ComponentBase
+public partial class MetadataView : PageBase
 {
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public V1ObjectMeta Item { get; set; }

@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using Extension;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class AgeView : ComponentBase,IDisposable
+public partial class AgeView : PageBase, IDisposable
 {
     [Parameter]
     public DateTime? Age { get; set; }

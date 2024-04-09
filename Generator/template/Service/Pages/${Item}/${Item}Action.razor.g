@@ -7,11 +7,12 @@ using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.${Item};
 
-public partial class ${Item}Action : ComponentBase
+public partial class ${Item}Action : PageBase
 {
     [Parameter]
     public ${ItemType} Item { get; set; }

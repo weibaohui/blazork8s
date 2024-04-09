@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (RequestLimits != null && (RequestLimits.Limits is { Count: > 0 } || RequestLimits.Requests is { Count: > 0 } || RequestLimits.Claims is { Count: > 0 }))
 {
     <HTableColumn Title="Resource" ExplainField="@ExplainField">

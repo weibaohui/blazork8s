@@ -1,5 +1,7 @@
 @using BlazorApp.Pages.Common.Html
 @using k8s
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Ports != null)
 {
     <HTableColumn Title="Ports" ExplainField="service.spec.ports">

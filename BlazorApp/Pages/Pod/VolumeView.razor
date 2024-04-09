@@ -1,5 +1,7 @@
 ﻿@using BlazorApp.Pages.Pod.Volume
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (PodSpec.Volumes != null)
 {
     <Divider Orientation="left" Style="font-weight:bold"> Volumes <span style="color:#DCDCDC">(@PodSpec.Volumes.Count)</span></Divider>

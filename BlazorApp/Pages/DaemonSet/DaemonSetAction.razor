@@ -1,5 +1,7 @@
 @using BlazorApp.Pages.Common
 @using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
 <ShareMenuItem T="V1DaemonSet" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {

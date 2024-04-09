@@ -1,4 +1,6 @@
 @using Extension.k8s
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Pod != null && Pod.Status.ContainerStatuses != null)
 {
     <Space>

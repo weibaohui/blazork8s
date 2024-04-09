@@ -1,4 +1,6 @@
-﻿@if (Type == "Main")
+﻿@inherits BlazorApp.Pages.Common.PageBase
+
+@if (Type == "Main")
 {
     <Tooltip Title="@($"Main Container")">
         <Tag PresetColor=@PresetColor.Magenta>

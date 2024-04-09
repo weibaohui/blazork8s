@@ -6,11 +6,12 @@ using BlazorApp.Utils;
 using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.ReplicaSet
 {
-    public partial class MiniReplicaSetListView : ComponentBase
+    public partial class MiniReplicaSetListView : PageBase
     {
         [Inject]
         public IStringLocalizer L { get; set; }

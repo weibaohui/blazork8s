@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using BlazorApp.Utils;
 using Extension;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class PropertyListView<T> : ComponentBase
+public partial class PropertyListView<T> : PageBase
 {
     [Parameter]
     public IList<T> Items { get; set; }

@@ -3,16 +3,16 @@ using System.Threading.Tasks;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Namespace;
 
-public partial class NamespaceSelect : ComponentBase
+public partial class NamespaceSelect : PageBase
 {
     private IList<V1Namespace> _ns;
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public EventCallback<string> OnNsSelected { get; set; }

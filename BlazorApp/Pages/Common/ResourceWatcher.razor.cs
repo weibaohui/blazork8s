@@ -4,11 +4,12 @@ using Entity;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class ResourceWatcher<T> : ComponentBase where T : IKubernetesObject<V1ObjectMeta>
+public partial class ResourceWatcher<T> : PageBase where T : IKubernetesObject<V1ObjectMeta>
 {
     private ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
 

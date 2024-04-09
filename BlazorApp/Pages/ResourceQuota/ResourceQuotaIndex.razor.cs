@@ -5,6 +5,7 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.ResourceQuota;
 public partial class ResourceQuotaIndex : TableBase<V1ResourceQuota>

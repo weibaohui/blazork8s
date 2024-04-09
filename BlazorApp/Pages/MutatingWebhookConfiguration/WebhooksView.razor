@@ -2,6 +2,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Webhooks is { Count: > 0 })
 {
     @foreach (var hook in Webhooks)
@@ -47,8 +49,7 @@
 
 @code {
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public IList<V1MutatingWebhook> Webhooks { get; set; }

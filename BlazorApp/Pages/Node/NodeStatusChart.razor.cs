@@ -8,10 +8,11 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Node;
 
-public partial class NodeStatusChart : ComponentBase, IDisposable
+public partial class NodeStatusChart : PageBase, IDisposable
 {
     [Parameter]
     public V1Node Node { get; set; }

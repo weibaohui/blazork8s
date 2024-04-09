@@ -3,6 +3,8 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html
 @using k8s
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Containers != null)
 {
     @foreach (var c in Containers)
@@ -100,8 +102,7 @@
 
 @code {
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Inject]
     IMessageService MessageService { get; set; }

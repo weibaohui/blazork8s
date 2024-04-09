@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Cluster;
 
-public partial class Cluster : ComponentBase
+public partial class Cluster : PageBase
 {
     [Inject]
     public IKubeService KubeService { get; set; }

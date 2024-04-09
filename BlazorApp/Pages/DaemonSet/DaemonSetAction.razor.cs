@@ -3,10 +3,11 @@ using AntDesign;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.DaemonSet;
 
-public partial class DaemonSetAction : ComponentBase
+public partial class DaemonSetAction : PageBase
 {
     [Parameter]
     public V1DaemonSet Item { get; set; }

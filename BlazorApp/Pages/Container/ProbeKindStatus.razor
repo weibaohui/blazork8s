@@ -1,4 +1,6 @@
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 <OptionsView Options='@(new []{ "HttpGet", "Exec", "TcpSocket", "Grpc" })' SelectOption="@Kind"></OptionsView>
 <br>
 @if (Probe.HttpGet != null)

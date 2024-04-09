@@ -2,6 +2,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Containers != null)
 {
     @foreach (var c in Containers)
@@ -93,8 +95,7 @@
 
 @code {
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Inject]
     IMessageService MessageService { get; set; }

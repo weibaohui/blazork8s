@@ -3,9 +3,11 @@ using AntDesign;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Crd;
-public partial class CrdAction : ComponentBase
+
+public partial class CrdAction : PageBase
 {
     [Parameter]
     public V1CustomResourceDefinition Item { get; set; }

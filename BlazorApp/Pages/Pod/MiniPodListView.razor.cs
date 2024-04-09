@@ -5,11 +5,12 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Pod
 {
-    public partial class MiniPodListView : ComponentBase
+    public partial class MiniPodListView : PageBase
     {
         [Inject]
         public IStringLocalizer L { get; set; }

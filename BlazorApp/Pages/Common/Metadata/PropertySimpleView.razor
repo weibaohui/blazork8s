@@ -1,6 +1,8 @@
 @using Extension
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (ChildContent != null || (Item != null && !Item.ToJson().Equals("{}")))
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">

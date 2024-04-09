@@ -4,11 +4,12 @@ using BlazorApp.Utils;
 using Entity;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class PodLogWatcher : ComponentBase, IDisposable
+public partial class PodLogWatcher : PageBase, IDisposable
 {
     [Inject]
     protected NavigationManager MyUriHelper { get; set; }

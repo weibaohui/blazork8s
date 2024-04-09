@@ -2,10 +2,11 @@
 using System.Threading.Tasks;
 using Extension;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class PropertySimpleView : ComponentBase
+public partial class PropertySimpleView : PageBase
 {
     [Parameter]
     public RenderFragment ChildContent { get; set; }

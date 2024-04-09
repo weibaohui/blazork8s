@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Container;
 
-public partial class ProbeKindStatus : ComponentBase
+public partial class ProbeKindStatus : PageBase
 {
     private string Kind { get; set; }
 

@@ -8,16 +8,16 @@ using Extension;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class ShareMenuItem<T> : ComponentBase where T : IKubernetesObject<V1ObjectMeta>
+public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1ObjectMeta>
 {
     private bool _enable;
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Inject]
     private IPageDrawerService PageDrawerService { get; set; }

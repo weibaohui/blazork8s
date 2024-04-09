@@ -1,5 +1,7 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Labels != null)
 {
     <HTableColumn Title=@L["Labels"] ExplainField="@ExplainField">
@@ -14,8 +16,7 @@
 
 @code {
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+
 
     [Parameter]
     public IDictionary<string, string> Labels { get; set; }

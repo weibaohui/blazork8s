@@ -1,10 +1,11 @@
 using System.Threading.Tasks;
 using BlazorApp.Utils;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class PropertySimpleGenericsView<T>:ComponentBase
+public partial class PropertySimpleGenericsView<T> : PageBase
 {
 
     [Parameter]

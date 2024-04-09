@@ -6,10 +6,11 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.ReplicaSet;
 
-public partial class ReplicaSetAction : ComponentBase
+public partial class ReplicaSetAction : PageBase
 {
     [Parameter]
     public V1ReplicaSet Item { get; set; }

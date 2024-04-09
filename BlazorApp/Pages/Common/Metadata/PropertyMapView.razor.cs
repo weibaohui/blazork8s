@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using BlazorApp.Utils;
 using Extension;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class PropertyMapView<T> : ComponentBase
+public partial class PropertyMapView<T> : PageBase
 {
     [Parameter]
     public IDictionary<string, T> Items { get; set; }

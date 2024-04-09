@@ -4,6 +4,7 @@ using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using k8s;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Workload;
 

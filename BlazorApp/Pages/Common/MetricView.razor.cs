@@ -9,10 +9,11 @@ using BlazorApp.Utils;
 using Extension;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common;
 
-public partial class MetricView : ComponentBase, IDisposable
+public partial class MetricView : PageBase, IDisposable
 {
     [Inject]
     public IKubeService KubeService { get; set; }
