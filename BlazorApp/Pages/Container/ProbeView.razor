@@ -4,9 +4,9 @@
 @if (Probe != null)
 {
     <HTableColumn Title="@ProbeType">
-        <Divider>探测类型</Divider>
+        <Divider>@L["ProbeType"]</Divider>
         <ProbeKindStatus Probe="Probe"></ProbeKindStatus>
-        <Divider>探测配置</Divider>
+        <Divider>@L["ProbeConfig"]</Divider>
         <Tag>@($"delay={Probe.InitialDelaySeconds}s")</Tag>
         <Tag>@($"timeout={Probe.TimeoutSeconds}s")</Tag>
         <Tag>@($"period={Probe.PeriodSeconds}s")</Tag>

@@ -3,6 +3,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Ingress is { Count: > 0 })
 {
     <HTableColumn Title="@Title" ExplainField="networkPolicy.spec.ingress">
@@ -20,12 +22,12 @@
 
                 @if (ingressRule.Ports is { Count: > 0 })
                 {
-                    <HTableColumn Title="Ports">
+                    <HTableColumn Title=@L["Ports"]>
                         @foreach (var port in ingressRule.Ports)
                         {
                             <HTable Class="miniTable">
                                 <PropertyOptionView Title="Protocol" Item="port.Protocol" ExplainField="networkPolicy.spec.ingress.ports" Options='@(new[] { "TCP", "UDP", "SCTP" })'></PropertyOptionView>
-                                <HTableColumn Title="Ports" ExplainField="networkPolicy.spec.ingress.ports">
+                                <HTableColumn Title=@L["Ports"] ExplainField="networkPolicy.spec.ingress.ports">
                                     <ColorfulTag>
                                         @port.Port
                                         @if (port.EndPort != null)
@@ -41,7 +43,7 @@
             }
         </HTable>
 
-        @if (Ingress.Where(x=>x.FromProperty!=null).SelectMany(x => x.FromProperty).ToList().Count == 0 && Ingress.Where(x=>x.Ports!=null).SelectMany(x => x.Ports).ToList().Count == 0)
+        @if (Ingress.Where(x => x.FromProperty != null).SelectMany(x => x.FromProperty).ToList().Count == 0 && Ingress.Where(x => x.Ports != null).SelectMany(x => x.Ports).ToList().Count == 0)
         {
             <Tag>ALL</Tag>
         }

@@ -23,7 +23,7 @@
         <PropertySimpleView Title="CompletionTime" Item="@Job.Status.CompletionTime" ExplainField="job.status.completionTime"></PropertySimpleView>
         <PropertySimpleView Title="Failed" Item="@Job.Status.Failed" ExplainField="job.status.failed"></PropertySimpleView>
         <PropertySimpleView Title="FailedIndexes" Item="@Job.Status.FailedIndexes" ExplainField="job.status.failedIndexes"></PropertySimpleView>
-        <PropertySimpleView Title="Ready" Item="@Job.Status.Ready" ExplainField="job.status.ready"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Ready"] Item="@Job.Status.Ready" ExplainField="job.status.ready"></PropertySimpleView>
         <PropertySimpleView Title="StartTime" Item="@Job.Status.StartTime.GetValueOrDefault().ToLocalTime()" ExplainField="job.status.startTime"></PropertySimpleView>
         <PropertySimpleView Title="Succeeded" Item="@Job.Status.Succeeded" ExplainField="job.status.succeeded"></PropertySimpleView>
         <PropertySimpleView Title="Terminating" Item="@Job.Status.Terminating" ExplainField="job.status.terminating"></PropertySimpleView>

@@ -15,7 +15,7 @@
                 </SelectOptions>
             </SimpleSelect>
 
-            <SimpleSelect Style="width:100px;" Placeholder="时间范围" OnSelectedItemChanged="OnSinceSelectChanged">
+            <SimpleSelect Style="width:100px;" Placeholder="@L["DateRange"]" OnSelectedItemChanged="OnSinceSelectChanged">
                 <SelectOptions>
                     <SimpleSelectOption Value="1m" Label="1m"></SimpleSelectOption>
                     <SimpleSelectOption Value="5m" Label="5m"></SimpleSelectOption>
@@ -23,10 +23,10 @@
                     <SimpleSelectOption Value="30m" Label="30m"></SimpleSelectOption>
                     <SimpleSelectOption Value="45m" Label="45m"></SimpleSelectOption>
                     <SimpleSelectOption Value="1h" Label="1h"></SimpleSelectOption>
-                    <SimpleSelectOption Value="specified" Label="指定"></SimpleSelectOption>
+                    <SimpleSelectOption Value="specified" Label=@L["Specify"]></SimpleSelectOption>
                 </SelectOptions>
             </SimpleSelect>
-            <DatePicker Disabled="@(_since != "specified")" TValue="DateTime?" ShowToday="true" OnChange="@DatePickerChanged" bind-Value="@_sinceTimestamp" ShowTime="@true" Format="yyyy-MM-ddTHH:mm ss" Mask="yyyy-MM-ddTHH:mm ss" Placeholder="@("自从")">
+            <DatePicker Disabled="@(_since != "specified")" TValue="DateTime?" ShowToday="true" OnChange="@DatePickerChanged" bind-Value="@_sinceTimestamp" ShowTime="@true" Format="yyyy-MM-ddTHH:mm ss" Mask="yyyy-MM-ddTHH:mm ss" Placeholder="@($"{L["Since"]}")">
                 <SuffixIcon>
                     <Icon Type="clock-circle" Theme="twotone"/>
                 </SuffixIcon>

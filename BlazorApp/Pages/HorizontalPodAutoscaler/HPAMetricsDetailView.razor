@@ -2,6 +2,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Metric.Pods != null)
 {
     @($"{Metric.Pods.Metric.Name} = ")

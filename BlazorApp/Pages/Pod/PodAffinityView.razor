@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Pod.Affinity
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Affinity != null)
 {
     <HTableColumn Title="Affinity">
@@ -9,7 +11,7 @@
 
             @if (Affinity.PodAffinity != null)
             {
-                <Panel Header="PodAffinity" Key="PodAffinity">
+                <Panel Header=@L["PodAffinity"] Key="PodAffinity">
 
                     @{
                         var preferred = Affinity.PodAffinity.PreferredDuringSchedulingIgnoredDuringExecution;
@@ -115,7 +117,7 @@
 
             @if (Affinity.PodAntiAffinity != null)
             {
-                <Panel Header="PodAntiAffinity" Key="PodAntiAffinity">
+                <Panel Header=@L["PodAntiAffinity"] Key="PodAntiAffinity">
 
                     @{
                         var preferred = Affinity.PodAntiAffinity.PreferredDuringSchedulingIgnoredDuringExecution;

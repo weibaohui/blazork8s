@@ -13,8 +13,8 @@
             <Button OnClick="@(() => OnPodNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
-        <AntDesign.Column Sortable="true" TData="string" Title="Ready">@context.ReadySummary()</AntDesign.Column>
-        <AntDesign.Column Title="Restart" TData="string">
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Ready"]>@context.ReadySummary()</AntDesign.Column>
+        <AntDesign.Column Title=@L["Restart"] TData="string">
             @context.RestartCount()
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Status"]>

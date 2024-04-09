@@ -1,8 +1,8 @@
-﻿@inherits BlazorApp.Pages.Common.PageBase
-@using BlazorApp.Pages.Common.Html
+﻿@using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
 @if (Env != null)
 {
-    <HTableColumn Title="Env">
+    <HTableColumn Title=@L["Env"]>
         @foreach (var ce in Env)
         {
             if (ce.ValueFrom != null)
@@ -12,16 +12,19 @@
                     var vf = ce.ValueFrom.FieldRef;
                     @($"{ce.Name}:FieldRef({vf.ApiVersion}:{vf.FieldPath})")
                 }
+
                 if (ce.ValueFrom.ConfigMapKeyRef != null)
                 {
                     var vf = ce.ValueFrom.ConfigMapKeyRef;
                     @($"{ce.Name}:ConfigMapKeyRef({vf.Key}:{vf.Name})")
                 }
+
                 if (ce.ValueFrom.SecretKeyRef != null)
                 {
                     var vf = ce.ValueFrom.SecretKeyRef;
                     @($"{ce.Name}:SecretKeyRef({vf.Key}:{vf.Name})")
                 }
+
                 if (ce.ValueFrom.ResourceFieldRef != null)
                 {
                     var vf = ce.ValueFrom.ResourceFieldRef;
@@ -32,6 +35,7 @@
             {
                 @($"{ce.Name}:{ce.Value}")
             }
+
             <br/>
         }
     </HTableColumn>

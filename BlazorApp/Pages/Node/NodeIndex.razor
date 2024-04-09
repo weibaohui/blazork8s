@@ -34,7 +34,7 @@
                     <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="string">
+                    <AntDesign.Column Title=@L["Ready"] TData="string">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
                     <AntDesign.Column Title="Usage" TData="string">

@@ -39,7 +39,7 @@
                     <AntDesign.Column Title="Current" TData="int" Width="70px">
                         @($"{context.Status.CurrentNumberScheduled}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="int" Width="70px">
+                    <AntDesign.Column Title=@L["Ready"] TData="int" Width="70px">
                         @($"{context.Status.NumberReady}")
                     </AntDesign.Column>
                     <AntDesign.Column Title="Latest" TData="int" Width="70px">

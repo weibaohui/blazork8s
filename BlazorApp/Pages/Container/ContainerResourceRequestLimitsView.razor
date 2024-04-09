@@ -5,12 +5,12 @@
 
 @if (RequestLimits != null && (RequestLimits.Limits is { Count: > 0 } || RequestLimits.Requests is { Count: > 0 } || RequestLimits.Claims is { Count: > 0 }))
 {
-    <HTableColumn Title="Resource" ExplainField="@ExplainField">
+    <HTableColumn Title=@L["Resource"] ExplainField="@ExplainField">
 
         @if (RequestLimits.Requests != null)
         {
             <Alert Type="@AlertType.Success">
-                Requests:
+                @L["Requests"]:
                 @foreach (var (key, value) in RequestLimits.Requests)
                 {
                     <ColorfulTag >@($"{key}={value}") </ColorfulTag>
@@ -20,7 +20,7 @@
         @if (RequestLimits.Limits != null)
         {
             <Alert Type="@AlertType.Warning">
-                Limits:
+                @L["Limits"]:
                 @foreach (var (key, value) in RequestLimits.Limits)
                 {
                     <ColorfulTag >@($"{key}={value}") </ColorfulTag>
@@ -30,7 +30,7 @@
         @if (RequestLimits.Claims != null)
         {
             <Alert Type="@AlertType.Warning">
-                Claims:
+                @L["Claims"]:
                 @foreach (var c in RequestLimits.Claims)
                 {
                     <ColorfulTag >@($"{c.Name}") </ColorfulTag>

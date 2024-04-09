@@ -3,6 +3,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Egress is { Count: > 0 })
 {
     <HTableColumn Title="@Title" ExplainField="networkPolicy.spec.egress">
@@ -20,12 +22,12 @@
 
                 @if (egressRule.Ports is { Count: > 0 })
                 {
-                    <HTableColumn Title="Ports">
+                    <HTableColumn Title=@L["Ports"]>
                         @foreach (var port in egressRule.Ports)
                         {
                             <HTable Class="miniTable">
                                 <PropertyOptionView Title="Protocol" Item="port.Protocol" ExplainField="networkPolicy.spec.egress.ports" Options='@(new[] { "TCP", "UDP", "SCTP" })'></PropertyOptionView>
-                                <HTableColumn Title="Ports" ExplainField="networkPolicy.spec.egress.ports">
+                                <HTableColumn Title=@L["Ports"] ExplainField="networkPolicy.spec.egress.ports">
                                     <ColorfulTag>
                                         @port.Port
                                         @if (port.EndPort != null)
@@ -40,10 +42,10 @@
                 }
             }
         </HTable>
-        @if (Egress.Where(x=>x.To!=null).SelectMany(x => x.To).ToList().Count == 0 && Egress.Where(x=>x.Ports!=null).SelectMany(x => x.Ports).ToList().Count == 0)
-                {
-                    <Tag>ALL</Tag>
-                }
+        @if (Egress.Where(x => x.To != null).SelectMany(x => x.To).ToList().Count == 0 && Egress.Where(x => x.Ports != null).SelectMany(x => x.Ports).ToList().Count == 0)
+        {
+            <Tag>ALL</Tag>
+        }
     </HTableColumn>
 }
 

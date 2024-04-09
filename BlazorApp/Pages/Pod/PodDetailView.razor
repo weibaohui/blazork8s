@@ -10,7 +10,7 @@
 
     @if (_isMetricsServerReady && Item.Status.Phase == "Running")
     {
-        <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
+        <Divider Orientation="left" Style="font-weight:bold">@L["Metrics"]</Divider>
         <Tabs Animated>
             <TabPane Tab="CPU" Key="1">
                 <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="cpu"></MetricView>

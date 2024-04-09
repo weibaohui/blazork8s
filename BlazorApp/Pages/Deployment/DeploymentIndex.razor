@@ -39,7 +39,7 @@
                     <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
 
 
-                    <AntDesign.Column Title="Ready" TData="int" Width="80px">
+                    <AntDesign.Column Title=@L["Ready"] TData="int" Width="80px">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas ?? 0}")
                     </AntDesign.Column>
                     <AntDesign.Column Title="Desired" Width="80px" TData="string">

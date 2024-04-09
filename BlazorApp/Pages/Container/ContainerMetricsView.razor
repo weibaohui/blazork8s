@@ -5,9 +5,9 @@
 
 @if (_isMetricsServerReady)
 {
-    <Divider Orientation="left" Style="font-weight:bold">Container Metrics</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Container"] @L["Metrics"]</Divider>
     <GridRow Class="grid-table ">
-        <GridCol Span="8" Flex=@("160px")>Container Name</GridCol>
+        <GridCol Span="8" Flex=@("160px")>@L["Container"] @L["Name"]</GridCol>
         <GridCol Span="8">CPU</GridCol>
         <GridCol Span="8">Memory</GridCol>
     </GridRow>

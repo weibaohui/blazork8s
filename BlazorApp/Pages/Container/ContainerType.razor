@@ -2,7 +2,7 @@
 
 @if (Type == "Main")
 {
-    <Tooltip Title="@($"Main Container")">
+    <Tooltip Title="@(L["Main Container"])">
         <Tag PresetColor=@PresetColor.Magenta>
             <Icon Type="container" Theme="outline"/>
         </Tag>
@@ -10,7 +10,7 @@
 }
 @if (Type == "Init")
 {
-    <Tooltip Title="@($"Init Container")">
+    <Tooltip Title="@(L["Init Container"])">
 
         <Tag PresetColor=@PresetColor.Gold>
             <Icon Type="setting" Theme="outline"/>
@@ -19,10 +19,10 @@
 }
 @if (Type == "Ephemeral")
 {
-    <Tooltip Title="@($"Ephemeral Container")">
+    <Tooltip Title="@(L["Ephemeral Container"])">
 
         <Tag PresetColor=@PresetColor.Blue>
-           <Icon Type="hourglass" Theme="outline"/>
+            <Icon Type="hourglass" Theme="outline"/>
         </Tag>
     </Tooltip>
 }

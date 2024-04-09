@@ -44,7 +44,7 @@
                     <AntDesign.Column Title="Current" TData="int" Width="80px">
                         @(context.Status.FullyLabeledReplicas ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Ready" TData="int" Width="80px">
+                    <AntDesign.Column Title=@L["Ready"] TData="int" Width="80px">
                         @(context.Status.ReadyReplicas ?? 0)
                     </AntDesign.Column>
 

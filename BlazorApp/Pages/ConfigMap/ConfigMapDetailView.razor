@@ -8,8 +8,8 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="ConfigMap.Metadata" ExplainFieldPrefix="configMap"></MetadataView>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Immutable" Item="@ConfigMap.Immutable" ExplainField="configMap.immutable"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Immutable"] Item="@ConfigMap.Immutable" ExplainField="configMap.immutable"></PropertySimpleView>
     </HTable>
-    <ConfigMapDataView Data="@ConfigMap.Data" Title="Data"></ConfigMapDataView>
+    <ConfigMapDataView Data="@ConfigMap.Data" Title=@L["Data"]></ConfigMapDataView>
     <MiniEventListView Uid="@ConfigMap.Metadata.Uid"></MiniEventListView>
 }

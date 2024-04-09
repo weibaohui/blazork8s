@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Hpa != null)
 {
     @if (SimpleView)
@@ -9,27 +11,37 @@
         {
             @if (metric.Pods != null)
             {
-                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+                <div>
+                    <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView>
+                </div>
             }
 
             @if (metric.Resource != null)
             {
-                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+                <div>
+                    <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView>
+                </div>
             }
 
             @if (metric.ObjectProperty != null)
             {
-                <div> <HPAMetricsDetailView Metric="@metric" Namespace="@Hpa.Namespace()" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+                <div>
+                    <HPAMetricsDetailView Metric="@metric" Namespace="@Hpa.Namespace()" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView>
+                </div>
             }
 
             @if (metric.External != null)
             {
-                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+                <div>
+                    <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView>
+                </div>
             }
 
             @if (metric.ContainerResource != null)
             {
-                <div> <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView></div>
+                <div>
+                    <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics" SimpleView="@SimpleView"></HPAMetricsDetailView>
+                </div>
             }
         }
     }
@@ -51,7 +63,7 @@
                     }
                     @if (metric.Resource != null)
                     {
-                        <PropertySimpleView Title="Resource" ExplainField="horizontalPodAutoscaler.spec.metrics.resource" Item="@metric.Resource" ShowInJson="true">
+                        <PropertySimpleView Title=@L["Resource"] ExplainField="horizontalPodAutoscaler.spec.metrics.resource" Item="@metric.Resource" ShowInJson="true">
                             <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
                         </PropertySimpleView>
                     }

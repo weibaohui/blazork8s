@@ -4,7 +4,7 @@
 
 @if (Ports != null)
 {
-    <HTableColumn Title="Ports" ExplainField="service.spec.ports">
+    <HTableColumn Title=@L["Ports"] ExplainField="service.spec.ports">
         @foreach (var p in Ports)
         {
             <div>
