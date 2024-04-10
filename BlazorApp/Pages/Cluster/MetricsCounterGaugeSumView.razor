@@ -1,4 +1,6 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (AllMetrics.Any(x => x.Name == MetricName))
 {
     <GridRow Class="grid-table">

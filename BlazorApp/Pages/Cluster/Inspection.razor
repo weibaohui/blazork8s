@@ -4,6 +4,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Node
 @using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.PageBase
 
 <div style="margin: 50px">
     <GridRow Class="grid-table">
@@ -57,7 +58,7 @@
 
 <Tabs Style="margin: 50px" DefaultActiveKey="Overview" Type="@TabType.Card" Size="@TabSize.Large">
 
-    <TabPane Key="Overview" Tab="Overview">
+    <TabPane Key="Overview" Tab=@L["Overview"]>
 
         @if (AllResourcesCount is { Count: > 0 })
         {
@@ -94,13 +95,13 @@
         }
     </TabPane>
 
-    <TabPane Key="Livez" Tab="Livez">
+    <TabPane Key="Livez" Tab=@L["LivenessProbe"]>
         @((MarkupString)LivezResult.ToHtmlDisplay())
     </TabPane>
-    <TabPane Key="Readyz" Tab="Readyz">
+    <TabPane Key="Readyz" Tab=@L["ReadinessProbe"]>
         @((MarkupString)ReadyzResult.ToHtmlDisplay())
     </TabPane>
-    <TabPane Key="Nodes" Tab="Nodes">
+    <TabPane Key="Node" Tab=@L["Node"]>
         @if (NodeList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
@@ -123,7 +124,7 @@
             <Empty Simple/>
         }
     </TabPane>
-    <TabPane Key="Pods" Tab="Pods">
+    <TabPane Key="Pod" Tab=@L["Pod"]>
         @if (PodList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
@@ -150,14 +151,14 @@
         }
     </TabPane>
 
-    <TabPane Key="Errors" Tab="Errors">
+    <TabPane Key="Errors" Tab=@L["Error"]>
 
         @if (AnalyzeResult is { Count: > 0 })
         {
             <GridRow Class="grid-table">
-                <GridCol Span="8">Name</GridCol>
-                <GridCol Span="12">Error</GridCol>
-                <GridCol Span="4">Action</GridCol>
+                <GridCol Span="8">@L["Name"]</GridCol>
+                <GridCol Span="12">@L["Error"]</GridCol>
+                <GridCol Span="4">@L["Action"]</GridCol>
 
             </GridRow>
             @foreach (var item in AnalyzeResult)
@@ -176,7 +177,7 @@
                         </div>
                     </GridCol>
                     <GridCol Span="4">
-                        <Button OnClick="@(() => OnAnalyzeClick(item))">智能分析</Button>
+                        <Button OnClick="@(() => OnAnalyzeClick(item))">@L["AI Analysis"]</Button>
                     </GridCol>
                 </GridRow>
             }

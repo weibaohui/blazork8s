@@ -1,4 +1,6 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (AllMetrics.Any(x => x.Name == MetricName))
 {
     <GridRow Class="grid-table">
@@ -15,14 +17,14 @@
                     .Measurements
                     .Where(x => x.Name == $"{MetricName}_sum")
                     .Sum(x => x.Value);
-                var avg = seconds / count ;
+                var avg = seconds / count;
             }
             <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
 
-             @if (OnDetailClick.HasDelegate)
-                        {
-                            <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">detail</Button>
-                        }
+            @if (OnDetailClick.HasDelegate)
+            {
+                <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">detail</Button>
+            }
         </GridCol>
     </GridRow>
 }

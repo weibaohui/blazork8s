@@ -41,7 +41,7 @@
         <ConditionsView Conditions="@(Node.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsView>
         @if (Node.Status.Addresses is { Count: > 0 })
         {
-            <HTableColumn Title="Address" ExplainField="node.status.addresses">
+            <HTableColumn Title=@L["Address"] ExplainField="node.status.addresses">
                 @foreach (var addr in Node.Status.Addresses)
                 {
                     <ColorfulTag>@addr.Type : @addr.Address</ColorfulTag>

@@ -10,15 +10,15 @@
     <GridRow >
         <GridCol Span="10" Style="padding: 10px">
             <HTable >
-                <HTableColumn Title="Address">
+                <HTableColumn Title=@L["Address"]>
                     <ColorfulTag>@KubeService.Client().BaseUri</ColorfulTag>
                 </HTableColumn>
-                <HTableColumn Title="Context">
+                <HTableColumn Title=@L["Context"]>
                     <ColorfulTag>@KubeService.CurrentContext()</ColorfulTag>
                 </HTableColumn>
                 @if (ServerInfo != null)
                 {
-                    <HTableColumn Title="version">
+                    <HTableColumn Title=@L["Version"]>
                         <ColorfulTag>@ServerInfo.GitVersion</ColorfulTag>
                         <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
                     </HTableColumn>
@@ -43,7 +43,7 @@
 
 
 <Tabs Style="margin: 50px" DefaultActiveKey="Status" Type="@TabType.Card" Size="@TabSize.Large">
-    <TabPane Key="Status" Tab="API Status">
+    <TabPane Key="Status" Tab=@L["API Status"]>
         @if (ApiServicesList is { Count: > 0 })
         {
             <GridRow Class="grid-table">
@@ -64,7 +64,7 @@
 
     @if (AllMetrics != null)
     {
-        <TabPane Key="k8sFeature" Tab="Feature">
+        <TabPane Key="k8sFeature" Tab=@L["Feature"]>
             @if (AllMetrics.Any(x => x.Name == "kubernetes_feature_enabled") is true)
             {
                 <GridRow Class="grid-table">
@@ -89,11 +89,11 @@
                             <GridCol Span="6">
                                 @if (item is { Value: > 0 })
                                 {
-                                    <Tag Color="@PresetColor.Green.ToString()">Enabled</Tag>
+                                    <Tag Color="@PresetColor.Green.ToString()">@L["Enabled"]</Tag>
                                 }
                                 else
                                 {
-                                    <Tag >Disabled</Tag>
+                                    <Tag >@L["Disabled"]</Tag>
                                 }
                             </GridCol>
                         </GridRow>

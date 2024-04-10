@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Workload;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
@@ -14,13 +15,16 @@ using Entity.Analyze;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Cluster;
 
-public partial class Inspection:ComponentBase
+public partial class Inspection : PageBase
 {
-[Inject]
+    private string _aiSummary = string.Empty;
+
+    private Timer _timer;
+
+    [Inject]
     public IKubeService KubeService { get; set; }
 
     [Inject]
@@ -49,9 +53,6 @@ public partial class Inspection:ComponentBase
 
     private string LivezResult  { get; set; }
     private string ReadyzResult { get; set; }
-    private string _aiSummary = string.Empty;
-
-    private Timer _timer;
 
     private ServerInfo ServerInfo { get; set; }
 
@@ -76,7 +77,6 @@ public partial class Inspection:ComponentBase
         NodeList = NodeService.List();
 
 
-
         //巡检信息
         PassResources     = ClusterInspectionResultContainer.Instance.GetPassResources();
         AnalyzeResult     = ClusterInspectionResultContainer.Instance.GetResults();
@@ -92,7 +92,6 @@ public partial class Inspection:ComponentBase
 
         await InvokeAsync(StateHasChanged);
     }
-
 
 
     private async void EventHandler(object sender, string resp)

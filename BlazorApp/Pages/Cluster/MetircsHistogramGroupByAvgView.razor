@@ -1,4 +1,6 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (AllMetrics.Any(x => x.Name == MetricName))
 {
     //将group by 的字段值找出来，后面根据这个值，逐个计算 sum/count
@@ -13,8 +15,8 @@
     if (group != null)
     {
         <GridRow Class="grid-table">
-            <GridCol Span="16">Item</GridCol>
-            <GridCol Span="8">Value</GridCol>
+            <GridCol Span="16">@L["Item"]</GridCol>
+            <GridCol Span="8">@L["Value"]</GridCol>
         </GridRow>
         foreach (var item in group)
         {
