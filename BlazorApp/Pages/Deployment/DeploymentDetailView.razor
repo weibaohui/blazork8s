@@ -16,15 +16,15 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
-        <SelectorView Title="Node Selector" Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
+        <SelectorView Title=@L["Node Selector"] Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@Deployment.Spec.Template.Spec"></ImagesView>
-        <PropertyOptionView Title="StrategyType" Item="@Deployment.Spec.Strategy.Type" ExplainField="deployment.spec.strategy" Options=@(new[] { "Recreate", "RollingUpdate" })></PropertyOptionView>
-        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@Deployment.Spec.Strategy.RollingUpdate" ExplainField="deployment.spec.strategy.rollingUpdate"></RollingUpdateView>
-        <PropertySimpleView Title="MinReadySeconds" Item="@Deployment.Spec.MinReadySeconds" ExplainField="deployment.spec.minReadySeconds"></PropertySimpleView>
-        <PropertySimpleView Title="Paused" Item="@Deployment.Spec.Paused" ExplainField="deployment.spec.paused"></PropertySimpleView>
-        <PropertySimpleView Title="ProgressDeadlineSeconds" Item="@Deployment.Spec.ProgressDeadlineSeconds" ExplainField="deployment.spec.progressDeadlineSeconds"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@Deployment.Spec.Replicas" ExplainField="deployment.spec.replicas"></PropertySimpleView>
-        <PropertySimpleView Title="RevisionHistoryLimit" Item="@Deployment.Spec.RevisionHistoryLimit" ExplainField="deployment.spec.revisionHistoryLimit"></PropertySimpleView>
+        <PropertyOptionView Title=@L["StrategyType"] Item="@Deployment.Spec.Strategy.Type" ExplainField="deployment.spec.strategy" Options=@(new[] { "Recreate", "RollingUpdate" })></PropertyOptionView>
+        <RollingUpdateView Title=@L["RollingUpdate"] RollingUpdate="@Deployment.Spec.Strategy.RollingUpdate" ExplainField="deployment.spec.strategy.rollingUpdate"></RollingUpdateView>
+        <PropertySimpleView Title=@L["MinReadySeconds"] Item="@Deployment.Spec.MinReadySeconds" ExplainField="deployment.spec.minReadySeconds"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Paused"] Item="@Deployment.Spec.Paused" ExplainField="deployment.spec.paused"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ProgressDeadlineSeconds"] Item="@Deployment.Spec.ProgressDeadlineSeconds" ExplainField="deployment.spec.progressDeadlineSeconds"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@Deployment.Spec.Replicas" ExplainField="deployment.spec.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["RevisionHistoryLimit"] Item="@Deployment.Spec.RevisionHistoryLimit" ExplainField="deployment.spec.revisionHistoryLimit"></PropertySimpleView>
         <TolerationsView Tolerations="@Deployment.Spec.Template.Spec.Tolerations"></TolerationsView>
     </HTable>
     <PodTemplateView PodTemplate="@Deployment.Spec.Template" MetadataExplainFieldPrefix="deployment"></PodTemplateView>
@@ -32,16 +32,16 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(Deployment.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
-        <HTableColumn Title="Replicas Sum">
+        <HTableColumn Title=@L["Replicas Sum"]>
             @($"{Deployment.Spec.Replicas ?? 0} desired, {Deployment.Status.UpdatedReplicas ?? 0} updated, {Deployment.Status.Replicas ?? 0} total, {Deployment.Status.AvailableReplicas ?? 0} available, {Deployment.Status.UnavailableReplicas ?? 0} unavailable")
         </HTableColumn>
-        <PropertySimpleView Title="AvailableReplicas" Item="@Deployment.Status.AvailableReplicas" ExplainField="deployment.status.availableReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="CollisionCount" Item="@Deployment.Status.CollisionCount" ExplainField="deployment.status.collisionCount"></PropertySimpleView>
-        <PropertySimpleView Title="ObservedGeneration" Item="@Deployment.Status.ObservedGeneration" ExplainField="deployment.status.observedGeneration"></PropertySimpleView>
-        <PropertySimpleView Title="ReadyReplicas" Item="@Deployment.Status.ReadyReplicas" ExplainField="deployment.status.readyReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@Deployment.Status.Replicas" ExplainField="deployment.status.replicas"></PropertySimpleView>
-        <PropertySimpleView Title="UnavailableReplicas" Item="@Deployment.Status.UnavailableReplicas" ExplainField="deployment.status.unavailableReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="UpdatedReplicas" Item="@Deployment.Status.UpdatedReplicas" ExplainField="deployment.status.updatedReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["AvailableReplicas"] Item="@Deployment.Status.AvailableReplicas" ExplainField="deployment.status.availableReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["CollisionCount"] Item="@Deployment.Status.CollisionCount" ExplainField="deployment.status.collisionCount"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ObservedGeneration"] Item="@Deployment.Status.ObservedGeneration" ExplainField="deployment.status.observedGeneration"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ReadyReplicas"] Item="@Deployment.Status.ReadyReplicas" ExplainField="deployment.status.readyReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@Deployment.Status.Replicas" ExplainField="deployment.status.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["UnavailableReplicas"] Item="@Deployment.Status.UnavailableReplicas" ExplainField="deployment.status.unavailableReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["UpdatedReplicas"] Item="@Deployment.Status.UpdatedReplicas" ExplainField="deployment.status.updatedReplicas"></PropertySimpleView>
     </HTable>
 
 

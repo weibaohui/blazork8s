@@ -12,7 +12,7 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@ReplicaSet.Spec.Selector.MatchLabels"></SelectorView>
-        <SelectorView Title="Node Selector" Selector="@ReplicaSet.Spec.Template.Spec.NodeSelector"></SelectorView>
+        <SelectorView Title=@L["Node Selector"] Selector="@ReplicaSet.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@ReplicaSet.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@ReplicaSet.Spec.Template.Spec.Tolerations"></TolerationsView>
         <PropertySimpleView Title="MinReadySeconds" Item="@ReplicaSet.Spec.MinReadySeconds" ExplainField="replicaSet.spec.minReadySeconds"></PropertySimpleView>

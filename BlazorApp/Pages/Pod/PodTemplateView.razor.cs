@@ -1,10 +1,10 @@
+using BlazorApp.Pages.Common;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Pod;
 
-public partial class PodTemplateView:ComponentBase
+public partial class PodTemplateView : PageBase
 {
     [Parameter]
     public V1PodTemplateSpec PodTemplate { get; set; }

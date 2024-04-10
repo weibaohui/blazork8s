@@ -68,7 +68,7 @@
                             @CrCount[context.Name()]
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Condition" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Condition"] TData="string" Width="100px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">

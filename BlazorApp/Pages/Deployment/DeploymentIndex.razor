@@ -11,7 +11,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd>
-                <SearchToolBar Title="Deployments" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["Deployment"] Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Deployment"
@@ -37,20 +37,16 @@
                         <Button OnClick="@(() => OnDeployClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
-
-
                     <AntDesign.Column Title=@L["Ready"] TData="int" Width="80px">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas ?? 0}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Desired" Width="80px" TData="string">
+                    <AntDesign.Column Title=@L["Desired"] Width="80px" TData="string">
                         <ColorfulTag>@(context.Spec.Replicas ?? 0)</ColorfulTag>
-                        @* <Button OnClick="@(() => BtnMinusClick(context))" Icon=Minus Size="small"></Button> *@
-                        @* <Button OnClick="@(() => BtnIncreaseClick(context))"  Icon=Plus Size="small"></Button> *@
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Latest" TData="int" Width="70px">
+                    <AntDesign.Column Title=@L["Latest"] TData="int" Width="70px">
                         @(context.Status.UpdatedReplicas ?? 0)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Available" TData="int" Width="80px">
+                    <AntDesign.Column Title=@L["Available"] TData="int" Width="80px">
                         @(context.Status.AvailableReplicas ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Selector"] TData="string">
@@ -59,14 +55,12 @@
                     <AntDesign.Column Title=@L["Images"] TData="string">
                         <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
-
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         @context.CreationTimestamp()?.AgeFromUtc()
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Condition" TData="string" Width="150px">
+                    <AntDesign.Column Title=@L["Condition"] TData="string" Width="150px">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
-
                     <ActionColumn Title=@L["Action"] Width="100px">
                         <DeploymentAction Item="@context"></DeploymentAction>
                     </ActionColumn>

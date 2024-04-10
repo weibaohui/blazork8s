@@ -38,7 +38,7 @@
                     <AntDesign.Column Title=@L["ControllerBy"] TData="string">
                         <ControllerBy Owner="@context.OwnerReferences()" Namespace="@context.Namespace()"></ControllerBy>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Desired" TData="int" Width="80px">
+                    <AntDesign.Column Title=@L["Desired"] TData="int" Width="80px">
                         @context.Status.Replicas
                     </AntDesign.Column>
                     <AntDesign.Column Title="Current" TData="int" Width="80px">
