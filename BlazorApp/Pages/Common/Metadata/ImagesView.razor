@@ -4,7 +4,7 @@
 
 @if (PodSpec != null)
 {
-    <HTableColumn Title="Images">
+    <HTableColumn Title=@L["Images"]>
         @if (PodSpec.Containers != null)
         {
             @foreach (var c in PodSpec.Containers)

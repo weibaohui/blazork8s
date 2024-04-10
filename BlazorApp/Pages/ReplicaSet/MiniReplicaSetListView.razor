@@ -12,7 +12,7 @@
             <Button OnClick="@(() => OnRsClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
-        <AntDesign.Column Title="Pods" TData="int">
+        <AntDesign.Column Title=@L["Pods"] TData="int">
             @CountPodsByOwner(@context.Metadata.Uid)
         </AntDesign.Column>
         <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">

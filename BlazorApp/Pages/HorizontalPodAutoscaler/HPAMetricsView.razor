@@ -57,7 +57,7 @@
 
                     @if (metric.Pods != null)
                     {
-                        <PropertySimpleView Title="Pods" ExplainField="horizontalPodAutoscaler.spec.metrics.pods" Item="@metric.Pods" ShowInJson="true">
+                        <PropertySimpleView Title=@L["Pods"] ExplainField="horizontalPodAutoscaler.spec.metrics.pods" Item="@metric.Pods" ShowInJson="true">
                             <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
                         </PropertySimpleView>
                     }

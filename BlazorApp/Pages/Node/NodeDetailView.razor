@@ -76,7 +76,7 @@
 
         @if (Node.Status.Images is { Count: > 0 })
         {
-            <HTableColumn Title="Images" ExplainField="node.status.images">
+            <HTableColumn Title=@L["Images"] ExplainField="node.status.images">
                 <Collapse>
                     <Panel Key="1">
                         <HeaderTemplate>

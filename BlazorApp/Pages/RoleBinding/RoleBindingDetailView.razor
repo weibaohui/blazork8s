@@ -15,7 +15,7 @@
 
         @if (RoleBinding.RoleRef is not null)
         {
-            <HTableColumn Title="Role" ExplainField="roleBinding.roleRef">
+            <HTableColumn Title=@L["Role"] ExplainField="roleBinding.roleRef">
                 <RefView Ref="@(RoleBinding.RoleRef.Adapt<V1ObjectReference>())" FullView="true"></RefView>
             </HTableColumn>
         }

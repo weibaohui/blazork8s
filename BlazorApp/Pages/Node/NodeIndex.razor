@@ -37,10 +37,10 @@
                     <AntDesign.Column Title=@L["Ready"] TData="string">
                         <ConditionsTagView Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())"></ConditionsTagView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Usage" TData="string">
+                    <AntDesign.Column Title=@L["Usage"] TData="string">
                         <NodeStatusBulletChart Node="@context"></NodeStatusBulletChart>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Cordoned" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Cordoned"] TData="string" Width="100px">
                         @if (context.Spec.Unschedulable is true)
                         {
                             <Tag Color="@PresetColor.Red.ToString()">Cordoned</Tag>
@@ -50,31 +50,31 @@
                             <Tag Color="@PresetColor.Green.ToString()">Normal</Tag>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Role" TData="string">
+                    <AntDesign.Column Title=@L["Role"] TData="string">
                         @foreach (var role in GetNodeRole(context))
                         {
                             <ColorfulTag>@role</ColorfulTag>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Pods" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Pods"] TData="string" Width="100px">
                         <ColorfulTag>@PodService.ListByNodeName(context.Name()).Count()</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="InternalIP" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["InternalIP"] TData="string" Width="100px">
                         <ColorfulTag> @context.Status.Addresses.FirstOrDefault(x => x.Type == "InternalIP")?.Address</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ExternalIP" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["ExternalIP"] TData="string" Width="100px">
                         <ColorfulTag> @context.Status.Addresses.FirstOrDefault(x => x.Type == "ExternalIP")?.Address</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="KubeletVersion" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["KubeletVersion"] TData="string" Width="100px">
                         <ColorfulTag>@context.Status.NodeInfo.KubeletVersion</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ContainerVersion" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["ContainerVersion"] TData="string" Width="100px">
                         <ColorfulTag> @context.Status.NodeInfo.ContainerRuntimeVersion</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="KernelVersion" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["KernelVersion"] TData="string" Width="100px">
                         <ColorfulTag> @context.Status.NodeInfo.KernelVersion</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="OsImage" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["OsImage"] TData="string" Width="100px">
                         <ColorfulTag>@context.Status.NodeInfo.OsImage</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">

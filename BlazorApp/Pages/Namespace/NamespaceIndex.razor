@@ -33,7 +33,7 @@
                     <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Finalizers" TData="string">
+                    <AntDesign.Column Title=@L["Finalizers"] TData="string">
                         @if (context.Spec.Finalizers is { Count: > 0 })
                         {
                             @foreach (var p in context.Spec.Finalizers)

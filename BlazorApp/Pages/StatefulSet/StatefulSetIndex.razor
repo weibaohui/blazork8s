@@ -36,7 +36,7 @@
                     <AntDesign.Column Title=@L["Ready"] TData="int">
                         @($"{context.Status.ReadyReplicas ?? 0}/{context.Status.Replicas}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Images" TData="string">
+                    <AntDesign.Column Title=@L["Images"] TData="string">
                         <ImagesListView PodSpec="@context.Spec.Template.Spec"></ImagesListView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
