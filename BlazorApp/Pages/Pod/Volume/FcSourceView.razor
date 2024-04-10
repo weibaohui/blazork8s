@@ -1,12 +1,14 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Fc != null)
 {
-    <PropertyListView Title="TargetWWNs" ExplainField=@(FieldPrefix+".fc.targetWWNs") Items="@Fc.TargetWWNs" T="string"></PropertyListView>
-    <PropertyListView Title="Wwids" ExplainField=@(FieldPrefix+".fc.wwids") Items="@Fc.Wwids" T="string"></PropertyListView>
-    <PropertySimpleView Title="Lun" ExplainField=@(FieldPrefix+".fc.lun") Item="@Fc.Lun"></PropertySimpleView>
-    <PropertySimpleView Title="FsType" ExplainField=@(FieldPrefix+".fc.fsType") Item="@Fc.FsType"></PropertySimpleView>
-    <PropertySimpleView Title="ReadOnly" ExplainField=@(FieldPrefix+".fc.readOnly") Item="@Fc.ReadOnlyProperty"></PropertySimpleView>
+    <PropertyListView Title=@L["TargetWWNs"] ExplainField=@(FieldPrefix + ".fc.targetWWNs") Items="@Fc.TargetWWNs" T="string"></PropertyListView>
+    <PropertyListView Title=@L["Wwids"] ExplainField=@(FieldPrefix + ".fc.wwids") Items="@Fc.Wwids" T="string"></PropertyListView>
+    <PropertySimpleView Title=@L["Lun"] ExplainField=@(FieldPrefix + ".fc.lun") Item="@Fc.Lun"></PropertySimpleView>
+    <PropertySimpleView Title=@L["FsType"] ExplainField=@(FieldPrefix + ".fc.fsType") Item="@Fc.FsType"></PropertySimpleView>
+    <PropertySimpleView Title=@L["ReadOnly"] ExplainField=@(FieldPrefix + ".fc.readOnly") Item="@Fc.ReadOnlyProperty"></PropertySimpleView>
 }
 
 
@@ -14,6 +16,8 @@
 
     [Parameter]
     public V1FCVolumeSource Fc { get; set; }
+
     [Parameter]
     public string FieldPrefix { get; set; }
+
 }

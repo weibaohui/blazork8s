@@ -1,6 +1,8 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Volume.PersistentVolumeClaim != null)
 {
     <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
@@ -14,14 +16,14 @@
                 <HTable >
                     <HTr>
                         <HTd>
-                            Volume
+                            @L["Volume"]
                             <KubectlExplainButton Field="pod.spec.volumes.persistentVolumeClaim"></KubectlExplainButton>
                         </HTd>
                         <HTd >
                             <RefView Ref="@TransferToRef(Volume)" FullView="true"></RefView>
                         </HTd>
                     </HTr>
-                 </HTable>
+                </HTable>
             </Card>
         </ChildContent>
     </BadgeRibbon>

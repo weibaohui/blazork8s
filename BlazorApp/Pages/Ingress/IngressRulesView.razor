@@ -2,6 +2,8 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Rules is { Count: > 0 })
 {
     <HTableColumn Title="@Title" ExplainField="ingress.spec.rules.http">
@@ -18,7 +20,7 @@
                 {
                     @foreach (var path in rule.Http.Paths)
                     {
-                        <HTableColumn Title="Path">
+                        <HTableColumn Title=@L["Path"]>
                             <ColorfulTag>@($"[{path.PathType}] {path.Path}")</ColorfulTag>
                             ==>
                             <IngressBackendNoTableView Backend="@path.Backend"></IngressBackendNoTableView>

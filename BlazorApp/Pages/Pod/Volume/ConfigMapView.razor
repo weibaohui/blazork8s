@@ -15,17 +15,17 @@
         <ChildContent>
             <Card Bordered>
                 <HTable >
-                    <HTableColumn Title="Volume" ExplainField="pod.spec.volumes.secret">
+                    <HTableColumn Title=@L["Volume"] ExplainField="pod.spec.volumes.secret">
                         <RefView Ref="@TransferToRef(Volume)" FullView="true"></RefView>
                     </HTableColumn>
                     <PropertySimpleView Title=@L["Name"] ExplainField="pod.spec.volumes.configMap.name" Item="@Volume.ConfigMap.Name"></PropertySimpleView>
-                    <PropertySimpleView Title="DefaultMode" ExplainField="pod.spec.volumes.configMap.defaultMode" Item="@Volume.ConfigMap.DefaultMode"></PropertySimpleView>
-                    <PropertySimpleView Title="Optional" ExplainField="pod.spec.volumes.configMap.optional" Item="@Volume.ConfigMap.Optional"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["DefaultMode"] ExplainField="pod.spec.volumes.configMap.defaultMode" Item="@Volume.ConfigMap.DefaultMode"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["Optional"] ExplainField="pod.spec.volumes.configMap.optional" Item="@Volume.ConfigMap.Optional"></PropertySimpleView>
                     @if (Volume.ConfigMap.Items != null)
                     {
                         @foreach (var ktp in Volume.ConfigMap.Items)
                         {
-                            <HTableColumn Title="ConfigMap" ExplainField="pod.spec.volumes.configMap">
+                            <HTableColumn Title=@L["ConfigMap"] ExplainField="pod.spec.volumes.configMap">
                                 <Tag>@ktp.Key => @ktp.Path</Tag>
                                 @if (ktp.Mode != null)
                                 {
@@ -43,7 +43,6 @@
 
 
 @code {
-
 
 
     [Parameter]

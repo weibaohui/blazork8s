@@ -1,10 +1,12 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Nfs != null)
 {
-    <PropertySimpleView Title="Server" ExplainField=@(FieldPrefix + ".nfs.server") Item="@Nfs.Server"></PropertySimpleView>
-    <PropertySimpleView Title="Path" ExplainField=@(FieldPrefix + ".nfs.path") Item="@Nfs.Path"></PropertySimpleView>
-    <PropertySimpleView Title="ReadOnly" ExplainField=@(FieldPrefix + ".nfs.readOnly") Item="@Nfs.ReadOnlyProperty"></PropertySimpleView>
+    <PropertySimpleView Title=@L["Server"] ExplainField=@(FieldPrefix + ".nfs.server") Item="@Nfs.Server"></PropertySimpleView>
+    <PropertySimpleView Title=@L["Path"] ExplainField=@(FieldPrefix + ".nfs.path") Item="@Nfs.Path"></PropertySimpleView>
+    <PropertySimpleView Title=@L["ReadOnly"] ExplainField=@(FieldPrefix + ".nfs.readOnly") Item="@Nfs.ReadOnlyProperty"></PropertySimpleView>
 }
 
 

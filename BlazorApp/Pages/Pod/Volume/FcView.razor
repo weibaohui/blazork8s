@@ -2,6 +2,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Utils
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (Volume.Fc != null)
 {
     <BadgeRibbon Text="@Volume.Name" Placement="start" Color="#832">
@@ -15,7 +17,7 @@
                 <HTable >
                     <HTr>
                         <HTd>
-                            Volume
+                            @L["Volume"]
                             <KubectlExplainButton Field="pod.spec.volumes.fc"></KubectlExplainButton>
                         </HTd>
                         <HTd >

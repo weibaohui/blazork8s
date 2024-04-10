@@ -53,7 +53,7 @@
             @foreach (var metric in Hpa.Spec.Metrics)
             {
                 <HTable Bordered Column="1">
-                    <PropertyOptionView Title="Type" ExplainField="horizontalPodAutoscaler.spec.metrics.type" Item="@metric.Type" Options='@(new[] { "ContainerResource", "External", "Object", "Pods", "Resource" })'></PropertyOptionView>
+                    <PropertyOptionView Title=@L["Type"] ExplainField="horizontalPodAutoscaler.spec.metrics.type" Item="@metric.Type" Options='@(new[] { "ContainerResource", "External", "Object", "Pods", "Resource" })'></PropertyOptionView>
 
                     @if (metric.Pods != null)
                     {

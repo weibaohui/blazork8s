@@ -14,7 +14,7 @@
         {
             @foreach (var limit in LimitRange.Spec.Limits)
             {
-                <PropertySimpleView Item="limit.Type" Title="Type" ExplainField="limitRange.spec.limits.type"></PropertySimpleView>
+                <PropertySimpleView Item="limit.Type" Title=@L["Type"] ExplainField="limitRange.spec.limits.type"></PropertySimpleView>
                 <PropertyMapView Items="limit.DefaultProperty" Title="Default" T="ResourceQuantity" ExplainField="limitRange.spec.limits.default"></PropertyMapView>
                 <PropertyMapView Items="limit.DefaultRequest" Title="DefaultRequest" T="ResourceQuantity" ExplainField="limitRange.spec.limits.defaultRequest"></PropertyMapView>
                 <PropertyMapView Items="limit.Max" Title="Max" T="ResourceQuantity" ExplainField="limitRange.spec.limits.max"></PropertyMapView>

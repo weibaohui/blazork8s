@@ -26,7 +26,7 @@
                                         <RefView Ref="@GetRef(hook.ClientConfig.Service)" FullView="true"></RefView>
                                     }
                                 </PropertySimpleView>
-                                <PropertySimpleView Title="Path" Item="@hook.ClientConfig.Service.Path" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.path")></PropertySimpleView>
+                                <PropertySimpleView Title=@L["Path"] Item="@hook.ClientConfig.Service.Path" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.path")></PropertySimpleView>
                                 <PropertySimpleView Title="Port" Item="@hook.ClientConfig.Service.Port" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.port")></PropertySimpleView>
                             }
                         }
@@ -48,7 +48,6 @@
 }
 
 @code {
-
 
 
     [Parameter]

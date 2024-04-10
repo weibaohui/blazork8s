@@ -1,9 +1,11 @@
 @using k8s.Models
 @using BlazorApp.Pages.Common.Metadata
-@if (HostPath  != null)
+@inherits BlazorApp.Pages.Common.PageBase
+
+@if (HostPath != null)
 {
-    <PropertyOptionView Title="Type" Item="@HostPath.Type" Options='@(new[] { "", "DirectoryOrCreate", "Directory", "FileOrCreate", "File", "Socket", "CharDevice", "BlockDevice" })' ExplainField=@(FieldPrefix+".hostPath.type")></PropertyOptionView>
-    <PropertySimpleView Title="Path" ExplainField=@(FieldPrefix+".hostPath.path") Item="@HostPath.Path"></PropertySimpleView>
+    <PropertyOptionView Title=@L["Type"] Item="@HostPath.Type" Options='@(new[] { "", "DirectoryOrCreate", "Directory", "FileOrCreate", "File", "Socket", "CharDevice", "BlockDevice" })' ExplainField=@(FieldPrefix + ".hostPath.type")></PropertyOptionView>
+    <PropertySimpleView Title=@L["Path"] ExplainField=@(FieldPrefix + ".hostPath.path") Item="@HostPath.Path"></PropertySimpleView>
 }
 
 
@@ -14,4 +16,5 @@
 
     [Parameter]
     public string FieldPrefix { get; set; }
+
 }
