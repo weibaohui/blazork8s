@@ -12,7 +12,7 @@
     <NodeAction Item="Node" MenuMode="MenuMode.Horizontal"></NodeAction>
     @if (_isMetricsServerReady)
     {
-        <Divider Orientation="left" Style="font-weight:bold">Metrics</Divider>
+        <Divider Orientation="left" Style="font-weight:bold">@L["Metrics"]</Divider>
         <Tabs Animated>
             <TabPane Tab="CPU" Key="1">
                 <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
@@ -28,12 +28,12 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <TaintsView Taints="@Node.Spec.Taints"></TaintsView>
-        <PropertySimpleView Title="ConfigSource" Item="@Node.Spec.ConfigSource" ExplainField="node.spec.configSource" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="ExternalID" Item="@Node.Spec.ExternalID" ExplainField="node.spec.externalID"></PropertySimpleView>
-        <PropertySimpleView Title="PodCIDR" Item="@Node.Spec.PodCIDR" ExplainField="node.spec.podCIDR"></PropertySimpleView>
-        <PropertyListView Title="PodCIDRs" Items="@Node.Spec.PodCIDRs" ExplainField="node.spec.podCIDRs" T="string"></PropertyListView>
-        <PropertySimpleView Title="ProviderID" Item="@Node.Spec.ProviderID" ExplainField="node.spec.providerID"></PropertySimpleView>
-        <PropertySimpleView Title="Unschedulable" Item="@Node.Spec.Unschedulable" ExplainField="node.spec.unschedulable"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ConfigSource"] Item="@Node.Spec.ConfigSource" ExplainField="node.spec.configSource" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ExternalID"] Item="@Node.Spec.ExternalID" ExplainField="node.spec.externalID"></PropertySimpleView>
+        <PropertySimpleView Title=@L["PodCIDR"] Item="@Node.Spec.PodCIDR" ExplainField="node.spec.podCIDR"></PropertySimpleView>
+        <PropertyListView Title=@L["PodCIDRs"] Items="@Node.Spec.PodCIDRs" ExplainField="node.spec.podCIDRs" T="string"></PropertyListView>
+        <PropertySimpleView Title=@L["ProviderID"] Item="@Node.Spec.ProviderID" ExplainField="node.spec.providerID"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Unschedulable"] Item="@Node.Spec.Unschedulable" ExplainField="node.spec.unschedulable"></PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
@@ -50,28 +50,28 @@
         }
         @if (Node.Status.DaemonEndpoints != null)
         {
-            <HTableColumn Title="DaemonEndpoints" ExplainField="node.status.daemonEndpoints">
+            <HTableColumn Title=@L["DaemonEndpoints"] ExplainField="node.status.daemonEndpoints">
                 <ColorfulTag > @($"KubeletEndpoint:{Node.Status.DaemonEndpoints.KubeletEndpoint.Port}")</ColorfulTag>
             </HTableColumn>
         }
         @if (Node.Status.NodeInfo != null)
         {
-            <HTableColumn Title="NodeInfo" ExplainField="node.status.nodeInfo">
+            <HTableColumn Title=@L["NodeInfo"] ExplainField="node.status.nodeInfo">
                 <HTable>
-                    <PropertySimpleView Title="Architecture" Item="@Node.Status.NodeInfo.Architecture" ExplainField="node.status.nodeInfo.architecture"></PropertySimpleView>
-                    <PropertySimpleView Title="BootID" Item="@Node.Status.NodeInfo.BootID" ExplainField="node.status.nodeInfo.bootID"></PropertySimpleView>
-                    <PropertySimpleView Title="ContainerRuntimeVersion" Item="@Node.Status.NodeInfo.ContainerRuntimeVersion" ExplainField="node.status.nodeInfo.containerRuntimeVersion"></PropertySimpleView>
-                    <PropertySimpleView Title="KernelVersion" Item="@Node.Status.NodeInfo.KernelVersion" ExplainField="node.status.nodeInfo.kernelVersion"></PropertySimpleView>
-                    <PropertySimpleView Title="KubeProxyVersion" Item="@Node.Status.NodeInfo.KubeProxyVersion" ExplainField="node.status.nodeInfo.kubeProxyVersion"></PropertySimpleView>
-                    <PropertySimpleView Title="KubeletVersion" Item="@Node.Status.NodeInfo.KubeletVersion" ExplainField="node.status.nodeInfo.kubeletVersion"></PropertySimpleView>
-                    <PropertySimpleView Title="MachineID" Item="@Node.Status.NodeInfo.MachineID" ExplainField="node.status.nodeInfo.machineID"></PropertySimpleView>
-                    <PropertySimpleView Title="OperatingSystem" Item="@Node.Status.NodeInfo.OperatingSystem" ExplainField="node.status.nodeInfo.operatingSystem"></PropertySimpleView>
-                    <PropertySimpleView Title="OsImage" Item="@Node.Status.NodeInfo.OsImage" ExplainField="node.status.nodeInfo.osImage"></PropertySimpleView>
-                    <PropertySimpleView Title="SystemUUID" Item="@Node.Status.NodeInfo.SystemUUID" ExplainField="node.status.nodeInfo.systemUUID"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["Architecture"] Item="@Node.Status.NodeInfo.Architecture" ExplainField="node.status.nodeInfo.architecture"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["BootID"] Item="@Node.Status.NodeInfo.BootID" ExplainField="node.status.nodeInfo.bootID"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["ContainerRuntimeVersion"] Item="@Node.Status.NodeInfo.ContainerRuntimeVersion" ExplainField="node.status.nodeInfo.containerRuntimeVersion"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["KernelVersion"] Item="@Node.Status.NodeInfo.KernelVersion" ExplainField="node.status.nodeInfo.kernelVersion"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["KubeProxyVersion"] Item="@Node.Status.NodeInfo.KubeProxyVersion" ExplainField="node.status.nodeInfo.kubeProxyVersion"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["KubeletVersion"] Item="@Node.Status.NodeInfo.KubeletVersion" ExplainField="node.status.nodeInfo.kubeletVersion"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["MachineID"] Item="@Node.Status.NodeInfo.MachineID" ExplainField="node.status.nodeInfo.machineID"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["OperatingSystem"] Item="@Node.Status.NodeInfo.OperatingSystem" ExplainField="node.status.nodeInfo.operatingSystem"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["OsImage"] Item="@Node.Status.NodeInfo.OsImage" ExplainField="node.status.nodeInfo.osImage"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["SystemUUID"] Item="@Node.Status.NodeInfo.SystemUUID" ExplainField="node.status.nodeInfo.systemUUID"></PropertySimpleView>
                 </HTable>
             </HTableColumn>
         }
-        <PropertySimpleView Title="Config" Item="@Node.Status.Config" ExplainField="node.status.config" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Config"] Item="@Node.Status.Config" ExplainField="node.status.config" ShowInJson="true"></PropertySimpleView>
 
 
         @if (Node.Status.Images is { Count: > 0 })
@@ -103,7 +103,7 @@
 
         @if (Node.Status.VolumesAttached is { Count: > 0 })
         {
-            <HTableColumn Title="VolumesAttached" ExplainField="node.status.volumesAttached">
+            <HTableColumn Title=@L["VolumesAttached"] ExplainField="node.status.volumesAttached">
                 <Collapse>
                     <Panel Key="1">
                         <HeaderTemplate>
@@ -116,7 +116,7 @@
                                     <HTableColumn Title=@L["Name"] ExplainField="node.status.volumesAttached.name">
                                         <div > @(attached.Name)</div>
                                     </HTableColumn>
-                                    <PropertySimpleView Title="DevicePath" Item="@attached.DevicePath" ExplainField="node.status.volumesAttached.devicePath"></PropertySimpleView>
+                                    <PropertySimpleView Title=@L["DevicePath"] Item="@attached.DevicePath" ExplainField="node.status.volumesAttached.devicePath"></PropertySimpleView>
                                 </HTable>
                             }
                         </ChildContent>
@@ -124,7 +124,7 @@
                 </Collapse>
             </HTableColumn>
         }
-        <PropertyListView Title="VolumesInUse" T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
+        <PropertyListView Title=@L["VolumesInUse"] T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
     </HTable>
     <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable"></NodeResourceCompareView>
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>

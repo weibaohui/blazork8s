@@ -3,7 +3,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.PageBase
 
-<Divider Orientation="left" Style="font-weight:bold">Pod</Divider>
+<Divider Orientation="left" Style="font-weight:bold">@L["Pod"]</Divider>
 @if (Pods is { Count: > 0 })
 {
     <Table TItem="V1Pod" DataSource="@Pods"
