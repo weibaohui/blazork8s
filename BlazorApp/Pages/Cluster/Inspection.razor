@@ -8,12 +8,12 @@
 
 <div style="margin: 50px">
     <GridRow Class="grid-table">
-        <GridCol Span="2">Latest:</GridCol>
+        <GridCol Span="2">@L["Latest"]:</GridCol>
         <GridCol Span="6">
             @LastInspection.ToLocalTime()
             (<AgeView Age="@LastInspection"></AgeView> ago)
         </GridCol>
-        <GridCol Span="2">Errors:</GridCol>
+        <GridCol Span="2">@L["Error"]:</GridCol>
         <GridCol Span="6">
             <Badge Count="@AnalyzeResult.Count" ShowZero="true"/>
         </GridCol>
@@ -27,7 +27,7 @@
                 @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                 {
                     <div>
-                        @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
+                        @($"{L[kv.Kind]}") @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
                     </div>
                 }
             }
@@ -36,7 +36,7 @@
                 @foreach (var name in PassResources)
                 {
                     <div>
-                        @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                        @($"{L[name]}") @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
                     </div>
                 }
             }
@@ -44,12 +44,15 @@
         <GridCol Span="16">
             @if (Ai.Enabled())
             {
-                <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">分析</Button>
-                @if (!_aiSummary.IsNullOrWhiteSpace())
+                if (AnalyzeResult is { Count: > 0 })
                 {
-                    <Alert Type="@AlertType.Warning">
-                        @((MarkupString)_aiSummary.ToHtmlDisplay())
-                    </Alert>
+                    <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">@L["Diagnosis"]</Button>
+                    @if (!_aiSummary.IsNullOrWhiteSpace())
+                    {
+                        <Alert Type="@AlertType.Warning">
+                            @((MarkupString)_aiSummary.ToHtmlDisplay())
+                        </Alert>
+                    }
                 }
             }
         </GridCol>

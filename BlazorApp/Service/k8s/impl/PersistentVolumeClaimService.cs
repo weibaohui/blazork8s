@@ -8,7 +8,7 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class PersistentVolumeClaimService(IKubeService kubeService,IEventService eventService)
+public class PersistentVolumeClaimService(IKubeService kubeService, IEventService eventService)
     : CommonAction<V1PersistentVolumeClaim>, IPersistentVolumeClaimService
 {
     public new async Task<object> Delete(string ns, string name)
@@ -24,12 +24,15 @@ public class PersistentVolumeClaimService(IKubeService kubeService,IEventService
         {
             var failures = new List<Failure>();
 
-            if (item.Status.Phase=="Pending")
+            if (item.Status.Phase == "Pending")
             {
-                var evt =await eventService.GetInvolvingObjectLatestEvent(item.Namespace(), item.Name());
-                if (evt == null){continue;}
+                var evt = await eventService.GetInvolvingObjectLatestEvent(item.Namespace(), item.Name());
+                if (evt == null)
+                {
+                    continue;
+                }
 
-                if (evt.Reason=="ProvisioningFailed")
+                if (evt.Reason == "ProvisioningFailed")
                 {
                     failures.Add(new Failure()
                     {
@@ -37,19 +40,19 @@ public class PersistentVolumeClaimService(IKubeService kubeService,IEventService
                     });
                 }
             }
-            
 
 
             if (failures.Count <= 0) continue;
-            results.Add(Result.NewResult(item,failures));
+            results.Add(Result.NewResult(item, failures));
         }
+
         if (results.Count == 0)
         {
-            ClusterInspectionResultContainer.Instance.GetPassResources().Add("PVC");
+            ClusterInspectionResultContainer.Instance.GetPassResources().Add("PersistentVolumeClaim");
         }
-        ClusterInspectionResultContainer.Instance.AddResourcesCount("PVC", items.ToList().Count);
+
+        ClusterInspectionResultContainer.Instance.AddResourcesCount("PersistentVolumeClaim", items.ToList().Count);
 
         return results;
     }
-
 }
