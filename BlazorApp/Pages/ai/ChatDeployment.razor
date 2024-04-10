@@ -4,7 +4,7 @@
 
 <GridRow >
     <GridCol Span="6">
-        <Card Title="提示词">
+        <Card Title=@L["Prompt"]>
             <AntList Bordered DataSource="@_data" Size="small">
                 <ChildContent Context="item">
                     <ListItem OnClick="@(() => CopyToSearch(item))">
@@ -13,26 +13,26 @@
                 </ChildContent>
             </AntList>
             <TextArea Bordered AutoSize MinRows="20" @bind-Value="@_txtValue" Style="padding-top: 20px"  ></TextArea>
-            <Button OnClick="ChatBtnClicked" Type="@ButtonType.Primary">发送</Button>
+            <Button OnClick="ChatBtnClicked" Type="@ButtonType.Primary">@L["Send"]</Button>
         </Card>
     </GridCol>
 
     <GridCol Span="12">
-        <Card Title="@(_aiName + "反馈")">
+        <Card Title="@(_aiName + L["Response"])">
             <Text Copyable>
                 @((MarkupString)_advice.ToHtmlDisplay())
             </Text>
         </Card>
     </GridCol>
     <GridCol Span="6">
-        <Card Title="提取Yaml">
+        <Card Title=@L["Yaml"]>
 
             <TextArea Bordered AutoSize MinRows="20"  @bind-Value="@_yamlAdvice"></TextArea>
-            <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
-            <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">删除</Button>
+            <Button OnClick="BtnApplyClicked" Type="@ButtonType.Primary">@L["Apply"]</Button>
+            <Button Danger="true" Type="@ButtonType.Primary" OnClick="BtnDeleteClicked">@L["Delete"]</Button>
             @if (!string.IsNullOrEmpty(_execResult))
             {
-                <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                <Divider Orientation="left" Style="font-weight:bold">@L["Result"]</Divider>
                 <div>
                     <p>
                         <Text Copyable>
