@@ -8,7 +8,7 @@
 <HTable Bordered Column="1">
     @if (PodSpec.HostAliases != null)
     {
-        <HTableColumn Title="HostAliases" ExplainField="pod.spec.hostAliases">
+        <HTableColumn Title=@L["HostAliases"] ExplainField="pod.spec.hostAliases">
             @foreach (var alias in PodSpec.HostAliases)
             {
                 @foreach (var hostname in alias.Hostnames)

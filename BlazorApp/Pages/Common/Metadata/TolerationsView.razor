@@ -14,11 +14,11 @@
                     <Table TItem="V1Toleration" DataSource="Tolerations"
                            HidePagination="true" PageSize="5000"
                            Size=@TableSize.Small Bordered="true">
-                        <AntDesign.Column TData="string" Title="Key" Field="@context.Key"/>
-                        <AntDesign.Column TData="string" Title="Operator" Field="@context.OperatorProperty"/>
-                        <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
-                        <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
-                        <AntDesign.Column TData="string" Title="TolerationSeconds">@context.TolerationSeconds</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title=@L["Key"] Field="@context.Key"/>
+                        <AntDesign.Column TData="string" Title=@L["TolerationOperator"] Field="@context.OperatorProperty"/>
+                        <AntDesign.Column TData="string" Title=@L["Value"]>@context.Value</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title=@L["Effect"]>@context.Effect</AntDesign.Column>
+                        <AntDesign.Column TData="string" Title=@L["TolerationSeconds"]>@context.TolerationSeconds</AntDesign.Column>
                     </Table>
                 </ChildContent>
             </Panel>
