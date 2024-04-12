@@ -1,8 +1,8 @@
 @page "/DaemonSet"
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1DaemonSet>
 @if (TableData.PagedItems != null)
 {
@@ -36,7 +36,7 @@
                     <AntDesign.Column Title=@L["Desired"] TData="int" Width="70px">
                         @(context.Status.DesiredNumberScheduled)
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Current" TData="int" Width="70px">
+                    <AntDesign.Column Title=@L["Current"] TData="int" Width="70px">
                         @($"{context.Status.CurrentNumberScheduled}")
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Ready"] TData="int" Width="70px">

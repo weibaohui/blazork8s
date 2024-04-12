@@ -1,43 +1,49 @@
-@using Extension
-@using k8s.Models
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
+@using Extension
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
 @if (SecurityContext != null && !SecurityContext.ToJson().Equals("{}"))
 {
-    <Divider Orientation="left" Style="font-weight:bold"> Container Security Context </Divider>
+    <Divider Orientation="left" Style="font-weight:bold"> @L["ContainerSecurityContext"]</Divider>
 
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="RunAsGroup" Item="@SecurityContext.RunAsGroup" ExplainField="pod.spec.containers.securityContext.runAsGroup"></PropertySimpleView>
-        <PropertySimpleView Title="RunAsNonRoot" Item="@SecurityContext.RunAsNonRoot" ExplainField="pod.spec.containers.securityContext.runAsNonRoot"></PropertySimpleView>
-        <PropertySimpleView Title="RunAsUser" Item="@SecurityContext.RunAsUser" ExplainField="pod.spec.containers.securityContext.runAsUser"></PropertySimpleView>
+        <PropertySimpleView Title=@L["RunAsGroup"] Item="@SecurityContext.RunAsGroup"
+                            ExplainField="pod.spec.containers.securityContext.runAsGroup">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["RunAsNonRoot"] Item="@SecurityContext.RunAsNonRoot"
+                            ExplainField="pod.spec.containers.securityContext.runAsNonRoot">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["RunAsUser"] Item="@SecurityContext.RunAsUser"
+                            ExplainField="pod.spec.containers.securityContext.runAsUser">
+        </PropertySimpleView>
         @if (SecurityContext.SeLinuxOptions != null)
         {
-            <HTableColumn Title="SeLinuxOptions" ExplainField="pod.spec.containers.securityContext.seLinuxOptions">
+            <HTableColumn Title=@L["SeLinuxOptions"] ExplainField="pod.spec.containers.securityContext.seLinuxOptions">
 
                 @if (SecurityContext.SeLinuxOptions.Level != null)
                 {
-                    <ColorfulTag >
+                    <ColorfulTag>
                         @($"Level={SecurityContext.SeLinuxOptions.Level}")
                     </ColorfulTag>
                 }
                 @if (SecurityContext.SeLinuxOptions.User != null)
                 {
-                    <ColorfulTag >
+                    <ColorfulTag>
                         @($"User={SecurityContext.SeLinuxOptions.User}")
                     </ColorfulTag>
                 }
                 @if (SecurityContext.SeLinuxOptions.Type != null)
                 {
-                    <ColorfulTag >
+                    <ColorfulTag>
                         @($"Type={SecurityContext.SeLinuxOptions.Type}")
                     </ColorfulTag>
                 }
                 @if (SecurityContext.SeLinuxOptions.Role != null)
                 {
-                    <ColorfulTag >
+                    <ColorfulTag>
                         @($"Role={SecurityContext.SeLinuxOptions.Role}")
                     </ColorfulTag>
                 }
@@ -46,17 +52,32 @@
 
         @if (SecurityContext.SeccompProfile != null)
         {
-            <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.containers.securityContext.seccompProfile" Item="@SecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
-            <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.containers.securityContext.seccompProfile.LocalhostProfile" Item="@SecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
+            <PropertyOptionView Title=@L["SeccompProfile"] ExplainField="pod.spec.containers.securityContext.seccompProfile"
+                                Item="@SecurityContext.SeccompProfile.Type"
+                                Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'>
+            </PropertyOptionView>
+            <PropertySimpleView Title=@L["LocalhostProfile"]
+                                ExplainField="pod.spec.containers.securityContext.seccompProfile.LocalhostProfile"
+                                Item="@SecurityContext.SeccompProfile.LocalhostProfile">
+            </PropertySimpleView>
         }
 
-        <PropertySimpleView Title="AllowPrivilegeEscalation" Item="@SecurityContext.AllowPrivilegeEscalation" ExplainField="pod.spec.containers.securityContext.allowPrivilegeEscalation"></PropertySimpleView>
-        <PropertySimpleView Title="Privileged" Item="@SecurityContext.Privileged" ExplainField="pod.spec.containers.securityContext.privileged"></PropertySimpleView>
-        <PropertyOptionView Title="ProcMount" ExplainField="pod.spec.containers.securityContext.procMount" Item="@SecurityContext.ProcMount" Options='@(new[] { "Default", "Unmasked" })'></PropertyOptionView>
-        <PropertySimpleView Title="ReadOnlyRootFilesystem" Item="@SecurityContext.ReadOnlyRootFilesystem" ExplainField="pod.spec.containers.securityContext.readOnlyRootFilesystem"></PropertySimpleView>
+        <PropertySimpleView Title=@L["AllowPrivilegeEscalation"] Item="@SecurityContext.AllowPrivilegeEscalation"
+                            ExplainField="pod.spec.containers.securityContext.allowPrivilegeEscalation">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Privileged"] Item="@SecurityContext.Privileged"
+                            ExplainField="pod.spec.containers.securityContext.privileged">
+        </PropertySimpleView>
+        <PropertyOptionView Title=@L["ProcMount"] ExplainField="pod.spec.containers.securityContext.procMount"
+                            Item="@SecurityContext.ProcMount"
+                            Options='@(new[] { "Default", "Unmasked" })'>
+        </PropertyOptionView>
+        <PropertySimpleView Title=@L["ReadOnlyRootFilesystem"] Item="@SecurityContext.ReadOnlyRootFilesystem"
+                            ExplainField="pod.spec.containers.securityContext.readOnlyRootFilesystem">
+        </PropertySimpleView>
         @if (SecurityContext.Capabilities != null)
         {
-            <HTableColumn Title="Capabilities" ExplainField="pod.spec.containers.securityContext.capabilities">
+            <HTableColumn Title=@L["Capabilities"] ExplainField="pod.spec.containers.securityContext.capabilities">
 
                 @if (SecurityContext.Capabilities.Add is { Count: > 0 })
                 {
@@ -82,14 +103,14 @@
         }
         @if (SecurityContext.WindowsOptions != null)
         {
-            <HTableColumn Title="WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions">
+            <HTableColumn Title=@L["WindowsOptions"] ExplainField="pod.spec.securityContext.windowsOptions">
 
                 @if (SecurityContext.WindowsOptions.GmsaCredentialSpec != null)
                 {
                     <div>
 
 
-                        <ColorfulTag >
+                        <ColorfulTag>
                             @($"GmsaCredentialSpec={SecurityContext.WindowsOptions.GmsaCredentialSpec}")
                         </ColorfulTag>
                     </div>
@@ -97,7 +118,7 @@
                 @if (SecurityContext.WindowsOptions.GmsaCredentialSpecName != null)
                 {
                     <div>
-                        <ColorfulTag >
+                        <ColorfulTag>
                             @($"GmsaCredentialSpecName={SecurityContext.WindowsOptions.GmsaCredentialSpecName}")
                         </ColorfulTag>
                     </div>
@@ -105,7 +126,7 @@
                 @if (SecurityContext.WindowsOptions.HostProcess != null)
                 {
                     <div>
-                        <ColorfulTag >
+                        <ColorfulTag>
                             @($"HostProcess={SecurityContext.WindowsOptions.HostProcess}")
                         </ColorfulTag>
                     </div>
@@ -113,7 +134,7 @@
                 @if (SecurityContext.WindowsOptions.RunAsUserName != null)
                 {
                     <div>
-                        <ColorfulTag >
+                        <ColorfulTag>
                             @($"RunAsUserName={SecurityContext.WindowsOptions.RunAsUserName}")
                         </ColorfulTag>
                     </div>
@@ -126,7 +147,6 @@
 
 @code{
 
-    [Parameter]
-    public V1SecurityContext SecurityContext { get; set; }
+    [Parameter] public V1SecurityContext SecurityContext { get; set; }
 
 }

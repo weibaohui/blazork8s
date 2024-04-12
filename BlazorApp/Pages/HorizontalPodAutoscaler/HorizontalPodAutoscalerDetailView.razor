@@ -1,9 +1,9 @@
-@using Mapster
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V2HorizontalPodAutoscaler>
 @if (HorizontalPodAutoscaler != null)
 {
@@ -52,7 +52,9 @@
                 (@HorizontalPodAutoscaler.Status.LastScaleTime.GetValueOrDefault().ToLocalTime())
             </PropertySimpleView>
         }
-        <PropertySimpleView Title="ObservedGeneration" Item="@HorizontalPodAutoscaler.Status.ObservedGeneration" ExplainField="horizontalPodAutoscaler.status.observedGeneration"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ObservedGeneration"] Item="@HorizontalPodAutoscaler.Status.ObservedGeneration"
+                            ExplainField="horizontalPodAutoscaler.status.observedGeneration">
+        </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@HorizontalPodAutoscaler.Metadata.Uid"></MiniEventListView>
 }

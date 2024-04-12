@@ -1,11 +1,11 @@
-@using Mapster
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1StatefulSet>
 @if (StatefulSet != null)
 {
@@ -16,8 +16,8 @@
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@StatefulSet.Spec.Selector.MatchLabels"></SelectorView>
         <PropertySimpleView Title="ServiceName" Item="@StatefulSet.Spec.ServiceName" ExplainField="statefulSet.spec.serviceName"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@StatefulSet.Spec.Replicas" ExplainField="statefulSet.spec.replicas"></PropertySimpleView>
-        <PropertySimpleView Title="MinReadySeconds" Item="@StatefulSet.Spec.MinReadySeconds" ExplainField="statefulSet.spec.minReadySeconds"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@StatefulSet.Spec.Replicas" ExplainField="statefulSet.spec.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["MinReadySeconds"] Item="@StatefulSet.Spec.MinReadySeconds" ExplainField="statefulSet.spec.minReadySeconds"></PropertySimpleView>
         <PropertySimpleView Title="RevisionHistoryLimit" Item="@StatefulSet.Spec.RevisionHistoryLimit" ExplainField="statefulSet.spec.revisionHistoryLimit"></PropertySimpleView>
         <PropertySimpleView Title="Ordinals" Item="@StatefulSet.Spec.Ordinals" ExplainField="statefulSet.spec.ordinals" ShowInJson="true"></PropertySimpleView>
         @if (StatefulSet.Spec.PersistentVolumeClaimRetentionPolicy != null)
@@ -49,14 +49,14 @@
     <PodSpecView PodSpec="@StatefulSet.Spec.Template.Spec"></PodSpecView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="AvailableReplicas" Item="@StatefulSet.Status.AvailableReplicas" ExplainField="statefulSet.status.availableReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["AvailableReplicas"] Item="@StatefulSet.Status.AvailableReplicas" ExplainField="statefulSet.status.availableReplicas"></PropertySimpleView>
         <PropertySimpleView Title="CollisionCount" Item="@StatefulSet.Status.CollisionCount" ExplainField="statefulSet.status.collisionCount"></PropertySimpleView>
-        <PropertySimpleView Title="Conditions" Item="@StatefulSet.Status.Conditions" ExplainField="statefulSet.status.conditions" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Conditions"] Item="@StatefulSet.Status.Conditions" ExplainField="statefulSet.status.conditions" ShowInJson="true"></PropertySimpleView>
         <PropertySimpleView Title="CurrentReplicas" Item="@StatefulSet.Status.CurrentReplicas" ExplainField="statefulSet.status.currentReplicas"></PropertySimpleView>
         <PropertySimpleView Title="CurrentRevision" Item="@StatefulSet.Status.CurrentRevision" ExplainField="statefulSet.status.currentRevision"></PropertySimpleView>
-        <PropertySimpleView Title="ObservedGeneration" Item="@StatefulSet.Status.ObservedGeneration" ExplainField="statefulSet.status.observedGeneration"></PropertySimpleView>
-        <PropertySimpleView Title="ReadyReplicas" Item="@StatefulSet.Status.ReadyReplicas" ExplainField="statefulSet.status.readyReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@StatefulSet.Status.Replicas" ExplainField="statefulSet.status.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ObservedGeneration"] Item="@StatefulSet.Status.ObservedGeneration" ExplainField="statefulSet.status.observedGeneration"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ReadyReplicas"] Item="@StatefulSet.Status.ReadyReplicas" ExplainField="statefulSet.status.readyReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@StatefulSet.Status.Replicas" ExplainField="statefulSet.status.replicas"></PropertySimpleView>
         <PropertySimpleView Title="UpdateRevision" Item="@StatefulSet.Status.UpdateRevision" ExplainField="statefulSet.status.updateRevision"></PropertySimpleView>
         <PropertySimpleView Title="UpdatedReplicas" Item="@StatefulSet.Status.UpdatedReplicas" ExplainField="statefulSet.status.updatedReplicas"></PropertySimpleView>
     </HTable>

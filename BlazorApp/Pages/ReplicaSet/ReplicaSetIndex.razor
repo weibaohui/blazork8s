@@ -1,16 +1,16 @@
 ﻿@page "/ReplicaSets"
-@using k8s.Models
-@using Extension
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using Extension
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1ReplicaSet>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Replica Sets" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["ReplicaSet"] Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1ReplicaSet"
@@ -41,7 +41,7 @@
                     <AntDesign.Column Title=@L["Desired"] TData="int" Width="80px">
                         @context.Status.Replicas
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Current" TData="int" Width="80px">
+                    <AntDesign.Column Title=@L["Current"] TData="int" Width="80px">
                         @(context.Status.FullyLabeledReplicas ?? 0)
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Ready"] TData="int" Width="80px">

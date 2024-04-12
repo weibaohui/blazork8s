@@ -1,8 +1,8 @@
-﻿@using BlazorApp.Pages.Common.Metadata
+﻿@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ReplicaSet>
 @if (ReplicaSet != null)
 {
@@ -15,22 +15,22 @@
         <SelectorView Title=@L["Node Selector"] Selector="@ReplicaSet.Spec.Template.Spec.NodeSelector"></SelectorView>
         <ImagesView PodSpec="@ReplicaSet.Spec.Template.Spec"></ImagesView>
         <TolerationsView Tolerations="@ReplicaSet.Spec.Template.Spec.Tolerations"></TolerationsView>
-        <PropertySimpleView Title="MinReadySeconds" Item="@ReplicaSet.Spec.MinReadySeconds" ExplainField="replicaSet.spec.minReadySeconds"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@ReplicaSet.Spec.Replicas" ExplainField="replicaSet.spec.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["MinReadySeconds"] Item="@ReplicaSet.Spec.MinReadySeconds" ExplainField="replicaSet.spec.minReadySeconds"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@ReplicaSet.Spec.Replicas" ExplainField="replicaSet.spec.replicas"></PropertySimpleView>
     </HTable>
     <PodTemplateView PodTemplate="@ReplicaSet.Spec.Template" MetadataExplainFieldPrefix="replicaSet"></PodTemplateView>
 
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <HTableColumn Title="Replicas">
-            @($"{ReplicaSet.Status.AvailableReplicas ?? 0} current / {ReplicaSet.Status.Replicas} desired")
+        <HTableColumn Title=@L["Replicas"]>
+            @($"{ReplicaSet.Status.AvailableReplicas ?? 0} {L["Current"]} / {ReplicaSet.Status.Replicas} {L["Desired"]}")
         </HTableColumn>
         <ConditionView ConditionList="@ReplicaSet.Status.Conditions" ExplainField="replicaSet.status.conditions"></ConditionView>
-        <PropertySimpleView Title="Replicas" Item="@ReplicaSet.Status.Replicas" ExplainField="replicaSet.status.replicas"></PropertySimpleView>
-        <PropertySimpleView Title="AvailableReplicas" Item="@ReplicaSet.Status.AvailableReplicas" ExplainField="replicaSet.status.availableReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="FullyLabeledReplicas" Item="@ReplicaSet.Status.FullyLabeledReplicas" ExplainField="replicaSet.status.fullyLabeledReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="ObservedGeneration" Item="@ReplicaSet.Status.ObservedGeneration" ExplainField="replicaSet.status.observedGeneration"></PropertySimpleView>
-        <PropertySimpleView Title="ReadyReplicas" Item="@ReplicaSet.Status.ReadyReplicas" ExplainField="replicaSet.status.readyReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@ReplicaSet.Status.Replicas" ExplainField="replicaSet.status.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["AvailableReplicas"] Item="@ReplicaSet.Status.AvailableReplicas" ExplainField="replicaSet.status.availableReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["FullyLabeledReplicas"] Item="@ReplicaSet.Status.FullyLabeledReplicas" ExplainField="replicaSet.status.fullyLabeledReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ObservedGeneration"] Item="@ReplicaSet.Status.ObservedGeneration" ExplainField="replicaSet.status.observedGeneration"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ReadyReplicas"] Item="@ReplicaSet.Status.ReadyReplicas" ExplainField="replicaSet.status.readyReplicas"></PropertySimpleView>
 
     </HTable>
 

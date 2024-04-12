@@ -5,7 +5,7 @@
         <Tooltip Title="@($"{c.Reason}:{c.Message}")">
             @if (c.Status == "True")
             {
-                <Tag Icon="check" PresetColor=@PresetColor.Blue>@c.Type</Tag>
+                <Tag Icon="check" Color="@PresetColor.Blue.ToString()">@c.Type</Tag>
             }
             else
             {

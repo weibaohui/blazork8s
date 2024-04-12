@@ -1,7 +1,9 @@
 @using BlazorApp.Pages.Common.Html
+@inherits BlazorApp.Pages.Common.PageBase
+
 @if (ConditionList != null)
 {
-    <HTableColumn Title="Conditions" ExplainField="@ExplainField">
+    <HTableColumn Title=@L["Conditions"] ExplainField="@ExplainField">
         <Condition ConditionList="ConditionList"></Condition>
     </HTableColumn>
 }

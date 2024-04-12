@@ -1,7 +1,7 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Common.Html.HTable
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ReplicationController>
 @if (ReplicationController != null)
 {
@@ -11,18 +11,18 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@ReplicationController.Spec.Selector"></SelectorView>
-        <PropertySimpleView Title="MinReadySeconds" Item="@ReplicationController.Spec.MinReadySeconds" ExplainField="replicationController.spec.minReadySeconds"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@ReplicationController.Spec.Replicas" ExplainField="replicationController.spec.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["MinReadySeconds"] Item="@ReplicationController.Spec.MinReadySeconds" ExplainField="replicationController.spec.minReadySeconds"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@ReplicationController.Spec.Replicas" ExplainField="replicationController.spec.replicas"></PropertySimpleView>
     </HTable>
     <PodTemplateView PodTemplate="@ReplicationController.Spec.Template" MetadataExplainFieldPrefix="replicationController"></PodTemplateView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="AvailableReplicas" Item="@ReplicationController.Status.AvailableReplicas" ExplainField="replicationController.status.availableReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="Conditions" Item="@ReplicationController.Status.Conditions" ExplainField="replicationController.status.conditions" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="FullyLabeledReplicas" Item="@ReplicationController.Status.FullyLabeledReplicas" ExplainField="replicationController.status.fullyLabeledReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="ObservedGeneration" Item="@ReplicationController.Status.ObservedGeneration" ExplainField="replicationController.status.observedGeneration"></PropertySimpleView>
-        <PropertySimpleView Title="ReadyReplicas" Item="@ReplicationController.Status.ReadyReplicas" ExplainField="replicationController.status.readyReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="Replicas" Item="@ReplicationController.Status.Replicas" ExplainField="replicationController.status.replicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["AvailableReplicas"] Item="@ReplicationController.Status.AvailableReplicas" ExplainField="replicationController.status.availableReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Conditions"] Item="@ReplicationController.Status.Conditions" ExplainField="replicationController.status.conditions" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["FullyLabeledReplicas"] Item="@ReplicationController.Status.FullyLabeledReplicas" ExplainField="replicationController.status.fullyLabeledReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ObservedGeneration"] Item="@ReplicationController.Status.ObservedGeneration" ExplainField="replicationController.status.observedGeneration"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ReadyReplicas"] Item="@ReplicationController.Status.ReadyReplicas" ExplainField="replicationController.status.readyReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Replicas"] Item="@ReplicationController.Status.Replicas" ExplainField="replicationController.status.replicas"></PropertySimpleView>
     </HTable>
 
     <MiniPodListView ControllerByUid="@ReplicationController.Metadata.Uid"></MiniPodListView>

@@ -5,10 +5,10 @@
 <ShareMenuItem T="V1ReplicaSet" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
-        <MenuItem OnClick="@(() => OnScaleClick(Item))">Scale</MenuItem>
+        <MenuItem OnClick="@(() => OnScaleClick(Item))">@L["Scale"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
-        <Button OnClick="@(() => OnScaleClick(Item))">Scale</Button>
+        <Button OnClick="@(() => OnScaleClick(Item))">@L["Scale"]</Button>
     }
 </ShareMenuItem>
