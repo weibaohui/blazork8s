@@ -5,11 +5,10 @@
 <ShareMenuItem T="V1PriorityClass" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
-        <MenuItem OnClick="@(() => OnCancelDefaultClick(Item))">CancelDefault</MenuItem>
-
+        <MenuItem OnClick=@(() => OnCancelDefaultClick(Item))>@L["CancelDefault"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
-        <Button OnClick="@(() => OnCancelDefaultClick(Item))">CancelDefault</Button>
+        <Button OnClick=@(() => OnCancelDefaultClick(Item))>@L["CancelDefault"]</Button>
     }
 </ShareMenuItem>
