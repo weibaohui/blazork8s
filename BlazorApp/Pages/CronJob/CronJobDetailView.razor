@@ -1,8 +1,8 @@
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Job
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1CronJob>
 @if (CronJob != null)
 {
@@ -11,17 +11,30 @@
     <MetadataView Item="CronJob.Metadata" ExplainFieldPrefix="cronJob"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertyOptionView Title="ConcurrencyPolicy" Item="@CronJob.Spec.ConcurrencyPolicy" ExplainField="cronJob.spec.concurrencyPolicy" Options="@(new[] { "Allow", "Forbid", "Replace" })"></PropertyOptionView>
-        <PropertySimpleView Title="FailedJobsHistoryLimit" Item="@CronJob.Spec.FailedJobsHistoryLimit" ExplainField="cronJob.spec.failedJobsHistoryLimit"></PropertySimpleView>
-        <PropertySimpleView Title="Schedule" ExplainField="cronJob.spec.schedule">
+        <PropertyOptionView Title=@L["ConcurrencyPolicy"] Item="@CronJob.Spec.ConcurrencyPolicy"
+                            ExplainField="cronJob.spec.concurrencyPolicy"
+                            Options="@(new[] { "Allow", "Forbid", "Replace" })">
+        </PropertyOptionView>
+        <PropertySimpleView Title=@L["FailedJobsHistoryLimit"] Item="@CronJob.Spec.FailedJobsHistoryLimit"
+                            ExplainField="cronJob.spec.failedJobsHistoryLimit">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Schedule"] ExplainField="cronJob.spec.schedule">
             @CronJob.Spec.Schedule
             <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Robot" OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{CronJob.Spec.Schedule}"))"></Button>
             <Button Type="@ButtonType.Default" Icon="@IconType.Outline.ClockCircle" OnClick="@(() => OnNextCronDateClick(CronJob.Spec.Schedule))"></Button>
         </PropertySimpleView>
-        <PropertySimpleView Title="StartingDeadlineSeconds" Item="@CronJob.Spec.StartingDeadlineSeconds" ExplainField="cronJob.spec.startingDeadlineSeconds"></PropertySimpleView>
-        <PropertySimpleView Title="SuccessfulJobsHistoryLimit" Item="@CronJob.Spec.SuccessfulJobsHistoryLimit" ExplainField="cronJob.spec.successfulJobsHistoryLimit"></PropertySimpleView>
-        <PropertySimpleView Title="Suspend" Item="@CronJob.Spec.Suspend" ExplainField="cronJob.spec.suspend"></PropertySimpleView>
-        <PropertySimpleView Title="TimeZone" Item="@CronJob.Spec.TimeZone" ExplainField="cronJob.spec.timeZone"></PropertySimpleView>
+        <PropertySimpleView Title=@L["StartingDeadlineSeconds"] Item="@CronJob.Spec.StartingDeadlineSeconds"
+                            ExplainField="cronJob.spec.startingDeadlineSeconds">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["SuccessfulJobsHistoryLimit"] Item="@CronJob.Spec.SuccessfulJobsHistoryLimit"
+                            ExplainField="cronJob.spec.successfulJobsHistoryLimit">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Suspend"] Item="@CronJob.Spec.Suspend"
+                            ExplainField="cronJob.spec.suspend">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["TimeZone"] Item="@CronJob.Spec.TimeZone"
+                            ExplainField="cronJob.spec.timeZone">
+        </PropertySimpleView>
     </HTable>
     <JobSpecView JobSpec="@CronJob.Spec.JobTemplate.Spec"></JobSpecView>
 
@@ -29,18 +42,18 @@
     <HTable Bordered Column="1">
         @if (CronJob.Status.Active is { Count: > 0 })
         {
-            <HTableColumn Title="Active">
+            <HTableColumn Title=@L["Active"]>
                 @foreach (var reference in CronJob.Status.Active)
                 {
                     <RefView Ref="reference" FullView="true"></RefView>
                 }
             </HTableColumn>
         }
-        <HTableColumn Title="LastScheduleTime" ExplainField="cronJob.status.lastScheduleTime">
+        <HTableColumn Title=@L["LastScheduleTime"] ExplainField="cronJob.status.lastScheduleTime">
             <AgeView Age="@CronJob.Status.LastScheduleTime"></AgeView>
             (@CronJob.Status.LastScheduleTime.GetValueOrDefault().ToLocalTime())
         </HTableColumn>
-        <HTableColumn Title="LastSuccessfulTime" ExplainField="cronJob.status.lastSuccessfulTime">
+        <HTableColumn Title=@L["LastSuccessfulTime"] ExplainField="cronJob.status.lastSuccessfulTime">
             <AgeView Age="@CronJob.Status.LastSuccessfulTime"></AgeView>
             (@CronJob.Status.LastSuccessfulTime.GetValueOrDefault().ToLocalTime())
         </HTableColumn>
