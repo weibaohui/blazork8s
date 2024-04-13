@@ -1,14 +1,15 @@
 @page "/PortForward"
-@using k8s.Models
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @using Entity
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<Entity.PortForward>
 @if (TableData.PagedItems != null)
 {
     <Card Bordered="false" Hoverable="true">
         <TitleTemplate>
-            <SearchToolBar Title="PortForward" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+            <SearchToolBar Title=@L["PortForward"] Count="@TableData.Total"
+                           OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                            OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                            OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                            OnSearch="OnSearchHandler" TItem="PortForward"
@@ -32,10 +33,10 @@
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
-                <AntDesign.Column Field="@context.Type" Title="KubeType"/>
-                <AntDesign.Column Field="@context.KubeName" Title="KubeName"/>
-                <AntDesign.Column Field="@context.KubePort" Title="KubePort"/>
-                <AntDesign.Column Field="@context.LocalPort" Title="LocalPort">
+                <AntDesign.Column Field="@context.Type" Title=@L["KubeType"]/>
+                <AntDesign.Column Field="@context.KubeName" Title=@L["KubeName"]/>
+                <AntDesign.Column Field="@context.KubePort" Title=@L["KubePort"]/>
+                <AntDesign.Column Field="@context.LocalPort" Title=@L["LocalPort"]>
                     <div>
                         @context.LocalPort
                         <a href=@($"http://127.0.0.1:{context.LocalPort}") target="_blank">Http</a>
@@ -43,7 +44,7 @@
                     </div>
                 </AntDesign.Column>
                 <AntDesign.Column Field="@context.Status" Title=@L["Status"]/>
-                <AntDesign.Column Field="@context.StatusTimestamp" Title="探测"/>
+                <AntDesign.Column Field="@context.StatusTimestamp" Title=@L["Probe"]/>
                 <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                     <AgeView Age="@context.CreationTimestamp()"></AgeView>
                 </AntDesign.Column>
