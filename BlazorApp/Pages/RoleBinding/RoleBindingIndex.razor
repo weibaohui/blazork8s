@@ -1,16 +1,17 @@
 @page "/RoleBinding"
-@using k8s.Models
-@using Mapster
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<V1RoleBinding>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="RoleBinding" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["RoleBinding"] Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1RoleBinding"
@@ -34,7 +35,7 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
-                    <AntDesign.Column Title="User" TData="string">
+                    <AntDesign.Column Title=@L["User"] TData="string">
                         @foreach (var subject in RoleService.ListManagedSubjectByRoleName(context.Namespace(), context.Name()))
                         {
                             <div>
