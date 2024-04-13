@@ -1,26 +1,32 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Behavior != null)
 {
     <HTable>
-        <PropertySimpleView Title="Policies" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp.policies" Item="@Behavior.Policies" ShowInJson="true">
+        <PropertySimpleView Title=@L["Policies"] ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp.policies"
+                            Item="@Behavior.Policies" ShowInJson="true">
             @foreach (var policy in Behavior.Policies)
             {
                 <ColorfulTag> @($"{policy.Value} {policy.Type} in {policy.PeriodSeconds} seconds")</ColorfulTag>
             }
         </PropertySimpleView>
-        <PropertySimpleView Title="SelectPolicy" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp.selectPolicy" Item="@Behavior.SelectPolicy"></PropertySimpleView>
-        <PropertySimpleView Title="Window" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp.stabilizationWindowSeconds" Item="@Behavior.StabilizationWindowSeconds"></PropertySimpleView>
+        <PropertySimpleView Title=@L["SelectPolicy"]
+                            ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp.selectPolicy"
+                            Item="@Behavior.SelectPolicy">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Window"]
+                            ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp.stabilizationWindowSeconds"
+                            Item="@Behavior.StabilizationWindowSeconds">
+        </PropertySimpleView>
     </HTable>
 }
 
 @code {
 
-    [Parameter]
-    public V2HPAScalingRules Behavior { get; set; }
+    [Parameter] public V2HPAScalingRules Behavior { get; set; }
 
 }
