@@ -1,10 +1,10 @@
-@using Mapster
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Job>
 @if (Job != null)
 {
@@ -18,16 +18,32 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(Job.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
-        <PropertySimpleView Title="Active" Item="@Job.Status.Active" ExplainField="job.status.active"></PropertySimpleView>
-        <PropertySimpleView Title="CompletedIndexes" Item="@Job.Status.CompletedIndexes" ExplainField="job.status.completedIndexes"></PropertySimpleView>
-        <PropertySimpleView Title="CompletionTime" Item="@Job.Status.CompletionTime" ExplainField="job.status.completionTime"></PropertySimpleView>
-        <PropertySimpleView Title="Failed" Item="@Job.Status.Failed" ExplainField="job.status.failed"></PropertySimpleView>
-        <PropertySimpleView Title="FailedIndexes" Item="@Job.Status.FailedIndexes" ExplainField="job.status.failedIndexes"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Active"] Item="@Job.Status.Active"
+                            ExplainField="job.status.active">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["CompletedIndexes"] Item="@Job.Status.CompletedIndexes"
+                            ExplainField="job.status.completedIndexes">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["CompletionTime"] Item="@Job.Status.CompletionTime"
+                            ExplainField="job.status.completionTime">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Failed"] Item="@Job.Status.Failed"
+                            ExplainField="job.status.failed">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["FailedIndexes"] Item="@Job.Status.FailedIndexes"
+                            ExplainField="job.status.failedIndexes">
+        </PropertySimpleView>
         <PropertySimpleView Title=@L["Ready"] Item="@Job.Status.Ready" ExplainField="job.status.ready"></PropertySimpleView>
         <PropertySimpleView Title=@L["StartTime"] Item="@Job.Status.StartTime.GetValueOrDefault().ToLocalTime()" ExplainField="job.status.startTime"></PropertySimpleView>
-        <PropertySimpleView Title="Succeeded" Item="@Job.Status.Succeeded" ExplainField="job.status.succeeded"></PropertySimpleView>
-        <PropertySimpleView Title="Terminating" Item="@Job.Status.Terminating" ExplainField="job.status.terminating"></PropertySimpleView>
-        <PropertySimpleView Title="UncountedTerminatedPods" Item="@Job.Status.UncountedTerminatedPods" ExplainField="job.status.uncountedTerminatedPods" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Succeeded"] Item="@Job.Status.Succeeded"
+                            ExplainField="job.status.succeeded">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Terminating"] Item="@Job.Status.Terminating"
+                            ExplainField="job.status.terminating">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["UncountedTerminatedPods"] Item="@Job.Status.UncountedTerminatedPods"
+                            ExplainField="job.status.uncountedTerminatedPods" ShowInJson="true">
+        </PropertySimpleView>
     </HTable>
 
     <MiniPodListView ControllerByUid="@Job.Metadata.Uid"></MiniPodListView>
