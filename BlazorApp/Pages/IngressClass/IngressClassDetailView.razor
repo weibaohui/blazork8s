@@ -1,6 +1,6 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1IngressClass>
 @if (IngressClass != null)
 {
@@ -10,8 +10,12 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
 
-        <PropertySimpleView Title="Controller" Item="@IngressClass.Spec.Controller" ExplainField="ingressClass.spec.controller"></PropertySimpleView>
-        <PropertySimpleView Title="Parameters" Item="@IngressClass.Spec.Parameters" ExplainField="ingressClass.spec.parameters" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Controller"] Item="@IngressClass.Spec.Controller"
+                            ExplainField="ingressClass.spec.controller">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Parameters"] Item="@IngressClass.Spec.Parameters"
+                            ExplainField="ingressClass.spec.parameters" ShowInJson="true">
+        </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@IngressClass.Metadata.Uid"></MiniEventListView>
 }

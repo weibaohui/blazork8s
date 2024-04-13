@@ -1,6 +1,6 @@
-@inherits BlazorApp.Pages.Common.PageBase
-@using k8s.Models
+@inherits PageBase
 @using BlazorApp.Pages.Namespace
+@using k8s.Models
 @typeparam            TItem
 
 <GridRow >
@@ -37,7 +37,7 @@
         <GridCol Span="4">
             @if (TableData?.SelectedRows?.Count() > 0)
             {
-                <Popconfirm Title="Are you sure delete this item?" OnConfirm="@DeleteHandler">
+                <Popconfirm Title="@L["Delete"]" OnConfirm="@DeleteHandler">
                     <Button Type="@ButtonType.Primary" Danger Size="small">@L["Delete"]</Button>
                 </Popconfirm>
 

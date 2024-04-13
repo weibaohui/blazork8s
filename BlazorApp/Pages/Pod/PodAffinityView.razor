@@ -1,6 +1,6 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Pod.Affinity
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Affinity != null)
@@ -223,7 +223,7 @@
 
             @if (Affinity.NodeAffinity != null)
             {
-                <Panel Header="NodeAffinity" Key="NodeAffinity">
+                <Panel Header=@L["NodeAffinity"] Key="NodeAffinity">
 
                     @{
                         var preferred = Affinity.NodeAffinity.PreferredDuringSchedulingIgnoredDuringExecution;
@@ -278,7 +278,6 @@
 
 @code {
 
-    [Parameter]
-    public V1Affinity Affinity { get; set; }
+    [Parameter] public V1Affinity Affinity { get; set; }
 
 }

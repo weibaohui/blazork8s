@@ -1,8 +1,8 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Egress is { Count: > 0 })
@@ -13,7 +13,7 @@
             {
                 @if (egressRule.To is { Count: > 0 })
                 {
-                    <HTableColumn Title="To">
+                    <HTableColumn Title=@L["To"]>
                         <HTable>
                             <NetworkPolicyPeerView Peers="egressRule.To" ExplainField="networkPolicy.spec.egress.to"></NetworkPolicyPeerView>
                         </HTable>
@@ -51,11 +51,9 @@
 
 @code {
 
-    [Parameter]
-    public IList<V1NetworkPolicyEgressRule> Egress { get; set; }
+    [Parameter] public IList<V1NetworkPolicyEgressRule> Egress { get; set; }
 
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
 }

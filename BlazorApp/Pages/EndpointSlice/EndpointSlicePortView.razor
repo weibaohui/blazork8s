@@ -1,18 +1,18 @@
-@using Mapster
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Service
+@using k8s.Models
+@using Mapster
+@inherits BlazorApp.Pages.Common.PageBase
 @if (Ports != null)
 {
-    <Divider Orientation="left" Style="font-weight:bold">Ports</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Ports"]</Divider>
     <HTable Bordered Column="1">
-        <ServicePortsView Ports="@(Ports.Adapt<IList<V1ServicePort>>())"></ServicePortsView>
+        <ServicePortsView Ports=@(Ports.Adapt<IList<V1ServicePort>>())></ServicePortsView>
     </HTable>
 }
 
 @code {
 
-    [Parameter]
-    public IList<Discoveryv1EndpointPort> Ports { get; set; }
+    [Parameter] public IList<Discoveryv1EndpointPort> Ports { get; set; }
 
 }

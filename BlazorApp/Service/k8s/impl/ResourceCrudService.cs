@@ -13,42 +13,42 @@ public class ResourceCrudService(
     {
         return kind switch
         {
-            "Deployment"                     => OnDeploymentDelete(ns, name),
-            "DaemonSet"                      => OnDaemonSetDelete(ns, name),
-            "StatefulSet"                    => OnStatefulSetDelete(ns, name),
-            "ReplicationController"          => OnReplicationControllerDelete(ns, name),
-            "ReplicaSet"                     => OnRsDelete(ns, name),
-            "Node"                           => OnNodeDelete(ns, name),
-            "Job"                            => OnJobDelete(ns, name),
-            "CronJob"                        => OnCronJobDelete(ns, name),
-            "Pod"                            => OnPodDelete(ns, name),
-            "Service"                        => OnServiceDelete(ns, name),
-            "Endpoints"                      => OnEndpointsDelete(ns, name),
-            "ServiceAccount"                 => OnServiceAccountDelete(ns, name),
-            "ClusterRole"                    => OnClusterRoleDelete(ns, name),
-            "Role"                           => OnRoleDelete(ns, name),
-            "HorizontalPodAutoscaler"        => OnHorizontalPodAutoscalerDelete(ns, name),
-            "ConfigMap"                      => OnConfigMapDelete(ns, name),
-            "Secret"                         => OnSecretDelete(ns, name),
-            "Ingress"                        => OnIngressDelete(ns, name),
-            "Namespace"                      => OnNamespaceDelete(ns, name),
-            "PersistentVolumeClaim"          => OnPersistentVolumeClaimDelete(ns, name),
-            "ResourceQuota"                  => OnResourceQuotaDelete(ns, name),
-            "LimitRange"                     => OnLimitRangeDelete(ns, name),
-            "Lease"                          => OnLeaseDelete(ns, name),
-            "PodDisruptionBudget"            => OnPodDisruptionBudgetDelete(ns, name),
-            "PriorityClass"                  => OnPriorityClassDelete(ns, name),
+            "Deployment" => OnDeploymentDelete(ns, name),
+            "DaemonSet" => OnDaemonSetDelete(ns, name),
+            "StatefulSet" => OnStatefulSetDelete(ns, name),
+            "ReplicationController" => OnReplicationControllerDelete(ns, name),
+            "ReplicaSet" => OnRsDelete(ns, name),
+            "Node" => OnNodeDelete(ns, name),
+            "Job" => OnJobDelete(ns, name),
+            "CronJob" => OnCronJobDelete(ns, name),
+            "Pod" => OnPodDelete(ns, name),
+            "Service" => OnServiceDelete(ns, name),
+            "Endpoints" => OnEndpointsDelete(ns, name),
+            "ServiceAccount" => OnServiceAccountDelete(ns, name),
+            "ClusterRole" => OnClusterRoleDelete(ns, name),
+            "Role" => OnRoleDelete(ns, name),
+            "HorizontalPodAutoscaler" => OnHorizontalPodAutoscalerDelete(ns, name),
+            "ConfigMap" => OnConfigMapDelete(ns, name),
+            "Secret" => OnSecretDelete(ns, name),
+            "Ingress" => OnIngressDelete(ns, name),
+            "Namespace" => OnNamespaceDelete(ns, name),
+            "PersistentVolumeClaim" => OnPersistentVolumeClaimDelete(ns, name),
+            "ResourceQuota" => OnResourceQuotaDelete(ns, name),
+            "LimitRange" => OnLimitRangeDelete(ns, name),
+            "Lease" => OnLeaseDelete(ns, name),
+            "PodDisruptionBudget" => OnPodDisruptionBudgetDelete(ns, name),
+            "PriorityClass" => OnPriorityClassDelete(ns, name),
             "ValidatingWebhookConfiguration" => OnValidatingWebhookConfigurationDelete(ns, name),
-            "MutatingWebhookConfiguration"   => OnMutatingWebhookConfigurationDelete(ns, name),
-            "EndpointSlice"                  => OnEndpointSliceDelete(ns, name),
-            "NetworkPolicy"                  => OnNetworkPolicyDelete(ns, name),
-            "IngressClass"                   => OnIngressClassDelete(ns, name),
-            "StorageClass"                   => OnStorageClassDelete(ns, name),
-            "PersistentVolume"               => OnPersistentVolumeDelete(ns, name),
-            "ClusterRoleBinding"             => OnClusterRoleBindingDelete(ns, name),
-            "RoleBinding"                    => OnRoleBindingDelete(ns, name),
-            "CustomResourceDefinition"       => OnCustomResourceDefinitionDelete(ns, name),
-            _                                => OnXDelete(kind, ns, name)
+            "MutatingWebhookConfiguration" => OnMutatingWebhookConfigurationDelete(ns, name),
+            "EndpointSlice" => OnEndpointSliceDelete(ns, name),
+            "NetworkPolicy" => OnNetworkPolicyDelete(ns, name),
+            "IngressClass" => OnIngressClassDelete(ns, name),
+            "StorageClass" => OnStorageClassDelete(ns, name),
+            "PersistentVolume" => OnPersistentVolumeDelete(ns, name),
+            "ClusterRoleBinding" => OnClusterRoleBindingDelete(ns, name),
+            "RoleBinding" => OnRoleBindingDelete(ns, name),
+            "CustomResourceDefinition" => OnCustomResourceDefinitionDelete(ns, name),
+            _ => OnXDelete(kind, ns, name)
         };
     }
 
@@ -166,7 +166,7 @@ public class ResourceCrudService(
 
     private async Task<V1Status> OnLimitRangeDelete(string ns, string name)
     {
-        return await KubeService.Client().DeleteNamespacedDeploymentAsync(name, ns);
+        return await KubeService.Client().DeleteNamespacedLimitRangeAsync(name, ns);
     }
 
     private async Task<V1Status> OnLeaseDelete(string ns, string name)
