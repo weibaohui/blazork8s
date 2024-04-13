@@ -1,7 +1,7 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Webhooks is { Count: > 0 })
@@ -12,35 +12,68 @@
             <Card Bordered>
                 <HTable >
                     <PropertySimpleView Title=@L["Name"] Item="@hook.Name" ExplainField=@(ExplainFieldPrefix + ".name")></PropertySimpleView>
-                    <PropertyListView Title="AdmissionReviewVersions" Items="@hook.AdmissionReviewVersions" ExplainField=@(ExplainFieldPrefix + ".admissionReviewVersions") T="string"></PropertyListView>
-                    <PropertySimpleView Title="ClientConfig" Item="@hook.ClientConfig" ExplainField=@(ExplainFieldPrefix + ".clientConfig")>
+                    <PropertyListView Title=@L["AdmissionReviewVersions"] Items="@hook.AdmissionReviewVersions"
+                                      ExplainField=@(ExplainFieldPrefix + ".admissionReviewVersions")
+                                      T="string">
+                    </PropertyListView>
+                    <PropertySimpleView Title=@L["ClientConfig"] Item="@hook.ClientConfig"
+                                        ExplainField=@(ExplainFieldPrefix + ".clientConfig")>
                         @if (hook.ClientConfig != null)
                         {
-                            <PropertySimpleView Title="CaBundle" Item="@hook.ClientConfig.CaBundle" ExplainField=@(ExplainFieldPrefix + ".clientConfig.caBundle") ShowInJson="true"></PropertySimpleView>
-                            <PropertySimpleView Title="Url" Item="@hook.ClientConfig.Url" ExplainField=@(ExplainFieldPrefix + ".clientConfig.url")></PropertySimpleView>
+                            <PropertySimpleView Title=@L["CaBundle"] Item="@hook.ClientConfig.CaBundle"
+                                                ExplainField=@(ExplainFieldPrefix + ".clientConfig.caBundle")
+                                                ShowInJson="true">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title=@L["Url"] Item="@hook.ClientConfig.Url"
+                                                ExplainField=@(ExplainFieldPrefix + ".clientConfig.url")>
+                            </PropertySimpleView>
                             @if (hook.ClientConfig.Service != null)
                             {
-                                <PropertySimpleView Title="Service" Item="@hook.ClientConfig.Service" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service")>
+                                <PropertySimpleView Title=@L["Service"] Item="@hook.ClientConfig.Service"
+                                                    ExplainField=@(ExplainFieldPrefix + ".clientConfig.service")>
                                     @if (hook.ClientConfig.Service != null)
                                     {
                                         <RefView Ref="@GetRef(hook.ClientConfig.Service)" FullView="true"></RefView>
                                     }
                                 </PropertySimpleView>
                                 <PropertySimpleView Title=@L["Path"] Item="@hook.ClientConfig.Service.Path" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.path")></PropertySimpleView>
-                                <PropertySimpleView Title="Port" Item="@hook.ClientConfig.Service.Port" ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.port")></PropertySimpleView>
+                                <PropertySimpleView Title=@L["Port"] Item="@hook.ClientConfig.Service.Port"
+                                                    ExplainField=@(ExplainFieldPrefix + ".clientConfig.service.port")>
+                                </PropertySimpleView>
                             }
                         }
                     </PropertySimpleView>
-                    <PropertyOptionView Title="FailurePolicy" Item="@hook.FailurePolicy" ExplainField=@(ExplainFieldPrefix + ".failurePolicy") Options="@(new[] { "Fail", "Ignore" })"></PropertyOptionView>
-                    <PropertySimpleView Title="MatchConditions" Item="@hook.MatchConditions" ExplainField=@(ExplainFieldPrefix + ".matchConditions") ShowInJson="true"></PropertySimpleView>
-                    <PropertyOptionView Title="MatchPolicy" Item="@hook.MatchPolicy" ExplainField=@(ExplainFieldPrefix + ".matchPolicy") Options="@(new[] { "Equivalent", "Exact" })"></PropertyOptionView>
+                    <PropertyOptionView Title=@L["FailurePolicy"] Item="@hook.FailurePolicy"
+                                        ExplainField=@(ExplainFieldPrefix + ".failurePolicy")
+                                        Options="@(new[] { "Fail", "Ignore" })">
+                    </PropertyOptionView>
+                    <PropertySimpleView Title=@L["MatchConditions"] Item="@hook.MatchConditions"
+                                        ExplainField=@(ExplainFieldPrefix + ".matchConditions")
+                                        ShowInJson="true">
+                    </PropertySimpleView>
+                    <PropertyOptionView Title=@L["MatchPolicy"] Item="@hook.MatchPolicy"
+                                        ExplainField=@(ExplainFieldPrefix + ".matchPolicy")
+                                        Options="@(new[] { "Equivalent", "Exact" })">
+                    </PropertyOptionView>
 
-                    <LabelSelectorView Title="NamespaceSelector" LabelSelector="@hook.NamespaceSelector"></LabelSelectorView>
-                    <LabelSelectorView Title="ObjectSelector" LabelSelector="@hook.ObjectSelector"></LabelSelectorView>
-                    <PropertyOptionView Title="ReInvocationPolicy" Item="@hook.ReinvocationPolicy" ExplainField=@(ExplainFieldPrefix + ".reinvocationPolicy") Options="@(new[] { "IfNeeded", "Never" })"></PropertyOptionView>
+                    <LabelSelectorView Title=@L["NamespaceSelector"]
+                                       LabelSelector="@hook.NamespaceSelector">
+                    </LabelSelectorView>
+                    <LabelSelectorView Title=@L["ObjectSelector"]
+                                       LabelSelector="@hook.ObjectSelector">
+                    </LabelSelectorView>
+                    <PropertyOptionView Title=@L["ReInvocationPolicy"] Item="@hook.ReinvocationPolicy"
+                                        ExplainField=@(ExplainFieldPrefix + ".reinvocationPolicy")
+                                        Options="@(new[] { "IfNeeded", "Never" })">
+                    </PropertyOptionView>
                     <RuleWithOperationsView Rules="@hook.Rules" ExplainFieldPrefix="@ExplainFieldPrefix"></RuleWithOperationsView>
-                    <PropertyOptionView Title="SideEffects" Item="@hook.SideEffects" ExplainField=@(ExplainFieldPrefix + ".sideEffects") Options="@(new[] { "None", "NoneOnDryRun", "Unknown", "Some" })"></PropertyOptionView>
-                    <PropertySimpleView Title="TimeoutSeconds" Item="@hook.TimeoutSeconds" ExplainField=@(ExplainFieldPrefix + ".timeoutSeconds")></PropertySimpleView>
+                    <PropertyOptionView Title=@L["SideEffects"] Item="@hook.SideEffects"
+                                        ExplainField=@(ExplainFieldPrefix + ".sideEffects")
+                                        Options="@(new[] { "None", "NoneOnDryRun", "Unknown", "Some" })">
+                    </PropertyOptionView>
+                    <PropertySimpleView Title=@L["TimeoutSeconds"] Item="@hook.TimeoutSeconds"
+                                        ExplainField=@(ExplainFieldPrefix + ".timeoutSeconds")>
+                    </PropertySimpleView>
                 </HTable>
             </Card>
         </BadgeRibbon>
@@ -50,18 +83,16 @@
 @code {
 
 
-    [Parameter]
-    public IList<V1MutatingWebhook> Webhooks { get; set; }
+    [Parameter] public IList<V1MutatingWebhook> Webhooks { get; set; }
 
-    [Parameter]
-    public string ExplainFieldPrefix { get; set; }
+    [Parameter] public string ExplainFieldPrefix { get; set; }
 
     private V1ObjectReference GetRef(Admissionregistrationv1ServiceReference service)
     {
         var ret = new V1ObjectReference()
         {
-            Kind              = "Service",
-            Name              = service.Name,
+            Kind = "Service",
+            Name = service.Name,
             NamespaceProperty = service.NamespaceProperty,
         };
 
