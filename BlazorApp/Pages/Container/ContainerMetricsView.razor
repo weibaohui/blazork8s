@@ -1,6 +1,6 @@
-@using k8s.Models
-@using BlazorApp.Service.k8s
 @using BlazorApp.Pages.Common
+@using BlazorApp.Service.k8s
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (_isMetricsServerReady)
@@ -8,8 +8,8 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Container"] @L["Metrics"]</Divider>
     <GridRow Class="grid-table ">
         <GridCol Span="8" Flex=@("160px")>@L["Container"] @L["Name"]</GridCol>
-        <GridCol Span="8">CPU</GridCol>
-        <GridCol Span="8">Memory</GridCol>
+        <GridCol Span="8">@L["CPU"]</GridCol>
+        <GridCol Span="8">@L["Memory"]</GridCol>
     </GridRow>
     @foreach (var item in Containers)
     {
@@ -28,14 +28,11 @@
 @code {
 
 
-    [Parameter]
-    public string PodName { get; set; }
+    [Parameter] public string PodName { get; set; }
 
-    [Parameter]
-    public IList<V1Container> Containers { get; set; }
+    [Parameter] public IList<V1Container> Containers { get; set; }
 
-    [Inject]
-    private IMetricsService MetricsService { get; set; }
+    [Inject] private IMetricsService MetricsService { get; set; }
 
     private bool _isMetricsServerReady;
 
