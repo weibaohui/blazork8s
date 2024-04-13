@@ -12,23 +12,27 @@
     <MetadataView Item="HorizontalPodAutoscaler.Metadata" ExplainFieldPrefix="horizontalPodAutoscaler"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="MaxReplicas" Item="@HorizontalPodAutoscaler.Spec.MaxReplicas" ExplainField="horizontalPodAutoscaler.spec.maxReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="MinReplicas" Item="@HorizontalPodAutoscaler.Spec.MinReplicas" ExplainField="horizontalPodAutoscaler.spec.minReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="ScaleTargetRef" ExplainField="horizontalPodAutoscaler.spec.scaleTargetRef">
+        <PropertySimpleView Title=@L["MaxReplicas"] Item="@HorizontalPodAutoscaler.Spec.MaxReplicas"
+                            ExplainField="horizontalPodAutoscaler.spec.maxReplicas">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["MinReplicas"] Item="@HorizontalPodAutoscaler.Spec.MinReplicas"
+                            ExplainField="horizontalPodAutoscaler.spec.minReplicas">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["ScaleTargetRef"] ExplainField="horizontalPodAutoscaler.spec.scaleTargetRef">
             <RefView FullView="true" Ref="@TransferToRef()"></RefView>
         </PropertySimpleView>
     </HTable>
     @if (HorizontalPodAutoscaler.Spec.Behavior != null)
     {
-        <Divider Orientation="left" Style="font-weight:bold">Behavior</Divider>
+        <Divider Orientation="left" Style="font-weight:bold">@L["Behavior"]</Divider>
         <HTable Bordered Column="1">
-            <PropertySimpleView Title="ScaleUp" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp">
+            <PropertySimpleView Title=@L["ScaleUp"] ExplainField="horizontalPodAutoscaler.spec.behavior.scaleUp">
                 @if (HorizontalPodAutoscaler.Spec.Behavior.ScaleUp != null)
                 {
                     <HPABehaviorView Behavior="@HorizontalPodAutoscaler.Spec.Behavior.ScaleUp"></HPABehaviorView>
                 }
             </PropertySimpleView>
-            <PropertySimpleView Title="ScaleDown" ExplainField="horizontalPodAutoscaler.spec.behavior.scaleDown">
+            <PropertySimpleView Title=@L["ScaleDown"] ExplainField="horizontalPodAutoscaler.spec.behavior.scaleDown">
                 @if (HorizontalPodAutoscaler.Spec.Behavior.ScaleDown != null)
                 {
                     <HPABehaviorView Behavior="@HorizontalPodAutoscaler.Spec.Behavior.ScaleDown"></HPABehaviorView>
@@ -43,11 +47,15 @@
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(HorizontalPodAutoscaler.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="deployment.status.conditions"></ConditionsView>
 
-        <PropertySimpleView Title="CurrentReplicas" Item="@HorizontalPodAutoscaler.Status.CurrentReplicas" ExplainField="horizontalPodAutoscaler.status.currentReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="DesiredReplicas" Item="@HorizontalPodAutoscaler.Status.DesiredReplicas" ExplainField="horizontalPodAutoscaler.status.desiredReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["CurrentReplicas"] Item="@HorizontalPodAutoscaler.Status.CurrentReplicas"
+                            ExplainField="horizontalPodAutoscaler.status.currentReplicas">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["DesiredReplicas"] Item="@HorizontalPodAutoscaler.Status.DesiredReplicas"
+                            ExplainField="horizontalPodAutoscaler.status.desiredReplicas">
+        </PropertySimpleView>
         @if (HorizontalPodAutoscaler.Status.LastScaleTime != null)
         {
-            <PropertySimpleView Title="LastScaleTime" ExplainField="horizontalPodAutoscaler.status.lastScaleTime">
+            <PropertySimpleView Title=@L["LastScaleTime"] ExplainField="horizontalPodAutoscaler.status.lastScaleTime">
                 <AgeView Age="@HorizontalPodAutoscaler.Status.LastScaleTime"></AgeView>
                 (@HorizontalPodAutoscaler.Status.LastScaleTime.GetValueOrDefault().ToLocalTime())
             </PropertySimpleView>
