@@ -5,11 +5,10 @@
 <ShareMenuItem T="V1IngressClass" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
-        <MenuItem OnClick="@(() => OnDefaultClick(Item))">SetDefault</MenuItem>
-
+        <MenuItem OnClick="@(() => OnDefaultClick(Item))">@L["SetDefault"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
-        <Button OnClick="@(() => OnDefaultClick(Item))">SetDefault</Button>
+        <Button OnClick="@(() => OnDefaultClick(Item))">@L["SetDefault"]</Button>
     }
 </ShareMenuItem>
