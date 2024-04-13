@@ -1,11 +1,11 @@
-@using Mapster
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod.Affinity
 @using BlazorApp.Pages.Pod.Volume
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PersistentVolume>
 @if (PersistentVolume != null)
 {
@@ -14,22 +14,37 @@
     <MetadataView Item="PersistentVolume.Metadata" ExplainFieldPrefix="persistentVolume"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="StorageClassName" Item="@PersistentVolume.Spec.StorageClassName" ExplainField="persistentVolume.spec.storageClassName"></PropertySimpleView>
-        <PropertyListView Title="AccessModes" Items="@PersistentVolume.Spec.AccessModes" ExplainField="persistentVolume.spec.accessModes" T="string"></PropertyListView>
-        <PropertyMapView Title="Capacity" Items="@PersistentVolume.Spec.Capacity" ExplainField="persistentVolume.spec.capacity" T="ResourceQuantity"></PropertyMapView>
+        @* 替换Title *@
+        <PropertySimpleView Title=@L["StorageClassName"] Item="@PersistentVolume.Spec.StorageClassName"
+                            ExplainField="persistentVolume.spec.storageClassName">
+        </PropertySimpleView>
+        <PropertyListView Title=@L["AccessModes"] Items="@PersistentVolume.Spec.AccessModes"
+                          ExplainField="persistentVolume.spec.accessModes" T="string">
+        </PropertyListView>
+        <PropertyMapView Title=@L["Capacity"] Items="@PersistentVolume.Spec.Capacity"
+                         ExplainField="persistentVolume.spec.capacity" T="ResourceQuantity">
+        </PropertyMapView>
         @if (PersistentVolume.Spec.ClaimRef != null)
         {
-            <HTableColumn Title="ScaleTarget">
+            <HTableColumn Title=@L["ScaleTarget"]>
                 <RefView FullView="true" Ref="@PersistentVolume.Spec.ClaimRef"></RefView>
             </HTableColumn>
         }
 
-        <PropertyListView Title="MountOptions" Items="@PersistentVolume.Spec.MountOptions" ExplainField="persistentVolume.spec.mountOptions" T="string"></PropertyListView>
-        <PropertyOptionView Title="PvReclaimPolicy" Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy" ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy" Options='@(new[] { "Delete", "Recycle", "Retain" })'></PropertyOptionView>
-        <PropertyOptionView Title="VolumeMode" Item="@PersistentVolume.Spec.VolumeMode" ExplainField="persistentVolume.spec.volumeMode" Options='@(new[] { "Block", "Filesystem" })'></PropertyOptionView>
+        <PropertyListView Title=@L["MountOptions"] Items="@PersistentVolume.Spec.MountOptions"
+                          ExplainField="persistentVolume.spec.mountOptions" T="string">
+        </PropertyListView>
+        <PropertyOptionView Title=@L["PvReclaimPolicy"] Item="@PersistentVolume.Spec.PersistentVolumeReclaimPolicy"
+                            ExplainField="persistentVolume.spec.persistentVolumeReclaimPolicy"
+                            Options='@(new[] { "Delete", "Recycle", "Retain" })'>
+        </PropertyOptionView>
+        <PropertyOptionView Title=@L["VolumeMode"] Item="@PersistentVolume.Spec.VolumeMode"
+                            ExplainField="persistentVolume.spec.volumeMode"
+                            Options='@(new[] { "Block", "Filesystem" })'>
+        </PropertyOptionView>
         @if (PersistentVolume.Spec.NodeAffinity != null)
         {
-            <HTableColumn Title="NodeAffinity">
+            <HTableColumn Title=@L["NodeAffinity"]>
                 @{
                     var required = PersistentVolume.Spec.NodeAffinity.Required;
                     @if (required != null)
@@ -61,18 +76,33 @@
         <LocalSourceView Local="@PersistentVolume.Spec.Local" FieldPrefix="persistentVolume.spec"></LocalSourceView>
 
         @* TODO MORE PV  *@
-        <PropertySimpleView Title="Rbd" Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Glusterfs" Item="@PersistentVolume.Spec.Glusterfs" ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Cephfs" Item="@PersistentVolume.Spec.Cephfs" ExplainField="persistentVolume.spec.cephfs" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="Cinder" Item="@PersistentVolume.Spec.Cinder" ExplainField="persistentVolume.spec.cinder" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Rbd"] Item="@PersistentVolume.Spec.Rbd" ExplainField="persistentVolume.spec.rbd"
+                            ShowInJson="true">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Glusterfs"] Item="@PersistentVolume.Spec.Glusterfs"
+                            ExplainField="persistentVolume.spec.glusterfs" ShowInJson="true">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Cephfs"] Item="@PersistentVolume.Spec.Cephfs"
+                            ExplainField="persistentVolume.spec.cephfs" ShowInJson="true">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Cinder"] Item="@PersistentVolume.Spec.Cinder"
+                            ExplainField="persistentVolume.spec.cinder" ShowInJson="true">
+        </PropertySimpleView>
 
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="LastPhaseTransitionTime" Item="@PersistentVolume.Status.LastPhaseTransitionTime" ExplainField="persistentVolume.status.lastPhaseTransitionTime"></PropertySimpleView>
-        <PropertySimpleView Title="Message" Item="@PersistentVolume.Status.Message" ExplainField="persistentVolume.status.message"></PropertySimpleView>
+        <PropertySimpleView Title=@L["LastPhaseTransitionTime"] Item="@PersistentVolume.Status.LastPhaseTransitionTime"
+                            ExplainField="persistentVolume.status.lastPhaseTransitionTime">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Message"] Item="@PersistentVolume.Status.Message"
+                            ExplainField="persistentVolume.status.message">
+        </PropertySimpleView>
         <PropertySimpleView Title=@L["Phase"] Item="@PersistentVolume.Status.Phase" ExplainField="persistentVolume.status.phase"></PropertySimpleView>
-        <PropertySimpleView Title="Reason" Item="@PersistentVolume.Status.Reason" ExplainField="persistentVolume.status.reason"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Reason"] Item="@PersistentVolume.Status.Reason"
+                            ExplainField="persistentVolume.status.reason">
+        </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@PersistentVolume.Metadata.Uid"></MiniEventListView>
 }
+```
