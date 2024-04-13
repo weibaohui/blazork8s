@@ -1,7 +1,7 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1NetworkPolicy>
 @if (NetworkPolicy != null)
 {
@@ -10,11 +10,15 @@
     <MetadataView Item="NetworkPolicy.Metadata" ExplainFieldPrefix="networkPolicy"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertyListView Title="PolicyTypes" Items="@NetworkPolicy.Spec.PolicyTypes" ExplainField="networkPolicy.spec.policyTypes" T="string"></PropertyListView>
-        <LabelSelectorView Title="PodSelector" LabelSelector="@NetworkPolicy.Spec.PodSelector" NullDesc="All Pod" ExplainField="networkPolicy.spec.podSelector"></LabelSelectorView>
+        <PropertyListView Title=@L["PolicyTypes"] Items="@NetworkPolicy.Spec.PolicyTypes"
+                          ExplainField="networkPolicy.spec.policyTypes" T="string">
+        </PropertyListView>
+        <LabelSelectorView Title=@L["PodSelector"] LabelSelector="@NetworkPolicy.Spec.PodSelector" NullDesc="All Pod"
+                           ExplainField="networkPolicy.spec.podSelector">
+        </LabelSelectorView>
 
-        <NetworkPolicyIngressView Ingress="@NetworkPolicy.Spec.Ingress" Title="Ingress"></NetworkPolicyIngressView>
-        <NetworkPolicyEgressView Egress="@NetworkPolicy.Spec.Egress" Title="Egress"></NetworkPolicyEgressView>
+        <NetworkPolicyIngressView Ingress="@NetworkPolicy.Spec.Ingress" Title=@L["Ingress"]></NetworkPolicyIngressView>
+        <NetworkPolicyEgressView Egress="@NetworkPolicy.Spec.Egress" Title=@L["Egress"]></NetworkPolicyEgressView>
     </HTable>
     <MiniEventListView Uid="@NetworkPolicy.Metadata.Uid"></MiniEventListView>
 }
