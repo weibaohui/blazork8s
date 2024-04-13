@@ -1,6 +1,6 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Lease>
 @if (Lease != null)
 {
@@ -9,11 +9,21 @@
     <MetadataView Item="Lease.Metadata" ExplainFieldPrefix="lease"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="AcquireTime" Item="@Lease.Spec.AcquireTime?.ToLocalTime()" ExplainField="lease.spec.acquireTime"></PropertySimpleView>
-        <PropertySimpleView Title="HolderIdentity" Item="@Lease.Spec.HolderIdentity" ExplainField="lease.spec.holderIdentity"></PropertySimpleView>
-        <PropertySimpleView Title="LeaseDurationSeconds" Item="@Lease.Spec.LeaseDurationSeconds" ExplainField="lease.spec.leaseDurationSeconds"></PropertySimpleView>
-        <PropertySimpleView Title="LeaseTransitions" Item="@Lease.Spec.LeaseTransitions" ExplainField="lease.spec.leaseTransitions"></PropertySimpleView>
-        <PropertySimpleView Title="RenewTime" Item="@Lease.Spec.RenewTime?.ToLocalTime()" ExplainField="lease.spec.renewTime"></PropertySimpleView>
+        <PropertySimpleView Title=@L["AcquireTime"] Item="@Lease.Spec.AcquireTime?.ToLocalTime()"
+                            ExplainField="lease.spec.acquireTime">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["HolderIdentity"] Item="@Lease.Spec.HolderIdentity"
+                            ExplainField="lease.spec.holderIdentity">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["LeaseDurationSeconds"] Item="@Lease.Spec.LeaseDurationSeconds"
+                            ExplainField="lease.spec.leaseDurationSeconds">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["LeaseTransitions"] Item="@Lease.Spec.LeaseTransitions"
+                            ExplainField="lease.spec.leaseTransitions">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["RenewTime"] Item="@Lease.Spec.RenewTime?.ToLocalTime()"
+                            ExplainField="lease.spec.renewTime">
+        </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@Lease.Metadata.Uid"></MiniEventListView>
 }
