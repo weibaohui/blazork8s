@@ -1,15 +1,16 @@
 @page "/MutatingWebhookConfiguration"
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1MutatingWebhookConfiguration>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="MutatingWebhookConfiguration" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["MutatingWebhookConfiguration"] Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1MutatingWebhookConfiguration"
@@ -33,7 +34,7 @@
                     <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Webhooks" TData="string">
+                    <AntDesign.Column Title=@L["Webhooks"] TData="string">
                         <ColorfulTag>@context.Webhooks.Count</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
