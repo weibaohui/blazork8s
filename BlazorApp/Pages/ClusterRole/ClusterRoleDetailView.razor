@@ -58,7 +58,7 @@
 
             @foreach (var subject in Subjects)
             {
-                <HTableColumn Title=@subject.Kind>
+                <HTableColumn Title=@L[subject.Kind]>
                     <RefView FullView="true" Ref="subject.Adapt<V1ObjectReference>()"></RefView>
                 </HTableColumn>
             }
