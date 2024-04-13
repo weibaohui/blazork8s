@@ -1,16 +1,17 @@
 @page "/Crd"
-@using k8s.Models
-@using Mapster
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<V1CustomResourceDefinition>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="CustomResourceDefinition" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["CustomResourceDefinition"] Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1CustomResourceDefinition"
@@ -31,13 +32,13 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
+                    <AntDesign.Column Field=@L["context.Name()"] Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Group" TData="string" Width="180px">
+                    <AntDesign.Column Title=@L["Group"] TData="string" Width="180px">
                         @($"{context.Spec.Group}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="GroupVersions" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["GroupVersions"] TData="string" Width="100px">
                         @if (context.Spec.Versions is { Count: > 0 })
                         {
                             foreach (var v in context.Spec.Versions)
@@ -46,22 +47,22 @@
                             }
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Kind" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Kind"] TData="string" Width="100px">
                         @if (context.Spec.Names?.Kind?.Length > 0)
                         {
                             <ColorfulTag> @context.Spec.Names.Kind</ColorfulTag>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Plural" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Plural"] TData="string" Width="100px">
                         @if (context.Spec.Names?.Plural?.Length > 0)
                         {
                             <ColorfulTag> @context.Spec.Names.Plural</ColorfulTag>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Scope" TData="string" Width="120px">
+                    <AntDesign.Column Title=@L["Scope"] TData="string" Width="120px">
                         @($"{context.Spec.Scope}")
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Count" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Count"] TData="string" Width="100px">
 
                         @if (CrCount.Keys.Contains(context.Name()))
                         {
