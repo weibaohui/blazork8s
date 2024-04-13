@@ -15,14 +15,21 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@StatefulSet.Spec.Selector.MatchLabels"></SelectorView>
-        <PropertySimpleView Title="ServiceName" Item="@StatefulSet.Spec.ServiceName" ExplainField="statefulSet.spec.serviceName"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ServiceName"] Item="@StatefulSet.Spec.ServiceName"
+                            ExplainField="statefulSet.spec.serviceName">
+        </PropertySimpleView>
         <PropertySimpleView Title=@L["Replicas"] Item="@StatefulSet.Spec.Replicas" ExplainField="statefulSet.spec.replicas"></PropertySimpleView>
         <PropertySimpleView Title=@L["MinReadySeconds"] Item="@StatefulSet.Spec.MinReadySeconds" ExplainField="statefulSet.spec.minReadySeconds"></PropertySimpleView>
-        <PropertySimpleView Title="RevisionHistoryLimit" Item="@StatefulSet.Spec.RevisionHistoryLimit" ExplainField="statefulSet.spec.revisionHistoryLimit"></PropertySimpleView>
-        <PropertySimpleView Title="Ordinals" Item="@StatefulSet.Spec.Ordinals" ExplainField="statefulSet.spec.ordinals" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["RevisionHistoryLimit"] Item="@StatefulSet.Spec.RevisionHistoryLimit"
+                            ExplainField="statefulSet.spec.revisionHistoryLimit">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Ordinals"] Item="@StatefulSet.Spec.Ordinals"
+                            ExplainField="statefulSet.spec.ordinals" ShowInJson="true">
+        </PropertySimpleView>
         @if (StatefulSet.Spec.PersistentVolumeClaimRetentionPolicy != null)
         {
-            <HTableColumn Title="PersistentVolumeClaimRetentionPolicy" ExplainField="statefulSet.spec.persistentVolumeClaimRetentionPolicy">
+            <HTableColumn Title=@L["PersistentVolumeClaimRetentionPolicy"]
+                          ExplainField="statefulSet.spec.persistentVolumeClaimRetentionPolicy">
                 @if (StatefulSet.Spec.PersistentVolumeClaimRetentionPolicy.WhenDeleted != null)
                 {
                     <ColorfulTag>WhenDeleted: @StatefulSet.Spec.PersistentVolumeClaimRetentionPolicy.WhenDeleted</ColorfulTag>
@@ -34,31 +41,51 @@
 
             </HTableColumn>
         }
-        <PropertyOptionView Title="PodManagementPolicy" Item="@StatefulSet.Spec.PodManagementPolicy" ExplainField="statefulSet.spec.podManagementPolicy" Options="@(new[] { "OrderedReady", "Parallel" })"></PropertyOptionView>
-        <PropertyOptionView Title="StrategyType" Item="@StatefulSet.Spec.UpdateStrategy.Type" ExplainField="statefulSet.spec.updateStrategy" Options=@(new[] { "OnDelete", "RollingUpdate" })></PropertyOptionView>
-        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@(StatefulSet.Spec.UpdateStrategy.RollingUpdate.Adapt<V1RollingUpdateDeployment>())" ExplainField="statefulSet.spec.updateStrategy.rollingUpdate">
+        <PropertyOptionView Title=@L["PodManagementPolicy"] Item="@StatefulSet.Spec.PodManagementPolicy"
+                            ExplainField="statefulSet.spec.podManagementPolicy"
+                            Options="@(new[] { "OrderedReady", "Parallel" })">
+        </PropertyOptionView>
+        <PropertyOptionView Title=@L["StrategyType"] Item="@StatefulSet.Spec.UpdateStrategy.Type"
+                            ExplainField="statefulSet.spec.updateStrategy"
+                            Options=@(new[] { "OnDelete", "RollingUpdate" })>
+        </PropertyOptionView>
+        <RollingUpdateView Title=@L["RollingUpdate"]
+                           RollingUpdate="@(StatefulSet.Spec.UpdateStrategy.RollingUpdate.Adapt<V1RollingUpdateDeployment>())"
+                           ExplainField="statefulSet.spec.updateStrategy.rollingUpdate">
             @if (StatefulSet.Spec.UpdateStrategy.RollingUpdate.Partition != null)
             {
                 <ColorfulTag>Partition = @StatefulSet.Spec.UpdateStrategy.RollingUpdate.Partition </ColorfulTag>
             }
         </RollingUpdateView>
-        <PropertySimpleView Title="VolumeClaimTemplates" Item="@StatefulSet.Spec.VolumeClaimTemplates" ExplainField="statefulSet.spec.volumeClaimTemplates" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["VolumeClaimTemplates"] Item="@StatefulSet.Spec.VolumeClaimTemplates"
+                            ExplainField="statefulSet.spec.volumeClaimTemplates" ShowInJson="true">
+        </PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">PodTemplate</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["PodTemplate"]</Divider>
     <MetadataView Item="@StatefulSet.Spec.Template.Metadata" ExplainFieldPrefix="statefulSet"></MetadataView>
     <PodSpecView PodSpec="@StatefulSet.Spec.Template.Spec"></PodSpecView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <PropertySimpleView Title=@L["AvailableReplicas"] Item="@StatefulSet.Status.AvailableReplicas" ExplainField="statefulSet.status.availableReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="CollisionCount" Item="@StatefulSet.Status.CollisionCount" ExplainField="statefulSet.status.collisionCount"></PropertySimpleView>
+        <PropertySimpleView Title=@L["CollisionCount"] Item="@StatefulSet.Status.CollisionCount"
+                            ExplainField="statefulSet.status.collisionCount">
+        </PropertySimpleView>
         <PropertySimpleView Title=@L["Conditions"] Item="@StatefulSet.Status.Conditions" ExplainField="statefulSet.status.conditions" ShowInJson="true"></PropertySimpleView>
-        <PropertySimpleView Title="CurrentReplicas" Item="@StatefulSet.Status.CurrentReplicas" ExplainField="statefulSet.status.currentReplicas"></PropertySimpleView>
-        <PropertySimpleView Title="CurrentRevision" Item="@StatefulSet.Status.CurrentRevision" ExplainField="statefulSet.status.currentRevision"></PropertySimpleView>
+        <PropertySimpleView Title=@L["CurrentReplicas"] Item="@StatefulSet.Status.CurrentReplicas"
+                            ExplainField="statefulSet.status.currentReplicas">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["CurrentRevision"] Item="@StatefulSet.Status.CurrentRevision"
+                            ExplainField="statefulSet.status.currentRevision">
+        </PropertySimpleView>
         <PropertySimpleView Title=@L["ObservedGeneration"] Item="@StatefulSet.Status.ObservedGeneration" ExplainField="statefulSet.status.observedGeneration"></PropertySimpleView>
         <PropertySimpleView Title=@L["ReadyReplicas"] Item="@StatefulSet.Status.ReadyReplicas" ExplainField="statefulSet.status.readyReplicas"></PropertySimpleView>
         <PropertySimpleView Title=@L["Replicas"] Item="@StatefulSet.Status.Replicas" ExplainField="statefulSet.status.replicas"></PropertySimpleView>
-        <PropertySimpleView Title="UpdateRevision" Item="@StatefulSet.Status.UpdateRevision" ExplainField="statefulSet.status.updateRevision"></PropertySimpleView>
-        <PropertySimpleView Title="UpdatedReplicas" Item="@StatefulSet.Status.UpdatedReplicas" ExplainField="statefulSet.status.updatedReplicas"></PropertySimpleView>
+        <PropertySimpleView Title=@L["UpdateRevision"] Item="@StatefulSet.Status.UpdateRevision"
+                            ExplainField="statefulSet.status.updateRevision">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["UpdatedReplicas"] Item="@StatefulSet.Status.UpdatedReplicas"
+                            ExplainField="statefulSet.status.updatedReplicas">
+        </PropertySimpleView>
     </HTable>
 
     <MiniPodListView ControllerByUid="@StatefulSet.Metadata.Uid"></MiniPodListView>
