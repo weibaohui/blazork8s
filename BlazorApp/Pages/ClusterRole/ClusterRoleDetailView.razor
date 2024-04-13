@@ -1,10 +1,10 @@
-@using Mapster
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ClusterRole>
 @if (ClusterRole != null)
 {
@@ -16,7 +16,7 @@
     <HTable Bordered Column="1">
         @if (ClusterRole.AggregationRule is { ClusterRoleSelectors.Count: > 0 })
         {
-            <HTableColumn Title="AggregationRule" ExplainField="clusterRole.aggregationRule">
+            <HTableColumn Title=@L["AggregationRule"] ExplainField="clusterRole.aggregationRule">
                 <HTable>
                     @foreach (var selector in ClusterRole.AggregationRule.ClusterRoleSelectors)
                     {
@@ -27,15 +27,25 @@
         }
         @if (ClusterRole.Rules is { Count: > 0 })
         {
-            <HTableColumn Title="Rules" ExplainField="clusterRole.rules">
+            <HTableColumn Title=@L["Rules"] ExplainField="clusterRole.rules">
                 @foreach (var rule in ClusterRole.Rules)
                 {
                     <HTable>
-                        <PropertyListView Items="rule.ResourceNames" T="string" Title="ResourceNames" ExplainField="clusterRole.rules.resourceNames"></PropertyListView>
-                        <PropertyListView Items="rule.NonResourceURLs" T="string" Title="NonResourceURLs" ExplainField="clusterRole.rules.nonResourceURLs"></PropertyListView>
-                        <PropertyListView Items="rule.ApiGroups" T="string" Title="ApiGroups" ExplainField="clusterRole.rules.apiGroups"></PropertyListView>
-                        <PropertyListView Items="rule.Resources" T="string" Title="Resources" ExplainField="clusterRole.rules.resources"></PropertyListView>
-                        <PropertyListView Items="rule.Verbs" T="string" Title="Verbs" ExplainField="clusterRole.rules.verbs"></PropertyListView>
+                        <PropertyListView Items="rule.ResourceNames" T="string" Title=@L["ResourceNames"]
+                                          ExplainField="clusterRole.rules.resourceNames">
+                        </PropertyListView>
+                        <PropertyListView Items="rule.NonResourceURLs" T="string" Title=@L["NonResourceURLs"]
+                                          ExplainField="clusterRole.rules.nonResourceURLs">
+                        </PropertyListView>
+                        <PropertyListView Items="rule.ApiGroups" T="string" Title=@L["ApiGroups"]
+                                          ExplainField="clusterRole.rules.apiGroups">
+                        </PropertyListView>
+                        <PropertyListView Items="rule.Resources" T="string" Title=@L["Resources"]
+                                          ExplainField="clusterRole.rules.resources">
+                        </PropertyListView>
+                        <PropertyListView Items="rule.Verbs" T="string" Title=@L["Verbs"]
+                                          ExplainField="clusterRole.rules.verbs">
+                        </PropertyListView>
                     </HTable>
                 }
             </HTableColumn>
@@ -43,12 +53,12 @@
     </HTable>
     @if (Subjects is { Count: > 0 })
     {
-        <Divider Orientation="left" Style="font-weight:bold">Had Subjects</Divider>
+        <Divider Orientation="left" Style="font-weight:bold">@L["Had Subjects"]</Divider>
         <HTable>
 
             @foreach (var subject in Subjects)
             {
-                <HTableColumn Title="@subject.Kind">
+                <HTableColumn Title=@subject.Kind>
                     <RefView FullView="true" Ref="subject.Adapt<V1ObjectReference>()"></RefView>
                 </HTableColumn>
             }
