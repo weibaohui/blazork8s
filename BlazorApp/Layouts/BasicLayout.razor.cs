@@ -3,7 +3,6 @@ using AntDesign.ProLayout;
 using BlazorApp.Service.AI;
 using k8s;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Layouts;
@@ -12,11 +11,9 @@ public partial class BasicLayout : LayoutComponentBase
 {
     public MenuDataItem[] MenuData;
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+    [Inject] public IStringLocalizer L { get; set; }
 
-    [Inject]
-    private IAiService Ai { get; set; }
+    [Inject] private IAiService Ai { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -24,17 +21,17 @@ public partial class BasicLayout : LayoutComponentBase
         [
             new MenuDataItem
             {
-                Name     = L["Cluster"],
-                Key      = "Cluster",
-                Icon     = "cluster",
+                Name = L["Cluster"],
+                Key = "Cluster",
+                Icon = "cluster",
                 Children = ClusterMenu(),
             },
             new MenuDataItem
             {
-                Path       = "/PortForward",
-                Name       = L["PortForward"],
-                Key        = "PortForward",
-                Icon       = "pic-center",
+                Path = "/PortForward",
+                Name = L["PortForward"],
+                Key = "PortForward",
+                Icon = "pic-center",
                 HideInMenu = KubernetesClientConfiguration.IsInCluster()
             },
 
@@ -42,46 +39,46 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItemWithPath(L["Node"], "database", "/Node"),
             new MenuDataItem
             {
-                Name     = L["Workloads"],
-                Key      = "Workloads",
-                Icon     = "appstore",
+                Name = L["Workloads"],
+                Key = "Workloads",
+                Icon = "appstore",
                 Children = WorkloadsMenu(),
             },
             new MenuDataItem
             {
-                Name     = L["Config"],
-                Key      = "Config",
-                Icon     = "control",
+                Name = L["Config"],
+                Key = "Config",
+                Icon = "control",
                 Children = ConfigMenu(),
             },
             new MenuDataItem
             {
-                Name     = L["Network"],
-                Key      = "Network",
-                Icon     = "apartment",
+                Name = L["Network"],
+                Key = "Network",
+                Icon = "apartment",
                 Children = NetworkMenu(),
             },
             new MenuDataItem
             {
-                Name     = L["Storage"],
-                Key      = "Storage",
-                Icon     = "inbox",
+                Name = L["Storage"],
+                Key = "Storage",
+                Icon = "inbox",
                 Children = StorageMenu(),
             },
             new MenuDataItem
             {
-                Name     = L["AccessControl"],
-                Key      = "AccessControl",
-                Icon     = "verified",
+                Name = L["AccessControl"],
+                Key = "AccessControl",
+                Icon = "verified",
                 Children = AccessControlMenu(),
             },
-            GetMenuItem(L["CRD"], "code"),
+            GetMenuItemWithPath(L["CRD"], "code", "/Crd"),
             new MenuDataItem
             {
-                Path       = "/ChatDeploy",
-                Name       = L["ChatDeploy"],
-                Key        = "ChatDeploy",
-                Icon       = "robot",
+                Path = "/ChatDeploy",
+                Name = L["ChatDeploy"],
+                Key = "ChatDeploy",
+                Icon = "robot",
                 HideInMenu = !Ai.Enabled(),
             },
             GetMenuItemWithPath(L["Example"], "unordered-list", "/Example"),
@@ -106,7 +103,7 @@ public partial class BasicLayout : LayoutComponentBase
         {
             Path = item,
             Name = item,
-            Key  = item,
+            Key = item,
             Icon = icon,
         };
     }
@@ -117,7 +114,7 @@ public partial class BasicLayout : LayoutComponentBase
         {
             Path = path,
             Name = item,
-            Key  = item,
+            Key = item,
             Icon = icon,
         };
     }

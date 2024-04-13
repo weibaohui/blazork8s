@@ -1,15 +1,15 @@
 @page "/Service"
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1Service>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="Service" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["Service"] Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Service"
@@ -37,7 +37,7 @@
                     <AntDesign.Column Title=@L["Type"] TData="string">
                         <ColorfulTag>@context.Spec.Type</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ClusterIP" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["ClusterIP"] TData="string" Width="100px">
                         @if (context.Spec.ClusterIPs is { Count: > 0 })
                         {
                             @foreach (var p in context.Spec.ClusterIPs)
@@ -47,7 +47,7 @@
                         }
                     </AntDesign.Column>
 
-                    <AntDesign.Column Title="ClusterIP" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["ClusterIP"] TData="string" Width="100px">
                         @foreach (var p in context.Spec.Ports)
                         {
                             <ColorfulTag>@($"{p.Port}{(p.NodePort != null ? ":" + p.NodePort : "")}/{p.Protocol}")</ColorfulTag>
@@ -56,7 +56,7 @@
                     <AntDesign.Column Title=@L["Selector"] TData="string" Width="100px">
                         <SelectorView Selector="@context.Spec.Selector"></SelectorView>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="ExternalIP" TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["ExternalIP"] TData="string" Width="100px">
                         @if (context.Spec.ExternalIPs is { Count: > 0 })
                         {
                             @foreach (var p in context.Spec.ExternalIPs)

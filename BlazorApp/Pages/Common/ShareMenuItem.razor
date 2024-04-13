@@ -19,7 +19,7 @@
         </Overlay>
         <ChildContent>
             <Button>
-                Title=@L["Action"]
+                @L["Action"]
                 <Icon Type="down"/>
             </Button>
         </ChildContent>
@@ -28,13 +28,13 @@
 @if (MenuMode == MenuMode.Horizontal)
 {
     <Alert Type="@AlertType.Success">
-        <Button OnClick="@(() => OnDescribeClick(Item))">Title=@L["Describe"]</Button>
-        <Button OnClick="@(() => OnYamlClick(Item))">Title=@L["Yaml"]</Button>
-        <Button OnClick="@(() => OnDocClick(Item))">Title=@L["Doc"]</Button>
+        <Button OnClick="@(() => OnDescribeClick(Item))">@L["Describe"]</Button>
+        <Button OnClick="@(() => OnYamlClick(Item))">@L["Yaml"]</Button>
+        <Button OnClick="@(() => OnDocClick(Item))">@L["Doc"]</Button>
         @if (_enable)
         {
-            <Button OnClick="@(() => OnAnalyzeClick(Item))">Title=@L["Inspection"]</Button>
-            <Button OnClick="@(() => OnSecurityClick(Item))">Title=@L["Security"]</Button>
+            <Button OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</Button>
+            <Button OnClick="@(() => OnSecurityClick(Item))">@L["Security"]</Button>
         }
         @ChildContent
     </Alert>

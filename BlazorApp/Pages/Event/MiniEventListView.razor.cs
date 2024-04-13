@@ -8,26 +8,21 @@ using BlazorApp.Service.k8s;
 using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Event
 {
     public partial class MiniEventListView : PageBase
     {
-        [Inject]
-        private IEventService EventService { get; set; }
+        [Inject] private IEventService EventService { get; set; }
 
-        [Inject]
-        private IAiService Ai { get; set; }
+        [Inject] private IAiService Ai { get; set; }
 
         private IList<Corev1Event> Events { get; set; }
 
 
-        [Parameter]
-        public string Uid { get; set; }
+        [Parameter] public string Uid { get; set; }
 
-        [Parameter]
-        public string Host { get; set; }
+        [Parameter] public string Host { get; set; }
 
 
         protected override async Task OnInitializedAsync()
@@ -47,7 +42,7 @@ namespace BlazorApp.Pages.Event
             await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
                 new IAiService.AiChatData
                 {
-                    Data  = e,
+                    Data = e,
                     Style = "error"
                 });
         }
@@ -58,7 +53,7 @@ namespace BlazorApp.Pages.Event
             await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
                 new IAiService.AiChatData
                 {
-                    Data  = Events.Where(x => x.Type == "Warning").ToList(),
+                    Data = Events.Where(x => x.Type == "Warning").ToList(),
                     Style = "error"
                 });
         }

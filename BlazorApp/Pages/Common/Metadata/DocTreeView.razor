@@ -1,6 +1,6 @@
 @typeparam            T
-@using Extension
 @using Entity
+@using Extension
 @inherits DrawerPageBase<T>
 <div>
 
@@ -10,8 +10,8 @@
     </Breadcrumb>
     <Divider/>
     <div>
-        <Button OnClick="ExpandAll">展开</Button>
-        <Button OnClick="CollapseAll">收缩</Button>
+        <Button OnClick="ExpandAll">@L["Expand"]</Button>
+        <Button OnClick="CollapseAll">@L["Collapse"]</Button>
     </div>
     <Divider/>
 
