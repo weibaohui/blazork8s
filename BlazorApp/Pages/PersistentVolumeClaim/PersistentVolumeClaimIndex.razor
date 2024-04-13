@@ -1,15 +1,16 @@
 @page "/PersistentVolumeClaim"
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1PersistentVolumeClaim>
 @if (TableData.PagedItems != null)
 {
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title="PersistentVolumeClaim" Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@L["PersistentVolumeClaim"] Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1PersistentVolumeClaim"
@@ -36,10 +37,10 @@
                     <AntDesign.Column Title=@L["Status"] TData="string">
                         <ColorfulTag>@context.Status.Phase</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="VolumeName" TData="string">
+                    <AntDesign.Column Title=@L["VolumeName"] TData="string">
                         <Tag>@context.Spec.VolumeName</Tag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="Capacity" TData="string">
+                    <AntDesign.Column Title=@L["Capacity"] TData="string">
                         @if (context.Status.Capacity is { Count: > 0 })
                         {
                             @foreach (var (key, value) in context.Status.Capacity)
@@ -50,7 +51,7 @@
                             }
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="AccessModes" TData="string">
+                    <AntDesign.Column Title=@L["AccessModes"] TData="string">
                         @foreach (var mode in context.Spec.AccessModes)
                         {
                             <div>
@@ -58,10 +59,10 @@
                             </div>
                         }
                     </AntDesign.Column>
-                    <AntDesign.Column Title="StorageClass" TData="string">
+                    <AntDesign.Column Title=@L["StorageClass"] TData="string">
                         <ColorfulTag>@context.Spec.StorageClassName</ColorfulTag>
                     </AntDesign.Column>
-                    <AntDesign.Column Title="VolumeMode" TData="string">
+                    <AntDesign.Column Title=@L["VolumeMode"] TData="string">
                         <ColorfulTag>@context.Spec.VolumeMode</ColorfulTag>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
