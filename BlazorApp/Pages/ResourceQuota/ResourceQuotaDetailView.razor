@@ -1,7 +1,8 @@
+```
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ResourceQuota>
 @if (ResourceQuota != null)
@@ -11,15 +12,27 @@
     <MetadataView Item="ResourceQuota.Metadata" ExplainFieldPrefix="resourceQuota"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Spec.Hard" ExplainField="resourceQuota.spec.hard" EveryItemOneRow="true"></PropertyMapView>
-        <LabelSelectorView Title="ScopeSelector" LabelSelector="@GetSelector()"></LabelSelectorView>
-        <PropertyListView Title="Scopes" Items="@ResourceQuota.Spec.Scopes" ExplainField="resourceQuota.spec.scopes" T="string"></PropertyListView>
+        <PropertyMapView T="ResourceQuantity" Title=@L["Hard"] Items="@ResourceQuota.Spec.Hard"
+                         ExplainField="resourceQuota.spec.hard" EveryItemOneRow="true">
+        </PropertyMapView>
+        <LabelSelectorView Title=@L["ScopeSelector"] LabelSelector="@GetSelector()"></LabelSelectorView>
+        <PropertyListView Title=@L["Scopes"] Items="@ResourceQuota.Spec.Scopes" ExplainField="resourceQuota.spec.scopes"
+                          T="string">
+        </PropertyListView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertyMapView T="ResourceQuantity" Title="Hard" Items="@ResourceQuota.Status.Hard" ExplainField="resourceQuota.status.hard" EveryItemOneRow="true"></PropertyMapView>
-        <PropertyMapView T="ResourceQuantity" Title="Used" Items="@ResourceQuota.Status.Used" ExplainField="resourceQuota.status.used" EveryItemOneRow="true"></PropertyMapView>
-        <PropertyMapView T="string" Title="Left" Items="@Calculate(ResourceQuota.Status.Hard, ResourceQuota.Status.Used)" EveryItemOneRow="true"></PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title=@L["Hard"] Items="@ResourceQuota.Status.Hard"
+                         ExplainField="resourceQuota.status.hard" EveryItemOneRow="true">
+        </PropertyMapView>
+        <PropertyMapView T="ResourceQuantity" Title=@L["Used"] Items="@ResourceQuota.Status.Used"
+                         ExplainField="resourceQuota.status.used" EveryItemOneRow="true">
+        </PropertyMapView>
+        <PropertyMapView T="string" Title=@L["Left"]
+                         Items="@Calculate(ResourceQuota.Status.Hard, ResourceQuota.Status.Used)"
+                         EveryItemOneRow="true">
+        </PropertyMapView>
     </HTable>
     <MiniEventListView Uid="@ResourceQuota.Metadata.Uid"></MiniEventListView>
 }
+```
