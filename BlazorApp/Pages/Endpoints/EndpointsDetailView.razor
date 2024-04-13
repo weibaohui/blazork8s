@@ -9,8 +9,14 @@
     @if (Endpoints.Subsets != null)
     {
         <EndpointsPortView Ports="@(Endpoints.Subsets.Where(x => x.Ports != null).SelectMany(x => x.Ports).ToList())"></EndpointsPortView>
-        <EndpointAddressView Addresses="@(Endpoints.Subsets.Where(x => x.Addresses != null).SelectMany(x => x.Addresses).ToList())" Title="Addresses"></EndpointAddressView>
-        <EndpointAddressView Addresses="@(Endpoints.Subsets.Where(x => x.NotReadyAddresses != null).SelectMany(x => x.NotReadyAddresses).ToList())" Title="NotReadyAddresses"></EndpointAddressView>
+        <EndpointAddressView
+            Addresses="@(Endpoints.Subsets.Where(x => x.Addresses != null).SelectMany(x => x.Addresses).ToList())"
+            Title=@L["Addresses"]>
+        </EndpointAddressView>
+        <EndpointAddressView
+            Addresses="@(Endpoints.Subsets.Where(x => x.NotReadyAddresses != null).SelectMany(x => x.NotReadyAddresses).ToList())"
+            Title=@L["NotReadyAddresses"]>
+        </EndpointAddressView>
     }
 
     <MiniEventListView Uid="@Endpoints.Metadata.Uid"></MiniEventListView>
