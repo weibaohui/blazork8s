@@ -1,7 +1,7 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Rules is { Count: > 0 })
@@ -11,7 +11,7 @@
         {
             <HTable Class="miniTable">
 
-                <HTableColumn Title="Host" ExplainField="ingress.spec.rules.host">
+                <HTableColumn Title=@L["Host"] ExplainField="ingress.spec.rules.host">
                     <ColorfulTag>@(rule.Host ?? "*") </ColorfulTag>
                 </HTableColumn>
 
@@ -35,10 +35,8 @@
 
 @code {
 
-    [Parameter]
-    public IList<V1IngressRule> Rules { get; set; }
+    [Parameter] public IList<V1IngressRule> Rules { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
 }
