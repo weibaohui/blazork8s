@@ -7,11 +7,11 @@
             <Menu >
                 <MenuItem OnClick="@(() => OnYamlClick(Item))">Yaml</MenuItem>
                 <MenuItem >
-                    <Popconfirm Title="确定删除吗"
+                    <Popconfirm Title=@L["Delete"]
                                 OnConfirm="@(() => OnDeleteClick(Item))"
                                 OkText="Yes"
                                 CancelText="No">
-                        删除
+                        @L["Delete"]
                     </Popconfirm>
                 </MenuItem>
             </Menu>
