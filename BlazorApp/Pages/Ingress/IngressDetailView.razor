@@ -1,6 +1,6 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Ingress>
 @if (Ingress != null)
 {
@@ -9,14 +9,18 @@
     <MetadataView Item="Ingress.Metadata" ExplainFieldPrefix="ingress"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="IngressClassName" Item="@Ingress.Spec.IngressClassName" ExplainField="ingress.spec.ingressClassName"></PropertySimpleView>
-        <IngressBackendView Title="DefaultBackend" Backend="@Ingress.Spec.DefaultBackend"></IngressBackendView>
-        <IngressRulesView Title="Rules" Rules="@Ingress.Spec.Rules"></IngressRulesView>
-        <IngressTlsView Title="TLS" Tls="@Ingress.Spec.Tls"></IngressTlsView>
+        <PropertySimpleView Title=@L["IngressClassName"] Item="@Ingress.Spec.IngressClassName"
+                            ExplainField="ingress.spec.ingressClassName">
+        </PropertySimpleView>
+        <IngressBackendView Title=@L["DefaultBackend"] Backend="@Ingress.Spec.DefaultBackend"></IngressBackendView>
+        <IngressRulesView Title=@L["Rules"] Rules="@Ingress.Spec.Rules"></IngressRulesView>
+        <IngressTlsView Title=@L["TLS"] Tls="@Ingress.Spec.Tls"></IngressTlsView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="LoadBalancer" Item="@Ingress.Status.LoadBalancer" ExplainField="ingress.status.loadBalancer" ShowInJson="true"></PropertySimpleView>
+        <PropertySimpleView Title=@L["LoadBalancer"] Item="@Ingress.Status.LoadBalancer"
+                            ExplainField="ingress.status.loadBalancer" ShowInJson="true">
+        </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@Ingress.Metadata.Uid"></MiniEventListView>
 }
