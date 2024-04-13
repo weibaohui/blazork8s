@@ -1,10 +1,10 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Endpoints
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
@@ -15,29 +15,63 @@
     <HTable Bordered Column="1">
         <SelectorView Title=@L["Selector"] Selector="@Item.Spec.Selector"></SelectorView>
         <PropertyOptionView Title=@L["Type"] Item="@Item.Spec.Type" Options='@(new[] { "ClusterIP", "NodePort", "ExternalName", "LoadBalancer" })' ExplainField="service.spec.type"></PropertyOptionView>
-        <PropertyOptionView Title="SessionAffinity" Item="@Item.Spec.SessionAffinity" Options='@(new[] { "ClientIP", "None" })' ExplainField="service.spec.sessionAffinity"></PropertyOptionView>
+        <PropertyOptionView Title=@L["SessionAffinity"] Item="@Item.Spec.SessionAffinity"
+                            Options='@(new[] { "ClientIP", "None" })'
+                            ExplainField="service.spec.sessionAffinity">
+        </PropertyOptionView>
         @if (Item.Spec.SessionAffinityConfig != null)
         {
-            <HTableColumn Title="SessionAffinityConfig" ExplainField="service.spec.sessionAffinityConfig">
+            <HTableColumn Title=@L["SessionAffinityConfig"] ExplainField="service.spec.sessionAffinityConfig">
                 <ColorfulTag >@($"timeout = {Item.Spec.SessionAffinityConfig.ClientIP.TimeoutSeconds} seconds")</ColorfulTag>
 
             </HTableColumn>
         }
 
-        <PropertyListView Title="IpFamilies" Items="@Item.Spec.IpFamilies" ExplainField="service.spec.ipFamilies" T="string"></PropertyListView>
-        <PropertyOptionView Title="IpFamilyPolicy" Item="@Item.Spec.IpFamilyPolicy" Options='@(new[] { "PreferDualStack", "RequireDualStack", "SingleStack" })' ExplainField="service.spec.ipFamilyPolicy"></PropertyOptionView>
-        <PropertySimpleView Title="HealthCheckNodePort" Item="@Item.Spec.HealthCheckNodePort" ExplainField="service.spec.healthCheckNodePort"></PropertySimpleView>
-        <PropertySimpleView Title="ClusterIP" Item="@Item.Spec.ClusterIP" ExplainField="service.spec.clusterIP"></PropertySimpleView>
-        <PropertyListView Title="ClusterIPs" Items="@Item.Spec.ClusterIPs" ExplainField="service.spec.clusterIPs" T="string"></PropertyListView>
-        <PropertyOptionView Title="InternalTrafficPolicy" Item="@Item.Spec.InternalTrafficPolicy" Options='@(new[] { "Cluster", "Local" })' ExplainField="service.spec.internalTrafficPolicy"></PropertyOptionView>
-        <PropertySimpleView Title="ExternalName" Item="@Item.Spec.ExternalName" ExplainField="service.spec.externalName"></PropertySimpleView>
-        <PropertyOptionView Title="ExternalTrafficPolicy" Item="@Item.Spec.ExternalTrafficPolicy" Options='@(new[] { "Cluster", "Local" })' ExplainField="service.spec.externalTrafficPolicy"></PropertyOptionView>
-        <PropertyListView Title="ExternalIPs" Items="@Item.Spec.ExternalIPs" ExplainField="service.spec.externalIPs" T="string"></PropertyListView>
-        <PropertySimpleView Title="AllocateLoadBalancerNodePorts" Item="@Item.Spec.AllocateLoadBalancerNodePorts" ExplainField="service.spec.allocateLoadBalancerNodePorts"></PropertySimpleView>
-        <PropertySimpleView Title="LoadBalancerClass" Item="@Item.Spec.LoadBalancerClass" ExplainField="service.spec.loadBalancerClass"></PropertySimpleView>
-        <PropertySimpleView Title="LoadBalancerIP" Item="@Item.Spec.LoadBalancerIP" ExplainField="service.spec.loadBalancerIP"></PropertySimpleView>
-        <PropertyListView Title="LoadBalancerSourceRanges" Items="@Item.Spec.LoadBalancerSourceRanges" ExplainField="service.spec.loadBalancerSourceRanges" T="string"></PropertyListView>
-        <PropertySimpleView Title="PublishNotReadyAddresses" Item="@Item.Spec.PublishNotReadyAddresses" ExplainField="service.spec.publishNotReadyAddresses"></PropertySimpleView>
+        <PropertyListView Title=@L["IpFamilies"] Items="@Item.Spec.IpFamilies" ExplainField="service.spec.ipFamilies"
+                          T="string">
+        </PropertyListView>
+        <PropertyOptionView Title=@L["IpFamilyPolicy"] Item="@Item.Spec.IpFamilyPolicy"
+                            Options='@(new[] { "PreferDualStack", "RequireDualStack", "SingleStack" })'
+                            ExplainField="service.spec.ipFamilyPolicy">
+        </PropertyOptionView>
+        <PropertySimpleView Title=@L["HealthCheckNodePort"] Item="@Item.Spec.HealthCheckNodePort"
+                            ExplainField="service.spec.healthCheckNodePort">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["ClusterIP"] Item="@Item.Spec.ClusterIP"
+                            ExplainField="service.spec.clusterIP">
+        </PropertySimpleView>
+        <PropertyListView Title=@L["ClusterIPs"] Items="@Item.Spec.ClusterIPs" ExplainField="service.spec.clusterIPs"
+                          T="string">
+        </PropertyListView>
+        <PropertyOptionView Title=@L["InternalTrafficPolicy"] Item="@Item.Spec.InternalTrafficPolicy"
+                            Options='@(new[] { "Cluster", "Local" })'
+                            ExplainField="service.spec.internalTrafficPolicy">
+        </PropertyOptionView>
+        <PropertySimpleView Title=@L["ExternalName"] Item="@Item.Spec.ExternalName"
+                            ExplainField="service.spec.externalName">
+        </PropertySimpleView>
+        <PropertyOptionView Title=@L["ExternalTrafficPolicy"] Item="@Item.Spec.ExternalTrafficPolicy"
+                            Options='@(new[] { "Cluster", "Local" })'
+                            ExplainField="service.spec.externalTrafficPolicy">
+        </PropertyOptionView>
+        <PropertyListView Title=@L["ExternalIPs"] Items="@Item.Spec.ExternalIPs" ExplainField="service.spec.externalIPs"
+                          T="string">
+        </PropertyListView>
+        <PropertySimpleView Title=@L["AllocateLoadBalancerNodePorts"] Item="@Item.Spec.AllocateLoadBalancerNodePorts"
+                            ExplainField="service.spec.allocateLoadBalancerNodePorts">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["LoadBalancerClass"] Item="@Item.Spec.LoadBalancerClass"
+                            ExplainField="service.spec.loadBalancerClass">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["LoadBalancerIP"] Item="@Item.Spec.LoadBalancerIP"
+                            ExplainField="service.spec.loadBalancerIP">
+        </PropertySimpleView>
+        <PropertyListView Title=@L["LoadBalancerSourceRanges"] Items="@Item.Spec.LoadBalancerSourceRanges"
+                          ExplainField="service.spec.loadBalancerSourceRanges" T="string">
+        </PropertyListView>
+        <PropertySimpleView Title=@L["PublishNotReadyAddresses"] Item="@Item.Spec.PublishNotReadyAddresses"
+                            ExplainField="service.spec.publishNotReadyAddresses">
+        </PropertySimpleView>
         <ServicePortsView Ports="@Item.Spec.Ports" SvcName="@Item.Metadata.Name" SvcNamespace="@Item.Metadata.NamespaceProperty"></ServicePortsView>
     </HTable>
 
