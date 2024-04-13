@@ -1,6 +1,6 @@
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1PriorityClass>
 @if (PriorityClass != null)
 {
@@ -9,10 +9,19 @@
     <MetadataView Item="PriorityClass.Metadata" ExplainFieldPrefix="priorityClass"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Description" Item="@PriorityClass.Description" ExplainField="priorityClass.description"></PropertySimpleView>
-        <PropertySimpleView Title="GlobalDefault" Item="@PriorityClass.GlobalDefault" ExplainField="priorityClass.globalDefault"></PropertySimpleView>
-        <PropertyOptionView Title="PreemptionPolicy" Item="@PriorityClass.PreemptionPolicy" ExplainField="priorityClass.preemptionPolicy" Options="@(new[] { "PreemptLowerPriority", "Never" })"></PropertyOptionView>
-        <PropertySimpleView Title="Value" Item="@PriorityClass.Value" ExplainField="priorityClass.value"></PropertySimpleView>
+        <PropertySimpleView Title=@L["Description"] Item="@PriorityClass.Description"
+                            ExplainField="priorityClass.description">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["GlobalDefault"] Item="@PriorityClass.GlobalDefault"
+                            ExplainField="priorityClass.globalDefault">
+        </PropertySimpleView>
+        <PropertyOptionView Title=@L["PreemptionPolicy"] Item="@PriorityClass.PreemptionPolicy"
+                            ExplainField="priorityClass.preemptionPolicy"
+                            Options="@(new[] { "PreemptLowerPriority", "Never" })">
+        </PropertyOptionView>
+        <PropertySimpleView Title=@L["Value"] Item="@PriorityClass.Value"
+                            ExplainField="priorityClass.value">
+        </PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
