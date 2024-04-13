@@ -1,15 +1,20 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
 @if (Tls is { Count: > 0 })
 {
     <HTableColumn Title="@Title" ExplainField="ingress.spec.tls">
         @foreach (var tl in Tls)
         {
             <HTable Class="miniTable">
-                <PropertySimpleView Title="SecretName" Item="tl.SecretName" ExplainField="ingress.spec.tls.secretName"></PropertySimpleView>
-                <PropertyListView Title="Hosts" Items="tl.Hosts" ExplainField="ingress.spec.tls.hosts" T="string"></PropertyListView>
+                <PropertySimpleView Title=@L["SecretName"] Item="tl.SecretName"
+                                    ExplainField="ingress.spec.tls.secretName">
+                </PropertySimpleView>
+                <PropertyListView Title=@L["Hosts"] Items="tl.Hosts" ExplainField="ingress.spec.tls.hosts"
+                                  T="string">
+                </PropertyListView>
             </HTable>
         }
     </HTableColumn>
@@ -18,10 +23,8 @@
 
 @code {
 
-    [Parameter]
-    public IList<V1IngressTLS> Tls { get; set; }
+    [Parameter] public IList<V1IngressTLS> Tls { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
 }
