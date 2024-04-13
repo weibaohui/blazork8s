@@ -1,5 +1,5 @@
 @typeparam            T
-@inherits BlazorApp.Pages.Common.PageBase
+@inherits PageBase
 
 @if (MenuMode == MenuMode.Vertical)
 {
@@ -18,20 +18,23 @@
             </Menu>
         </Overlay>
         <ChildContent>
-            <Button>操作 <Icon Type="down"/></Button>
+            <Button>
+                Title=@L["Action"]
+                <Icon Type="down"/>
+            </Button>
         </ChildContent>
     </Dropdown>
 }
 @if (MenuMode == MenuMode.Horizontal)
 {
     <Alert Type="@AlertType.Success">
-        <Button OnClick="@(() => OnDescribeClick(Item))">@L["Describe"]</Button>
-        <Button OnClick="@(() => OnYamlClick(Item))">@L["Yaml"]</Button>
-        <Button OnClick="@(() => OnDocClick(Item))">@L["Doc"]</Button>
+        <Button OnClick="@(() => OnDescribeClick(Item))">Title=@L["Describe"]</Button>
+        <Button OnClick="@(() => OnYamlClick(Item))">Title=@L["Yaml"]</Button>
+        <Button OnClick="@(() => OnDocClick(Item))">Title=@L["Doc"]</Button>
         @if (_enable)
         {
-            <Button OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</Button>
-            <Button OnClick="@(() => OnSecurityClick(Item))">@L["Security"]</Button>
+            <Button OnClick="@(() => OnAnalyzeClick(Item))">Title=@L["Inspection"]</Button>
+            <Button OnClick="@(() => OnSecurityClick(Item))">Title=@L["Security"]</Button>
         }
         @ChildContent
     </Alert>
