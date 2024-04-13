@@ -1,24 +1,35 @@
-@using Extension
-@using k8s.Models
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
+@using Extension
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1PodSecurityContext>
 @if (PodSecurityContext != null && !PodSecurityContext.ToJson().Equals("{}"))
 {
     <Divider Orientation="left" Style="font-weight:bold"> PodSecurityContext </Divider>
 
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="FsGroup" Item="@PodSecurityContext.FsGroup" ExplainField="pod.spec.securityContext.fsGroup"></PropertySimpleView>
-        <PropertyOptionView Title="FsGroupChangePolicy" ExplainField="pod.spec.securityContext.fsGroupChangePolicy" Item="@PodSecurityContext.FsGroupChangePolicy" Options='@(new[] { "OnRootMismatch", "Always" })'></PropertyOptionView>
-        <PropertySimpleView Title="RunAsGroup" Item="@PodSecurityContext.RunAsGroup" ExplainField="pod.spec.securityContext.runAsGroup"></PropertySimpleView>
-        <PropertySimpleView Title="RunAsNonRoot" Item="@PodSecurityContext.RunAsNonRoot" ExplainField="pod.spec.securityContext.runAsNonRoot"></PropertySimpleView>
-        <PropertySimpleView Title="RunAsUser" Item="@PodSecurityContext.RunAsUser" ExplainField="pod.spec.securityContext.runAsUser"></PropertySimpleView>
+        <PropertySimpleView Title=@L["FsGroup"] Item="@PodSecurityContext.FsGroup"
+                            ExplainField="pod.spec.securityContext.fsGroup">
+        </PropertySimpleView>
+        <PropertyOptionView Title=@L["FsGroupChangePolicy"] ExplainField="pod.spec.securityContext.fsGroupChangePolicy"
+                            Item="@PodSecurityContext.FsGroupChangePolicy"
+                            Options='@(new[] { "OnRootMismatch", "Always" })'>
+        </PropertyOptionView>
+        <PropertySimpleView Title=@L["RunAsGroup"] Item="@PodSecurityContext.RunAsGroup"
+                            ExplainField="pod.spec.securityContext.runAsGroup">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["RunAsNonRoot"] Item="@PodSecurityContext.RunAsNonRoot"
+                            ExplainField="pod.spec.securityContext.runAsNonRoot">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["RunAsUser"] Item="@PodSecurityContext.RunAsUser"
+                            ExplainField="pod.spec.securityContext.runAsUser">
+        </PropertySimpleView>
 
         @if (PodSecurityContext.SeLinuxOptions != null)
         {
-            <HTableColumn Title="SeLinuxOptions" ExplainField="pod.spec.securityContext.seLinuxOptions">
+            <HTableColumn Title=@L["SeLinuxOptions"] ExplainField="pod.spec.securityContext.seLinuxOptions">
 
                 @if (PodSecurityContext.SeLinuxOptions.Level != null)
                 {
@@ -48,14 +59,22 @@
         }
         @if (PodSecurityContext.SeccompProfile != null)
         {
-            <PropertyOptionView Title="SeccompProfile" ExplainField="pod.spec.securityContext.seccompProfile" Item="@PodSecurityContext.SeccompProfile.Type" Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'></PropertyOptionView>
-            <PropertySimpleView Title="LocalhostProfile" ExplainField="pod.spec.securityContext.seccompProfile.LocalhostProfile" Item="@PodSecurityContext.SeccompProfile.LocalhostProfile"></PropertySimpleView>
+            <PropertyOptionView Title=@L["SeccompProfile"] ExplainField="pod.spec.securityContext.seccompProfile"
+                                Item="@PodSecurityContext.SeccompProfile.Type"
+                                Options='@(new[] { "Localhost", "RuntimeDefault", "Unconfined" })'>
+            </PropertyOptionView>
+            <PropertySimpleView Title=@L["LocalhostProfile"]
+                                ExplainField="pod.spec.securityContext.seccompProfile.LocalhostProfile"
+                                Item="@PodSecurityContext.SeccompProfile.LocalhostProfile">
+            </PropertySimpleView>
         }
-        <PropertyListView Title="SupplementalGroups" ExplainField="pod.spec.securityContext.supplementalGroups" Items="@PodSecurityContext.SupplementalGroups" T="long?"></PropertyListView>
+        <PropertyListView Title=@L["SupplementalGroups"] ExplainField="pod.spec.securityContext.supplementalGroups"
+                          Items="@PodSecurityContext.SupplementalGroups" T="long?">
+        </PropertyListView>
 
         @if (PodSecurityContext.Sysctls != null)
         {
-            <HTableColumn Title="Sysctls" ExplainField="pod.spec.securityContext.sysctls">
+            <HTableColumn Title=@L["Sysctls"] ExplainField="pod.spec.securityContext.sysctls">
 
                 @foreach (var sysctl in PodSecurityContext.Sysctls)
                 {
@@ -71,7 +90,7 @@
 
         @if (PodSecurityContext.WindowsOptions != null)
         {
-            <HTableColumn Title="WindowsOptions" ExplainField="pod.spec.securityContext.windowsOptions">
+            <HTableColumn Title=@L["WindowsOptions"] ExplainField="pod.spec.securityContext.windowsOptions">
 
 
                 @if (PodSecurityContext.WindowsOptions.GmsaCredentialSpec != null)
@@ -113,7 +132,6 @@
 
 @code{
 
-    [Parameter]
-    public V1PodSecurityContext PodSecurityContext { get; set; }
+    [Parameter] public V1PodSecurityContext PodSecurityContext { get; set; }
 
 }
