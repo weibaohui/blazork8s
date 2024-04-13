@@ -1,9 +1,9 @@
-@using Mapster
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1RoleBinding>
 @if (RoleBinding != null)
 {
@@ -21,7 +21,7 @@
         }
         @if (RoleBinding.Subjects is { Count: > 0 })
         {
-            <HTableColumn Title="Subjects" ExplainField="roleBinding.subjects">
+            <HTableColumn Title=@L["Subjects"] ExplainField="roleBinding.subjects">
                 @foreach (var subject in RoleBinding.Subjects)
                 {
                     <RefView Ref="@(subject.Adapt<V1ObjectReference>())" FullView="true"></RefView>
