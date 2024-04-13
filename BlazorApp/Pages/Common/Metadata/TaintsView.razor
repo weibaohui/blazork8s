@@ -1,6 +1,6 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html
-@inherits BlazorApp.Pages.Common.PageBase
+@using k8s.Models
+@inherits PageBase
 
 @if (Taints != null)
 {
@@ -15,21 +15,14 @@
                     <Table TItem="V1Taint" DataSource="Taints"
                            HidePagination="true" PageSize="5000"
                            Size=@TableSize.Small Bordered="true">
-                        <AntDesign.Column TData="string" Title="Key" Field="@context.Key"/>
-                        <AntDesign.Column TData="string" Title="Value">@context.Value</AntDesign.Column>
-                        <AntDesign.Column TData="string" Title="Effect">@context.Effect</AntDesign.Column>
-                        <AntDesign.Column TData="DateTime?" Title="Time" Field="@context.TimeAdded"/>
+                        <AntDesign.Column Title=@L["Key"] Field="@context.Key"/>
+                        <AntDesign.Column Title=@L["Value"]>@context.Value</AntDesign.Column>
+                        <AntDesign.Column Title=@L["Effect"]>@context.Effect</AntDesign.Column>
+                        <AntDesign.Column Title=@L["Time"] Field="@context.TimeAdded"/>
 
                     </Table>
                 </ChildContent>
             </Panel>
         </Collapse>
     </HTableColumn>
-}
-
-@code {
-
-    [Parameter]
-    public IList<V1Taint> Taints { get; set; }
-
 }
