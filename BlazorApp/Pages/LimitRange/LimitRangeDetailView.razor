@@ -15,22 +15,22 @@
             @foreach (var limit in LimitRange.Spec.Limits)
             {
                 <PropertySimpleView Item="limit.Type" Title=@L["Type"]
-                                    ExplainField=@L["limitRange.spec.limits.type"]>
+                                    ExplainField="limitRange.spec.limits.type" ]>
                 </PropertySimpleView>
                 <PropertyMapView Items="limit.DefaultProperty" Title=@L["Default"] T="ResourceQuantity"
-                                 ExplainField=@L["limitRange.spec.limits.default"]>
+                                 ExplainField="limitRange.spec.limits.default">
                 </PropertyMapView>
                 <PropertyMapView Items="limit.DefaultRequest" Title=@L["DefaultRequest"] T="ResourceQuantity"
-                                 ExplainField=@L["limitRange.spec.limits.defaultRequest"]>
+                                 ExplainField="limitRange.spec.limits.defaultRequest">
                 </PropertyMapView>
                 <PropertyMapView Items="limit.Max" Title=@L["Max"] T="ResourceQuantity"
-                                 ExplainField=@L["limitRange.spec.limits.max"]>
+                                 ExplainField="limitRange.spec.limits.max">
                 </PropertyMapView>
                 <PropertyMapView Items="limit.MaxLimitRequestRatio" Title=@L["MaxLimitRequestRatio"] T="ResourceQuantity"
-                                 ExplainField=@L["limitRange.spec.limits.maxLimitRequestRatio"]>
+                                 ExplainField="limitRange.spec.limits.maxLimitRequestRatio">
                 </PropertyMapView>
                 <PropertyMapView Items="limit.Min" Title=@L["Min"] T="ResourceQuantity"
-                                 ExplainField=@L["limitRange.spec.limits.min"]>
+                                 ExplainField="limitRange.spec.limits.min">
                 </PropertyMapView>
             }
         }
