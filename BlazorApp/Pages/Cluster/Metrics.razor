@@ -25,7 +25,8 @@
             <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["Request Total"] MetricName="etcd_requests_total"> </MetricsCounterGaugeSumView>
 
             <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title=@L["Request Latency (avg)"] MetricName="etcd_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _etcdRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
-            <Drawer Closable="true" @bind-Visible="@_etcdRequestLatencyDetailVisible" Placement="right" Width="800" Title=@($"{@L["Request Latency"]}")>
+            <Drawer Closable="true" @bind-Visible="@_etcdRequestLatencyDetailVisible" Placement="right" Width="800"
+                    Title=@($"{L["Request Latency"]}")>
                 <Divider Orientation="left" Style="font-weight:bold">Type</Divider>
                 <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="etcd_request_duration_seconds" GroupBy="type" Unit="seconds"></MetircsHistogramGroupByAvgView>
                 <Divider Orientation="left" Style="font-weight:bold">Operation</Divider>
@@ -43,7 +44,8 @@
             <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title=@L["Auth Latency (avg)"] MetricName="authentication_duration_seconds" Unit="seconds"></MetircsHistogramTotalAvgView>
             <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title=@L["Request Latency (avg)"] MetricName="apiserver_request_duration_seconds" Unit="seconds" OnDetailClick="@(() => _apiServerRequestLatencyDetailVisible = true)"></MetircsHistogramTotalAvgView>
 
-            <Drawer Closable="true" @bind-Visible="@_apiServerRequestLatencyDetailVisible" Placement="right" Width="800" Title=@($"{@L["Request Latency"]}")>
+            <Drawer Closable="true" @bind-Visible="@_apiServerRequestLatencyDetailVisible" Placement="right" Width="800"
+                    Title=@($"{L["Request Latency"]}")>
                 <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
                 <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_request_duration_seconds" GroupBy="component" Unit="seconds"></MetircsHistogramGroupByAvgView>
                 <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
@@ -67,7 +69,8 @@
             <MetircsHistogramSumView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" Title=@L["Response Size (total)"] CalcField="sum" Unit="bytes"></MetircsHistogramSumView>
             <MetircsHistogramTotalAvgView AllMetrics="@AllMetrics" Title=@L["Response Size (avg)"] MetricName="apiserver_response_sizes" Unit="bytes" OnDetailClick="@(() => _apiServerResponseSizeDetailVisible = true)"></MetircsHistogramTotalAvgView>
 
-            <Drawer Closable="true" @bind-Visible="@_apiServerResponseSizeDetailVisible" Placement="right" Width="800" Title=@($"{@L["Response Size"]}")>
+            <Drawer Closable="true" @bind-Visible="@_apiServerResponseSizeDetailVisible" Placement="right" Width="800"
+                    Title=@($"{L["Response Size"]}")>
                 <Divider Orientation="left" Style="font-weight:bold">Component</Divider>
                 <MetircsHistogramGroupByAvgView AllMetrics="@AllMetrics" MetricName="apiserver_response_sizes" GroupBy="component" Unit="bytes"></MetircsHistogramGroupByAvgView>
                 <Divider Orientation="left" Style="font-weight:bold">Verb</Divider>
