@@ -5,7 +5,7 @@
 <div style="margin: 20px">
 
     <Breadcrumb>
-        <BreadcrumbItem>Example</BreadcrumbItem>
+        <BreadcrumbItem>@L["Example"]</BreadcrumbItem>
     </Breadcrumb>
     <Divider/>
 
@@ -48,11 +48,11 @@
                             Id="yaml-editor"
                             ConstructionOptions="EditorConstructionOptions"/>
                     </div>
-                    <Button OnClick="@BtnApplyClicked" Type="@ButtonType.Primary">应用</Button>
-                    <Button Danger="true" Type="@ButtonType.Primary" OnClick="@BtnDeleteClicked">删除</Button>
+                    <Button OnClick="@BtnApplyClicked" Type="@ButtonType.Primary">@L["Apply"]</Button>
+                    <Button Danger="true" Type="@ButtonType.Primary" OnClick="@BtnDeleteClicked">@L["Delete"]</Button>
                     @if (!string.IsNullOrEmpty(_execResult))
                     {
-                        <Divider Orientation="left" Style="font-weight:bold">执行结果</Divider>
+                        <Divider Orientation="left" Style="font-weight:bold">@L["Result"]</Divider>
                         <div>
                             <p>
                                 <Text Copyable>
