@@ -1,12 +1,10 @@
+using BlazorApp.Pages.Common;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Job;
 
-public partial class JobSpecView :ComponentBase
+public partial class JobSpecView : PageBase
 {
-
-    [Parameter]
-    public V1JobSpec JobSpec { get; set; }
+    [Parameter] public V1JobSpec JobSpec { get; set; }
 }
