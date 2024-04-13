@@ -1,8 +1,9 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
 @if (Backend != null)
 {
-    <HTableColumn Title="@Title">
+    <HTableColumn Title=@L["Title"]>
         <IngressBackendNoTableView Backend="@Backend"></IngressBackendNoTableView>
     </HTableColumn>
 }
@@ -10,10 +11,8 @@
 
 @code {
 
-    [Parameter]
-    public V1IngressBackend Backend { get; set; }
+    [Parameter] public V1IngressBackend Backend { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
 }
