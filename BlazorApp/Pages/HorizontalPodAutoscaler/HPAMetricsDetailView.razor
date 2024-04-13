@@ -1,7 +1,7 @@
-@using Mapster
-@using k8s.Models
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Metric.Pods != null)
@@ -47,7 +47,7 @@
 
     @if (Metric.External.Metric.Selector != null && !SimpleView)
     {
-        <LabelSelectorView LabelSelector="@Metric.External.Metric.Selector" Title="Match Pods"></LabelSelectorView>
+        <LabelSelectorView LabelSelector="@Metric.External.Metric.Selector" Title=@L["Match Pods"]></LabelSelectorView>
     }
 }
 @if (Metric.ContainerResource != null)
@@ -62,17 +62,13 @@
 
 @code {
 
-    [Parameter]
-    public string Namespace { get; set; }
+    [Parameter] public string Namespace { get; set; }
 
-    [Parameter]
-    public V2MetricSpec Metric { get; set; }
+    [Parameter] public V2MetricSpec Metric { get; set; }
 
-    [Parameter]
-    public bool SimpleView { get; set; } = false;
+    [Parameter] public bool SimpleView { get; set; } = false;
 
-    [Parameter]
-    public IList<V2MetricStatus> CurrentMetrics { get; set; }
+    [Parameter] public IList<V2MetricStatus> CurrentMetrics { get; set; }
 
 
     private V1ObjectReference GetObjectRef(V2CrossVersionObjectReference obj)
@@ -91,21 +87,21 @@
 
         var current = type switch
         {
-            "ObjectProperty"    => CurrentMetrics.FirstOrDefault(x => x.ObjectProperty?.Metric?.Name == metricName)?.ObjectProperty?.Current,
-            "Resource"          => CurrentMetrics.FirstOrDefault(x => x.Resource?.Name == metricName)?.Resource?.Current,
-            "External"          => CurrentMetrics.FirstOrDefault(x => x.External?.Metric?.Name == metricName)?.External?.Current,
-            "Pods"              => CurrentMetrics.FirstOrDefault(x => x.Pods?.Metric?.Name == metricName)?.Pods?.Current,
+            "ObjectProperty" => CurrentMetrics.FirstOrDefault(x => x.ObjectProperty?.Metric?.Name == metricName)?.ObjectProperty?.Current,
+            "Resource" => CurrentMetrics.FirstOrDefault(x => x.Resource?.Name == metricName)?.Resource?.Current,
+            "External" => CurrentMetrics.FirstOrDefault(x => x.External?.Metric?.Name == metricName)?.External?.Current,
+            "Pods" => CurrentMetrics.FirstOrDefault(x => x.Pods?.Metric?.Name == metricName)?.Pods?.Current,
             "ContainerResource" => CurrentMetrics.FirstOrDefault(x => x.ContainerResource?.Name == metricName)?.ContainerResource?.Current,
-            _                   => null
+            _ => null
         };
 
 
         return targetType switch
         {
-            "Utilization"  => current?.AverageUtilization,
+            "Utilization" => current?.AverageUtilization,
             "AverageValue" => current?.AverageValue,
-            "Value"        => current?.Value,
-            _              => null
+            "Value" => current?.Value,
+            _ => null
         };
     }
 
