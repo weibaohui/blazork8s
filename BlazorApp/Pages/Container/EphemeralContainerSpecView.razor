@@ -1,7 +1,7 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common.Html
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Containers != null)
@@ -18,11 +18,17 @@
                     <PropertySimpleView Title=@L["Image"] Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
                     <PropertySimpleView Title=@L["Image"] Item="@c.Image" ExplainField="pod.spec.containers.name"></PropertySimpleView>
                     <PropertyOptionView Title=@L["ImagePullPolicy"] ExplainField="pod.spec.containers.imagePullPolicy" Item="@c.ImagePullPolicy" Options='@(new[] { "Always", "IfNotPresent", "Never" })'></PropertyOptionView>
-                    <PropertySimpleView Title="Resources" Item="@c.Resources" ExplainField="pod.spec.containers.resources" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["Resources"] Item="@c.Resources"
+                                        ExplainField="pod.spec.containers.resources"
+                                        ShowInJson="true">
+                    </PropertySimpleView>
                     <PropertySimpleView Title=@L["EnvFrom"] Item="@c.EnvFrom" ExplainField="pod.spec.containers.envFrom" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title=@L["Lifecycle"] Item="@c.Lifecycle" ExplainField="pod.spec.containers.lifecycle" ShowInJson="true"></PropertySimpleView>
                     <PropertySimpleView Title=@L["ResizePolicy"] Item="@c.ResizePolicy" ExplainField="pod.spec.containers.resizePolicy" ShowInJson="true"></PropertySimpleView>
-                    <PropertySimpleView Title="securityContext" Item="@c.SecurityContext" ExplainField="pod.spec.containers.securityContext" ShowInJson="true"></PropertySimpleView>
+                    <PropertySimpleView Title=@L["securityContext"] Item="@c.SecurityContext"
+                                        ExplainField="pod.spec.containers.securityContext"
+                                        ShowInJson="true">
+                    </PropertySimpleView>
                     <PropertyOptionView Title=@L["TerminationMessagePolicy"] Item="@c.TerminationMessagePolicy" ExplainField="pod.spec.containers.terminationMessagePolicy" Options='@(new[] { "FallbackToLogsOnError", "File" })'></PropertyOptionView>
                     <PropertySimpleView Title=@L["TerminationMessagePath"] Item="@c.TerminationMessagePath" ExplainField="pod.spec.containers.terminationMessagePath"></PropertySimpleView>
                     <PropertySimpleView Title=@L["WorkingDir"] Item="@c.WorkingDir" ExplainField="pod.spec.containers.workingDir"></PropertySimpleView>
@@ -96,13 +102,10 @@
 @code {
 
 
-    [Inject]
-    IMessageService MessageService { get; set; }
+    [Inject] IMessageService MessageService { get; set; }
 
-    [Parameter]
-    public IList<V1EphemeralContainer> Containers { get; set; }
+    [Parameter] public IList<V1EphemeralContainer> Containers { get; set; }
 
-    [Parameter]
-    public string Type { get; set; }
+    [Parameter] public string Type { get; set; }
 
 }
