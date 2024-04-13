@@ -17,25 +17,49 @@
         <PropertySimpleView Title=@L["MinReadySeconds"] Item="@DaemonSet.Spec.MinReadySeconds"
                             ExplainField="daemonSet.spec.minReadySeconds">
         </PropertySimpleView>
-        <PropertySimpleView Title="RevisionHistoryLimit" Item="@DaemonSet.Spec.RevisionHistoryLimit" ExplainField="daemonSet.spec.revisionHistoryLimit"></PropertySimpleView>
-        <PropertyOptionView Title="StrategyType" Item="@DaemonSet.Spec.UpdateStrategy.Type" ExplainField="daemonSet.spec.updateStrategy" Options=@(new[] { "OnDelete", "RollingUpdate" })></PropertyOptionView>
-        <RollingUpdateView Title="RollingUpdate" RollingUpdate="@(DaemonSet.Spec.UpdateStrategy.RollingUpdate.Adapt<V1RollingUpdateDeployment>())" ExplainField="daemonSet.spec.updateStrategy.rollingUpdate"></RollingUpdateView>
+        <PropertySimpleView Title=@L["RevisionHistoryLimit"] Item="@DaemonSet.Spec.RevisionHistoryLimit"
+                            ExplainField="daemonSet.spec.revisionHistoryLimit">
+        </PropertySimpleView>
+        <PropertyOptionView Title=@L["StrategyType"] Item="@DaemonSet.Spec.UpdateStrategy.Type"
+                            ExplainField="daemonSet.spec.updateStrategy"
+                            Options=@(new[] { "OnDelete", "RollingUpdate" })>
+        </PropertyOptionView>
+        <RollingUpdateView Title=@L["RollingUpdate"]
+                           RollingUpdate="@(DaemonSet.Spec.UpdateStrategy.RollingUpdate.Adapt<V1RollingUpdateDeployment>())"
+                           ExplainField="daemonSet.spec.updateStrategy.rollingUpdate">
+        </RollingUpdateView>
     </HTable>
     <PodTemplateView PodTemplate="@DaemonSet.Spec.Template" MetadataExplainFieldPrefix="statefulSet"></PodTemplateView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
         <ConditionsView Conditions="@(DaemonSet.Status.Conditions.Adapt<IList<V1Condition>>())" ExplainField="daemonSet.status.conditions"></ConditionsView>
-        <PropertySimpleView Title="CollisionCount" Item="@DaemonSet.Status.CollisionCount" ExplainField="daemonSet.status.collisionCount"></PropertySimpleView>
-        <PropertySimpleView Title="CurrentNumberScheduled" Item="@DaemonSet.Status.CurrentNumberScheduled" ExplainField="daemonSet.status.currentNumberScheduled"></PropertySimpleView>
-        <PropertySimpleView Title="DesiredNumberScheduled" Item="@DaemonSet.Status.DesiredNumberScheduled" ExplainField="daemonSet.status.desiredNumberScheduled"></PropertySimpleView>
-        <PropertySimpleView Title="NumberAvailable" Item="@DaemonSet.Status.NumberAvailable" ExplainField="daemonSet.status.numberAvailable"></PropertySimpleView>
-        <PropertySimpleView Title="NumberMisscheduled" Item="@DaemonSet.Status.NumberMisscheduled" ExplainField="daemonSet.status.numberMisscheduled"></PropertySimpleView>
-        <PropertySimpleView Title="NumberReady" Item="@DaemonSet.Status.NumberReady" ExplainField="daemonSet.status.numberReady"></PropertySimpleView>
-        <PropertySimpleView Title="NumberUnavailable" Item="@DaemonSet.Status.NumberUnavailable" ExplainField="daemonSet.status.numberUnavailable"></PropertySimpleView>
+        <PropertySimpleView Title=@L["CollisionCount"] Item="@DaemonSet.Status.CollisionCount"
+                            ExplainField="daemonSet.status.collisionCount">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["CurrentNumberScheduled"] Item="@DaemonSet.Status.CurrentNumberScheduled"
+                            ExplainField="daemonSet.status.currentNumberScheduled">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["DesiredNumberScheduled"] Item="@DaemonSet.Status.DesiredNumberScheduled"
+                            ExplainField="daemonSet.status.desiredNumberScheduled">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["NumberAvailable"] Item="@DaemonSet.Status.NumberAvailable"
+                            ExplainField="daemonSet.status.numberAvailable">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["NumberMisscheduled"] Item="@DaemonSet.Status.NumberMisscheduled"
+                            ExplainField="daemonSet.status.numberMisscheduled">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["NumberReady"] Item="@DaemonSet.Status.NumberReady"
+                            ExplainField="daemonSet.status.numberReady">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["NumberUnavailable"] Item="@DaemonSet.Status.NumberUnavailable"
+                            ExplainField="daemonSet.status.numberUnavailable">
+        </PropertySimpleView>
         <PropertySimpleView Title=@L["ObservedGeneration"] Item="@DaemonSet.Status.ObservedGeneration"
                             ExplainField="daemonSet.status.observedGeneration">
         </PropertySimpleView>
-        <PropertySimpleView Title="UpdatedNumberScheduled" Item="@DaemonSet.Status.UpdatedNumberScheduled" ExplainField="daemonSet.status.updatedNumberScheduled"></PropertySimpleView>
+        <PropertySimpleView Title=@L["UpdatedNumberScheduled"] Item="@DaemonSet.Status.UpdatedNumberScheduled"
+                            ExplainField="daemonSet.status.updatedNumberScheduled">
+        </PropertySimpleView>
     </HTable>
     <MiniPodListView ControllerByUid="@DaemonSet.Metadata.Uid"></MiniPodListView>
     <MiniEventListView Uid="@DaemonSet.Metadata.Uid"></MiniEventListView>
