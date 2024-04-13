@@ -1,6 +1,6 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Hpa != null)
@@ -69,19 +69,24 @@
                     }
                     @if (metric.ObjectProperty != null)
                     {
-                        <PropertySimpleView Title="Object" ExplainField="horizontalPodAutoscaler.spec.metrics.object" Item="@metric.ObjectProperty" ShowInJson="true">
+                        <PropertySimpleView Title=@L["Object"] ExplainField="horizontalPodAutoscaler.spec.metrics.object"
+                                            Item="@metric.ObjectProperty" ShowInJson="true">
                             <HPAMetricsDetailView Metric="@metric" Namespace="@Hpa.Namespace()" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
                         </PropertySimpleView>
                     }
                     @if (metric.External != null)
                     {
-                        <PropertySimpleView Title="External" ExplainField="horizontalPodAutoscaler.spec.metrics.external" Item="@metric.External" ShowInJson="true">
+                        <PropertySimpleView Title=@L["External"]
+                                            ExplainField="horizontalPodAutoscaler.spec.metrics.external"
+                                            Item="@metric.External" ShowInJson="true">
                             <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
                         </PropertySimpleView>
                     }
                     @if (metric.ContainerResource != null)
                     {
-                        <PropertySimpleView Title="ContainerResource" ExplainField="horizontalPodAutoscaler.spec.metrics.containerResource" Item="@metric.ContainerResource" ShowInJson="true">
+                        <PropertySimpleView Title=@L["ContainerResource"]
+                                            ExplainField="horizontalPodAutoscaler.spec.metrics.containerResource"
+                                            Item="@metric.ContainerResource" ShowInJson="true">
                             <HPAMetricsDetailView Metric="@metric" CurrentMetrics="@CurrentMetrics"></HPAMetricsDetailView>
                         </PropertySimpleView>
                     }
@@ -94,11 +99,9 @@
 
 @code {
 
-    [Parameter]
-    public V2HorizontalPodAutoscaler Hpa { get; set; }
+    [Parameter] public V2HorizontalPodAutoscaler Hpa { get; set; }
 
-    [Parameter]
-    public bool SimpleView { get; set; } = false;
+    [Parameter] public bool SimpleView { get; set; } = false;
 
     private IList<V2MetricStatus> CurrentMetrics { get; set; }
 
