@@ -1,8 +1,8 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Ingress is { Count: > 0 })
@@ -13,7 +13,7 @@
             {
                 @if (ingressRule.FromProperty is { Count: > 0 })
                 {
-                    <HTableColumn Title="From">
+                    <HTableColumn Title=@L["From"]>
                         <HTable>
                             <NetworkPolicyPeerView Peers="ingressRule.FromProperty" ExplainField="networkPolicy.spec.ingress.from"></NetworkPolicyPeerView>
                         </HTable>
@@ -52,10 +52,8 @@
 
 @code {
 
-    [Parameter]
-    public IList<V1NetworkPolicyIngressRule> Ingress { get; set; }
+    [Parameter] public IList<V1NetworkPolicyIngressRule> Ingress { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
 }
