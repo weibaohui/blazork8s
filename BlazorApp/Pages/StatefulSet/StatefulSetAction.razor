@@ -5,13 +5,12 @@
 <ShareMenuItem T="V1StatefulSet" Item="Item" MenuMode="MenuMode">
     @if (MenuMode == MenuMode.Vertical)
     {
-        <MenuItem OnClick="@(() => OnRestartClick(Item))">Restart</MenuItem>
-        <MenuItem OnClick="@(() => OnScaleClick(Item))">Scale</MenuItem>
-
+        <MenuItem OnClick="@(() => OnRestartClick(Item))">Title=@L["Restart"]</MenuItem>
+        <MenuItem OnClick="@(() => OnScaleClick(Item))">Title=@L["Scale"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
-            <Button OnClick="@(() => OnRestartClick(Item))">Restart</Button>
-            <Button OnClick="@(() => OnScaleClick(Item))">Scale</Button>
+        <Button OnClick="@(() => OnRestartClick(Item))">Title=@L["Restart"]</Button>
+        <Button OnClick="@(() => OnScaleClick(Item))">Title=@L["Scale"]</Button>
     }
 </ShareMenuItem>
