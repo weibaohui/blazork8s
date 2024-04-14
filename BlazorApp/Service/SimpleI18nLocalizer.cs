@@ -51,9 +51,9 @@ public class SimpleI18NStringLocalizer : IStringLocalizer
         var hasTranslation = ResourceContent.TryGetValue(keyName, out var jToken)
                              && (jToken.HasValues || jToken.Value<string>() != null);
 
-        //If the translation key was not found
+        //如果没有定义的翻译，那么返回key本身
         if (!hasTranslation)
-            return new LocalizedString(keyName, string.Empty, true, LocaleFileName);
+            return new LocalizedString(keyName, keyName, true, LocaleFileName);
         //Plural form translation
         if (jToken.HasValues)
         {
