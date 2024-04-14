@@ -25,7 +25,7 @@
 * 资源用量动态展示（需安装metric server）
 * 页面功能集成kubectl Describe、kubectl explain等高频命令，使用界面点击即可查看。
 * 集群页面增加巡检功能，对主要资源对象的常见错误进行巡检，并给出明细列表。
-
+* 支持中文、英文以及法语、德语、意大利语、俄语、西班牙语、法语、日语、韩语等12国语言。
 ## ☀️ 授权协议
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
@@ -68,11 +68,11 @@ kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deploymen
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
 ### X86架构环境
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.6
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.7
 ```
 ### ARM Run (Mac M1/2/3等ARM架构)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.6-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.7-arm
 ```
 
 * 访问：http://IP:4000  (!不要使用 127.0.0.1/localhost!)

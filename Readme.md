@@ -26,7 +26,7 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Dynamic display of resource usage (requires installation of the metric server).
 * Integration of page functionalities such as kubectl Describe, kubectl explain, and other high-frequency commands. These can be accessed with a simple click on the user interface.
 * Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
-
+* Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
 ## ☀️ License
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
@@ -64,11 +64,11 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 ### x86 Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.6
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.7
 ```
 ### ARM Run (Mac M1/2/3)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.6-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.7-arm
 ```
 
 * View：http://IP:4000 (!Do not use 127.0.0.1/localhost!)
