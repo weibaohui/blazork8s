@@ -2,22 +2,28 @@
 @using System.Globalization
 @using BlazorApp.Service
 @inherits BlazorApp.Pages.Common.PageBase
-<Card Title=@L["Language"] Style="width: 300px">
+<Card Title=@L["Language"] Style="width: 400px;padding: 20px">
+    <Space>
+        <SpaceItem>
+            @L["Language"]:
+        </SpaceItem>
+        <SpaceItem>
+            <Select TItem="LanguageDefine" Style="width: 250px"
+                    TItemValue="string"
+                    DataSource="@_languages"
+                    @bind-Value="@_selectedValue"
+                    LabelName="@nameof(LanguageDefine.Name)"
+                    ValueName="@nameof(LanguageDefine.Value)"
+                    Placeholder=@L["Language"]
+                    DefaultActiveFirstOption="true"
+                    EnableSearch
+                    OnSelectedItemChanged="OnSelectedItemChangedHandler">
+            </Select>
+        </SpaceItem>
 
-    <p>
-        @L["Language"]: @_selectedValue <br/>
-    </p>
-    <Select TItem="LanguageDefine"
-            TItemValue="string"
-            DataSource="@_languages"
-            @bind-Value="@_selectedValue"
-            LabelName="@nameof(LanguageDefine.Name)"
-            ValueName="@nameof(LanguageDefine.Value)"
-            Placeholder=@L["Language"]
-            DefaultActiveFirstOption="true"
-            EnableSearch
-            OnSelectedItemChanged="OnSelectedItemChangedHandler">
-    </Select>
+    </Space>
+
+
 </Card>
 
 
@@ -25,12 +31,23 @@
 {
     [Inject] IStringLocalizer StringLocalizer { get; set; }
 
-
     private readonly List<LanguageDefine> _languages =
     [
-        new LanguageDefine { Value = "zh-CN", Name = "中文" },
-        new LanguageDefine { Value = "en-US", Name = "English" }
+        new LanguageDefine { Value = "en-US", Name = "English" },
+        new LanguageDefine { Value = "zh-CN", Name = "中文(Chinese)" },
+        new LanguageDefine { Value = "es", Name = "Español (Spanish)" },
+        new LanguageDefine { Value = "ru", Name = "Русский (Russian)" },
+        new LanguageDefine { Value = "pt-br", Name = "Português (Portuguese)" },
+        new LanguageDefine { Value = "pl", Name = "Polski (Polish)" },
+        new LanguageDefine { Value = "ko", Name = "한국어 (Korean)" },
+        new LanguageDefine { Value = "ja", Name = "日本語 (Japanese)" },
+        new LanguageDefine { Value = "fr", Name = "Français (French)" },
+        new LanguageDefine { Value = "de", Name = "Deutsch (German)" },
+        new LanguageDefine { Value = "hi", Name = "ह\u093fन\u094dद\u0940 (Hindi)" },
+        new LanguageDefine { Value = "id", Name = "Bahasa Indonesia (Indonesian)" },
+        new LanguageDefine { Value = "it", Name = "Italiano (Italian)" }
     ];
+
 
     private string _selectedValue;
     private LanguageDefine _selectedItem;
