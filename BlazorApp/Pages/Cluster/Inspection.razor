@@ -1,9 +1,9 @@
 @page "/Cluster/Inspection"
-@using Extension
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Node
-@using BlazorApp.Pages.Common
+@using Extension
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 <div style="margin: 50px">
@@ -27,7 +27,8 @@
                 @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                 {
                     <div>
-                        @($"{L[kv.Kind]}") @($"{kv.Kind}:") <Badge Count="@kv.Count"/>
+                        @($"{L[kv.Kind]}")
+                        <Badge Count="@kv.Count"/>
                     </div>
                 }
             }
@@ -36,7 +37,8 @@
                 @foreach (var name in PassResources)
                 {
                     <div>
-                        @($"{L[name]}") @($"{name}:") <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                        @($"{L[name]}")
+                        <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
                     </div>
                 }
             }

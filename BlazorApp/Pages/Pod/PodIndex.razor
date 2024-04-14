@@ -1,10 +1,10 @@
 ﻿@page "/Pods"
-@using k8s.Models
-@using Extension.k8s
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
-@using BlazorApp.Pages.Common
+@using Extension.k8s
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1Pod>
 
 
@@ -13,7 +13,8 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd >
-                <SearchToolBar Title=@($"{L["Pod"]} Pod") Count="@TableData.Total" OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                <SearchToolBar Title=@($"{L["Pod"]}") Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection"
                                TableData="@TableData"
