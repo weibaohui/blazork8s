@@ -533,5 +533,7 @@
   "PodAntiAffinity": "PodAntiAffinity",
   "Probe": "Probe",
   "ReplicaSet": "ReplicaSet",
-  "Storage": "Storage"
+  "Storage": "Storage",
+  "Settings": "Settings",
+  "Language": "Language"
 }

@@ -10,12 +10,11 @@ using BlazorApp.Service.k8s.impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using SimpleI18n.DependencyInjection;
+using Microsoft.Extensions.Localization;
 using SqlSugar;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSimpleI18n(); // 设置多语言.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
@@ -24,10 +23,12 @@ builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSet
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddSingleton<IStringLocalizer, SimpleI18NStringLocalizer>();
 builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddHostedService<HostedService>();
 builder.Services.AddHostedService<PortForwardService>();
 builder.Services.AddHostedService<MetricsQueueWatchService>();
+
 
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddSingleton<IMetricsService, MetricsService>();
@@ -90,10 +91,10 @@ builder.Services.AddSingleton
         //Scoped用SqlSugarClient
         SqlSugarClient sqlSugar = new SqlSugarClient(new ConnectionConfig()
             {
-                DbType                = SqlSugar.DbType.Sqlite,
-                ConnectionString      = "DataSource=docs.db",
+                DbType = DbType.Sqlite,
+                ConnectionString = "DataSource=docs.db",
                 IsAutoCloseConnection = true,
-                LanguageType          = LanguageType.Chinese,
+                LanguageType = LanguageType.Chinese
             },
             db =>
             {

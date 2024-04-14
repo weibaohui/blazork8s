@@ -1,0 +1,58 @@
+@page "/Settings/Language"
+@using System.Globalization
+@using BlazorApp.Service
+@inherits BlazorApp.Pages.Common.PageBase
+<Card Title=@L["Language"] Style="width: 300px">
+
+    <p>
+        @L["Language"]: @_selectedValue <br/>
+    </p>
+    <Select TItem="LanguageDefine"
+            TItemValue="string"
+            DataSource="@_languages"
+            @bind-Value="@_selectedValue"
+            LabelName="@nameof(LanguageDefine.Name)"
+            ValueName="@nameof(LanguageDefine.Value)"
+            Placeholder=@L["Language"]
+            DefaultActiveFirstOption="true"
+            EnableSearch
+            OnSelectedItemChanged="OnSelectedItemChangedHandler">
+    </Select>
+</Card>
+
+
+@code
+{
+    [Inject] IStringLocalizer StringLocalizer { get; set; }
+
+
+    private readonly List<LanguageDefine> _languages =
+    [
+        new LanguageDefine { Value = "zh-CN", Name = "中文" },
+        new LanguageDefine { Value = "en-US", Name = "English" }
+    ];
+
+    private string _selectedValue;
+    private LanguageDefine _selectedItem;
+    private SimpleI18NStringLocalizer _localizer;
+
+
+    protected override Task OnInitializedAsync()
+    {
+        _localizer = (SimpleI18NStringLocalizer)StringLocalizer;
+        _selectedValue = _localizer.GetCulture().Name;
+        return base.OnInitializedAsync();
+    }
+
+    private void OnSelectedItemChangedHandler(LanguageDefine value)
+    {
+        _selectedItem = value;
+        _localizer.SetCulture(new CultureInfo(_selectedItem.Value));
+    }
+
+    class LanguageDefine
+    {
+        public string Value { get; set; }
+        public string Name { get; set; }
+    }
+}

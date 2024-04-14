@@ -533,5 +533,7 @@
   "PodAntiAffinity": "Pod 反亲和性",
   "Probe": "探针",
   "ReplicaSet": "副本集",
-  "Storage": "存储"
+  "Storage": "存储",
+  "Settings": "设置",
+  "Language": "语言"
 }

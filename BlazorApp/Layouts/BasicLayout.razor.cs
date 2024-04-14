@@ -81,10 +81,25 @@ public partial class BasicLayout : LayoutComponentBase
                 Icon = "robot",
                 HideInMenu = !Ai.Enabled(),
             },
+            new MenuDataItem
+            {
+                Name = L["Settings"],
+                Key = "Settings",
+                Icon = "setting",
+                Children = SettingMenu()
+            },
             GetMenuItemWithPath(L["Example"], "unordered-list", "/Example"),
             GetMenuItemWithPath(L["OpenSource"], "github", "/OpenSource")
         ];
         await base.OnInitializedAsync();
+    }
+
+    private MenuDataItem[] SettingMenu()
+    {
+        return new[]
+        {
+            GetMenuItemWithPath(L["Language"], "translation", "/Settings/Language")
+        };
     }
 
     private MenuDataItem[] ClusterMenu()
