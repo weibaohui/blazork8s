@@ -536,5 +536,9 @@
   "Storage": "存储",
   "Settings": "设置",
   "Language": "语言",
-  "DeployRevisions": "部署修订版"
+  "DeployRevisions": "部署修订版",
+  "CronExpression": "Cron表达式",
+  "Next": "下一个",
+  "Index": "索引",
+  "Date": "日期"
 }

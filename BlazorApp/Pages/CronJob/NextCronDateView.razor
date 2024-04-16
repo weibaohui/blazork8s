@@ -5,17 +5,17 @@
 @if (_nextCronDate is { Count: > 0 })
 {
     <div>
-        <p>Cron Expression: @CronExpression</p>
+        <p>@L["CronExpression"]: @CronExpression</p>
     </div>
     <div>
-        <p>Next Cron Date:</p>
+        <p>@L["Next"]:</p>
 
         <HTable>
             <HTr>
-                <HTd>Index</HTd>
-                <HTd>Date</HTd>
+                <HTd>@L["Index"]</HTd>
+                <HTd>@L["Date"]</HTd>
             </HTr>
-            @{int i = 0;}
+            @{ var i = 0; }
             @foreach (var date in _nextCronDate)
             {
                 <HTr>
@@ -31,8 +31,7 @@
 
 @code {
 
-    [Parameter]
-    public string CronExpression { get; set; }
+    [Parameter] public string CronExpression { get; set; }
 
     private List<string> _nextCronDate = [];
 
