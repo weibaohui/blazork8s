@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Utils.Swagger;
 using Entity;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
@@ -16,29 +16,27 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
 {
     private readonly List<TreeData> _dataList = new();
 
-    private TreeData _currentItem    = new();
-    private string   _currentRootKey = "";
+    private TreeData _currentItem = new();
+    private string _currentRootKey = "";
 
-    private string         _resultCn;
+    private string _resultCn;
+    private bool _showCnResult;
     private Tree<TreeData> _tree;
 
-    [Parameter]
-    public T Item { get; set; }
+    [Parameter] public T Item { get; set; }
 
-    [Inject]
-    IAiService AiService { get; set; }
+    [Inject] private IAiService AiService { get; set; }
 
 
-    [Inject]
-    private IMessageService MessageService { get; set; }
+    [Inject] private IMessageService MessageService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
         Item = base.Options;
-        var instance  = (T)Activator.CreateInstance(typeof(T));
+        var instance = (T)Activator.CreateInstance(typeof(T));
         var attribute = instance.GetKubernetesTypeMetadata();
-        var group     = attribute.Group == "" ? "core" : attribute.Group.Split(".")[0];
-        var key       = $"io.k8s.api.{group}.{attribute.ApiVersion}.{attribute.Kind}";
+        var group = attribute.Group == "" ? "core" : attribute.Group.Split(".")[0];
+        var key = $"io.k8s.api.{group}.{attribute.ApiVersion}.{attribute.Kind}";
         //对CRD的key进行特殊处理
         if ($"{group}.{attribute.ApiVersion}.{attribute.Kind}" == "apiextensions.v1.CustomResourceDefinition")
         {
@@ -53,6 +51,9 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
         {
             AiService.SetChatEventHandler(EventHandler);
         }
+
+        var x = (SimpleI18NStringLocalizer)L;
+        if (x.GetCulture().Name == "zh-CN") _showCnResult = true;
 
         await base.OnInitializedAsync();
     }
@@ -79,7 +80,7 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
         {
             var dataItem = args.Node.DataItem;
             dataItem.ChildList.Clear();
-            var refKey   = SwaggerHelper.Instance.GetRefKey(args.Node.DataItem.RefKey);
+            var refKey = SwaggerHelper.Instance.GetRefKey(args.Node.DataItem.RefKey);
             var treeData = SwaggerHelper.Instance.GetEntityByName(refKey).ToTreeData();
             if (treeData.ChildList.Count > 0)
             {
@@ -104,10 +105,10 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
     private async Task OnItemClick(TreeEventArgs<TreeData> arg)
     {
         _currentItem = arg.Node.DataItem;
-        _resultCn    = _currentItem.descriptionCN;
-        if (AiService.Enabled() && string.IsNullOrWhiteSpace(_currentItem.descriptionCN))
+        if (_showCnResult)
         {
-            await ReTranslate();
+            _resultCn = _currentItem.descriptionCN;
+            if (AiService.Enabled() && string.IsNullOrWhiteSpace(_currentItem.descriptionCN)) await ReTranslate();
         }
     }
 
@@ -117,6 +118,7 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
 
         _resultCn = "";
         await InvokeAsync(StateHasChanged);
+        //todo 改为自动翻译为各种语言
         _resultCn = await AiService.AIChat("请逐字翻译以下内容，注意请不要遗漏细节并保持原来的格式：" + _currentItem.description);
     }
 }
