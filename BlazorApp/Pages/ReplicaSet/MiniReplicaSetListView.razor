@@ -1,10 +1,10 @@
-﻿@using k8s.Models
-@using Extension
+﻿@using Extension
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Items != null)
 {
-    <Divider Orientation="left" Style="font-weight:bold">Deploy Revisions</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["DeployRevisions"]</Divider>
     <Table TItem="V1ReplicaSet" DataSource="@Items"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
