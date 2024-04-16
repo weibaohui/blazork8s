@@ -1,8 +1,8 @@
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
 @using BlazorApp.Utils
-@using BlazorApp.Pages.Common.Html
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 <HTable Bordered Column="1">
@@ -20,7 +20,9 @@
             }
         </HTableColumn>
     }
-    <SelectorView Title=@L["NodeSelector"] Selector="@PodSpec.NodeSelector"></SelectorView>
+    <SelectorView Title=@L["NodeSelector"] Selector="@PodSpec.NodeSelector"
+                  ExplainField="pod.spec.nodeSelector">
+    </SelectorView>
     <PropertySimpleView Title=@L["ActiveDeadlineSeconds"] ExplainField="pod.spec.activeDeadlineSeconds" Item="@PodSpec.ActiveDeadlineSeconds"></PropertySimpleView>
     <PropertySimpleView Title=@L["EnableServiceLinks"] ExplainField="pod.spec.enableServiceLinks" Item="@PodSpec.EnableServiceLinks"></PropertySimpleView>
     <PropertySimpleView Title=@L["DnsConfig"] ExplainField="pod.spec.dnsConfig" Item="@PodSpec.DnsConfig" ShowInJson="true"></PropertySimpleView>

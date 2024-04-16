@@ -1,8 +1,8 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common.Html
 @using k8s
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Containers != null)
@@ -12,7 +12,7 @@
         <BadgeRibbon Text="@c.Name" Placement="start">
             <Card Bordered>
                 <HTable Title="" Bordered Column="1">
-                    <HTableColumn Title=@L["Name"]>
+                    <HTableColumn Title=@L["Name"] ExplainField="pod.spec.containers.name">
                         <ContainerType Type="@Type"></ContainerType>
                         @c.Name
                     </HTableColumn>
@@ -103,20 +103,15 @@
 @code {
 
 
-    [Inject]
-    IMessageService MessageService { get; set; }
+    [Inject] IMessageService MessageService { get; set; }
 
-    [Parameter]
-    public IList<V1Container> Containers { get; set; }
+    [Parameter] public IList<V1Container> Containers { get; set; }
 
-    [Parameter]
-    public string Type { get; set; }
+    [Parameter] public string Type { get; set; }
 
-    [Parameter]
-    public bool ShowPortForwardBtn { get; set; }
+    [Parameter] public bool ShowPortForwardBtn { get; set; }
 
-    [Parameter]
-    public EventCallback<int> OnPortForward { get; set; }
+    [Parameter] public EventCallback<int> OnPortForward { get; set; }
 
     private async Task OnPortForwardBtnClick(int port)
     {
