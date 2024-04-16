@@ -1,9 +1,9 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
-@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Pod>
 @if (Item != null)
 {
     <PodAction PodItem="Item" MenuMode="MenuMode.Horizontal"></PodAction>
@@ -12,10 +12,10 @@
     {
         <Divider Orientation="left" Style="font-weight:bold">@L["Metrics"]</Divider>
         <Tabs Animated>
-            <TabPane Tab="CPU" Key="1">
+            <TabPane Tab=@L["CPU"] Key="1">
                 <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="cpu"></MetricView>
             </TabPane>
-            <TabPane Tab="Memory" Key="2">
+            <TabPane Tab=@L["Memory"] Key="2">
                 <MetricView FullView="true" ResourceType="Pod" ItemName="@Item.Name()" MetricType="memory"></MetricView>
             </TabPane>
         </Tabs>
