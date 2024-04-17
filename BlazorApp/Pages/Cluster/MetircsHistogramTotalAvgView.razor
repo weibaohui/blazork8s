@@ -6,8 +6,8 @@
     @if (AllMetrics.Any(x => x.Name == MetricName))
     {
         <GridRow Class="grid-table">
-            <GridCol Span="8">@Title</GridCol>
-            <GridCol Span="16">
+            <GridCol Span="16">@Title</GridCol>
+            <GridCol Span="8">
                 @{
                     var count = AllMetrics
                         .FirstOrDefault(x => x.Name == MetricName)?
