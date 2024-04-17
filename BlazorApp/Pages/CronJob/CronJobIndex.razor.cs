@@ -41,7 +41,7 @@ public partial class CronJobIndex : TableBase<V1CronJob>
 
     private async Task OnNextCronDateClick(string item)
     {
-        var options = PageDrawerService.DefaultOptions($"Next Cron Date", width: 500);
+        var options = PageDrawerService.DefaultOptions($"{L["Next"]}", 500);
         await PageDrawerService.ShowDrawerAsync<NextCronDateView, string, bool>(options, item);
     }
 }
