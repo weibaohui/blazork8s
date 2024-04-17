@@ -2,14 +2,11 @@ using System.Threading.Tasks;
 using AntDesign;
 using BlazorApp.Pages.Common.Metadata;
 using BlazorApp.Pages.Workload;
-using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using Extension;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;
 
@@ -17,23 +14,14 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
 {
     private bool _enable;
 
+    [Parameter] public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
+
+    [Parameter] public T Item { get; set; }
+
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
 
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
-
-    [Parameter]
-    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
-
-    [Parameter]
-    public T Item { get; set; }
-
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
-
-    [Inject]
-    private IAiService Ai { get; set; }
+    [Inject] private IAiService Ai { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -55,7 +43,7 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
 
     private async Task OnDescribeClick(T item)
     {
-        var type    = typeof(T).Name.GetSubstringAfterFirstDigit().ToLower();
+        var type = typeof(T).Name.GetSubstringAfterFirstDigit().ToLower();
         var command = $"{type} {item.Name()} ";
         if (!item.Namespace().IsNullOrWhiteSpace())
         {
@@ -73,7 +61,7 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
         await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
             new IAiService.AiChatData
             {
-                Data  = item,
+                Data = item,
                 Style = "error"
             });
     }
@@ -84,7 +72,7 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
         await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
             new IAiService.AiChatData
             {
-                Data  = item,
+                Data = item,
                 Style = "security"
             });
     }
