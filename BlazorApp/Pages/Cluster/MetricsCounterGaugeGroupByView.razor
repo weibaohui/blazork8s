@@ -1,46 +1,44 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
 @inherits BlazorApp.Pages.Common.PageBase
 
-@if (AllMetrics.Any(x => x.Name == MetricName))
+@if (AllMetrics is { Count: > 0 })
 {
-    var group = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
-        .Measurements?
-        .GroupBy(x => x.Labels[GroupBy])?
-        .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
-        .OrderByDescending(x => x.Count)
-        .ToList();
-
-    if (group != null)
+    @if (AllMetrics.Any(x => x.Name == MetricName))
     {
-        foreach (var gb in group)
+        var group = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
+            .Measurements?
+            .GroupBy(x => x.Labels[GroupBy])?
+            .Select(x => new { Code = x.Key, Count = x.Sum(y => y.Value) })?
+            .OrderByDescending(x => x.Count)
+            .ToList();
+
+        if (group != null)
         {
-            <GridRow Class="grid-table">
-                <GridCol Span="12">
-                    @(gb.Code)
-                </GridCol>
-                <GridCol Span="12">
-                    <NumberFormat Number="@(gb.Count)" Unit="@Unit"></NumberFormat>
-                </GridCol>
-            </GridRow>
+            foreach (var gb in group)
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="16">
+                        @(gb.Code)
+                    </GridCol>
+                    <GridCol Span="8">
+                        <NumberFormat Number="@(gb.Count)" Unit="@Unit"></NumberFormat>
+                    </GridCol>
+                </GridRow>
+            }
         }
     }
 }
 
 @code {
 
-    [Parameter]
-    public IList<IMetric> AllMetrics { get; set; }
+    [Parameter] public IList<IMetric> AllMetrics { get; set; }
 
-    [Parameter]
-    public string MetricName { get; set; }
+    [Parameter] public string MetricName { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
-    [Parameter]
-    public string GroupBy { get; set; }
+    [Parameter] public string GroupBy { get; set; }
 
-    [Parameter]
-    public string Unit { get; set; }
+    [Parameter] public string Unit { get; set; }
 
 }

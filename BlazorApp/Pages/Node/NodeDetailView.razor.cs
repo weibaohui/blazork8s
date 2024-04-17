@@ -6,26 +6,23 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Node;
 
 public partial class NodeDetailView : DrawerPageBase<V1Node>
 {
-    private bool         _isMetricsServerReady;
+    private bool _isMetricsServerReady;
     private IList<V1Pod> _pods;
-    public  V1Node       Node;
+    public V1Node Node;
 
-    [Inject]
-    private IMetricsService MetricsService { get; set; }
+    [Inject] private IMetricsService MetricsService { get; set; }
 
-    [Inject]
-    private IPodService PodService { get; set; }
+    [Inject] private IPodService PodService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        Node                  = Options;
-        _pods                 = PodService.ListByNodeName(Node.Name());
+        Node = Options;
+        _pods = PodService.ListByNodeName(Node.Name());
         _isMetricsServerReady = await MetricsService.MetricsServerReady();
         await base.OnInitializedAsync();
     }
@@ -39,5 +36,13 @@ public partial class NodeDetailView : DrawerPageBase<V1Node>
     {
         var drawerRef = FeedbackRef as DrawerRef<bool>;
         await drawerRef!.CloseAsync(true);
+    }
+
+
+    private async Task OnNodeMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetrics, V1Node, bool>(item);
     }
 }

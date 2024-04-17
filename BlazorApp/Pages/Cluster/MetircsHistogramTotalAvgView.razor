@@ -1,51 +1,49 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
 @inherits BlazorApp.Pages.Common.PageBase
 
-@if (AllMetrics.Any(x => x.Name == MetricName))
+@if (AllMetrics is { Count: > 0 })
 {
-    <GridRow Class="grid-table">
-        <GridCol Span="4">@Title</GridCol>
-        <GridCol Span="6">
-            @{
-                var count = AllMetrics
-                    .FirstOrDefault(x => x.Name == MetricName)?
-                    .Measurements
-                    .Where(x => x.Name == $"{MetricName}_count")
-                    .Sum(x => x.Value);
-                var seconds = AllMetrics
-                    .FirstOrDefault(x => x.Name == MetricName)?
-                    .Measurements
-                    .Where(x => x.Name == $"{MetricName}_sum")
-                    .Sum(x => x.Value);
-                var avg = seconds / count;
-            }
-            <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
+    @if (AllMetrics.Any(x => x.Name == MetricName))
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="8">@Title</GridCol>
+            <GridCol Span="16">
+                @{
+                    var count = AllMetrics
+                        .FirstOrDefault(x => x.Name == MetricName)?
+                        .Measurements
+                        .Where(x => x.Name == $"{MetricName}_count")
+                        .Sum(x => x.Value);
+                    var seconds = AllMetrics
+                        .FirstOrDefault(x => x.Name == MetricName)?
+                        .Measurements
+                        .Where(x => x.Name == $"{MetricName}_sum")
+                        .Sum(x => x.Value);
+                    var avg = seconds / count;
+                }
+                <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
 
-            @if (OnDetailClick.HasDelegate)
-            {
-                <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">@L["Detail"]</Button>
-            }
-        </GridCol>
-    </GridRow>
+                @if (OnDetailClick.HasDelegate)
+                {
+                    <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">@L["Detail"]</Button>
+                }
+            </GridCol>
+        </GridRow>
+    }
 }
 
 @code {
 
-    [Parameter]
-    public IList<IMetric> AllMetrics { get; set; }
+    [Parameter] public IList<IMetric> AllMetrics { get; set; }
 
-    [Parameter]
-    public string MetricName { get; set; }
+    [Parameter] public string MetricName { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
 
-    [Parameter]
-    public string Unit { get; set; }
+    [Parameter] public string Unit { get; set; }
 
 
-    [Parameter]
-    public EventCallback OnDetailClick { get; set; }
+    [Parameter] public EventCallback OnDetailClick { get; set; }
 
 }

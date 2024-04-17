@@ -1,23 +1,22 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 <HTr>
-    <HTd>@Title
-    @if (ExplainField != null)
-    {
-        <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
-    }
-        </HTd>
+    <HTd>
+        @Title
+        @if (ExplainField != null)
+        {
+            <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
+        }
+    </HTd>
     <HTd>@ChildContent</HTd>
 </HTr>
+
 @code {
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
 
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 }

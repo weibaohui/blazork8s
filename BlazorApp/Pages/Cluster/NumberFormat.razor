@@ -8,15 +8,18 @@
         {
             "bytes" => Number switch
             {
-                > 1024 * 1024 * 1024                     => $"{Math.Round((double)Number / 1024 / 1024 / 1024, 2)} GB",
+                > 1024 * 1024 * 1024 => $"{Math.Round((double)Number / 1024 / 1024 / 1024, 2)} GB",
                 >= 1024 * 1024 and <= 1024 * 1024 * 1024 => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
-                _                                        => $"{Math.Round((double)Number / 1024, 2)} KB"
+                _ => $"{Math.Round((double)Number / 1024, 2)} KB"
             },
             "seconds" => Number switch
             {
-                > 60           => $"{Math.Round((double)Number / 60, 2)} min",
+                > 86400 * 365 => $"{Math.Round((double)Number / 60 / 60 / 24 / 365, 2)} year",
+                > 86400 and <= 86400 * 365 => $"{Math.Round((double)Number / 60 / 60 / 24, 2)} day",
+                > 3600 and <= 86400 => $"{Math.Round((double)Number / 60 / 60, 2)} hour",
+                > 60 and <= 3600 => $"{Math.Round((double)Number / 60, 2)} min",
                 >= 1 and <= 60 => $"{Math.Round((double)Number, 2)} s",
-                _              => $"{Math.Round((double)Number * 1000, 2)} ms"
+                _ => $"{Math.Round((double)Number * 1000, 2)} ms"
             },
 
             _ => $"{Number}"
@@ -39,10 +42,8 @@
 
 @code {
 
-    [Parameter]
-    public double? Number { get; set; } = 0;
+    [Parameter] public double? Number { get; set; } = 0;
 
-    [Parameter]
-    public string Unit { get; set; }
+    [Parameter] public string Unit { get; set; }
 
 }

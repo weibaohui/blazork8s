@@ -1,11 +1,11 @@
-@using k8s.Models
-@using Mapster
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1Node>
 @if (Node != null)
 {
@@ -14,10 +14,10 @@
     {
         <Divider Orientation="left" Style="font-weight:bold">@L["Metrics"]</Divider>
         <Tabs Animated>
-            <TabPane Tab="CPU" Key="1">
+            <TabPane Tab=@L["CPU"] Key="1">
                 <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
             </TabPane>
-            <TabPane Tab="Memory" Key="2">
+            <TabPane Tab=@L["Memory"] Key="2">
                 <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="memory"></MetricView>
             </TabPane>
         </Tabs>
@@ -127,6 +127,10 @@
         <PropertyListView Title=@L["VolumesInUse"] T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
     </HTable>
     <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable"></NodeResourceCompareView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Config"]</Divider>
+    <Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
+
     <MiniEventListView Host="@Node.Name()"></MiniEventListView>
 }
