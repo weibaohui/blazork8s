@@ -80,7 +80,31 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
  cd blazork8s/BlazorApp
  dotnet watch run
 ```
-
+# Interface Language Configuration
+The interface defaults to displaying in Chinese. To set a default display in another language, modify the `appsettings.json` in the source code's BlazorApp directory or the image's `/app/appsettings.json`.
+```
+"SimpleI18n": {
+"LocaleFilesPath": "wwwroot/lang",
+"DefaultCultureName": "LANGUAGE"
+}
+```
+The available values for `LANGUAGE` include
+```json
+{
+  "en-US": "English",
+  "zh-CN": "中文(Chinese)",
+  "es": "Español (Spanish)",
+  "ru": "Русский (Russian)",
+  "pt-br": "Português (Portuguese)",
+  "pl": "Polski (Polish)",
+  "ko": "한국어 (Korean)",
+  "ja": "日本語 (Japanese)",
+  "fr": "Français (French)",
+  "de": "Deutsch (German)",
+  "hi": "हिंदी (Hindi)",
+  "it": "Italiano (Italian)"
+}
+```
 # ChatGPT config 
 
 * √ [MoonShot AI](https://kimi.moonshot.cn/)
@@ -91,7 +115,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * √ [OpenAI](https://openai.com/)
 * √ [One-API](https://github.com/songquanpeng/one-api) same as OpenAI 
 
-Modify the appsettings.json in the BlazorApp directory or /app/ directory of the image.
+Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.json`  in the image.
 
 ```
   "AI": {

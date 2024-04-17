@@ -84,7 +84,31 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
  cd blazork8s/BlazorApp
  dotnet watch run
 ```
-
+# 界面语言配置
+ 界面默认显示为中文。如需默认显示其他语言，请修改源码BlazorApp目录下的`appsettings.json`或镜像`/app/appsettings.json`
+```
+ "SimpleI18n": {
+    "LocaleFilesPath": "wwwroot/lang",
+    "DefaultCultureName": "LANGUAGE"
+  }
+```
+`LANGUAGE`可选值包括
+```json
+{
+  "en-US": "English",
+  "zh-CN": "中文(Chinese)",
+  "es": "Español (Spanish)",
+  "ru": "Русский (Russian)",
+  "pt-br": "Português (Portuguese)",
+  "pl": "Polski (Polish)",
+  "ko": "한국어 (Korean)",
+  "ja": "日本語 (Japanese)",
+  "fr": "Français (French)",
+  "de": "Deutsch (German)",
+  "hi": "ह\u093fन\u094dद\u0940 (Hindi)",
+  "it": "Italiano (Italian)"
+}
+```
 # 大模型 配置
 
 * √ [月之暗面 MoonShot AI](https://kimi.moonshot.cn/)
