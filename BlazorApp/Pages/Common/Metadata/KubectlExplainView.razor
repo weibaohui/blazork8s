@@ -9,7 +9,9 @@
         @((MarkupString)_result.ToHtmlDisplay())
     </p>
 </Card>
-@if (!string.IsNullOrEmpty(_resultCn))
+
+
+@if (!string.IsNullOrEmpty(_translateResult))
 {
     <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + @L["Translation"])">
         @if (AiService.Enabled())
@@ -19,7 +21,13 @@
             </p>
         }
         <p>
-            @((MarkupString)_resultCn.ToHtmlDisplay())
+            @((MarkupString)_translateResult.ToHtmlDisplay())
         </p>
     </Card>
-} 
+}
+@if (string.IsNullOrEmpty(_translateResult) && AiService.Enabled())
+{
+    <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + L["Translation"])">
+        <Spin/>
+    </Card>
+}

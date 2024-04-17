@@ -14,13 +14,13 @@ namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private readonly List<TreeData> _dataList = new();
+    private readonly List<TreeData> _dataList = [];
+    private string _cultureName;
 
     private TreeData _currentItem = new();
     private string _currentRootKey = "";
 
-    private string _resultCn;
-    private bool _showCnResult;
+    private string _translateResult;
     private Tree<TreeData> _tree;
 
     [Parameter] public T Item { get; set; }
@@ -53,14 +53,14 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
         }
 
         var x = (SimpleI18NStringLocalizer)L;
-        if (x.GetCulture().Name == "zh-CN") _showCnResult = true;
+        _cultureName = x.GetCulture().Name;
 
         await base.OnInitializedAsync();
     }
 
     private async void EventHandler(object sender, string resp)
     {
-        _resultCn += resp;
+        _translateResult += resp;
         await InvokeAsync(StateHasChanged);
     }
 
@@ -104,21 +104,29 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
 
     private async Task OnItemClick(TreeEventArgs<TreeData> arg)
     {
+        //每次点击都清空一遍
+        _translateResult = "";
         _currentItem = arg.Node.DataItem;
-        if (_showCnResult)
+        if (_cultureName == "zh-CN")
         {
-            _resultCn = _currentItem.descriptionCN;
-            if (AiService.Enabled() && string.IsNullOrWhiteSpace(_currentItem.descriptionCN)) await ReTranslate();
+            //当前只存了中文，所以其他语言都需要调用AI进行翻译
+            _translateResult = _currentItem.descriptionCN;
         }
+
+        if (AiService.Enabled() && string.IsNullOrWhiteSpace(_translateResult))
+            await ReTranslate();
     }
 
     private async Task ReTranslate()
     {
         if (!AiService.Enabled()) return;
 
-        _resultCn = "";
+        _translateResult = "";
         await InvokeAsync(StateHasChanged);
-        //todo 改为自动翻译为各种语言
-        _resultCn = await AiService.AIChat("请逐字翻译以下内容，注意请不要遗漏细节并保持原来的格式：" + _currentItem.description);
+
+        var language = SimpleI18NStringLocalizer.LanguageMap[_cultureName];
+        _translateResult =
+            await AiService.AIChat($"请将下面的内容，逐字翻译为{language}。注意请不要遗漏细节并保持原来的格式：\r" + _currentItem.description);
+        await InvokeAsync(StateHasChanged);
     }
 }

@@ -16,6 +16,22 @@ public class SimpleI18NStringLocalizer : IStringLocalizer
 {
     private const string GenderMark = "[f]";
 
+    public static Dictionary<string, string> LanguageMap = new()
+    {
+        { "en-US", "英语" },
+        { "zh-CN", "简体中文" },
+        { "es", "西班牙语" },
+        { "ru", "俄罗斯语" },
+        { "pt-br", "西班牙语" },
+        { "pl", "波兰语" },
+        { "ko", "韩语" },
+        { "ja", "日语" },
+        { "fr", "法语" },
+        { "de", "德语" },
+        { "hi", "印地语" },
+        { "it", "意大利语" }
+    };
+
     private readonly IDictionary<string, JObject> _inMemoryResources = new Dictionary<string, JObject>();
 
     private CultureInfo _culture;

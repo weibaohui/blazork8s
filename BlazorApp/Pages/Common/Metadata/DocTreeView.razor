@@ -51,18 +51,29 @@
                         </p>
                         </Body>
                     </Card>
-                    @if (!string.IsNullOrEmpty(_resultCn))
+                    @if (!string.IsNullOrEmpty(_translateResult))
                     {
-                        <Card Style="max-width:600px">
+                        <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + L["Translation"])"
+                              Style="max-width:600px">
                             <p>
-                                @((MarkupString)_resultCn.ToHtmlDisplay())
+                                @((MarkupString)_translateResult.ToHtmlDisplay())
                             </p>
                             @if (AiService.Enabled())
                             {
                                 <p>
-                                    <Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link" OnClick="@ReTranslate">对这个翻译不满意，重新翻译</Button>
+                                    <Button Icon="@IconType.Fill.Frown" Type="@ButtonType.Link"
+                                            OnClick="@ReTranslate">
+                                        @L["Not satisfied with this translation, retranslate."]
+                                    </Button>
                                 </p>
                             }
+                        </Card>
+                    }
+                    @if (_currentItem.Title != null && string.IsNullOrEmpty(_translateResult) && AiService.Enabled())
+                    {
+                        <Card Title="@((AiService.Enabled() ? AiService.Name() : "") + L["Translation"])"
+                              Style="max-width:600px">
+                            <Spin/>
                         </Card>
                     }
                 </div>
