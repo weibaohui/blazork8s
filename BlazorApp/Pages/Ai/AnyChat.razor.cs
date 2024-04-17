@@ -2,17 +2,15 @@ using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.AI;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
-namespace BlazorApp.Pages.ai;
+namespace BlazorApp.Pages.Ai;
 
 public partial class AnyChat : DrawerPageBase<string>
 {
-    [Inject]
-    IAiService AiService { get; set; }
-
-    private string _ask    = string.Empty;
+    private string _ask = string.Empty;
     private string _result = string.Empty;
+
+    [Inject] private IAiService AiService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
