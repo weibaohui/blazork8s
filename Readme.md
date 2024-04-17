@@ -81,7 +81,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
  dotnet watch run
 ```
 # Interface Language Configuration
-The interface defaults to displaying in Chinese. To set a default display in another language, modify the `appsettings.json` in the source code's BlazorApp directory or the image's `/app/appsettings.json`.
+The interface defaults to displaying in Chinese. To set a default display in another language, modify the `appsettings.json` in the source code's `BlazorApp` directory or the image's `/app/appsettings.json`.
 ```
 "SimpleI18n": {
 "LocaleFilesPath": "wwwroot/lang",

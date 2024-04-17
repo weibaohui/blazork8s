@@ -85,7 +85,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
  dotnet watch run
 ```
 # 界面语言配置
- 界面默认显示为中文。如需默认显示其他语言，请修改源码BlazorApp目录下的`appsettings.json`或镜像`/app/appsettings.json`
+ 界面默认显示为中文。如需默认显示其他语言，请修改源码`BlazorApp`目录下的`appsettings.json`或镜像`/app/appsettings.json`
 ```
  "SimpleI18n": {
     "LocaleFilesPath": "wwwroot/lang",
