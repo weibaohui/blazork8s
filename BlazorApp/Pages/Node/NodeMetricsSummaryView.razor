@@ -5,87 +5,139 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
-<Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
-<HTable>
-    <HTr>
-        <HTd>@L["CPU"]</HTd>
-        <HTd>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_cpu_sockets"]
-                                        MetricName="machine_cpu_sockets">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_cpu_physical_cores"]
-                                        MetricName="machine_cpu_physical_cores">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_cpu_cores"]
-                                        MetricName="machine_cpu_cores">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_scrape_error"]
-                                        MetricName="machine_scrape_error">
-            </MetricsCounterGaugeSumView>
-        </HTd>
-    </HTr>
-    <HTr>
-        <HTd>@L["Memory"]</HTd>
-        <HTd>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_memory_bytes"]
-                                        MetricName="machine_memory_bytes" Unit="bytes">
-            </MetricsCounterGaugeSumView>
-        </HTd>
-    </HTr>
-    <HTr>
-        <HTd>@L["Disk"]</HTd>
-        <HTd>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_nvm_capacity"]
-                                        MetricName="machine_nvm_capacity" Unit="bytes">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_blkio_device_usage_total"]
-                                        MetricName="container_blkio_device_usage_total"
-                                        Unit="bytes">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_file_descriptors"]
-                                        MetricName="container_file_descriptors">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_fs_inodes_free"]
-                                        MetricName="container_fs_inodes_free">
-            </MetricsCounterGaugeSumView>
-        </HTd>
-    </HTr>
-    <HTr>
-        <HTd>@L["Process"]</HTd>
-        <HTd>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_ulimits_soft"]
-                                        MetricName="container_ulimits_soft">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_threads"]
-                                        MetricName="container_threads">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_threads_max"]
-                                        MetricName="container_threads_max">
-            </MetricsCounterGaugeSumView>
+@if (CadvisorMetrics is { Count: > 0 })
+{
+    <Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+    <HTable>
+        <HTr>
+            <HTd>@L["CPU"]</HTd>
+            <HTd>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_cpu_sockets"]
+                                            MetricName="machine_cpu_sockets">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_cpu_physical_cores"]
+                                            MetricName="machine_cpu_physical_cores">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_cpu_cores"]
+                                            MetricName="machine_cpu_cores">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_scrape_error"]
+                                            MetricName="machine_scrape_error">
+                </MetricsCounterGaugeSumView>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>@L["Memory"]</HTd>
+            <HTd>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_memory_bytes"]
+                                            MetricName="machine_memory_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>@L["Disk"]</HTd>
+            <HTd>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_nvm_capacity"]
+                                            MetricName="machine_nvm_capacity" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_blkio_device_usage_total"]
+                                            MetricName="container_blkio_device_usage_total"
+                                            Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_file_descriptors"]
+                                            MetricName="container_file_descriptors">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_fs_inodes_free"]
+                                            MetricName="container_fs_inodes_free">
+                </MetricsCounterGaugeSumView>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>@L["Process"]</HTd>
+            <HTd>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_cpu_seconds_total"]
+                                            MetricName="process_cpu_seconds_total" Unit="seconds">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_open_fds"]
+                                            MetricName="process_open_fds">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_max_fds"]
+                                            MetricName="process_max_fds">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_resident_memory_bytes"]
+                                            MetricName="process_resident_memory_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_virtual_memory_bytes"]
+                                            MetricName="process_virtual_memory_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_virtual_memory_max_bytes"]
+                                            MetricName="process_virtual_memory_max_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_ulimits_soft"]
+                                            MetricName="container_ulimits_soft">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_threads"]
+                                            MetricName="container_threads">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_threads_max"]
+                                            MetricName="container_threads_max">
+                </MetricsCounterGaugeSumView>
 
-        </HTd>
-    </HTr>
-    <HTr>
-        <HTd>@L["Network"]</HTd>
-        <HTd>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_network_receive_bytes_total"]
-                                        MetricName="container_network_receive_bytes_total"
-                                        Unit="bytes">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_network_receive_errors_total"]
-                                        MetricName="container_network_receive_errors_total">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics"
-                                        Title=@L["container_network_receive_packets_dropped_total"]
-                                        MetricName="container_network_receive_packets_dropped_total">
-            </MetricsCounterGaugeSumView>
-            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_network_receive_packets_total"]
-                                        MetricName="container_network_receive_packets_total">
-            </MetricsCounterGaugeSumView>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>@L["Network"]</HTd>
+            <HTd>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_network_receive_bytes_total"]
+                                            MetricName="container_network_receive_bytes_total"
+                                            Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_network_receive_errors_total"]
+                                            MetricName="container_network_receive_errors_total">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics"
+                                            Title=@L["container_network_receive_packets_dropped_total"]
+                                            MetricName="container_network_receive_packets_dropped_total">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics"
+                                            Title=@L["container_network_receive_packets_total"]
+                                            MetricName="container_network_receive_packets_total">
+                </MetricsCounterGaugeSumView>
 
-        </HTd>
-    </HTr>
-</HTable>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>@L["Pod"]</HTd>
+            <HTd>
+
+                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["node_memory_working_set_bytes"]
+                                            MetricName="node_memory_working_set_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["pod_memory_working_set_bytes"]
+                                            MetricName="pod_memory_working_set_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_memory_working_set_bytes"]
+                                            MetricName="container_memory_working_set_bytes" Unit="bytes">
+                </MetricsCounterGaugeSumView>
+
+                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
+                                            Title=@L["node_cpu_usage_seconds_total"]
+                                            MetricName="node_cpu_usage_seconds_total" Unit="seconds">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
+                                            Title=@L["pod_cpu_usage_seconds_total"]
+                                            MetricName="pod_cpu_usage_seconds_total" Unit="seconds">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_cpu_usage_seconds_total"]
+                                            MetricName="container_cpu_usage_seconds_total"
+                                            Unit="seconds">
+                </MetricsCounterGaugeSumView>
+
+
+            </HTd>
+        </HTr>
+    </HTable>
+}
 
 
 @code {
@@ -93,11 +145,15 @@
 
     [Inject] INodeService NodeService { get; set; }
 
-    private IList<IMetric> AllMetrics { get; set; }
+    private IList<IMetric> Metrics { get; set; }
+    private IList<IMetric> CadvisorMetrics { get; set; }
+    private IList<IMetric> ResourceMetrics { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        AllMetrics = await NodeService.GetCadvisorMetrics(Node.Name());
+        Metrics = await NodeService.GetMetrics(Node.Name());
+        CadvisorMetrics = await NodeService.GetCadvisorMetrics(Node.Name());
+        ResourceMetrics = await NodeService.GetResourceMetrics(Node.Name());
         await base.OnInitializedAsync();
     }
 

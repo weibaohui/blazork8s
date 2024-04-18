@@ -5,7 +5,7 @@
 
 @if (MultipleGroupBy is { Count: > 0 } && AllMetrics is { Count: > 0 } && AllMetrics.Any(x => x.Name == MetricName))
 {
-    //将group by 的字段值找出来，后面根据这个值，逐个计算 sum/count
+//将group by 的字段值找出来，后面根据这个值，逐个计算 sum
     var groups = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
         .Measurements?
         .Select(x => x.Labels.Where(lb => MultipleGroupBy.Contains(lb.Key))
@@ -15,7 +15,7 @@
         .ToList();
 
 
-    //去重
+//去重
     IDictionary<string, Dictionary<string, string>> distinctList = new Dictionary<string, Dictionary<string, string>>();
     if (groups != null)
     {
@@ -29,12 +29,15 @@
         }
     }
 
-    //去重完毕
+//去重完毕
     var group = distinctList.Values;
     if (group is { Count: > 0 })
     {
         <GridRow Class="grid-table">
-            <GridCol Span="16">@L["Item"]</GridCol>
+            <GridCol Span="16">
+                @L["Item"]
+                @($"({string.Join(',', MultipleGroupBy)})")
+            </GridCol>
             <GridCol Span="8">@L["Value"]</GridCol>
         </GridRow>
         foreach (var item in group)
@@ -53,21 +56,10 @@
                 </GridCol>
                 <GridCol Span="8">
                     @{
-                        var countLinq = AllMetrics
-                            .FirstOrDefault(x => x.Name == MetricName)?
-                            .Measurements
-                            .Where(x => x.Name == $"{MetricName}_count");
-                        foreach (var (k, v) in item)
-                        {
-                            countLinq = countLinq?.Where(x => x.Labels[k] == v);
-                        }
-
-                        var count = countLinq?
-                            .Sum(x => x.Value);
                         var sumLinq = AllMetrics
                             .FirstOrDefault(x => x.Name == MetricName)?
                             .Measurements
-                            .Where(x => x.Name == $"{MetricName}_sum");
+                            .Where(x => x.Name == $"{MetricName}");
                         foreach (var (k, v) in item)
                         {
                             sumLinq = sumLinq?.Where(x => x.Labels[k] == v);
@@ -75,9 +67,8 @@
 
                         var sum = sumLinq?
                             .Sum(x => x.Value);
-                        var avg = sum / count;
                     }
-                    <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
+                    <NumberFormat Number="@sum" Unit="@Unit"></NumberFormat>
                 </GridCol>
             </GridRow>
         }
