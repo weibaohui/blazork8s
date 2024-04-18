@@ -13,14 +13,7 @@
     @if (_isMetricsServerReady)
     {
         <Divider Orientation="left" Style="font-weight:bold">@L["Metrics"]</Divider>
-        <Tabs Animated>
-            <TabPane Tab=@L["CPU"] Key="1">
-                <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
-            </TabPane>
-            <TabPane Tab=@L["Memory"] Key="2">
-                <MetricView FullView="true" ResourceType="Node" ItemName="@Node.Name()" MetricType="memory"></MetricView>
-            </TabPane>
-        </Tabs>
+        <NodeStatusChart Node="@Node"></NodeStatusChart>
     }
 
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
