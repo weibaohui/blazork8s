@@ -37,12 +37,4 @@ public partial class NodeDetailView : DrawerPageBase<V1Node>
         var drawerRef = FeedbackRef as DrawerRef<bool>;
         await drawerRef!.CloseAsync(true);
     }
-
-
-    private async Task OnNodeMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetrics, V1Node, bool>(item);
-    }
 }

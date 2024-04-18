@@ -128,7 +128,7 @@
     </HTable>
     <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable"></NodeResourceCompareView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Config"]</Divider>
-    <Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+    <NodeMetricsSummaryView Node="@Node"></NodeMetricsSummaryView>
 
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
 

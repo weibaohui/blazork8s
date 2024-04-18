@@ -1,0 +1,112 @@
+@using BlazorApp.Pages.Cluster
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+<Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+<HTable>
+    <HTr>
+        <HTd>@L["CPU"]</HTd>
+        <HTd>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_cpu_sockets"]
+                                        MetricName="machine_cpu_sockets">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_cpu_physical_cores"]
+                                        MetricName="machine_cpu_physical_cores">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_cpu_cores"]
+                                        MetricName="machine_cpu_cores">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_scrape_error"]
+                                        MetricName="machine_scrape_error">
+            </MetricsCounterGaugeSumView>
+        </HTd>
+    </HTr>
+    <HTr>
+        <HTd>@L["Memory"]</HTd>
+        <HTd>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_memory_bytes"]
+                                        MetricName="machine_memory_bytes" Unit="bytes">
+            </MetricsCounterGaugeSumView>
+        </HTd>
+    </HTr>
+    <HTr>
+        <HTd>@L["Disk"]</HTd>
+        <HTd>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["machine_nvm_capacity"]
+                                        MetricName="machine_nvm_capacity" Unit="bytes">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_blkio_device_usage_total"]
+                                        MetricName="container_blkio_device_usage_total"
+                                        Unit="bytes">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_file_descriptors"]
+                                        MetricName="container_file_descriptors">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_fs_inodes_free"]
+                                        MetricName="container_fs_inodes_free">
+            </MetricsCounterGaugeSumView>
+        </HTd>
+    </HTr>
+    <HTr>
+        <HTd>@L["Process"]</HTd>
+        <HTd>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_ulimits_soft"]
+                                        MetricName="container_ulimits_soft">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_threads"]
+                                        MetricName="container_threads">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_threads_max"]
+                                        MetricName="container_threads_max">
+            </MetricsCounterGaugeSumView>
+
+        </HTd>
+    </HTr>
+    <HTr>
+        <HTd>@L["Network"]</HTd>
+        <HTd>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_network_receive_bytes_total"]
+                                        MetricName="container_network_receive_bytes_total"
+                                        Unit="bytes">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_network_receive_errors_total"]
+                                        MetricName="container_network_receive_errors_total">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics"
+                                        Title=@L["container_network_receive_packets_dropped_total"]
+                                        MetricName="container_network_receive_packets_dropped_total">
+            </MetricsCounterGaugeSumView>
+            <MetricsCounterGaugeSumView AllMetrics="@AllMetrics" Title=@L["container_network_receive_packets_total"]
+                                        MetricName="container_network_receive_packets_total">
+            </MetricsCounterGaugeSumView>
+
+        </HTd>
+    </HTr>
+</HTable>
+
+
+@code {
+    [Parameter] public V1Node Node { get; set; }
+
+    [Inject] INodeService NodeService { get; set; }
+
+    private IList<IMetric> AllMetrics { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllMetrics = await NodeService.GetCadvisorMetrics(Node.Name());
+        await base.OnInitializedAsync();
+    }
+
+    private async Task OnNodeMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsDetailView, V1Node, bool>(item);
+    }
+
+
+}
