@@ -159,9 +159,9 @@ public class ResourceCrudService(
     }
 
 
-    private async Task<V1Status> OnResourceQuotaDelete(string ns, string name)
+    private async Task<V1ResourceQuota> OnResourceQuotaDelete(string ns, string name)
     {
-        return await KubeService.Client().DeleteNamespacedDeploymentAsync(name, ns);
+        return await KubeService.Client().DeleteNamespacedResourceQuotaAsync(name, ns);
     }
 
     private async Task<V1Status> OnLimitRangeDelete(string ns, string name)
