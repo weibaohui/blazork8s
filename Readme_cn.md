@@ -195,5 +195,4 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
   <br>
 
 ## 页面预览
-
-[click me](https://gitee.com/weibaohui/blazork8s/blob/main/docs/ui_gitee.md)
+[click me](docs/ui.md)
