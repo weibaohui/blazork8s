@@ -152,7 +152,19 @@
                                     MetricName="container_fs_writes_total"
                                     Unit="bytes">
         </MetricsCounterGaugeSumView>
-
+        <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                                      Title=@L["storage_operation_duration_seconds"]
+                                      MetricName="storage_operation_duration_seconds" Unit="seconds"
+                                      OnDetailClick="@(() => _storageOperationDurationSecondsVisible = true)">
+        </MetircsHistogramTotalAvgView>
+        <Drawer Closable="true" @bind-Visible="@_storageOperationDurationSecondsVisible" Placement="right" Width="800"
+                Title=@($"{L["storage_operation_duration_seconds"]}")>
+            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@Metrics"
+                                                    MetricName="storage_operation_duration_seconds"
+                                                    Unit="seconds"
+                                                    MultipleGroupBy="@(new List<string> { "volume_plugin", "operation_name" })">
+            </MetircsHistogramGroupByMultipleAvgView>
+        </Drawer>
     </HTd>
 </HTr>
 <HTr>
@@ -222,6 +234,31 @@
         <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_threads_max"]
                                     MetricName="container_threads_max">
         </MetricsCounterGaugeSumView>
+        <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["go_goroutines"]
+                                    MetricName="go_goroutines">
+        </MetricsCounterGaugeSumView>
+        <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["go_threads"]
+                                    MetricName="go_threads">
+        </MetricsCounterGaugeSumView>
+        <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["go_gc_heap_allocs_bytes_total"]
+                                    MetricName="go_gc_heap_allocs_bytes_total" Unit="bytes">
+        </MetricsCounterGaugeSumView>
+        <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_pauses_seconds"]
+                                      MetricName="go_gc_pauses_seconds"
+                                      Unit="seconds">
+        </MetircsHistogramTotalAvgView>
+        <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_duration_seconds"]
+                                      MetricName="go_gc_duration_seconds"
+                                      Unit="seconds">
+        </MetircsHistogramTotalAvgView>
+        <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_heap_allocs_by_size_bytes"]
+                                      MetricName="go_gc_heap_allocs_by_size_bytes"
+                                      Unit="bytes">
+        </MetircsHistogramTotalAvgView>
+        <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_sched_latencies_seconds"]
+                                      MetricName="go_sched_latencies_seconds"
+                                      Unit="seconds">
+        </MetircsHistogramTotalAvgView>
 
     </HTd>
 </HTr>
@@ -429,6 +466,21 @@
                                       Title=@L["kubelet_pod_start_duration_seconds"]
                                       MetricName="kubelet_pod_start_duration_seconds" Unit="seconds">
         </MetircsHistogramTotalAvgView>
+
+        <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                                      Title=@L["kubelet_cgroup_manager_duration_seconds"]
+                                      MetricName="kubelet_cgroup_manager_duration_seconds" Unit="seconds"
+                                      OnDetailClick="@(() => _kubeletCgroupManagerDurationSecondsVisible = true)">
+        </MetircsHistogramTotalAvgView>
+        <Drawer Closable="true" @bind-Visible="@_kubeletCgroupManagerDurationSecondsVisible" Placement="right"
+                Width="800"
+                Title=@($"{L["kubelet_cgroup_manager_duration_seconds"]}")>
+            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@Metrics"
+                                                    MetricName="kubelet_cgroup_manager_duration_seconds"
+                                                    Unit="seconds"
+                                                    MultipleGroupBy="@(new List<string> { "operation_type" })">
+            </MetircsHistogramGroupByMultipleAvgView>
+        </Drawer>
     </HTd>
 </HTr>
 </HTable>
@@ -452,6 +504,8 @@
     private bool _kubeletRuntimeOperationsTotalVisible;
     private bool _kubeletWorkingPodsVisible;
     private bool _kubeletStartedContainersErrorsTotalVisible;
+    private bool _storageOperationDurationSecondsVisible;
+    private bool _kubeletCgroupManagerDurationSecondsVisible;
 
     protected override async Task OnInitializedAsync()
     {
