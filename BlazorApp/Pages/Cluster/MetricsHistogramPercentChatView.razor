@@ -1,0 +1,37 @@
+<TinyColumn Data="@Trend" Config="_trendConfig"></TinyColumn>
+
+@code{
+    [Parameter] public IList<double> Data { get; set; } = [1, 2, 3];
+
+    private List<DataValue> Trend { get; set; } = [];
+
+    protected override Task OnInitializedAsync()
+    {
+        for (var i = 0; i < Data.Count; i++)
+        {
+            Trend.Add(new DataValue { index = i.ToString(), value = Data[i] });
+        }
+
+        return base.OnInitializedAsync();
+    }
+
+
+    readonly TinyColumnConfig _trendConfig = new()
+    {
+        Width = 100,
+        Height = 30,
+        XField = "index",
+        YField = "value"
+    };
+
+
+    public class DataValue
+    {
+// ReSharper disable once InconsistentNaming
+        public string index { get; set; }
+
+// ReSharper disable once InconsistentNaming
+        public double value { get; set; }
+    }
+
+}

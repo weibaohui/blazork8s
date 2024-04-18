@@ -1,6 +1,5 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
-@using Extension
-<h3>MetricsHistogramPercentView</h3>
+@inherits BlazorApp.Pages.Common.PageBase
 @if (AllMetrics is { Count: > 0 })
 {
     if (AllMetrics.Any(x => x.Name == MetricName))
@@ -12,6 +11,13 @@
             .Select(x => x.Labels[GroupBy])
             .Distinct();
 
+        <GridRow Class="grid-table">
+            <GridCol Span="6">@($"{L["Item"]}({GroupBy})")</GridCol>
+            <GridCol Span="6">@($"{L["PercentileChart"]}(99,90,50)")</GridCol>
+            <GridCol Span="4">@("P99")</GridCol>
+            <GridCol Span="4">@("P95")</GridCol>
+            <GridCol Span="4">@("P50")</GridCol>
+        </GridRow>
         foreach (var group in groupByKeys!)
         {
             var allCount = AllMetrics
@@ -27,12 +33,20 @@
                 .Where(x => !x.Labels["le"].ToLower().Contains("inf"))
                 .Select(x => (double.Parse(x.Labels["le"]), x.Value));
 
-            var p99 = "";
-            var p95 = "";
-            var p90 = "";
-            var p75 = "";
-            var p50 = "";
-            var p25 = "";
+
+            double p99Count = 0;
+            double p95Count = 0;
+            double p90Count = 0;
+            double p75Count = 0;
+            double p50Count = 0;
+            double p25Count = 0;
+            double p99Time = 0;
+            double p95Time = 0;
+            double p90Time = 0;
+            double p75Time = 0;
+            double p50Time = 0;
+            double p25Time = 0;
+//t代表时间，v代表count个数
             foreach (var (t, v) in leKeyValueTupleList!)
             {
                 var ret = v / allCount * 100;
@@ -42,45 +56,51 @@
                 {
                     case >= 99:
                     {
-                        if (p99.IsNullOrEmpty())
+                        if (p99Count == 0)
                         {
-                            p99 = $"{t}({v})";
+                            p99Time = t;
+                            p99Count = v;
                         }
 
                         break;
                     }
                     case >= 95 and < 99:
-                        if (p95.IsNullOrEmpty())
+                        if (p95Count == 0)
                         {
-                            p95 = $"{t}({v})";
+                            p95Time = t;
+                            p95Count = v;
                         }
 
                         break;
                     case >= 90 and < 95:
-                        if (p90.IsNullOrEmpty())
+                        if (p90Count == 0)
                         {
-                            p90 = $"{t}({v})";
+                            p90Time = t;
+                            p90Count = v;
                         }
 
                         break;
                     case >= 75 and < 90:
-                        if (p75.IsNullOrEmpty())
+                        if (p75Count == 0)
                         {
-                            p75 = $"{t}({v})";
+                            p75Time = t;
+                            p75Count = v;
                         }
 
                         break;
                     case >= 50 and < 70:
-                        if (p50.IsNullOrEmpty())
+                        if (p50Count == 0)
                         {
-                            p50 = $"{t}({v})";
+                            p50Time = t;
+                            p50Count = v;
                         }
 
                         break;
                     case >= 25 and < 50:
-                        if (p25.IsNullOrEmpty())
+                        if (p25Count == 0)
                         {
-                            p25 = $"{t}({v})";
+                            p25Time = t;
+                            p25Count = v;
                         }
 
                         break;
@@ -88,13 +108,26 @@
             }
 
 
-            @($"{group}-p99:{p99}")<br>
-            @($"{group}-p95:{p95}")<br>
-            @($"{group}-p90:{p90}")<br>
-            @($"{group}-p75:{p50}")<br>
-            @($"{group}-p50:{p50}")<br>
-            @($"{group}-p25:{p50}")<br>
-            <br>
+            <GridRow Class="grid-table">
+                <GridCol Span="6">@($"{group}")</GridCol>
+                <GridCol Span="6">
+                    <MetricsHistogramPercentChatView
+                        Data="@(new List<double> { p99Count, p95Count, p50Count })">
+                    </MetricsHistogramPercentChatView>
+                </GridCol>
+                <GridCol Span="4">
+                    <NumberFormat Unit="@Unit" Number="@p99Time"></NumberFormat>
+                    <div style="font-size: 6pt">@($"{p99Count}")</div>
+                </GridCol>
+                <GridCol Span="4">
+                    <NumberFormat Unit="@Unit" Number="@p95Time"></NumberFormat>
+                    <div style="font-size: 6pt">@($"{p95Count}")</div>
+                </GridCol>
+                <GridCol Span="4">
+                    <NumberFormat Unit="@Unit" Number="@p50Time"></NumberFormat>
+                    <div style="font-size: 6pt">@($"{p50Count}")</div>
+                </GridCol>
+            </GridRow>
         }
     }
 }

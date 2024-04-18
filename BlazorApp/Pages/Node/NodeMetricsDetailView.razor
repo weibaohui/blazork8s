@@ -480,6 +480,13 @@
                                                     Unit="seconds"
                                                     MultipleGroupBy="@(new List<string> { "operation_type" })">
             </MetircsHistogramGroupByMultipleAvgView>
+            <MetricsHistogramPercentView AllMetrics="@Metrics"
+                                         MetricName="kubelet_cgroup_manager_duration_seconds"
+                                         GroupBy="operation_type"
+                                         Title=@L["kubelet_cgroup_manager_duration_seconds"]
+                                         Unit="seconds">
+            </MetricsHistogramPercentView>
+
         </Drawer>
     </HTd>
 </HTr>
