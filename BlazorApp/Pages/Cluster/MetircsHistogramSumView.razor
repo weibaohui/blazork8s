@@ -3,7 +3,7 @@
 
 @if (AllMetrics is { Count: > 0 })
 {
-    @if (AllMetrics.Any(x => x.Name == MetricName))
+    if (AllMetrics.Any(x => x.Name == MetricName))
     {
         <GridRow Class="grid-table">
             <GridCol Span="16">@Title</GridCol>

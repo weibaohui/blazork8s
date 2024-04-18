@@ -1,0 +1,118 @@
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@using Extension
+<h3>MetricsHistogramPercentView</h3>
+@if (AllMetrics is { Count: > 0 })
+{
+    if (AllMetrics.Any(x => x.Name == MetricName))
+    {
+        var groupByKeys = AllMetrics
+            .FirstOrDefault(x => x.Name == MetricName)?
+            .Measurements
+            .Where(x => x.Name == $"{MetricName}_bucket")
+            .Select(x => x.Labels[GroupBy])
+            .Distinct();
+
+        foreach (var group in groupByKeys!)
+        {
+            var allCount = AllMetrics
+                .FirstOrDefault(x => x.Name == MetricName)?
+                .Measurements
+                .FirstOrDefault(x => x.Name == $"{MetricName}_count" && x.Labels[GroupBy] == group)?
+                .Value;
+            var leKeyValueTupleList = AllMetrics
+                .FirstOrDefault(x => x.Name == MetricName)?
+                .Measurements
+                .Where(x => x.Name == $"{MetricName}_bucket")
+                .Where(x => x.Labels[GroupBy] == group)
+                .Where(x => !x.Labels["le"].ToLower().Contains("inf"))
+                .Select(x => (double.Parse(x.Labels["le"]), x.Value));
+
+            var p99 = "";
+            var p95 = "";
+            var p90 = "";
+            var p75 = "";
+            var p50 = "";
+            var p25 = "";
+            foreach (var (t, v) in leKeyValueTupleList!)
+            {
+                var ret = v / allCount * 100;
+                @* @($"{group}-{t}={v};allCount{allCount};ret={ret}")<br> *@
+
+                switch (ret)
+                {
+                    case >= 99:
+                    {
+                        if (p99.IsNullOrEmpty())
+                        {
+                            p99 = $"{t}({v})";
+                        }
+
+                        break;
+                    }
+                    case >= 95 and < 99:
+                        if (p95.IsNullOrEmpty())
+                        {
+                            p95 = $"{t}({v})";
+                        }
+
+                        break;
+                    case >= 90 and < 95:
+                        if (p90.IsNullOrEmpty())
+                        {
+                            p90 = $"{t}({v})";
+                        }
+
+                        break;
+                    case >= 75 and < 90:
+                        if (p75.IsNullOrEmpty())
+                        {
+                            p75 = $"{t}({v})";
+                        }
+
+                        break;
+                    case >= 50 and < 70:
+                        if (p50.IsNullOrEmpty())
+                        {
+                            p50 = $"{t}({v})";
+                        }
+
+                        break;
+                    case >= 25 and < 50:
+                        if (p25.IsNullOrEmpty())
+                        {
+                            p25 = $"{t}({v})";
+                        }
+
+                        break;
+                }
+            }
+
+
+            @($"{group}-p99:{p99}")<br>
+            @($"{group}-p95:{p95}")<br>
+            @($"{group}-p90:{p90}")<br>
+            @($"{group}-p75:{p50}")<br>
+            @($"{group}-p50:{p50}")<br>
+            @($"{group}-p25:{p50}")<br>
+            <br>
+        }
+    }
+}
+
+@code {
+    [Parameter] public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter] public string MetricName { get; set; }
+
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string GroupBy { get; set; }
+
+
+    [Parameter] public string Unit { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+}
