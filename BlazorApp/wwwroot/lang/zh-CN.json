@@ -526,7 +526,7 @@
   "IngressClass": "入口类",
   "Job": "作业",
   "LimitRange": "限制范围",
-  "Metrics": "度量",
+  "Metrics": "指标",
   "NetworkPolicy": "网络策略",
   "Node": "节点",
   "PodAffinity": "Pod 亲和性",
