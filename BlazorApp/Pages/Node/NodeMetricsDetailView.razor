@@ -245,8 +245,19 @@
         </MetricsCounterGaugeSumView>
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_pauses_seconds"]
                                       MetricName="go_gc_pauses_seconds"
-                                      Unit="seconds">
+                                      Unit="seconds"
+                                      OnDetailClick="@(() => _goGcPausesSecondsVisible = true)">
         </MetircsHistogramTotalAvgView>
+        <Drawer Closable="true" @bind-Visible="@_goGcPausesSecondsVisible" Placement="right"
+                Width="800"
+                Title=@($"{L["go_gc_pauses_seconds"]}")>
+            <MetricsHistogramPercentView AllMetrics="@Metrics"
+                                         MetricName="go_gc_pauses_seconds"
+                                         Title=@L["go_gc_pauses_seconds"]
+                                         Unit="seconds">
+            </MetricsHistogramPercentView>
+
+        </Drawer>
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_duration_seconds"]
                                       MetricName="go_gc_duration_seconds"
                                       Unit="seconds">
@@ -480,12 +491,12 @@
                                                     Unit="seconds"
                                                     MultipleGroupBy="@(new List<string> { "operation_type" })">
             </MetircsHistogramGroupByMultipleAvgView>
-            <MetricsHistogramPercentView AllMetrics="@Metrics"
-                                         MetricName="kubelet_cgroup_manager_duration_seconds"
-                                         GroupBy="operation_type"
-                                         Title=@L["kubelet_cgroup_manager_duration_seconds"]
-                                         Unit="seconds">
-            </MetricsHistogramPercentView>
+            <MetricsHistogramPercentGroupByView AllMetrics="@Metrics"
+                                                MetricName="kubelet_cgroup_manager_duration_seconds"
+                                                GroupBy="operation_type"
+                                                Title=@L["kubelet_cgroup_manager_duration_seconds"]
+                                                Unit="seconds">
+            </MetricsHistogramPercentGroupByView>
 
         </Drawer>
     </HTd>
@@ -513,6 +524,7 @@
     private bool _kubeletStartedContainersErrorsTotalVisible;
     private bool _storageOperationDurationSecondsVisible;
     private bool _kubeletCgroupManagerDurationSecondsVisible;
+    private bool _goGcPausesSecondsVisible;
 
     protected override async Task OnInitializedAsync()
     {

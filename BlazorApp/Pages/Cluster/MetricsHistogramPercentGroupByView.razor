@@ -1,0 +1,151 @@
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@inherits BlazorApp.Pages.Common.PageBase
+@if (AllMetrics is { Count: > 0 })
+{
+    if (AllMetrics.Any(x => x.Name == MetricName))
+    {
+        var groupByKeys = AllMetrics
+            .FirstOrDefault(x => x.Name == MetricName)?
+            .Measurements
+            .Where(x => x.Name == $"{MetricName}_bucket")
+            .Select(x => x.Labels[GroupBy])
+            .Distinct();
+
+        <GridRow Class="grid-table">
+            <GridCol Span="6">@($"{L["Item"]}({GroupBy})")</GridCol>
+            <GridCol Span="6">@($"{L["PercentileChart"]}(99,90,50)")</GridCol>
+            <GridCol Span="4">@("P99")</GridCol>
+            <GridCol Span="4">@("P95")</GridCol>
+            <GridCol Span="4">@("P50")</GridCol>
+        </GridRow>
+        foreach (var group in groupByKeys!)
+        {
+            var allCount = AllMetrics
+                .FirstOrDefault(x => x.Name == MetricName)?
+                .Measurements
+                .FirstOrDefault(x => x.Name == $"{MetricName}_count" && x.Labels[GroupBy] == group)?
+                .Value;
+            var leKeyValueTupleList = AllMetrics
+                .FirstOrDefault(x => x.Name == MetricName)?
+                .Measurements
+                .Where(x => x.Name == $"{MetricName}_bucket")
+                .Where(x => x.Labels[GroupBy] == group)
+                .Where(x => !x.Labels["le"].ToLower().Contains("inf"))
+                .Select(x => (double.Parse(x.Labels["le"]), x.Value));
+
+
+            double p99Count = 0;
+            double p95Count = 0;
+            double p90Count = 0;
+            double p75Count = 0;
+            double p50Count = 0;
+            double p25Count = 0;
+            double p99Time = 0;
+            double p95Time = 0;
+            double p90Time = 0;
+            double p75Time = 0;
+            double p50Time = 0;
+            double p25Time = 0;
+//t代表时间，v代表count个数
+            foreach (var (t, v) in leKeyValueTupleList!)
+            {
+                var ret = v / allCount * 100;
+                @* @($"{group}-{t}={v};allCount{allCount};ret={ret}")<br> *@
+
+                switch (ret)
+                {
+                    case >= 99:
+                    {
+                        if (p99Count == 0)
+                        {
+                            p99Time = t;
+                            p99Count = v;
+                        }
+
+                        break;
+                    }
+                    case >= 95 and < 99:
+                        if (p95Count == 0)
+                        {
+                            p95Time = t;
+                            p95Count = v;
+                        }
+
+                        break;
+                    case >= 90 and < 95:
+                        if (p90Count == 0)
+                        {
+                            p90Time = t;
+                            p90Count = v;
+                        }
+
+                        break;
+                    case >= 75 and < 90:
+                        if (p75Count == 0)
+                        {
+                            p75Time = t;
+                            p75Count = v;
+                        }
+
+                        break;
+                    case >= 50 and < 70:
+                        if (p50Count == 0)
+                        {
+                            p50Time = t;
+                            p50Count = v;
+                        }
+
+                        break;
+                    case >= 25 and < 50:
+                        if (p25Count == 0)
+                        {
+                            p25Time = t;
+                            p25Count = v;
+                        }
+
+                        break;
+                }
+            }
+
+
+            <GridRow Class="grid-table">
+                <GridCol Span="6">@($"{group}")</GridCol>
+                <GridCol Span="6">
+                    <MetricsHistogramPercentChatView
+                        Data="@(new List<double> { p99Count, p95Count, p50Count })">
+                    </MetricsHistogramPercentChatView>
+                </GridCol>
+                <GridCol Span="4">
+                    <NumberFormat Unit="@Unit" Number="@p99Time"></NumberFormat>
+                    <div style="font-size: 6pt">@($"{p99Count}")</div>
+                </GridCol>
+                <GridCol Span="4">
+                    <NumberFormat Unit="@Unit" Number="@p95Time"></NumberFormat>
+                    <div style="font-size: 6pt">@($"{p95Count}")</div>
+                </GridCol>
+                <GridCol Span="4">
+                    <NumberFormat Unit="@Unit" Number="@p50Time"></NumberFormat>
+                    <div style="font-size: 6pt">@($"{p50Count}")</div>
+                </GridCol>
+            </GridRow>
+        }
+    }
+}
+
+@code {
+    [Parameter] public IList<IMetric> AllMetrics { get; set; }
+
+    [Parameter] public string MetricName { get; set; }
+
+    [Parameter] public string Title { get; set; }
+    [Parameter] public string GroupBy { get; set; }
+
+
+    [Parameter] public string Unit { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+}
