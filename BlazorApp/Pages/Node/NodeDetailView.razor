@@ -120,7 +120,7 @@
         <PropertyListView Title=@L["VolumesInUse"] T="string" Items="@Node.Status.VolumesInUse" ExplainField="node.status.volumesInUse"></PropertyListView>
     </HTable>
     <NodeResourceCompareView Capacity="@Node.Status.Capacity" Allocatable="@Node.Status.Allocatable"></NodeResourceCompareView>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Config"]</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metrics"]</Divider>
     <NodeMetricsSummaryView Node="@Node"></NodeMetricsSummaryView>
 
     <MiniPodListView Pods="_pods" HideAction="true"></MiniPodListView>
