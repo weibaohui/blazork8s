@@ -12,6 +12,11 @@
                 >= 1024 * 1024 and <= 1024 * 1024 * 1024 => $"{Math.Round((double)Number / 1024 / 1024, 2)} MB",
                 _ => $"{Math.Round((double)Number / 1024, 2)} KB"
             },
+            "millicores" => Number switch
+            {
+                <= 100 => $"{Number} millicores",
+                _ => $"{Math.Round((double)Number / 1000, 2)} core"
+            },
             "seconds" => Number switch
             {
                 > 86400 * 365 => $"{Math.Round((double)Number / 60 / 60 / 24 / 365, 2)} year",

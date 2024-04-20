@@ -16,18 +16,22 @@
                                 MetricName="machine_cpu_cores">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_load_average_10s"]
-                                MetricName="container_cpu_load_average_10s">
+                                MetricName="container_cpu_load_average_10s"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_system_seconds_total"]
                                 MetricName="container_cpu_system_seconds_total"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })"
                                 Unit="seconds">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_usage_seconds_total"]
                                 MetricName="container_cpu_usage_seconds_total"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })"
                                 Unit="seconds">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_user_seconds_total"]
                                 MetricName="container_cpu_user_seconds_total"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })"
                                 Unit="seconds">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["machine_scrape_error"]
@@ -39,33 +43,42 @@
                                 MetricName="machine_memory_bytes" Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_cache"]
-                                MetricName="container_memory_cache" Unit="bytes">
+                                MetricName="container_memory_cache" Unit="bytes"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_failcnt"]
-                                MetricName="container_memory_failcnt">
+                                MetricName="container_memory_failcnt"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_failures_total"]
-                                MetricName="container_memory_failures_total">
+                                MetricName="container_memory_failures_total"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_mapped_file"]
-                                MetricName="container_memory_mapped_file">
+                                MetricName="container_memory_mapped_file"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_max_usage_bytes"]
                                 MetricName="container_memory_max_usage_bytes"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_rss"]
-                                MetricName="container_memory_rss" Unit="bytes">
+                                MetricName="container_memory_rss" Unit="bytes"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_swap"]
-                                MetricName="container_memory_swap" Unit="bytes">
+                                MetricName="container_memory_swap" Unit="bytes"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_usage_bytes"]
                                 MetricName="container_memory_usage_bytes"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_memory_working_set_bytes"]
                                 MetricName="container_memory_working_set_bytes"
+                                MultipleGroupBy="@(new List<string> { "pod", "namespace" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
 
@@ -79,54 +92,73 @@
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_blkio_device_usage_total"]
                                 MetricName="container_blkio_device_usage_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace", "operation" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_file_descriptors"]
-                                MetricName="container_file_descriptors">
+                                MetricName="container_file_descriptors"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_inodes_free"]
-                                MetricName="container_fs_inodes_free">
+                                MetricName="container_fs_inodes_free"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_inodes_total"]
-                                MetricName="container_fs_inodes_total">
+                                MetricName="container_fs_inodes_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_io_current"]
-                                MetricName="container_fs_io_current">
+                                MetricName="container_fs_io_current"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_io_time_seconds_total"]
                                 MetricName="container_fs_io_time_seconds_total"
-                                Unit="seconds">
+                                Unit="seconds" MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics"
                                 Title=@L["container_fs_io_time_weighted_seconds_total"]
                                 MetricName="container_fs_io_time_weighted_seconds_total"
-                                Unit="seconds">
+                                Unit="seconds" MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_limit_bytes"]
-                                MetricName="container_fs_limit_bytes" Unit="bytes">
+                                MetricName="container_fs_limit_bytes" Unit="bytes"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_read_seconds_total"]
                                 MetricName="container_fs_read_seconds_total"
-                                Unit="seconds">
+                                Unit="seconds" MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_reads_bytes_total"]
                                 MetricName="container_fs_reads_bytes_total"
-                                Unit="bytes">
+                                Unit="bytes" MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
+
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_reads_merged_total"]
-                                MetricName="container_fs_reads_merged_total">
+                                MetricName="container_fs_reads_merged_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_reads_total"]
-                                MetricName="container_fs_reads_total">
+                                MetricName="container_fs_reads_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_sector_reads_total"]
-                                MetricName="container_fs_sector_reads_total">
+                                MetricName="container_fs_sector_reads_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_sector_writes_total"]
-                                MetricName="container_fs_sector_writes_total">
+                                MetricName="container_fs_sector_writes_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_usage_bytes"]
-                                MetricName="container_fs_usage_bytes" Unit="bytes">
+                                MetricName="container_fs_usage_bytes" Unit="bytes"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_write_seconds_total"]
                                 MetricName="container_fs_write_seconds_total"
@@ -134,13 +166,16 @@
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_writes_bytes_total"]
                                 MetricName="container_fs_writes_bytes_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_writes_merged_total"]
-                                MetricName="container_fs_writes_merged_total">
+                                MetricName="container_fs_writes_merged_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_fs_writes_total"]
                                 MetricName="container_fs_writes_total"
+                                MultipleGroupBy="@(new List<string> { "device", "pod", "namespace" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
@@ -153,6 +188,7 @@
 <TabPane Key="4" Tab=@L["Network"]>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_network_receive_bytes_total"]
                                 MetricName="container_network_receive_bytes_total"
+                                MultipleGroupBy="@(new List<string> { "interface" })"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_network_receive_errors_total"]
@@ -163,9 +199,11 @@
                                 MetricName="container_network_receive_packets_dropped_total">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_network_receive_packets_total"]
+                                MultipleGroupBy="@(new List<string> { "interface" })"
                                 MetricName="container_network_receive_packets_total">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_network_transmit_bytes_total"]
+                                MultipleGroupBy="@(new List<string> { "interface" })"
                                 MetricName="container_network_transmit_bytes_total"
                                 Unit="bytes">
     </MetricsCounterGaugeSumView>
@@ -177,6 +215,7 @@
                                 MetricName="container_network_transmit_packets_dropped_total">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_network_transmit_packets_total"]
+                                MultipleGroupBy="@(new List<string> { "interface" })"
                                 MetricName="container_network_transmit_packets_total">
     </MetricsCounterGaugeSumView>
 
@@ -216,17 +255,21 @@
                                 MetricName="container_sockets">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_spec_cpu_period"]
-                                MetricName="container_spec_cpu_period">
+                                MetricName="container_spec_cpu_period" Unit="millicores"
+                                MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_spec_cpu_quota"]
-                                MetricName="container_spec_cpu_quota">
+                                MetricName="container_spec_cpu_quota" Unit="millicores"
+                                MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_spec_cpu_shares"]
-                                MetricName="container_spec_cpu_shares">
+                                MetricName="container_spec_cpu_shares" Unit="millicores"
+                                MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_spec_memory_limit_bytes"]
                                 MetricName="container_spec_memory_limit_bytes"
-                                Unit="bytes">
+                                Unit="bytes"
+                                MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics"
                                 Title=@L["container_spec_memory_reservation_limit_bytes"]
@@ -241,10 +284,12 @@
                                 MetricName="container_tasks_state">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_threads"]
-                                MetricName="container_threads">
+                                MetricName="container_threads"
+                                MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_threads_max"]
-                                MetricName="container_threads_max">
+                                MetricName="container_threads_max"
+                                MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
     </MetricsCounterGaugeSumView>
     <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["go_goroutines"]
                                 MetricName="go_goroutines">
