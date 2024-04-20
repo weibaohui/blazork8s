@@ -1,0 +1,95 @@
+@using BlazorApp.Pages.Cluster
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Node>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_mirror_pods"]
+                            MetricName="kubelet_mirror_pods">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_restarted_pods_total"]
+                            MetricName="kubelet_restarted_pods_total">
+</MetricsCounterGaugeSumView>
+
+<MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_running_pods"]
+                            MetricName="kubelet_running_pods">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_started_pods_errors_total"]
+                            MetricName="kubelet_started_pods_errors_total">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics"
+                            Title=@L["kubelet_active_pods"]
+                            MetricName="kubelet_active_pods"
+                            MultipleGroupBy="@(new List<string> { "static" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics"
+                            Title=@L["kubelet_runtime_operations_total"]
+                            MetricName="kubelet_runtime_operations_total"
+                            MultipleGroupBy="@(new List<string> { "operation_type" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics"
+                            Title=@L["kubelet_running_containers"]
+                            MetricName="kubelet_running_containers"
+                            MultipleGroupBy="@(new List<string> { "container_state" })">
+</MetricsCounterGaugeSumView>
+
+<MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_started_containers_total"]
+                            MetricName="kubelet_started_containers_total">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics"
+                            Title=@L["kubelet_started_containers_errors_total"]
+                            MetricName="kubelet_started_containers_errors_total"
+                            MultipleGroupBy="@(new List<string> { "code" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics"
+                            Title=@L["kubelet_working_pods"]
+                            MetricName="kubelet_working_pods"
+                            MultipleGroupBy="@(new List<string> { "config", "lifecycle", "static" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_managed_ephemeral_containers"]
+                            MetricName="kubelet_managed_ephemeral_containers">
+</MetricsCounterGaugeSumView>
+
+<MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                              Title=@L["kubelet_pod_status_sync_duration_seconds"]
+                              MetricName="kubelet_pod_status_sync_duration_seconds" Unit="seconds">
+</MetircsHistogramTotalAvgView>
+<MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                              Title=@L["kubelet_pod_worker_duration_seconds"]
+                              MetricName="kubelet_pod_worker_duration_seconds" Unit="seconds">
+</MetircsHistogramTotalAvgView>
+<MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                              Title=@L["kubelet_runtime_operations_duration_seconds"]
+                              MetricName="kubelet_runtime_operations_duration_seconds" Unit="seconds">
+</MetircsHistogramTotalAvgView>
+<MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                              Title=@L["kubelet_pod_start_duration_seconds"]
+                              MetricName="kubelet_pod_start_duration_seconds" Unit="seconds">
+</MetircsHistogramTotalAvgView>
+
+<MetircsHistogramTotalAvgView AllMetrics="@Metrics"
+                              Title=@L["kubelet_cgroup_manager_duration_seconds"]
+                              MetricName="kubelet_cgroup_manager_duration_seconds"
+                              MultipleGroupBy="@(new List<string> { "operation_type" })"
+                              Unit="seconds">
+</MetircsHistogramTotalAvgView>
+
+@code {
+    [Parameter] public V1Node Node { get; set; }
+
+    [Inject] INodeService NodeService { get; set; }
+    private IList<IMetric> Metrics { get; set; }
+    private IList<IMetric> CAdvisorMetrics { get; set; }
+    private IList<IMetric> ResourceMetrics { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Node = Options;
+        Metrics = await NodeService.GetMetrics(Node.Name());
+        CAdvisorMetrics = await NodeService.GetCadvisorMetrics(Node.Name());
+        ResourceMetrics = await NodeService.GetResourceMetrics(Node.Name());
+
+        await base.OnInitializedAsync();
+    }
+
+
+}

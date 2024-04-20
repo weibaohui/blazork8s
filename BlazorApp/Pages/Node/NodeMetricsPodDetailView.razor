@@ -1,0 +1,56 @@
+@using BlazorApp.Pages.Cluster
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Node>
+<MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["node_memory_working_set_bytes"]
+                            MetricName="node_memory_working_set_bytes" Unit="bytes">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["pod_memory_working_set_bytes"]
+                            MetricName="pod_memory_working_set_bytes" Unit="bytes"
+                            MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_memory_working_set_bytes"]
+                            MetricName="container_memory_working_set_bytes" Unit="bytes"
+                            MultipleGroupBy="@(new List<string> { "namespace", "pod", "container" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
+                            Title=@L["node_cpu_usage_seconds_total"]
+                            MetricName="node_cpu_usage_seconds_total" Unit="seconds">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
+                            Title=@L["pod_cpu_usage_seconds_total"]
+                            MetricName="pod_cpu_usage_seconds_total" Unit="seconds"
+                            MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_cpu_usage_seconds_total"]
+                            MetricName="container_cpu_usage_seconds_total"
+                            Unit="seconds">
+</MetricsCounterGaugeSumView>
+
+<MetricsCounterGaugeSumView AllMetrics="@Metrics"
+                            Title=@L["kubelet_container_log_filesystem_used_bytes"]
+                            MetricName="kubelet_container_log_filesystem_used_bytes" Unit="bytes"
+                            MultipleGroupBy="@(new List<string> { "namespace", "pod", "container" })">
+</MetricsCounterGaugeSumView>
+
+@code {
+    [Parameter] public V1Node Node { get; set; }
+
+    [Inject] INodeService NodeService { get; set; }
+    private IList<IMetric> Metrics { get; set; }
+    private IList<IMetric> CAdvisorMetrics { get; set; }
+    private IList<IMetric> ResourceMetrics { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Node = Options;
+        Metrics = await NodeService.GetMetrics(Node.Name());
+        CAdvisorMetrics = await NodeService.GetCadvisorMetrics(Node.Name());
+        ResourceMetrics = await NodeService.GetResourceMetrics(Node.Name());
+
+        await base.OnInitializedAsync();
+    }
+
+
+}

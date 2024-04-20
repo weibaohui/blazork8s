@@ -1,0 +1,54 @@
+@using BlazorApp.Pages.Cluster
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils.Prometheus.Models.Interfaces
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Node>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["machine_cpu_sockets"]
+                            MetricName="machine_cpu_sockets">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["machine_cpu_physical_cores"]
+                            MetricName="machine_cpu_physical_cores">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["machine_cpu_cores"]
+                            MetricName="machine_cpu_cores">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_load_average_10s"]
+                            MetricName="container_cpu_load_average_10s">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_system_seconds_total"]
+                            MetricName="container_cpu_system_seconds_total"
+                            Unit="seconds">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_usage_seconds_total"]
+                            MetricName="container_cpu_usage_seconds_total"
+                            Unit="seconds">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["container_cpu_user_seconds_total"]
+                            MetricName="container_cpu_user_seconds_total"
+                            Unit="seconds">
+</MetricsCounterGaugeSumView>
+<MetricsCounterGaugeSumView AllMetrics="@CAdvisorMetrics" Title=@L["machine_scrape_error"]
+                            MetricName="machine_scrape_error">
+</MetricsCounterGaugeSumView>
+
+
+@code {
+    [Parameter] public V1Node Node { get; set; }
+
+    [Inject] INodeService NodeService { get; set; }
+    private IList<IMetric> Metrics { get; set; }
+    private IList<IMetric> CAdvisorMetrics { get; set; }
+    private IList<IMetric> ResourceMetrics { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Node = Options;
+        Metrics = await NodeService.GetMetrics(Node.Name());
+        CAdvisorMetrics = await NodeService.GetCadvisorMetrics(Node.Name());
+        ResourceMetrics = await NodeService.GetResourceMetrics(Node.Name());
+
+        await base.OnInitializedAsync();
+    }
+
+
+}

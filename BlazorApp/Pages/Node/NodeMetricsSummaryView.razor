@@ -7,10 +7,12 @@
 @inherits BlazorApp.Pages.Common.PageBase
 @if (CadvisorMetrics is { Count: > 0 })
 {
-    <Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
     <HTable>
         <HTr>
-            <HTd>@L["CPU"]</HTd>
+            <HTd>
+                @L["CPU"]
+                <Button OnClick="@(() => OnNodeCPUMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+            </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_cpu_sockets"]
                                             MetricName="machine_cpu_sockets">
@@ -21,13 +23,13 @@
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_cpu_cores"]
                                             MetricName="machine_cpu_cores">
                 </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_scrape_error"]
-                                            MetricName="machine_scrape_error">
-                </MetricsCounterGaugeSumView>
             </HTd>
         </HTr>
         <HTr>
-            <HTd>@L["Memory"]</HTd>
+            <HTd>
+                @L["Memory"]
+                <Button OnClick="@(() => OnNodeMemoryMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+            </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_memory_bytes"]
                                             MetricName="machine_memory_bytes" Unit="bytes">
@@ -35,11 +37,11 @@
             </HTd>
         </HTr>
         <HTr>
-            <HTd>@L["Disk"]</HTd>
             <HTd>
-                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_nvm_capacity"]
-                                            MetricName="machine_nvm_capacity" Unit="bytes">
-                </MetricsCounterGaugeSumView>
+                @L["Disk"]
+                <Button OnClick="@(() => OnNodeDiskMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+            </HTd>
+            <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_blkio_device_usage_total"]
                                             MetricName="container_blkio_device_usage_total"
                                             Unit="bytes">
@@ -53,40 +55,29 @@
             </HTd>
         </HTr>
         <HTr>
-            <HTd>@L["Process"]</HTd>
             <HTd>
-                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_cpu_seconds_total"]
-                                            MetricName="process_cpu_seconds_total" Unit="seconds">
-                </MetricsCounterGaugeSumView>
+                @L["Process"]
+                <Button OnClick="@(() => OnNodeProcessMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+            </HTd>
+            <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_open_fds"]
                                             MetricName="process_open_fds">
                 </MetricsCounterGaugeSumView>
                 <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_max_fds"]
                                             MetricName="process_max_fds">
                 </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_resident_memory_bytes"]
-                                            MetricName="process_resident_memory_bytes" Unit="bytes">
-                </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_virtual_memory_bytes"]
-                                            MetricName="process_virtual_memory_bytes" Unit="bytes">
-                </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_virtual_memory_max_bytes"]
-                                            MetricName="process_virtual_memory_max_bytes" Unit="bytes">
-                </MetricsCounterGaugeSumView>
+
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_ulimits_soft"]
                                             MetricName="container_ulimits_soft">
                 </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_threads"]
-                                            MetricName="container_threads">
-                </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_threads_max"]
-                                            MetricName="container_threads_max">
-                </MetricsCounterGaugeSumView>
-
             </HTd>
         </HTr>
         <HTr>
-            <HTd>@L["Network"]</HTd>
+            <HTd>
+                @L["Network"]
+                <Button OnClick="@(() => OnNodeNetworkMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+
+            </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_network_receive_bytes_total"]
                                             MetricName="container_network_receive_bytes_total"
@@ -107,7 +98,10 @@
             </HTd>
         </HTr>
         <HTr>
-            <HTd>@L["Pod"]</HTd>
+            <HTd>
+                @L["Pod"]
+                <Button OnClick="@(() => OnNodePodMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+            </HTd>
             <HTd>
 
                 <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["node_memory_working_set_bytes"]
@@ -119,23 +113,28 @@
                 <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_memory_working_set_bytes"]
                                             MetricName="container_memory_working_set_bytes" Unit="bytes">
                 </MetricsCounterGaugeSumView>
-
-                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
-                                            Title=@L["node_cpu_usage_seconds_total"]
-                                            MetricName="node_cpu_usage_seconds_total" Unit="seconds">
-                </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
-                                            Title=@L["pod_cpu_usage_seconds_total"]
-                                            MetricName="pod_cpu_usage_seconds_total" Unit="seconds">
-                </MetricsCounterGaugeSumView>
-                <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_cpu_usage_seconds_total"]
-                                            MetricName="container_cpu_usage_seconds_total"
-                                            Unit="seconds">
-                </MetricsCounterGaugeSumView>
-
-
             </HTd>
         </HTr>
+        <HTr>
+            <HTd>
+                @L["Kubelet"]
+                <Button OnClick="@(() => OnNodeKubeletMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+            </HTd>
+            <HTd>
+
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_restarted_pods_total"]
+                                            MetricName="kubelet_restarted_pods_total">
+                </MetricsCounterGaugeSumView>
+
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_running_pods"]
+                                            MetricName="kubelet_running_pods">
+                </MetricsCounterGaugeSumView>
+                <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_started_pods_errors_total"]
+                                            MetricName="kubelet_started_pods_errors_total">
+                </MetricsCounterGaugeSumView>
+            </HTd>
+        </HTr>
+
     </HTable>
 }
 
@@ -157,12 +156,53 @@
         await base.OnInitializedAsync();
     }
 
-    private async Task OnNodeMetricsClick(V1Node item)
+    private async Task OnNodeCPUMetricsClick(V1Node item)
     {
         await PageDrawerHelper<V1Node>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsDetailView, V1Node, bool>(item);
+            .ShowDrawerAsync<NodeMetricsCPUDetailView, V1Node, bool>(item);
     }
 
+    private async Task OnNodeMemoryMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsMemoryDetailView, V1Node, bool>(item);
+    }
+
+    private async Task OnNodeNetworkMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsNetworkDetailView, V1Node, bool>(item);
+    }
+
+    private async Task OnNodeProcessMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsProcessDetailView, V1Node, bool>(item);
+    }
+
+    private async Task OnNodePodMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsPodDetailView, V1Node, bool>(item);
+    }
+
+    private async Task OnNodeKubeletMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsKubeletDetailView, V1Node, bool>(item);
+    }
+
+    private async Task OnNodeDiskMetricsClick(V1Node item)
+    {
+        await PageDrawerHelper<V1Node>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<NodeMetricsDiskDetailView, V1Node, bool>(item);
+    }
 
 }
