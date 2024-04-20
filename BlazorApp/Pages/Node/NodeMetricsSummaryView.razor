@@ -7,11 +7,12 @@
 @inherits BlazorApp.Pages.Common.PageBase
 @if (CadvisorMetrics is { Count: > 0 })
 {
+    <Button OnClick="@(() => OnNodeMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
+
     <HTable>
         <HTr>
             <HTd>
                 @L["CPU"]
-                <Button OnClick="@(() => OnNodeCPUMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
             </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_cpu_sockets"]
@@ -28,7 +29,6 @@
         <HTr>
             <HTd>
                 @L["Memory"]
-                <Button OnClick="@(() => OnNodeMemoryMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
             </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["machine_memory_bytes"]
@@ -39,7 +39,6 @@
         <HTr>
             <HTd>
                 @L["Disk"]
-                <Button OnClick="@(() => OnNodeDiskMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
             </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_blkio_device_usage_total"]
@@ -57,7 +56,6 @@
         <HTr>
             <HTd>
                 @L["Process"]
-                <Button OnClick="@(() => OnNodeProcessMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
             </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["process_open_fds"]
@@ -75,8 +73,6 @@
         <HTr>
             <HTd>
                 @L["Network"]
-                <Button OnClick="@(() => OnNodeNetworkMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
-
             </HTd>
             <HTd>
                 <MetricsCounterGaugeSumView AllMetrics="@CadvisorMetrics" Title=@L["container_network_receive_bytes_total"]
@@ -100,10 +96,8 @@
         <HTr>
             <HTd>
                 @L["Pod"]
-                <Button OnClick="@(() => OnNodePodMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
             </HTd>
             <HTd>
-
                 <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["node_memory_working_set_bytes"]
                                             MetricName="node_memory_working_set_bytes" Unit="bytes">
                 </MetricsCounterGaugeSumView>
@@ -118,10 +112,8 @@
         <HTr>
             <HTd>
                 @L["Kubelet"]
-                <Button OnClick="@(() => OnNodeKubeletMetricsClick(Node))" Type="@ButtonType.Link">@L["Detail"]</Button>
             </HTd>
             <HTd>
-
                 <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_restarted_pods_total"]
                                             MetricName="kubelet_restarted_pods_total">
                 </MetricsCounterGaugeSumView>
@@ -156,53 +148,11 @@
         await base.OnInitializedAsync();
     }
 
-    private async Task OnNodeCPUMetricsClick(V1Node item)
+    private async Task OnNodeMetricsClick(V1Node item)
     {
         await PageDrawerHelper<V1Node>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsCPUDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnNodeMemoryMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsMemoryDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnNodeNetworkMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsNetworkDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnNodeProcessMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsProcessDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnNodePodMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsPodDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnNodeKubeletMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsKubeletDetailView, V1Node, bool>(item);
-    }
-
-    private async Task OnNodeDiskMetricsClick(V1Node item)
-    {
-        await PageDrawerHelper<V1Node>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<NodeMetricsDiskDetailView, V1Node, bool>(item);
+            .ShowDrawerAsync<NodeMetricsDetailTabView, V1Node, bool>(item);
     }
 
 }

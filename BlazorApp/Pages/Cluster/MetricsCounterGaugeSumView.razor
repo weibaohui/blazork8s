@@ -15,9 +15,9 @@
                 }
             </GridCol>
         </GridRow>
-        <Drawer Closable="true" Visible="@_showDetail" @bind-Visible="@_showDetail" Placement="right"
-                Width="800"
-                Title=@Title>
+        <Modal Closable="true" @bind-Visible="@_showDetail"
+               Width="800" Resizable=true
+               Title=@Title>
             @if (MultipleGroupBy is { Count: > 0 })
             {
                 <MetricsCounterGaugeGroupByMultipleView AllMetrics="@AllMetrics"
@@ -25,7 +25,7 @@
                                                         MultipleGroupBy="@MultipleGroupBy">
                 </MetricsCounterGaugeGroupByMultipleView>
             }
-        </Drawer>
+        </Modal>
     }
 }
 

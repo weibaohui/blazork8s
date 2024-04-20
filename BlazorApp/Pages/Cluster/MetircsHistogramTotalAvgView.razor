@@ -26,9 +26,9 @@
             </GridCol>
         </GridRow>
 
-        <Drawer Closable="true" Visible="@_showDetail" @bind-Visible="@_showDetail" Placement="right"
-                Width="800"
-                Title=@Title>
+        <Modal Closable="true" @bind-Visible="@_showDetail"
+               Width="800" Resizable=true
+               Title=@Title>
             <MetricsHistogramPercentView AllMetrics="@AllMetrics"
                                          MetricName="@MetricName"
                                          Title=@L[MetricName]
@@ -42,7 +42,7 @@
                                                         MultipleGroupBy="@MultipleGroupBy">
                 </MetircsHistogramGroupByMultipleAvgView>
             }
-        </Drawer>
+        </Modal>
     }
 }
 
