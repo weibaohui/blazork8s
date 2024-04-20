@@ -27,21 +27,38 @@
         </GridRow>
 
         <Modal Closable="true" @bind-Visible="@_showDetail"
-               Width="800" Resizable=true
+               Width="1000" Resizable=true
                Style="top: 20px"
                Title=@Title>
-            <MetricsHistogramPercentView AllMetrics="@AllMetrics"
-                                         MetricName="@MetricName"
-                                         Title=@L[MetricName]
-                                         Unit="@Unit">
-            </MetricsHistogramPercentView>
+
             @if (MultipleGroupBy is { Count: > 0 })
             {
-                <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
-                                                        MetricName="@MetricName"
-                                                        Unit="@Unit"
-                                                        MultipleGroupBy="@MultipleGroupBy">
-                </MetircsHistogramGroupByMultipleAvgView>
+                <Tabs Type="@TabType.Card">
+                    <TabPane Key="1" Tab="@L["PercentileChart"]">
+                        <MetricsHistogramPercentGroupByView AllMetrics="@AllMetrics"
+                                                            MetricName="@MetricName"
+                                                            Title=@L[MetricName]
+                                                            MultipleGroupBy="@MultipleGroupBy"
+                                                            Unit="@Unit">
+                        </MetricsHistogramPercentGroupByView>
+                    </TabPane>
+                    <TabPane Key="2" Tab="@L["DataList"]">
+                        <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
+                                                                MetricName="@MetricName"
+                                                                Unit="@Unit"
+                                                                MultipleGroupBy="@MultipleGroupBy">
+                        </MetircsHistogramGroupByMultipleAvgView>
+                    </TabPane>
+
+                </Tabs>
+            }
+            else
+            {
+                <MetricsHistogramPercentView AllMetrics="@AllMetrics"
+                                             MetricName="@MetricName"
+                                             Title=@L[MetricName]
+                                             Unit="@Unit">
+                </MetricsHistogramPercentView>
             }
         </Modal>
     }

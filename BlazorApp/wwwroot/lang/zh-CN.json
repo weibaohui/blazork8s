@@ -652,5 +652,6 @@
   "kubelet_pod_status_sync_duration_seconds": "容器组状态同步耗时",
   "kubelet_pod_worker_duration_seconds": "容器组工作耗时",
   "kubelet_working_pods": "工作容器组数",
-  "PercentileChart": "百分位图"
+  "PercentileChart": "百分位图",
+  "DataList": "数据列表"
 }

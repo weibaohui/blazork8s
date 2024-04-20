@@ -1,36 +1,68 @@
 @using BlazorApp.Utils.Prometheus.Models.Interfaces
+@using Extension
+@using k8s
 @inherits BlazorApp.Pages.Common.PageBase
 @if (AllMetrics is { Count: > 0 })
 {
     if (AllMetrics.Any(x => x.Name == MetricName))
     {
-        var groupByKeys = AllMetrics
-            .FirstOrDefault(x => x.Name == MetricName)?
-            .Measurements
-            .Where(x => x.Name == $"{MetricName}_bucket")
-            .Select(x => x.Labels[GroupBy])
-            .Distinct();
+        var groups = AllMetrics.FirstOrDefault(x => x.Name == MetricName)?
+            .Measurements?
+            .Where(x => x.Name == $"{MetricName}_count")
+            .Select(x => x.Labels.Where(lb => MultipleGroupBy.Contains(lb.Key))
+                .ToDictionary(kv => kv.Key, kv => kv.Value)
+            )
+            .Distinct()
+            .ToList();
 
+//去重
+        IDictionary<string, Dictionary<string, string>> distinctList = new Dictionary<string, Dictionary<string, string>>();
+        if (groups != null)
+        {
+            foreach (var enumerable in groups)
+            {
+                var hash = KubernetesJson.Serialize(enumerable).ToMd5Str();
+                if (!distinctList.ContainsKey(hash))
+                {
+                    distinctList.Add(hash, enumerable);
+                }
+            }
+        }
+
+        var group = distinctList.Values;
+        var keys = group.SelectMany(x => x.Keys).Distinct().ToList();
         <GridRow Class="grid-table">
-            <GridCol Span="6">@($"{L["Item"]}({GroupBy})")</GridCol>
+            <GridCol Span="6">@($"{L["Item"]}({string.Join(",", keys)})")</GridCol>
             <GridCol Span="6">@($"{L["PercentileChart"]}(99,90,50)")</GridCol>
             <GridCol Span="4">@("P99")</GridCol>
             <GridCol Span="4">@("P95")</GridCol>
             <GridCol Span="4">@("P50")</GridCol>
         </GridRow>
-        foreach (var group in groupByKeys!)
+        foreach (var item in group)
         {
-            var allCount = AllMetrics
+            var allCountLinq = AllMetrics
                 .FirstOrDefault(x => x.Name == MetricName)?
                 .Measurements
-                .FirstOrDefault(x => x.Name == $"{MetricName}_count" && x.Labels[GroupBy] == group)?
-                .Value;
-            var leKeyValueTupleList = AllMetrics
+                .Where(x => x.Name == $"{MetricName}_count");
+            foreach (var (k, v) in item)
+            {
+                allCountLinq = allCountLinq?.Where(x => x.Labels[k] == v);
+            }
+
+            var allCount = allCountLinq.Where(x => x.Labels.Keys.Any(y => MultipleGroupBy.Contains(y)))
+                .Sum(x => x.Value);
+
+            var leKeyValueTupleListLinq = AllMetrics
                 .FirstOrDefault(x => x.Name == MetricName)?
                 .Measurements
                 .Where(x => x.Name == $"{MetricName}_bucket")
-                .Where(x => x.Labels[GroupBy] == group)
-                .Where(x => !x.Labels["le"].ToLower().Contains("inf"))
+                .Where(x => !x.Labels["le"].ToLower().Contains("inf"));
+            foreach (var (k, v) in item)
+            {
+                leKeyValueTupleListLinq = leKeyValueTupleListLinq?.Where(x => x.Labels[k] == v);
+            }
+
+            var leKeyValueTupleList = leKeyValueTupleListLinq
                 .Select(x => (double.Parse(x.Labels["le"]), x.Value));
 
 
@@ -109,7 +141,11 @@
 
 
             <GridRow Class="grid-table">
-                <GridCol Span="6">@($"{group}")</GridCol>
+                @{
+                    var vv = item.Values.Where(x => !x.IsNullOrEmpty()).ToList();
+                    var rvv = string.Join("/", vv);
+                }
+                <GridCol Span="6">@($"{rvv}")</GridCol>
                 <GridCol Span="6">
                     <MetricsHistogramPercentChatView
                         Data="@(new List<double> { p99Count, p95Count, p50Count })">
@@ -138,9 +174,7 @@
     [Parameter] public string MetricName { get; set; }
 
     [Parameter] public string Title { get; set; }
-    [Parameter] public string GroupBy { get; set; }
-
-
+    [Parameter] public List<string> MultipleGroupBy { get; set; }
     [Parameter] public string Unit { get; set; }
 
     protected override async Task OnInitializedAsync()
