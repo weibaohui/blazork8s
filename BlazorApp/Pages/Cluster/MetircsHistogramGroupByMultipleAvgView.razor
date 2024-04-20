@@ -38,7 +38,7 @@
                 @L["Item"]
                 @($"({string.Join(',', MultipleGroupBy)})")
             </GridCol>
-            <GridCol Span="8">@L["Value"]</GridCol>
+            <GridCol Span="8">@($"{L["Value"]}(avg)")</GridCol>
         </GridRow>
         foreach (var item in group)
         {

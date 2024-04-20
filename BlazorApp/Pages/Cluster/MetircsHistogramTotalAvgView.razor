@@ -34,6 +34,14 @@
                                          Title=@L[MetricName]
                                          Unit="@Unit">
             </MetricsHistogramPercentView>
+            @if (MultipleGroupBy is { Count: > 0 })
+            {
+                <MetircsHistogramGroupByMultipleAvgView AllMetrics="@AllMetrics"
+                                                        MetricName="@MetricName"
+                                                        Unit="@Unit"
+                                                        MultipleGroupBy="@MultipleGroupBy">
+                </MetircsHistogramGroupByMultipleAvgView>
+            }
         </Drawer>
     }
 }
@@ -44,6 +52,7 @@
     [Parameter] public string MetricName { get; set; }
     [Parameter] public string Title { get; set; }
     [Parameter] public string Unit { get; set; }
+    [Parameter] public List<string> MultipleGroupBy { get; set; }
     private bool _showDetail = false;
 
 

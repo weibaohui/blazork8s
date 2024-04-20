@@ -9,13 +9,23 @@
             <GridCol Span="16">@Title</GridCol>
             <GridCol Span="8">
                 <NumberFormat Unit="@Unit" Number="@AllMetrics.FirstOrDefault(x => x.Name == MetricName)?.Measurements.Sum(x => x.Value)"></NumberFormat>
-
-                @if (OnDetailClick.HasDelegate)
+                @if (MultipleGroupBy is { Count: > 0 })
                 {
-                    <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">@L["Detail"]</Button>
+                    <Button Type="@ButtonType.Link" OnClick=@(() => _showDetail = true)>@L["Detail"]</Button>
                 }
             </GridCol>
         </GridRow>
+        <Drawer Closable="true" @bind-Visible="@_showDetail" Placement="right"
+                Width="800"
+                Title=@Title>
+            @if (MultipleGroupBy is { Count: > 0 })
+            {
+                <MetricsCounterGaugeGroupByMultipleView AllMetrics="@AllMetrics"
+                                                        MetricName="@MetricName"
+                                                        MultipleGroupBy="@MultipleGroupBy">
+                </MetricsCounterGaugeGroupByMultipleView>
+            }
+        </Drawer>
     }
 }
 
@@ -29,7 +39,7 @@
 
     [Parameter] public string Unit { get; set; }
 
-    [Parameter] public EventCallback OnDetailClick { get; set; }
-
+    [Parameter] public List<string> MultipleGroupBy { get; set; }
+    private bool _showDetail = false;
 
 }

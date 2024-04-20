@@ -154,16 +154,9 @@
         </MetricsCounterGaugeSumView>
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
                                       Title=@L["storage_operation_duration_seconds"]
-                                      MetricName="storage_operation_duration_seconds" Unit="seconds">
+                                      MetricName="storage_operation_duration_seconds" Unit="seconds"
+                                      MultipleGroupBy="@(new List<string> { "volume_plugin", "operation_name" })">
         </MetircsHistogramTotalAvgView>
-        <Drawer Closable="true" @bind-Visible="@_storageOperationDurationSecondsVisible" Placement="right" Width="800"
-                Title=@($"{L["storage_operation_duration_seconds"]}")>
-            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@Metrics"
-                                                    MetricName="storage_operation_duration_seconds"
-                                                    Unit="seconds"
-                                                    MultipleGroupBy="@(new List<string> { "volume_plugin", "operation_name" })">
-            </MetircsHistogramGroupByMultipleAvgView>
-        </Drawer>
     </HTd>
 </HTr>
 <HTr>
@@ -305,30 +298,12 @@
         </MetricsCounterGaugeSumView>
         <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["pod_memory_working_set_bytes"]
                                     MetricName="pod_memory_working_set_bytes" Unit="bytes"
-                                    OnDetailClick="@(() => _podMemoryWorkingSetBytesVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_podMemoryWorkingSetBytesVisible" Placement="right" Width="800"
-                Title=@($"{L["pod_memory_working_set_bytes"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@ResourceMetrics"
-                                                    MetricName="pod_memory_working_set_bytes"
-                                                    MultipleGroupBy="@(new List<string> { "namespace", "pod" })"
-                                                    Unit="bytes">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
         <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_memory_working_set_bytes"]
                                     MetricName="container_memory_working_set_bytes" Unit="bytes"
-                                    OnDetailClick="@(() => _containerMemoryWorkingSetBytesVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "namespace", "pod", "container" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_containerMemoryWorkingSetBytesVisible" Placement="right"
-                Width="800" Title=@($"{L["container_memory_working_set_bytes"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@ResourceMetrics"
-                                                    MetricName="container_memory_working_set_bytes"
-                                                    MultipleGroupBy="@(new List<string> { "namespace", "pod", "container" })"
-                                                    Unit="bytes">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
-
-
         <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
                                     Title=@L["node_cpu_usage_seconds_total"]
                                     MetricName="node_cpu_usage_seconds_total" Unit="seconds">
@@ -336,16 +311,8 @@
         <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics"
                                     Title=@L["pod_cpu_usage_seconds_total"]
                                     MetricName="pod_cpu_usage_seconds_total" Unit="seconds"
-                                    OnDetailClick="@(() => _podCpuUsageSecondsTotalVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "namespace", "pod" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_podCpuUsageSecondsTotalVisible" Placement="right" Width="800"
-                Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@ResourceMetrics"
-                                                    MetricName="pod_cpu_usage_seconds_total"
-                                                    MultipleGroupBy="@(new List<string> { "namespace", "pod" })"
-                                                    Unit="seconds">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
         <MetricsCounterGaugeSumView AllMetrics="@ResourceMetrics" Title=@L["container_cpu_usage_seconds_total"]
                                     MetricName="container_cpu_usage_seconds_total"
                                     Unit="seconds">
@@ -354,18 +321,8 @@
         <MetricsCounterGaugeSumView AllMetrics="@Metrics"
                                     Title=@L["kubelet_container_log_filesystem_used_bytes"]
                                     MetricName="kubelet_container_log_filesystem_used_bytes" Unit="bytes"
-                                    OnDetailClick="@(() => _kubeletContainerLogFilesystemUsedBytesVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "namespace", "pod", "container" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletContainerLogFilesystemUsedBytesVisible" Placement="right"
-                Width="800" Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_container_log_filesystem_used_bytes"
-                                                    MultipleGroupBy="@(new List<string> { "namespace", "pod", "container" })"
-                                                    Unit="bytes">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
-
-
     </HTd>
 </HTr>
 <HTr>
@@ -387,66 +344,32 @@
         <MetricsCounterGaugeSumView AllMetrics="@Metrics"
                                     Title=@L["kubelet_active_pods"]
                                     MetricName="kubelet_active_pods"
-                                    OnDetailClick="@(() => _kubeletActivePodsVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "static" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletActivePodsVisible" Placement="right" Width="800"
-                Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_active_pods"
-                                                    MultipleGroupBy="@(new List<string> { "static" })">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
         <MetricsCounterGaugeSumView AllMetrics="@Metrics"
                                     Title=@L["kubelet_runtime_operations_total"]
                                     MetricName="kubelet_runtime_operations_total"
-                                    OnDetailClick="@(() => _kubeletRuntimeOperationsTotalVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "operation_type" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletRuntimeOperationsTotalVisible" Placement="right" Width="800"
-                Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_runtime_operations_total"
-                                                    MultipleGroupBy="@(new List<string> { "operation_type" })">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
         <MetricsCounterGaugeSumView AllMetrics="@Metrics"
                                     Title=@L["kubelet_running_containers"]
                                     MetricName="kubelet_running_containers"
-                                    OnDetailClick="@(() => _kubeletRunningContainersVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "container_state" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletRunningContainersVisible" Placement="right" Width="800"
-                Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_running_containers"
-                                                    MultipleGroupBy="@(new List<string> { "container_state" })">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
+
         <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_started_containers_total"]
                                     MetricName="kubelet_started_containers_total">
         </MetricsCounterGaugeSumView>
         <MetricsCounterGaugeSumView AllMetrics="@Metrics"
                                     Title=@L["kubelet_started_containers_errors_total"]
                                     MetricName="kubelet_started_containers_errors_total"
-                                    OnDetailClick="@(() => _kubeletStartedContainersErrorsTotalVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "code" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletStartedContainersErrorsTotalVisible" Placement="right"
-                Width="800" Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_started_containers_errors_total"
-                                                    MultipleGroupBy="@(new List<string> { "code" })">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
         <MetricsCounterGaugeSumView AllMetrics="@Metrics"
                                     Title=@L["kubelet_working_pods"]
                                     MetricName="kubelet_working_pods"
-                                    OnDetailClick="@(() => _kubeletWorkingPodsVisible = true)">
+                                    MultipleGroupBy="@(new List<string> { "config", "lifecycle", "static" })">
         </MetricsCounterGaugeSumView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletWorkingPodsVisible" Placement="right" Width="800"
-                Title=@($"{L["pod_cpu_usage_seconds_total"]}")>
-            <MetricsCounterGaugeGroupByMultipleView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_working_pods"
-                                                    MultipleGroupBy="@(new List<string> { "config", "lifecycle", "static" })">
-            </MetricsCounterGaugeGroupByMultipleView>
-        </Drawer>
         <MetricsCounterGaugeSumView AllMetrics="@Metrics" Title=@L["kubelet_managed_ephemeral_containers"]
                                     MetricName="kubelet_managed_ephemeral_containers">
         </MetricsCounterGaugeSumView>
@@ -470,17 +393,10 @@
 
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
                                       Title=@L["kubelet_cgroup_manager_duration_seconds"]
-                                      MetricName="kubelet_cgroup_manager_duration_seconds" Unit="seconds">
+                                      MetricName="kubelet_cgroup_manager_duration_seconds"
+                                      MultipleGroupBy="@(new List<string> { "operation_type" })"
+                                      Unit="seconds">
         </MetircsHistogramTotalAvgView>
-        <Drawer Closable="true" @bind-Visible="@_kubeletCgroupManagerDurationSecondsVisible" Placement="right"
-                Width="800"
-                Title=@($"{L["kubelet_cgroup_manager_duration_seconds"]}")>
-            <MetircsHistogramGroupByMultipleAvgView AllMetrics="@Metrics"
-                                                    MetricName="kubelet_cgroup_manager_duration_seconds"
-                                                    Unit="seconds"
-                                                    MultipleGroupBy="@(new List<string> { "operation_type" })">
-            </MetircsHistogramGroupByMultipleAvgView>
-        </Drawer>
     </HTd>
 </HTr>
 </HTable>
@@ -493,19 +409,6 @@
     private IList<IMetric> Metrics { get; set; }
     private IList<IMetric> CAdvisorMetrics { get; set; }
     private IList<IMetric> ResourceMetrics { get; set; }
-
-
-    private bool _podCpuUsageSecondsTotalVisible;
-    private bool _podMemoryWorkingSetBytesVisible;
-    private bool _containerMemoryWorkingSetBytesVisible;
-    private bool _kubeletContainerLogFilesystemUsedBytesVisible;
-    private bool _kubeletRunningContainersVisible;
-    private bool _kubeletActivePodsVisible;
-    private bool _kubeletRuntimeOperationsTotalVisible;
-    private bool _kubeletWorkingPodsVisible;
-    private bool _kubeletStartedContainersErrorsTotalVisible;
-    private bool _storageOperationDurationSecondsVisible;
-    private bool _kubeletCgroupManagerDurationSecondsVisible;
 
     protected override async Task OnInitializedAsync()
     {
