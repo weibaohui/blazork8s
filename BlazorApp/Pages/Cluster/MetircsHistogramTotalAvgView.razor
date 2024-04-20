@@ -22,28 +22,29 @@
                     var avg = seconds / count;
                 }
                 <NumberFormat Number="@avg" Unit="@Unit"></NumberFormat>
-
-                @if (OnDetailClick.HasDelegate)
-                {
-                    <Button Type="@ButtonType.Link" OnClick="@OnDetailClick">@L["Detail"]</Button>
-                }
+                <Button Type="@ButtonType.Link" OnClick=@(() => _showDetail = true)>@L["Detail"]</Button>
             </GridCol>
         </GridRow>
+
+        <Drawer Closable="true" @bind-Visible="@_showDetail" Placement="right"
+                Width="800"
+                Title=@Title>
+            <MetricsHistogramPercentView AllMetrics="@AllMetrics"
+                                         MetricName="@MetricName"
+                                         Title=@L[MetricName]
+                                         Unit="@Unit">
+            </MetricsHistogramPercentView>
+        </Drawer>
     }
 }
 
 @code {
 
     [Parameter] public IList<IMetric> AllMetrics { get; set; }
-
     [Parameter] public string MetricName { get; set; }
-
     [Parameter] public string Title { get; set; }
-
-
     [Parameter] public string Unit { get; set; }
+    private bool _showDetail = false;
 
-
-    [Parameter] public EventCallback OnDetailClick { get; set; }
 
 }

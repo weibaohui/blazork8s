@@ -154,8 +154,7 @@
         </MetricsCounterGaugeSumView>
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
                                       Title=@L["storage_operation_duration_seconds"]
-                                      MetricName="storage_operation_duration_seconds" Unit="seconds"
-                                      OnDetailClick="@(() => _storageOperationDurationSecondsVisible = true)">
+                                      MetricName="storage_operation_duration_seconds" Unit="seconds">
         </MetircsHistogramTotalAvgView>
         <Drawer Closable="true" @bind-Visible="@_storageOperationDurationSecondsVisible" Placement="right" Width="800"
                 Title=@($"{L["storage_operation_duration_seconds"]}")>
@@ -245,19 +244,10 @@
         </MetricsCounterGaugeSumView>
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_pauses_seconds"]
                                       MetricName="go_gc_pauses_seconds"
-                                      Unit="seconds"
-                                      OnDetailClick="@(() => _goGcPausesSecondsVisible = true)">
+                                      Unit="seconds">
         </MetircsHistogramTotalAvgView>
-        <Drawer Closable="true" @bind-Visible="@_goGcPausesSecondsVisible" Placement="right"
-                Width="800"
-                Title=@($"{L["go_gc_pauses_seconds"]}")>
-            <MetricsHistogramPercentView AllMetrics="@Metrics"
-                                         MetricName="go_gc_pauses_seconds"
-                                         Title=@L["go_gc_pauses_seconds"]
-                                         Unit="seconds">
-            </MetricsHistogramPercentView>
 
-        </Drawer>
+
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics" Title=@L["go_gc_duration_seconds"]
                                       MetricName="go_gc_duration_seconds"
                                       Unit="seconds">
@@ -480,8 +470,7 @@
 
         <MetircsHistogramTotalAvgView AllMetrics="@Metrics"
                                       Title=@L["kubelet_cgroup_manager_duration_seconds"]
-                                      MetricName="kubelet_cgroup_manager_duration_seconds" Unit="seconds"
-                                      OnDetailClick="@(() => _kubeletCgroupManagerDurationSecondsVisible = true)">
+                                      MetricName="kubelet_cgroup_manager_duration_seconds" Unit="seconds">
         </MetircsHistogramTotalAvgView>
         <Drawer Closable="true" @bind-Visible="@_kubeletCgroupManagerDurationSecondsVisible" Placement="right"
                 Width="800"
@@ -491,13 +480,6 @@
                                                     Unit="seconds"
                                                     MultipleGroupBy="@(new List<string> { "operation_type" })">
             </MetircsHistogramGroupByMultipleAvgView>
-            <MetricsHistogramPercentGroupByView AllMetrics="@Metrics"
-                                                MetricName="kubelet_cgroup_manager_duration_seconds"
-                                                GroupBy="operation_type"
-                                                Title=@L["kubelet_cgroup_manager_duration_seconds"]
-                                                Unit="seconds">
-            </MetricsHistogramPercentGroupByView>
-
         </Drawer>
     </HTd>
 </HTr>
@@ -524,7 +506,6 @@
     private bool _kubeletStartedContainersErrorsTotalVisible;
     private bool _storageOperationDurationSecondsVisible;
     private bool _kubeletCgroupManagerDurationSecondsVisible;
-    private bool _goGcPausesSecondsVisible;
 
     protected override async Task OnInitializedAsync()
     {
