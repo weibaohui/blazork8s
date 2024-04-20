@@ -1,12 +1,15 @@
-@using k8s.Models
-@using Extension.k8s
 @using BlazorApp.Pages.Common
+@using Extension.k8s
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 <div>
     <GridRow Class="grid-table ">
         <GridCol Span="4">
-            <Icon Type="dashboard" Theme="twotone" TwotoneColor="#106ebe" Height="20px" Width="20px"/>
+            <Tooltip ArrowPointAtCenter="true" Title="@L["Detail"]">
+                <Icon OnClick="() => OnNodeMetricsClick(Node)" Type="dashboard" Theme="twotone" TwotoneColor="#106ebe"
+                      Height="20px" Width="20px"/>
+            </Tooltip>
         </GridCol>
         <GridCol Span="10">
             <MetricView ResourceType="Node" ItemName="@Node.Name()" MetricType="cpu"></MetricView>
@@ -17,7 +20,7 @@
     </GridRow>
     <GridRow Class="grid-table ">
         <GridCol Span="24">
-             <NodeStatusBulletChart Node="@Node"></NodeStatusBulletChart>
+            <NodeStatusBulletChart Node="@Node"></NodeStatusBulletChart>
         </GridCol>
     </GridRow>
     <GridRow Class="grid-table ">
@@ -26,7 +29,7 @@
                 @foreach (var pod in podsOnNode)
                 {
                     <SpaceItem>
-                        <Tooltip  ArrowPointAtCenter="true">
+                        <Tooltip ArrowPointAtCenter="true">
                             <TitleTemplate>
                                 <Text Style="color: white">@pod.Name() @pod.Status()</Text>
                             </TitleTemplate>
@@ -37,22 +40,28 @@
                                         <Icon Type="play-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone" TwotoneColor="#0f9b0f" Height="20px" Width="20px"/>
                                         break;
                                     case "Terminating":
-                                        <Icon Type="minus-square" OnClick="@(() => OnPodClick(pod))"  Theme="twotone" TwotoneColor="#a19f9d" Height="20px" Width="20px"/>
+                                        <Icon Type="minus-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone"
+                                              TwotoneColor="#a19f9d" Height="20px" Width="20px"/>
                                         break;
                                     case "Pending":
-                                        <Icon Type="play-square"  OnClick="@(() => OnPodClick(pod))" Theme="twotone" TwotoneColor="#ff8c00" Height="20px" Width="20px"/>
+                                        <Icon Type="play-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone"
+                                              TwotoneColor="#ff8c00" Height="20px" Width="20px"/>
                                         break;
                                     case "Completed":
-                                        <Icon Type="play-square"  OnClick="@(() => OnPodClick(pod))" Theme="twotone" TwotoneColor="#e1dfdd" Height="20px" Width="20px"/>
+                                        <Icon Type="play-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone"
+                                              TwotoneColor="#e1dfdd" Height="20px" Width="20px"/>
                                         break;
                                     case "CrashLoopBackOff":
-                                        <Icon Type="close-square"  OnClick="@(() => OnPodClick(pod))" Theme="twotone" TwotoneColor="#d83b01" Height="20px" Width="20px"/>
+                                        <Icon Type="close-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone"
+                                              TwotoneColor="#d83b01" Height="20px" Width="20px"/>
                                         break;
                                     case "error":
-                                        <Icon Type="minus-square"  OnClick="@(() => OnPodClick(pod))" Theme="twotone" TwotoneColor="#ffb900" Height="20px" Width="20px"/>
+                                        <Icon Type="minus-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone"
+                                              TwotoneColor="#ffb900" Height="20px" Width="20px"/>
                                         break;
                                     default:
-                                        <Icon Type="minus-square"  OnClick="@(() => OnPodClick(pod))" Theme="twotone" TwotoneColor="#a8071a" Height="20px" Width="20px"/>
+                                        <Icon Type="minus-square" OnClick="@(() => OnPodClick(pod))" Theme="twotone"
+                                              TwotoneColor="#a8071a" Height="20px" Width="20px"/>
                                         break;
                                 }
                             </ChildContent>

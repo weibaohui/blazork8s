@@ -116,7 +116,15 @@
                         {
                             <SpaceItem>
                                 <Card Title="@item.Name()" Style="margin: 10px;width: 380px">
+                                    <Extra>
+                                        <Button OnClick="@(() => OnItemNameClick(item))"
+                                                Type="@ButtonType.Link">
+                                            @L["Detail"]
+                                        </Button>
+                                    </Extra>
+                                    <Body>
                                     <NodeStatusChart Node="@item"></NodeStatusChart>
+                                    </Body>
                                 </Card>
                             </SpaceItem>
                         }
