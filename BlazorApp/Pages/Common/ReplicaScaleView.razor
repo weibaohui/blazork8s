@@ -4,15 +4,18 @@
 
 
     <HTr>
-        <HTd >Current : </HTd>
+        <HTd>@L["Current"] </HTd>
         <HTd>
             <Text>@_replicas</Text>
         </HTd>
+        <HTd>
+
+        </HTd>
     </HTr>
     <HTr>
-        <HTd>Desired:</HTd>
+        <HTd>@L["Desired"]</HTd>
         <HTd>
-            <Space Size="@($"15")">
+            <Space Size="@("20")">
 
                 <SpaceItem>
                     <div style="float: left">@_value</div>
@@ -20,13 +23,16 @@
                 <SpaceItem>
                     <Slider Style="float:left;width: 150px" Min="1" Max="100" Step="1" @bind-Value="@_value"/>
                 </SpaceItem>
+                <SpaceItem>
+                    <AntDesign.InputNumber Min="1" Max="100" @bind-Value="@_value" TValue="double"/>
+                </SpaceItem>
             </Space>
         </HTd>
     </HTr>
     @if (_value >= 90)
     {
         <HTr>
-            <HTd ColSpan="2">
+            <HTd ColSpan="3">
                 <Alert Message=@L["High number of replicas may cause cluster performance issues"] Type="@AlertType.Warning"/>
             </HTd>
         </HTr>
@@ -36,8 +42,7 @@
 
 @code{
 
-    [Inject]
-    public IStringLocalizer L { get; set; }
+    [Inject] public IStringLocalizer L { get; set; }
 
     private double _replicas;
 
@@ -46,7 +51,7 @@
     protected override void OnInitialized()
     {
         _replicas = this.Options;
-        _value    = _replicas;
+        _value = _replicas;
         base.OnInitialized();
     }
 
