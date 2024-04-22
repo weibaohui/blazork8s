@@ -17,8 +17,8 @@ public static class ResourceQuantityExtension
         return value.Format switch
         {
             ResourceQuantity.SuffixFormat.DecimalSI => Math.Round(value.ToDecimal() * 1000, 2) + "m",
-            ResourceQuantity.SuffixFormat.BinarySI  => Math.Round(value.ToDecimal() / 1024 / 1024, 2) + "Mi",
-            _                                       => value.CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI)
+            ResourceQuantity.SuffixFormat.BinarySI => Math.Round(value.ToDecimal() / 1024 / 1024, 2) + "Mi",
+            _ => value.CanonicalizeString(ResourceQuantity.SuffixFormat.BinarySI)
         };
     }
 
@@ -28,8 +28,8 @@ public static class ResourceQuantityExtension
         return value.Format switch
         {
             ResourceQuantity.SuffixFormat.DecimalSI => Math.Round(value.ToDecimal() * 1000, 2),
-            ResourceQuantity.SuffixFormat.BinarySI  => Math.Round(value.ToDecimal() / 1024 / 1024, 2),
-            _                                       => value.ToDecimal()
+            ResourceQuantity.SuffixFormat.BinarySI => Math.Round(value.ToDecimal() / 1024 / 1024, 2),
+            _ => value.ToDecimal()
         };
     }
 }

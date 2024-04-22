@@ -1,0 +1,96 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils
+@using Extension
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
+@if (_allocatedCpu > 0)
+{
+    <GridRow>
+        <GridCol Span="20" Style="padding: 10px">
+            <HTable>
+                <HTr>
+                    <HTd>@L["CPU"]</HTd>
+                    <HTd>
+                        <ColorfulTag>@($"{_metricsCpu}/{_allocatedCpu} core")</ColorfulTag>
+                        <br>
+                        <AntDesign.Progress Style="width: 200px" Type=ProgressType.Line Percent=_cpuPercent
+                                            TrailColor="#53C419" Size=ProgressSize.Small>
+                        </AntDesign.Progress>
+                    </HTd>
+                </HTr>
+                <HTr>
+                    <HTd>@L["Memory"]</HTd>
+                    <HTd>
+                        <ColorfulTag>@($"{_metricsMemory}/{_allocatedMemory} Gi")</ColorfulTag>
+                        <br>
+                        <AntDesign.Progress Style="width: 200px" Type=ProgressType.Line Percent=@_memoryPercent
+                                            TrailColor="#53C419" Size=ProgressSize.Small>
+                        </AntDesign.Progress>
+                    </HTd>
+                </HTr>
+                <HTr>
+                    <HTd>@L["Pod"]</HTd>
+                    <HTd>
+                        <ColorfulTag>@($"{_metricsPods}/{_allocatedPods} ")</ColorfulTag>
+                        <br>
+                        <AntDesign.Progress Style="width: 200px" Type=ProgressType.Line Percent=@_podPercent
+                                            TrailColor="#53C419" Size=ProgressSize.Small>
+                        </AntDesign.Progress>
+                    </HTd>
+                </HTr>
+            </HTable>
+        </GridCol>
+    </GridRow>
+}
+
+@code {
+    [Inject] private INodeService NodeService { get; set; }
+    [Inject] private IMetricsService MetricsService { get; set; }
+    private decimal _allocatedCpu = 0;
+    private decimal _allocatedMemory = 0;
+    private decimal _metricsCpu = 0;
+    private decimal _metricsMemory = 0;
+    private int _allocatedPods = 0;
+    private int _metricsPods = 0;
+    private double _cpuPercent = 0;
+    private double _memoryPercent = 0;
+    private double _podPercent = 0;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var nodesMetrics = await MetricsService.NodeMetrics();
+        var nodes = NodeService.List();
+        foreach (var node in nodes)
+        {
+            _allocatedCpu += node.Status.Allocatable["cpu"].HumanizeValue();
+            _allocatedMemory += node.Status.Allocatable["memory"].HumanizeValue();
+
+            _allocatedPods += node.Status.Allocatable["pods"].ToInt32();
+
+            var metrics = nodesMetrics.FirstOrDefault(w => w.Metadata.Name == node.Name());
+            if (metrics != null)
+            {
+                _metricsCpu += metrics.Usage["cpu"].HumanizeValue();
+                _metricsMemory += metrics.Usage["memory"].HumanizeValue();
+            }
+
+            _metricsPods += NodeService.GetPodCount(node.Name());
+        }
+
+        _metricsCpu = ResourceQuantityUnitConverter.CpuUnitConvert($"{_metricsCpu}");
+        _allocatedCpu = ResourceQuantityUnitConverter.CpuUnitConvert($"{_allocatedCpu}");
+        _allocatedMemory = ResourceQuantityUnitConverter.MemoryUnitConvert($"{_allocatedMemory}");
+        _metricsMemory = ResourceQuantityUnitConverter.MemoryUnitConvert($"{_metricsMemory}");
+
+
+        _podPercent = Math.Round((double)_metricsPods / (double)_allocatedPods * 100, 2);
+        _cpuPercent = Math.Round((double)_metricsCpu / (double)_allocatedCpu * 100, 2);
+        _memoryPercent = Math.Round((double)_metricsMemory / (double)_allocatedMemory * 100, 2);
+        await base.OnInitializedAsync();
+    }
+
+}

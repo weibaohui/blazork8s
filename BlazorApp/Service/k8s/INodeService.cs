@@ -8,12 +8,12 @@ namespace BlazorApp.Service.k8s;
 
 public interface INodeService : ICommonAction<V1Node>
 {
-    Task Cordon(string   nodeName);
+    Task Cordon(string nodeName);
     Task UnCordon(string nodeName);
-    long               GetPodCount(string       nodeName);
-    string             GetPodCapacity(string    nodeName);
-    string             GetMemoryCapacity(string nodeName);
-    string             GetCpuCapacity(string    nodeName);
+    int GetPodCount(string nodeName);
+    string GetPodCapacity(string nodeName);
+    string GetMemoryCapacity(string nodeName);
+    string GetCpuCapacity(string nodeName);
     Task<List<Result>> Analyze();
     Task<List<IMetric>> GetMetrics(string nodeName);
     Task<List<IMetric>> GetCadvisorMetrics(string nodeName);

@@ -13,11 +13,6 @@ namespace BlazorApp.Service.k8s.impl
     public class NodeService(IKubeService kubeService, IPodService podService, IMetricsService metricsService)
         : CommonAction<V1Node>, INodeService
     {
-        public new async Task<V1Status> Delete(string ns, string name)
-        {
-            return await kubeService.Client().DeleteNodeAsync(name: name);
-        }
-
         public async Task Cordon(string nodeName)
         {
             await SetSchedulable(nodeName, false); //cordon()
@@ -28,29 +23,7 @@ namespace BlazorApp.Service.k8s.impl
             await SetSchedulable(nodeName, true); //uncordon()
         }
 
-        private async Task SetSchedulable(string nodeName, bool schedulable)
-        {
-            var node = GetByName(nodeName);
-            var unScheduleStr = """
-                                {
-                                    "spec": {
-                                        "unschedulable":  true
-                                    }
-                                }
-                                """;
-            var scheduleStr = """
-                              {
-                                  "spec": {
-                                      "unschedulable":  false
-                                  }
-                              }
-                              """;
-            await kubeService.Client()
-                .PatchNodeAsync(new V1Patch(schedulable ? scheduleStr : unScheduleStr, V1Patch.PatchType.MergePatch),
-                    node.Name());
-        }
-
-        public long GetPodCount(string nodeName)
+        public int GetPodCount(string nodeName)
         {
             return podService.ListByNodeName(nodeName).ToList().Count;
         }
@@ -58,15 +31,9 @@ namespace BlazorApp.Service.k8s.impl
         public string GetPodCapacity(string nodeName)
         {
             var capacity = GetNodeCapacity(nodeName);
-            var pods     = capacity?.FirstOrDefault(x => x.Key == "pods").Value.CanonicalizeString();
-            var current  = GetPodCount(nodeName);
+            var pods = capacity?.FirstOrDefault(x => x.Key == "pods").Value.CanonicalizeString();
+            var current = GetPodCount(nodeName);
             return $"{current}/{pods}";
-        }
-
-        private IDictionary<string, ResourceQuantity> GetNodeCapacity(string nodeName)
-        {
-            var capacity = this.List().FirstOrDefault(x => x.Name() == nodeName)?.Status.Capacity;
-            return capacity;
         }
 
         public string GetCpuCapacity(string nodeName)
@@ -81,21 +48,9 @@ namespace BlazorApp.Service.k8s.impl
             return ResourceCurrentAndCapacity(nodeName, "memory");
         }
 
-        private string ResourceCurrentAndCapacity(string nodeName, string type)
-        {
-            var capacity = GetNodeCapacity(nodeName);
-            var all      = capacity?.FirstOrDefault(x => x.Key == type).Value.HumanizeValue();
-
-            var current = metricsService.NodeMetricsQueue(nodeName).GetList()
-                .FirstOrDefault()?.Usage
-                .FirstOrDefault(x => x.Key == type).Value.HumanizeValue();
-
-            return $"{current}/{all}";
-        }
-
         public async Task<List<IMetric>> GetMetrics(string nodeName)
         {
-            var             metricString = await kubeService.GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/metrics");
+            var metricString = await kubeService.GetStringAsync($"/api/v1/nodes/{nodeName}/proxy/metrics");
             return await kubeService.ConvertStringToMetrics(metricString);
         }
 
@@ -119,7 +74,7 @@ namespace BlazorApp.Service.k8s.impl
 
         public async Task<List<Result>> Analyze()
         {
-            var items   = List();
+            var items = List();
             var results = new List<Result>();
             foreach (var item in items.ToList())
             {
@@ -174,6 +129,51 @@ namespace BlazorApp.Service.k8s.impl
 
             ClusterInspectionResultContainer.Instance.AddResourcesCount("Node", items.ToList().Count);
             return results;
+        }
+
+        public new async Task<V1Status> Delete(string ns, string name)
+        {
+            return await kubeService.Client().DeleteNodeAsync(name: name);
+        }
+
+        private async Task SetSchedulable(string nodeName, bool schedulable)
+        {
+            var node = GetByName(nodeName);
+            var unScheduleStr = """
+                                {
+                                    "spec": {
+                                        "unschedulable":  true
+                                    }
+                                }
+                                """;
+            var scheduleStr = """
+                              {
+                                  "spec": {
+                                      "unschedulable":  false
+                                  }
+                              }
+                              """;
+            await kubeService.Client()
+                .PatchNodeAsync(new V1Patch(schedulable ? scheduleStr : unScheduleStr, V1Patch.PatchType.MergePatch),
+                    node.Name());
+        }
+
+        private IDictionary<string, ResourceQuantity> GetNodeCapacity(string nodeName)
+        {
+            var capacity = this.List().FirstOrDefault(x => x.Name() == nodeName)?.Status.Capacity;
+            return capacity;
+        }
+
+        private string ResourceCurrentAndCapacity(string nodeName, string type)
+        {
+            var capacity = GetNodeCapacity(nodeName);
+            var all = capacity?.FirstOrDefault(x => x.Key == type).Value.HumanizeValue();
+
+            var current = metricsService.NodeMetricsQueue(nodeName).GetList()
+                .FirstOrDefault()?.Usage
+                .FirstOrDefault(x => x.Key == type).Value.HumanizeValue();
+
+            return $"{current}/{all}";
         }
     }
 }

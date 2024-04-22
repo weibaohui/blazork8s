@@ -1,9 +1,9 @@
 @page "/Cluster"
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using k8s.Models
 @using Mapster
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Pages.Common
 @inherits BlazorApp.Pages.Common.PageBase
 
 <Card Title="@KubeService.CurrentContext()" Style="margin: 50px">
@@ -23,6 +23,7 @@
                         <ColorfulTag>@ServerInfo.Platform</ColorfulTag>
                     </HTableColumn>
                 }
+
             </HTable>
         </GridCol>
         <GridCol Span="10" Style="padding: 10px">
@@ -40,7 +41,9 @@
         </GridCol>
     </GridRow>
 </Card>
-
+<Card Title="@L["Usage"]" Style="margin: 50px">
+    <ClusterUsage></ClusterUsage>
+</Card>
 
 <Tabs Style="margin: 50px" DefaultActiveKey="Status" Type="@TabType.Card" Size="@TabSize.Large">
     <TabPane Key="Status" Tab=@L["API Status"]>
