@@ -6,23 +6,20 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.StatefulSet;
 
 public partial class StatefulSetAction : PageBase
 {
-    [Parameter]
-    public V1StatefulSet Item { get; set; }
-    [Parameter]
-    public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+    [Parameter] public V1StatefulSet Item { get; set; }
 
-    [Inject]
-    IMessageService MessageService { get; set; }
-    [Inject]
-    ModalService ModalService { get; set; }
-    [Inject]
-    private IStatefulSetService StatefulSetService { get; set; }
+    [Parameter] public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
+
+    [Inject] private IMessageService MessageService { get; set; }
+
+    [Inject] private ModalService ModalService { get; set; }
+
+    [Inject] private IStatefulSetService StatefulSetService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -34,9 +31,10 @@ public partial class StatefulSetAction : PageBase
     {
         var options = new ConfirmOptions()
         {
-            Title        = "Scale StatefulSet : " + item.Name(),
+            Title = "Scale StatefulSet : " + item.Name(),
             MaskClosable = true,
-            Mask         = true
+            Mask = true,
+            Width = "600px"
         };
 
         var confirmRef =
@@ -53,6 +51,7 @@ public partial class StatefulSetAction : PageBase
             await InvokeAsync(StateHasChanged);
         };
     }
+
     private async Task OnRestartClick(V1StatefulSet item)
     {
         await StatefulSetService.Restart(item);

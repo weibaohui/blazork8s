@@ -6,35 +6,28 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.ReplicaSet;
 
 public partial class ReplicaSetAction : PageBase
 {
-    [Parameter]
-    public V1ReplicaSet Item { get; set; }
+    [Parameter] public V1ReplicaSet Item { get; set; }
 
-    [Parameter]
-    public MenuMode MenuMode { get; set; }=MenuMode.Vertical;
+    [Parameter] public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 
-    [Inject]
-    ModalService ModalService { get; set; }
-    [Inject]
-    private IReplicaSetService ReplicaSetService { get; set; }
+    [Inject] private ModalService ModalService { get; set; }
 
-
- 
-
+    [Inject] private IReplicaSetService ReplicaSetService { get; set; }
 
 
     private async Task OnScaleClick(V1ReplicaSet item)
     {
         var options = new ConfirmOptions()
         {
-            Title        = "Scale ReplicaSet : " + item.Name(),
+            Title = "Scale ReplicaSet : " + item.Name(),
             MaskClosable = true,
-            Mask         = true
+            Mask = true,
+            Width = "600px"
         };
 
         var confirmRef =
