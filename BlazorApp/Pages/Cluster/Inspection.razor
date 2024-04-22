@@ -5,62 +5,69 @@
 @using Extension
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
-
 <div style="margin: 50px">
-    <GridRow Class="grid-table">
-        <GridCol Span="2">@L["Latest"]:</GridCol>
-        <GridCol Span="6">
-            @LastInspection.ToLocalTime()
-            (<AgeView Age="@LastInspection"></AgeView> ago)
-        </GridCol>
-        <GridCol Span="2">@L["Error"]:</GridCol>
-        <GridCol Span="6">
-            <Badge Count="@AnalyzeResult.Count" ShowZero="true"/>
-        </GridCol>
-        <GridCol Span="8"></GridCol>
-    </GridRow>
+    @if (AllResourcesCount is { Count: > 0 })
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="2">@L["Latest"]:</GridCol>
+            <GridCol Span="6">
+                @LastInspection.ToLocalTime()
+                (
+                <AgeView Age="@LastInspection"></AgeView>
+                ago)
+            </GridCol>
+            <GridCol Span="2">@L["Error"]:</GridCol>
+            <GridCol Span="6">
+                <Badge Count="@AnalyzeResult.Count" ShowZero="true"/>
+            </GridCol>
+            <GridCol Span="8"></GridCol>
+        </GridRow>
 
-    <GridRow Class="grid-table">
-        <GridCol Span="8">
-            @if (AnalyzeResult is { Count: > 0 })
-            {
-                @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
+        <GridRow Class="grid-table">
+            <GridCol Span="8">
+                @if (AnalyzeResult is { Count: > 0 })
                 {
-                    <div>
-                        @($"{L[kv.Kind]}")
-                        <Badge Count="@kv.Count"/>
-                    </div>
-                }
-            }
-            @if (PassResources is { Count: > 0 })
-            {
-                @foreach (var name in PassResources)
-                {
-                    <div>
-                        @($"{L[name]}")
-                        <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
-                    </div>
-                }
-            }
-        </GridCol>
-        <GridCol Span="16">
-            @if (Ai.Enabled())
-            {
-                if (AnalyzeResult is { Count: > 0 })
-                {
-                    <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">@L["Diagnosis"]</Button>
-                    @if (!_aiSummary.IsNullOrWhiteSpace())
+                    @foreach (var kv in AnalyzeResult.GroupBy(x => x.Kind).Select(g => new { Kind = g.Key, Count = g.Count() }))
                     {
-                        <Alert Type="@AlertType.Warning">
-                            @((MarkupString)_aiSummary.ToHtmlDisplay())
-                        </Alert>
+                        <div>
+                            @($"{L[kv.Kind]}")
+                            <Badge Count="@kv.Count"/>
+                        </div>
                     }
                 }
-            }
-        </GridCol>
-    </GridRow>
+                @if (PassResources is { Count: > 0 })
+                {
+                    @foreach (var name in PassResources)
+                    {
+                        <div>
+                            @($"{L[name]}")
+                            <Badge Count="0" ShowZero="true" Style="background-color: #52c41a; "/>
+                        </div>
+                    }
+                }
+            </GridCol>
+            <GridCol Span="16">
+                @if (Ai.Enabled())
+                {
+                    if (AnalyzeResult is { Count: > 0 })
+                    {
+                        <Button Type="@ButtonType.Default" OnClick="@OnSummaryClick">@L["Diagnosis"]</Button>
+                        @if (!_aiSummary.IsNullOrWhiteSpace())
+                        {
+                            <Alert Type="@AlertType.Warning">
+                                @((MarkupString)_aiSummary.ToHtmlDisplay())
+                            </Alert>
+                        }
+                    }
+                }
+            </GridCol>
+        </GridRow>
+    }
+    else
+    {
+        <Spin/>
+    }
 </div>
-
 <Tabs Style="margin: 50px" DefaultActiveKey="Overview" Type="@TabType.Card" Size="@TabSize.Large">
 
     <TabPane Key="Overview" Tab=@L["Overview"]>
