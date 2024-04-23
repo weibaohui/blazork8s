@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using AntDesign;
 using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.Workload;
+using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity;
-using Entity.Analyze;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Result = Entity.Analyze.Result;
 
 namespace BlazorApp.Pages.Cluster;
 
 public partial class Inspection : PageBase
 {
     private string _aiSummary = string.Empty;
+    private string _cultureName;
 
     private Timer _timer;
 
@@ -30,13 +33,11 @@ public partial class Inspection : PageBase
 
     [Inject] public INodeService NodeService { get; set; }
 
-
+    [Inject] private IMessageService MessageService { get; set; }
     [Inject] private IAiService Ai { get; set; }
 
-    private List<V1ComponentStatus> ComponentStatus { get; set; }
     private IList<V1Pod> PodList { get; set; }
     private IList<V1Node> NodeList { get; set; }
-    private List<V1APIService> ApiServicesList { get; set; }
     private IList<Result> AnalyzeResult { get; set; }
     private DateTime LastInspection { get; set; }
     private IList<string> PassResources { get; set; }
@@ -61,6 +62,9 @@ public partial class Inspection : PageBase
         _timer.Start();
         await OnTimerCallback(); //先执行一次
         ServerInfo = await KubeService.GetServerVersion();
+
+        var x = (SimpleI18NStringLocalizer)L;
+        _cultureName = x.GetCulture().Name;
         await base.OnInitializedAsync();
     }
 
@@ -100,26 +104,35 @@ public partial class Inspection : PageBase
         {
             if (AnalyzeResult is { Count: > 0 })
             {
-                const string prompt = "请用中文归纳总结以下异常信息，并以300字以内给出概要统计信息。";
+                var language = SimpleI18NStringLocalizer.LanguageMap[_cultureName];
+
+                var prompt = $"请用{language}归纳总结以下异常信息，并以300字以内给出概要统计信息。";
                 var json = KubernetesJson.Serialize(AnalyzeResult);
                 _aiSummary = await Ai.AIChat(prompt + json);
             }
         }
         else
         {
-            _aiSummary = "AI服务未启用";
+            _aiSummary = L["AI service not enabled"];
         }
     }
 
     private async Task OnAnalyzeClick(object item)
     {
-        var options = PageDrawerService.DefaultOptions($"智能分析:", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
-            new IAiService.AiChatData
-            {
-                Data = item,
-                Style = "error"
-            });
+        if (Ai.Enabled())
+        {
+            var options = PageDrawerService.DefaultOptions($"{L["AI Analysis"]}:", 1000);
+            await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
+                new IAiService.AiChatData
+                {
+                    Data = item,
+                    Style = "error"
+                });
+        }
+        else
+        {
+            await MessageService.Error($"{L["AI service not enabled"]}");
+        }
     }
 
     private V1ObjectReference GetRef(Result item)
