@@ -20,7 +20,7 @@ public class OpenAiService(IConfigService configService, IPromptService promptSe
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt = promptService.GetPrompt("error");
+        var prompt = promptService.GetPrompt("Error");
         var content = $"{prompt} \n {text}";
 
         return await Query(content);
@@ -28,7 +28,7 @@ public class OpenAiService(IConfigService configService, IPromptService promptSe
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt = promptService.GetPrompt("security");
+        var prompt = promptService.GetPrompt("Security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
@@ -41,7 +41,7 @@ public class OpenAiService(IConfigService configService, IPromptService promptSe
 
     public string Name()
     {
-        return "OpenAI大模型";
+        return "OpenAI";
     }
 
     private string GetToken()

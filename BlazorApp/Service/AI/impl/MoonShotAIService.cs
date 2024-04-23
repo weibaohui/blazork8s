@@ -21,7 +21,7 @@ public class MoonShotAiService(
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt = promptService.GetPrompt("error");
+        var prompt = promptService.GetPrompt("Error");
         var content = $"{prompt} \n {text}";
 
         return await Query(content);
@@ -29,7 +29,7 @@ public class MoonShotAiService(
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt = promptService.GetPrompt("security");
+        var prompt = promptService.GetPrompt("Security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
@@ -42,7 +42,7 @@ public class MoonShotAiService(
 
     public string Name()
     {
-        return "月之暗面大模型";
+        return "月之暗面Kimi大模型";
     }
 
     private string GetToken()

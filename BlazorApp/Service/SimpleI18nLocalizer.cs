@@ -16,7 +16,7 @@ public class SimpleI18NStringLocalizer : IStringLocalizer
 {
     private const string GenderMark = "[f]";
 
-    public static Dictionary<string, string> LanguageMap = new()
+    public static readonly Dictionary<string, string> LanguageMap = new()
     {
         { "en-US", "英语" },
         { "zh-CN", "简体中文" },

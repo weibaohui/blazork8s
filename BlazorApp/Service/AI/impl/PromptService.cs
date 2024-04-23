@@ -1,17 +1,27 @@
-using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class PromptService(IConfigService configService, ILogger<PromptService> logger) : IPromptService
+public class PromptService(IConfigService configService, IStringLocalizer L) : IPromptService
 {
-    [Inject] public IStringLocalizer L { get; set; }
-
     public string GetPrompt(string key)
     {
         var prompt = configService.GetSection("Prompt")?.GetValue<string>(key);
+        if (prompt != null && prompt.Contains("{language}"))
+        {
+            prompt = prompt.Replace("{language}", GetLanguage());
+        }
+
         return prompt;
+    }
+
+
+    private string GetLanguage()
+    {
+        var x = (SimpleI18NStringLocalizer)L;
+        var cultureName = x.GetCulture().Name;
+        var language = SimpleI18NStringLocalizer.LanguageMap[cultureName];
+        return language;
     }
 }

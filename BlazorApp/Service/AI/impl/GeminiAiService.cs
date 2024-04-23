@@ -25,7 +25,7 @@ public class GeminiAiService(
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt = promptService.GetPrompt("error");
+        var prompt = promptService.GetPrompt("Error");
         text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
         var content = $"{prompt}:{text}";
         return await Query(content);
@@ -33,7 +33,7 @@ public class GeminiAiService(
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt = promptService.GetPrompt("security");
+        var prompt = promptService.GetPrompt("Security");
         text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
         var content = $"{prompt}:{text}";
         return await Query(content);

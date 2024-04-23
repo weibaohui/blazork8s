@@ -7,7 +7,6 @@ using AntDesign;
 using BlazorApp.Pages.Common;
 using BlazorApp.Pages.Node;
 using BlazorApp.Pages.Workload;
-using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
@@ -23,10 +22,10 @@ namespace BlazorApp.Pages.Cluster;
 public partial class Inspection : PageBase
 {
     private string _aiSummary = string.Empty;
-    private string _cultureName;
 
     private Timer _timer;
 
+    [Inject] IPromptService PromptService { get; set; }
     [Inject] public IKubeService KubeService { get; set; }
 
     [Inject] public IPodService PodService { get; set; }
@@ -63,8 +62,6 @@ public partial class Inspection : PageBase
         await OnTimerCallback(); //先执行一次
         ServerInfo = await KubeService.GetServerVersion();
 
-        var x = (SimpleI18NStringLocalizer)L;
-        _cultureName = x.GetCulture().Name;
         await base.OnInitializedAsync();
     }
 
@@ -104,11 +101,7 @@ public partial class Inspection : PageBase
         {
             if (AnalyzeResult is { Count: > 0 })
             {
-                var language = SimpleI18NStringLocalizer.LanguageMap[_cultureName];
-
-                var prompt =
-                    $"Please summarize the following exception information in `{language}` and provide a summary statistic within 300 characters. Please respond in `{language}`.";
-                Console.WriteLine(prompt);
+                var prompt = PromptService.GetPrompt("ErrorSummarize");
                 var json = KubernetesJson.Serialize(AnalyzeResult);
                 _aiSummary = await Ai.AIChat(prompt + json);
             }

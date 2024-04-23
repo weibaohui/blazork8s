@@ -38,7 +38,7 @@ namespace BlazorApp.Pages.Event
 
         private async Task Ask(Corev1Event e)
         {
-            var options = PageDrawerService.DefaultOptions($"AI分析", width: 1000);
+            var options = PageDrawerService.DefaultOptions($"{L["AI Analysis"]}", width: 1000);
             await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
                 new IAiService.AiChatData
                 {
@@ -49,7 +49,7 @@ namespace BlazorApp.Pages.Event
 
         private async Task AskAll()
         {
-            var options = PageDrawerService.DefaultOptions($"AI分析", width: 1000);
+            var options = PageDrawerService.DefaultOptions($"{L["AI Analysis"]}", width: 1000);
             await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
                 new IAiService.AiChatData
                 {

@@ -57,7 +57,7 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
 
     private async Task OnAnalyzeClick(T item)
     {
-        var options = PageDrawerService.DefaultOptions($"智能分析:{item.Name()}", width: 1000);
+        var options = PageDrawerService.DefaultOptions($"{L["AI Analysis"]}:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
             new IAiService.AiChatData
             {
@@ -68,7 +68,7 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
 
     private async Task OnSecurityClick(T item)
     {
-        var options = PageDrawerService.DefaultOptions($"安全分析:{item.Name()}", width: 1000);
+        var options = PageDrawerService.DefaultOptions($"{L["AI Security Analysis"]}:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
             new IAiService.AiChatData
             {
