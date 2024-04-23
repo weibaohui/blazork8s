@@ -4,16 +4,16 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Service.AI.ResponseModels.Qwen;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class QwenAiService(IConfigService configService, ILogger<QwenAiService> logger) : IQwenAiService
+public class QwenAiService(IConfigService configService, IPromptService promptService, ILogger<QwenAiService> logger)
+    : IQwenAiService
 {
     private const string SseEndpoint = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation";
-    private       string _incrementResp = "";
-    private       string _lastResp = "";
+    private string _incrementResp = "";
+    private string _lastResp = "";
 
     public async Task<string> AIChat(string prompt)
     {
@@ -27,14 +27,14 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("error");
+        var prompt = promptService.GetPrompt("error");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt  = configService.GetSection("QwenAI")!.GetSection("Prompt").GetValue<string>("security");
+        var prompt = promptService.GetPrompt("security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
@@ -61,9 +61,9 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
     {
         promptAndText = JsonSerializer.Serialize(promptAndText).TrimStart('"').TrimEnd('"');
 
-        var       resp       = "";
+        var resp = "";
         using var httpClient = new HttpClient();
-        var       request    = new HttpRequestMessage(HttpMethod.Post, SseEndpoint);
+        var request = new HttpRequestMessage(HttpMethod.Post, SseEndpoint);
         request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
         request.Headers.Add("Authorization", "Bearer " + GetApiKey());
         const string json = """
@@ -79,9 +79,9 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
         var jsonStr = json.Replace("${promptAndText}", promptAndText)
             .Replace("${model}", GetModel());
         request.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
-        using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-        await using var body     = await response.Content.ReadAsStreamAsync();
-        using var       reader   = new System.IO.StreamReader(body);
+        using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+        await using var body = await response.Content.ReadAsStreamAsync();
+        using var reader = new System.IO.StreamReader(body);
         while (!reader.EndOfStream)
         {
             var line = await reader.ReadLineAsync();
@@ -90,9 +90,9 @@ public class QwenAiService(IConfigService configService, ILogger<QwenAiService> 
             }
             else if (line.StartsWith("data:"))
             {
-                var eventData    = line["data:".Length..].Trim();
+                var eventData = line["data:".Length..].Trim();
                 var chatResponse = JsonSerializer.Deserialize<Response>(eventData);
-                var text         = chatResponse?.Output?.Text;
+                var text = chatResponse?.Output?.Text;
                 if (chatResponse?.Output?.FinishReason == "stop")
                 {
                     //阿里通义千问最后一次返回全部

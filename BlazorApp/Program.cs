@@ -33,11 +33,11 @@ builder.Services.AddHostedService<MetricsQueueWatchService>();
 builder.Services.AddSingleton<IKubeService, KubeService>();
 builder.Services.AddSingleton<IMetricsService, MetricsService>();
 builder.Services.AddSingleton<ClusterInspectionService>();
-
 builder.Services.AddSingleton<IKubectlService, KubectlService>();
 
 
 builder.Services.AddSingleton<IConfigService, ConfigService>();
+builder.Services.AddSingleton<IPromptService, PromptService>();
 builder.Services.AddSingleton<INodeService, NodeService>();
 builder.Services.AddSingleton<IPodService, PodService>();
 builder.Services.AddSingleton<IDeploymentService, DeploymentService>();
@@ -47,7 +47,6 @@ builder.Services.AddSingleton<IEventService, EventService>();
 builder.Services.AddSingleton<INamespaceService, NamespaceService>();
 builder.Services.AddSingleton<IXunFeiAiService, XunFeiAiService>();
 builder.Services.AddSingleton<IOpenAiService, OpenAiService>();
-builder.Services.AddSingleton<IRockAiService, RockAiService>();
 builder.Services.AddSingleton<IQwenAiService, QwenAiService>();
 builder.Services.AddSingleton<IGeminiAiService, GeminiAiService>();
 builder.Services.AddSingleton<IMoonShotAiService, MoonShotAiService>();

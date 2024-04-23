@@ -2,13 +2,15 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class GeminiAiService(IConfigService configService, ILogger<GeminiAiService> logger) : IGeminiAiService
+public class GeminiAiService(
+    IConfigService configService,
+    IPromptService promptService,
+    ILogger<GeminiAiService> logger) : IGeminiAiService
 {
     public async Task<string> AIChat(string prompt)
     {
@@ -23,7 +25,7 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt = configService.GetSection("GeminiAI")!.GetSection("Prompt").GetValue<string>("error");
+        var prompt = promptService.GetPrompt("error");
         text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
         var content = $"{prompt}:{text}";
         return await Query(content);
@@ -31,7 +33,7 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt = configService.GetSection("GeminiAI")!.GetSection("Prompt").GetValue<string>("security");
+        var prompt = promptService.GetPrompt("security");
         text = JsonConvert.SerializeObject(text).TrimStart('"').TrimEnd('"');
         var content = $"{prompt}:{text}";
         return await Query(content);
@@ -65,9 +67,9 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
     {
         // Console.WriteLine($"Gemini {GetSseEndpoint()} ");
         // Console.WriteLine($"Gemini {promptAndText} ");
-        var       resp       = "";
+        var resp = "";
         using var httpClient = new HttpClient();
-        var       request    = new HttpRequestMessage(HttpMethod.Post, GetSseEndpoint());
+        var request = new HttpRequestMessage(HttpMethod.Post, GetSseEndpoint());
         var json = """
                    {
                        "contents": [
@@ -86,9 +88,9 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
             "application/json");
         try
         {
-            using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-            await using var body     = await response.Content.ReadAsStreamAsync();
-            using var       reader   = new System.IO.StreamReader(body);
+            using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            await using var body = await response.Content.ReadAsStreamAsync();
+            using var reader = new System.IO.StreamReader(body);
             while (!reader.EndOfStream)
             {
                 var line = await reader.ReadLineAsync();
@@ -97,7 +99,7 @@ public class GeminiAiService(IConfigService configService, ILogger<GeminiAiServi
                 if (line.StartsWith("\"text\":"))
                 {
                     var data = line.Split("\"text\":")[1].Trim();
-                    data =  data.Trim('"');
+                    data = data.Trim('"');
                     resp += data;
                     ChatEventHandler?.Invoke(this, data);
                 }

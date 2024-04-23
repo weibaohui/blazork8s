@@ -5,13 +5,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
+public class XunFeiAiService(IConfigService configService, IPromptService promptService) : IXunFeiAiService
 {
     private static ClientWebSocket _webSocket;
 
@@ -28,14 +27,14 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("error");
+        var prompt = promptService.GetPrompt("error");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt  = configService.GetSection("XunFeiAI")!.GetSection("Prompt").GetValue<string>("security");
+        var prompt = promptService.GetPrompt("security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
@@ -79,9 +78,9 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
     private async Task<string> Query(string promptAndText)
     {
-        var resp    = "";
+        var resp = "";
         var authUrl = GetAuthUrl();
-        var url     = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
+        var url = authUrl.Replace("http://", "ws://").Replace("https://", "wss://");
         using (_webSocket = new ClientWebSocket())
         {
             await _webSocket.ConnectAsync(new Uri(url), CancellationToken.None);
@@ -91,16 +90,16 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
                 header = new IXunFeiAiService.Header()
                 {
                     app_id = GetAppId(),
-                    uid    = "12345"
+                    uid = "12345"
                 },
                 parameter = new IXunFeiAiService.Parameter()
                 {
                     chat = new IXunFeiAiService.Chat()
                     {
-                        domain           = GetDomain(), //模型领域，默认为星火通用大模型
-                        temperature      = 0.5,         //温度采样阈值，用于控制生成内容的随机性和多样性，值越大多样性越高；范围（0，1）
-                        max_tokens       = 1024,        //生成内容的最大长度，范围（0，4096）
-                        auditing         = "default",
+                        domain = GetDomain(), //模型领域，默认为星火通用大模型
+                        temperature = 0.5, //温度采样阈值，用于控制生成内容的随机性和多样性，值越大多样性越高；范围（0，1）
+                        max_tokens = 1024, //生成内容的最大长度，范围（0，4096）
+                        auditing = "default",
                         random_threshold = 0.5,
                     }
                 },
@@ -139,7 +138,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
                     //将结果构造为json
 
                     JObject jsonObj = JObject.Parse(receivedMessage);
-                    int     code    = (int)jsonObj["header"]?["code"];
+                    int code = (int)jsonObj["header"]?["code"];
 
 
                     if (0 == code)
@@ -148,7 +147,7 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
 
                         JArray textArray = (JArray)jsonObj["payload"]?["choices"]?["text"];
-                        var    content   = (string)textArray?[0]["content"];
+                        var content = (string)textArray?[0]["content"];
                         resp += content;
 
                         ChatEventHandler?.Invoke(this, content);
@@ -215,9 +214,9 @@ public class XunFeiAiService(IConfigService configService) : IXunFeiAiService
 
     string HmaCsha256(string apiSecretIsKey, string buider)
     {
-        var bytes      = Encoding.UTF8.GetBytes(apiSecretIsKey);
+        var bytes = Encoding.UTF8.GetBytes(apiSecretIsKey);
         var hMACSHA256 = new HMACSHA256(bytes);
-        var date       = Encoding.UTF8.GetBytes(buider);
+        var date = Encoding.UTF8.GetBytes(buider);
         date = hMACSHA256.ComputeHash(date);
         hMACSHA256.Clear();
         return Convert.ToBase64String(date);

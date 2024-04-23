@@ -5,12 +5,12 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BlazorApp.Service.AI.ResponseModels.OpenAI;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.AI.impl;
 
-public class OpenAiService(IConfigService configService, ILogger<OpenAiService> logger) : IOpenAiService
+public class OpenAiService(IConfigService configService, IPromptService promptService, ILogger<OpenAiService> logger)
+    : IOpenAiService
 {
     public async Task<string> AIChat(string prompt)
     {
@@ -20,7 +20,7 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
 
     public async Task<string> ExplainError(string text)
     {
-        var prompt  = configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("error");
+        var prompt = promptService.GetPrompt("error");
         var content = $"{prompt} \n {text}";
 
         return await Query(content);
@@ -28,7 +28,7 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
 
     public async Task<string> ExplainSecurity(string text)
     {
-        var prompt  = configService.GetSection("OpenAI")!.GetSection("Prompt").GetValue<string>("security");
+        var prompt = promptService.GetPrompt("security");
         var content = $"{prompt} \n {text}";
         return await Query(content);
     }
@@ -66,9 +66,9 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
     {
         promptAndText = JsonSerializer.Serialize(promptAndText).TrimStart('"').TrimEnd('"');
 
-        var       resp       = "";
+        var resp = "";
         using var httpClient = new HttpClient();
-        var       request    = new HttpRequestMessage(HttpMethod.Post, GetBaseUrl() + "/chat/completions");
+        var request = new HttpRequestMessage(HttpMethod.Post, GetBaseUrl() + "/chat/completions");
         request.Headers.Add("Authorization", "Bearer " + GetToken());
         const string json = """
                             {
@@ -83,9 +83,9 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
         var jsonStr = json.Replace("${promptAndText}", promptAndText)
             .Replace("${model}", GetModel());
         request.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
-        using var       response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-        await using var body     = await response.Content.ReadAsStreamAsync();
-        using var       reader   = new System.IO.StreamReader(body);
+        using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+        await using var body = await response.Content.ReadAsStreamAsync();
+        using var reader = new System.IO.StreamReader(body);
         while (!reader.EndOfStream)
         {
             var line = await reader.ReadLineAsync();
@@ -98,7 +98,7 @@ public class OpenAiService(IConfigService configService, ILogger<OpenAiService> 
                 if (eventData == "[DONE]") break;
 
                 var completion = JsonSerializer.Deserialize<Response>(eventData);
-                var text       = completion?.Choices?.FirstOrDefault()?.Delta?.Content;
+                var text = completion?.Choices?.FirstOrDefault()?.Delta?.Content;
                 resp += text;
                 ChatEventHandler?.Invoke(this, text);
             }
