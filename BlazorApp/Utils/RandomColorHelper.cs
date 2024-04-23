@@ -57,7 +57,7 @@ public enum ColorfulTagHexRgb
     LightSlateGrey = 0x778899,
     Maroon = 0x800000,
     Brown = 0xA52A2A,
-    Red = 0xFF0000,
+    Tomato1 = 0xFF6347,
     Tomato = 0xFF6347,
     Coral = 0xFF7F50,
     DarkSalmon = 0xE9967A,
