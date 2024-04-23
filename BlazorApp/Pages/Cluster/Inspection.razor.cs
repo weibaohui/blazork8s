@@ -106,7 +106,9 @@ public partial class Inspection : PageBase
             {
                 var language = SimpleI18NStringLocalizer.LanguageMap[_cultureName];
 
-                var prompt = $"请用{language}归纳总结以下异常信息，并以300字以内给出概要统计信息。";
+                var prompt =
+                    $"Please summarize the following exception information in `{language}` and provide a summary statistic within 300 characters. Please respond in `{language}`.";
+                Console.WriteLine(prompt);
                 var json = KubernetesJson.Serialize(AnalyzeResult);
                 _aiSummary = await Ai.AIChat(prompt + json);
             }
