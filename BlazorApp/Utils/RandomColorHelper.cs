@@ -26,7 +26,6 @@ public enum RandomColor
 
 public enum ColorfulTagHexRgb
 {
-    MediumBlue = 0x0000CD,
     MediumSlateBlue = 0x7B68EE,
     DodgerBlue = 0x1E90FF,
     SteelBlue = 0x4682B4,
@@ -56,10 +55,6 @@ public enum ColorfulTagHexRgb
     DarkSlateGray7 = 0x2F4F4F,
     DarkSlateGray8 = 0x2D3E50,
     LightSlateGrey = 0x778899,
-    Gray = 0x808080,
-    DimGray = 0x696969,
-    DarkGray = 0xA9A9A9,
-    White = 0xFFFFFF,
     Maroon = 0x800000,
     Brown = 0xA52A2A,
     Red = 0xFF0000,
