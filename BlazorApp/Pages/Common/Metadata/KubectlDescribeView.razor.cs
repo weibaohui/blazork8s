@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;
@@ -9,15 +8,13 @@ namespace BlazorApp.Pages.Common.Metadata;
 public partial class KubectlDescribeView : DrawerPageBase<string>
 {
     private string _resource = string.Empty;
-    private string _result   = string.Empty;
+    private string _result = string.Empty;
 
 
-    [Inject]
-    IKubectlService Kubectl { get; set; }
+    [Inject] IKubectlService Kubectl { get; set; }
 
 
-    [Inject]
-    ILogger<KubectlExplainView> Logger { get; set; }
+    [Inject] ILogger<KubectlExplainView> Logger { get; set; }
 
     protected override async Task OnInitializedAsync()
     {

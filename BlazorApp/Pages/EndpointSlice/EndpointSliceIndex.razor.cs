@@ -6,14 +6,12 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.EndpointSlice;
 
 public partial class EndpointSliceIndex : TableBase<V1EndpointSlice>
 {
-    [Inject]
-    private IEndpointSliceService EndpointSliceService { get; set; }
+    [Inject] private IEndpointSliceService EndpointSliceService { get; set; }
 
     private async Task OnResourceChanged(ResourceCache<V1EndpointSlice> data)
     {

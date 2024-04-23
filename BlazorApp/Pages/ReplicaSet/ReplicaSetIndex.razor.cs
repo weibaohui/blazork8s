@@ -4,40 +4,33 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
-namespace BlazorApp.Pages.ReplicaSet
+namespace BlazorApp.Pages.ReplicaSet;
+
+public partial class ReplicaSetIndex : TableBase<V1ReplicaSet>
 {
-    public partial class ReplicaSetIndex : TableBase<V1ReplicaSet>
+    [Inject] private IReplicaSetService ReplicaSetService { get; set; }
+
+
+    private async Task OnResourceChanged(ResourceCache<V1ReplicaSet> data)
     {
-        [Inject]
-        public IStringLocalizer L { get; set; }
+        ItemList = data;
+        TableData.CopyData(ItemList);
+        await InvokeAsync(StateHasChanged);
+    }
 
-        [Inject]
-        private IReplicaSetService ReplicaSetService { get; set; }
-
-
-        private async Task OnResourceChanged(ResourceCache<V1ReplicaSet> data)
-        {
-            ItemList = data;
-            TableData.CopyData(ItemList);
-            await InvokeAsync(StateHasChanged);
-        }
-
-        protected override async Task OnInitializedAsync()
-        {
-            await base.OnInitializedAsync();
-            TableData.CopyData(ItemList);
-            await InvokeAsync(StateHasChanged);
-        }
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        TableData.CopyData(ItemList);
+        await InvokeAsync(StateHasChanged);
+    }
 
 
-        private async Task OnRsClick(V1ReplicaSet rs)
-        {
-            await PageDrawerHelper<V1ReplicaSet>.Instance
-                .SetDrawerService(PageDrawerService.DrawerService)
-                .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(rs);
-        }
+    private async Task OnRsClick(V1ReplicaSet rs)
+    {
+        await PageDrawerHelper<V1ReplicaSet>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(rs);
     }
 }

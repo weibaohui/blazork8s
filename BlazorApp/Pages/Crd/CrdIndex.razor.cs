@@ -5,17 +5,14 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Crd;
 
 public partial class CrdIndex : TableBase<V1CustomResourceDefinition>
 {
-    [Inject]
-    public IKubeService KubeService { get; set; }
+    [Inject] public IKubeService KubeService { get; set; }
 
-    [Inject]
-    private ICustomResourceDefinitionService CrdService { get; set; }
+    [Inject] private ICustomResourceDefinitionService CrdService { get; set; }
 
 
     public IDictionary<string, int> CrCount { get; set; } = new Dictionary<string, int>(); // <name,count>

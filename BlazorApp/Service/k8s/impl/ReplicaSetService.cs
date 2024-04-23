@@ -8,7 +8,7 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl
 {
-    public class ReplicaSetService(IKubeService kubeService, IDocService docService)
+    public class ReplicaSetService(IKubeService kubeService)
         : CommonAction<V1ReplicaSet>, IReplicaSetService
     {
         public new async Task<object> Delete(string ns, string name)
@@ -42,7 +42,7 @@ namespace BlazorApp.Service.k8s.impl
 
         public async Task<List<Result>> Analyze()
         {
-            var items   = List();
+            var items = List();
             var results = new List<Result>();
             foreach (var item in items.ToList())
             {
@@ -51,7 +51,7 @@ namespace BlazorApp.Service.k8s.impl
                 //create failed
                 if (item.Status.Replicas == 0)
                 {
-                    if (item.Status.Conditions is {Count:>0})
+                    if (item.Status.Conditions is { Count: > 0 })
                     {
                         foreach (var status in item.Status.Conditions)
                         {
@@ -74,6 +74,7 @@ namespace BlazorApp.Service.k8s.impl
             {
                 ClusterInspectionResultContainer.Instance.GetPassResources().Add("ReplicaSet");
             }
+
             ClusterInspectionResultContainer.Instance.AddResourcesCount("ReplicaSet", items.ToList().Count);
 
             return results;

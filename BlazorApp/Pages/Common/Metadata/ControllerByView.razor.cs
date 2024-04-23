@@ -3,23 +3,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class ControllerByView : PageBase
 {
+    [Parameter] public IList<V1OwnerReference> Owner { get; set; }
 
+    [Parameter] public string Namespace { get; set; }
 
-    [Parameter]
-    public IList<V1OwnerReference> Owner { get; set; }
-
-    [Parameter]
-    public string Namespace { get; set; }
-
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 
     private IList<V1ObjectReference> Refs { get; set; }
 
@@ -29,9 +22,9 @@ public partial class ControllerByView : PageBase
         {
             Refs = Owner.Select(x => new V1ObjectReference()
             {
-                ApiVersion        = x.ApiVersion,
-                Kind              = x.Kind,
-                Name              = x.Name,
+                ApiVersion = x.ApiVersion,
+                Kind = x.Kind,
+                Name = x.Name,
                 NamespaceProperty = Namespace
             }).ToList();
         }

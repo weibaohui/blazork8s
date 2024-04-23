@@ -2,27 +2,21 @@ using System.Collections.Generic;
 using BlazorApp.Utils;
 using Extension;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class PropertyMapView<T> : PageBase
 {
-    [Parameter]
-    public IDictionary<string, T> Items { get; set; }
+    [Parameter] public IDictionary<string, T> Items { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
-    [Parameter]
-    public string Key { get; set; }
+    [Parameter] public string Key { get; set; }
 
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 
 
-    [Parameter]
-    public bool EveryItemOneRow { get; set; } = false;
+    [Parameter] public bool EveryItemOneRow { get; set; } = false;
 
     private bool IsBasicType()
     {

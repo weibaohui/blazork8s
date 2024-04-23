@@ -2,7 +2,6 @@ using System.Threading.Tasks;
 using BlazorMonaco.Editor;
 using k8s;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
@@ -10,32 +9,31 @@ public partial class YamlView<T> : DrawerPageBase<T>
 {
     private StandaloneCodeEditor _editor = null!;
 
-    [Parameter]
-    public T Item { get; set; }
+    [Parameter] public T Item { get; set; }
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         return new StandaloneEditorConstructionOptions
         {
-            AutomaticLayout            = true,
-            Language                   = "yaml",
-            Theme                      = "vs-dark",
-            Contextmenu                = true,
+            AutomaticLayout = true,
+            Language = "yaml",
+            Theme = "vs-dark",
+            Contextmenu = true,
             CopyWithSyntaxHighlighting = true,
             CursorSmoothCaretAnimation = "true",
-            FoldingImportsByDefault    = true,
-            MouseWheelZoom             = true,
-            SmoothScrolling            = true,
-            WrappingIndent             = "indent",
-            AutoClosingBrackets        = "always",
-            AutoSurround               = "languageDefined",
-            FontSize                   = 16,
-            WordWrap                   = "on",
+            FoldingImportsByDefault = true,
+            MouseWheelZoom = true,
+            SmoothScrolling = true,
+            WrappingIndent = "indent",
+            AutoClosingBrackets = "always",
+            AutoSurround = "languageDefined",
+            FontSize = 16,
+            WordWrap = "on",
             Minimap = new EditorMinimapOptions
             {
                 Enabled = false
             },
-            RenderLineHighlight  = "all",
+            RenderLineHighlight = "all",
             ScrollBeyondLastLine = true,
             Scrollbar = new EditorScrollbarOptions
             {
@@ -43,7 +41,7 @@ public partial class YamlView<T> : DrawerPageBase<T>
             },
             BracketPairColorization = new BracketPairColorizationOptions
             {
-                Enabled                            = true,
+                Enabled = true,
                 IndependentColorPoolPerBracketType = true
             },
             Value = KubernetesYaml.Serialize(Item),

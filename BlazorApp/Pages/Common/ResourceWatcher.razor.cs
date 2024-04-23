@@ -4,7 +4,6 @@ using Entity;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace BlazorApp.Pages.Common;
@@ -15,14 +14,11 @@ public partial class ResourceWatcher<T> : PageBase where T : IKubernetesObject<V
 
     private HubConnection HubConnection { get; set; }
 
-    [Inject]
-    protected NavigationManager MyUriHelper { get; set; }
+    [Inject] protected NavigationManager MyUriHelper { get; set; }
 
-    [Parameter]
-    public EventCallback<ResourceCache<T>> OnResourceChanged { get; set; }
+    [Parameter] public EventCallback<ResourceCache<T>> OnResourceChanged { get; set; }
 
-    [Parameter]
-    public EventCallback<PodLogEntity> OnPodLogChanged { get; set; }
+    [Parameter] public EventCallback<PodLogEntity> OnPodLogChanged { get; set; }
 
     private async Task UpdateMessage(ResourceWatchEntity<T> data)
     {

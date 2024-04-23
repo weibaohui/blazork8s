@@ -4,14 +4,12 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.ClusterRole;
 
 public partial class ClusterRoleDetailView : DrawerPageBase<V1ClusterRole>
 {
-    [Inject]
-    public IClusterRoleService ClusterRoleService { get; set; }
+    [Inject] public IClusterRoleService ClusterRoleService { get; set; }
 
     private V1ClusterRole ClusterRole { get; set; }
 
@@ -20,7 +18,7 @@ public partial class ClusterRoleDetailView : DrawerPageBase<V1ClusterRole>
     protected override async Task OnInitializedAsync()
     {
         ClusterRole = Options;
-        Subjects    = ClusterRoleService.ListManagedSubjectByClusterRole(ClusterRole);
+        Subjects = ClusterRoleService.ListManagedSubjectByClusterRole(ClusterRole);
         await base.OnInitializedAsync();
     }
 }

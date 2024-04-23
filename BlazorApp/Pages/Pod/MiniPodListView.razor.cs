@@ -1,35 +1,26 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Pod
 {
     public partial class MiniPodListView : PageBase
     {
-        [Inject]
-        public IStringLocalizer L { get; set; }
+        [Inject] private IPodService PodService { get; set; }
 
-        [Inject]
-        private IPodService PodService { get; set; }
+        [Inject] private DrawerService DrawerService { get; set; }
 
-        [Inject]
-        private DrawerService DrawerService { get; set; }
-
-        [Parameter]
-        public IList<V1Pod> Pods { get; set; } = new List<V1Pod>();
+        [Parameter] public IList<V1Pod> Pods { get; set; } = new List<V1Pod>();
 
 
-        [Parameter]
-        public string ControllerByUid { get; set; }
+        [Parameter] public string ControllerByUid { get; set; }
 
-        [Parameter]
-        public bool HideAction { get; set; }
+        [Parameter] public bool HideAction { get; set; }
 
 
         protected override async Task OnInitializedAsync()

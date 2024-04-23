@@ -1,58 +1,49 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using Extension.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
-namespace BlazorApp.Pages.ReplicaSet
+namespace BlazorApp.Pages.ReplicaSet;
+
+public partial class MiniReplicaSetListView : PageBase
 {
-    public partial class MiniReplicaSetListView : PageBase
+    [Inject] private IReplicaSetService ReplicaSetService { get; set; }
+
+    [Inject] private IPodService PodService { get; set; }
+
+    [Inject] private DrawerService DrawerService { get; set; }
+
+    private IList<V1Pod> PodList { get; set; }
+    public IList<V1ReplicaSet> Items { get; set; }
+
+    [Parameter] public string ControllerByUid { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        [Inject]
-        public IStringLocalizer L { get; set; }
-
-        [Inject]
-        private IReplicaSetService ReplicaSetService { get; set; }
-
-        [Inject]
-        private IPodService PodService { get; set; }
-
-        [Inject]
-        private DrawerService DrawerService { get; set; }
-
-        private IList<V1Pod>        PodList { get; set; }
-        public  IList<V1ReplicaSet> Items   { get; set; }
-
-        [Parameter]
-        public string ControllerByUid { get; set; }
-
-        protected override async Task OnInitializedAsync()
+        if (!string.IsNullOrEmpty(ControllerByUid))
         {
-            if (!string.IsNullOrEmpty(ControllerByUid))
-            {
-                Items = ReplicaSetService.ListByOwnerUid(ControllerByUid);
-            }
-
-            PodList = PodService.List();
-            await base.OnInitializedAsync();
+            Items = ReplicaSetService.ListByOwnerUid(ControllerByUid);
         }
 
+        PodList = PodService.List();
+        await base.OnInitializedAsync();
+    }
 
-        private async Task OnRsClick(V1ReplicaSet rs)
-        {
-            await PageDrawerHelper<V1ReplicaSet>.Instance
-                .SetDrawerService(DrawerService)
-                .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(rs);
-        }
 
-        private int CountPodsByOwner(string uid)
-        {
-            return PodList.CountPodsByOwner(uid);
-        }
+    private async Task OnRsClick(V1ReplicaSet rs)
+    {
+        await PageDrawerHelper<V1ReplicaSet>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(rs);
+    }
+
+    private int CountPodsByOwner(string uid)
+    {
+        return PodList.CountPodsByOwner(uid);
     }
 }

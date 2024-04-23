@@ -9,17 +9,68 @@ using BlazorApp.Utils;
 using Extension;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common;
 
 public partial class MetricView : PageBase, IDisposable
 {
-    [Inject]
-    public IKubeService KubeService { get; set; }
+    readonly AreaConfig _areaConfig = new AreaConfig
+    {
+        Height = 250,
+        Width = 600,
+        Smooth = true,
+        AutoFit = true,
+        AreaStyle = new GraphicStyle()
+        {
+            Fill = "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
+        },
+        Color = RandomColorHelper.RandomColorHexRgb(),
+        XField = "index",
+        YField = "value",
+        XAxis = new ValueCatTimeAxis
+        {
+            TickCount = 1,
+            Range = [0, 1]
+        },
+        Slider = new Slider
+        {
+            Start = 0,
+            End = 1,
+            TrendCfg = new TrendCfg
+            {
+                IsArea = true
+            }
+        }
+    };
 
-    [Inject]
-    public IMetricsService MetricsService { get; set; }
+    private ResourceQuantity _lastValue;
+
+    private List<DataValue> _showData = new();
+
+    private Timer _timer;
+
+    private TinyAreaConfig _tinyAreaConfig = new TinyAreaConfig
+    {
+        Width = 100,
+        Height = 20,
+        Smooth = true,
+        AutoFit = true,
+        AreaStyle = new TextStyle()
+        {
+            Fill = RandomColorHelper.RandomColorHexRgb(),
+        },
+        Color = RandomColorHelper.RandomColorHexRgb(),
+        XField = "index",
+        YField = "value",
+        XAxis = new Axis
+        {
+            TickCount = 2,
+        },
+    };
+
+    [Inject] public IKubeService KubeService { get; set; }
+
+    [Inject] public IMetricsService MetricsService { get; set; }
 
 
     /// <summary>
@@ -53,27 +104,26 @@ public partial class MetricView : PageBase, IDisposable
     [Parameter]
     public bool FullView { get; set; } = false;
 
-    private Timer _timer;
-
-    private List<DataValue> _showData = new();
-
-    private ResourceQuantity _lastValue;
+    public void Dispose()
+    {
+        _timer.Dispose();
+    }
 
 
     protected override async Task OnInitializedAsync()
     {
-        _timer         =  new Timer(1000);
+        _timer = new Timer(1000);
         _timer.Elapsed += (sender, eventArgs) => OnTimerCallback();
         _timer.Start();
 
 
-        _showData = GetTrendData(ItemName, MetricType,ContainerName);
+        _showData = GetTrendData(ItemName, MetricType, ContainerName);
         await base.OnInitializedAsync();
     }
 
     private void OnTimerCallback()
     {
-        _showData = GetTrendData(ItemName, MetricType,ContainerName);
+        _showData = GetTrendData(ItemName, MetricType, ContainerName);
         InvokeAsync(StateHasChanged);
     }
 
@@ -162,70 +212,17 @@ public partial class MetricView : PageBase, IDisposable
     {
         return ResourceType switch
         {
-            "Pod"       => GetPodTrendData(itemName, type),
-            "Node"      => GetNodeTrendData(itemName, type),
+            "Pod" => GetPodTrendData(itemName, type),
+            "Node" => GetNodeTrendData(itemName, type),
             "Container" => GetContainerTrendData(itemName, containerName, type),
-            _           => null
+            _ => null
         };
     }
 
 
     public class DataValue
     {
-        public int     Index { get; set; }
+        public int Index { get; set; }
         public decimal Value { get; set; }
-    }
-
-    private TinyAreaConfig _tinyAreaConfig = new TinyAreaConfig
-    {
-        Width   = 100,
-        Height  = 20,
-        Smooth  = true,
-        AutoFit = true,
-        AreaStyle = new TextStyle()
-        {
-            Fill = RandomColorHelper.RandomColorHexRgb(),
-        },
-        Color = RandomColorHelper.RandomColorHexRgb(),
-        XField = "index",
-        YField = "value",
-        XAxis = new Axis
-        {
-            TickCount = 2,
-        },
-    };
-
-    readonly AreaConfig _areaConfig = new AreaConfig
-    {
-        Height  = 250,
-        Width   = 600,
-        Smooth  = true,
-        AutoFit = true,
-        AreaStyle = new GraphicStyle()
-        {
-            Fill = "l(270) 0:#ffffff 0.5:#7ec2f3 1:#1890ff",
-        },
-        Color = RandomColorHelper.RandomColorHexRgb(),
-        XField = "index",
-        YField = "value",
-        XAxis = new ValueCatTimeAxis
-        {
-            TickCount = 1,
-            Range     = [0, 1]
-        },
-        Slider = new Slider
-        {
-            Start = 0,
-            End   = 1,
-            TrendCfg = new TrendCfg
-            {
-                IsArea = true
-            }
-        }
-    };
-
-    public void Dispose()
-    {
-        _timer.Dispose();
     }
 }

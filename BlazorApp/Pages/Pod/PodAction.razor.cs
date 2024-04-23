@@ -1,30 +1,19 @@
 using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Service;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Pod;
 
 public partial class PodAction : PageBase
 {
+    [Parameter] public V1Pod PodItem { get; set; }
 
+    [Parameter] public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
 
-    [Parameter]
-    public V1Pod PodItem { get; set; }
-
-    [Parameter]
-    public MenuMode MenuMode { get; set; } = MenuMode.Vertical;
-
-    [Inject]
-    private IPodService PodService { get; set; }
-
-
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
+    [Inject] private IPodService PodService { get; set; }
 
 
     private async Task OnPodLogClick(V1Pod pod)

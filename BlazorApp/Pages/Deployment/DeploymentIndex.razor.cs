@@ -4,14 +4,12 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Deployment;
 
 public partial class DeploymentIndex : TableBase<V1Deployment>
 {
-    [Inject]
-    private IDeploymentService DeploymentService { get; set; }
+    [Inject] private IDeploymentService DeploymentService { get; set; }
 
 
     private async Task OnResourceChanged(ResourceCache<V1Deployment> data)
@@ -34,19 +32,18 @@ public partial class DeploymentIndex : TableBase<V1Deployment>
         await PageDrawerHelper<V1Deployment>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
             .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(deploy);
-
     }
 
 
     private async Task BtnIncreaseClick(V1Deployment deploy)
     {
-       await DeploymentService.UpdateReplicas(deploy, deploy.Spec.Replicas+1);
-       await InvokeAsync(StateHasChanged);
-
+        await DeploymentService.UpdateReplicas(deploy, deploy.Spec.Replicas + 1);
+        await InvokeAsync(StateHasChanged);
     }
+
     private async Task BtnMinusClick(V1Deployment deploy)
     {
-        await DeploymentService.UpdateReplicas(deploy, deploy.Spec.Replicas-1);
+        await DeploymentService.UpdateReplicas(deploy, deploy.Spec.Replicas - 1);
         await InvokeAsync(StateHasChanged);
     }
 }

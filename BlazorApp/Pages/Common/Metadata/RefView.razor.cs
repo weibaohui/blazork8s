@@ -24,93 +24,65 @@ using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class RefView : PageBase
 {
-    [Parameter]
-    public V1ObjectReference Ref { get; set; }
+    [Parameter] public V1ObjectReference Ref { get; set; }
 
-    [Parameter]
-    public bool FullView { get; set; } = false;
+    [Parameter] public bool FullView { get; set; } = false;
 
-    [Inject]
-    private IMessageService MessageService { get; set; }
+    [Inject] private IMessageService MessageService { get; set; }
 
-    [Inject]
-    private IServiceAccountService ServiceAccountService { get; set; }
+    [Inject] private IServiceAccountService ServiceAccountService { get; set; }
 
-    [Inject]
-    private IPersistentVolumeService PersistentVolumeService { get; set; }
+    [Inject] private IPersistentVolumeService PersistentVolumeService { get; set; }
 
-    [Inject]
-    private IPersistentVolumeClaimService PersistentVolumeClaimService { get; set; }
+    [Inject] private IPersistentVolumeClaimService PersistentVolumeClaimService { get; set; }
 
-    [Inject]
-    private IClusterRoleService ClusterRoleService { get; set; }
+    [Inject] private IClusterRoleService ClusterRoleService { get; set; }
 
-    [Inject]
-    private IRoleService RoleService { get; set; }
+    [Inject] private IRoleService RoleService { get; set; }
 
-    [Inject]
-    private IReplicaSetService ReplicaSetService { get; set; }
+    [Inject] private IReplicaSetService ReplicaSetService { get; set; }
 
-    [Inject]
-    private INodeService NodeService { get; set; }
+    [Inject] private INodeService NodeService { get; set; }
 
-    [Inject]
-    private IJobService JobService { get; set; }
+    [Inject] private IJobService JobService { get; set; }
 
-    [Inject]
-    private ICronJobService CronJobService { get; set; }
+    [Inject] private ICronJobService CronJobService { get; set; }
 
-    [Inject]
-    private IPodService PodService { get; set; }
+    [Inject] private IPodService PodService { get; set; }
 
-    [Inject]
-    private IDeploymentService DeploymentService { get; set; }
+    [Inject] private IDeploymentService DeploymentService { get; set; }
 
-    [Inject]
-    private IDaemonSetService DaemonSetService { get; set; }
+    [Inject] private IDaemonSetService DaemonSetService { get; set; }
 
-    [Inject]
-    private IStatefulSetService StatefulSetService { get; set; }
+    [Inject] private IStatefulSetService StatefulSetService { get; set; }
 
-    [Inject]
-    private IReplicationControllerService ReplicationControllerService { get; set; }
+    [Inject] private IReplicationControllerService ReplicationControllerService { get; set; }
 
-    [Inject]
-    private IConfigMapService ConfigMapService { get; set; }
+    [Inject] private IConfigMapService ConfigMapService { get; set; }
 
-    [Inject]
-    private IEndpointsService EndpointsService { get; set; }
+    [Inject] private IEndpointsService EndpointsService { get; set; }
 
-    [Inject]
-    private ISecretService SecretService { get; set; }
+    [Inject] private ISecretService SecretService { get; set; }
 
-    [Inject]
-    private ILogger<ControllerBy> Logger { get; set; }
+    [Inject] private ILogger<ControllerBy> Logger { get; set; }
 
-    [Inject]
-    private IMessageService Message { get; set; }
+    [Inject] private IMessageService Message { get; set; }
 
-    [Inject]
-    private DrawerService DrawerService { get; set; }
+    [Inject] private DrawerService DrawerService { get; set; }
 
-    [Inject]
-    private INamespaceService NamespaceService { get; set; }
+    [Inject] private INamespaceService NamespaceService { get; set; }
 
-    [Inject]
-    private IIngressService IngressService { get; set; }
+    [Inject] private IIngressService IngressService { get; set; }
 
-    [Inject]
-    private IServiceService ServiceService { get; set; }
+    [Inject] private IServiceService ServiceService { get; set; }
 
-    [Inject]
-    private IHorizontalPodAutoscalerService HpaService { get; set; }
+    [Inject] private IHorizontalPodAutoscalerService HpaService { get; set; }
 
     private string GetDelimiter()
     {
@@ -121,33 +93,33 @@ public partial class RefView : PageBase
     {
         var name = Ref.Name;
         var kind = Ref.Kind;
-        var ns   = Ref.NamespaceProperty;
+        var ns = Ref.NamespaceProperty;
 
         var task = kind switch
         {
-            "Deployment"              => OnDeploymentClick(Ref),
-            "DaemonSet"               => OnDaemonSetClick(Ref),
-            "StatefulSet"             => OnStatefulSetClick(Ref),
-            "ReplicationController"   => OnReplicationControllerClick(Ref),
-            "ReplicaSet"              => OnRsClick(Ref),
-            "Node"                    => OnNodeClick(Ref),
-            "Job"                     => OnJobClick(Ref),
-            "CronJob"                 => OnCronJobClick(Ref),
-            "Pod"                     => OnPodClick(Ref),
-            "Service"                 => OnServiceClick(Ref),
-            "Endpoints"               => OnEndpointsClick(Ref),
-            "Group"                   => OnGroupClick(Ref),
-            "User"                    => OnUserClick(Ref),
-            "ServiceAccount"          => OnServiceAccountClick(Ref),
-            "ClusterRole"             => OnClusterRoleClick(Ref),
-            "Role"                    => OnRoleClick(Ref),
+            "Deployment" => OnDeploymentClick(Ref),
+            "DaemonSet" => OnDaemonSetClick(Ref),
+            "StatefulSet" => OnStatefulSetClick(Ref),
+            "ReplicationController" => OnReplicationControllerClick(Ref),
+            "ReplicaSet" => OnRsClick(Ref),
+            "Node" => OnNodeClick(Ref),
+            "Job" => OnJobClick(Ref),
+            "CronJob" => OnCronJobClick(Ref),
+            "Pod" => OnPodClick(Ref),
+            "Service" => OnServiceClick(Ref),
+            "Endpoints" => OnEndpointsClick(Ref),
+            "Group" => OnGroupClick(Ref),
+            "User" => OnUserClick(Ref),
+            "ServiceAccount" => OnServiceAccountClick(Ref),
+            "ClusterRole" => OnClusterRoleClick(Ref),
+            "Role" => OnRoleClick(Ref),
             "HorizontalPodAutoscaler" => OnHorizontalPodAutoscalerClick(Ref),
-            "ConfigMap"               => OnConfigMapClick(Ref),
-            "Secret"                  => OnSecretClick(Ref),
-            "Ingress"                 => OnIngressClick(Ref),
-            "Namespace"               => OnNamespaceClick(Ref),
-            "PersistentVolumeClaim"   => OnPersistentVolumeClaimClick(Ref),
-            _                         => OnXClick(Ref)
+            "ConfigMap" => OnConfigMapClick(Ref),
+            "Secret" => OnSecretClick(Ref),
+            "Ingress" => OnIngressClick(Ref),
+            "Namespace" => OnNamespaceClick(Ref),
+            "PersistentVolumeClaim" => OnPersistentVolumeClaimClick(Ref),
+            _ => OnXClick(Ref)
         };
 
         return task;

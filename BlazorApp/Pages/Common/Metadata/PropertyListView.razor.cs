@@ -2,23 +2,18 @@ using System.Collections.Generic;
 using BlazorApp.Utils;
 using Extension;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class PropertyListView<T> : PageBase
 {
-    [Parameter]
-    public IList<T> Items { get; set; }
+    [Parameter] public IList<T> Items { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
-    [Parameter]
-    public string Key { get; set; }
+    [Parameter] public string Key { get; set; }
 
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 
     private string GetValue(T item)
     {
@@ -29,6 +24,4 @@ public partial class PropertyListView<T> : PageBase
     {
         return typeof(T).IsNullableType() ? typeof(T).GetUnderlyingType().IsBasicType() : typeof(T).IsBasicType();
     }
-
-
 }

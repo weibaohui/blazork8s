@@ -5,8 +5,6 @@ using BlazorApp.Utils;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Localization;
 
 namespace BlazorApp.Pages.Common;
 
@@ -15,40 +13,27 @@ public partial class SearchToolBar<TItem> : PageBase where TItem : IKubernetesOb
     private string _style = " padding: 8px 0;";
 
 
+    [Parameter] public string Title { get; set; }
 
+    [Parameter] public int Count { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public bool HideNsSelector { get; set; } = false;
 
-    [Parameter]
-    public int Count { get; set; }
+    [Parameter] public EventCallback<string> OnNsSelected { get; set; }
 
-    [Parameter]
-    public bool HideNsSelector { get; set; } = false;
+    [Parameter] public EventCallback<string> OnSearch { get; set; }
 
-    [Parameter]
-    public EventCallback<string> OnNsSelected { get; set; }
+    [Parameter] public EventCallback OnRemoveAllClicked { get; set; }
 
-    [Parameter]
-    public EventCallback<string> OnSearch { get; set; }
+    [Parameter] public EventCallback OnItemDeletedCallback { get; set; }
 
-    [Parameter]
-    public EventCallback OnRemoveAllClicked { get; set; }
+    [Parameter] public EventCallback<string> OnSelectedItemCloseClicked { get; set; }
 
-    [Parameter]
-    public EventCallback OnItemDeletedCallback { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
 
-    [Parameter]
-    public EventCallback<string> OnSelectedItemCloseClicked { get; set; }
+    [Parameter] public TableData<TItem> TableData { get; set; }
 
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
-
-    [Parameter]
-    public TableData<TItem> TableData { get; set; }
-
-    [Inject]
-    private IResourceCrudService ResourceCrudService { get; set; }
+    [Inject] private IResourceCrudService ResourceCrudService { get; set; }
 
     private string TxtValue { get; set; }
 

@@ -5,35 +5,30 @@ using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
-namespace BlazorApp.Pages.Deployment
+namespace BlazorApp.Pages.Deployment;
+
+public partial class DeploymentDetailView : DrawerPageBase<V1Deployment>
 {
-    public partial class DeploymentDetailView : DrawerPageBase<V1Deployment>
+    private V1Deployment Deployment { get; set; }
+
+    [Inject] private IPodService PodService { get; set; }
+
+    [Inject] private IReplicaSetService ReplicaSetService { get; set; }
+
+    private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
+
+
+    protected override async Task OnInitializedAsync()
     {
-        private V1Deployment Deployment { get; set; }
+        Deployment = base.Options;
 
-        [Inject]
-        private IPodService PodService { get; set; }
-
-        [Inject]
-        private IReplicaSetService ReplicaSetService { get; set; }
-
-        private IList<V1Pod> PodList { get; set; } = new List<V1Pod>();
-
-
-
-        protected override async Task OnInitializedAsync()
+        var rs = ReplicaSetService.ListByOwnerUid(Deployment.Uid());
+        rs.ForEach(r =>
         {
-            Deployment = base.Options;
-
-            var rs = ReplicaSetService.ListByOwnerUid(Deployment.Uid());
-            rs.ForEach(r =>
-            {
-                var pods = PodService.ListByOwnerUid(r.Uid());
-                pods.ForEach(p => PodList.Add(p));
-            });
-            await base.OnInitializedAsync();
-        }
+            var pods = PodService.ListByOwnerUid(r.Uid());
+            pods.ForEach(p => PodList.Add(p));
+        });
+        await base.OnInitializedAsync();
     }
 }

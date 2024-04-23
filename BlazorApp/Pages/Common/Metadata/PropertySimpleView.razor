@@ -2,29 +2,22 @@
 @using Extension
 @inherits PageBase
 
-@if (ChildContent != null || (Item != null && !Item.ToJson().Equals("{}")))
+@if (Item != null && !Item.ToJson().Equals("{}"))
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
 
-        @if (ChildContent != null)
+        @ChildContent
+        @if (ShowInJson)
         {
-            @ChildContent
+            <p>
+                @((MarkupString)PrettyJson())
+            </p>
         }
         else
         {
-            @if (ShowInJson)
-            {
-                <p >
-                    @((MarkupString)PrettyJson())
-                </p>
-            }
-            else
-            {
-                <ColorfulTag OnClick="OnTagClick">
-                    @Item
-                </ColorfulTag>
-            }
+            <ColorfulTag OnClick="OnTagClick">
+                @Item
+            </ColorfulTag>
         }
-
     </HTableColumn>
 }

@@ -1,13 +1,11 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
 namespace BlazorApp.Pages.Common.Metadata;
 
-public partial class KubectlExplainButton:PageBase
+public partial class KubectlExplainButton : PageBase
 {
-    [Parameter]
-    public string Field { get; set; }
+    [Parameter] public string Field { get; set; }
 
     private async Task KubectlExplainClick()
     {

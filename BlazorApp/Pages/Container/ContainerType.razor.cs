@@ -1,13 +1,9 @@
-﻿using k8s.Models;
+﻿using BlazorApp.Pages.Common;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 
-namespace  BlazorApp.Pages.Container
+namespace BlazorApp.Pages.Container;
+
+public partial class ContainerType : PageBase
 {
-    public partial class ContainerType : PageBase
-    {
-
-        [Parameter]
-        public string Type { get; set; }
-    }
+    [Parameter] public string Type { get; set; }
 }

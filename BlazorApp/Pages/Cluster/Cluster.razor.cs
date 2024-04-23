@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using BlazorApp.Pages.Common;
-using BlazorApp.Service;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity;
@@ -16,31 +15,24 @@ namespace BlazorApp.Pages.Cluster;
 
 public partial class Cluster : PageBase
 {
-    [Inject]
-    public IKubeService KubeService { get; set; }
+    private Timer _timer;
 
-    [Inject]
-    public IPodService PodService { get; set; }
+    [Inject] public IKubeService KubeService { get; set; }
 
-    [Inject]
-    public INodeService NodeService { get; set; }
+    [Inject] public IPodService PodService { get; set; }
 
-    [Inject]
-    private IPageDrawerService PageDrawerService { get; set; }
+    [Inject] public INodeService NodeService { get; set; }
 
 
     private List<V1ComponentStatus> ComponentStatus { get; set; }
-    private List<V1APIService>      ApiServicesList { get; set; }
-    private IList<IMetric>          AllMetrics      { get; set; }
-
-
-    private Timer _timer;
+    private List<V1APIService> ApiServicesList { get; set; }
+    private IList<IMetric> AllMetrics { get; set; }
 
     private ServerInfo ServerInfo { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        _timer         =  new Timer(10000);
+        _timer = new Timer(10000);
         _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
         _timer.Start();
         await OnTimerCallback(); //先执行一次
@@ -57,7 +49,7 @@ public partial class Cluster : PageBase
 
         var apiServiceList = await KubeService.Client().ListAPIServiceAsync();
         ApiServicesList = apiServiceList.Items.ToList();
-        AllMetrics      = await KubeService.GetMetrics();
+        AllMetrics = await KubeService.GetMetrics();
         await InvokeAsync(StateHasChanged);
     }
 }
