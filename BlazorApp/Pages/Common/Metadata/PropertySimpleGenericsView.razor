@@ -1,13 +1,12 @@
 @typeparam            T
-@using Microsoft.IdentityModel.Tokens
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
+@using Microsoft.IdentityModel.Tokens
+@inherits PageBase
 
 @if (Item != null)
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
-        <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
+        <ColorfulTag OnClick="OnTagClick">
 
             @if (IsString)
             {
@@ -19,6 +18,6 @@
                 @GetValue(Item)
             }
 
-        </Tag>
+        </ColorfulTag>
     </HTableColumn>
 }

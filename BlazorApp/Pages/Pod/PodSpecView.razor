@@ -1,8 +1,8 @@
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
-@using BlazorApp.Utils
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 <HTable Bordered Column="1">
@@ -14,7 +14,7 @@
                 @foreach (var hostname in alias.Hostnames)
                 {
                     <div>
-                        <Tag Color=@RandomColorHelper.RandomColor()>@($"{alias.Ip} {hostname}")</Tag>
+                        <ColorfulTag >@($"{alias.Ip} {hostname}")</ColorfulTag>
                     </div>
                 }
             }

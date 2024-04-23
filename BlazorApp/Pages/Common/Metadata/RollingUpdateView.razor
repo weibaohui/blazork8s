@@ -1,23 +1,22 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
+@using k8s.Models
+@inherits PageBase
 
 @if (RollingUpdate != null)
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
         @if (RollingUpdate.MaxSurge != null)
         {
-            <Tag Color="@RandomColorHelper.RandomColor()">
+            <ColorfulTag>
                 @L["MaxSurge"] = @RollingUpdate.MaxSurge
-            </Tag>
+            </ColorfulTag>
         }
 
         @if (RollingUpdate.MaxUnavailable != null)
         {
-            <Tag Color="@RandomColorHelper.RandomColor()">
+            <ColorfulTag>
                 @L["MaxUnavailable"] = @RollingUpdate.MaxUnavailable
-            </Tag>
+            </ColorfulTag>
         }
         @if (ChildContent != null)
         {
@@ -28,14 +27,11 @@
 
 @code {
 
-    [Parameter]
-    public V1RollingUpdateDeployment RollingUpdate { get; set; }
+    [Parameter] public V1RollingUpdateDeployment RollingUpdate { get; set; }
 
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 
-    [Parameter]
-    public string Title { get; set; }
+    [Parameter] public string Title { get; set; }
 
     [Parameter]
 #nullable enable

@@ -1,7 +1,7 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Utils
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Volume.Csi != null)
@@ -21,7 +21,7 @@
                             <KubectlExplainButton Field="pod.spec.volumes.csi"></KubectlExplainButton>
                         </HTd>
                         <HTd >
-                            <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">CSI</Tag>
+                            <Tag>@Volume.Name</Tag><ColorfulTag>CSI</ColorfulTag>
                         </HTd>
                     </HTr>
                     <CsiSourceView Csi="@Volume.Csi" FieldPrefix="pod.spec.volumes"></CsiSourceView>
@@ -35,10 +35,8 @@
 
 @code {
 
-    [Parameter]
-    public V1Volume Volume { get; set; }
+    [Parameter] public V1Volume Volume { get; set; }
 
-    [Parameter]
-    public int Index { get; set; }
+    [Parameter] public int Index { get; set; }
 
 }

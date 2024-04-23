@@ -1,5 +1,4 @@
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
 @inherits PageBase
 
 @if (Selector is { Keys.Count: > 0 })
@@ -7,7 +6,7 @@
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
         @foreach (var label in Selector)
         {
-            <Tag Color=@RandomColorHelper.RandomColor()>@label.Key = @label.Value</Tag>
+            <ColorfulTag>@label.Key = @label.Value</ColorfulTag>
         }
     </HTableColumn>
 }

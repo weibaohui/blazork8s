@@ -1,10 +1,9 @@
 @using Extension
-@using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
+@inherits PageBase
 
 @if (Ref != null)
 {
-    <Tag Color="@RandomColorHelper.RandomColor()" OnClick="@OnObjClick" Style="cursor: pointer">
+    <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Kind">
         <Tooltip>
             <TitleTemplate>
                 @($"[{Ref.Kind}]  {Ref.ApiVersion} {Ref.NamespaceProperty} {Ref.Name}")
@@ -19,7 +18,6 @@
                     else
                     {
                         @($"{Ref.Kind} {Ref.NamespaceProperty}/{Ref.Name}")
-
                     }
                 }
                 else
@@ -28,5 +26,5 @@
                 }
             </ChildContent>
         </Tooltip>
-    </Tag>
+    </ColorfulTag>
 }

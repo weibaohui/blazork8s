@@ -14,7 +14,6 @@
     <MetadataView Item="PersistentVolume.Metadata" ExplainFieldPrefix="persistentVolume"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        @* 替换Title *@
         <PropertySimpleView Title=@L["StorageClassName"] Item="@PersistentVolume.Spec.StorageClassName"
                             ExplainField="persistentVolume.spec.storageClassName">
         </PropertySimpleView>

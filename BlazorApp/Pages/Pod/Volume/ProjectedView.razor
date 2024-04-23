@@ -1,8 +1,8 @@
-@using k8s.Models
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Utils
-@using BlazorApp.Pages.Common.Html
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Volume.Projected != null)
@@ -17,7 +17,8 @@
             <Card Bordered>
                 <HTable >
                     <HTableColumn Title=@L["Volume"] ExplainField="pod.spec.volumes.projected">
-                        <Tag>@Volume.Name</Tag> <Tag Color="@RandomColorHelper.RandomColor()">Projected</Tag>
+                        <Tag>@Volume.Name</Tag>
+                        <ColorfulTag> Projected</ColorfulTag>
 
                     </HTableColumn>
 
@@ -31,7 +32,7 @@
                             @foreach (var item in p.DownwardAPI.Items)
                             {
                                 <HTableColumn Title=@L["DownwardAPI"] ExplainField="pod.spec.volumes.projected.sources.downwardAPI.items">
-                                    <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@item.Path</Tag>
+                                    <ColorfulTag Icon="hdd">@item.Path</ColorfulTag>
                                     @if (item.FieldRef != null)
                                     {
                                         <Tag>@item.Mode @item.FieldRef.ApiVersion/@item.FieldRef.FieldPath </Tag>
@@ -51,7 +52,7 @@
                             {
                                 <HTableColumn Title=@L["ConfigMap"] ExplainField="pod.spec.volumes.projected.sources.configMap.items">
                                     <RefView Ref="@TransferToRef(p.ConfigMap)"></RefView>
-                                    <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()">@p.ConfigMap.Name</Tag>
+                                    <ColorfulTag Icon="hdd">@p.ConfigMap.Name</ColorfulTag>
                                     <Tag>@ktp.Key => @ktp.Path</Tag>
                                 </HTableColumn>
                             }
@@ -63,7 +64,7 @@
                             {
                                 <HTableColumn Title=@L["Secret"] ExplainField="pod.spec.volumes.projected.sources.secret.items">
                                     <RefView Ref="@TransferToRef(p.Secret)"></RefView>
-                                    <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.Secret.Name</Tag>
+                                    <ColorfulTag Icon="hdd"> @p.Secret.Name</ColorfulTag>
                                     <Tag>@ktp.Key => @ktp.Path</Tag>
                                 </HTableColumn>
                             }
@@ -72,7 +73,7 @@
                         @if (p.ServiceAccountToken != null)
                         {
                             <HTableColumn Title=@L["ServiceAccountToken"] ExplainField="pod.spec.volumes.projected.sources.serviceAccountToken">
-                                <Tag Icon="hdd" Color="@RandomColorHelper.RandomColor()"> @p.ServiceAccountToken.Path</Tag>
+                                <ColorfulTag Icon="hdd"> @p.ServiceAccountToken.Path</ColorfulTag>
                                 <Tag>@p.ServiceAccountToken.Audience @p.ServiceAccountToken.ExpirationSeconds s</Tag>
                             </HTableColumn>
                         }
@@ -86,22 +87,19 @@
 
 @code {
 
-    [Parameter]
-    public V1Volume Volume { get; set; }
+    [Parameter] public V1Volume Volume { get; set; }
 
-    [Parameter]
-    public int Index { get; set; }
+    [Parameter] public int Index { get; set; }
 
-    [Parameter]
-    public string Namespace { get; set; }
+    [Parameter] public string Namespace { get; set; }
 
 
     private V1ObjectReference TransferToRef(V1ConfigMapProjection item)
     {
         return new V1ObjectReference()
         {
-            Name              = item.Name,
-            Kind              = "ConfigMap",
+            Name = item.Name,
+            Kind = "ConfigMap",
             NamespaceProperty = Namespace
         };
     }
@@ -110,8 +108,8 @@
     {
         return new V1ObjectReference()
         {
-            Name              = item.Name,
-            Kind              = "Secret",
+            Name = item.Name,
+            Kind = "Secret",
             NamespaceProperty = Namespace
         };
     }

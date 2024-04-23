@@ -1,13 +1,12 @@
-@inherits BlazorApp.Pages.Common.PageBase
+@inherits PageBase
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
 @typeparam            T
 @if (Items != null)
 {
     <HTableColumn Title=@Title ExplainField="@ExplainField">
         @foreach (var p in Items)
         {
-            <Tag Color=@RandomColorHelper.RandomColor()>
+            <ColorfulTag>
                 @if (IsBasicType())
                 {
                     @p
@@ -16,7 +15,7 @@
                 {
                     @GetValue(p)
                 }
-            </Tag>
+            </ColorfulTag>
         }
     </HTableColumn>
 }

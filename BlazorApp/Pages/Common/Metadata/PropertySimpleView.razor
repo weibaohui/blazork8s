@@ -1,7 +1,6 @@
-@using Extension
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
+@using Extension
+@inherits PageBase
 
 @if (ChildContent != null || (Item != null && !Item.ToJson().Equals("{}")))
 {
@@ -21,9 +20,9 @@
             }
             else
             {
-                <Tag Color=@RandomColorHelper.RandomColor() OnClick="OnTagClick">
+                <ColorfulTag OnClick="OnTagClick">
                     @Item
-                </Tag>
+                </ColorfulTag>
             }
         }
 

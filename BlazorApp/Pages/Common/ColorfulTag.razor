@@ -1,20 +1,94 @@
-@using Extension
 @using BlazorApp.Utils
+@using Extension
+@using Microsoft.AspNetCore.Components.Rendering
+@using Microsoft.AspNetCore.Components.RenderTree
 @if (ChildContent != null)
 {
-    <Tag Color="@RandomColorHelper.RandomColor()">
+    <Tag Color="@GetColor()" OnClick="@OnClick" Style="@Style" Icon="@Icon">
         @ChildContent
     </Tag>
 }
 
 @code {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    [Parameter] public RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public string Style { get; set; }
+    [Parameter] public string Icon { get; set; }
+
+//指定计算颜色的key
+    [Parameter] public string ColorKey { get; set; }
+
+//指定颜色
+    [Parameter] public string Color { get; set; }
+    private string _key = "";
 
     private string GetColor()
     {
-        var x = (((string) ChildContent.Target) ?? string.Empty).ToMd5Digits();
-        return Enum.GetValues(typeof(RandomColor)).GetValue(x % 11)?.ToString();
-     }
+        return !Color.IsNullOrEmpty() ? Color : RandomColorHelper.ColorfulTagHexRgb(_key);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ColorKey.IsNullOrEmpty())
+        {
+            var builder = new RenderTreeBuilder();
+            builder.AddContent(0, ChildContent);
+            var frames = builder.GetFrames();
+            _key = GetChildContentText(frames);
+        }
+        else
+        {
+            _key = ColorKey;
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+    private string ProcessRenderFragment(RenderFragment fragment)
+    {
+        var builder = new RenderTreeBuilder();
+        builder.AddContent(0, fragment);
+        var frames = builder.GetFrames();
+        return GetChildContentText(frames);
+    }
+
+    private string GetChildContentText(ArrayRange<RenderTreeFrame> frames)
+    {
+        var ret = "";
+
+        foreach (var frame in frames.Array)
+        {
+            switch (frame.FrameType)
+            {
+                case RenderTreeFrameType.Attribute:
+                    ret += frame.AttributeName;
+                    ret += ProcessRenderFragment((RenderFragment)frame.AttributeValue);
+                    break;
+                case RenderTreeFrameType.Text:
+                    ret += frame.TextContent;
+                    break;
+                case RenderTreeFrameType.None:
+                    break;
+                case RenderTreeFrameType.Element:
+                    break;
+                case RenderTreeFrameType.Component:
+                    break;
+                case RenderTreeFrameType.Region:
+                    break;
+                case RenderTreeFrameType.ElementReferenceCapture:
+                    break;
+                case RenderTreeFrameType.ComponentReferenceCapture:
+                    break;
+                case RenderTreeFrameType.Markup:
+                    break;
+                case RenderTreeFrameType.ComponentRenderMode:
+                    break;
+                case RenderTreeFrameType.NamedEvent:
+                    break;
+            }
+        }
+
+        return ret;
+    }
 
 }

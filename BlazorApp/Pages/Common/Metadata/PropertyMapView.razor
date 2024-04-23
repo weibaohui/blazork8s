@@ -1,6 +1,5 @@
+@inherits PageBase
 @using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
 @typeparam            T
 @if (Items != null)
 {
@@ -10,16 +9,16 @@
             @if (EveryItemOneRow)
             {
                 <div>
-                    <Tag Color=@RandomColorHelper.RandomColor()>
+                    <ColorfulTag>
                         <span>@($"{p.Key}={GetSumValue(p.Value)}")</span>
-                    </Tag>
+                    </ColorfulTag>
                 </div>
             }
             else
             {
-                <Tag Color=@RandomColorHelper.RandomColor()>
+                <ColorfulTag>
                     <span>@($"{p.Key}={GetSumValue(p.Value)}")</span>
-                </Tag>
+                </ColorfulTag>
             }
         }
     </HTableColumn>

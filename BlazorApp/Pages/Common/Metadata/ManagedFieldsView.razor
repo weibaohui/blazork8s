@@ -1,8 +1,7 @@
+@using BlazorApp.Pages.Common.Html
 @using Extension
 @using k8s.Models
-@using BlazorApp.Pages.Common.Html
-@using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
+@inherits PageBase
 
 @if (ManagedFields is { Count: > 0 })
 {
@@ -10,9 +9,9 @@
         @foreach (var entry in ManagedFields)
         {
             <div>
-                <Tag Color="@RandomColorHelper.RandomColor()">
+                <ColorfulTag>
                     @($"{entry.Manager} {entry.Operation} {entry.Time.GetValueOrDefault().ToLocalTime().ToFriendlyDisplay()}")
-                </Tag>
+                </ColorfulTag>
             </div>
         }
 
@@ -22,11 +21,8 @@
 @code {
 
 
+    [Parameter] public IList<V1ManagedFieldsEntry> ManagedFields { get; set; }
 
-    [Parameter]
-    public IList<V1ManagedFieldsEntry> ManagedFields { get; set; }
-
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 
 }

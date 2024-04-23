@@ -44,7 +44,9 @@
                     <AntDesign.Column Title=@L["EndPoints"] TData="string">
                         @foreach (var p in GetEndPointsIpPorts(context))
                         {
-                            <ColorfulTag>@p</ColorfulTag>
+                            <li>
+                                <ColorfulTag>@p</ColorfulTag>
+                            </li>
                         }
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
