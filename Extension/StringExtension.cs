@@ -53,26 +53,30 @@ public static class StringExtensions
     public static string ToMd5Str(this string input)
     {
         // Use input string to calculate MD5 hash
-        MD5 md5        = MD5.Create();
+        var md5 = MD5.Create();
         var inputBytes = Encoding.ASCII.GetBytes(input);
-        var hashBytes  = md5.ComputeHash(inputBytes);
+        var hashBytes = md5.ComputeHash(inputBytes);
 
         // Convert the byte array to hexadecimal string
-        StringBuilder sb = new StringBuilder();
+        var sb = new StringBuilder();
         foreach (var t in hashBytes)
         {
             sb.Append(t.ToString("X2"));
             // To force the hex string to lower-case letters instead of
-            // upper-case, use he following line instead:
+            // upper-case, use the following line instead:
             // sb.Append(hashBytes[i].ToString("x2"));
         }
 
         return sb.ToString();
     }
 
-    public static long ToMd5Digits(this string str)
+    public static long ToNumeric(this string input)
     {
-        return Convert.ToInt64(str.ToMd5Str().RemoveStringOfNonDigits());
+        // ASCII 码的范围是 0 到 127
+        // 通过乘以 128，可以确保任何一个字符的 ASCII 码在生成的数字值中都有足够的空间表示，而不会与其他字符的 ASCII 码相互重叠。
+        // 这种方式可以使得生成的数字值在一定程度上保持唯一性，尽管这并不是绝对的，因为仍然存在可能的冲突，特别是对于较短的字符串或较小的数字范围。
+
+        return Math.Abs(input.Aggregate<char, long>(0, (current, c) => current * 2 + c));
     }
 
     /// <summary>
