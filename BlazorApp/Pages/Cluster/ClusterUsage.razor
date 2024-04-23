@@ -62,29 +62,35 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var nodesMetrics = await MetricsService.NodeMetrics();
         var nodes = NodeService.List();
         foreach (var node in nodes)
         {
             _allocatedCpu += node.Status.Allocatable["cpu"].HumanizeValue();
             _allocatedMemory += node.Status.Allocatable["memory"].HumanizeValue();
-
             _allocatedPods += node.Status.Allocatable["pods"].ToInt32();
+            _metricsPods += NodeService.GetPodCount(node.Name());
+        }
 
-            var metrics = nodesMetrics.FirstOrDefault(w => w.Metadata.Name == node.Name());
-            if (metrics != null)
+        _allocatedCpu = ResourceQuantityUnitConverter.CpuUnitConvert($"{_allocatedCpu}");
+        _allocatedMemory = ResourceQuantityUnitConverter.MemoryUnitConvert($"{_allocatedMemory}");
+
+
+        var metricsServerReady = await MetricsService.MetricsServerReady();
+        if (metricsServerReady)
+        {
+            var nodesMetrics = await MetricsService.NodeMetrics();
+
+            foreach (var node in nodes)
             {
+                var metrics = nodesMetrics.FirstOrDefault(w => w.Metadata.Name == node.Name());
+                if (metrics == null) continue;
                 _metricsCpu += metrics.Usage["cpu"].HumanizeValue();
                 _metricsMemory += metrics.Usage["memory"].HumanizeValue();
             }
 
-            _metricsPods += NodeService.GetPodCount(node.Name());
+            _metricsCpu = ResourceQuantityUnitConverter.CpuUnitConvert($"{_metricsCpu}");
+            _metricsMemory = ResourceQuantityUnitConverter.MemoryUnitConvert($"{_metricsMemory}");
         }
-
-        _metricsCpu = ResourceQuantityUnitConverter.CpuUnitConvert($"{_metricsCpu}");
-        _allocatedCpu = ResourceQuantityUnitConverter.CpuUnitConvert($"{_allocatedCpu}");
-        _allocatedMemory = ResourceQuantityUnitConverter.MemoryUnitConvert($"{_allocatedMemory}");
-        _metricsMemory = ResourceQuantityUnitConverter.MemoryUnitConvert($"{_metricsMemory}");
 
 
         _podPercent = Math.Round((double)_metricsPods / (double)_allocatedPods * 100, 2);
