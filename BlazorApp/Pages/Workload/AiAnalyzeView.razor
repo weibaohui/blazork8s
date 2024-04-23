@@ -1,8 +1,8 @@
 @using Extension
 @inherits BlazorApp.Pages.Common.DrawerPageBase<BlazorApp.Service.AI.IAiService.AiChatData>
 
-<div>
+<Card>
     <p>
         @((MarkupString)Advice.ToHtmlDisplay())
     </p>
-</div>
+</Card>

@@ -29,6 +29,7 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
 
 
     [Inject] private IMessageService MessageService { get; set; }
+    [Inject] private IPromptService PromptService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -124,9 +125,8 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
         _translateResult = "";
         await InvokeAsync(StateHasChanged);
 
-        var language = SimpleI18NStringLocalizer.LanguageMap[_cultureName];
-        _translateResult =
-            await AiService.AIChat($"请将下面的内容，逐字翻译为{language}。注意请不要遗漏细节并保持原来的格式：\r" + _currentItem.description);
+        var prompt = PromptService.GetPrompt("Translate");
+        _translateResult = await AiService.AIChat($"{prompt}\r" + _currentItem.description);
         await InvokeAsync(StateHasChanged);
     }
 }

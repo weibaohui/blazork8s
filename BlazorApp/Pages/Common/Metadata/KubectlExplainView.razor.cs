@@ -24,6 +24,7 @@ public partial class KubectlExplainView : DrawerPageBase<string>
     [Inject] private IAiService AiService { get; set; }
 
     [Inject] private ILogger<KubectlExplainView> Logger { get; set; }
+    [Inject] private IPromptService PromptService { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -77,9 +78,9 @@ public partial class KubectlExplainView : DrawerPageBase<string>
         _translateResult = "";
         await InvokeAsync(StateHasChanged);
 
-        var language = SimpleI18NStringLocalizer.LanguageMap[_cultureName];
-        _translateResult =
-            await AiService.AIChat($"请将下面的内容，逐字翻译为{language}。注意请不要遗漏细节并保持原来的格式：\r" + _result);
+        var prompt = PromptService.GetPrompt("Translate");
+
+        _translateResult = await AiService.AIChat($"{prompt}\r" + _result);
         await InvokeAsync(StateHasChanged);
     }
 }
