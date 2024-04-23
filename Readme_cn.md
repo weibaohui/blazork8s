@@ -123,26 +123,19 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 或镜像/app/目录下的appsettings.json
 
 ```
-  "AI": {
-    "Enable": true, //是否开启
-    "Select": "QwenAI" //选择哪一个大模型。可选阿里通义千问、科大讯飞星火大模型
+   "AI": {
+    "Enable": true, //enabled
+    "Select": "OpenAI" //choose a model from below
   },
-   "QwenAI": {
-    "APIKey": "sk-xxxxxxx7dd3494880a7920axxxxxxxxx",
-    "Prompt": {
-      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议：",
-      "security": "简明扼要地用Kubernetes安全专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议:"
-    }
+  "OpenAI": {
+    "Token": "sk-xxx",
+    "Model": "gpt-3.5-turbo",
+    "BaseUrl": "https://api.openai.com/v1"
   },
-  "XunFeiAI": {
-    "APPID": "xxxxxx",
-    "APISecret": "XXXjYzgzY2E0ZTkwxxxxxxYxMDJkYTBl",
-    "APIKey": "xxxxxxx7dd3494880a7920axxxxxxxxx",
-    "Prompt": {
-      "error": "简明扼要地用 Kubernetes 专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议：",
-      "security": "简明扼要地用Kubernetes安全专家的身份判断一下这段输出有什么问题，要整齐列出问题对象和可能原因以及操作建议:"
-    }
-  },
+  "GeminiAI": {
+    "APIKey": "AIxxxxxxx7dd3494880a7920axxxxxxxxx",
+    "Model": "gemini-pro"
+  }
 ```
 
 ## 大模型应用效果

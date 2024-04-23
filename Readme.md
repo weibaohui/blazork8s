@@ -120,24 +120,17 @@ Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.js
 ```
   "AI": {
     "Enable": true, //enabled
-    "Select": "QwenAI" //choose a model
+    "Select": "OpenAI" //choose a model from below
   },
-   "QwenAI": {
-    "APIKey": "sk-xxxxxxx7dd3494880a7920axxxxxxxxx",
-    "Prompt": {
-      "error": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:",
-      "security": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:"
-    }
+  "OpenAI": {
+    "Token": "sk-xxx",
+    "Model": "gpt-3.5-turbo",
+    "BaseUrl": "https://api.openai.com/v1"
   },
-  "XunFeiAI": {
-    "APPID": "xxxxxx",
-    "APISecret": "XXXjYzgzY2E0ZTkwxxxxxxYxMDJkYTBl",
-    "APIKey": "xxxxxxx7dd3494880a7920axxxxxxxxx",
-    "Prompt": {
-      "error": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:",
-      "security": "Concisely, in the role of a Kubernetes expert, assess the provided output for any issues. Clearly list the problematic components, potential causes, and recommend appropriate actions:"
-    }
-  },
+  "GeminiAI": {
+    "APIKey": "AIxxxxxxx7dd3494880a7920axxxxxxxxx",
+    "Model": "gemini-pro"
+  }
 ```
 
 ## Effectiveness
