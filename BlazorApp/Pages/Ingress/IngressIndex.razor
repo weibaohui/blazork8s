@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using Extension
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1Ingress>
 @if (TableData.PagedItems != null)
@@ -35,7 +36,7 @@
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
 
-                    <AntDesign.Column Title=@L["Class"] TData="string">
+                    <AntDesign.Column Title=@L["IngressClass"] TData="string">
                         @context.Spec.IngressClassName
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Hosts"] TData="string">
@@ -43,16 +44,24 @@
                         {
                             @foreach (var rule in context.Spec.Rules)
                             {
-                                @if (rule.Host != null)
+                                @foreach (var path in rule.Http.Paths)
                                 {
                                     <div>
-                                        <ColorfulTag>@rule.Host</ColorfulTag>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div>
-                                        <ColorfulTag>*</ColorfulTag>
+                                        <a href="@GetRulePathDisplay(rule, path, context.Spec.Tls)"
+                                           target="_blank">
+                                            @GetRulePathDisplay(rule, path, context.Spec.Tls)
+                                        </a>
+                                        @{
+                                            var backend = GetRulePathBackend(path);
+                                        }
+                                        @if (!backend.IsNullOrEmpty())
+                                        {
+                                            @(" -> ")
+                                            <RefView Ref="@GetRulePathBackend(path, context.Namespace())"
+                                                     FullView="true">
+                                            </RefView>
+                                            <Tag>@path?.Backend?.Service?.Port?.Number</Tag>
+                                        }
                                     </div>
                                 }
                             }

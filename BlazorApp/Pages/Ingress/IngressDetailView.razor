@@ -9,7 +9,7 @@
     <MetadataView Item="Ingress.Metadata" ExplainFieldPrefix="ingress"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title=@L["IngressClassName"] Item="@Ingress.Spec.IngressClassName"
+        <PropertySimpleView Title=@L["IngressClass"] Item="@Ingress.Spec.IngressClassName"
                             ExplainField="ingress.spec.ingressClassName">
         </PropertySimpleView>
         <IngressBackendView Title=@L["DefaultBackend"] Backend="@Ingress.Spec.DefaultBackend"></IngressBackendView>
