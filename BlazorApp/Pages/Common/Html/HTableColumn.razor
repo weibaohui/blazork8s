@@ -3,7 +3,7 @@
 <HTr>
     <HTd>
         @Title
-        @if (ExplainField != null)
+        @if (ExplainField != null && !string.IsNullOrWhiteSpace(ExplainField))
         {
             <KubectlExplainButton Field="@ExplainField"></KubectlExplainButton>
         }
