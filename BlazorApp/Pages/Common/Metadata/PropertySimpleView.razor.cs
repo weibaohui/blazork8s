@@ -1,4 +1,3 @@
-#nullable enable
 using System.Threading.Tasks;
 using Extension;
 using Microsoft.AspNetCore.Components;
@@ -9,7 +8,7 @@ public partial class PropertySimpleView : PageBase
 {
     [Parameter] public RenderFragment ChildContent { get; set; }
 
-    [Parameter] public object? Item { get; set; }
+    [Parameter] public object Item { get; set; }
 
     [Parameter] public string Title { get; set; } = "";
 
@@ -30,7 +29,7 @@ public partial class PropertySimpleView : PageBase
         return OnClick.InvokeAsync();
     }
 
-    private string? PrettyJson()
+    private string PrettyJson()
     {
         return Item?.ToPrettyJson().ToHtmlDisplay();
     }

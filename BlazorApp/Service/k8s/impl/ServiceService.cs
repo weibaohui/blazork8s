@@ -16,9 +16,9 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
         return await kubeService.Client().DeleteNamespacedServiceAsync(name, ns);
     }
 
-    public async Task<List<Result>> Analyze()
+    public Task<List<Result>> Analyze()
     {
-        var items   = List();
+        var items = List();
         var results = new List<Result>();
 
         //通过EndPoints反向看Service，1是subset为空，说明Service Label可能有问题
@@ -66,10 +66,10 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
                     if (subset.NotReadyAddresses is not { Count: > 0 }) continue;
                     foreach (var addr in subset.NotReadyAddresses)
                     {
-
                         failures.Add(new Failure()
                         {
-                            Text = $"Service Endpoints {ep.Namespace()}/{ep.Name()} is not ready at {addr.Ip},target to {addr.TargetRef.Kind} {addr.TargetRef.NamespaceProperty}/{addr.TargetRef.Name}",
+                            Text =
+                                $"Service Endpoints {ep.Namespace()}/{ep.Name()} is not ready at {addr.Ip},target to {addr.TargetRef.Kind} {addr.TargetRef.NamespaceProperty}/{addr.TargetRef.Name}",
                         });
                     }
                 }
@@ -79,12 +79,14 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
             if (failures.Count <= 0) continue;
             results.Add(Result.NewResult(ep, failures));
         }
+
         if (results.Count == 0)
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("Endpoints");
         }
+
         ClusterInspectionResultContainer.Instance.AddResourcesCount("Endpoints", items.ToList().Count);
 
-        return results;
+        return Task.FromResult(results);
     }
 }

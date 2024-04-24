@@ -69,9 +69,9 @@ public class DeploymentService(IKubeService kubeService)
     }
 
 
-    public async Task<List<Result>> Analyze()
+    public Task<List<Result>> Analyze()
     {
-        var items   = List();
+        var items = List();
         var results = new List<Result>();
         foreach (var item in items.ToList())
         {
@@ -89,14 +89,15 @@ public class DeploymentService(IKubeService kubeService)
 
 
             if (failures.Count <= 0) continue;
-            results.Add(Result.NewResult(item,failures));
+            results.Add(Result.NewResult(item, failures));
         }
+
         if (results.Count == 0)
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("Deployment");
         }
 
         ClusterInspectionResultContainer.Instance.AddResourcesCount("Deployment", items.ToList().Count);
-        return results;
+        return Task.FromResult(results);
     }
 }

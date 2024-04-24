@@ -10,9 +10,9 @@ using k8s.Models;
 namespace BlazorApp.Service.k8s.impl;
 
 public class IngressService(
-    IKubeService         kubeService,
-    IServiceService      svcService,
-    ISecretService       secretService,
+    IKubeService kubeService,
+    IServiceService svcService,
+    ISecretService secretService,
     IIngressClassService ingressClassService)
     : CommonAction<V1Ingress>, IIngressService
 {
@@ -21,9 +21,9 @@ public class IngressService(
         return await kubeService.Client().DeleteNamespacedIngressAsync(name, ns);
     }
 
-    public async Task<List<Result>> Analyze()
+    public Task<List<Result>> Analyze()
     {
-        var items   = List();
+        var items = List();
         var results = new List<Result>();
         foreach (var item in items.ToList())
         {
@@ -77,7 +77,8 @@ public class IngressService(
                         {
                             continue;
                         }
-                        var svc     = svcService.GetByName(item.Namespace(), svcName);
+
+                        var svc = svcService.GetByName(item.Namespace(), svcName);
                         if (svc == null)
                         {
                             failures.Add(new Failure
@@ -116,8 +117,9 @@ public class IngressService(
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("Ingress");
         }
+
         ClusterInspectionResultContainer.Instance.AddResourcesCount("Ingress", items.ToList().Count);
 
-        return results;
+        return Task.FromResult(results);
     }
 }

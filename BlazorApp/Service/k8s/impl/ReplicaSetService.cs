@@ -40,7 +40,7 @@ namespace BlazorApp.Service.k8s.impl
         }
 
 
-        public async Task<List<Result>> Analyze()
+        public Task<List<Result>> Analyze()
         {
             var items = List();
             var results = new List<Result>();
@@ -77,7 +77,7 @@ namespace BlazorApp.Service.k8s.impl
 
             ClusterInspectionResultContainer.Instance.AddResourcesCount("ReplicaSet", items.ToList().Count);
 
-            return results;
+            return Task.FromResult(results);
         }
     }
 }

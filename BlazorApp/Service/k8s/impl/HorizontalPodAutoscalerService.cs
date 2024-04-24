@@ -9,10 +9,10 @@ using k8s.Models;
 namespace BlazorApp.Service.k8s.impl;
 
 public class HorizontalPodAutoscalerService(
-    IKubeService                  kubeService,
-    IDeploymentService            deploymentService,
-    IReplicaSetService            replicaSetService,
-    IStatefulSetService           statefulSetService,
+    IKubeService kubeService,
+    IDeploymentService deploymentService,
+    IReplicaSetService replicaSetService,
+    IStatefulSetService statefulSetService,
     IReplicationControllerService replicationControllerService)
     : CommonAction<V2HorizontalPodAutoscaler>, IHorizontalPodAutoscalerService
 {
@@ -26,9 +26,9 @@ public class HorizontalPodAutoscalerService(
         return await kubeService.Client().AutoscalingV1.DeleteNamespacedHorizontalPodAutoscalerAsync(name, ns);
     }
 
-    public async Task<List<Result>> Analyze()
+    public Task<List<Result>> Analyze()
     {
-        var items   = List();
+        var items = List();
         var results = new List<Result>();
         foreach (var item in items.ToList())
         {
@@ -157,15 +157,15 @@ public class HorizontalPodAutoscalerService(
                 }
             }
 
-            if (item.Status.Conditions is {Count:>0})
+            if (item.Status.Conditions is { Count: > 0 })
             {
                 foreach (var condition in item.Status.Conditions)
                 {
-                    if (condition.Type=="ScalingActive" && condition.Status=="False")
+                    if (condition.Type == "ScalingActive" && condition.Status == "False")
                     {
                         failures.Add(new Failure()
                         {
-                            Text =  $"HPA {item.Namespace()}/{item.Name()} {condition.Reason} {condition.Message}"
+                            Text = $"HPA {item.Namespace()}/{item.Name()} {condition.Reason} {condition.Message}"
                         });
                     }
                 }
@@ -179,8 +179,9 @@ public class HorizontalPodAutoscalerService(
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("HorizontalPodAutoscaler");
         }
+
         ClusterInspectionResultContainer.Instance.AddResourcesCount("HorizontalPodAutoscaler", items.ToList().Count);
 
-        return results;
+        return Task.FromResult(results);
     }
 }

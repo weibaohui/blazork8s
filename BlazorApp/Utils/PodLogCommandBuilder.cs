@@ -1,4 +1,3 @@
-#nullable enable
 using System;
 using Extension;
 using Microsoft.Extensions.Logging;
@@ -7,22 +6,22 @@ namespace BlazorApp.Utils;
 
 public class PodLogCommandBuilder
 {
-    private static readonly ILogger<PodLogCommandBuilder> Logger         = LoggingHelper<PodLogCommandBuilder>.Logger();
-    private                 bool                          _allContainers = false;
-    private                 string                        _command;
-    private                 string                        _containerName;
-    private                 bool                          _follow;
-    private                 bool                          _ignoreErrors;
-    private                 string                        _namespace;
+    private static readonly ILogger<PodLogCommandBuilder> Logger = LoggingHelper<PodLogCommandBuilder>.Logger();
+    private bool _allContainers = false;
+    private string _command;
+    private string _containerName;
+    private bool _follow;
+    private bool _ignoreErrors;
+    private string _namespace;
 
-    private string    _podName;
-    private string    _podRunningTimeout;
-    private bool      _prefix;
-    private bool      _previous;
-    private bool      _showTimestamp;
-    private string    _since;
+    private string _podName;
+    private string _podRunningTimeout;
+    private bool _prefix;
+    private bool _previous;
+    private bool _showTimestamp;
+    private string _since;
     private DateTime? _sinceTimestamp;
-    private string    _tail;
+    private string _tail;
 
 
     public PodLogCommandBuilder Build()
@@ -65,7 +64,7 @@ public class PodLogCommandBuilder
 
     #region Getter Setter
 
-    public string? GetCommand()
+    public string GetCommand()
     {
         return _command;
     }

@@ -11,7 +11,8 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class StatefulSetService(IKubeService kubeService,
+public class StatefulSetService(
+    IKubeService kubeService,
     IServiceService svcService,
     IStorageClassService storageClassService) : CommonAction<V1StatefulSet>, IStatefulSetService
 {
@@ -19,9 +20,9 @@ public class StatefulSetService(IKubeService kubeService,
     {
         return await kubeService.Client().DeleteNamespacedStatefulSetAsync(name, ns);
     }
+
     public async Task UpdateReplicas(V1StatefulSet item, int? replicas)
     {
-
         if (item == null) return;
 
         if (replicas < 0)
@@ -70,9 +71,9 @@ public class StatefulSetService(IKubeService kubeService,
     }
 
 
-    public async Task<List<Result>> Analyze()
+    public Task<List<Result>> Analyze()
     {
-        var items   = List();
+        var items = List();
         var results = new List<Result>();
         foreach (var item in items.ToList())
         {
@@ -90,22 +91,20 @@ public class StatefulSetService(IKubeService kubeService,
             {
                 var svcName = item.Spec.ServiceName;
                 //检查是否存在
-                var svc = svcService.GetByName(item.Namespace(),svcName);
+                var svc = svcService.GetByName(item.Namespace(), svcName);
                 if (svc == null)
                 {
-
                     failures.Add(new Failure
                     {
                         Text = $"StatefulSet  {item.Namespace()}/{item.Name()} spec.serviceName {svcName} not exist",
                         KubernetesDocField = "statefulSet.spec.serviceName",
                     });
-
                 }
             }
 
 
             //检查存储配置，尤其是storageClassName
-            if(item.Spec.VolumeClaimTemplates  is {Count: > 0})
+            if (item.Spec.VolumeClaimTemplates is { Count: > 0 })
             {
                 foreach (var pvcTemplate in item.Spec.VolumeClaimTemplates)
                 {
@@ -113,25 +112,26 @@ public class StatefulSetService(IKubeService kubeService,
                     var storageClass = storageClassService.GetByName(pvcTemplate.Spec.StorageClassName);
                     if (storageClass == null)
                     {
-
                         failures.Add(new Failure
                         {
-                            Text          = $"StatefulSet  {item.Namespace()}/{item.Name()} use storageClass {pvcTemplate.Spec.StorageClassName} not exist",
+                            Text =
+                                $"StatefulSet  {item.Namespace()}/{item.Name()} use storageClass {pvcTemplate.Spec.StorageClassName} not exist",
                         });
                     }
                 }
             }
 
             if (failures.Count <= 0) continue;
-            results.Add(Result.NewResult(item,failures));
+            results.Add(Result.NewResult(item, failures));
         }
 
         if (results.Count == 0)
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("StatefulSet");
         }
+
         ClusterInspectionResultContainer.Instance.AddResourcesCount("StatefulSet", items.ToList().Count);
 
-        return results;
+        return Task.FromResult(results);
     }
 }

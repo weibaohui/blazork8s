@@ -16,9 +16,9 @@ public class CronJobService(IKubeService kubeService) : CommonAction<V1CronJob>,
         return await kubeService.Client().DeleteNamespacedCronJobAsync(name, ns);
     }
 
-    public async Task<List<Result>> Analyze()
+    public Task<List<Result>> Analyze()
     {
-        var items   = List();
+        var items = List();
         var results = new List<Result>();
         foreach (var item in items.ToList())
         {
@@ -64,8 +64,9 @@ public class CronJobService(IKubeService kubeService) : CommonAction<V1CronJob>,
         {
             ClusterInspectionResultContainer.Instance.GetPassResources().Add("CronJob");
         }
+
         ClusterInspectionResultContainer.Instance.AddResourcesCount("CronJob", items.ToList().Count);
-        return results;
+        return Task.FromResult(results);
     }
 
 
