@@ -52,12 +52,12 @@
                                             @IngressService.GetRulePathDisplayUrl(rule, path, context.Spec.Tls)
                                         </a>
                                         @{
-                                            var backend = GetRulePathBackend(path);
+                                            var backend = IngressService.GetRulePathBackend(path);
                                         }
                                         @if (!backend.IsNullOrEmpty())
                                         {
                                             @(" -> ")
-                                            <RefView Ref="@GetRulePathBackend(path, context.Namespace())"
+                                            <RefView Ref="@IngressService.GetRulePathBackend(path, context.Namespace())"
                                                      FullView="true">
                                             </RefView>
                                             <Tag>@path?.Backend?.Service?.Port?.Number</Tag>

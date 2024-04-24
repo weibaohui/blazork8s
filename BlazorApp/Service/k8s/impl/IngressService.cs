@@ -159,4 +159,28 @@ public class IngressService(
 
         return pathDisplay;
     }
+
+    public string GetRulePathBackend(V1HTTPIngressPath path)
+    {
+        var pathDisplay = "";
+
+        if (path?.Backend?.Service?.Name != null && !string.IsNullOrWhiteSpace(path.Backend?.Service?.Name))
+            pathDisplay += $"{path.Backend?.Service?.Name}";
+
+        if (path?.Backend?.Service?.Port?.Number != null) pathDisplay += $":{path.Backend?.Service?.Port?.Number}";
+
+        return pathDisplay;
+    }
+
+    public V1ObjectReference GetRulePathBackend(V1HTTPIngressPath path, string ns)
+    {
+        var reference = new V1ObjectReference
+        {
+            ApiVersion = "v1",
+            Kind = "Service",
+            Name = path?.Backend?.Service?.Name,
+            NamespaceProperty = ns
+        };
+        return reference;
+    }
 }
