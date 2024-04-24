@@ -39,7 +39,7 @@
                     <AntDesign.Column Title=@L["IngressClass"] TData="string">
                         @context.Spec.IngressClassName
                     </AntDesign.Column>
-                    <AntDesign.Column Title=@L["Hosts"] TData="string">
+                    <AntDesign.Column Title=@L["Detail"] TData="string">
                         @if (context.Spec.Rules is { Count: > 0 })
                         {
                             @foreach (var rule in context.Spec.Rules)
@@ -47,9 +47,9 @@
                                 @foreach (var path in rule.Http.Paths)
                                 {
                                     <div>
-                                        <a href="@GetRulePathDisplay(rule, path, context.Spec.Tls)"
+                                        <a href="@IngressService.GetRulePathDisplayUrl(rule, path, context.Spec.Tls)"
                                            target="_blank">
-                                            @GetRulePathDisplay(rule, path, context.Spec.Tls)
+                                            @IngressService.GetRulePathDisplayUrl(rule, path, context.Spec.Tls)
                                         </a>
                                         @{
                                             var backend = GetRulePathBackend(path);

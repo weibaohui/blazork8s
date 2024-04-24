@@ -15,7 +15,24 @@
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
 
+        <AntDesign.Column Title=@L["Detail"] TData="string">
+            @if (context.Spec.Rules is { Count: > 0 })
+            {
+                @foreach (var rule in context.Spec.Rules)
+                {
+                    @foreach (var path in rule.Http.Paths)
+                    {
+                        <div>
+                            <a href="@IngressService.GetRulePathDisplayUrl(rule, path, context.Spec.Tls)"
+                               target="_blank">
+                                @IngressService.GetRulePathDisplayUrl(rule, path, context.Spec.Tls)
+                            </a>
 
+                        </div>
+                    }
+                }
+            }
+        </AntDesign.Column>
     </Table>
 }
 

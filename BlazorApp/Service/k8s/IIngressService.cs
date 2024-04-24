@@ -10,4 +10,5 @@ public interface IIngressService : ICommonAction<V1Ingress>
     Task<List<Result>> Analyze();
 
     IList<V1Ingress> ListByServiceList(IList<V1Service> services);
+    string GetRulePathDisplayUrl(V1IngressRule rule, V1HTTPIngressPath path, IList<V1IngressTLS> specTls);
 }

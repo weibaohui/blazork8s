@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
@@ -31,25 +30,6 @@ public partial class IngressIndex : TableBase<V1Ingress>
         await PageDrawerHelper<V1Ingress>.Instance
             .SetDrawerService(PageDrawerService.DrawerService)
             .ShowDrawerAsync<IngressDetailView, V1Ingress, bool>(item);
-    }
-
-    private static string GetRulePathDisplay(V1IngressRule rule, V1HTTPIngressPath path, IList<V1IngressTLS> specTls)
-    {
-        var pathDisplay = "";
-        if (specTls is { Count: > 0 })
-            pathDisplay += "https://";
-        else
-            pathDisplay += "http://";
-
-        if (rule?.Host != null && !string.IsNullOrWhiteSpace(rule?.Host))
-            pathDisplay += $"{rule.Host}";
-        else
-            pathDisplay += "*";
-
-        if (path?.Path != null) pathDisplay += $"{path.Path}";
-
-
-        return pathDisplay;
     }
 
     private static string GetRulePathBackend(V1HTTPIngressPath path)

@@ -140,4 +140,23 @@ public class IngressService(
 
         return list;
     }
+
+    public string GetRulePathDisplayUrl(V1IngressRule rule, V1HTTPIngressPath path, IList<V1IngressTLS> specTls)
+    {
+        var pathDisplay = "";
+        if (specTls is { Count: > 0 })
+            pathDisplay += "https://";
+        else
+            pathDisplay += "http://";
+
+        if (rule?.Host != null && !string.IsNullOrWhiteSpace(rule?.Host))
+            pathDisplay += $"{rule.Host}";
+        else
+            pathDisplay += "*";
+
+        if (path?.Path != null) pathDisplay += $"{path.Path}";
+
+
+        return pathDisplay;
+    }
 }
