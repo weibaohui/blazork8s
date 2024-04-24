@@ -1,6 +1,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Container
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Service
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<V1Pod>
 @if (Item != null)
@@ -19,6 +20,7 @@
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <PodStatusView PodStatus="@Item.Status"></PodStatusView>
 
+    <MiniServiceListView Labels="@Item.Metadata.Labels"></MiniServiceListView>
 
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }

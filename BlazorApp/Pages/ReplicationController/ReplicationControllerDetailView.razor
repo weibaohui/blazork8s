@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Service
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1ReplicationController>
 @if (ReplicationController != null)
 {
@@ -26,6 +27,7 @@
     </HTable>
 
     <MiniPodListView ControllerByUid="@ReplicationController.Metadata.Uid"></MiniPodListView>
+    <MiniServiceListView Labels="@ReplicationController.Metadata.Labels"></MiniServiceListView>
 
     <MiniEventListView Uid="@ReplicationController.Metadata.Uid"></MiniEventListView>
 }

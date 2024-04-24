@@ -4,6 +4,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Service
 @using k8s.Models
 @using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1StatefulSet>
@@ -89,5 +90,7 @@
     </HTable>
 
     <MiniPodListView ControllerByUid="@StatefulSet.Metadata.Uid"></MiniPodListView>
+    <MiniServiceListView Labels="@StatefulSet.Metadata.Labels"></MiniServiceListView>
+
     <MiniEventListView Uid="@StatefulSet.Metadata.Uid"></MiniEventListView>
 }

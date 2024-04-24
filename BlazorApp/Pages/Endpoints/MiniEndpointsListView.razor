@@ -1,8 +1,8 @@
-@using k8s.Models
 @using BlazorApp.Utils
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
-<Divider Orientation="left" Style="font-weight:bold">Endpoints</Divider>
+<Divider Orientation="left" Style="font-weight:bold">@L["Endpoints"]</Divider>
 @if (Items is { Count: > 0 })
 {
     <Table TItem="V1Endpoints" DataSource="@Items"
@@ -23,8 +23,7 @@
 {
 
 
-    [Parameter]
-    public IList<V1Endpoints> Items { get; set; } = new List<V1Endpoints>();
+    [Parameter] public IList<V1Endpoints> Items { get; set; } = new List<V1Endpoints>();
 
     private async Task OnItemNameClick(V1Endpoints item)
     {

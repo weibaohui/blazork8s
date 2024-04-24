@@ -89,4 +89,14 @@ public class ServiceService(IKubeService kubeService, IEndpointsService endpoint
 
         return Task.FromResult(results);
     }
+
+    public IList<V1Service> ListByLabels(IDictionary<string, string> labels)
+    {
+        return List()?
+            .Where(x => x.Spec?.Selector is { Count: > 0 } && x.Spec.Selector.Any(y =>
+                    labels.Any(z => z.Key == y.Key && z.Value == y.Value)
+                )
+            )
+            .ToList();
+    }
 }

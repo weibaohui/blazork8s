@@ -5,6 +5,7 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.ReplicaSet
+@using BlazorApp.Pages.Service
 @using k8s.Models
 @using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
@@ -67,5 +68,6 @@
 
     <MiniReplicaSetListView ControllerByUid="@Deployment.Metadata.Uid"></MiniReplicaSetListView>
     <MiniPodListView Pods="@PodList"></MiniPodListView>
+    <MiniServiceListView Labels="@Deployment.Metadata.Labels"></MiniServiceListView>
     <MiniEventListView Uid="@Deployment.Metadata.Uid"></MiniEventListView>
 }

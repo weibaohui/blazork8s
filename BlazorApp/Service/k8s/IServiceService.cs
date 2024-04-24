@@ -7,6 +7,7 @@ namespace BlazorApp.Service.k8s;
 
 public interface IServiceService : ICommonAction<V1Service>
 {
-     Task<List<Result>> Analyze();
+    Task<List<Result>> Analyze();
 
+    IList<V1Service> ListByLabels(IDictionary<string, string> labels);
 }

@@ -3,6 +3,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
+@using BlazorApp.Pages.Service
 @using k8s.Models
 @using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1DaemonSet>
@@ -62,5 +63,7 @@
         </PropertySimpleView>
     </HTable>
     <MiniPodListView ControllerByUid="@DaemonSet.Metadata.Uid"></MiniPodListView>
+    <MiniServiceListView Labels="@DaemonSet.Metadata.Labels"></MiniServiceListView>
+
     <MiniEventListView Uid="@DaemonSet.Metadata.Uid"></MiniEventListView>
 }
