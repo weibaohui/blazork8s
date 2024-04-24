@@ -8,12 +8,25 @@
     <Table TItem="V1ReplicaSet" DataSource="@Items"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
+        <AntDesign.Column Title=@L["Action"] TData="string">
+            <Button Type="@ButtonType.Primary" OnClick="@(() => OnRolloutClick(context))">@L["Rollout"]</Button>
+        </AntDesign.Column>
+        <AntDesign.Column Title=@L["Id"] TData="string">
+            @{
+                var version = $"{context.Metadata?.Annotations?["deployment.kubernetes.io/revision"]}";
+                @version
+                if (CurrentRevision == version)
+                {
+                    <Tag Icon="check-circle" Color="success">@L["Current"]</Tag>
+                }
+            }
+        </AntDesign.Column>
         <AntDesign.Column Title=@L["Name"] TData="string">
             <Button OnClick="@(() => OnRsClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
         <AntDesign.Column Title=@L["Pods"] TData="int">
-            @CountPodsByOwner(@context.Metadata.Uid)
+            @CountPodsByOwner(context.Metadata.Uid)
         </AntDesign.Column>
         <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
             @context.CreationTimestamp()?.AgeFromUtc()

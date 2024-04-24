@@ -44,14 +44,14 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
     private async Task OnDescribeClick(T item)
     {
         var type = typeof(T).Name.GetSubstringAfterFirstDigit().ToLower();
-        var command = $"{type} {item.Name()} ";
+        var command = $" describe {type} {item.Name()} ";
         if (!item.Namespace().IsNullOrWhiteSpace())
         {
-            command = $"{type} {item.Name()} -n {item.Namespace()}";
+            command = $" describe {type} {item.Name()} -n {item.Namespace()}";
         }
 
         var options = PageDrawerService.DefaultOptions($"Describe:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<KubectlDescribeView, string, bool>(options, command);
+        await PageDrawerService.ShowDrawerAsync<KubectlCommand, string, bool>(options, command);
     }
 
 

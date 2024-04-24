@@ -7,7 +7,10 @@
             kubectl @_command
         </Alert>
     </p>
-    <p style="background-color: black;color: white">
-        @((MarkupString)_result.ToHtmlDisplay())
-    </p>
+
+    <div style="background-color: #012B36;color: #839496;">
+        <p style="margin: 15px">
+            @((MarkupString)_result.ToHtmlDisplayNoMarkdown())
+        </p>
+    </div>
 </Card>

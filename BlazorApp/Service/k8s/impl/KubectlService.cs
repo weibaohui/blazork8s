@@ -52,7 +52,8 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
             return string.Empty;
         }
 
-        return await Kubectl($"  {command}");
+        _outPutAppendNewLine = true;
+        return await Kubectl($"  {command}", _outPutAppendNewLine);
     }
 
 

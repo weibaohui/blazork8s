@@ -66,7 +66,9 @@
     </HTable>
 
 
-    <MiniReplicaSetListView ControllerByUid="@Deployment.Metadata.Uid"></MiniReplicaSetListView>
+    <MiniReplicaSetListView ControllerByUid="@Deployment.Metadata.Uid"
+                            CurrentRevision="@($"{Deployment.Metadata?.Annotations?["deployment.kubernetes.io/revision"]}")">
+    </MiniReplicaSetListView>
     <MiniPodListView Pods="@PodList"></MiniPodListView>
     @if (Deployment.Spec?.Template.Metadata.Labels is { Count: > 0 })
     {
