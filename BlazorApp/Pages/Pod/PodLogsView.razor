@@ -36,12 +36,19 @@
     </GridRow>
     <GridRow>
         <GridCol>
-            <Checkbox bind-Value="@_showTimestamp" OnChange="@(() => _showTimestamp = !_showTimestamp)">显示时间戳</Checkbox>
-            <Checkbox bind-Value="@_follow" OnChange="@(() => _follow = !_follow)">跟随</Checkbox>
-            <Checkbox bind-Value="@_prefix" OnChange="@(() => _prefix = !_prefix)">显名</Checkbox>
-            <Checkbox bind-Value="@_previous" OnChange="@(() => _previous = !_previous)">前世</Checkbox>
-            <Checkbox bind-Value="@_ignoreErrors" OnChange="@(() => _ignoreErrors = !_ignoreErrors)">忽略错误</Checkbox>
-            <SimpleSelect Style="width:100px;" Placeholder="Pod超时" OnSelectedItemChanged="OnTimeoutSelectChanged">
+            <Checkbox bind-Value="@_showTimestamp"
+                      OnChange="@(() => _showTimestamp = !_showTimestamp)">
+                @L["Show Timestamps"]
+            </Checkbox>
+            <Checkbox bind-Value="@_follow" OnChange="@(() => _follow = !_follow)">@L["Follow"]</Checkbox>
+            <Checkbox bind-Value="@_prefix" OnChange="@(() => _prefix = !_prefix)">@L["Show Prefix"]</Checkbox>
+            <Checkbox bind-Value="@_previous" OnChange="@(() => _previous = !_previous)">@L["Show Previous"]</Checkbox>
+            <Checkbox bind-Value="@_ignoreErrors"
+                      OnChange="@(() => _ignoreErrors = !_ignoreErrors)">
+                @L["Ignore Errors"]
+            </Checkbox>
+            <SimpleSelect Style="width:100px;" Placeholder="@L["Pod Running Timeout"]"
+                          OnSelectedItemChanged="OnTimeoutSelectChanged">
                 <SelectOptions>
                     <SimpleSelectOption Value="1m" Label="1m"></SimpleSelectOption>
                     <SimpleSelectOption Value="5m" Label="5m"></SimpleSelectOption>

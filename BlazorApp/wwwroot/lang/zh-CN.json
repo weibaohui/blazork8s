@@ -659,6 +659,12 @@
   "Sort By": "排序方式",
   "Ok": "确定",
   "Cancel": "取消",
-  "Show Container": "显示容器"
+  "Show Container": "显示容器",
+  "Show Timestamps": "显示时间戳",
+  "Follow": "跟随",
+  "Show Prefix": "显名",
+  "Show Previous": "前世",
+  "Ignore Errors": "忽略错误",
+  "Pod Running Timeout": "Pod超时"
 
 }
