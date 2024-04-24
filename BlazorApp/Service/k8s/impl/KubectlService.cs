@@ -56,15 +56,6 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         return await Kubectl($"  {command}", _outPutAppendNewLine);
     }
 
-
-    public async Task<string> Describe(string resourceAndName)
-    {
-        //执行Describe 命令需要再每行后面增加换行符
-        _outPutAppendNewLine = true;
-        return await Kubectl($" describe {resourceAndName}", _outPutAppendNewLine);
-    }
-
-
     public void SetOutputEventHandler(EventHandler<string> eventHandler)
     {
         OnCommandExecutedHandler = eventHandler;
@@ -109,6 +100,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
         if (Token.IsCancellationRequested) Token = CancellationToken.None;
 
         var cmd = Cli.Wrap("kubectl")
+            .WithValidation(CommandResultValidation.None)
             .WithArguments(command);
         var result = string.Empty;
         try

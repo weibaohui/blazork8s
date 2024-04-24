@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using BlazorApp.Service.k8s;
 using BlazorMonaco.Editor;
 using k8s;
 using Microsoft.AspNetCore.Components;
@@ -8,8 +9,20 @@ namespace BlazorApp.Pages.Common.Metadata;
 public partial class YamlView<T> : DrawerPageBase<T>
 {
     private StandaloneCodeEditor _editor = null!;
-
+    private string _execResult;
+    private bool _loading = false;
+    [Inject] private IKubectlService Kubectl { get; set; }
     [Parameter] public T Item { get; set; }
+
+    private async Task BtnApplyClicked()
+    {
+        _execResult = string.Empty;
+        _loading = true;
+        var yaml = await _editor.GetValue();
+        _execResult = await Kubectl.Apply(yaml);
+        _loading = false;
+    }
+
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
@@ -51,10 +64,17 @@ public partial class YamlView<T> : DrawerPageBase<T>
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         Item = base.Options;
+        Kubectl.SetOutputEventHandler(EventHandler);
+
+        await base.OnInitializedAsync();
     }
 
+    private async void EventHandler(object sender, string resp)
+    {
+        _execResult += resp;
+        await InvokeAsync(StateHasChanged);
+    }
 
     protected override void Dispose(bool disposing)
     {

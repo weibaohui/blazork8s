@@ -32,7 +32,7 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
     private async Task OnYamlClick(T item)
     {
         var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
-        await PageDrawerService.ShowDrawerAsync<YamlView<T>, T, bool>(options, item);
+        var x = await PageDrawerService.ShowDrawerAsync<YamlView<T>, T, bool>(options, item);
     }
 
     private async Task OnDocClick(T item)

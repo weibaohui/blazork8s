@@ -1,5 +1,21 @@
 @typeparam            T
+@using Extension
 @inherits DrawerPageBase<T>
+
+<Button OnClick="BtnApplyClicked"
+        Loading="_loading"
+        Type="@ButtonType.Primary">
+    @L["Apply"]
+</Button>
+
+
+@if (!_execResult.IsNullOrEmpty())
+{
+    <Alert Type="@AlertType.Warning">
+        @((MarkupString)_execResult.ToHtmlDisplayNoMarkdown())
+    </Alert>
+}
+
 
 <div style="height: 100%;min-height: 300px">
     <StandaloneCodeEditor

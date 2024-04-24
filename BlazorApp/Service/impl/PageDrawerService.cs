@@ -1,14 +1,12 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AntDesign;
 
 namespace BlazorApp.Service.impl;
 
-public class PageDrawerService : IPageDrawerService
+public class PageDrawerService(DrawerService drawerService) : IPageDrawerService
 {
-    public PageDrawerService(DrawerService drawerService)
-    {
-        DrawerService = drawerService;
-    }
+    private readonly IList<DrawerRef> _drawerRefs = new List<DrawerRef>();
 
     public DrawerOptions DefaultOptions(string title, int width = 800)
     {
@@ -20,11 +18,28 @@ public class PageDrawerService : IPageDrawerService
         return options;
     }
 
-    public DrawerService DrawerService { get; }
+    public DrawerService DrawerService { get; } = drawerService;
 
-    public Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options,
+    public async Task<DrawerRef<TResult>> ShowDrawerAsync<TComponent, TComponentOptions, TResult>(DrawerOptions options,
         TComponentOptions component) where TComponent : FeedbackComponent<TComponentOptions, TResult>
     {
-        return DrawerService.CreateAsync<TComponent, TComponentOptions, TResult>(options, component);
+        var x = await DrawerService.CreateAsync<TComponent, TComponentOptions, TResult>(options, component);
+        _drawerRefs.Add(x);
+        return x;
+    }
+
+    /// <summary>
+    /// 获取所有弹窗
+    /// </summary>
+    /// <returns></returns>
+    public IList<DrawerRef> GetDrawerRefs()
+    {
+        //使用样例
+        // var refs = PageDrawerService.GetDrawerRefs();
+        // foreach (var drawerRef in refs)
+        // {
+        //     await drawerRef.CloseAsync();
+        // }
+        return _drawerRefs;
     }
 }
