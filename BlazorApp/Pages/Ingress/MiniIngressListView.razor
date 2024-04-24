@@ -33,7 +33,8 @@
                             @if (!backend.IsNullOrEmpty())
                             {
                                 @(" -> ")
-                                <RefView Ref="@IngressService.GetRulePathBackend(path, context.Namespace())">
+                                <RefView FullView="true"
+                                         Ref="@IngressService.GetRulePathBackend(path, context.Namespace())">
                                 </RefView>
                                 <Tag>@path?.Backend?.Service?.Port?.Number</Tag>
                             }
