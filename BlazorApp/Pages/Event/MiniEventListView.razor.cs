@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Pages.Ai;
 using BlazorApp.Pages.Common;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using Extension.k8s;

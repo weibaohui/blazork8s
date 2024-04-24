@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Ai;
 using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
 using BlazorApp.Service.AI;
 using Extension;
 using k8s;

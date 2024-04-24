@@ -5,7 +5,7 @@ using BlazorApp.Service.k8s;
 using k8s;
 using Microsoft.AspNetCore.Components;
 
-namespace BlazorApp.Pages.Workload;
+namespace BlazorApp.Pages.Ai;
 
 public partial class AiAnalyzeView : DrawerPageBase<IAiService.AiChatData>
 {
