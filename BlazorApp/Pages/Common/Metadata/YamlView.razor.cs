@@ -64,7 +64,7 @@ public partial class YamlView<T> : DrawerPageBase<T>
 
     protected override async Task OnInitializedAsync()
     {
-        Item = base.Options;
+        Item ??= base.Options;
         Kubectl.SetOutputEventHandler(EventHandler);
 
         await base.OnInitializedAsync();

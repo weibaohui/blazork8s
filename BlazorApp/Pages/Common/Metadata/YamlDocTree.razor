@@ -1,0 +1,10 @@
+@typeparam            T
+@inherits DrawerPageBase<T>
+<Tabs Type="@TabType.Card">
+    <TabPane Key="4" Tab="@L["Yaml"]">
+        <YamlView T="T" Item="@Item"></YamlView>
+    </TabPane>
+    <TabPane Key="5" Tab="@L["Doc"]">
+        <DocTreeView T="T" Item="@Item"></DocTreeView>
+    </TabPane>
+</Tabs>

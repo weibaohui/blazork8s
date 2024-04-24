@@ -41,6 +41,13 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
         await PageDrawerService.ShowDrawerAsync<DocTreeView<T>, T, bool>(options, item);
     }
 
+    private async Task OnYamlDocClick(T item)
+    {
+        var options = PageDrawerService.DefaultOptions($"YamlDoc:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<YamlDocTree<T>, T, bool>(options, item);
+    }
+
+
     private async Task OnDescribeClick(T item)
     {
         var type = typeof(T).Name.GetSubstringAfterFirstDigit().ToLower();

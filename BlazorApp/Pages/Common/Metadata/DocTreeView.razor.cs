@@ -33,7 +33,7 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
 
     protected override async Task OnInitializedAsync()
     {
-        Item = base.Options;
+        Item ??= base.Options;
         var instance = (T)Activator.CreateInstance(typeof(T));
         var attribute = instance.GetKubernetesTypeMetadata();
         var group = attribute.Group == "" ? "core" : attribute.Group.Split(".")[0];
