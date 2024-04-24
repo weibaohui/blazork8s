@@ -316,7 +316,7 @@
   "Volume": "卷",
   "Optional": "可选",
   "ConfigMap": "配置映射",
-  "ReplicationController": "复制控制器",
+  "ReplicationController": "复本制控制器",
   "Pod": "容器组",
   "Addresses": "地址",
   "NotReadyAddresses": "未就绪地址",
