@@ -11,13 +11,12 @@ namespace BlazorApp.Pages.Common;
 
 public partial class TableBase<T> : PageBase where T : IKubernetesObject<V1ObjectMeta>
 {
-    protected readonly TableData<T> TableData   = TableDataHelper<T>.Instance.Build();
-    private            string       _selectedNs = "";
+    protected readonly TableData<T> TableData = TableDataHelper<T>.Instance.Build();
+    protected string _selectedNs = "";
 
     protected ResourceCache<T> ItemList = ResourceCacheHelper<T>.Instance.Build();
 
-    [Inject]
-    protected ILogger<TableBase<T>> Logger { get; set; }
+    [Inject] protected ILogger<TableBase<T>> Logger { get; set; }
 
 
     protected override async Task OnInitializedAsync()

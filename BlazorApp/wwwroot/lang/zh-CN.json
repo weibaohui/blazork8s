@@ -655,6 +655,10 @@
   "PercentileChart": "百分位图",
   "DataList": "数据列表",
   "AI service not enabled": "没有启用AI服务",
-  "AI Security Analysis": "AI安全分析"
+  "AI Security Analysis": "AI安全分析",
+  "Sort By": "排序方式",
+  "Ok": "确定",
+  "Cancel": "取消",
+  "Show Container": "显示容器"
 
 }

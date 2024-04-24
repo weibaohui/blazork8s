@@ -20,6 +20,28 @@
                                TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Pod"
                                OnNsSelected="OnNsSelectedHandler">
+                    @if (_metricsServerReady)
+                    {
+                        <GridRow Class="grid-table">
+                            <GridCol Span="2">
+                                <Text Strong>@L["Top"]</Text>
+                            </GridCol>
+                            <GridCol Span="22">
+                                <SimpleSelect Style="width:100px;" Placeholder="@L["Sort By"]"
+                                              OnSelectedItemChanged="OnSortByChanged">
+                                    <SelectOptions>
+                                        <SimpleSelectOption Value="cpu" Label="cpu"></SimpleSelectOption>
+                                        <SimpleSelectOption Value="memory" Label="memory"></SimpleSelectOption>
+                                    </SelectOptions>
+                                </SimpleSelect>
+                                <Checkbox bind-Value="@_showContainer"
+                                          OnChange="@(() => _showContainer = !_showContainer)">
+                                    @L["Show Container"]
+                                </Checkbox>
+                                <Button Type="@ButtonType.Primary" OnClick="@(() => OnTopClick())">@L["Ok"]</Button>
+                            </GridCol>
+                        </GridRow>
+                    }
                 </SearchToolBar>
             </HTd>
         </HTr>
