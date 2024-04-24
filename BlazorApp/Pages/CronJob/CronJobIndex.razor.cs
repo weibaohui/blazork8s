@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using BlazorApp.Pages.Ai;
 using BlazorApp.Pages.Common;
+using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
 using k8s.Models;
@@ -10,6 +11,7 @@ namespace BlazorApp.Pages.CronJob;
 
 public partial class CronJobIndex : TableBase<V1CronJob>
 {
+    [Inject] private IPromptService PromptService { get; set; }
     [Inject] private ICronJobService CronJobService { get; set; }
 
     private async Task OnResourceChanged(ResourceCache<V1CronJob> data)
@@ -35,7 +37,7 @@ public partial class CronJobIndex : TableBase<V1CronJob>
 
     private async Task OnAnyChatClick(string item)
     {
-        var options = PageDrawerService.DefaultOptions($"AI Chat", width: 1000);
+        var options = PageDrawerService.DefaultOptions($"{L["AI Chat"]}", 1000);
         await PageDrawerService.ShowDrawerAsync<AnyChat, string, bool>(options, item);
     }
 

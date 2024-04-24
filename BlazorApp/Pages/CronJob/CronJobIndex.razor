@@ -37,7 +37,9 @@
                     <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
                     <AntDesign.Column Title=@L["Schedule"] TData="string">
                         @context.Spec.Schedule
-                        <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Robot" OnClick="@(() => OnAnyChatClick($"请解释如下Cron表达式：{context.Spec.Schedule}"))"></Button>
+                        <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Robot"
+                                OnClick="@(() => OnAnyChatClick($"{PromptService.GetPrompt("CronExplain")}{context.Spec.Schedule}"))">
+                        </Button>
                         <Button Type="@ButtonType.Default" Icon="@IconType.Outline.ClockCircle" OnClick="@(() => OnNextCronDateClick(context.Spec.Schedule))"></Button>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Suspend"] TData="string">
