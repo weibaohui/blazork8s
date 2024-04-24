@@ -20,11 +20,12 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Yaml-defined fields are analyzed and displayed in a tree structure, accompanied by documentation. Additionally, translation using a large model is available, eliminating concerns about forgetting definitions.
 * Detailed explanations of Kubernetes resource fields, ensuring no ambiguity about the number of options and their meanings.Official documentation with clickable links.
 * Integration of official examples in a directory tree format, allowing easy browsing, reference, and field copying.
+* Support efficient editing of YAML resources, enabling writing YAML fields on one side of the page while referring to field definitions at the same time.
 * Generation of Yaml using a large model.
 * Problem analysis using a large model.
 * Security checks using a large model.
 * Dynamic display of resource usage (requires installation of the metric server).
-* Integration of page functionalities such as kubectl Describe, kubectl explain, and other high-frequency commands. These can be accessed with a simple click on the user interface.
+* Integration of page functionalities such as kubectl describe, kubectl explain, kubectl top and other high-frequency commands. These can be accessed with a simple click on the user interface.
 * Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
 * Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
 ## ☀️ License
