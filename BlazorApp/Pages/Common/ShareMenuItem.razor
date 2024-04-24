@@ -9,7 +9,7 @@
                 <MenuItem OnClick="@(() => OnDescribeClick(Item))">@L["Describe"]</MenuItem>
                 <MenuItem OnClick="@(() => OnYamlClick(Item))">@L["Yaml"]</MenuItem>
                 <MenuItem OnClick="@(() => OnDocClick(Item))">@L["Doc"]</MenuItem>
-                <MenuItem OnClick="@(() => OnYamlDocClick(Item))">@L["YamlDoc"]</MenuItem>
+                <MenuItem OnClick="@(() => OnYamlDocClick(Item))">@L["Efficient Edit"]</MenuItem>
                 @if (_enable)
                 {
                     <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</MenuItem>
@@ -32,7 +32,7 @@
         <Button OnClick="@(() => OnDescribeClick(Item))">@L["Describe"]</Button>
         <Button OnClick="@(() => OnYamlClick(Item))">@L["Yaml"]</Button>
         <Button OnClick="@(() => OnDocClick(Item))">@L["Doc"]</Button>
-        <Button OnClick="@(() => OnYamlDocClick(Item))">@L["YamlDoc"]</Button>
+        <Button OnClick="@(() => OnYamlDocClick(Item))">@L["Efficient Edit"]</Button>
         @if (_enable)
         {
             <Button OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</Button>

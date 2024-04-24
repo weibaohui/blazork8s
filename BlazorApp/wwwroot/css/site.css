@@ -177,3 +177,12 @@ GridRow GridCol 首行
     font-weight: normal;
     text-align: left;
 }
+
+.ant-tabs-tabpane {
+    outline: none;
+!important;
+    height: 600px;
+!important;
+    min-height: 800px;
+!important;
+}
