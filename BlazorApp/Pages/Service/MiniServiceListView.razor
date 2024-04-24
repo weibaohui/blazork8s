@@ -1,0 +1,55 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
+@if (Services is { Count: > 0 })
+{
+    <Divider Orientation="left" Style="font-weight:bold">@L["Service"]</Divider>
+
+    <Table TItem="V1Service" DataSource="@Services"
+           HidePagination="true" PageSize="5000"
+           Size=@TableSize.Small Bordered="true">
+        <AntDesign.Column Title=@L["Name"] TData="string">
+            <Button OnClick="@(() => OnServiceNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+        </AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
+        <AntDesign.Column Title=@L["Type"] TData="string">
+            <ColorfulTag>@context.Spec.Type</ColorfulTag>
+        </AntDesign.Column>
+        <AntDesign.Column Title=@L["Selector"] TData="string" Width="100px">
+            <SelectorView Selector="@context.Spec.Selector"></SelectorView>
+        </AntDesign.Column>
+    </Table>
+}
+
+@code{
+
+    [Inject] private IServiceService ServiceService { get; set; }
+
+    [Parameter] public IList<V1Service> Services { get; set; } = new List<V1Service>();
+
+    [Parameter] public IDictionary<string, string> Labels { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Labels is { Count: > 0 })
+        {
+            Services = ServiceService.ListByLabels(Labels);
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+
+    async Task OnServiceNameClick(V1Service pod)
+    {
+        await PageDrawerHelper<V1Service>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<ServiceDetailView, V1Service, bool>(pod);
+    }
+
+}
