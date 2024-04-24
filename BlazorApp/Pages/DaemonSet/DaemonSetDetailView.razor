@@ -63,7 +63,10 @@
         </PropertySimpleView>
     </HTable>
     <MiniPodListView ControllerByUid="@DaemonSet.Metadata.Uid"></MiniPodListView>
-    <MiniServiceListView Labels="@DaemonSet.Metadata.Labels"></MiniServiceListView>
+    @if (DaemonSet.Spec?.Template.Metadata.Labels is { Count: > 0 })
+    {
+        <MiniServiceListView Labels="@DaemonSet.Spec.Template.Metadata.Labels"></MiniServiceListView>
+    }
 
     <MiniEventListView Uid="@DaemonSet.Metadata.Uid"></MiniEventListView>
 }

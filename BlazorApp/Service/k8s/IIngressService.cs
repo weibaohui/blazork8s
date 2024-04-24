@@ -7,6 +7,7 @@ namespace BlazorApp.Service.k8s;
 
 public interface IIngressService : ICommonAction<V1Ingress>
 {
-     Task<List<Result>> Analyze();
+    Task<List<Result>> Analyze();
 
+    IList<V1Ingress> ListByServiceList(IList<V1Service> services);
 }

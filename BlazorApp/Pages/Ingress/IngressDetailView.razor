@@ -17,10 +17,14 @@
         <IngressTlsView Title=@L["TLS"] Tls="@Ingress.Spec.Tls"></IngressTlsView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <HTable Bordered Column="1">
-        <PropertySimpleView Title=@L["LoadBalancer"] Item="@Ingress.Status.LoadBalancer"
-                            ExplainField="ingress.status.loadBalancer" ShowInJson="true">
-        </PropertySimpleView>
-    </HTable>
+    @if (Ingress.Status.LoadBalancer is not null)
+    {
+        <HTable Bordered Column="1">
+            <PropertySimpleView Title=@L["LoadBalancer"] Item="@Ingress.Status.LoadBalancer"
+                                ExplainField="ingress.status.loadBalancer" ShowInJson="true">
+            </PropertySimpleView>
+        </HTable>
+    }
+
     <MiniEventListView Uid="@Ingress.Metadata.Uid"></MiniEventListView>
 }

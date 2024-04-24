@@ -1,0 +1,49 @@
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
+@if (Ingresses is { Count: > 0 })
+{
+    <Divider Orientation="left" Style="font-weight:bold">@L["Ingress"]</Divider>
+
+    <Table TItem="V1Ingress" DataSource="@Ingresses"
+           HidePagination="true" PageSize="5000"
+           Size=@TableSize.Small Bordered="true">
+        <AntDesign.Column Title=@L["Name"] TData="string">
+            <Button OnClick="@(() => OnServiceNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+        </AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
+
+
+    </Table>
+}
+
+@code{
+
+    [Inject] private IIngressService IngressService { get; set; }
+
+    [Parameter] public IList<V1Ingress> Ingresses { get; set; } = new List<V1Ingress>();
+
+    [Parameter] public IList<V1Service> Services { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Services is { Count: > 0 })
+        {
+            Ingresses = IngressService.ListByServiceList(Services);
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+
+    async Task OnServiceNameClick(V1Ingress pod)
+    {
+        await PageDrawerHelper<V1Ingress>.Instance
+            .SetDrawerService(PageDrawerService.DrawerService)
+            .ShowDrawerAsync<IngressDetailView, V1Ingress, bool>(pod);
+    }
+
+}

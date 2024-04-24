@@ -90,7 +90,10 @@
     </HTable>
 
     <MiniPodListView ControllerByUid="@StatefulSet.Metadata.Uid"></MiniPodListView>
-    <MiniServiceListView Labels="@StatefulSet.Metadata.Labels"></MiniServiceListView>
+    @if (StatefulSet.Spec?.Template.Metadata.Labels is { Count: > 0 })
+    {
+        <MiniServiceListView Labels="@StatefulSet.Spec.Template.Metadata.Labels"></MiniServiceListView>
+    }
 
     <MiniEventListView Uid="@StatefulSet.Metadata.Uid"></MiniEventListView>
 }

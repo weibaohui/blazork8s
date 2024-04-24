@@ -68,6 +68,10 @@
 
     <MiniReplicaSetListView ControllerByUid="@Deployment.Metadata.Uid"></MiniReplicaSetListView>
     <MiniPodListView Pods="@PodList"></MiniPodListView>
-    <MiniServiceListView Labels="@Deployment.Metadata.Labels"></MiniServiceListView>
+    @if (Deployment.Spec?.Template.Metadata.Labels is { Count: > 0 })
+    {
+        <MiniServiceListView Labels="@Deployment.Spec.Template.Metadata.Labels"></MiniServiceListView>
+    }
+
     <MiniEventListView Uid="@Deployment.Metadata.Uid"></MiniEventListView>
 }

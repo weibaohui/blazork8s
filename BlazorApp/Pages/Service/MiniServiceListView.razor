@@ -1,5 +1,6 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Ingress
 @using BlazorApp.Service.k8s
 @using BlazorApp.Utils
 @using k8s.Models
@@ -23,6 +24,8 @@
             <SelectorView Selector="@context.Spec.Selector"></SelectorView>
         </AntDesign.Column>
     </Table>
+
+    <MiniIngressListView Services="@Services"></MiniIngressListView>
 }
 
 @code{

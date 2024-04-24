@@ -122,4 +122,22 @@ public class IngressService(
 
         return Task.FromResult(results);
     }
+
+    public IList<V1Ingress> ListByServiceList(IList<V1Service> services)
+    {
+        var list = new List<V1Ingress>();
+        foreach (var svc in services)
+        {
+            var ns = svc.Namespace();
+            var name = svc.Name();
+            var result = List().Where(x => x.Namespace() == ns)
+                .Where(x => x.Spec.Rules is { Count: > 0 } && x.Spec.Rules.Any(
+                    y => y.Http.Paths is { Count: > 0 } && y.Http.Paths.Any(
+                        z => z.Backend?.Service?.Name == name
+                    ))).ToList();
+            list.AddRange(result);
+        }
+
+        return list;
+    }
 }

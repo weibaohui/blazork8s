@@ -36,7 +36,10 @@
     </HTable>
 
     <MiniPodListView ControllerByUid="@ReplicaSet.Metadata.Uid"></MiniPodListView>
-    <MiniServiceListView Labels="@ReplicaSet.Metadata.Labels"></MiniServiceListView>
+    @if (ReplicaSet.Spec?.Template.Metadata.Labels is { Count: > 0 })
+    {
+        <MiniServiceListView Labels="@ReplicaSet.Spec.Template.Metadata.Labels"></MiniServiceListView>
+    }
 
     <MiniEventListView Uid="@ReplicaSet.Metadata.Uid"></MiniEventListView>
 }
