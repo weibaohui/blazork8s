@@ -5,7 +5,7 @@
 
 @if (Affinity != null)
 {
-    <HTableColumn Title=@L["Affinity"]>
+    <HTableColumn Title=@L["Affinity"] ExplainField="@ExplainField">
         <Collapse Accordion>
 
 
@@ -122,7 +122,7 @@
                     @{
                         var preferred = Affinity.PodAntiAffinity.PreferredDuringSchedulingIgnoredDuringExecution;
 
-                        @if (preferred != null && preferred.Count > 0)
+                        @if (preferred is { Count: > 0 })
                         {
                             @foreach (var term in preferred)
                             {
@@ -173,7 +173,7 @@
                     @{
                         var required = Affinity.PodAntiAffinity.RequiredDuringSchedulingIgnoredDuringExecution;
 
-                        @if (required != null && required.Count > 0)
+                        @if (required is { Count: > 0 })
                         {
                             @foreach (var term in required)
                             {
@@ -279,5 +279,6 @@
 @code {
 
     [Parameter] public V1Affinity Affinity { get; set; }
+    [Parameter] public string ExplainField { get; set; } = "";
 
 }

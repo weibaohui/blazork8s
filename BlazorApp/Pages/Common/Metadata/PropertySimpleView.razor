@@ -1,8 +1,7 @@
 @using BlazorApp.Pages.Common.Html
-@using Extension
 @inherits PageBase
 
-@if (Item != null && !Item.ToJson().Equals("{}"))
+@if (Item != null)
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
 
@@ -16,7 +15,7 @@
         else
         {
             <ColorfulTag OnClick="OnTagClick">
-                @Item
+                @($"{Item}")
             </ColorfulTag>
         }
     </HTableColumn>

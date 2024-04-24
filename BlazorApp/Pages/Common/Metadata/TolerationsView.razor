@@ -1,9 +1,9 @@
 @using BlazorApp.Pages.Common.Html
 @using k8s.Models
-@inherits BlazorApp.Pages.Common.PageBase
+@inherits PageBase
 @if (Tolerations != null)
 {
-    <HTableColumn Title=@L["Tolerations"]>
+    <HTableColumn Title=@L["Tolerations"] ExplainField="@ExplainField">
 
         <Collapse>
             <Panel Key="1">

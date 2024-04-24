@@ -8,4 +8,5 @@ namespace BlazorApp.Pages.Container;
 public partial class EnvView : PageBase
 {
     [Parameter] public IList<V1EnvVar> Env { get; set; }
+    [Parameter] public string ExplainField { get; set; } = "";
 }

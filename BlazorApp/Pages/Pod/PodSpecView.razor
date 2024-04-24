@@ -54,8 +54,8 @@
     <PropertySimpleView Title=@L["TerminationGracePeriodSeconds"] ExplainField="pod.spec.terminationGracePeriodSeconds" Item="@PodSpec.TerminationGracePeriodSeconds"></PropertySimpleView>
     <PropertySimpleView Title=@L["TopologySpreadConstraints"] ExplainField="pod.spec.topologySpreadConstraints" Item="@PodSpec.TopologySpreadConstraints"></PropertySimpleView>
     <ImagesView PodSpec="@PodSpec"></ImagesView>
-    <PodAffinityView Affinity="@PodSpec.Affinity"></PodAffinityView>
-    <TolerationsView Tolerations="@PodSpec.Tolerations"></TolerationsView>
+    <PodAffinityView ExplainField="pod.spec.affinity" Affinity="@PodSpec.Affinity"></PodAffinityView>
+    <TolerationsView ExplainField="pod.spec.tolerations" Tolerations="@PodSpec.Tolerations"></TolerationsView>
 </HTable>
 
 <PodSecurityContextView PodSecurityContext="@PodSpec.SecurityContext"></PodSecurityContextView>

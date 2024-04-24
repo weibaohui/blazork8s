@@ -1,7 +1,7 @@
 @inherits PageBase
 @using BlazorApp.Pages.Common.Html
 @typeparam            T
-@if (Items != null)
+@if (Items is { Count: > 0 })
 {
     <HTableColumn Title=@Title ExplainField=@ExplainField>
         @foreach (var p in Items)

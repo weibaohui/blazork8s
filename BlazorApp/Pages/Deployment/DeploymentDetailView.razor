@@ -1,33 +1,53 @@
-﻿@using Mapster
+﻿@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Pod
 @using BlazorApp.Pages.ReplicaSet
-@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common
-@using BlazorApp.Pages.Common.Html
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Deployment>
 @if (Deployment != null)
 {
     <DeploymentAction Item="Deployment" MenuMode="MenuMode.Horizontal"></DeploymentAction>
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="Deployment.Metadata" ExplainFieldPrefix="deployment"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
-    <HTable Bordered Column="1">
-        <SelectorView Title=@L["Selector"] Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
-        <SelectorView Title=@L["Node Selector"] Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
-        <ImagesView PodSpec="@Deployment.Spec.Template.Spec"></ImagesView>
-        <PropertyOptionView Title=@L["StrategyType"] Item="@Deployment.Spec.Strategy.Type" ExplainField="deployment.spec.strategy" Options=@(new[] { "Recreate", "RollingUpdate" })></PropertyOptionView>
-        <RollingUpdateView Title=@L["RollingUpdate"] RollingUpdate="@Deployment.Spec.Strategy.RollingUpdate" ExplainField="deployment.spec.strategy.rollingUpdate"></RollingUpdateView>
-        <PropertySimpleView Title=@L["MinReadySeconds"] Item="@Deployment.Spec.MinReadySeconds" ExplainField="deployment.spec.minReadySeconds"></PropertySimpleView>
-        <PropertySimpleView Title=@L["Paused"] Item="@Deployment.Spec.Paused" ExplainField="deployment.spec.paused"></PropertySimpleView>
-        <PropertySimpleView Title=@L["ProgressDeadlineSeconds"] Item="@Deployment.Spec.ProgressDeadlineSeconds" ExplainField="deployment.spec.progressDeadlineSeconds"></PropertySimpleView>
-        <PropertySimpleView Title=@L["Replicas"] Item="@Deployment.Spec.Replicas" ExplainField="deployment.spec.replicas"></PropertySimpleView>
-        <PropertySimpleView Title=@L["RevisionHistoryLimit"] Item="@Deployment.Spec.RevisionHistoryLimit" ExplainField="deployment.spec.revisionHistoryLimit"></PropertySimpleView>
-        <TolerationsView Tolerations="@Deployment.Spec.Template.Spec.Tolerations"></TolerationsView>
-    </HTable>
-    <PodTemplateView PodTemplate="@Deployment.Spec.Template" MetadataExplainFieldPrefix="deployment"></PodTemplateView>
+    @if (Deployment.Spec != null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+        <HTable Bordered Column="1">
+            <SelectorView Title=@L["Selector"] Selector="@Deployment.Spec.Selector.MatchLabels"></SelectorView>
+            <SelectorView Title=@L["Node Selector"] Selector="@Deployment.Spec.Template.Spec.NodeSelector"></SelectorView>
+            <ImagesView PodSpec="@Deployment.Spec.Template.Spec"></ImagesView>
+            <PropertyOptionView Title=@L["StrategyType"] Item="@Deployment.Spec.Strategy.Type"
+                                ExplainField="deployment.spec.strategy"
+                                Options=@(new[] { "Recreate", "RollingUpdate" })>
+            </PropertyOptionView>
+            <RollingUpdateView Title=@L["RollingUpdate"] RollingUpdate="@Deployment.Spec.Strategy.RollingUpdate"
+                               ExplainField="deployment.spec.strategy.rollingUpdate">
+            </RollingUpdateView>
+            <PropertySimpleView Title=@L["MinReadySeconds"] Item="@Deployment.Spec.MinReadySeconds"
+                                ExplainField="deployment.spec.minReadySeconds">
+            </PropertySimpleView>
+            <PropertySimpleView Title=@L["Paused"] Item="@Deployment.Spec.Paused"
+                                ExplainField="deployment.spec.paused">
+            </PropertySimpleView>
+            <PropertySimpleView Title=@L["ProgressDeadlineSeconds"] Item="@Deployment.Spec.ProgressDeadlineSeconds"
+                                ExplainField="deployment.spec.progressDeadlineSeconds">
+            </PropertySimpleView>
+            <PropertySimpleView Title=@L["Replicas"] Item="@Deployment.Spec.Replicas"
+                                ExplainField="deployment.spec.replicas">
+            </PropertySimpleView>
+            <PropertySimpleView Title=@L["RevisionHistoryLimit"] Item="@Deployment.Spec.RevisionHistoryLimit"
+                                ExplainField="deployment.spec.revisionHistoryLimit">
+            </PropertySimpleView>
+            <TolerationsView ExplainField="deployment.spec.template.spec.tolerations"
+                             Tolerations="@Deployment.Spec.Template.Spec.Tolerations">
+            </TolerationsView>
+        </HTable>
+        <PodTemplateView PodTemplate="@Deployment.Spec.Template" MetadataExplainFieldPrefix="deployment"></PodTemplateView>
+    }
 
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">

@@ -2,7 +2,7 @@
 @inherits BlazorApp.Pages.Common.PageBase
 @if (Env != null)
 {
-    <HTableColumn Title=@L["Env"]>
+    <HTableColumn Title=@L["Env"] ExplainField="@ExplainField">
         @foreach (var ce in Env)
         {
             if (ce.ValueFrom != null)

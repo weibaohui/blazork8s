@@ -1,16 +1,17 @@
-﻿@using BlazorApp.Pages.Common.Html
+﻿@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Probe != null)
 {
-    <HTableColumn Title=@L[ProbeType]>
+    <HTableColumn Title=@L[ProbeType] ExplainField="@ExplainField">
         <Divider>@L["ProbeType"]</Divider>
         <ProbeKindStatus Probe="Probe"></ProbeKindStatus>
         <Divider>@L["ProbeConfig"]</Divider>
-        <Tag>@($"delay={Probe.InitialDelaySeconds}s")</Tag>
-        <Tag>@($"timeout={Probe.TimeoutSeconds}s")</Tag>
-        <Tag>@($"period={Probe.PeriodSeconds}s")</Tag>
-        <Tag>@($"#success={Probe.SuccessThreshold}")</Tag>
-        <Tag>@($"#failure={Probe.FailureThreshold}")</Tag>
+        <ColorfulTag>@($"delay={Probe.InitialDelaySeconds}s")</ColorfulTag>
+        <ColorfulTag>@($"timeout={Probe.TimeoutSeconds}s")</ColorfulTag>
+        <ColorfulTag>@($"period={Probe.PeriodSeconds}s")</ColorfulTag>
+        <ColorfulTag>@($"#success={Probe.SuccessThreshold}")</ColorfulTag>
+        <ColorfulTag>@($"#failure={Probe.FailureThreshold}")</ColorfulTag>
     </HTableColumn>
 }

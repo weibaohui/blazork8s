@@ -1,3 +1,4 @@
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
@@ -28,10 +29,10 @@
                     <PropertySimpleView Title=@L["TTY"] Item="@c.Tty" ExplainField="pod.spec.containers.tty"></PropertySimpleView>
                     <PropertySimpleView Title=@L["Stdin"] Item="@c.Stdin" ExplainField="pod.spec.containers.stdin"></PropertySimpleView>
                     <PropertySimpleView Title=@L["StdinOnce"] Item="@c.StdinOnce" ExplainField="pod.spec.containers.stdinOnce"></PropertySimpleView>
-                    <EnvView Env="@c.Env"></EnvView>
+                    <EnvView Env="@c.Env" ExplainField="pod.spec.containers.env"></EnvView>
                     @if (c.Ports != null)
                     {
-                        <HTableColumn Title=@L["Ports"]>
+                        <HTableColumn Title=@L["Ports"] ExplainField="pod.spec.containers.ports">
 
                             @foreach (var p in c.Ports)
                             {
@@ -50,7 +51,7 @@
                     }
                     @if (c.Command != null)
                     {
-                        <HTableColumn Title=@L["Command"]>
+                        <HTableColumn Title=@L["Command"] ExplainField="pod.spec.containers.command">
                             @foreach (var cc in c.Command)
                             {
                                 @cc
@@ -60,7 +61,7 @@
                     }
                     @if (c.Args != null)
                     {
-                        <HTableColumn Title=@L["Args"]>
+                        <HTableColumn Title=@L["Args"] ExplainField="pod.spec.containers.args">
                             @foreach (var cc in c.Args)
                             {
                                 @cc
@@ -68,28 +69,35 @@
                             }
                         </HTableColumn>
                     }
-                    <ProbeView Probe="@c.LivenessProbe" ProbeType="LivenessProbe"></ProbeView>
-                    <ProbeView Probe="@c.ReadinessProbe" ProbeType="ReadinessProbe"></ProbeView>
-                    <ProbeView Probe="@c.StartupProbe" ProbeType="StartupProbe"></ProbeView>
+                    <ProbeView ExplainField="pod.spec.containers.livenessProbe" Probe="@c.LivenessProbe"
+                               ProbeType="LivenessProbe">
+                    </ProbeView>
+                    <ProbeView ExplainField="pod.spec.containers.readinessProbe" Probe="@c.ReadinessProbe"
+                               ProbeType="ReadinessProbe">
+                    </ProbeView>
+                    <ProbeView ExplainField="pod.spec.containers.startupProbe" Probe="@c.StartupProbe"
+                               ProbeType="StartupProbe">
+                    </ProbeView>
 
                     @if (c.VolumeMounts != null)
                     {
-                        <HTableColumn Title=@L["VolumeMounts"]>
+                        <HTableColumn Title=@L["VolumeMounts"] ExplainField="pod.spec.containers.volumeMounts">
                             @foreach (var vm in c.VolumeMounts)
                             {
-                                @if (vm.ReadOnlyProperty is true)
-                                {
-                                    <Tag PresetColor="@PresetColor.Gold">RO</Tag>
-                                }
-                                else
-                                {
-                                    <Tag PresetColor="@PresetColor.Lime">RW</Tag>
-                                }
+                                <div>
+                                    @if (vm.ReadOnlyProperty is true)
+                                    {
+                                        <ColorfulTag>RO</ColorfulTag>
+                                    }
+                                    else
+                                    {
+                                        <ColorfulTag>RW</ColorfulTag>
+                                    }
 
-                                <Tag>@vm.Name</Tag>
-                                <span>=></span>
-                                <Tag Color="#87d068">@vm.MountPath</Tag>
-                                <br/>
+                                    <ColorfulTag>@vm.Name</ColorfulTag>
+                                    <span>=></span>
+                                    <ColorfulTag>@vm.MountPath</ColorfulTag>
+                                </div>
                             }
                         </HTableColumn>
                     }
