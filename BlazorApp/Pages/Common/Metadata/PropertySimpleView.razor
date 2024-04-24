@@ -5,18 +5,27 @@
 {
     <HTableColumn Title="@Title" ExplainField="@ExplainField">
 
-        @ChildContent
-        @if (ShowInJson)
+        @* 有子内容直接展示，忽略格式化输出 *@
+        @if (ChildContent != null)
         {
-            <p>
-                @((MarkupString)PrettyJson())
-            </p>
+            @ChildContent
         }
         else
         {
-            <ColorfulTag OnClick="OnTagClick">
-                @($"{Item}")
-            </ColorfulTag>
+            @if (ShowInJson)
+            {
+                <p>
+                    @((MarkupString)PrettyJson())
+                </p>
+            }
+            else
+            {
+                <ColorfulTag OnClick="OnTagClick">
+                    @($"{Item}")
+                </ColorfulTag>
+            }
         }
+
+
     </HTableColumn>
 }
