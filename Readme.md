@@ -21,11 +21,9 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Detailed explanations of Kubernetes resource fields, ensuring no ambiguity about the number of options and their meanings.Official documentation with clickable links.
 * Integration of official examples in a directory tree format, allowing easy browsing, reference, and field copying.
 * Support efficient editing of YAML resources, enabling writing YAML fields on one side of the page while referring to field definitions at the same time.
-* Generation of Yaml using a large model.
-* Problem analysis using a large model.
-* Security checks using a large model.
-* Dynamic display of resource usage (requires installation of the metric server).
-* Integration of page functionalities such as kubectl describe, kubectl explain, kubectl top and other high-frequency commands. These can be accessed with a simple click on the user interface.
+* Support displaying corresponding Service and Ingress on the Pod page, and support displaying backend Pods on the Service and Ingress pages.
+* Generation of Yaml 、Problem analysis、Security checks using a large model.
+* Display resource usage dynamically (requires installation of metric server), and support viewing detailed statistical data* Integration of page functionalities such as kubectl describe, kubectl explain, kubectl top and other high-frequency commands. These can be accessed with a simple click on the user interface.
 * Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
 * Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
 ## ☀️ License
@@ -65,11 +63,11 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 ### x86 Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.8
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.9
 ```
 ### ARM Run (Mac M1/2/3)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.8-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.9-arm
 ```
 
 * View：http://IP:4000 (!Do not use 127.0.0.1/localhost!)

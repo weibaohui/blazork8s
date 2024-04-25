@@ -20,12 +20,11 @@
 * 详细的k8s资源字段解释，再也不用担心不知道这个字段有几个选项、都是什么意思了。可链接访问官方文档。
 * 官方示例集成，以目录树的形式呈现k8s官方示例，可以随时浏览参考，复制字段了。
 * 支持高效编辑资源Yaml，在一个页面内可以一边写yaml字段，一边查字段定义了。
-* 大模型生成yaml
-* 大模型问题分析
-* 大模型安全检测
-* 资源用量动态展示（需安装metric server）
+* 支持Pod页面关联显示对应的Service、Ingress，支持Service、Ingress页面展示后端Pod。
+* 大模型生成yaml、大模型问题分析、大模型安全检测。
+* 资源用量动态展示（需安装metric server），支持统计数据详情查看。
 * 页面功能集成kubectl describe、kubectl explain、kubectl top等高频命令，使用界面点击即可查看。
-* 集群页面增加巡检功能，对主要资源对象的常见错误进行巡检，并给出明细列表。
+* 集群页面增加巡检功能，对主要资源对象的常见错误进行巡检，并给出巡检结果明细列表。
 * 支持中文、英文以及法语、德语、意大利语、俄语、西班牙语、法语、日语、韩语等12国语言。
 ## ☀️ 授权协议
 
@@ -69,11 +68,11 @@ kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deploymen
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
 ### X86架构环境
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.8
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.9
 ```
 ### ARM Run (Mac M1/2/3等ARM架构)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.8-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.9-arm
 ```
 
 * 访问：http://IP:4000  (!不要使用 127.0.0.1/localhost!)
