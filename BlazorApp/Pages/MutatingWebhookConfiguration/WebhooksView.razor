@@ -1,6 +1,7 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
@@ -89,15 +90,7 @@
 
     private V1ObjectReference GetRef(Admissionregistrationv1ServiceReference service)
     {
-        var ret = new V1ObjectReference()
-        {
-            Kind = "Service",
-            Name = service.Name,
-            NamespaceProperty = service.NamespaceProperty,
-        };
-
-
-        return ret;
+        return KubeHelper.GetObjectRef("Service", service.NamespaceProperty, service.Name);
     }
 
 }

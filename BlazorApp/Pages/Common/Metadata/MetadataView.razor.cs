@@ -1,3 +1,4 @@
+using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
@@ -11,10 +12,6 @@ public partial class MetadataView : PageBase
 
     private V1ObjectReference NsRef(string func)
     {
-        return new V1ObjectReference()
-        {
-            Name = Item.Namespace(),
-            Kind = "Namespace"
-        };
+        return KubeHelper.GetObjectRef("Namespace", Item.Namespace());
     }
 }

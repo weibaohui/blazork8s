@@ -132,12 +132,7 @@ public partial class Inspection : PageBase
 
     private V1ObjectReference GetRef(Result item)
     {
-        return new V1ObjectReference()
-        {
-            Kind = item.Kind,
-            Name = item.Name(),
-            NamespaceProperty = item.Namespace(),
-        };
+        return KubeHelper.GetObjectRef(item.Kind, item.Namespace(), item.Name());
     }
 
     private async Task OnItemNameClick(V1Node item)

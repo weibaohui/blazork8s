@@ -174,13 +174,6 @@ public class IngressService(
 
     public V1ObjectReference GetRulePathBackend(V1HTTPIngressPath path, string ns)
     {
-        var reference = new V1ObjectReference
-        {
-            ApiVersion = "v1",
-            Kind = "Service",
-            Name = path?.Backend?.Service?.Name,
-            NamespaceProperty = ns
-        };
-        return reference;
+        return KubeHelper.GetObjectRef("Service", ns, path.Backend?.Service?.Name);
     }
 }

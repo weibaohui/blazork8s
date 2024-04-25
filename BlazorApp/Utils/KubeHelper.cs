@@ -22,4 +22,27 @@ public static class KubeHelper
         };
         return reference;
     }
+
+    public static V1ObjectReference GetObjectRef(string kind, string name)
+    {
+        var reference = new V1ObjectReference
+        {
+            ApiVersion = "v1",
+            Kind = kind,
+            Name = name
+        };
+        return reference;
+    }
+
+    public static V1ObjectReference GetObjectRef(string apiVersion, string kind, string ns, string name)
+    {
+        var reference = new V1ObjectReference
+        {
+            ApiVersion = apiVersion,
+            Kind = kind,
+            Name = name,
+            NamespaceProperty = ns
+        };
+        return reference;
+    }
 }

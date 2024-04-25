@@ -1,6 +1,7 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
 @if (Volume.PersistentVolumeClaim != null)
@@ -32,23 +33,15 @@
 
 @code {
 
-    [Parameter]
-    public V1Volume Volume { get; set; }
+    [Parameter] public V1Volume Volume { get; set; }
 
-    [Parameter]
-    public int Index { get; set; }
+    [Parameter] public int Index { get; set; }
 
-    [Parameter]
-    public string Namespace { get; set; }
+    [Parameter] public string Namespace { get; set; }
 
     private V1ObjectReference TransferToRef(V1Volume volume)
     {
-        return new V1ObjectReference()
-        {
-            Name              = volume.PersistentVolumeClaim.ClaimName,
-            Kind              = "PersistentVolumeClaim",
-            NamespaceProperty = Namespace
-        };
+        return KubeHelper.GetObjectRef("PersistentVolumeClaim", Namespace, volume.PersistentVolumeClaim.ClaimName);
     }
 
 }

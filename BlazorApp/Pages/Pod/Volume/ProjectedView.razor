@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
@@ -96,22 +97,12 @@
 
     private V1ObjectReference TransferToRef(V1ConfigMapProjection item)
     {
-        return new V1ObjectReference()
-        {
-            Name = item.Name,
-            Kind = "ConfigMap",
-            NamespaceProperty = Namespace
-        };
+        return KubeHelper.GetObjectRef("ConfigMap", Namespace, item.Name);
     }
 
     private V1ObjectReference TransferToRef(V1SecretProjection item)
     {
-        return new V1ObjectReference()
-        {
-            Name = item.Name,
-            Kind = "Secret",
-            NamespaceProperty = Namespace
-        };
+        return KubeHelper.GetObjectRef("Secret", Namespace, item.Name);
     }
 
 }
