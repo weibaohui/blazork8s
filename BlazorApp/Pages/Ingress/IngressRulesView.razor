@@ -1,6 +1,7 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
@@ -20,8 +21,12 @@
                 {
                     @foreach (var path in rule.Http.Paths)
                     {
-                        <HTableColumn Title=@L["Path"]>
-                            <ColorfulTag>@($"[{path.PathType}] {path.Path}")</ColorfulTag>
+                        <PropertyOptionView Title=@L["PathType"] Item="@path.PathType"
+                                            Options='@(new[] { "Exact", "Prefix", "ImplementationSpecific" })'
+                                            ExplainField="ingress.spec.rules.http.paths.pathType">
+                        </PropertyOptionView>
+                        <HTableColumn Title=@L["Path"] ExplainField="ingress.spec.rules.http.paths.path">
+                            <ColorfulTag>@path.Path</ColorfulTag>
                             ==>
                             <IngressBackendNoTableView Namespace="@Namespace"
                                                        Backend="@path.Backend">

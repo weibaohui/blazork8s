@@ -667,6 +667,8 @@
   "Ignore Errors": "忽略错误",
   "Pod Running Timeout": "Pod超时",
   "AI Chat": "AI对话",
-  "Efficient Edit": "高效编辑"
+  "Efficient Edit": "高效编辑",
+  "PathType": "路径类型",
+  "Backend": "后端"
 
 }

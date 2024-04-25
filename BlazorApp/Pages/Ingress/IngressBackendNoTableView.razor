@@ -8,7 +8,7 @@
     {
         <span>
             <ColorfulTag>@($"Resource: {Backend.Resource.ApiGroup}/{Backend.Resource.Kind}:{Backend.Resource.Name}") </ColorfulTag>
-            <KubectlExplainButton Field="ingress.spec.defaultBackend.resource"></KubectlExplainButton>
+            <KubectlExplainButton Field="ingress.spec.rules.http.paths.backend.resource"></KubectlExplainButton>
         </span>
     }
 
@@ -17,7 +17,7 @@
         <RefView FullView="true" Ref="@KubeHelper.GetObjectRef("Service", Namespace, Backend.Service.Name)">
         </RefView>
         <ColorfulTag>@($"{Backend.Service.Port.Name}{Backend.Service.Port.Number}") </ColorfulTag>
-        <KubectlExplainButton Field="ingress.spec.defaultBackend.service"></KubectlExplainButton>
+        <KubectlExplainButton Field="ingress.spec.rules.http.paths.backend.service"></KubectlExplainButton>
     }
 }
 
