@@ -57,24 +57,35 @@ public enum ColorfulTagHexRgb
     LightSlateGrey = 0x778899,
     Maroon = 0x800000,
     Brown = 0xA52A2A,
-    Tomato1 = 0xFF6347,
-    Tomato = 0xFF6347,
+
+    // Tomato1 = 0xFF6347,
+    // Tomato = 0xFF6347,
     Coral = 0xFF7F50,
     DarkSalmon = 0xE9967A,
     Salmon = 0xFA8072,
     LightCoral = 0xF08080,
-    OrangeRed = 0xFF4500,
-    DarkOrange = 0xFF8C00,
+
+    // OrangeRed = 0xFF4500,
+    // DarkOrange = 0xFF8C00,
     Orange = 0xFFA500,
     Goldenrod = 0xDAA520,
-    DarkKhaki = 0xBDB76B,
-    SkyBlue = 0x87CEEB,
+
+    // DarkKhaki = 0xBDB76B,
     ForestGreen = 0x228B22,
     GoldenRod = 0xDAA520,
     FireBrick = 0xB22222,
     Navy = 0x000080,
     RosyBrown = 0xBC8F8F,
-    WarmGray = 0x808069
+    WarmGray = 0x808069,
+    LayUiGreenBlue = 0x16BAAA,
+    LayUiFreshGreen = 0x16B777,
+    LayUiClassicBlue = 0x1E9FFF,
+    LayUiDanger = 0xFF5722,
+    LayUiWarning = 0xFFB800,
+    LayUiGuide = 0x31BDEC,
+    LayUiOrange = 0xFFB800,
+    LayuiDeepGray = 0x2F363C,
+    LayuiDeepGray2 = 0x23292E
 }
 
 public static class RandomColorHelper
