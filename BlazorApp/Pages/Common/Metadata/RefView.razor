@@ -11,18 +11,19 @@
             <ChildContent>
                 @if (FullView)
                 {
+                    <span>@($"{Ref.Kind}") &nbsp;</span>
                     @if (Ref.NamespaceProperty.IsNullOrWhiteSpace())
                     {
-                        @($"{Ref.Kind} {Ref.Name}")
+                        @($"{Ref.Name}")
                     }
                     else
                     {
-                        @($"{Ref.Kind} {Ref.NamespaceProperty}/{Ref.Name}")
+                        @($"{Ref.NamespaceProperty}/{Ref.Name}")
                     }
                 }
                 else
                 {
-                    @($"{Ref.Kind}")
+                    <ColorfulTag>@($"{Ref.Kind}")</ColorfulTag>
                 }
             </ChildContent>
         </Tooltip>
