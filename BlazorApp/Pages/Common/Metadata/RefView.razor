@@ -3,29 +3,46 @@
 
 @if (Ref != null)
 {
-    <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Kind">
-        <Tooltip>
-            <TitleTemplate>
-                @($"[{Ref.Kind}]  {Ref.ApiVersion} {Ref.NamespaceProperty} {Ref.Name}")
-            </TitleTemplate>
-            <ChildContent>
-                @if (FullView)
-                {
-                    <span>@($"{Ref.Kind}") &nbsp;</span>
-                    @if (Ref.NamespaceProperty.IsNullOrWhiteSpace())
+    @if (OnlyName)
+    {
+        <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Name">
+
+            <Tooltip>
+                <TitleTemplate>
+                    @($"{Ref.Kind}/{Ref.ApiVersion}/{Ref.NamespaceProperty}/{Ref.Name}")
+                </TitleTemplate>
+                <ChildContent>
+                    @($"{Ref.Name}")
+                </ChildContent>
+            </Tooltip>
+        </ColorfulTag>
+    }
+    else
+    {
+        <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Kind">
+            <Tooltip>
+                <TitleTemplate>
+                    @($"{Ref.Kind}/{Ref.ApiVersion}/{Ref.NamespaceProperty}/{Ref.Name}")
+                </TitleTemplate>
+                <ChildContent>
+                    @if (FullView)
                     {
-                        @($"{Ref.Name}")
+                        <span>@($"{Ref.Kind}") &nbsp;</span>
+                        @if (Ref.NamespaceProperty.IsNullOrWhiteSpace())
+                        {
+                            @($"{Ref.Name}")
+                        }
+                        else
+                        {
+                            @($"{Ref.NamespaceProperty}/{Ref.Name}")
+                        }
                     }
                     else
                     {
-                        @($"{Ref.NamespaceProperty}/{Ref.Name}")
+                        <ColorfulTag>@($"{Ref.Kind}")</ColorfulTag>
                     }
-                }
-                else
-                {
-                    <ColorfulTag>@($"{Ref.Kind}")</ColorfulTag>
-                }
-            </ChildContent>
-        </Tooltip>
-    </ColorfulTag>
+                </ChildContent>
+            </Tooltip>
+        </ColorfulTag>
+    }
 }

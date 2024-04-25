@@ -13,7 +13,7 @@
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
         <AntDesign.Column Title=@L["Service"] TData="string">
-            <RefView FullView="true" Ref="@KubeHelper.GetObjectRef("Service", context.Namespace, context.ServiceName)">
+            <RefView OnlyName=true Ref="@KubeHelper.GetObjectRef("Service", context.Namespace, context.ServiceName)">
             </RefView>
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Selector"]>
@@ -26,10 +26,15 @@
             }
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Pod"]>
-            <RefView FullView="true" Ref="@KubeHelper.GetObjectRef("Pod", context.Namespace, context.PodName)">
+            <RefView OnlyName=true Ref="@KubeHelper.GetObjectRef("Pod", context.Namespace, context.PodName)">
             </RefView>
         </AntDesign.Column>
-
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Service IP"]>
+            <ColorfulTag>@context.SvcIp</ColorfulTag>
+        </AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Pod IP"]>
+            <ColorfulTag>@context.PodIp</ColorfulTag>
+        </AntDesign.Column>
     </Table>
 }
 else
@@ -75,7 +80,8 @@ else
                 Namespace = res.Namespace,
                 IngressName = res.IngressName,
                 ServiceName = res.ServiceName,
-                PodSelector = podSelector
+                PodSelector = podSelector,
+                SvcIp = svc.Spec.ClusterIP
             };
             var list = await PodService.FilterPodByLabels(res.Namespace, podSelector);
             if (list is not { Count: > 0 }) continue;
@@ -87,6 +93,7 @@ else
                     continue;
                 }
 
+                result.PodIp = pod.Status.PodIP;
                 result.PodName = pod.Name();
                 resultList.Add(result);
             }
@@ -143,8 +150,10 @@ else
         public string Namespace { get; set; }
         public string IngressName { get; set; }
         public string ServiceName { get; set; }
-        public string PodName { get; set; }
+        public string SvcIp { get; set; }
         public IDictionary<string, string> PodSelector { get; set; }
+        public string PodName { get; set; }
+        public string PodIp { get; set; }
     }
 
 

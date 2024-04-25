@@ -34,6 +34,12 @@ public partial class RefView : PageBase
 
     [Parameter] public bool FullView { get; set; } = false;
 
+    /// <summary>
+    ///     只显示资源名称，此时FullView不起作用
+    /// </summary>
+    [Parameter]
+    public bool OnlyName { get; set; } = false;
+
     [Inject] private IMessageService MessageService { get; set; }
 
     [Inject] private IServiceAccountService ServiceAccountService { get; set; }
