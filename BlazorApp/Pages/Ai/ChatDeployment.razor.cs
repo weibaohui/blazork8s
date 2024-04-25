@@ -15,7 +15,7 @@ public partial class ChatDeployment : PageBase
         "部署一个k8s nginx应用",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问，域名为www.nginx.com，并使用```yaml ```包裹起来",
         "请给我一套k8s部署yaml，名称为nginx，可以通过ingress访问",
-        "请给出一套部署2048小游戏的k8s yaml"
+        "You are an expert Kubernetes YAML generator, that only generates valid Kubernetes YAML manifests. You should never provide any explanations. You should always output raw YAML only, and always wrap the raw YAML with ```yaml. You are an expert Kubernetes YAML generator, that only generates valid Kubernetes YAML manifests. You should never provide any explanations. You should always output raw YAML only, and always wrap the raw YAML with ```yaml. 请给出一套部署2048小游戏的k8s yaml"
     ];
 
     private string _advice;
