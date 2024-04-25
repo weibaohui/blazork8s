@@ -42,7 +42,7 @@
             <GridCol Span="16">
 
                 <div style="margin: 20px">
-                    <div style="height: 300px;width: 800px">
+                    <div style="height: 600px;width: 800px">
                         <StandaloneCodeEditor
                             @ref="_editor"
                             Id="yaml-editor"
@@ -55,7 +55,7 @@
                         <Divider Orientation="left" Style="font-weight:bold">@L["Result"]</Divider>
                         <div>
                             <p>
-                                <Text Copyable>
+                                <Text>
                                     @((MarkupString)_execResult.ToHtmlDisplay())
                                 </Text>
                             </p>

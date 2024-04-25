@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using BlazorMonaco.Editor;
 using Microsoft.AspNetCore.Components;
-using BlazorApp.Pages.Common;
 using Microsoft.AspNetCore.Hosting;
 
 namespace BlazorApp.Pages.Example;
@@ -14,24 +14,22 @@ namespace BlazorApp.Pages.Example;
 public partial class Example : PageBase
 {
     private DirectoryNode _currentItem = new();
-    private string        _currentYaml = "";
+    private string _currentYaml = "";
 
     private List<DirectoryNode> _dataList = new();
 
     private StandaloneCodeEditor _editor = null!;
-    private string               _execResult;
-    private Tree<DirectoryNode>  _tree;
+    private string _execResult;
+    private Tree<DirectoryNode> _tree;
 
-    [Inject]
-    private IWebHostEnvironment HostingEnvironment { get; set; }
+    [Inject] private IWebHostEnvironment HostingEnvironment { get; set; }
 
-    [Inject]
-    private IKubectlService Kubectl { get; set; }
+    [Inject] private IKubectlService Kubectl { get; set; }
 
 
     protected override Task OnInitializedAsync()
     {
-        var wwwRootPath   = HostingEnvironment.WebRootPath;
+        var wwwRootPath = HostingEnvironment.WebRootPath;
         var rootDirectory = wwwRootPath + "/k8s_example";
         _dataList = GetDirectoryTree(rootDirectory);
         Kubectl.SetOutputEventHandler(EventHandler);
@@ -49,7 +47,7 @@ public partial class Example : PageBase
     private static List<DirectoryNode> GetDirectoryTree(string rootDirectory)
     {
         var directoryTree = new List<DirectoryNode>();
-        var rootInfo      = new DirectoryInfo(rootDirectory);
+        var rootInfo = new DirectoryInfo(rootDirectory);
         var rootNode = new DirectoryNode
             { Name = rootInfo.Name, FullName = rootInfo.FullName, Icon = "folder-open", IsLeaf = false };
         directoryTree.Add(rootNode);
@@ -115,41 +113,41 @@ public partial class Example : PageBase
 
     private async Task BtnApplyClicked()
     {
-        _execResult  = string.Empty;
+        _execResult = string.Empty;
         _currentYaml = await _editor.GetValue();
-        _execResult  = await Kubectl.Apply(_currentYaml);
+        _execResult = await Kubectl.Apply(_currentYaml);
     }
 
     private async Task BtnDeleteClicked()
     {
-        _execResult  = string.Empty;
+        _execResult = string.Empty;
         _currentYaml = await _editor.GetValue();
-        _execResult  = await Kubectl.Delete(_currentYaml);
+        _execResult = await Kubectl.Delete(_currentYaml);
     }
 
     private StandaloneEditorConstructionOptions EditorConstructionOptions(StandaloneCodeEditor editor)
     {
         return new StandaloneEditorConstructionOptions
         {
-            AutomaticLayout            = true,
-            Language                   = "yaml",
-            Theme                      = "vs-dark",
-            Contextmenu                = true,
+            AutomaticLayout = true,
+            Language = "yaml",
+            Theme = "vs-dark",
+            Contextmenu = true,
             CopyWithSyntaxHighlighting = true,
             CursorSmoothCaretAnimation = "true",
-            FoldingImportsByDefault    = true,
-            MouseWheelZoom             = true,
-            SmoothScrolling            = true,
-            WrappingIndent             = "indent",
-            AutoClosingBrackets        = "always",
-            AutoSurround               = "languageDefined",
-            FontSize                   = 16,
-            WordWrap                   = "on",
+            FoldingImportsByDefault = true,
+            MouseWheelZoom = true,
+            SmoothScrolling = true,
+            WrappingIndent = "indent",
+            AutoClosingBrackets = "always",
+            AutoSurround = "languageDefined",
+            FontSize = 16,
+            WordWrap = "on",
             Minimap = new EditorMinimapOptions
             {
                 Enabled = false
             },
-            RenderLineHighlight  = "all",
+            RenderLineHighlight = "all",
             ScrollBeyondLastLine = true,
             Scrollbar = new EditorScrollbarOptions
             {
@@ -157,7 +155,7 @@ public partial class Example : PageBase
             },
             BracketPairColorization = new BracketPairColorizationOptions
             {
-                Enabled                            = true,
+                Enabled = true,
                 IndependentColorPoolPerBracketType = true
             },
             Value = _currentYaml,
@@ -167,10 +165,10 @@ public partial class Example : PageBase
 
 public class DirectoryNode
 {
-    public string Icon     { get; set; }
-    public string Name     { get; set; }
+    public string Icon { get; set; }
+    public string Name { get; set; }
     public string FullName { get; set; }
-    public bool   IsLeaf   { get; set; }
+    public bool IsLeaf { get; set; }
 
     public List<DirectoryNode> ChildList { get; set; } = new List<DirectoryNode>();
 }
