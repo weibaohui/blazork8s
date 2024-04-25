@@ -1,7 +1,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
-@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Ingress>
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Ingress>
 @if (Ingress != null)
 {
     <IngressAction Item="Ingress" MenuMode="MenuMode.Horizontal"></IngressAction>
@@ -12,8 +13,13 @@
         <PropertySimpleView Title=@L["IngressClass"] Item="@Ingress.Spec.IngressClassName"
                             ExplainField="ingress.spec.ingressClassName">
         </PropertySimpleView>
-        <IngressBackendView Title=@L["DefaultBackend"] Backend="@Ingress.Spec.DefaultBackend"></IngressBackendView>
-        <IngressRulesView Title=@L["Rules"] Rules="@Ingress.Spec.Rules"></IngressRulesView>
+        <IngressBackendView Title=@L["DefaultBackend"] Namespace="@Ingress.Namespace()"
+                            Backend="@Ingress.Spec.DefaultBackend"
+                            ExplainField="ingress.spec.ingressClassName">
+        </IngressBackendView>
+        <IngressRulesView Title=@L["Rules"] Namespace="@Ingress.Namespace()"
+                          Rules="@Ingress.Spec.Rules">
+        </IngressRulesView>
         <IngressTlsView Title=@L["TLS"] Tls="@Ingress.Spec.Tls"></IngressTlsView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
@@ -25,6 +31,8 @@
             </PropertySimpleView>
         </HTable>
     }
+
+    <IngressBackendServicePodListView Ingress="@Ingress"></IngressBackendServicePodListView>
 
     <MiniEventListView Uid="@Ingress.Metadata.Uid"></MiniEventListView>
 }

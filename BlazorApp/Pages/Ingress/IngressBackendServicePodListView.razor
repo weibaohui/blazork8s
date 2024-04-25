@@ -1,0 +1,151 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Service.k8s
+@using BlazorApp.Utils
+@using Extension
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.DrawerPageBase<V1Ingress>
+
+<Divider Orientation="left" Style="font-weight:bold">@L["Backend"]</Divider>
+@if (ResList is { Count: > 0 })
+{
+    <Table TItem="IngressSvcPodDto" DataSource="@ResList"
+           HidePagination="true" PageSize="5000"
+           Size=@TableSize.Small Bordered="true">
+        <AntDesign.Column Title=@L["Service"] TData="string">
+            <RefView FullView="true" Ref="@KubeHelper.GetObjectRef("Service", context.Namespace, context.ServiceName)">
+            </RefView>
+        </AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Selector"]>
+            @if (context.PodSelector is { Count: > 0 })
+            {
+                foreach (var label in context.PodSelector)
+                {
+                    <ColorfulTag>@label.Key = @label.Value</ColorfulTag>
+                }
+            }
+        </AntDesign.Column>
+        <AntDesign.Column Sortable="true" TData="string" Title=@L["Pod"]>
+            <RefView FullView="true" Ref="@KubeHelper.GetObjectRef("Pod", context.Namespace, context.PodName)">
+            </RefView>
+        </AntDesign.Column>
+
+    </Table>
+}
+else
+{
+    <Empty Simple/>
+}
+
+@code {
+    [Inject] private IServiceService ServiceService { get; set; }
+    [Inject] private IPodService PodService { get; set; }
+
+    [Parameter] public V1Ingress Ingress { get; set; }
+
+    private IList<IngressSvcPodDto> ResList { get; set; } = new List<IngressSvcPodDto>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        ResList = ProcessIngressBackendSvc();
+        ResList = await ProcessIngressBackendPod(ResList);
+        await base.OnInitializedAsync();
+    }
+
+
+    /// <summary>
+    ///     ingress-svc1-pod1
+    ///     ingress-svc1-pod2
+    ///     ingress-svc2-pod3
+    ///     ingress-svc2-pod4
+    /// </summary>
+    private async Task<IList<IngressSvcPodDto>> ProcessIngressBackendPod(IList<IngressSvcPodDto> resList)
+    {
+        IList<IngressSvcPodDto> resultList = new List<IngressSvcPodDto>();
+        foreach (var res in resList)
+        {
+            var svc = ServiceService.GetByName(res.Namespace, res.ServiceName);
+            if (svc is null) continue;
+
+            var podSelector = svc.Spec.Selector;
+
+//按pod维度组织数据结构
+            var result = new IngressSvcPodDto
+            {
+                Namespace = res.Namespace,
+                IngressName = res.IngressName,
+                ServiceName = res.ServiceName,
+                PodSelector = podSelector
+            };
+            var list = await PodService.FilterPodByLabels(res.Namespace, podSelector);
+            if (list is not { Count: > 0 }) continue;
+
+            foreach (var pod in list)
+            {
+                if (resultList.Any(x => x.PodName == pod.Name()))
+                {
+                    continue;
+                }
+
+                result.PodName = pod.Name();
+                resultList.Add(result);
+            }
+        }
+
+        resultList = resultList.GroupBy(dto => dto.PodName)
+            .Select(group => group.First())
+            .ToList();
+        return resultList;
+    }
+
+    /// <summary>
+    ///     ingress-svc1
+    ///     ingress-svc2
+    /// </summary>
+    private IList<IngressSvcPodDto> ProcessIngressBackendSvc()
+    {
+        IList<IngressSvcPodDto> resList = new List<IngressSvcPodDto>();
+        var ns = Ingress.Namespace();
+        if (Ingress.Spec.Rules is { Count: > 0 })
+        {
+            foreach (var rule in Ingress.Spec.Rules)
+            {
+                if (rule.Http.Paths is not { Count: > 0 }) continue;
+                foreach (var path in rule.Http.Paths)
+                {
+                    var serviceName = path.Backend?.Service?.Name;
+                    if (serviceName.IsNullOrWhiteSpace()) continue;
+                    if (resList.Any(x => x.ServiceName == serviceName))
+                    {
+//跳过重复
+                        continue;
+                    }
+
+                    var res = new IngressSvcPodDto
+                    {
+                        Namespace = ns,
+                        IngressName = Ingress.Name(),
+                        ServiceName = serviceName
+                    };
+                    resList.Add(res);
+                }
+            }
+        }
+
+        resList = resList.GroupBy(dto => dto.ServiceName)
+            .Select(group => group.First())
+            .ToList();
+        return resList;
+    }
+
+    class IngressSvcPodDto
+    {
+        public string Namespace { get; set; }
+        public string IngressName { get; set; }
+        public string ServiceName { get; set; }
+        public string PodName { get; set; }
+        public IDictionary<string, string> PodSelector { get; set; }
+    }
+
+
+}

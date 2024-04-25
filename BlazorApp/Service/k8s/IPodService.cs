@@ -12,10 +12,10 @@ namespace BlazorApp.Service.k8s
 
         IList<V1Pod> ListByNodeName(string nodeName);
 
-        Task<IList<V1Pod>> FilterPodByLabels(string ns, string                      labels);
+        Task<IList<V1Pod>> FilterPodByLabels(string ns, string labels);
         Task<IList<V1Pod>> FilterPodByLabels(string ns, IDictionary<string, string> labels);
 
-        Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(string                      labels);
+        Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(string labels);
         Task<IList<V1Pod>> FilterPodByLabelsForAllNamespace(IDictionary<string, string> labels);
 
         public Task<List<Result>> Analyze();

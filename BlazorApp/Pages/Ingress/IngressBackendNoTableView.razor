@@ -1,6 +1,7 @@
-@using k8s.Models
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using k8s.Models
 @if (Backend != null)
 {
     @if (Backend.Resource != null)
@@ -13,18 +14,18 @@
 
     @if (Backend.Service != null)
     {
-        <span>
-            <ColorfulTag>@($"Service: {Backend.Service.Name}:{Backend.Service.Port.Name}{Backend.Service.Port.Number}") </ColorfulTag>
-            <KubectlExplainButton Field="ingress.spec.defaultBackend.service"></KubectlExplainButton>
-        </span>
+        <RefView FullView="true" Ref="@KubeHelper.GetObjectRef("Service", Namespace, Backend.Service.Name)">
+        </RefView>
+        <ColorfulTag>@($"{Backend.Service.Port.Name}{Backend.Service.Port.Number}") </ColorfulTag>
+        <KubectlExplainButton Field="ingress.spec.defaultBackend.service"></KubectlExplainButton>
     }
 }
 
 
 @code {
 
-    [Parameter]
-    public V1IngressBackend Backend { get; set; }
+    [Parameter] public V1IngressBackend Backend { get; set; }
 
+    [Parameter] public string Namespace { get; set; }
 
 }

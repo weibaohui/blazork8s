@@ -23,7 +23,9 @@
                         <HTableColumn Title=@L["Path"]>
                             <ColorfulTag>@($"[{path.PathType}] {path.Path}")</ColorfulTag>
                             ==>
-                            <IngressBackendNoTableView Backend="@path.Backend"></IngressBackendNoTableView>
+                            <IngressBackendNoTableView Namespace="@Namespace"
+                                                       Backend="@path.Backend">
+                            </IngressBackendNoTableView>
                         </HTableColumn>
                     }
                 }
@@ -38,5 +40,6 @@
     [Parameter] public IList<V1IngressRule> Rules { get; set; }
 
     [Parameter] public string Title { get; set; }
+    [Parameter] public string Namespace { get; set; }
 
 }
