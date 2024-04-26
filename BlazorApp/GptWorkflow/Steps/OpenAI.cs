@@ -13,6 +13,7 @@ public class OpenAi() : StepBody
     public string Text { get; set; }
     public string Result { get; set; }
     public IAiService Ai { get; set; }
+    public Context Context { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
@@ -25,6 +26,8 @@ public class OpenAi() : StepBody
         _logger.LogInformation("OpenAi Prompt: {Prompt}", Prompt);
         Result = Ai?.AIChat(Prompt).GetAwaiter().GetResult();
         _logger.LogInformation("OpenAi Result: {Result}", Result);
+        Context.History.Add(Result);
+
         return ExecutionResult.Next();
     }
 }

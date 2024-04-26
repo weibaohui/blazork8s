@@ -99,6 +99,9 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 
         if (Token.IsCancellationRequested) Token = CancellationToken.None;
 
+        //防止重复命令
+        command = command.Trim();
+        command = command.StartsWith("kubectl") ? command.Remove(0, "kubectl".Length) : command;
         var cmd = Cli.Wrap("kubectl")
             .WithValidation(CommandResultValidation.None)
             .WithArguments(command);

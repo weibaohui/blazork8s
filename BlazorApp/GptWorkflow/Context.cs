@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using BlazorApp.Service.AI;
 
 namespace BlazorApp.GptWorkflow;
@@ -9,4 +10,5 @@ public class Context
     public string Result { get; set; }
     public string UserTask { get; set; }
     public IAiService AiService { get; set; }
+    public IList<string> History { get; set; }
 }

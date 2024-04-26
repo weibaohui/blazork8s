@@ -14,10 +14,25 @@ public class Kubectl : StepBody
     public string Command { get; set; }
     public string Result { get; set; }
 
+    public Context Context { get; set; }
+
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        Result = _kubectlService.Command(Command).GetAwaiter().GetResult();
-        Console.WriteLine(Result);
+        foreach (var cmd in Command.Split(";"))
+        {
+            Console.WriteLine($"Command: {cmd}");
+            if (cmd.StartsWith("kubectl logs") || cmd.StartsWith("kubectl exec"))
+            {
+                //查看日志、交互在自动化场景下没有意义
+                continue;
+            }
+
+            var exec = cmd.StartsWith("kubectl") ? cmd.Remove(0, "kubectl".Length) : cmd;
+            Result += _kubectlService.Command(exec).GetAwaiter().GetResult() + "\r\n";
+        }
+
+        Console.WriteLine($"Kubectl final result: {Result}");
+        Context.History.Add(Result);
         return ExecutionResult.Next();
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Timers;
 using BlazorApp.GptWorkflow;
@@ -36,10 +37,11 @@ public partial class Workflow : PageBase, IDisposable
 
     private async Task Start()
     {
+        _ctx.History = new List<string>();
         _ctx.UserTask = "巡查集群运行状态";
-        _ctx.Command = "get pods -A -o wide";
-        _ctx.Prompt = "请你作为一个k8s专家.\r\n" +
-                      "0、列出有问题的POD名称,按照`namespace/pod名称`的格式输出，一行一个pod。\r\n" +
+        _ctx.Command = "get pods -n default -o wide";
+        _ctx.Prompt = "当前巡检命名空间是default.请你作为一个k8s专家.\r\n" +
+                      "0、列出有问题的POD名称,请确保pod名称是从给你的内容中提取的，并保证一行一个pod。\r\n" +
                       "1、就每个方面列出最主要的2个问题。\r\n" +
                       "2、详细解释下问题的发生的原因。\r\n" +
                       "3、给出可能得解决方案。\r\n" +

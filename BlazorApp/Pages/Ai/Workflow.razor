@@ -11,4 +11,13 @@
             @((MarkupString)@_ctx.Result.ToHtmlDisplay())
         </Text>
     </div>
+    <div style="margin: 15px">
+
+        @foreach (var history in _ctx.History)
+        {
+            <Text>
+                @((MarkupString)@history.ToHtmlDisplay())
+            </Text>
+        }
+    </div>
 }
