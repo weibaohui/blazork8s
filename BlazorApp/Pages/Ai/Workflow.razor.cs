@@ -31,7 +31,8 @@ public partial class Workflow : PageBase, IDisposable
         _timer = new Timer(1000);
         _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
         _timer.Start();
-        Container.RegisterWorkflow<HelloWorldWorkflow>();
+        Container.RegisterWorkflow<InspectPodRepairWorkflow>();
+        Container.RegisterWorkflow<EchoWorkflow>();
         await base.OnInitializedAsync();
     }
 
@@ -40,11 +41,11 @@ public partial class Workflow : PageBase, IDisposable
         var workflowHost = Container.Host();
 
         _ctx.History = new List<string>();
-        _ctx.UserTask = "请检查default命名空间下的pod运行状态";
+        _ctx.UserTask = "请检查kubernetes-dashboards命名空间下的pod运行状态";
         _ctx.AiService = Ai;
         _ctx.KubectlService = Kubectl;
         _ctx.Host = workflowHost;
-        await workflowHost.StartWorkflow(HelloWorldWorkflow.Name, _ctx);
+        await workflowHost.StartWorkflow(InspectPodRepairWorkflow.Name, _ctx);
     }
 
 

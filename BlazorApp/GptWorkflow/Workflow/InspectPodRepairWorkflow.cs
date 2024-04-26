@@ -4,7 +4,7 @@ using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Workflow;
 
-public class HelloWorldWorkflow : IGptWorkflow<Context>
+public class InspectPodRepairWorkflow : IGptWorkflow<Context>
 {
     public static string Name => "HelloWorld";
     public string Id => "HelloWorld";
@@ -28,6 +28,8 @@ public class HelloWorldWorkflow : IGptWorkflow<Context>
             .Then<Kubectl>()
             .Input(step => step.Context, ctx => ctx)
             .Then<ExpertKubernetesRepair>()
+            .Input(step => step.Context, ctx => ctx)
+            .Then<RunWorkflow>()
             .Input(step => step.Context, ctx => ctx)
             .Then<PassDetect>()
             .Input(step => step.Context, ctx => ctx)
