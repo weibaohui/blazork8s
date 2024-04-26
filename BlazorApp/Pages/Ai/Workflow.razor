@@ -1,0 +1,14 @@
+@page "/Workflow"
+@using Extension
+@inherits BlazorApp.Pages.Common.PageBase
+<h3>Workflow</h3>
+
+<Button Type="@ButtonType.Primary" OnClick="() => Start()">执行</Button>
+@if (!_ctx.Result.IsNullOrEmpty())
+{
+    <div style="margin: 15px">
+        <Text Copyable>
+            @((MarkupString)@_ctx.Result.ToHtmlDisplay())
+        </Text>
+    </div>
+}

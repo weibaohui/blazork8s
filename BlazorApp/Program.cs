@@ -1,6 +1,7 @@
 using System;
 using AntDesign.ProLayout;
 using BlazorApp.Chat;
+using BlazorApp.GptWorkflow;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.AI.impl;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using SqlSugar;
+using WorkflowCore.Interface;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,7 +85,7 @@ builder.Services.AddSingleton<IStatefulSetService, StatefulSetService>();
 builder.Services.AddSingleton<ICustomResourceDefinitionService, CustomResourceDefinitionService>();
 builder.Services.AddSingleton<IReplicationControllerService, ReplicationControllerService>();
 builder.Services.AddSingleton<IResourceCrudService, ResourceCrudService>();
-
+builder.Services.AddSingleton<IWorkflowContainer, WorkflowContainer>();
 builder.Services.AddSingleton
     <ISqlSugarClient>(s =>
     {
@@ -98,8 +100,6 @@ builder.Services.AddSingleton
             db =>
             {
                 //每次上下文都会执行
-
-
                 db.Aop.OnLogExecuting = (sql, pars) =>
                 {
                     //获取原生SQL推荐 5.1.4.63  性能OK
@@ -108,6 +108,11 @@ builder.Services.AddSingleton
             });
         return sqlSugar;
     });
+
+builder.Services.AddWorkflow();
+builder.Services.AddTransient<IOpenAiService, OpenAiService>();
+builder.Services.AddTransient<IPromptService, PromptService>();
+
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.
@@ -128,5 +133,8 @@ app.MapHub<ChatHub>("/chathub");
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");
 
+//启动工作流
+var host = app.Services.GetService<IWorkflowHost>();
+host.Start();
 
 app.Run();

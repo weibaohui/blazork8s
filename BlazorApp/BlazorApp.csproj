@@ -17,13 +17,11 @@
       <PackageReference Include="NCrontab" Version="3.3.3" />
       <PackageReference Include="Quick.PtyNet" Version="1.0.2" />
       <PackageReference Include="SqlSugarCore" Version="5.1.4.146"/>
+      <PackageReference Include="WorkflowCore" Version="3.10.0"/>
       <PackageReference Include="XtermBlazor" Version="2.1.0"/>
   </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />
         <ProjectReference Include="..\Extension\Extension.csproj" />
     </ItemGroup>
-     
-    
-
 </Project>
