@@ -110,8 +110,6 @@ builder.Services.AddSingleton
     });
 
 builder.Services.AddWorkflow();
-builder.Services.AddTransient<IOpenAiService, OpenAiService>();
-builder.Services.AddTransient<IPromptService, PromptService>();
 
 
 var app = builder.Build();
