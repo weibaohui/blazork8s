@@ -1,7 +1,4 @@
 using System;
-using BlazorApp.Service.k8s.impl;
-using BlazorApp.Utils;
-using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -9,16 +6,13 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class Kubectl : StepBody
 {
-    private static readonly ILogger<KubectlService> Logger = LoggingHelper<KubectlService>.Logger();
-    private readonly KubectlService _kubectlService = new KubectlService(Logger);
-    public string Command { get; set; }
-    public string Result { get; set; }
-
     public Context Context { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        foreach (var cmd in Command.Split(";"))
+        var command = Context.LatestMessage;
+        var ret = "";
+        foreach (var cmd in command.Split(";"))
         {
             Console.WriteLine($"Command: {cmd}");
             if (cmd.StartsWith("kubectl logs") || cmd.StartsWith("kubectl exec"))
@@ -28,11 +22,12 @@ public class Kubectl : StepBody
             }
 
             var exec = cmd.StartsWith("kubectl") ? cmd.Remove(0, "kubectl".Length) : cmd;
-            Result += _kubectlService.Command(exec).GetAwaiter().GetResult() + "\r\n";
+            ret += Context.KubectlService.Command(exec).GetAwaiter().GetResult() + "\r\n";
         }
 
-        Console.WriteLine($"Kubectl final result: {Result}");
-        Context.History.Add(Result);
+        Console.WriteLine($"Kubectl final result: {ret}");
+        Context.LatestMessage = ret;
+        Context.History.Add(Context.LatestMessage);
         return ExecutionResult.Next();
     }
 }

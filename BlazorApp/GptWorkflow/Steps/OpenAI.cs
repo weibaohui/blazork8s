@@ -1,5 +1,3 @@
-using BlazorApp.Service.AI;
-using BlazorApp.Utils;
 using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
@@ -8,25 +6,31 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class OpenAi() : StepBody
 {
-    private readonly ILogger<OpenAi> _logger = LoggingHelper<OpenAi>.Logger();
-    public string Prompt { get; set; }
-    public string Text { get; set; }
-    public string Result { get; set; }
-    public IAiService Ai { get; set; }
+    private string _prompt;
     public Context Context { get; set; }
+
+    private bool Check()
+    {
+        if (Context.AiService == null)
+        {
+            Context.Logger.LogError("OpenAi Null ERROR");
+            return false;
+        }
+
+        return true;
+    }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        if (Ai == null)
+        if (Check())
         {
-            _logger.LogError("OpenAi Null ERROR");
+            _prompt = $"{Context.LatestMessage}\n请根据以上内容，{_prompt}";
+            Context.Logger.LogInformation("OpenAi Prompt: {Prompt}", _prompt);
+            Context.LatestMessage = Context.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
+            Context.Logger.LogInformation("OpenAi Result: {Result}", Context.LatestMessage);
+            Context.History.Add(Context.LatestMessage);
         }
 
-        Prompt = $"{Text}\n请根据以上内容，{Prompt}";
-        _logger.LogInformation("OpenAi Prompt: {Prompt}", Prompt);
-        Result = Ai?.AIChat(Prompt).GetAwaiter().GetResult();
-        _logger.LogInformation("OpenAi Result: {Result}", Result);
-        Context.History.Add(Result);
 
         return ExecutionResult.Next();
     }

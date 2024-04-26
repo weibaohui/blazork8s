@@ -4,19 +4,20 @@
 <h3>Workflow</h3>
 
 <Button Type="@ButtonType.Primary" OnClick="() => Start()">执行</Button>
-@if (!_ctx.Result.IsNullOrEmpty())
+@if (!_ctx.LatestMessage.IsNullOrEmpty())
 {
     <div style="margin: 15px">
         <Text Copyable>
-            @((MarkupString)@_ctx.Result.ToHtmlDisplay())
+            @((MarkupString)_ctx.LatestMessage.ToHtmlDisplay())
         </Text>
     </div>
+    <hr/>
     <div style="margin: 15px">
 
         @foreach (var history in _ctx.History)
         {
             <Text>
-                @((MarkupString)@history.ToHtmlDisplay())
+                @((MarkupString)history.ToHtmlDisplay())
             </Text>
         }
     </div>
