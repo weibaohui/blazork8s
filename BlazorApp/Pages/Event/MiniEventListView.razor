@@ -1,6 +1,7 @@
-﻿@using BlazorApp.Pages.Common.Html.HTable
-@using BlazorApp.Pages.Common.Metadata
+﻿@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
 @inherits BlazorApp.Pages.Common.PageBase
 <Divider Orientation="left" Style="font-weight:bold">@L["Events"]</Divider>
 @if (Events != null)
@@ -22,7 +23,7 @@
     {
         <HTable Bordered Column="1">
 
-            <HTableColumn Title=@L["Message"]>
+            <HTableColumn Title=@L["Message"] ExplainField="events.message">
 
                 <span style="color: @(e.Type == "Warning" ? "red" : "black")">
                     [@e.Type] @e.Message
@@ -38,30 +39,30 @@
             </HTableColumn>
             @if (e.Source != null)
             {
-                <HTableColumn Title=@L["Source"]>
+                <HTableColumn Title=@L["Source"] ExplainField="events.source">
                     @if (e.Source.Host != null)
                     {
-                        <Tag >@e.Source.Host</Tag>
+                        <ColorfulTag>@e.Source.Host</ColorfulTag>
                     }
-                    <Tag >@e.Source.Component</Tag>
+                    <ColorfulTag>@e.Source.Component</ColorfulTag>
                 </HTableColumn>
             }
             @if (e.LastTimestamp != null)
             {
-                <HTableColumn Title=@L["LastSeen"]>
+                <HTableColumn Title=@L["LastSeen"] ExplainField="events.lastTimestamp">
                     <AgeView Age="@e.LastTimestamp"></AgeView>
                     ( @e.LastTimestamp.GetValueOrDefault().ToLocalTime() )
                 </HTableColumn>
             }
             @if (e.InvolvedObject != null)
             {
-                <HTableColumn Title=@L["Involved"]>
-                    <Tag PresetColor="PresetColor.Blue">@e.InvolvedObject.NamespaceProperty</Tag>
-                    <Tag PresetColor="PresetColor.Purple">@e.InvolvedObject.Kind</Tag>
-                    <Tag PresetColor="PresetColor.Orange">@e.InvolvedObject.Name</Tag>
+                <HTableColumn Title=@L["Involved"] ExplainField="events.involvedObject">
+                    <ColorfulTag>@e.InvolvedObject.NamespaceProperty</ColorfulTag>
+                    <ColorfulTag>@e.InvolvedObject.Kind</ColorfulTag>
+                    <ColorfulTag>@e.InvolvedObject.Name</ColorfulTag>
                     @if (e.InvolvedObject.FieldPath != null)
                     {
-                        <Tag PresetColor="PresetColor.Green">@e.InvolvedObject.FieldPath</Tag>
+                        <ColorfulTag>@e.InvolvedObject.FieldPath</ColorfulTag>
                     }
                 </HTableColumn>
             }
