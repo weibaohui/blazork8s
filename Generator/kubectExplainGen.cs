@@ -50,7 +50,8 @@ public class kubectExplainGen
         // dictList.AddItem("CustomResourceDefinition", typeof(V1CustomResourceDefinition));
         // dictList.AddItem("Pod", typeof(V1Pod));
         // dictList.AddItem("Lease", typeof(V1Lease));
-        dictList.AddItem("Namespace", typeof(V1Namespace));
+        // dictList.AddItem("Namespace", typeof(V1Namespace));
+        dictList.AddItem("Event", typeof(Corev1Event));
 
         Console.WriteLine("AddList Over");
 
@@ -59,7 +60,7 @@ public class kubectExplainGen
         foreach (var dictionary in dictList.GetDictList())
         {
             var resourceName = (string)dictionary["Item"];
-            var entityList   = (IList<KubeType>)dictionary["Properties"];
+            var entityList = (IList<KubeType>)dictionary["Properties"];
             list.AddRange(entityList);
             Console.WriteLine(resourceName);
         }
@@ -67,7 +68,7 @@ public class kubectExplainGen
 
         //使用TranslateService进行翻译
 
-        var db    = new kubectExplainGen().DB();
+        var db = new kubectExplainGen().DB();
         var count = db.Queryable<KubeExplainRef>().ToList().Count;
         Console.WriteLine(count);
 
@@ -94,8 +95,8 @@ public class kubectExplainGen
         //创建数据库对象 (用法和EF Dappper一样通过new保证线程安全)
         SqlSugarClient Db = new SqlSugarClient(new ConnectionConfig()
             {
-                ConnectionString      = $"DataSource={dbPath}",
-                DbType                = DbType.Sqlite,
+                ConnectionString = $"DataSource={dbPath}",
+                DbType = DbType.Sqlite,
                 IsAutoCloseConnection = true
             },
             db =>

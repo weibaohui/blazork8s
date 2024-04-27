@@ -23,7 +23,7 @@
     {
         <HTable Bordered Column="1">
 
-            <HTableColumn Title=@L["Message"] ExplainField="events.message">
+            <HTableColumn Title=@L["Message"] ExplainField="event.message">
 
                 <span style="color: @(e.Type == "Warning" ? "red" : "black")">
                     [@e.Type] @e.Message
@@ -39,7 +39,7 @@
             </HTableColumn>
             @if (e.Source != null)
             {
-                <HTableColumn Title=@L["Source"] ExplainField="events.source">
+                <HTableColumn Title=@L["Source"] ExplainField="event.source">
                     @if (e.Source.Host != null)
                     {
                         <ColorfulTag>@e.Source.Host</ColorfulTag>
@@ -49,14 +49,14 @@
             }
             @if (e.LastTimestamp != null)
             {
-                <HTableColumn Title=@L["LastSeen"] ExplainField="events.lastTimestamp">
+                <HTableColumn Title=@L["LastSeen"] ExplainField="event.lastTimestamp">
                     <AgeView Age="@e.LastTimestamp"></AgeView>
                     ( @e.LastTimestamp.GetValueOrDefault().ToLocalTime() )
                 </HTableColumn>
             }
             @if (e.InvolvedObject != null)
             {
-                <HTableColumn Title=@L["Involved"] ExplainField="events.involvedObject">
+                <HTableColumn Title=@L["Involved"] ExplainField="event.involvedObject">
                     <ColorfulTag>@e.InvolvedObject.NamespaceProperty</ColorfulTag>
                     <ColorfulTag>@e.InvolvedObject.Kind</ColorfulTag>
                     <ColorfulTag>@e.InvolvedObject.Name</ColorfulTag>
