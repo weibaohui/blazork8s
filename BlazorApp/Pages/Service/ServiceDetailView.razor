@@ -4,7 +4,9 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Endpoints
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Ingress
 @using BlazorApp.Pages.Pod
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Service>
 @if (Item != null)
 {
@@ -77,6 +79,7 @@
 
     <MiniPodListView Pods="@PodList"></MiniPodListView>
     <MiniEndpointsListView Items="@EndpointsList"></MiniEndpointsListView>
+    <MiniIngressListView Services="@(new List<V1Service> { Item })"></MiniIngressListView>
 
     <MiniEventListView Uid="@Item.Metadata.Uid"></MiniEventListView>
 }
