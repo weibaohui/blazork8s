@@ -94,14 +94,17 @@ public partial class MyDiagram : ComponentBase
 
     private void LinkNodes(NodeModel source, NodeModel target)
     {
-        Diagram.Links.Add(new LinkModel(source.GetPort(PortAlignment.Right), target.GetPort(PortAlignment.Left))
-        {
-            Router = new OrthogonalRouter(),
-            PathGenerator = new StraightPathGenerator(10),
-            // SourceMarker = LinkMarker.Square,
-            TargetMarker = LinkMarker.NewArrow(6, 6),
-            Color = "#8EA3B1",
-            Width = 1,
-        });
+        var sourcePort = source.GetPort(PortAlignment.Right);
+        var targetPort = target.GetPort(PortAlignment.Left);
+        if (sourcePort != null && targetPort != null)
+            Diagram.Links.Add(new LinkModel(sourcePort, targetPort)
+            {
+                Router = new OrthogonalRouter(),
+                PathGenerator = new StraightPathGenerator(10),
+                // SourceMarker = LinkMarker.Square,
+                TargetMarker = LinkMarker.NewArrow(6, 6),
+                Color = "#8EA3B1",
+                Width = 1
+            });
     }
 }
