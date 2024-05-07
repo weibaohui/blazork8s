@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
@@ -11,16 +12,27 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Diagrams;
 
-public partial class MyDiagram : ComponentBase
+public partial class MyDiagram : ComponentBase, IDisposable
 {
     [Inject] private IDeploymentService DeploymentService { get; set; }
     [Inject] private IReplicaSetService ReplicaSetService { get; set; }
     [Inject] private IPodService PodService { get; set; }
 
+    // private Timer _timer;
     private BlazorDiagram Diagram { get; set; }
+
+
+    public void Dispose()
+    {
+        // _timer.Dispose();
+    }
 
     protected override async Task OnInitializedAsync()
     {
+        // _timer = new Timer(5000);
+        // _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
+        // _timer.Start();
+
         var options = new BlazorDiagramOptions
         {
             Zoom =
@@ -31,10 +43,35 @@ public partial class MyDiagram : ComponentBase
 
         Diagram = new BlazorDiagram(options);
 
-
         Diagram.RegisterComponent<KubeNode<V1Deployment>, KubeNodeWidget<V1Deployment>>();
         Diagram.RegisterComponent<KubeNode<V1ReplicaSet>, KubeNodeWidget<V1ReplicaSet>>();
         Diagram.RegisterComponent<KubeNode<V1Pod>, KubeNodeWidget<V1Pod>>();
+
+        await OnTimerCallback();
+
+        await base.OnInitializedAsync();
+    }
+
+
+    private void LinkNodes(NodeModel source, NodeModel target)
+    {
+        var sourcePort = source.GetPort(PortAlignment.Right);
+        var targetPort = target.GetPort(PortAlignment.Left);
+        if (sourcePort != null && targetPort != null)
+            Diagram.Links.Add(new LinkModel(sourcePort, targetPort)
+            {
+                Router = new OrthogonalRouter(),
+                PathGenerator = new StraightPathGenerator(10),
+                // SourceMarker = LinkMarker.Square,
+                TargetMarker = LinkMarker.NewArrow(6, 6),
+                Color = "#8EA3B1",
+                Width = 1
+            });
+    }
+
+
+    private async Task OnTimerCallback()
+    {
         KubeNodeContainer<V1Deployment>.Instance.Clear();
         KubeNodeContainer<V1ReplicaSet>.Instance.Clear();
         KubeNodeContainer<V1Pod>.Instance.Clear();
@@ -68,43 +105,18 @@ public partial class MyDiagram : ComponentBase
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
                     LinkNodes(rsNode, podNode);
                     if (pods.Count > 1)
-                    {
                         //只有一个就不用往下移位
                         y += offset;
-                    }
                 }
 
                 if (replicaSets.Count > 1)
-                {
                     //只有一个就不用往下移位
                     y += offset;
-                }
             }
 
-            if (list.Count > 1)
-            {
-                y += offset;
-            }
+            if (list.Count > 1) y += offset;
         }
 
-
-        await base.OnInitializedAsync();
-    }
-
-
-    private void LinkNodes(NodeModel source, NodeModel target)
-    {
-        var sourcePort = source.GetPort(PortAlignment.Right);
-        var targetPort = target.GetPort(PortAlignment.Left);
-        if (sourcePort != null && targetPort != null)
-            Diagram.Links.Add(new LinkModel(sourcePort, targetPort)
-            {
-                Router = new OrthogonalRouter(),
-                PathGenerator = new StraightPathGenerator(10),
-                // SourceMarker = LinkMarker.Square,
-                TargetMarker = LinkMarker.NewArrow(6, 6),
-                Color = "#8EA3B1",
-                Width = 1
-            });
+        await InvokeAsync(StateHasChanged);
     }
 }
