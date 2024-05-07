@@ -19,6 +19,8 @@
       <PackageReference Include="SqlSugarCore" Version="5.1.4.146"/>
       <PackageReference Include="WorkflowCore" Version="3.10.0"/>
       <PackageReference Include="XtermBlazor" Version="2.1.0"/>
+      <PackageReference Include="Z.Blazor.Diagrams" Version="3.0.2"/>
+
   </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Entity\Entity.csproj" />
