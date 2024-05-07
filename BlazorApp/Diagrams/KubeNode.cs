@@ -27,7 +27,7 @@ public class KubeNode<T> : NodeModel where T : IKubernetesObject<V1ObjectMeta>
     private void AddNode(T item)
     {
         var key = $"{item.Namespace()}/{item.Name()}";
-        KubeNodeContainer.Instance.AddNode(key, this);
+        KubeNodeContainer<T>.Instance.AddNode(key, this);
         Diagram.Nodes.Add(this);
     }
 }

@@ -70,6 +70,27 @@ public static class StringExtensions
         return sb.ToString();
     }
 
+    /// <summary>
+    ///
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="maxLength"></param>
+    /// <returns></returns>
+    public static string Truncate(this string input, int maxLength)
+    {
+        if (string.IsNullOrEmpty(input))
+        {
+            return input;
+        }
+
+        if (input.Length <= maxLength)
+        {
+            return input;
+        }
+
+        return input.Substring(0, maxLength) + "...";
+    }
+
     public static long ToNumeric(this string input)
     {
         // ASCII 码的范围是 0 到 127

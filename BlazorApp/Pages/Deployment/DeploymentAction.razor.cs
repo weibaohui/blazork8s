@@ -2,6 +2,7 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Diagrams;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
@@ -40,6 +41,12 @@ public partial class DeploymentAction : PageBase
     {
         await DeploymentService.Restart(item);
         await MessageService.Success($"{item.Name()} Restarted");
+    }
+
+    private async Task OnDiagramClick(V1Deployment item)
+    {
+        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
+        var x = await PageDrawerService.ShowDrawerAsync<DeploymentDiagram, V1Deployment, bool>(options, item);
     }
 
     private async Task OnScaleClick(V1Deployment item)

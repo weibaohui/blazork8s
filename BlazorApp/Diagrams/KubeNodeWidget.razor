@@ -1,8 +1,9 @@
 @typeparam            T
+@using Extension
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
-<div class="default-node container">
+<div class="default-node ">
 
 
     @foreach (var port in Node.Ports.Where(x => x.Alignment == PortAlignment.Left))
@@ -15,8 +16,35 @@
     {
         <PortRenderer @key="port" Port="port" Class="default"/>
     }
+    @{
+        var typeName = Node.Item.GetType().Name;
+        var resName = Node.Item.Name();
+    }
+    <div style="width: 200px;">
+        <GridRow Style="align-items: center" Gutter="8">
+            <GridCol Span="4">
+                <Icon Type="appstore" Theme="twotone" Style="font-size: 30px"/>
+            </GridCol>
+            <GridCol Span="16">
+                @(resName.Truncate(15))
+            </GridCol>
+            <GridCol Span="4">
+                <Icon Type="setting" Theme="twotone" Style="font-size: 18px"/>
+            </GridCol>
+        </GridRow>
+        <GridRow>
+            <GridCol Span="6" Style="font-size: 18px">
 
-    <div>
-        @Node.Item.Name()
+                @if (typeName == "V1Deployment")
+                {
+                    <Icon Type="heart" Theme="fill" Style="color:#f5222d"/>
+                    @((Node.Item as V1Deployment)?.Status.AvailableReplicas)
+                }
+                else
+                {
+                    <Icon Type="heart" Theme="fill" Style="color:#19BE94"/>
+                }
+            </GridCol>
+        </GridRow>
     </div>
 </div>

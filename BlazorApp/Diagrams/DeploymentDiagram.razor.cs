@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
@@ -5,15 +6,16 @@ using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.PathGenerators;
 using Blazor.Diagrams.Core.Routers;
 using Blazor.Diagrams.Options;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Diagrams;
 
-public partial class MyDiagram : ComponentBase
+public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
 {
-    [Inject] private IDeploymentService DeploymentService { get; set; }
+    [Parameter] public V1Deployment Deployment { get; set; }
     [Inject] private IReplicaSetService ReplicaSetService { get; set; }
     [Inject] private IPodService PodService { get; set; }
 
@@ -21,6 +23,7 @@ public partial class MyDiagram : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        Deployment ??= base.Options;
         var options = new BlazorDiagramOptions
         {
             Zoom =
@@ -33,20 +36,19 @@ public partial class MyDiagram : ComponentBase
 
 
         Diagram.RegisterComponent<KubeNode<V1Deployment>, KubeNodeWidget<V1Deployment>>();
-        Diagram.RegisterComponent<KubeNode<V1ReplicaSet>, KubeNodeWidget<V1ReplicaSet>>();
-        Diagram.RegisterComponent<KubeNode<V1Pod>, KubeNodeWidget<V1Pod>>();
         KubeNodeContainer<V1Deployment>.Instance.Clear();
         KubeNodeContainer<V1ReplicaSet>.Instance.Clear();
         KubeNodeContainer<V1Pod>.Instance.Clear();
-        var list = DeploymentService.List();
+        var list = new List<V1Deployment>() { Deployment };
         var x = 50;
-        var offset = 65;
-        var column2XBase = 350;
-        var column3XBase = 650;
-        var y = 50;
+        var offset = 30;
+        var column2XBase = 250;
+        var column3XBase = 450;
+        var y = 0;
 
         foreach (var deploy in list)
         {
+            y += offset;
             _ = new KubeNode<V1Deployment>(Diagram, deploy, new Point(x, y));
             var key = $"{deploy.Namespace()}/{deploy.Name()}";
             var deployNode = KubeNodeContainer<V1Deployment>.Instance.Get(key);
@@ -67,23 +69,10 @@ public partial class MyDiagram : ComponentBase
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
                     LinkNodes(rsNode, podNode);
-                    if (pods.Count > 1)
-                    {
-                        //只有一个就不用往下移位
-                        y += offset;
-                    }
+                    y += offset * 2;
                 }
 
-                if (replicaSets.Count > 1)
-                {
-                    //只有一个就不用往下移位
-                    y += offset;
-                }
-            }
-
-            if (list.Count > 1)
-            {
-                y += offset;
+                y += offset * 2;
             }
         }
 
@@ -94,14 +83,17 @@ public partial class MyDiagram : ComponentBase
 
     private void LinkNodes(NodeModel source, NodeModel target)
     {
-        Diagram.Links.Add(new LinkModel(source.GetPort(PortAlignment.Right), target.GetPort(PortAlignment.Left))
+        var sourcePort = source.GetPort(PortAlignment.Right);
+        var targetPort = target.GetPort(PortAlignment.Left);
+        if (sourcePort != null && targetPort != null)
         {
-            Router = new OrthogonalRouter(),
-            PathGenerator = new StraightPathGenerator(10),
-            // SourceMarker = LinkMarker.Square,
-            TargetMarker = LinkMarker.NewArrow(6, 6),
-            Color = "#8EA3B1",
-            Width = 1,
-        });
+            Diagram.Links.Add(new LinkModel(sourcePort, targetPort)
+            {
+                Router = new OrthogonalRouter(),
+                PathGenerator = new StraightPathGenerator(),
+                // SourceMarker = LinkMarker.Square,
+                TargetMarker = LinkMarker.Arrow
+            });
+        }
     }
 }
