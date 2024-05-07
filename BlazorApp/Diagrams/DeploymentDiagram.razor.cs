@@ -36,19 +36,20 @@ public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
 
 
         Diagram.RegisterComponent<KubeNode<V1Deployment>, KubeNodeWidget<V1Deployment>>();
+        Diagram.RegisterComponent<KubeNode<V1ReplicaSet>, KubeNodeWidget<V1ReplicaSet>>();
+        Diagram.RegisterComponent<KubeNode<V1Pod>, KubeNodeWidget<V1Pod>>();
         KubeNodeContainer<V1Deployment>.Instance.Clear();
         KubeNodeContainer<V1ReplicaSet>.Instance.Clear();
         KubeNodeContainer<V1Pod>.Instance.Clear();
         var list = new List<V1Deployment>() { Deployment };
         var x = 50;
-        var offset = 30;
-        var column2XBase = 250;
-        var column3XBase = 450;
-        var y = 0;
+        var offset = 65;
+        var column2XBase = 400;
+        var column3XBase = 750;
+        var y = 50;
 
         foreach (var deploy in list)
         {
-            y += offset;
             _ = new KubeNode<V1Deployment>(Diagram, deploy, new Point(x, y));
             var key = $"{deploy.Namespace()}/{deploy.Name()}";
             var deployNode = KubeNodeContainer<V1Deployment>.Instance.Get(key);
@@ -69,10 +70,23 @@ public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
                     LinkNodes(rsNode, podNode);
-                    y += offset * 2;
+                    if (pods.Count > 1)
+                    {
+                        //只有一个就不用往下移位
+                        y += offset;
+                    }
                 }
 
-                y += offset * 2;
+                if (replicaSets.Count > 1)
+                {
+                    //只有一个就不用往下移位
+                    y += offset;
+                }
+            }
+
+            if (list.Count > 1)
+            {
+                y += offset;
             }
         }
 
@@ -90,9 +104,11 @@ public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
             Diagram.Links.Add(new LinkModel(sourcePort, targetPort)
             {
                 Router = new OrthogonalRouter(),
-                PathGenerator = new StraightPathGenerator(),
+                PathGenerator = new StraightPathGenerator(10),
                 // SourceMarker = LinkMarker.Square,
-                TargetMarker = LinkMarker.Arrow
+                TargetMarker = LinkMarker.NewArrow(6, 6),
+                Color = "#8EA3B1",
+                Width = 1,
             });
         }
     }

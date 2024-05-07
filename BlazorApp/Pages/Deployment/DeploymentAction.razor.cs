@@ -45,7 +45,7 @@ public partial class DeploymentAction : PageBase
 
     private async Task OnDiagramClick(V1Deployment item)
     {
-        var options = PageDrawerService.DefaultOptions($"Yaml:{item.Name()}", width: 1000);
+        var options = PageDrawerService.DefaultOptions($"{L["Diagram"]}:{item.Name()}", width: 1300);
         var x = await PageDrawerService.ShowDrawerAsync<DeploymentDiagram, V1Deployment, bool>(options, item);
     }
 

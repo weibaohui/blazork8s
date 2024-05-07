@@ -41,8 +41,8 @@ public partial class MyDiagram : ComponentBase
         var list = DeploymentService.List();
         var x = 50;
         var offset = 65;
-        var column2XBase = 350;
-        var column3XBase = 650;
+        var column2XBase = 400;
+        var column3XBase = 750;
         var y = 50;
 
         foreach (var deploy in list)
