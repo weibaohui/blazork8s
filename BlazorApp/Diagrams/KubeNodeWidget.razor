@@ -1,5 +1,6 @@
 @typeparam            T
 @using Extension
+@using Extension.k8s
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
@@ -45,24 +46,67 @@
             </GridCol>
         </GridRow>
         <GridRow Style="align-items: center" Gutter="8">
-            <GridCol Span="4">
-                @if (typeName == "V1Deployment")
-                {
+            @if (typeName == "V1Deployment")
+            {
+                <GridCol Span="4">
                     @("deploy")
-                }
-                else if (typeName == "V1Pod")
-                {
+                </GridCol>
+                <GridCol Span="20" Style="font-size: 18px">
+                    @{
+                        var item = Node.Item as V1Deployment;
+                    }
+                    @if (item?.IsReady() is true)
+                    {
+                        <Icon Type="heart" Theme="fill" Style="color:#19BE94"/>
+                    }
+                    else
+                    {
+                        <Icon Type="thunderbolt" Theme="fill" Style="color:#f5222d"/>
+                    }
+                </GridCol>
+            }
+            else if (typeName == "V1Pod")
+            {
+                <GridCol Span="4">
                     @("pod")
-                }
-                else if (typeName == "V1ReplicaSet")
-                {
+                </GridCol>
+                <GridCol Span="20" Style="font-size: 18px">
+                    @{
+                        var item = Node.Item as V1Pod;
+                    }
+                    @if (item?.IsReady() is true)
+                    {
+                        <Icon Type="heart" Theme="fill" Style="color:#19BE94"/>
+                    }
+                    else
+                    {
+                        <Icon Type="thunderbolt" Theme="fill" Style="color:#f5222d"/>
+                    }
+                </GridCol>
+            }
+            else if (typeName == "V1ReplicaSet")
+            {
+                <GridCol Span="4">
                     @("rs")
-                }
-            </GridCol>
-            <GridCol Span="20" Style="font-size: 18px">
-                <Icon Type="heart" Theme="fill" Style="color:#f5222d"/>
-                <Icon Type="heart" Theme="fill" Style="color:#19BE94"/>
-            </GridCol>
+                </GridCol>
+                <GridCol Span="20" Style="font-size: 18px">
+
+                    @{
+                        var item = Node.Item as V1ReplicaSet;
+                    }
+                    @if (item?.IsReady() is true)
+                    {
+                        <Icon Type="heart" Theme="fill" Style="color:#19BE94"/>
+                    }
+                    else
+                    {
+                        <Icon Type="thunderbolt" Theme="fill" Style="color:#f5222d"/>
+                    }
+
+                </GridCol>
+            }
+
+
         </GridRow>
     </div>
 </div>
