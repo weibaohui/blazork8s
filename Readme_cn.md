@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://gitee.com/weibaohui/blazork8s">
-    <img src="https://gitee.com/weibaohui/blazork8s/raw/main/BlazorApp/wwwroot/pro_icon.svg">
+    <img src="/BlazorApp/wwwroot/pro_icon.svg">
   </a>
   <h1 align="center"> Blazor k8s </h1>
   <h4 align="center"> 
@@ -26,6 +26,7 @@
 * 页面功能集成kubectl describe、kubectl explain、kubectl top等高频命令，使用界面点击即可查看。
 * 集群页面增加巡检功能，对主要资源对象的常见错误进行巡检，并给出巡检结果明细列表。
 * 支持中文、英文以及法语、德语、意大利语、俄语、西班牙语、法语、日语、韩语等12国语言。
+* 支持通过拓扑图直观展示workload资源之间的关系以及状态
 ## ☀️ 授权协议
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
@@ -143,7 +144,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 ### DocTree树状展开yaml定义，再也不用担心记不住定义了
 
 <br>
-  <img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/doc-tree.gif">
+  <img src="/docs/img/doc-tree.gif">
   <br>
 
 ### 字段含义解释
@@ -153,23 +154,25 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * 使用kubectl 获取k8s解释
 * 使用配置的AI大模型，进行智能解释，效果如下：
   <br>
-  <img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/kubectl-explain.gif">
+  <img src="/docs/img/kubectl-explain.gif">
   <br>
 
 ### 生成部署yaml
 
 <br>
 通过提示词获得k8s部署yaml，并执行<br>
-<img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/gpt-deploy.gif">
+<img src="/docs/img/gpt-deploy.gif">
 <br>
 
 ### 智能分析
 
 在每一个资源上面都增加了智能分析、安全分析两个按钮。
 <br>
-<img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/POD-analyze.gif">
+<img src="/docs/img/POD-analyze.gif">
 <br>
-
+## 资源拓扑展示
+<img src="/docs/img/deploy-diagram.jpg">
+<br>
 ## 巡检支持资源情况
 
 * Node
@@ -184,7 +187,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * NetworkPolicy
 * HorizontalPodAutoscaler
   <br>
-  <img src="https://gitee.com/weibaohui/blazork8s/raw/main/docs/img/cluster-inspection.png">
+  <img src="/docs/img/cluster-inspection.png">
   <br>
 
 ## 页面预览

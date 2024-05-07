@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://github.com/weibaohui/blazork8s">
-    <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/BlazorApp/wwwroot/pro_icon.svg">
+    <img src="/BlazorApp/wwwroot/pro_icon.svg">
   </a>
   <h1 align="center"> Blazor k8s </h1>
   <h4 align="center"> 
@@ -26,6 +26,7 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Display resource usage dynamically (requires installation of metric server), and support viewing detailed statistical data* Integration of page functionalities such as kubectl describe, kubectl explain, kubectl top and other high-frequency commands. These can be accessed with a simple click on the user interface.
 * Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
 * Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
+* Visualize the relationships and states between workload resources intuitively through a topology diagram.
 ## ☀️ License
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
@@ -137,7 +138,7 @@ Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.js
 ### DocTree expands YAML definitions in a tree-like structure, no longer worry about forgetting the definitions.
 
 <br>
-  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/doc-tree.gif">
+  <img src="/docs/img/doc-tree.gif">
   <br>
 
 ### Explanation of Field Meanings
@@ -147,21 +148,26 @@ Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.js
 * Use kubectl to obtain Kubernetes explanations
 * Using a configured AI large model for intelligent interpretation, the results are as follows:
   <br>
-  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/kubectl-explain.gif">
+  <img src="/docs/img/kubectl-explain.gif">
   <br>
 
 ### Generate deployment YAML
 
 <br>
 Obtain k8s deployment YAML through prompts and execute <br>
-<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/gpt-deploy.gif">
+<img src="/docs/img/gpt-deploy.gif">
 <br>
 
 ### Intelligent Analysis
 
 Added intelligent analysis and security analysis buttons on each resource.
 <br>
-<img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/POD-analyze.gif">
+<img src="/docs/img/POD-analyze.gif">
+<br>
+
+### Workload Diagram
+Visualize the relationships and states between workload resources intuitively through a topology diagram
+<img src="/docs/img/deploy-diagram.jpg">
 <br>
 
 ## List of inspectable resources
@@ -178,7 +184,7 @@ Added intelligent analysis and security analysis buttons on each resource.
 * NetworkPolicy
 * HorizontalPodAutoscaler
   <br>
-  <img src="https://raw.githubusercontent.com/weibaohui/blazork8s/main/docs/img/cluster-inspection.png">
+  <img src="/docs/img/cluster-inspection.png">
   <br>
 
 ## UI preview
