@@ -1,17 +1,22 @@
 using System.Threading.Tasks;
 using Blazor.Diagrams;
-using Blazor.Diagrams.Core.Anchors;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
 using Blazor.Diagrams.Core.PathGenerators;
 using Blazor.Diagrams.Core.Routers;
 using Blazor.Diagrams.Options;
+using BlazorApp.Service.k8s;
+using k8s.Models;
 using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Diagrams;
 
 public partial class MyDiagram : ComponentBase
 {
+    [Inject] private IDeploymentService DeploymentService { get; set; }
+    [Inject] private IReplicaSetService ReplicaSetService { get; set; }
+    [Inject] private IPodService PodService { get; set; }
+
     private BlazorDiagram Diagram { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -25,70 +30,60 @@ public partial class MyDiagram : ComponentBase
         };
 
         Diagram = new BlazorDiagram(options);
-        var firstNode = Diagram.Nodes.Add(new NodeModel(new Point(50, 50))
+
+
+        Diagram.RegisterComponent<KubeNode<V1Deployment>, KubeNodeWidget<V1Deployment>>();
+        KubeNodeContainer.Instance.Clear();
+        var list = DeploymentService.List();
+        var x = 50;
+        var offset = 30;
+        var column2XBase = 250;
+        var column3XBase = 450;
+        var y = 0;
+
+        foreach (var deploy in list)
         {
-            Title = "Node x"
-        });
-        var secondNode = Diagram.Nodes.Add(new NodeModel(new Point(200, 100))
-        {
-            Title = "Node y"
-        });
-        var firstNodeRightPort = firstNode.AddPort(PortAlignment.Right);
+            y += offset;
+            _ = new KubeNode<V1Deployment>(Diagram, deploy, new Point(x, y));
+            var key = $"{deploy.Namespace()}/{deploy.Name()}";
+            var deployNode = KubeNodeContainer.Instance.Get(key);
 
-        var secondNodeLeftPort = secondNode.AddPort(PortAlignment.Left);
-        var secondNodeRightPort = secondNode.AddPort(PortAlignment.Right);
-        var sourceAnchor1 = new SinglePortAnchor(firstNodeRightPort);
-        var targetAnchor1 = new SinglePortAnchor(secondNodeLeftPort);
-        var link = Diagram.Links.Add(new LinkModel(sourceAnchor1, targetAnchor1));
+            var replicaSets = ReplicaSetService.ListByOwnerUid(deploy.Metadata.Uid);
 
-        Diagram.RegisterComponent<AddTwoNumbersNode, AddTwoNumbersWidget>();
-        var node = Diagram.Nodes.Add(new AddTwoNumbersNode(new Point(400, 150)));
-        node.AddPort(PortAlignment.Left);
-        node.AddPort(PortAlignment.Right);
+            foreach (var rs in replicaSets)
+            {
+                _ = new KubeNode<V1ReplicaSet>(Diagram, rs, new Point(column2XBase, y));
+                var rkey = $"{rs.Namespace()}/{rs.Name()}";
+                var rsNode = KubeNodeContainer.Instance.Get(rkey);
+                LinkNodes(deployNode, rsNode);
 
-        Diagram.Links.Add(new LinkModel(secondNode.GetPort(PortAlignment.Right), node.GetPort(PortAlignment.Left))
-        {
-            SourceMarker = LinkMarker.Arrow,
-            TargetMarker = LinkMarker.Arrow,
-            PathGenerator = new SmoothPathGenerator()
-        });
+                var pods = PodService.ListByOwnerUid(rs.Metadata.Uid);
+                foreach (var pod in pods)
+                {
+                    _ = new KubeNode<V1Pod>(Diagram, pod, new Point(column3XBase, y));
+                    var pkey = $"{pod.Namespace()}/{pod.Name()}";
+                    var podNode = KubeNodeContainer.Instance.Get(pkey);
+                    LinkNodes(rsNode, podNode);
+                    y += offset * 2;
+                }
+
+                y += offset * 2;
+            }
+        }
 
 
-        var node1 = NewNode(50, 50, "node1");
-        var node2 = NewNode(300, 300, "node2");
-        var node3 = NewNode(300, 50, "node3");
-        Diagram.Nodes.Add(new[] { node1, node2, node3 });
-
-        Diagram.Links.Add(new LinkModel(node1.GetPort(PortAlignment.Right), node2.GetPort(PortAlignment.Left))
-        {
-            SourceMarker = LinkMarker.Arrow,
-            TargetMarker = LinkMarker.Arrow,
-            PathGenerator = new SmoothPathGenerator()
-        });
-        Diagram.Links.Add(new LinkModel(node2.GetPort(PortAlignment.Right), node3.GetPort(PortAlignment.Right))
-        {
-            Router = new OrthogonalRouter(),
-            PathGenerator = new StraightPathGenerator(),
-            SourceMarker = LinkMarker.Arrow,
-            TargetMarker = LinkMarker.Arrow
-        });
         await base.OnInitializedAsync();
     }
 
-    protected override void OnInitialized()
-    {
-    }
 
-    private NodeModel NewNode(double x, double y, string title)
+    private void LinkNodes(NodeModel source, NodeModel target)
     {
-        var node = new NodeModel(new Point(x, y))
+        Diagram.Links.Add(new LinkModel(source.GetPort(PortAlignment.Right), target.GetPort(PortAlignment.Left))
         {
-            Title = title
-        };
-        node.AddPort();
-        node.AddPort(PortAlignment.Top);
-        node.AddPort(PortAlignment.Left);
-        node.AddPort(PortAlignment.Right);
-        return node;
+            Router = new OrthogonalRouter(),
+            PathGenerator = new StraightPathGenerator(),
+            // SourceMarker = LinkMarker.Square,
+            TargetMarker = LinkMarker.Arrow
+        });
     }
 }

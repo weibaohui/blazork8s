@@ -1,0 +1,22 @@
+@typeparam            T
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.PageBase
+
+<div class="default-node container">
+
+
+    @foreach (var port in Node.Ports.Where(x => x.Alignment == PortAlignment.Left))
+    {
+        <PortRenderer @key="port" Port="port" Class="default"/>
+    }
+
+
+    @foreach (var port in Node.Ports.Where(x => x.Alignment == PortAlignment.Right))
+    {
+        <PortRenderer @key="port" Port="port" Class="default"/>
+    }
+
+    <div>
+        @Node.Item.Name()
+    </div>
+</div>
