@@ -14,7 +14,7 @@ public class KubeNode<T> : NodeModel where T : IKubernetesObject<V1ObjectMeta>
         Name = Item.Name();
         Title = Name;
         Diagram = diagram;
-
+        Locked = true;
         AddPort(PortAlignment.Left);
         AddPort(PortAlignment.Right);
         AddNode(item);
