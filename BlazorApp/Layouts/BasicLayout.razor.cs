@@ -106,9 +106,10 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItemWithPath(L["Overview"], "cluster", "/Cluster"),
-            GetMenuItemWithPath(L["Inspection"], "cluster", "/Cluster/Inspection"),
-            GetMenuItemWithPath(L["Metrics"], "cluster", "/Cluster/Metrics")
+            GetMenuItemWithPath(L["Overview"], "dashboard", "/Cluster"),
+            GetMenuItemWithPath(L["Inspection"], "scan", "/Cluster/Inspection"),
+            GetMenuItemWithPath(L["Metrics"], "cluster", "/Cluster/Metrics"),
+            GetMenuItemWithPath(L["Diagram"], "deployment-unit", "/MyDiagram")
         };
     }
 
