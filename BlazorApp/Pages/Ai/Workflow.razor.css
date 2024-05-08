@@ -1,0 +1,88 @@
+
+.chat-container {
+    width: calc(100vh - 120px);
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    height: calc(100vh - 5px);
+}
+
+.chat-box {
+    padding: 20px;
+    height: calc(100vh - 120px);
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+}
+
+.message {
+    padding: 10px 15px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+}
+
+.bot-message {
+    background-color: #f2f2f2;
+}
+
+.input-box {
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+    position: absolute;
+    bottom: 60px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.input-box input[type="text"] {
+    width: calc(100% - 50px);
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+.input-box button {
+    width: 50px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.prompt {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    z-index: 999;
+    bottom: 120px;
+
+}
+
+.prompt ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prompt button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+    padding: 0;
+    margin: 0;
+}

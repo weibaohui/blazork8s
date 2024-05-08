@@ -89,6 +89,7 @@ public partial class BasicLayout : LayoutComponentBase
                 Children = SettingMenu()
             },
             GetMenuItemWithPath(L["Example"], "unordered-list", "/Example"),
+            GetMenuItemWithPath(L["Workflow"], "project", "/Workflow"),
             GetMenuItemWithPath(L["OpenSource"], "github", "/OpenSource")
         ];
         await base.OnInitializedAsync();

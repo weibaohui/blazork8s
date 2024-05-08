@@ -43,6 +43,7 @@ public class CodeExtract : StepBody
                 Console.WriteLine($"CodeExtract {Pattern},final result: {ret}");
                 Context.LatestMessage = ret;
                 Context.History.Add(Context.LatestMessage);
+                Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
             }
         }
 

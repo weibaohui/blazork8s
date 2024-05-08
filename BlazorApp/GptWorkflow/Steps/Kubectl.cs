@@ -28,6 +28,8 @@ public class Kubectl : StepBody
         Console.WriteLine($"Kubectl final result: {ret}");
         Context.LatestMessage = ret;
         Context.History.Add(Context.LatestMessage);
+        Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
+
         return ExecutionResult.Next();
     }
 }

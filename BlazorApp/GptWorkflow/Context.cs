@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
@@ -16,4 +17,5 @@ public class Context
     public IAiService AiService { get; set; }
     public IKubectlService KubectlService { get; set; }
     public IWorkflowHost Host { get; set; }
+    public Action<object, string> OutputEventHandler { get; set; }
 }

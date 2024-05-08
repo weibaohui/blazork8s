@@ -29,6 +29,7 @@ public class OpenAi() : StepBody
             Context.LatestMessage = Context.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
             Context.Logger.LogInformation("OpenAi Result: {Result}", Context.LatestMessage);
             Context.History.Add(Context.LatestMessage);
+            Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
         }
 
 

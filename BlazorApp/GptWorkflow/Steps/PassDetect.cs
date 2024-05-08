@@ -24,6 +24,7 @@ public class PassDetect : StepBody
         }
 
         Context.History.Add(Context.LatestMessage);
+        Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
         return ExecutionResult.Next();
     }
 }

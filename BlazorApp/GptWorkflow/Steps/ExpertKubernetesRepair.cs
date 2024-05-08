@@ -42,6 +42,7 @@ public class ExpertKubernetesRepair : StepBody
             Context.LatestMessage = Context.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
             _logger.LogInformation("ExpertKubernetes Result: {Result}", Context.LatestMessage);
             Context.History.Add(Context.LatestMessage);
+            Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
         }
 
 

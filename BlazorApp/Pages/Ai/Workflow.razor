@@ -1,24 +1,40 @@
 @page "/Workflow"
-@using Extension
 @inherits BlazorApp.Pages.Common.PageBase
-<h3>Workflow</h3>
 
-<Button Type="@ButtonType.Primary" OnClick="() => Start()">执行</Button>
-@if (!_ctx.LatestMessage.IsNullOrEmpty())
-{
-    <div style="margin: 15px">
-        <Text Copyable>
-            @((MarkupString)_ctx.LatestMessage.ToHtmlDisplay())
-        </Text>
-    </div>
-    <hr/>
-    <div style="margin: 15px">
-
-        @foreach (var history in _ctx.History)
+<div class="chat-container">
+    <div class="chat-box" id="chat-box">
+        @foreach (var message in _messages)
         {
-            <Text>
-                @((MarkupString)history.ToHtmlDisplay())
-            </Text>
+            <div class="message @(message.IsUser ? "user-message" : "bot-message")">
+                <p>@message.Content</p>
+            </div>
         }
     </div>
-}
+    <div class="input-box">
+        <input type="text" @bind="_userInput" @onkeypress="HandleKeyPress" placeholder="Type your message...">
+        <button @onclick="@(() => SendMessage())">Send</button>
+    </div>
+    @if (_showPrompt)
+    {
+        <div class="prompt">
+            <p>Select:</p>
+            <ul>
+                <li>
+                    <button @onclick="@(() => InsertTag("请检查kubernetes-dashboards命名空间下的pod运行状态"))">
+                        #pod-kubernetes-dashboards
+                    </button>
+                </li>
+                <li>
+                    <button @onclick="@(() => InsertTag("请检查default命名空间下的pod运行状态"))">#pod-default</button>
+                </li>
+                <li>
+                    <button @onclick="@(() => InsertTag("deployment"))">#deployment</button>
+                </li>
+                <li>
+                    <button @onclick="@(() => InsertTag("service"))">#service</button>
+                </li>
+            </ul>
+        </div>
+    }
+
+</div>
