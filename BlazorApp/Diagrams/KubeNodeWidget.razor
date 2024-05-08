@@ -22,6 +22,7 @@
         <GridRow Style="align-items: center" Gutter="8">
             <GridCol Span="4">
 
+
                 @if (typeName == "V1Deployment")
                 {
                     <Icon Type="appstore" Theme="twotone" Style="font-size: 30px"/>
@@ -35,8 +36,8 @@
                     <Icon Type="switcher" Theme="twotone" Style="font-size: 30px ;color: teal"/>
                 }
             </GridCol>
-            <GridCol Span="18" Style=" display: flex; flex-wrap: wrap; ">
-                @(resName.Truncate(50))
+            <GridCol Span="18">
+                <div class="long-text">@(resName)</div>
             </GridCol>
             <GridCol Span="2">
                 <Icon Type="more" Theme="outline" Style="font-size: 18px"/>
@@ -83,5 +84,8 @@
                     break;
             }
         </GridRow>
+    </div>
+    <div class="time-ago">
+        <div class="center">@Node.Item.CreationTimestamp().AgeFromUtc()</div>
     </div>
 </div>

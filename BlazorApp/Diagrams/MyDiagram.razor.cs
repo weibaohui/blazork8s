@@ -84,7 +84,7 @@ public partial class MyDiagram : ComponentBase, IDisposable
         Diagram.Nodes.Clear();
         var list = DeploymentService.List();
         var x = 50;
-        var offset = 65;
+        var offset = 75;
         var column2XBase = 400;
         var column3XBase = 750;
         var y = 50;
