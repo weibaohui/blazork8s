@@ -41,7 +41,7 @@ window.scrollToBottom = function (element) {
             _messages.Add(new Message { Content = _userInput, IsUser = false });
             if (_userInput.StartsWith("#"))
             {
-                await Start(_userInput.Substring(1));
+                await Start(_userInput);
             }
 
             _userInput = string.Empty;
@@ -83,14 +83,13 @@ window.scrollToBottom = function (element) {
     private void HandleKeyPress(KeyboardEventArgs e)
     {
         if (e.Key == "Enter")
-        {
             _ = SendMessage();
-        }
         else if (e.Key == "#")
-        {
             _showPrompt = true;
-            StateHasChanged();
-        }
+        else
+            _showPrompt = false;
+
+        StateHasChanged();
     }
 
     private void InsertTag(string tag)

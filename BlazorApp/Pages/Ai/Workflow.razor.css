@@ -1,11 +1,11 @@
 
 .chat-container {
-    width: calc(100vh - 120px);
+    width: calc(100% - 200px);
     margin: 20px auto;
-    border: 1px solid #ccc;
-    border-radius: 10px;
+    /*border: 1px solid #ccc;*/
+    /*border-radius: 10px;*/
     overflow: hidden;
-    height: calc(100vh - 5px);
+    height: calc(100vh - 200px);
 }
 
 .chat-box {
@@ -36,29 +36,18 @@
 
 .input-box {
     background-color: #fff;
-    border-top: 1px solid #ccc;
-    position: absolute;
-    bottom: 60px;
-    width: 100%;
+    border-bottom: 1px solid #ccc;
+    width: calc(100% - 200px);
     max-width: 600px;
 }
 
 .input-box input[type="text"] {
-    width: calc(100% - 50px);
+    width: calc(100% - 200px);
     padding: 10px;
     border: none;
     border-radius: 5px;
     outline: none;
-}
-
-.input-box button {
-    width: 50px;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
+    max-width: 600px;
 }
 
 .prompt {
@@ -68,8 +57,7 @@
     border-radius: 5px;
     padding: 10px;
     z-index: 999;
-    bottom: 120px;
-
+    bottom: 40px;
 }
 
 .prompt ul {
@@ -85,4 +73,24 @@
     color: #007bff;
     padding: 0;
     margin: 0;
+}
+
+.center {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-message {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.bottom-bar {
+    height: 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

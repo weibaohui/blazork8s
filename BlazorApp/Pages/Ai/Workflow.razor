@@ -1,23 +1,40 @@
 @page "/Workflow"
 @inherits BlazorApp.Pages.Common.PageBase
-
-<div class="chat-container">
-    <div class="chat-box" id="chat-box">
-        @foreach (var message in _messages)
-        {
-            <div class="message @(message.IsUser ? "user-message" : "bot-message")">
-                <p>@message.Content</p>
-            </div>
-        }
+<PageTitle>Workflow</PageTitle>
+@if (_userInput == null)
+{
+    <div class="chat-container">
+        <div class="center welcome-message">
+            How can I help you today?
+        </div>
     </div>
+}
+else
+{
+    <div class="chat-container">
+        <div class="chat-box" id="chat-box">
+            @foreach (var message in _messages)
+            {
+                <div class="message @(message.IsUser ? "user-message" : "bot-message")">
+                    <p>@message.Content</p>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<div class="bottom-bar">
     <div class="input-box">
-        <input type="text" @bind="_userInput" @onkeypress="HandleKeyPress" placeholder="Type your message...">
-        <button @onclick="@(() => SendMessage())">Send</button>
+        <Search Style="width: 800px" @bind-Value="_userInput" Placeholder="Type your message..."
+                EnterButton="@("Send")"
+                OnPressEnter="@(() => SendMessage())"
+                OnSearch="@(() => SendMessage())"
+                OnkeyDown="@HandleKeyPress"
+                Size="large"/>
     </div>
     @if (_showPrompt)
     {
         <div class="prompt">
-            <p>Select:</p>
             <ul>
                 <li>
                     <button @onclick="@(() => InsertTag("请检查kubernetes-dashboards命名空间下的pod运行状态"))">
@@ -36,5 +53,12 @@
             </ul>
         </div>
     }
+    <GridRow Gutter="8">
+        <GridCol Span="4"></GridCol>
+        <GridCol Span="16">
 
+
+        </GridCol>
+        <GridCol Span="4"></GridCol>
+    </GridRow>
 </div>
