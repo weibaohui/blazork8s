@@ -11,10 +11,6 @@ public class PassDetect : StepBody
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         Console.WriteLine($"Context.UserTask={Context.UserTask}");
-        Console.WriteLine($"Context.UserTask={Context.UserTask}");
-        Console.WriteLine($"Context.UserTask={Context.UserTask}");
-        Console.WriteLine($"Context.UserTask={Context.UserTask}");
-        Console.WriteLine($"Context.UserTask={Context.UserTask}");
         Console.WriteLine($"Context.LatestMessage={Context.LatestMessage}");
         var text = Context.LatestMessage;
         if (text.StartsWith("PASS"))
