@@ -1,4 +1,5 @@
 
+
 .chat-container {
     width: calc(100% - 200px);
     margin: 20px auto;
@@ -41,7 +42,7 @@
     max-width: 600px;
 }
 
-.input-box input[type="text"] {
+.input-box input {
     width: calc(100% - 200px);
     padding: 10px;
     border: none;
@@ -57,7 +58,7 @@
     border-radius: 5px;
     padding: 10px;
     z-index: 999;
-    bottom: 40px;
+    bottom: 122px;
 }
 
 .prompt ul {

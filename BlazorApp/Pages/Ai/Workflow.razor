@@ -25,40 +25,33 @@ else
 
 <div class="bottom-bar">
     <div class="input-box">
-        <Search Style="width: 800px" @bind-Value="_userInput" Placeholder="Type your message..."
+        <Search @bind-Value="_userInput" Bordered="false" Placeholder="Type your message..."
                 EnterButton="@("Send")"
                 OnPressEnter="@(() => SendMessage())"
                 OnSearch="@(() => SendMessage())"
                 OnkeyDown="@HandleKeyPress"
                 Size="large"/>
+        @if (_showPrompt)
+        {
+            <div class="prompt">
+                <ul>
+                    <li>
+                        <button @onclick="@(() => InsertTag("请检查kubernetes-dashboards命名空间下的pod运行状态"))">
+                            #pod-kubernetes-dashboards
+                        </button>
+                    </li>
+                    <li>
+                        <button @onclick="@(() => InsertTag("请检查default命名空间下的pod运行状态"))">#pod-default</button>
+                    </li>
+                    <li>
+                        <button @onclick="@(() => InsertTag("deployment"))">#deployment</button>
+                    </li>
+                    <li>
+                        <button @onclick="@(() => InsertTag("service"))">#service</button>
+                    </li>
+                </ul>
+            </div>
+        }
     </div>
-    @if (_showPrompt)
-    {
-        <div class="prompt">
-            <ul>
-                <li>
-                    <button @onclick="@(() => InsertTag("请检查kubernetes-dashboards命名空间下的pod运行状态"))">
-                        #pod-kubernetes-dashboards
-                    </button>
-                </li>
-                <li>
-                    <button @onclick="@(() => InsertTag("请检查default命名空间下的pod运行状态"))">#pod-default</button>
-                </li>
-                <li>
-                    <button @onclick="@(() => InsertTag("deployment"))">#deployment</button>
-                </li>
-                <li>
-                    <button @onclick="@(() => InsertTag("service"))">#service</button>
-                </li>
-            </ul>
-        </div>
-    }
-    <GridRow Gutter="8">
-        <GridCol Span="4"></GridCol>
-        <GridCol Span="16">
 
-
-        </GridCol>
-        <GridCol Span="4"></GridCol>
-    </GridRow>
 </div>
