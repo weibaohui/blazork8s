@@ -41,6 +41,8 @@ public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
         KubeNodeContainer<V1Deployment>.Instance.Clear();
         KubeNodeContainer<V1ReplicaSet>.Instance.Clear();
         KubeNodeContainer<V1Pod>.Instance.Clear();
+        Diagram.Nodes.Clear();
+
         var list = new List<V1Deployment>() { Deployment };
         var x = 50;
         var offset = 65;
@@ -56,28 +58,30 @@ public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
 
             var replicaSets = ReplicaSetService.ListByOwnerUid(deploy.Metadata.Uid);
 
-            foreach (var rs in replicaSets)
+            for (var n = 0; n < replicaSets.Count; n++)
             {
+                var rs = replicaSets[n];
                 _ = new KubeNode<V1ReplicaSet>(Diagram, rs, new Point(column2XBase, y));
                 var rkey = $"{rs.Namespace()}/{rs.Name()}";
                 var rsNode = KubeNodeContainer<V1ReplicaSet>.Instance.Get(rkey);
                 LinkNodes(deployNode, rsNode);
 
                 var pods = PodService.ListByOwnerUid(rs.Metadata.Uid);
-                foreach (var pod in pods)
+                for (var m = 0; m < pods.Count; m++)
                 {
+                    var pod = pods[m];
                     _ = new KubeNode<V1Pod>(Diagram, pod, new Point(column3XBase, y));
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
                     LinkNodes(rsNode, podNode);
-                    if (pods.Count > 1)
+                    if (pods.Count > 1 && m != pods.Count - 1)
                     {
                         //只有一个就不用往下移位
                         y += offset;
                     }
                 }
 
-                if (replicaSets.Count > 1)
+                if (replicaSets.Count > 1 && n != replicaSets.Count - 1)
                 {
                     //只有一个就不用往下移位
                     y += offset;

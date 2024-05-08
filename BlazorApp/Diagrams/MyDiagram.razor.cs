@@ -1,7 +1,5 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
@@ -17,7 +15,7 @@ namespace BlazorApp.Diagrams;
 
 public partial class MyDiagram : ComponentBase, IDisposable
 {
-    private Timer _timer;
+    // private Timer _timer;
     [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private IDeploymentService DeploymentService { get; set; }
     [Inject] private IReplicaSetService ReplicaSetService { get; set; }
@@ -27,14 +25,14 @@ public partial class MyDiagram : ComponentBase, IDisposable
 
     public void Dispose()
     {
-        _timer.Dispose();
+        // _timer.Dispose();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        _timer = new Timer(5000);
-        _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
-        _timer.Start();
+        // _timer = new Timer(5000);
+        // _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
+        // _timer.Start();
 
         var options = new BlazorDiagramOptions
         {
@@ -99,31 +97,34 @@ public partial class MyDiagram : ComponentBase, IDisposable
 
             var replicaSets = ReplicaSetService.ListByOwnerUid(deploy.Metadata.Uid);
 
-            foreach (var rs in replicaSets)
+            for (var n = 0; n < replicaSets.Count; n++)
             {
+                var rs = replicaSets[n];
                 _ = new KubeNode<V1ReplicaSet>(Diagram, rs, new Point(column2XBase, y));
                 var rkey = $"{rs.Namespace()}/{rs.Name()}";
                 var rsNode = KubeNodeContainer<V1ReplicaSet>.Instance.Get(rkey);
                 LinkNodes(deployNode, rsNode);
 
                 var pods = PodService.ListByOwnerUid(rs.Metadata.Uid);
-                foreach (var pod in pods)
+                for (var m = 0; m < pods.Count; m++)
                 {
+                    var pod = pods[m];
                     _ = new KubeNode<V1Pod>(Diagram, pod, new Point(column3XBase, y));
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
                     LinkNodes(rsNode, podNode);
-                    if (pods.Count() > 1)
+                    if (pods.Count > 1 && m != pods.Count - 1)
                         //只有一个就不用往下移位
                         y += offset;
                 }
 
                 //只有一个就不用往下移位
-                if (replicaSets.Count > 1) y += offset;
+                if (replicaSets.Count > 1 && n != replicaSets.Count - 1) y += offset;
             }
+
+            if (list.Count > 1) y += offset;
         }
 
-        Diagram.Refresh();
         await InvokeAsync(StateHasChanged);
     }
 }
