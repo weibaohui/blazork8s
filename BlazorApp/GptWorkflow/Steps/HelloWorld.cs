@@ -12,8 +12,6 @@ public class HelloWorld : StepBody
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         Context.LatestMessage = HumanCommand;
-        Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
-
         Console.WriteLine("Hello world");
         return ExecutionResult.Next();
     }
