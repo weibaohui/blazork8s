@@ -1,11 +1,11 @@
 
 
 .chat-container {
-    width: calc(100% - 200px);
+    width: calc(80% - 200px);
     margin: 20px auto;
     /*border: 1px solid #ccc;*/
     /*border-radius: 10px;*/
-    overflow: hidden;
+    /*overflow: hidden;*/
     height: calc(100vh - 200px);
 }
 
@@ -21,7 +21,7 @@
     padding: 10px 15px;
     border-radius: 20px;
     margin-bottom: 10px;
-    max-width: 70%;
+    max-width: 90%;
     word-wrap: break-word;
 }
 
