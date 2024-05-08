@@ -30,10 +30,13 @@
 
 .long-text {
     width: 200px; /* 设置文本框的宽度 */
+    height: 20px; /* 设置文本框的高度 */
+
     white-space: nowrap; /* 让文本在一行内显示 */
     overflow: hidden; /* 隐藏超出容器的部分 */
     text-overflow: ellipsis; /* 当文本溢出时显示省略号 */
     cursor: pointer; /* 鼠标样式为手型 */
+    vertical-align: top; /* 垂直从顶部显示文本 */
 }
 
 .long-text:hover {
