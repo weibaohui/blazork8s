@@ -1,0 +1,12 @@
+@if (Ready is true)
+{
+    <Icon Type="heart" Theme="fill" Style="color:#19BE94"/>
+}
+else
+{
+    <Icon Type="thunderbolt" Theme="fill" Style="color:#6E6E6E"/>
+}
+
+@code {
+    [Parameter] public bool? Ready { get; set; }
+}

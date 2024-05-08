@@ -65,15 +65,16 @@ namespace Extension.k8s
         {
             return pods.Where(w => w.Spec.NodeName == nodeName).ToList();
         }
+
         public static int CountPodsByOwner(this IList<V1Pod> pods, string uid)
         {
-             return pods
+            return pods
                 .Count(x => x.GetController() != null && x.GetController().Uid == uid);
         }
 
         public static string ReadySummary(this IList<V1Pod> pods)
         {
-            var count      = pods.Count;
+            var count = pods.Count;
             var readyCount = pods.Count(IsReady);
             return $"{readyCount}/{count}";
         }
@@ -86,6 +87,13 @@ namespace Extension.k8s
             }
 
             return pod.Status.Conditions.Any(condition => condition.Type == "Ready" && condition.Status == "True");
+        }
+
+        public static bool IsProcessing(this V1Pod pod)
+        {
+            if (pod.Status?.Conditions == null) return false;
+
+            return pod.Status.Conditions.Any(condition => condition.Status != "True");
         }
 
         /// <summary>
@@ -137,9 +145,9 @@ namespace Extension.k8s
                 return phaseList.First();
             }
         }
+
         public static string Status(this V1PodStatus podStatus)
         {
-
             var phase = podStatus.Phase;
 
             if (podStatus.ContainerStatuses == null)

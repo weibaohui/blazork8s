@@ -6,8 +6,15 @@ public static class ReplicaSetExtension
 {
     public static bool IsReady(this V1ReplicaSet rs)
     {
-        if (rs.Status?.Replicas == 0) return false;
+        if (rs.Spec?.Replicas == 0) return false;
 
-        return rs.Status?.Replicas == rs.Status?.ReadyReplicas;
+        return rs.Status?.Replicas == rs.Spec?.Replicas;
+    }
+
+    public static bool IsProcessing(this V1ReplicaSet rs)
+    {
+        if (rs.Spec?.Replicas == 0) return false;
+
+        return rs.Status?.Replicas != rs.Spec?.Replicas;
     }
 }

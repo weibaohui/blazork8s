@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Core.Models;
@@ -9,29 +11,30 @@ using Blazor.Diagrams.Options;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace BlazorApp.Diagrams;
 
 public partial class MyDiagram : ComponentBase, IDisposable
 {
+    private Timer _timer;
+    [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private IDeploymentService DeploymentService { get; set; }
     [Inject] private IReplicaSetService ReplicaSetService { get; set; }
     [Inject] private IPodService PodService { get; set; }
-
-    // private Timer _timer;
     private BlazorDiagram Diagram { get; set; }
 
 
     public void Dispose()
     {
-        // _timer.Dispose();
+        _timer.Dispose();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        // _timer = new Timer(5000);
-        // _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
-        // _timer.Start();
+        _timer = new Timer(5000);
+        _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
+        _timer.Start();
 
         var options = new BlazorDiagramOptions
         {
@@ -47,7 +50,7 @@ public partial class MyDiagram : ComponentBase, IDisposable
         Diagram.RegisterComponent<KubeNode<V1ReplicaSet>, KubeNodeWidget<V1ReplicaSet>>();
         Diagram.RegisterComponent<KubeNode<V1Pod>, KubeNodeWidget<V1Pod>>();
 
-        await OnTimerCallback();
+        await LoadDiagram();
 
         await base.OnInitializedAsync();
     }
@@ -69,12 +72,18 @@ public partial class MyDiagram : ComponentBase, IDisposable
             });
     }
 
-
     private async Task OnTimerCallback()
+    {
+        // await JsRuntime.InvokeVoidAsync("eval", $"window.location.reload(true)");
+        await LoadDiagram();
+    }
+
+    private async Task LoadDiagram()
     {
         KubeNodeContainer<V1Deployment>.Instance.Clear();
         KubeNodeContainer<V1ReplicaSet>.Instance.Clear();
         KubeNodeContainer<V1Pod>.Instance.Clear();
+        Diagram.Nodes.Clear();
         var list = DeploymentService.List();
         var x = 50;
         var offset = 65;
@@ -104,19 +113,17 @@ public partial class MyDiagram : ComponentBase, IDisposable
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
                     LinkNodes(rsNode, podNode);
-                    if (pods.Count > 1)
+                    if (pods.Count() > 1)
                         //只有一个就不用往下移位
                         y += offset;
                 }
 
-                if (replicaSets.Count > 1)
-                    //只有一个就不用往下移位
-                    y += offset;
+                //只有一个就不用往下移位
+                if (replicaSets.Count > 1) y += offset;
             }
-
-            if (list.Count > 1) y += offset;
         }
 
+        Diagram.Refresh();
         await InvokeAsync(StateHasChanged);
     }
 }

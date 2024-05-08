@@ -11,4 +11,16 @@ public static class DeploymentExtension
 
         return deploy.Status.Conditions.All(x => x.Status == "True");
     }
+
+    public static bool IsProcessing(this V1Deployment deploy)
+    {
+        if (deploy.Status?.Conditions == null) return false;
+
+        if (deploy.Status.Conditions.Any(x => x.Status == "True" && x.Type == "Progressing"))
+            if (deploy.Status.Replicas != deploy.Status.UpdatedReplicas)
+                return true;
+
+        ;
+        return false;
+    }
 }
