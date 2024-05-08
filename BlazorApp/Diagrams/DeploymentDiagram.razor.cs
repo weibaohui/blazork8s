@@ -45,7 +45,7 @@ public partial class DeploymentDiagram : DrawerPageBase<V1Deployment>
 
         var list = new List<V1Deployment>() { Deployment };
         var x = 50;
-        var offset = 65;
+        var offset = 75;
         var column2XBase = 400;
         var column3XBase = 750;
         var y = 50;

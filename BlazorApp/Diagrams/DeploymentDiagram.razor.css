@@ -1,7 +1,7 @@
 .diagram-container {
-    margin: 10px;
-    width: calc(100% - 20px);
-    height: calc(100vh - 10px);
+    padding: 5px;
+    width: calc(100% - 5px);
+    height: calc(100vh - 5px);
     /*border: 1px solid black;*/
     font-size: 12px;
     background-color: #DEE7EB;
@@ -30,5 +30,5 @@
 }
 
 ::deep .default-node .diagram-port, .default.diagram-group .diagram-port {
-    margin: -2px;
+    margin: -6px;
 }
