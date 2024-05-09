@@ -15,6 +15,12 @@ public class KubectlRunner : StepBody
         var msg = Message.NewMessage(GlobalContext, StepName);
 
         var command = msg.StepInput;
+
+        if (string.IsNullOrWhiteSpace(command))
+        {
+            return ExecutionResult.Next();
+        }
+
         var ret = "";
         foreach (var cmd in command.Split(";"))
         {
@@ -33,7 +39,6 @@ public class KubectlRunner : StepBody
         GlobalContext.Logger.LogDebug("Kubectl final result: {Ret}", ret);
         msg.StepResponse = ret;
 
-        GlobalContext.LatestMessage = msg;
 
         return ExecutionResult.Next();
     }

@@ -35,7 +35,7 @@ public class OpenAi() : StepBody
             GlobalContext.Logger.LogInformation("OpenAi Result: {Result}", msg.StepResponse);
         }
 
-        GlobalContext.LatestMessage = msg;
+
         return ExecutionResult.Next();
     }
 }

@@ -16,7 +16,7 @@ public class DoSomething : StepBody
         GlobalContext.Logger.LogDebug("DoSomething Input={Input}", msg.StepInput);
         // Do something with the input，and set the output to the message
         msg.StepResponse = msg.StepInput;
-        GlobalContext.LatestMessage = msg;
+
         return ExecutionResult.Next();
     }
 }

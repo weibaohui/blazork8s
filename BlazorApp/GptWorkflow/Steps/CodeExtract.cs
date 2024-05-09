@@ -23,11 +23,14 @@ public class CodeExtract : StepBody
     {
         var msg = Message.NewMessage(GlobalContext, StepName, StepDescription);
         msg.StepParameter.Add("Pattern", Pattern);
-
+        var text = msg.StepInput;
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return ExecutionResult.Next();
+        }
 
         if (Check())
         {
-            var text = msg.StepInput;
             if (!text.IsNullOrWhiteSpace() && !Pattern.IsNullOrWhiteSpace())
             {
                 var ret = "";
@@ -53,7 +56,6 @@ public class CodeExtract : StepBody
         }
 
 
-        GlobalContext.LatestMessage = msg;
         return ExecutionResult.Next();
     }
 }

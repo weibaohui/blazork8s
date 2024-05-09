@@ -14,7 +14,7 @@ public class End : StepBody
         var msg = Message.NewMessage(GlobalContext, StepName);
         msg.StepResponse = "Goodbye";
         GlobalContext.Logger.LogDebug("Goodbye world");
-        GlobalContext.LatestMessage = msg;
+
         return ExecutionResult.Next();
     }
 }

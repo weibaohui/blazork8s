@@ -44,7 +44,7 @@ public class ExpertKubernetesRepair : StepBody
             GlobalContext.Logger.LogDebug("ExpertKubernetes Result: {Result}", msg.StepResponse);
         }
 
-        GlobalContext.LatestMessage = msg;
+
         return ExecutionResult.Next();
     }
 }

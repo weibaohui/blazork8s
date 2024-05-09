@@ -46,6 +46,7 @@ public class Message
             //节点的输入默认为上一个step的输出
             StepInput = ctx.LatestMessage.StepResponse
         };
+        ctx.LatestMessage = msg;
         return msg;
     }
 }

@@ -27,7 +27,6 @@ public class PassDetector : StepBody
             msg.StepResponse = msg.StepInput;
         }
 
-        GlobalContext.LatestMessage = msg;
 
         return ExecutionResult.Next();
     }
