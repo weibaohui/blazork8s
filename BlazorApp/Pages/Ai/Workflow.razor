@@ -33,12 +33,44 @@ else
                             @(message.Message.StepName) @(message.Message.StepDueDate)
                         </div>
                     }
+                    @if (ShowStepPrompt && !string.IsNullOrWhiteSpace(message.Message?.StepPrompt))
+                    {
+                        <div class="message-prompt">
+                            <Alert Type="@AlertType.Success">
+                                <div>ChatGPT prompt:</div>
+                                <p>@((MarkupString)message.Message?.StepPrompt.ToHtmlDisplayNoMarkdown())</p>
+                            </Alert>
+                        </div>
+                    }
+                    @if (ShowStepParameter && message.Message?.StepParameter is { Count: > 0 })
+                    {
+                        <div class="message-parameter">
+                            <Alert Type="@AlertType.Warning">
+                                <div>Parameter:</div>
+                                <ul>
+                                    @foreach (var parameter in message.Message.StepParameter)
+                                    {
+                                        <li>
+                                            <span>@parameter.Key = @parameter.Value</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </Alert>
+                        </div>
+                    }
 
                     <Text Copyable="true">
                         <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
                     </Text>
                 </div>
             }
+        </div>
+        <div class="chat-config">
+            <Switch CheckedChildren="显示Prompt" UnCheckedChildren="不显示Prompt" @bind-Checked="ShowStepPrompt"/>
+            <br/>
+            <Switch CheckedChildren="显示执行参数" UnCheckedChildren="不显示执行参数"
+                    @bind-Checked="ShowStepParameter"/>
+            <br/>
         </div>
     </div>
 }

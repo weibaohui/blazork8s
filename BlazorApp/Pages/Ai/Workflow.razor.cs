@@ -14,6 +14,8 @@ public partial class Workflow : PageBase
     private readonly List<ChatMessage> _messages = new();
     private bool _showPrompt = false;
     private string _userInput;
+    private bool ShowStepPrompt { get; set; }
+    private bool ShowStepParameter { get; set; }
     [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private IWorkflowStarter WorkflowStarter { get; set; }
 
