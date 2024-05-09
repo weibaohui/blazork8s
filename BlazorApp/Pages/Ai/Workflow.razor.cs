@@ -28,8 +28,10 @@ chatContent.scrollTop = chatContent.scrollHeight;");
     {
         if (!string.IsNullOrWhiteSpace(_userInput))
         {
-            _messages.Add(new ChatMessage { Content = _userInput, IsUser = true });
-            _messages.Add(new ChatMessage { Content = _userInput, IsUser = false });
+            _messages.Add(new ChatMessage
+            {
+                Content = _userInput, IsUser = true
+            });
             if (_userInput.StartsWith("#"))
             {
                 await WorkflowStarter.Start(_userInput, InspectPodRepairWorkflow.Name, EventHandler);
@@ -47,7 +49,13 @@ chatContent.scrollTop = chatContent.scrollHeight;");
 
     private async void EventHandler(object sender, Message message)
     {
-        _messages.Add(new ChatMessage { Content = message.StepResponse, IsUser = false });
+        _messages.Add(
+            new ChatMessage
+            {
+                Message = message,
+                Content = message.StepResponse,
+                IsUser = false
+            });
         await InvokeAsync(StateHasChanged);
         await ScrollToBottom();
         await ScrollToBottom();
@@ -76,5 +84,6 @@ chatContent.scrollTop = chatContent.scrollHeight;");
     {
         public string Content { get; set; }
         public bool IsUser { get; set; }
+        public Message Message { get; set; }
     }
 }

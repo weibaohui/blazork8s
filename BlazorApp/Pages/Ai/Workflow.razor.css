@@ -25,14 +25,18 @@
     word-wrap: break-word;
 }
 
+.message-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
 .user-message {
-    background-color: #007bff;
-    color: white;
-    align-self: flex-end;
+    /*background-color: #007bff;*/
+    /*color: white;*/
+    /*align-self: flex-end;*/
 }
 
 .bot-message {
-    background-color: #f2f2f2;
+    /*background-color: #f2f2f2;*/
 }
 
 .input-box {

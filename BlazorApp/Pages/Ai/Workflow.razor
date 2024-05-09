@@ -17,6 +17,22 @@ else
             @foreach (var message in _messages)
             {
                 <div class="message @(message.IsUser ? "user-message" : "bot-message")">
+                    @if (message.IsUser)
+                    {
+                        <div class="message-title">
+                            <Avatar Style="background-color: #87d068" Icon="user"/>
+                            You
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="message-title">
+                            <Avatar Style="color: #f56a00; background-color: #fde3cf; ">
+                                @(message.Message.StepName.Substring(0, 1))
+                            </Avatar>
+                            @(message.Message.StepName) @(message.Message.StepDueDate)
+                        </div>
+                    }
 
                     <Text Copyable="true">
                         <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
