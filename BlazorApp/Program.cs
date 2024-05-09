@@ -86,6 +86,7 @@ builder.Services.AddSingleton<ICustomResourceDefinitionService, CustomResourceDe
 builder.Services.AddSingleton<IReplicationControllerService, ReplicationControllerService>();
 builder.Services.AddSingleton<IResourceCrudService, ResourceCrudService>();
 builder.Services.AddSingleton<IWorkflowContainer, WorkflowContainer>();
+builder.Services.AddSingleton<IWorkflowStarter, WorkflowStarter>();
 builder.Services.AddSingleton
     <ISqlSugarClient>(s =>
     {

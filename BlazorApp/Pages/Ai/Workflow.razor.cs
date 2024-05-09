@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using BlazorApp.GptWorkflow;
 using BlazorApp.GptWorkflow.Workflow;
 using BlazorApp.Pages.Common;
-using BlazorApp.Service.AI;
-using BlazorApp.Service.k8s;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -13,24 +11,14 @@ namespace BlazorApp.Pages.Ai;
 
 public partial class Workflow : PageBase
 {
-    private readonly Context _ctx = new Context();
     private readonly List<Message> _messages = new List<Message>();
     private bool _showPrompt = false;
-
     private string _userInput;
     [Inject] private IJSRuntime JsRuntime { get; set; }
-    [Inject] private IAiService Ai { get; set; }
-    [Inject] private IKubectlService Kubectl { get; set; }
-    [Inject] private IWorkflowContainer Container { get; set; }
+    [Inject] private IWorkflowStarter WorkflowStarter { get; set; }
 
     private async Task ScrollToBottom()
     {
-//         await JsRuntime.InvokeVoidAsync("eval", @"
-// window.scrollToBottom = function (element) {
-//             element.scrollTop = element.scrollHeight;
-//         };
-//         window.scrollToBottom(document.getElementById('chat-box'));
-// ");
         await JsRuntime.InvokeVoidAsync("eval", @"
 var chatContent = document.getElementById(""chat-box"");
 chatContent.scrollTop = chatContent.scrollHeight;");
@@ -44,7 +32,7 @@ chatContent.scrollTop = chatContent.scrollHeight;");
             _messages.Add(new Message { Content = _userInput, IsUser = false });
             if (_userInput.StartsWith("#"))
             {
-                await Start(_userInput);
+                await WorkflowStarter.Start(_userInput, InspectPodRepairWorkflow.Name, EventHandler);
             }
 
             _userInput = string.Empty;
@@ -54,29 +42,6 @@ chatContent.scrollTop = chatContent.scrollHeight;");
 
         await ScrollToBottom();
         await ScrollToBottom();
-    }
-
-
-    protected override async Task OnInitializedAsync()
-    {
-        Container.RegisterWorkflow<InspectPodRepairWorkflow>();
-        Container.RegisterWorkflow<EchoWorkflow>();
-        await base.OnInitializedAsync();
-    }
-
-    private async Task Start(string task)
-    {
-        var workflowHost = Container.Host();
-
-        _ctx.History = new List<string>();
-        // _ctx.UserTask = "请检查kubernetes-dashboards命名空间下的pod运行状态";
-        _ctx.UserTask = task;
-        _ctx.AiService = Ai;
-        _ctx.KubectlService = Kubectl;
-        _ctx.Host = workflowHost;
-        _ctx.OutputEventHandler = EventHandler;
-
-        await workflowHost.StartWorkflow(InspectPodRepairWorkflow.Name, _ctx);
     }
 
 
