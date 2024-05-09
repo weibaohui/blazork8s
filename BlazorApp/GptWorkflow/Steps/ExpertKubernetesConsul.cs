@@ -1,4 +1,3 @@
-using BlazorApp.Utils;
 using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
@@ -9,7 +8,6 @@ public class ExpertKubernetesConsul : StepBody
 {
     private const string StepName = "ExpertKubernetesConsul";
 
-    private readonly ILogger<OpenAi> _logger = LoggingHelper<OpenAi>.Logger();
 
     private string _prompt = "请你作为一个k8s专家、高级管理员的角色，面对上述用户的目标。\n" +
                              "请你针对用户给出的目标，返回一条最有可能达成目标的命令。\n" +
@@ -22,7 +20,7 @@ public class ExpertKubernetesConsul : StepBody
     {
         if (GlobalContext.AiService == null)
         {
-            _logger.LogError("ExpertKubernetes AIService ERROR Null");
+            GlobalContext.Logger.LogError("ExpertKubernetes AIService ERROR Null");
             return false;
         }
 
@@ -37,9 +35,9 @@ public class ExpertKubernetesConsul : StepBody
         {
             _prompt = $"{msg.StepInput}\n{_prompt}";
             msg.StepPrompt = _prompt;
-            _logger.LogInformation("ExpertKubernetes Prompt: {Prompt}", _prompt);
+            GlobalContext.Logger.LogDebug("ExpertKubernetes Prompt: {Prompt}", _prompt);
             msg.StepResponse = GlobalContext.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
-            _logger.LogInformation("ExpertKubernetes Result: {Result}", msg.StepResponse);
+            GlobalContext.Logger.LogDebug("ExpertKubernetes Result: {Result}", msg.StepResponse);
         }
 
         GlobalContext.LatestMessage = msg;

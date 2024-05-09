@@ -1,6 +1,6 @@
-using System;
 using System.Text.RegularExpressions;
 using Extension;
+using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -9,6 +9,7 @@ namespace BlazorApp.GptWorkflow.Steps;
 public class CodeExtract : StepBody
 {
     private const string StepName = "CodeExtract";
+    private const string StepDescription = "CodeExtract";
 
     public string Pattern { get; set; }
     public GlobalContext GlobalContext { get; set; }
@@ -20,7 +21,7 @@ public class CodeExtract : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        var msg = Message.NewMessage(GlobalContext, StepName);
+        var msg = Message.NewMessage(GlobalContext, StepName, StepDescription);
         msg.StepParameter.Add("Pattern", Pattern);
 
 
@@ -41,12 +42,12 @@ public class CodeExtract : StepBody
                 {
                     foreach (Capture capture in match.Captures)
                     {
-                        Console.WriteLine($"capture: {capture}");
+                        GlobalContext.Logger.LogDebug($"capture: {capture}");
                         ret += capture.Value.Trim() + ";";
                     }
                 }
 
-                Console.WriteLine($"CodeExtract {Pattern},final result: {ret}");
+                GlobalContext.Logger.LogDebug("CodeExtract {Pattern},final result: {Ret}", Pattern, ret);
                 msg.StepResponse = ret;
             }
         }

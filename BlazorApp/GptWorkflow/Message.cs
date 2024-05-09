@@ -8,6 +8,7 @@ public class Message
     private string _stepResponse;
     public string FlowName { get; set; }
     public string StepName { get; set; }
+    public string StepDescription { get; set; }
     public string StepPrompt { get; set; }
     public Dictionary<string, object> StepParameter { get; set; } = new();
 
@@ -33,13 +34,14 @@ public class Message
     public GlobalContext Ctx { get; set; }
 
 
-    public static Message NewMessage(GlobalContext ctx, string stepName)
+    public static Message NewMessage(GlobalContext ctx, string stepName, string stepDescription = "")
     {
         var msg = new Message
         {
             Ctx = ctx,
             UserTask = ctx.UserTask,
             StepName = stepName,
+            StepDescription = stepDescription,
             StepDueDate = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
             //节点的输入默认为上一个step的输出
             StepInput = ctx.LatestMessage.StepResponse

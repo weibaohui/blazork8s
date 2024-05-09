@@ -1,12 +1,13 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Steps;
 
-public class HelloWorld : StepBody
+public class Start : StepBody
 {
-    private const string StepName = "HelloWorld";
+    private const string StepName = "Start";
 
     public GlobalContext GlobalContext { get; set; }
     public string HumanCommand { get; set; }
@@ -25,7 +26,7 @@ public class HelloWorld : StepBody
             StepResponse = HumanCommand
         };
         GlobalContext.LatestMessage = msg;
-        Console.WriteLine("Hello world");
+        GlobalContext.Logger.LogDebug("Start:Hello world");
         return ExecutionResult.Next();
     }
 }

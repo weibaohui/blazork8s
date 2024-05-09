@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Steps;
 
-public class PassDetect : StepBody
+public class PassDetector : StepBody
 {
-    private const string StepName = "PassDetect";
+    private const string StepName = "PassDetector";
 
     public GlobalContext GlobalContext { get; set; }
 
@@ -14,13 +14,12 @@ public class PassDetect : StepBody
     {
         var msg = Message.NewMessage(GlobalContext, StepName);
 
-        Console.WriteLine($"msg.UserTask={msg.UserTask}");
-        Console.WriteLine($"msg.StepInput={msg.StepInput}");
+        GlobalContext.Logger.LogDebug("msg.StepInput={Input}", msg.StepInput);
         var text = msg.StepInput;
         if (text.StartsWith("PASS"))
         {
             msg.StepResponse = "PASS";
-            Console.WriteLine($"PASS detect: {text} ====>>>> PASS");
+            GlobalContext.Logger.LogDebug("PASS detect: {Text} ====>>>> PASS", text);
         }
         else
         {

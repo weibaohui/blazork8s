@@ -6,15 +6,15 @@ namespace BlazorApp.GptWorkflow.Workflow;
 
 public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
 {
-    public static string Name => "HelloWorld";
-    public string Id => "HelloWorld";
+    public static string Name => "Start";
+    public string Id => "Start";
     public int Version => 1;
 
     public void Build(IWorkflowBuilder<GlobalContext> builder)
     {
         builder
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
-            .StartWith<HelloWorld>()
+            .StartWith<Start>()
             .Input(step => step.HumanCommand, ctx => ctx.UserTask)
             .Input(step => step.GlobalContext, ctx => ctx)
             .Then<ExpertKubernetesConsul>()
@@ -25,14 +25,14 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .Then<CodeExtract>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
-            .Then<Kubectl>()
+            .Then<KubectlRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Then<ExpertKubernetesRepair>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Then<RunWorkflow>()
+            .Then<SubWorkflowRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.WorkflowName, ctx => "Echo")
-            .Then<PassDetect>()
+            .Then<PassDetector>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .If(data => data.LatestMessage.StepResponse != "PASS").Do(then => then
                 .StartWith<CodeExtract>()
@@ -41,9 +41,10 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
                 .Then<CodeExtract>()
                 .Input(step => step.GlobalContext, ctx => ctx)
                 .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
-                .Then<Kubectl>()
+                .Then<KubectlRunner>()
                 .Input(step => step.GlobalContext, ctx => ctx)
             )
-            .Then<GoodbyeWorld>();
+            .Then<End>()
+            .Input(step => step.GlobalContext, ctx => ctx);
     }
 }

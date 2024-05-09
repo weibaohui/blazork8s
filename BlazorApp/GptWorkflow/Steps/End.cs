@@ -4,18 +4,16 @@ using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Steps;
 
-public class DoSomething : StepBody
+public class End : StepBody
 {
-    private const string StepName = "DoSomething";
-
+    private const string StepName = "End";
     public GlobalContext GlobalContext { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         var msg = Message.NewMessage(GlobalContext, StepName);
-        GlobalContext.Logger.LogDebug("DoSomething Input={Input}", msg.StepInput);
-        // Do something with the input，and set the output to the message
-        msg.StepResponse = msg.StepInput;
+        msg.StepResponse = "Goodbye";
+        GlobalContext.Logger.LogDebug("Goodbye world");
         GlobalContext.LatestMessage = msg;
         return ExecutionResult.Next();
     }

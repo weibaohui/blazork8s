@@ -16,6 +16,6 @@ public class EchoWorkflow : IGptWorkflow<GlobalContext>
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
             .StartWith<DoSomething>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Then<GoodbyeWorld>();
+            .Then<End>();
     }
 }

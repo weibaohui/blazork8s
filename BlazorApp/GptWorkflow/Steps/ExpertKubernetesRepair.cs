@@ -1,4 +1,3 @@
-using BlazorApp.Utils;
 using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
@@ -8,7 +7,6 @@ namespace BlazorApp.GptWorkflow.Steps;
 public class ExpertKubernetesRepair : StepBody
 {
     private const string StepName = "ExpertKubernetesRepair";
-    private readonly ILogger<OpenAi> _logger = LoggingHelper<OpenAi>.Logger();
 
     private string _prompt = "请你作为一个k8s专家,根据以上内容,判断运行是否有问题。" +
                              "如果没有问题，请返回PASS这个单词，请务必注意只能返回PASS这4个字符。" +
@@ -27,7 +25,7 @@ public class ExpertKubernetesRepair : StepBody
     {
         if (GlobalContext.AiService == null)
         {
-            _logger.LogError("ExpertKubernetes AIService ERROR Null");
+            GlobalContext.Logger.LogError("ExpertKubernetes AIService ERROR Null");
             return false;
         }
 
@@ -41,9 +39,9 @@ public class ExpertKubernetesRepair : StepBody
         {
             _prompt = $"用户诉求：{msg.UserTask}\n获得信息：{msg.StepInput}\n{_prompt}";
             msg.StepPrompt = _prompt;
-            _logger.LogInformation("ExpertKubernetes Prompt: {Prompt}", _prompt);
+            GlobalContext.Logger.LogDebug("ExpertKubernetes Prompt: {Prompt}", _prompt);
             msg.StepResponse = GlobalContext.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
-            _logger.LogInformation("ExpertKubernetes Result: {Result}", msg.StepResponse);
+            GlobalContext.Logger.LogDebug("ExpertKubernetes Result: {Result}", msg.StepResponse);
         }
 
         GlobalContext.LatestMessage = msg;

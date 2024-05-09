@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -8,9 +8,9 @@ namespace BlazorApp.GptWorkflow.Steps;
 ///     启动另一个流程，流程需要提前注册好。
 ///     将Context传入，那么可以通过Context进行数据传递
 /// </summary>
-public class RunWorkflow : StepBody
+public class SubWorkflowRunner : StepBody
 {
-    private const string StepName = "RunWorkflow";
+    private const string StepName = "SubWorkflowRunner";
 
     public GlobalContext GlobalContext { get; set; }
     public string WorkflowName { get; set; }
@@ -20,7 +20,7 @@ public class RunWorkflow : StepBody
         var msg = Message.NewMessage(GlobalContext, StepName);
         msg.StepParameter.Add("WorkflowName", WorkflowName);
 
-        Console.WriteLine($"RunWorkflow start:{WorkflowName}");
+        GlobalContext.Logger.LogDebug("RunWorkflow start:{Name}", WorkflowName);
         GlobalContext.Host.StartWorkflow(WorkflowName, GlobalContext).GetAwaiter().GetResult();
         msg.StepResponse = $"RunWorkflow {WorkflowName} success";
 
