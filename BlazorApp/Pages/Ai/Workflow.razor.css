@@ -104,14 +104,16 @@
 .chat-config {
     position: absolute;
     top: 240px;
-    /* left: 300px; */
     z-index: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 150px;
-    /* height: 100px; */
+    height: 120px;
     text-align: center;
-    border-radius: 4px 0 0 4px;
-    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    border-radius: 2px;
+    align-content: space-around;
+    flex-wrap: wrap;
+    background-color: #f0f0f0;
 }
