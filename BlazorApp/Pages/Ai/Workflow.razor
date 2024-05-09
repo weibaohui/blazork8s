@@ -1,4 +1,5 @@
 @page "/Workflow"
+@using Extension
 @inherits BlazorApp.Pages.Common.PageBase
 <PageTitle>Workflow</PageTitle>
 @if (_userInput == null)
@@ -16,7 +17,10 @@ else
             @foreach (var message in _messages)
             {
                 <div class="message @(message.IsUser ? "user-message" : "bot-message")">
-                    <p>@message.Content</p>
+
+                    <Text Copyable="true">
+                        <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
+                    </Text>
                 </div>
             }
         </div>

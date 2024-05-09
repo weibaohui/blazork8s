@@ -25,12 +25,15 @@ public partial class Workflow : PageBase
 
     private async Task ScrollToBottom()
     {
+//         await JsRuntime.InvokeVoidAsync("eval", @"
+// window.scrollToBottom = function (element) {
+//             element.scrollTop = element.scrollHeight;
+//         };
+//         window.scrollToBottom(document.getElementById('chat-box'));
+// ");
         await JsRuntime.InvokeVoidAsync("eval", @"
-window.scrollToBottom = function (element) {
-            element.scrollTop = element.scrollHeight;
-        };
-        window.scrollToBottom(document.getElementById('chat-box'));
-");
+var chatContent = document.getElementById(""chat-box"");
+chatContent.scrollTop = chatContent.scrollHeight;");
     }
 
     private async Task SendMessage()
@@ -45,8 +48,11 @@ window.scrollToBottom = function (element) {
             }
 
             _userInput = string.Empty;
+
+            await InvokeAsync(StateHasChanged);
         }
 
+        await ScrollToBottom();
         await ScrollToBottom();
     }
 
@@ -78,6 +84,8 @@ window.scrollToBottom = function (element) {
     {
         _messages.Add(new Message { Content = resp, IsUser = false });
         await InvokeAsync(StateHasChanged);
+        await ScrollToBottom();
+        await ScrollToBottom();
     }
 
     private void HandleKeyPress(KeyboardEventArgs e)
