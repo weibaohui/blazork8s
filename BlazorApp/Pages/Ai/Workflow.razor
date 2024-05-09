@@ -2,108 +2,119 @@
 @using Extension
 @inherits BlazorApp.Pages.Common.PageBase
 <PageTitle>Workflow</PageTitle>
-@if (_userInput == null)
+@if (AiService.Enabled())
 {
-    <div class="chat-container">
-        <div class="center welcome-message">
-            How can I help you today?
+    @if (_userInput == null)
+    {
+        <div class="chat-container">
+            <div class="center welcome-message">
+                How can I help you today?
+            </div>
         </div>
+    }
+    else
+    {
+        <div class="chat-container">
+            <div class="chat-box" id="chat-box">
+                @foreach (var message in _messages)
+                {
+                    <div class="message @(message.IsUser ? "user-message" : "bot-message")">
+                        @if (message.IsUser)
+                        {
+                            <div class="message-title">
+                                <Avatar Style="background-color: #87d068" Icon="user"/>
+                                You
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="message-title">
+                                <Avatar Style="color: #f56a00; background-color: #fde3cf; ">
+                                    @(message.Message.StepName.Substring(0, 1))
+                                </Avatar>
+                                @(message.Message.StepName) @(message.Message.StepDueDate)
+                            </div>
+                        }
+                        @if (ShowStepPrompt && !string.IsNullOrWhiteSpace(message.Message?.StepPrompt))
+                        {
+                            <div class="message-prompt">
+                                <Alert Type="@AlertType.Success">
+                                    <div>ChatGPT prompt:</div>
+                                    <p>@((MarkupString)message.Message?.StepPrompt.ToHtmlDisplayNoMarkdown())</p>
+                                </Alert>
+                            </div>
+                        }
+                        @if (ShowStepParameter && message.Message?.StepParameter is { Count: > 0 })
+                        {
+                            <div class="message-parameter">
+                                <Alert Type="@AlertType.Warning">
+                                    <div>Parameter:</div>
+                                    <ul>
+                                        @foreach (var parameter in message.Message.StepParameter)
+                                        {
+                                            <li>
+                                                <span>@parameter.Key = @parameter.Value</span>
+                                            </li>
+                                        }
+                                    </ul>
+                                </Alert>
+                            </div>
+                        }
+
+                        <Text Copyable="true">
+                            <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
+                        </Text>
+                    </div>
+                }
+            </div>
+            <div class="chat-config">
+                <Switch CheckedChildren="显示Prompt" UnCheckedChildren="不显示Prompt" @bind-Checked="ShowStepPrompt"/>
+                <br/>
+                <Switch CheckedChildren="显示执行参数" UnCheckedChildren="不显示执行参数"
+                        @bind-Checked="ShowStepParameter"/>
+                <br/>
+            </div>
+        </div>
+    }
+
+    <div class="bottom-bar">
+        <div class="input-box">
+            <Search @bind-Value="_userInput" Bordered="false" Placeholder="Type your message..."
+                    EnterButton="@("Send")"
+                    OnPressEnter="@(() => SendMessage())"
+                    OnSearch="@(() => SendMessage())"
+                    OnkeyDown="@HandleKeyPress"
+                    Size="large"/>
+            @if (_showPrompt)
+            {
+                <div class="prompt">
+                    <ul>
+                        <li>
+                            <button @onclick="@(() => InsertTag("请检查kubernetes-dashboard命名空间下的pod运行状态"))">
+                                #pod-kubernetes-dashboard
+                            </button>
+                        </li>
+                        <li>
+                            <button @onclick="@(() => InsertTag("请检查default命名空间下的pod运行状态"))">#pod-default</button>
+                        </li>
+                        <li>
+                            <button @onclick="@(() => InsertTag("deployment"))">#deployment</button>
+                        </li>
+                        <li>
+                            <button @onclick="@(() => InsertTag("service"))">#service</button>
+                        </li>
+                    </ul>
+                </div>
+            }
+        </div>
+
     </div>
 }
 else
 {
     <div class="chat-container">
-        <div class="chat-box" id="chat-box">
-            @foreach (var message in _messages)
-            {
-                <div class="message @(message.IsUser ? "user-message" : "bot-message")">
-                    @if (message.IsUser)
-                    {
-                        <div class="message-title">
-                            <Avatar Style="background-color: #87d068" Icon="user"/>
-                            You
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="message-title">
-                            <Avatar Style="color: #f56a00; background-color: #fde3cf; ">
-                                @(message.Message.StepName.Substring(0, 1))
-                            </Avatar>
-                            @(message.Message.StepName) @(message.Message.StepDueDate)
-                        </div>
-                    }
-                    @if (ShowStepPrompt && !string.IsNullOrWhiteSpace(message.Message?.StepPrompt))
-                    {
-                        <div class="message-prompt">
-                            <Alert Type="@AlertType.Success">
-                                <div>ChatGPT prompt:</div>
-                                <p>@((MarkupString)message.Message?.StepPrompt.ToHtmlDisplayNoMarkdown())</p>
-                            </Alert>
-                        </div>
-                    }
-                    @if (ShowStepParameter && message.Message?.StepParameter is { Count: > 0 })
-                    {
-                        <div class="message-parameter">
-                            <Alert Type="@AlertType.Warning">
-                                <div>Parameter:</div>
-                                <ul>
-                                    @foreach (var parameter in message.Message.StepParameter)
-                                    {
-                                        <li>
-                                            <span>@parameter.Key = @parameter.Value</span>
-                                        </li>
-                                    }
-                                </ul>
-                            </Alert>
-                        </div>
-                    }
-
-                    <Text Copyable="true">
-                        <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
-                    </Text>
-                </div>
-            }
-        </div>
-        <div class="chat-config">
-            <Switch CheckedChildren="显示Prompt" UnCheckedChildren="不显示Prompt" @bind-Checked="ShowStepPrompt"/>
-            <br/>
-            <Switch CheckedChildren="显示执行参数" UnCheckedChildren="不显示执行参数"
-                    @bind-Checked="ShowStepParameter"/>
-            <br/>
+        <div class="center welcome-message">
+            Sorry, the AI service is not enabled. Please contact the administrator.
         </div>
     </div>
 }
-
-<div class="bottom-bar">
-    <div class="input-box">
-        <Search @bind-Value="_userInput" Bordered="false" Placeholder="Type your message..."
-                EnterButton="@("Send")"
-                OnPressEnter="@(() => SendMessage())"
-                OnSearch="@(() => SendMessage())"
-                OnkeyDown="@HandleKeyPress"
-                Size="large"/>
-        @if (_showPrompt)
-        {
-            <div class="prompt">
-                <ul>
-                    <li>
-                        <button @onclick="@(() => InsertTag("请检查kubernetes-dashboard命名空间下的pod运行状态"))">
-                            #pod-kubernetes-dashboard
-                        </button>
-                    </li>
-                    <li>
-                        <button @onclick="@(() => InsertTag("请检查default命名空间下的pod运行状态"))">#pod-default</button>
-                    </li>
-                    <li>
-                        <button @onclick="@(() => InsertTag("deployment"))">#deployment</button>
-                    </li>
-                    <li>
-                        <button @onclick="@(() => InsertTag("service"))">#service</button>
-                    </li>
-                </ul>
-            </div>
-        }
-    </div>
-
-</div>

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using BlazorApp.GptWorkflow;
 using BlazorApp.GptWorkflow.Workflow;
 using BlazorApp.Pages.Common;
+using BlazorApp.Service.AI;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.JSInterop;
@@ -18,6 +19,8 @@ public partial class Workflow : PageBase
     private bool ShowStepParameter { get; set; }
     [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private IWorkflowStarter WorkflowStarter { get; set; }
+
+    [Inject] private IAiService AiService { get; set; }
 
     private async Task ScrollToBottom()
     {

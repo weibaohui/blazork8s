@@ -83,13 +83,20 @@ public partial class BasicLayout : LayoutComponentBase
             },
             new MenuDataItem
             {
+                Path = "/Workflow",
+                Name = L["Workflow"],
+                Key = "Workflow",
+                Icon = "project",
+                HideInMenu = !Ai.Enabled()
+            },
+            new MenuDataItem
+            {
                 Name = L["Settings"],
                 Key = "Settings",
                 Icon = "setting",
                 Children = SettingMenu()
             },
             GetMenuItemWithPath(L["Example"], "unordered-list", "/Example"),
-            GetMenuItemWithPath(L["Workflow"], "project", "/Workflow"),
             GetMenuItemWithPath(L["OpenSource"], "github", "/OpenSource")
         ];
         await base.OnInitializedAsync();
