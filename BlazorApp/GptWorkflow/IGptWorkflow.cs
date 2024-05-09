@@ -6,6 +6,6 @@ public interface IGptWorkflow : IWorkflow
 {
 }
 
-public interface IGptWorkflow<TWorkflow> : IWorkflow<Context>
+public interface IGptWorkflow<TWorkflow> : IWorkflow<GlobalContext>
 {
 }

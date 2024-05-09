@@ -10,14 +10,22 @@ namespace BlazorApp.GptWorkflow.Steps;
 /// </summary>
 public class RunWorkflow : StepBody
 {
-    public Context Context { get; set; }
+    private const string StepName = "RunWorkflow";
+
+    public GlobalContext GlobalContext { get; set; }
+    public string WorkflowName { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        var workflowName = "Echo";
+        var msg = Message.NewMessage(GlobalContext, StepName);
+        msg.StepParameter.Add("WorkflowName", WorkflowName);
 
-        Console.WriteLine($"RunWorkflow start:{workflowName}");
-        Context.Host.StartWorkflow(workflowName, Context).GetAwaiter().GetResult();
+        Console.WriteLine($"RunWorkflow start:{WorkflowName}");
+        GlobalContext.Host.StartWorkflow(WorkflowName, GlobalContext).GetAwaiter().GetResult();
+        msg.StepResponse = $"RunWorkflow {WorkflowName} success";
+
+        //不要传递msg，让下一个步骤，使用上一个步骤，因为本步骤只是启动另一个流程，并不关心结果。
+        // GlobalContext.LatestMessage = msg;
         return ExecutionResult.Next();
     }
 }

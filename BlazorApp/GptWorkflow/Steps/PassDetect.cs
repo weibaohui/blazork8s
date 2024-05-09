@@ -6,21 +6,30 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class PassDetect : StepBody
 {
-    public Context Context { get; set; }
+    private const string StepName = "PassDetect";
+
+    public GlobalContext GlobalContext { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        Console.WriteLine($"Context.UserTask={Context.UserTask}");
-        Console.WriteLine($"Context.LatestMessage={Context.LatestMessage}");
-        var text = Context.LatestMessage;
+        var msg = Message.NewMessage(GlobalContext, StepName);
+
+        Console.WriteLine($"msg.UserTask={msg.UserTask}");
+        Console.WriteLine($"msg.StepInput={msg.StepInput}");
+        var text = msg.StepInput;
         if (text.StartsWith("PASS"))
         {
-            Context.LatestMessage = "PASS";
+            msg.StepResponse = "PASS";
             Console.WriteLine($"PASS detect: {text} ====>>>> PASS");
         }
+        else
+        {
+            //如果不是PASS，那么需要将输入原样返回，让下一个环节处理
+            msg.StepResponse = msg.StepInput;
+        }
 
-        Context.History.Add(Context.LatestMessage);
-        Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
+        GlobalContext.LatestMessage = msg;
+
         return ExecutionResult.Next();
     }
 }

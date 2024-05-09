@@ -11,7 +11,7 @@ namespace BlazorApp.Pages.Ai;
 
 public partial class Workflow : PageBase
 {
-    private readonly List<Message> _messages = new List<Message>();
+    private readonly List<ChatMessage> _messages = new();
     private bool _showPrompt = false;
     private string _userInput;
     [Inject] private IJSRuntime JsRuntime { get; set; }
@@ -28,8 +28,8 @@ chatContent.scrollTop = chatContent.scrollHeight;");
     {
         if (!string.IsNullOrWhiteSpace(_userInput))
         {
-            _messages.Add(new Message { Content = _userInput, IsUser = true });
-            _messages.Add(new Message { Content = _userInput, IsUser = false });
+            _messages.Add(new ChatMessage { Content = _userInput, IsUser = true });
+            _messages.Add(new ChatMessage { Content = _userInput, IsUser = false });
             if (_userInput.StartsWith("#"))
             {
                 await WorkflowStarter.Start(_userInput, InspectPodRepairWorkflow.Name, EventHandler);
@@ -45,9 +45,9 @@ chatContent.scrollTop = chatContent.scrollHeight;");
     }
 
 
-    private async void EventHandler(object sender, string resp)
+    private async void EventHandler(object sender, Message message)
     {
-        _messages.Add(new Message { Content = resp, IsUser = false });
+        _messages.Add(new ChatMessage { Content = message.StepResponse, IsUser = false });
         await InvokeAsync(StateHasChanged);
         await ScrollToBottom();
         await ScrollToBottom();
@@ -72,7 +72,7 @@ chatContent.scrollTop = chatContent.scrollHeight;");
         StateHasChanged();
     }
 
-    public class Message
+    public class ChatMessage
     {
         public string Content { get; set; }
         public bool IsUser { get; set; }

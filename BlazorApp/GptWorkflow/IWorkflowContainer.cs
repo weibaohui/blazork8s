@@ -4,7 +4,7 @@ namespace BlazorApp.GptWorkflow;
 
 public interface IWorkflowContainer
 {
-    void RegisterWorkflow<TWorkflow>() where TWorkflow : IGptWorkflow<Context>;
+    void RegisterWorkflow<TWorkflow>() where TWorkflow : IGptWorkflow<GlobalContext>;
 
     IWorkflowHost Host();
 }

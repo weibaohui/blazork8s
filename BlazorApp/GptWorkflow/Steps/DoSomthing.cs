@@ -6,12 +6,17 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class DoSomething : StepBody
 {
-    public Context Context { get; set; }
+    private const string StepName = "DoSomething";
+
+    public GlobalContext GlobalContext { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        Console.WriteLine($"DoSomething LatestMessage={Context.LatestMessage}");
-        Context.History.Add("DoSomething DoSomething DoSomething DoSomething");
+        var msg = Message.NewMessage(GlobalContext, StepName);
+        Console.WriteLine($"DoSomething LatestMessage={msg.StepInput}");
+        // Do something with the input，and set the output to the message
+        msg.StepResponse = msg.StepInput;
+        GlobalContext.LatestMessage = msg;
         return ExecutionResult.Next();
     }
 }

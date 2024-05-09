@@ -7,6 +7,7 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class ExpertKubernetesRepair : StepBody
 {
+    private const string StepName = "ExpertKubernetesRepair";
     private readonly ILogger<OpenAi> _logger = LoggingHelper<OpenAi>.Logger();
 
     private string _prompt = "请你作为一个k8s专家,根据以上内容,判断运行是否有问题。" +
@@ -20,11 +21,11 @@ public class ExpertKubernetesRepair : StepBody
                              "5、列出你准备执行的命令，要求命令用```shell ```包裹起来。命令必须是可以直接执行的、正确的命令。\n" +
                              "请注意使用<br>换行.请作答";
 
-    public Context Context { get; set; }
+    public GlobalContext GlobalContext { get; set; }
 
     private bool Check()
     {
-        if (Context.AiService == null)
+        if (GlobalContext.AiService == null)
         {
             _logger.LogError("ExpertKubernetes AIService ERROR Null");
             return false;
@@ -35,17 +36,17 @@ public class ExpertKubernetesRepair : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
+        var msg = Message.NewMessage(GlobalContext, StepName);
         if (Check())
         {
-            _prompt = $"用户诉求：{Context.UserTask}\n获得信息：{Context.LatestMessage}\n{_prompt}";
+            _prompt = $"用户诉求：{msg.UserTask}\n获得信息：{msg.StepInput}\n{_prompt}";
+            msg.StepPrompt = _prompt;
             _logger.LogInformation("ExpertKubernetes Prompt: {Prompt}", _prompt);
-            Context.LatestMessage = Context.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
-            _logger.LogInformation("ExpertKubernetes Result: {Result}", Context.LatestMessage);
-            Context.History.Add(Context.LatestMessage);
-            Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
+            msg.StepResponse = GlobalContext.AiService?.AIChat(_prompt).GetAwaiter().GetResult();
+            _logger.LogInformation("ExpertKubernetes Result: {Result}", msg.StepResponse);
         }
 
-
+        GlobalContext.LatestMessage = msg;
         return ExecutionResult.Next();
     }
 }

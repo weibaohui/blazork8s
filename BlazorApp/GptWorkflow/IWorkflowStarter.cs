@@ -9,16 +9,16 @@ namespace BlazorApp.GptWorkflow;
 
 public interface IWorkflowStarter
 {
-    public Task Start(string userTask, string workflowName, Action<object, string> eventHandler);
+    public Task Start(string userTask, string workflowName, Action<object, Message> eventHandler);
 }
 
 public class WorkflowStarter(IAiService ai, IKubectlService kubectl, IWorkflowContainer container) : IWorkflowStarter
 {
-    public async Task Start(string userTask, string workflowName, Action<object, string> eventHandler)
+    public async Task Start(string userTask, string workflowName, Action<object, Message> eventHandler)
     {
         Init();
         var workflowHost = container.Host();
-        var ctx = new Context
+        var ctx = new GlobalContext
         {
             History = new List<string>(),
             UserTask = userTask,

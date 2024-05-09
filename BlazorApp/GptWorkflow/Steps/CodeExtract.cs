@@ -8,8 +8,10 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class CodeExtract : StepBody
 {
+    private const string StepName = "CodeExtract";
+
     public string Pattern { get; set; }
-    public Context Context { get; set; }
+    public GlobalContext GlobalContext { get; set; }
 
     private bool Check()
     {
@@ -18,9 +20,13 @@ public class CodeExtract : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        var text = Context.LatestMessage;
+        var msg = Message.NewMessage(GlobalContext, StepName);
+        msg.StepParameter.Add("Pattern", Pattern);
+
+
         if (Check())
         {
+            var text = msg.StepInput;
             if (!text.IsNullOrWhiteSpace() && !Pattern.IsNullOrWhiteSpace())
             {
                 var ret = "";
@@ -41,12 +47,12 @@ public class CodeExtract : StepBody
                 }
 
                 Console.WriteLine($"CodeExtract {Pattern},final result: {ret}");
-                Context.LatestMessage = ret;
-                Context.History.Add(Context.LatestMessage);
-                Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
+                msg.StepResponse = ret;
             }
         }
 
+
+        GlobalContext.LatestMessage = msg;
         return ExecutionResult.Next();
     }
 }

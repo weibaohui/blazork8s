@@ -8,14 +8,14 @@ using WorkflowCore.Interface;
 
 namespace BlazorApp.GptWorkflow;
 
-public class Context
+public class GlobalContext
 {
-    public readonly ILogger<Context> Logger = LoggingHelper<Context>.Logger();
+    public readonly ILogger<GlobalContext> Logger = LoggingHelper<GlobalContext>.Logger();
     public string UserTask { get; set; }
-    public string LatestMessage { get; set; }
+    public Message LatestMessage { get; set; }
     public IList<string> History { get; set; }
     public IAiService AiService { get; set; }
     public IKubectlService KubectlService { get; set; }
     public IWorkflowHost Host { get; set; }
-    public Action<object, string> OutputEventHandler { get; set; }
+    public Action<object, Message> OutputEventHandler { get; set; }
 }

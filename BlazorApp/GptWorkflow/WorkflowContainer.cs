@@ -7,7 +7,7 @@ public class WorkflowContainer(IWorkflowHost workflowHost) : IWorkflowContainer
 {
     private readonly List<string> _registeredWorkflows = [];
 
-    public void RegisterWorkflow<TWorkflow>() where TWorkflow : IGptWorkflow<Context>
+    public void RegisterWorkflow<TWorkflow>() where TWorkflow : IGptWorkflow<GlobalContext>
     {
         var key = typeof(TWorkflow).Name;
 
@@ -20,7 +20,7 @@ public class WorkflowContainer(IWorkflowHost workflowHost) : IWorkflowContainer
             }
 
             _registeredWorkflows.Add(key);
-            workflowHost.RegisterWorkflow<TWorkflow, Context>();
+            workflowHost.RegisterWorkflow<TWorkflow, GlobalContext>();
         }
     }
 

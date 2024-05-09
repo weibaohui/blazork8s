@@ -6,11 +6,15 @@ namespace BlazorApp.GptWorkflow.Steps;
 
 public class Kubectl : StepBody
 {
-    public Context Context { get; set; }
+    private const string StepName = "Kubectl";
+
+    public GlobalContext GlobalContext { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        var command = Context.LatestMessage;
+        var msg = Message.NewMessage(GlobalContext, StepName);
+
+        var command = msg.StepInput;
         var ret = "";
         foreach (var cmd in command.Split(";"))
         {
@@ -22,13 +26,13 @@ public class Kubectl : StepBody
             }
 
             var exec = cmd.StartsWith("kubectl") ? cmd.Remove(0, "kubectl".Length) : cmd;
-            ret += Context.KubectlService.Command(exec).GetAwaiter().GetResult() + "\r\n";
+            ret += GlobalContext.KubectlService.Command(exec).GetAwaiter().GetResult() + "\r\n";
         }
 
         Console.WriteLine($"Kubectl final result: {ret}");
-        Context.LatestMessage = ret;
-        Context.History.Add(Context.LatestMessage);
-        Context.OutputEventHandler.Invoke(this, Context.LatestMessage);
+        msg.StepResponse = ret;
+
+        GlobalContext.LatestMessage = msg;
 
         return ExecutionResult.Next();
     }
