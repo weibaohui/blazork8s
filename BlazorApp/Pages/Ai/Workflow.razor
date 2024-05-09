@@ -67,13 +67,14 @@
                     </div>
                 }
             </div>
-            <div class="chat-config">
-                <Switch CheckedChildren="显示Prompt" UnCheckedChildren="不显示Prompt" @bind-Checked="ShowStepPrompt"/>
-                <br/>
-                <Switch CheckedChildren="显示执行参数" UnCheckedChildren="不显示执行参数"
-                        @bind-Checked="ShowStepParameter"/>
-                <br/>
-            </div>
+
+        </div>
+        <div class="chat-config">
+            <Switch CheckedChildren="显示Prompt" UnCheckedChildren="不显示Prompt" @bind-Checked="ShowStepPrompt"/>
+            <br/>
+            <Switch CheckedChildren="显示执行参数" UnCheckedChildren="不显示执行参数"
+                    @bind-Checked="ShowStepParameter"/>
+            <br/>
         </div>
     }
 
