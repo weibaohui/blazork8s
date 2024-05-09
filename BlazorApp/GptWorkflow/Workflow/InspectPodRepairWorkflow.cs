@@ -29,9 +29,9 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Then<ExpertKubernetesRepair>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Then<SubWorkflowRunner>()
-            .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.WorkflowName, ctx => "Echo")
+            // .Then<SubWorkflowRunner>()
+            // .Input(step => step.GlobalContext, ctx => ctx)
+            // .Input(step => step.WorkflowName, ctx => "Echo")
             .Then<PassDetector>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .If(data => data.LatestMessage.StepResponse != "PASS").Do(then => then
