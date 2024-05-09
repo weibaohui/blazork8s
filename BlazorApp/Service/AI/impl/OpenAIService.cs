@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -76,7 +77,7 @@ public class OpenAiService(IConfigService configService, IPromptService promptSe
                               "messages": [
                                  {"role": "user", "content": "${promptAndText}"}
                               ],
-                              "temperature": 0.7,
+                              "temperature": 0.1,
                               "stream": true
                             }
                             """;
@@ -85,7 +86,7 @@ public class OpenAiService(IConfigService configService, IPromptService promptSe
         request.Content = new StringContent(jsonStr, Encoding.UTF8, "application/json");
         using var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
         await using var body = await response.Content.ReadAsStreamAsync();
-        using var reader = new System.IO.StreamReader(body);
+        using var reader = new StreamReader(body);
         while (!reader.EndOfStream)
         {
             var line = await reader.ReadLineAsync();
