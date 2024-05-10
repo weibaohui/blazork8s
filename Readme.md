@@ -23,10 +23,12 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Support efficient editing of YAML resources, enabling writing YAML fields on one side of the page while referring to field definitions at the same time.
 * Support displaying corresponding Service and Ingress on the Pod page, and support displaying backend Pods on the Service and Ingress pages.
 * Generation of Yaml 、Problem analysis、Security checks using a large model.
+* Support conversational k8s functionality operations, such as semantic commands to check the running status of pods in the default namespace.
 * Display resource usage dynamically (requires installation of metric server), and support viewing detailed statistical data* Integration of page functionalities such as kubectl describe, kubectl explain, kubectl top and other high-frequency commands. These can be accessed with a simple click on the user interface.
 * Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
 * Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
 * Visualize the relationships and states between workload resources intuitively through a topology diagram.
+
 ## ☀️ License
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
@@ -64,11 +66,11 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 ### x86 Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.9
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.0
 ```
 ### ARM Run (Mac M1/2/3)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.1.9-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.0-arm
 ```
 
 * View：http://IP:4000 (!Do not use 127.0.0.1/localhost!)
