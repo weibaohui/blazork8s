@@ -83,8 +83,8 @@ public partial class BasicLayout : LayoutComponentBase
             },
             new MenuDataItem
             {
-                Path = "/Workflow",
-                Name = L["Workflow"],
+                Path = "/Ai/Workflow",
+                Name = L["AiWorkflow"],
                 Key = "Workflow",
                 Icon = "project",
                 HideInMenu = !Ai.Enabled()
