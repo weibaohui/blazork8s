@@ -1,7 +1,7 @@
 .diagram-container {
-    padding: 5px;
-    width: calc(100% - 5px);
-    height: calc(100vh - 5px);
+    padding: 2px;
+    width: calc(100% - 2px);
+    height: calc(100vh - 2px);
     /*border: 1px solid black;*/
     font-size: 12px;
     background-color: #DEE7EB;
@@ -31,4 +31,13 @@
 
 ::deep .default-node .diagram-port, .default.diagram-group .diagram-port {
     margin: -6px;
+}
+
+::deep .diagram-canvas {
+    overflow: auto;
+}
+
+::deep .diagram-node.locked {
+    /* cursor: pointer; */
+    cursor: default;
 }

@@ -7,10 +7,12 @@
     {
         <MenuItem OnClick="@(() => OnPodLogClick(PodItem))">@L["ViewLog"]</MenuItem>
         <MenuItem OnClick="@(() => OnPodExecClick(PodItem))">@L["RunExec"]</MenuItem>
+        <MenuItem OnClick="@(() => OnDiagramClick(PodItem))">@L["Diagram"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
         <Button OnClick="@(() => OnPodLogClick(PodItem))">@L["ViewLog"]</Button>
         <Button OnClick="@(() => OnPodExecClick(PodItem))">@L["RunExec"]</Button>
+        <Button OnClick="@(() => OnDiagramClick(PodItem))">@L["Diagram"]</Button>
     }
 </ShareMenuItem>

@@ -1,5 +1,7 @@
 @page "/PodDiagram"
 @page "/PodDiagram/{PodName}"
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
+
 @if (Diagram != null)
 {
     <div class="diagram-container">

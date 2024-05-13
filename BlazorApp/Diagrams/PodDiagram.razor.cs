@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Options;
+using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -15,7 +16,7 @@ namespace BlazorApp.Diagrams;
 /// 以POD为中心，进行图形展示。
 /// 左边是Pod的来源，右边是Pod的网络连接关系。
 /// </summary>
-public partial class PodDiagram : ComponentBase
+public partial class PodDiagram : DrawerPageBase<V1Pod>
 {
     [Inject] private IJSRuntime JsRuntime { get; set; }
     [Inject] private IDeploymentService DeploymentService { get; set; }
@@ -32,9 +33,16 @@ public partial class PodDiagram : ComponentBase
 
     /// <summary>
     /// PodName是一个非全称名称，可能是部分名称，比如"web"，"api"等。
+    /// 可以通过页面路径访问传递
     /// </summary>
     [Parameter]
     public string PodName { get; set; }
+
+    /// <summary>
+    ///     弹窗页面调用
+    /// </summary>
+    [Parameter]
+    public V1Pod Pod { get; set; }
 
     private IList<V1Pod> Pods { get; set; }
     private BlazorDiagram Diagram { get; set; }
@@ -42,12 +50,22 @@ public partial class PodDiagram : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        if (string.IsNullOrWhiteSpace(PodName))
-            Pods = PodService.List()
-                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        Pod ??= Options;
+        if (Pod != null)
+        {
+            //传递了一个Pod过来，那么就展示这个Pod
+            Pods = new List<V1Pod> { Pod };
+        }
         else
-            Pods = PodService.List().Where(p => p.Name().Contains(PodName))
-                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        {
+            //如果没有传递Pod，那么就按PodName搜索，如果PodName为空，则展示所有Pod
+            if (string.IsNullOrWhiteSpace(PodName))
+                Pods = PodService.List()
+                    .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+            else
+                Pods = PodService.List().Where(p => p.Name().Contains(PodName))
+                    .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        }
 
 
         var options = new BlazorDiagramOptions

@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using AntDesign;
+using BlazorApp.Diagrams;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
 using k8s.Models;
@@ -27,5 +28,11 @@ public partial class PodAction : PageBase
     {
         var options = PageDrawerService.DefaultOptions($"Logs:{pod.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<PodExecView, V1Pod, bool>(options, pod);
+    }
+
+    private async Task OnDiagramClick(V1Pod item)
+    {
+        var options = PageDrawerService.DefaultOptions($"{L["Diagram"]}:{item.Name()}", 1300);
+        var x = await PageDrawerService.ShowDrawerAsync<PodDiagram, V1Pod, bool>(options, item);
     }
 }
