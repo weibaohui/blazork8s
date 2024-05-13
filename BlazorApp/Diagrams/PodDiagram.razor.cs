@@ -41,7 +41,8 @@ public partial class PodDiagram : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        Pods = PodService.List().Where(p => p.Name().Contains(PodName)).ToList();
+        Pods = PodService.List().Where(p => p.Name().Contains(PodName))
+            .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
 
         var options = new BlazorDiagramOptions
         {
@@ -83,7 +84,6 @@ public partial class PodDiagram : ComponentBase
         Diagram.Nodes.Clear();
 
 
-        var x = 50;
         var offset = 75;
         var columnXBase = 50;
         var column2XBase = 400;
