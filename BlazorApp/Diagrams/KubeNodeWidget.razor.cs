@@ -9,21 +9,21 @@ namespace BlazorApp.Diagrams;
 
 public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1ObjectMeta>
 {
-    private string resName;
+    private string _resName;
 
-    private string typeName;
+    private string _typeName;
     [Parameter] public KubeNode<T> Node { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-        typeName = Node.Item.GetType().Name;
-        resName = Node.Item.Name();
+        _typeName = Node.Item.GetType().Name;
+        _resName = Node.Item.Name();
         await base.OnInitializedAsync();
     }
 
     private bool? GetReadyStatus(T item)
     {
-        return typeName switch
+        return _typeName switch
         {
             "V1Deployment" => (Node.Item as V1Deployment)?.IsReady(),
             "V1Pod" => (Node.Item as V1Pod)?.IsReady(),
@@ -40,7 +40,7 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
 
     private bool? GetProcessingStatus(T item)
     {
-        return typeName switch
+        return _typeName switch
         {
             "V1Deployment" => (Node.Item as V1Deployment)?.IsProcessing(),
             "V1Pod" => (Node.Item as V1Pod)?.IsProcessing(),
@@ -63,7 +63,7 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
             "V1Pod" => "appstore",
             "V1ReplicaSet" => "build",
             "V1Job" => "container",
-            "V1CronJob" => "history",
+            "V1CronJob" => "schedule",
             "V1DaemonSet" => "reconciliation",
             "V1StatefulSet" => "project",
             "V1ReplicationController" => "split-cells",

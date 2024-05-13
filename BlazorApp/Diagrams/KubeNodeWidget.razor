@@ -24,7 +24,7 @@
             <GridCol Span="5" Style="font-size: 18px">
                 <div class="left-region">
                     <div class="icon">
-                        <Icon Type="@GetIcon(typeName)" Theme="fill" Style="font-size: 30px;color: #31bdec"/>
+                        <Icon Type="@GetIcon(_typeName)" Theme="fill" Style="font-size: 30px;color: #31bdec"/>
                     </div>
 
                     <div class="status">
@@ -34,7 +34,7 @@
                 </div>
             </GridCol>
             <GridCol Span="19">
-                <div class="long-text">@(resName)</div>
+                <div class="long-text">@(_resName)</div>
                 <div>
                     <RefView
                         Ref="@(KubeHelper.GetObjectRef(Node.Item?.Kind, Node.Item?.Namespace(), Node.Item?.Name()))">

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -114,8 +113,6 @@ public partial class PodDiagram : ComponentBase
                     //可能是job
                     var jobName = pod.Labels()["job-name"];
                     var jobUid = pod.Labels()["controller-uid"];
-                    Console.WriteLine($"pod {pod.Name()} is job {jobName}");
-                    Console.WriteLine($"pod {pod.Name()} is jobUid {jobUid}");
                     var job = JobService.GetByUid(jobUid);
                     if (job != null)
                     {

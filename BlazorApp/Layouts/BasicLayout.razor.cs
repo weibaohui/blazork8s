@@ -154,7 +154,7 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItemWithPath(L["StatefulSet"], "project", "/StatefulSet"),
             GetMenuItemWithPath(L["ReplicationController"], "split-cells", "/ReplicationController"),
             GetMenuItemWithPath(L["Job"], "container", "/Job"),
-            GetMenuItemWithPath(L["CronJob"], "history", "/CronJob")
+            GetMenuItemWithPath(L["CronJob"], "schedule", "/CronJob")
         };
     }
 
