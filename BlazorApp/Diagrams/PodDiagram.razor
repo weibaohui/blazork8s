@@ -2,8 +2,15 @@
 @page "/PodDiagram/{PodName}"
 @inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Pod>
 
+
 @if (Diagram != null)
 {
+    @if (Pod != null)
+    {
+//传递了Pod过来，这是弹窗,增加一个新页面展示链接
+        <a href=@($"/PodDiagram/{Pod.Metadata.Name}") target="_blank">@L["OpenInNewWindow"]</a>
+    }
+
     <div class="diagram-container">
         <CascadingValue Value="Diagram">
             <DiagramCanvas>

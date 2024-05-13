@@ -671,5 +671,6 @@
   "PathType": "路径类型",
   "Backend": "后端",
   "Diagram": "拓扑图",
-  "AiWorkflow": "智能自动化"
+  "AiWorkflow": "智能自动化",
+  "OpenInNewWindow": "在新窗口打开"
 }
