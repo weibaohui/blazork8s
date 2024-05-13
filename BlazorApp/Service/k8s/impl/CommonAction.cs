@@ -11,9 +11,9 @@ namespace BlazorApp.Service.k8s.impl;
 
 public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesObject<V1ObjectMeta>
 {
-    private readonly ResourceCache<T>         _cache = ResourceCacheHelper<T>.Instance.Build();
-    private readonly IServiceScope            _scope;
+    private readonly ResourceCache<T> _cache = ResourceCacheHelper<T>.Instance.Build();
     private readonly ILogger<CommonAction<T>> _logger = LoggingHelper<CommonAction<T>>.Logger();
+    private readonly IServiceScope _scope;
 
     public CommonAction(IServiceScopeFactory serviceScopeFactory)
     {
@@ -40,7 +40,7 @@ public abstract class CommonAction<T> : ICommonAction<T> where T : IKubernetesOb
 
     public T GetByUid(string uid)
     {
-        return List().First(x => x.Uid() == uid);
+        return List().FirstOrDefault(x => x.Uid() == uid);
     }
 
     public IList<T> ListByNamespace(string ns)

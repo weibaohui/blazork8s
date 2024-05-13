@@ -1,4 +1,6 @@
-
+::deep .diagram-node.locked {
+    cursor: pointer;
+}
 .wrap {
     display: flex;
     align-content: center;
@@ -28,19 +30,34 @@
     flex-direction: row;
 }
 
+.left-region .icon {
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.left-region .status {
+    display: flex;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
 .long-text {
     width: 200px; /* 设置文本框的宽度 */
     height: 20px; /* 设置文本框的高度 */
-
     white-space: nowrap; /* 让文本在一行内显示 */
     overflow: hidden; /* 隐藏超出容器的部分 */
     text-overflow: ellipsis; /* 当文本溢出时显示省略号 */
-    cursor: pointer; /* 鼠标样式为手型 */
+    /*cursor: pointer; !* 鼠标样式为手型 *!*/
     vertical-align: top; /* 垂直从顶部显示文本 */
 }
 
-.long-text:hover {
-    white-space: normal; /* 允许文本折行 */
-    overflow: visible; /* 显示全部文本 */
-    text-overflow: clip; /* 不显示省略号 */
-}
+/*.long-text:hover {*/
+/*    white-space: normal; !* 允许文本折行 *!*/
+/*    overflow: visible; !* 显示全部文本 *!*/
+/*    text-overflow: clip; !* 不显示省略号 *!*/
+/*}*/

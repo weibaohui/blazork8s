@@ -1,9 +1,6 @@
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
-using BlazorApp.Pages.Deployment;
-using BlazorApp.Pages.Pod;
-using BlazorApp.Pages.ReplicaSet;
-using BlazorApp.Utils;
+using Extension.k8s;
 using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
@@ -24,40 +21,56 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
         await base.OnInitializedAsync();
     }
 
-    private async Task Show()
+    private bool? GetReadyStatus(T item)
     {
-        switch (typeName)
+        return typeName switch
         {
-            case "V1Deployment":
-                await OnDeployClick(Node.Item as V1Deployment);
-                break;
-            case "V1Pod":
-                await OnPodClick(Node.Item as V1Pod);
-                break;
-            case "V1ReplicaSet":
-                await OnRsClick(Node.Item as V1ReplicaSet);
-                break;
-        }
+            "V1Deployment" => (Node.Item as V1Deployment)?.IsReady(),
+            "V1Pod" => (Node.Item as V1Pod)?.IsReady(),
+            "V1ReplicaSet" => (Node.Item as V1ReplicaSet)?.IsReady(),
+            // "V1Job" => (Node.Item as V1Job)?.IsReady(),
+            // "V1CronJob" =>( Node.Item as V1CronJob)?.IsReady(),
+            // "V1DaemonSet" => (Node.Item as V1DaemonSet)?.IsReady(),
+            // "V1StatefulSet" => (Node.Item as V1StatefulSet)?.IsReady(),
+            // "V1Node" => (Node.Item as V1Node)?.IsReady(),
+            // "V1ReplicationController" => (Node.Item as V1ReplicationController)?.IsReady(),
+            _ => true
+        };
     }
 
-    private async Task OnDeployClick(V1Deployment deploy)
+    private bool? GetProcessingStatus(T item)
     {
-        await PageDrawerHelper<V1Deployment>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<DeploymentDetailView, V1Deployment, bool>(deploy);
+        return typeName switch
+        {
+            "V1Deployment" => (Node.Item as V1Deployment)?.IsProcessing(),
+            "V1Pod" => (Node.Item as V1Pod)?.IsProcessing(),
+            "V1ReplicaSet" => (Node.Item as V1ReplicaSet)?.IsProcessing(),
+            // "V1Job" => (Node.Item as V1Job)?.IsReady(),
+            // "V1CronJob" =>( Node.Item as V1CronJob)?.IsReady(),
+            // "V1DaemonSet" => (Node.Item as V1DaemonSet)?.IsReady(),
+            // "V1StatefulSet" => (Node.Item as V1StatefulSet)?.IsReady(),
+            // "V1Node" => (Node.Item as V1Node)?.IsReady(),
+            // "V1ReplicationController" => (Node.Item as V1ReplicationController)?.IsReady(),
+            _ => false
+        };
     }
 
-    private async Task OnPodClick(V1Pod pod)
+    private string GetIcon(string type)
     {
-        await PageDrawerHelper<V1Pod>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<PodDetailView, V1Pod, bool>(pod);
-    }
-
-    private async Task OnRsClick(V1ReplicaSet rs)
-    {
-        await PageDrawerHelper<V1ReplicaSet>.Instance
-            .SetDrawerService(PageDrawerService.DrawerService)
-            .ShowDrawerAsync<ReplicaSetDetailView, V1ReplicaSet, bool>(rs);
+        return type switch
+        {
+            "V1Deployment" => "hdd",
+            "V1Pod" => "appstore",
+            "V1ReplicaSet" => "build",
+            "V1Job" => "container",
+            "V1CronJob" => "history",
+            "V1DaemonSet" => "reconciliation",
+            "V1StatefulSet" => "project",
+            "V1ReplicationController" => "split-cells",
+            "V1Node" => "database",
+            "V1Ingress" => "gateway",
+            "V1Service" => "node-expand",
+            _ => "hdd"
+        };
     }
 }

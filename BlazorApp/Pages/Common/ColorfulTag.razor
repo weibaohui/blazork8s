@@ -13,6 +13,7 @@
     [Parameter] public RenderFragment ChildContent { get; set; }
     [Parameter] public EventCallback OnClick { get; set; }
     [Parameter] public string Style { get; set; }
+
     [Parameter] public string Icon { get; set; }
 
 //指定计算颜色的key
@@ -24,22 +25,26 @@
 
     private string GetColor()
     {
-        return !Color.IsNullOrEmpty() ? Color : RandomColorHelper.ColorfulTagHexRgb(_key);
+        return !string.IsNullOrWhiteSpace(Color) ? Color : RandomColorHelper.ColorfulTagHexRgb(_key);
     }
 
     protected override async Task OnInitializedAsync()
     {
-        if (ColorKey.IsNullOrEmpty())
+        if (string.IsNullOrWhiteSpace(Color))
         {
-            var builder = new RenderTreeBuilder();
-            builder.AddContent(0, ChildContent);
-            var frames = builder.GetFrames();
-            _key = GetChildContentText(frames);
+            if (!ColorKey.IsNullOrEmpty())
+            {
+                _key = ColorKey;
+            }
+            else
+            {
+                var builder = new RenderTreeBuilder();
+                builder.AddContent(0, ChildContent);
+                var frames = builder.GetFrames();
+                _key = GetChildContentText(frames);
+            }
         }
-        else
-        {
-            _key = ColorKey;
-        }
+
 
         await base.OnInitializedAsync();
     }

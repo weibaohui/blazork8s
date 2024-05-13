@@ -5,11 +5,11 @@
 {
     @if (OnlyName)
     {
-        <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Name">
+        <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Name" Color="@Color">
 
             <Tooltip>
                 <TitleTemplate>
-                    @($"{Ref.Kind}/{Ref.ApiVersion}/{Ref.NamespaceProperty}/{Ref.Name}")
+                    @($"{Ref.ApiVersion}/{Ref.Kind}/{Ref.NamespaceProperty}/{Ref.Name}")
                 </TitleTemplate>
                 <ChildContent>
                     @($"{Ref.Name}")
@@ -19,10 +19,10 @@
     }
     else
     {
-        <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Kind">
+        <ColorfulTag OnClick="@OnObjClick" Style="cursor: pointer" ColorKey="@Ref.Kind" Color="@Color">
             <Tooltip>
                 <TitleTemplate>
-                    @($"{Ref.Kind}/{Ref.ApiVersion}/{Ref.NamespaceProperty}/{Ref.Name}")
+                    @($"{Ref.ApiVersion}/{Ref.Kind}/{Ref.NamespaceProperty}/{Ref.Name}")
                 </TitleTemplate>
                 <ChildContent>
                     @if (FullView)
@@ -39,7 +39,7 @@
                     }
                     else
                     {
-                        <ColorfulTag>@($"{Ref.Kind}")</ColorfulTag>
+                        @($"{Ref.Kind}")
                     }
                 </ChildContent>
             </Tooltip>

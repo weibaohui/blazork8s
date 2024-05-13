@@ -2,9 +2,6 @@ using System;
 using System.Threading.Tasks;
 using Blazor.Diagrams;
 using Blazor.Diagrams.Core.Geometry;
-using Blazor.Diagrams.Core.Models;
-using Blazor.Diagrams.Core.PathGenerators;
-using Blazor.Diagrams.Core.Routers;
 using Blazor.Diagrams.Options;
 using BlazorApp.Service.k8s;
 using k8s.Models;
@@ -53,23 +50,6 @@ public partial class MyDiagram : ComponentBase, IDisposable
         await base.OnInitializedAsync();
     }
 
-
-    private void LinkNodes(NodeModel source, NodeModel target)
-    {
-        var sourcePort = source.GetPort(PortAlignment.Right);
-        var targetPort = target.GetPort(PortAlignment.Left);
-        if (sourcePort != null && targetPort != null)
-            Diagram.Links.Add(new LinkModel(sourcePort, targetPort)
-            {
-                Router = new OrthogonalRouter(),
-                PathGenerator = new StraightPathGenerator(10),
-                // SourceMarker = LinkMarker.Square,
-                TargetMarker = LinkMarker.NewArrow(6, 6),
-                Color = "#8EA3B1",
-                Width = 1
-            });
-    }
-
     private async Task OnTimerCallback()
     {
         // await JsRuntime.InvokeVoidAsync("eval", $"window.location.reload(true)");
@@ -103,7 +83,7 @@ public partial class MyDiagram : ComponentBase, IDisposable
                 _ = new KubeNode<V1ReplicaSet>(Diagram, rs, new Point(column2XBase, y));
                 var rkey = $"{rs.Namespace()}/{rs.Name()}";
                 var rsNode = KubeNodeContainer<V1ReplicaSet>.Instance.Get(rkey);
-                LinkNodes(deployNode, rsNode);
+                DiagramHelper.LinkNodes(Diagram, deployNode, rsNode);
 
                 var pods = PodService.ListByOwnerUid(rs.Metadata.Uid);
                 for (var m = 0; m < pods.Count; m++)
@@ -112,7 +92,7 @@ public partial class MyDiagram : ComponentBase, IDisposable
                     _ = new KubeNode<V1Pod>(Diagram, pod, new Point(column3XBase, y));
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
-                    LinkNodes(rsNode, podNode);
+                    DiagramHelper.LinkNodes(Diagram, rsNode, podNode);
                     if (pods.Count > 1 && m != pods.Count - 1)
                         //只有一个就不用往下移位
                         y += offset;

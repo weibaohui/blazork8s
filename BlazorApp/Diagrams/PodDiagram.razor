@@ -1,0 +1,10 @@
+@page "/PodDiagram/{PodName}"
+@if (Diagram != null)
+{
+    <div class="diagram-container">
+        <CascadingValue Value="Diagram">
+            <DiagramCanvas>
+            </DiagramCanvas>
+        </CascadingValue>
+    </div>
+}

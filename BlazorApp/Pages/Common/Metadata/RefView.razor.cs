@@ -30,6 +30,8 @@ namespace BlazorApp.Pages.Common.Metadata;
 
 public partial class RefView : PageBase
 {
+    //指定颜色
+    [Parameter] public string Color { get; set; }
     [Parameter] public V1ObjectReference Ref { get; set; }
 
     [Parameter] public bool FullView { get; set; } = false;

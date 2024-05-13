@@ -147,10 +147,10 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItemWithPath(L["Pod"], "block", "/Pods"),
-            GetMenuItemWithPath(L["Deployment"], "deployment-unit", "Deployments"),
+            GetMenuItemWithPath(L["Pod"], "appstore", "/Pods"),
+            GetMenuItemWithPath(L["Deployment"], "hdd", "Deployments"),
             GetMenuItemWithPath(L["ReplicaSet"], "build", "/ReplicaSets"),
-            GetMenuItemWithPath(L["DaemonSet"], "partition", "/DaemonSet"),
+            GetMenuItemWithPath(L["DaemonSet"], "reconciliation", "/DaemonSet"),
             GetMenuItemWithPath(L["StatefulSet"], "project", "/StatefulSet"),
             GetMenuItemWithPath(L["ReplicationController"], "split-cells", "/ReplicationController"),
             GetMenuItemWithPath(L["Job"], "container", "/Job"),
