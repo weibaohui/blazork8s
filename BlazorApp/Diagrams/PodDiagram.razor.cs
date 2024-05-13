@@ -27,6 +27,8 @@ public partial class PodDiagram : ComponentBase
     [Inject] private IJobService JobService { get; set; }
     [Inject] private ICronJobService CronJobService { get; set; }
     [Inject] private IPodService PodService { get; set; }
+    [Inject] private IServiceService ServiceService { get; set; }
+    [Inject] private IIngressService IngressService { get; set; }
 
     /// <summary>
     /// PodName是一个非全称名称，可能是部分名称，比如"web"，"api"等。
@@ -61,6 +63,8 @@ public partial class PodDiagram : ComponentBase
         Diagram.RegisterComponent<KubeNode<V1DaemonSet>, KubeNodeWidget<V1DaemonSet>>();
         Diagram.RegisterComponent<KubeNode<V1ReplicationController>, KubeNodeWidget<V1ReplicationController>>();
         Diagram.RegisterComponent<KubeNode<V1Node>, KubeNodeWidget<V1Node>>();
+        Diagram.RegisterComponent<KubeNode<V1Ingress>, KubeNodeWidget<V1Ingress>>();
+        Diagram.RegisterComponent<KubeNode<V1Service>, KubeNodeWidget<V1Service>>();
         Diagram.RegisterComponent<KubeNode<V1CronJob>, KubeNodeWidget<V1CronJob>>();
 
         await LoadDiagram();
@@ -80,6 +84,8 @@ public partial class PodDiagram : ComponentBase
         KubeNodeContainer<V1DaemonSet>.Instance.Clear();
         KubeNodeContainer<V1ReplicationController>.Instance.Clear();
         KubeNodeContainer<V1Node>.Instance.Clear();
+        KubeNodeContainer<V1Service>.Instance.Clear();
+        KubeNodeContainer<V1Ingress>.Instance.Clear();
         Diagram.Nodes.Clear();
 
 
@@ -87,6 +93,8 @@ public partial class PodDiagram : ComponentBase
         var columnXBase = 50;
         var column2XBase = 400;
         var column3XBase = 750; //中央位置
+        var column4XBase = 1100;
+        var column5XBase = 1450;
         var y = 50;
 
         //1.Pod在中央，左边1是来源rs，左边2是deploy
@@ -254,6 +262,42 @@ public partial class PodDiagram : ComponentBase
                 }
             }
 
+            //寻找Service
+            var labels = pod.Metadata.Labels;
+            if (labels is { Count: > 0 })
+            {
+                var svcList = ServiceService.ListByLabels(labels);
+                foreach (var svc in svcList)
+                {
+                    var key = $"{svc.Namespace()}/{svc.Name()}";
+                    var svcNode = KubeNodeContainer<V1Service>.Instance.Get(key);
+                    if (svcNode == null)
+                    {
+                        _ = new KubeNode<V1Service>(Diagram, svc, new Point(column4XBase, y));
+                        svcNode = KubeNodeContainer<V1Service>.Instance.Get(key);
+                        if (svcList.Count > 1) y += offset;
+                    }
+
+                    DiagramHelper.LinkNodesTwoWay(Diagram, podNode, svcNode);
+
+
+                    //寻找Service后面的Ingress
+                    var ingList = IngressService.ListByServiceList(new List<V1Service> { svc });
+                    foreach (var ing in ingList)
+                    {
+                        var ingKey = $"{ing.Namespace()}/{ing.Name()}";
+                        var ingNode = KubeNodeContainer<V1Ingress>.Instance.Get(ingKey);
+                        if (ingNode == null)
+                        {
+                            _ = new KubeNode<V1Ingress>(Diagram, ing, new Point(column5XBase, y));
+                            ingNode = KubeNodeContainer<V1Ingress>.Instance.Get(ingKey);
+                            if (ingList.Count > 1) y += offset;
+                        }
+
+                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, ingNode);
+                    }
+                }
+            }
 
             if (Pods.Count > 1) y += offset;
         }

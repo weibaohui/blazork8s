@@ -180,12 +180,12 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItemWithPath(L["Service"], "partition", "/Service"),
+            GetMenuItemWithPath(L["Service"], "api", "/Service"),
             GetMenuItemWithPath(L["EndpointSlice"], "format-painter", "/EndpointSlice"),
             GetMenuItemWithPath(L["Endpoints"], "node-expand", "/Endpoints"),
             GetMenuItemWithPath(L["NetworkPolicy"], "partition", "/NetworkPolicy"),
             GetMenuItemWithPath(L["IngressClass"], "reconciliation", "/IngressClass"),
-            GetMenuItemWithPath(L["Ingress"], "gateway", "/Ingress")
+            GetMenuItemWithPath(L["Ingress"], "cloud", "/Ingress")
         };
     }
 

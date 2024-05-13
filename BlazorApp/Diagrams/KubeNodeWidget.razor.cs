@@ -69,7 +69,7 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
             "V1ReplicationController" => "split-cells",
             "V1Node" => "database",
             "V1Ingress" => "gateway",
-            "V1Service" => "node-expand",
+            "V1Service" => "api",
             _ => "hdd"
         };
     }
