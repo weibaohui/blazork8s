@@ -42,8 +42,13 @@ public partial class PodDiagram : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
-        Pods = PodService.List().Where(p => p.Name().Contains(PodName))
-            .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        if (string.IsNullOrWhiteSpace(PodName))
+            Pods = PodService.List()
+                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        else
+            Pods = PodService.List().Where(p => p.Name().Contains(PodName))
+                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+
 
         var options = new BlazorDiagramOptions
         {
@@ -112,26 +117,6 @@ public partial class PodDiagram : ComponentBase
             var pkey = $"{pod.Namespace()}/{pod.Name()}";
             var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
 
-            if (owner == null)
-            {
-                //看不到controllerBy，可能是因为没有controllerRef
-                //通过k8s规则来找到owner
-                if (pod.Labels().ContainsKey("controller-uid") && pod.Labels().ContainsKey("job-name"))
-                {
-                    //可能是job
-                    var jobName = pod.Labels()["job-name"];
-                    var jobUid = pod.Labels()["controller-uid"];
-                    var job = JobService.GetByUid(jobUid);
-                    if (job != null)
-                    {
-                        //找到Job
-                        _ = new KubeNode<V1Job>(Diagram, job, new Point(column2XBase, y));
-                        var key = $"{job.Namespace()}/{job.Name()}";
-                        var node = KubeNodeContainer<V1Job>.Instance.Get(key);
-                        DiagramHelper.LinkNodes(Diagram, node, podNode);
-                    }
-                }
-            }
 
             if (owner != null)
             {
