@@ -117,7 +117,7 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItemWithPath(L["Overview"], "dashboard", "/Cluster"),
             GetMenuItemWithPath(L["Inspection"], "scan", "/Cluster/Inspection"),
             GetMenuItemWithPath(L["Metrics"], "cluster", "/Cluster/Metrics"),
-            GetMenuItemWithPath(L["Diagram"], "deployment-unit", "/MyDiagram")
+            GetMenuItemWithPath(L["Diagram"], "deployment-unit", "/PodDiagram")
         };
     }
 
