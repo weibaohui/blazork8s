@@ -32,7 +32,7 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
             //运行kubectl
-            .Then<KubectlRunner>()
+            .Then<KubectlCommandRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
             //根据用户诉求、k8s命令的执行结果，综合判断是否需要进行故障排查
             .Then<ExpertKubernetesRepair>()
@@ -53,7 +53,7 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
                 .Then<CodeExtractor>()
                 .Input(step => step.GlobalContext, ctx => ctx)
                 .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
-                .Then<KubectlRunner>()
+                .Then<KubectlCommandRunner>()
                 .Input(step => step.GlobalContext, ctx => ctx)
             )
             .Then<End>()

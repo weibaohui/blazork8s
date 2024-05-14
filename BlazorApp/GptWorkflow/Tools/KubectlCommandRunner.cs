@@ -4,9 +4,9 @@ using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Tools;
 
-public class KubectlRunner : StepBody
+public class KubectlCommandRunner : StepBody
 {
-    private const string StepName = "KubectlRunner";
+    private const string StepName = "KubectlCommandRunner";
 
     public GlobalContext GlobalContext { get; set; }
 

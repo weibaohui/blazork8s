@@ -33,7 +33,7 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
             //运行kubectl
-            .Then<KubectlRunner>()
+            .Then<KubectlCommandRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
             //接下来进行循环，直到没有问题，或者超出loop次数
             .Then<LoopBegin>()
@@ -57,7 +57,7 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
                     .Then<CodeExtractor>()
                     .Input(step => step.GlobalContext, ctx => ctx)
                     .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
-                    .Then<KubectlRunner>()
+                    .Then<KubectlCommandRunner>()
                     .Input(step => step.GlobalContext, ctx => ctx)
                     .Then<Sleep>()
                     .Input(step => step.GlobalContext, ctx => ctx)
