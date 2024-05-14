@@ -18,4 +18,6 @@ public class GlobalContext
     public IKubectlService KubectlService { get; set; }
     public IWorkflowHost Host { get; set; }
     public Action<object, Message> OutputEventHandler { get; set; }
+
+    public string CurrentSubWorkflowName { get; set; }
 }
