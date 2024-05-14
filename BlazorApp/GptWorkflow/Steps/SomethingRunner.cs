@@ -4,7 +4,7 @@ using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Steps;
 
-public class DoSomething : StepBody
+public class SomethingRunner : StepBody
 {
     private const string StepName = "DoSomething";
 

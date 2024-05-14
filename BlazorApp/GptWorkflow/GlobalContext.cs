@@ -19,5 +19,24 @@ public class GlobalContext
     public IWorkflowHost Host { get; set; }
     public Action<object, Message> OutputEventHandler { get; set; }
 
+    /// <summary>
+    /// 当进入子流程时，需要保存当前的子流程名称
+    /// 当退出子流程时，需要清除当前的子流程名称
+    /// </summary>
     public string CurrentSubWorkflowName { get; set; }
+
+    /// <summary>
+    /// 是否允许循环
+    /// </summary>
+    public bool AllowLoop { get; set; }
+
+    /// <summary>
+    /// 循环次数
+    /// </summary>
+    public int LoopCount { get; set; } = 0;
+
+    /// <summary>
+    /// 最大循环次数
+    /// </summary>
+    public int MaxLoopCount { get; set; } = 5;
 }

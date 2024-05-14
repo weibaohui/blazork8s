@@ -1,4 +1,6 @@
-﻿using BlazorApp.GptWorkflow.Steps;
+﻿using BlazorApp.GptWorkflow.Actions;
+using BlazorApp.GptWorkflow.Steps;
+using BlazorApp.GptWorkflow.Tools;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -6,8 +8,8 @@ namespace BlazorApp.GptWorkflow.Workflow;
 
 public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
 {
-    public static string Name => "Start";
-    public string Id => "Start";
+    public static string Name => "InspectPodRepairWorkflow";
+    public string Id => "InspectPodRepairWorkflow";
     public int Version => 1;
 
     public void Build(IWorkflowBuilder<GlobalContext> builder)
@@ -22,11 +24,11 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .Then<ExpertKubernetesConsul>()
             .Input(step => step.GlobalContext, ctx => ctx)
             //提取命令
-            .Then<CodeExtract>()
+            .Then<CodeExtractor>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.Pattern, ctx => CodeExtractPattern.SHELL)
             //提取命令
-            .Then<CodeExtract>()
+            .Then<CodeExtractor>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
             //运行kubectl
@@ -45,10 +47,10 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             //PASS代表无需故障修复，其他需要提取指令运行。
             .If(data => data.LatestMessage.StepResponse != "PASS").Do(then => then
-                .StartWith<CodeExtract>()
+                .StartWith<CodeExtractor>()
                 .Input(step => step.GlobalContext, ctx => ctx)
                 .Input(step => step.Pattern, ctx => CodeExtractPattern.SHELL)
-                .Then<CodeExtract>()
+                .Then<CodeExtractor>()
                 .Input(step => step.GlobalContext, ctx => ctx)
                 .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
                 .Then<KubectlRunner>()

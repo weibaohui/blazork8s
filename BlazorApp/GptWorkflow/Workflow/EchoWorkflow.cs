@@ -1,4 +1,5 @@
-﻿using BlazorApp.GptWorkflow.Steps;
+﻿using BlazorApp.GptWorkflow.Actions;
+using BlazorApp.GptWorkflow.Steps;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -14,7 +15,7 @@ public class EchoWorkflow : IGptWorkflow<GlobalContext>
     {
         builder
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
-            .StartWith<DoSomething>()
+            .StartWith<SomethingRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Then<End>()
             .Input(step => step.GlobalContext, ctx => ctx);

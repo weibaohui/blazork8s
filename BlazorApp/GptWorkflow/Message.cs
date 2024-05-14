@@ -47,6 +47,13 @@ public class Message
             StepInput = ctx.LatestMessage.StepResponse
         };
         ctx.LatestMessage = msg;
+        if (ctx.AllowLoop)
+        {
+            msg.StepParameter.Add("AllowLoop", true);
+            msg.StepParameter.Add("LoopCount", ctx.LoopCount);
+            msg.StepParameter.Add("MaxLoopCount", ctx.MaxLoopCount);
+        }
+
         return msg;
     }
 }

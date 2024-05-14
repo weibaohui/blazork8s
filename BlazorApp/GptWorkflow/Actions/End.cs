@@ -2,7 +2,7 @@
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
-namespace BlazorApp.GptWorkflow.Steps;
+namespace BlazorApp.GptWorkflow.Actions;
 
 public class End : StepBody
 {

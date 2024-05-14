@@ -25,7 +25,8 @@ public class WorkflowStarter(IAiService ai, IKubectlService kubectl, IWorkflowCo
             AiService = ai,
             KubectlService = kubectl,
             Host = workflowHost,
-            OutputEventHandler = eventHandler
+            OutputEventHandler = eventHandler,
+            MaxLoopCount = 5
         };
         await workflowHost.StartWorkflow(workflowName, ctx);
     }
@@ -36,6 +37,7 @@ public class WorkflowStarter(IAiService ai, IKubectlService kubectl, IWorkflowCo
     private void Init()
     {
         container.RegisterWorkflow<InspectPodRepairWorkflow>();
+        container.RegisterWorkflow<DoWhileWorkflow>();
         container.RegisterWorkflow<EchoWorkflow>();
     }
 }

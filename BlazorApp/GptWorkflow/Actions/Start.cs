@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
-namespace BlazorApp.GptWorkflow.Steps;
+namespace BlazorApp.GptWorkflow.Actions;
 
 public class Start : StepBody
 {

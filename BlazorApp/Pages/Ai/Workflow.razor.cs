@@ -39,7 +39,7 @@ chatContent.scrollTop = chatContent.scrollHeight;");
             });
             if (_userInput.StartsWith("#"))
             {
-                await WorkflowStarter.Start(_userInput, InspectPodRepairWorkflow.Name, EventHandler);
+                await WorkflowStarter.Start(_userInput, DoWhileWorkflow.Name, EventHandler);
             }
 
             _userInput = string.Empty;

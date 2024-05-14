@@ -6,7 +6,7 @@ using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Steps;
 
-public class CodeExtract : StepBody
+public class CodeExtractor : StepBody
 {
     private const string StepName = "CodeExtract";
     private const string StepDescription = "CodeExtract";
