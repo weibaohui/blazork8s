@@ -12,14 +12,14 @@
 
 .monaco-editor-container {
     height: 100%;
-    width: 100%;
+    width: calc(100% - 2px);
     border: 1px solid gray;
 }
 
 /** Table 表格样式 **/
 .normalTable {
     border-collapse: collapse;
-    width: 100%;
+    width: calc(100% - 2px);
     border: 1px solid #f0f0f0 !important;
     margin-bottom: 20px;
 }
@@ -64,7 +64,7 @@
 /** Table 表格样式 **/
 .miniTable {
     border-collapse: collapse;
-    width: 100%;
+    width: calc(100% - 2px);
     border: 1px solid #f0f0f0 !important;
     margin-bottom: 20px;
 }
@@ -118,7 +118,7 @@
 .wideTable {
     margin: 10px;
 !important;
-    width: 100%;
+    width: calc(100% - 2px);
     border-collapse: collapse;
     border: 1px solid #f0f0f0 !important;
 }
@@ -133,7 +133,8 @@
 
 /** Table 表格样式 **/
 .wideTableWithGrid {
-    margin: 10px;!important;
+    margin: 10px;
+!important;
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #f0f0f0 !important;
@@ -163,6 +164,7 @@ GridRow GridCol 看起来像一个表格
     padding: 5px 9px;
     font-size: 14px;
 }
+
 /**
 * Div Box Style
 GridRow GridCol 首行
