@@ -45,7 +45,7 @@ public class CodeExtractor : StepBody
                 {
                     foreach (Capture capture in match.Captures)
                     {
-                        GlobalContext.Logger.LogDebug($"capture: {capture}");
+                        GlobalContext.Logger.LogDebug("CodeExtractor capture: {Capture}", capture);
                         ret += capture.Value.Trim() + ";";
                     }
                 }
