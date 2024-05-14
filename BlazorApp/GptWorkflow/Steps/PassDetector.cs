@@ -15,7 +15,7 @@ public class PassDetector : StepBody
         var msg = Message.NewMessage(GlobalContext, StepName);
 
         GlobalContext.Logger.LogDebug("msg.StepInput={Input}", msg.StepInput);
-        var text = msg.StepInput.Trim();
+        var text = msg.StepInput.Trim().TrimEnd('.').TrimEnd('。');
         if (text.StartsWith("PASS") || text.EndsWith("PASS"))
         {
             msg.StepResponse = "PASS";

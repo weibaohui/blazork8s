@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BlazorApp.GptWorkflow;
@@ -12,6 +13,7 @@ namespace BlazorApp.Pages.Ai;
 
 public partial class Workflow : PageBase
 {
+    private readonly object _lock = new();
     private readonly List<ChatMessage> _messages = new();
     private bool _showPrompt = false;
     private string _userInput;
@@ -26,17 +28,31 @@ public partial class Workflow : PageBase
     {
         await JsRuntime.InvokeVoidAsync("eval", @"
 var chatContent = document.getElementById(""chat-box"");
-chatContent.scrollTop = chatContent.scrollHeight;");
+ try {
+        if (chatContent) {
+            //console.log(chatContent.scrollHeight);
+            chatContent.scrollTop = chatContent.scrollHeight;
+        } else {
+            throw new Error('Element is null');
+        }
+    } catch (error) {
+        console.error(error.message);
+    }
+");
     }
 
     private async Task SendMessage()
     {
         if (!string.IsNullOrWhiteSpace(_userInput))
         {
-            _messages.Add(new ChatMessage
+            lock (_lock)
             {
-                Content = _userInput, IsUser = true
-            });
+                _messages.Add(new ChatMessage
+                {
+                    Content = _userInput, IsUser = true
+                });
+            }
+
             if (_userInput.StartsWith("#"))
             {
                 await WorkflowStarter.Start(_userInput, DoWhileWorkflow.Name, EventHandler);
@@ -45,22 +61,32 @@ chatContent.scrollTop = chatContent.scrollHeight;");
             _userInput = string.Empty;
 
             await InvokeAsync(StateHasChanged);
+            await ScrollToBottom();
+            await ScrollToBottom();
         }
-
-        await ScrollToBottom();
-        await ScrollToBottom();
     }
 
 
     private async void EventHandler(object sender, Message message)
     {
-        _messages.Add(
-            new ChatMessage
+        lock (_lock)
+        {
+            try
             {
-                Message = message,
-                Content = message.StepResponse,
-                IsUser = false
-            });
+                _messages.Add(
+                    new ChatMessage
+                    {
+                        Message = message,
+                        Content = message.StepResponse,
+                        IsUser = false
+                    });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
         await InvokeAsync(StateHasChanged);
         await ScrollToBottom();
         await ScrollToBottom();

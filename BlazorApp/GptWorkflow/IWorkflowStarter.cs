@@ -37,6 +37,7 @@ public class WorkflowStarter(IAiService ai, IKubectlService kubectl, IWorkflowCo
     private void Init()
     {
         container.RegisterWorkflow<InspectPodRepairWorkflow>();
+        container.RegisterWorkflow<FindCodeRunWorkflow>();
         container.RegisterWorkflow<DoWhileWorkflow>();
         container.RegisterWorkflow<EchoWorkflow>();
     }
