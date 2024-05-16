@@ -13,6 +13,7 @@ public class LoopEnd : StepBody
     {
         var msg = Message.NewMessage(GlobalContext, StepName);
         msg.StepResponse = msg.StepInput;
+        msg.StepParameter.Add("LoopControl", $"LoopEnd => true");
         GlobalContext.AllowLoop = false;
         return ExecutionResult.Next();
     }

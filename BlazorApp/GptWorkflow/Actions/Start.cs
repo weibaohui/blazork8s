@@ -11,6 +11,8 @@ public class Start : StepBody
 
     public GlobalContext GlobalContext { get; set; }
     public string HumanCommand { get; set; }
+    public string WorkflowName { get; set; }
+
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
@@ -23,9 +25,11 @@ public class Start : StepBody
             StepName = StepName,
             StepDueDate = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
             StepInput = HumanCommand,
-            StepResponse = HumanCommand
+            StepResponse = HumanCommand,
+            FlowName = WorkflowName
         };
         GlobalContext.LatestMessage = msg;
+        GlobalContext.CurrentWorkflowName = WorkflowName;
         GlobalContext.Logger.LogDebug("Start:Hello world");
         return ExecutionResult.Next();
     }

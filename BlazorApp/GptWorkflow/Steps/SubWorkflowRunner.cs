@@ -17,6 +17,9 @@ public class SubWorkflowRunner : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
+        GlobalContext.CurrentSubWorkflowName = WorkflowName;
+        GlobalContext.CurrentWorkflowName = WorkflowName;
+
         var lastMsg = GlobalContext.LatestMessage;
         var msg = Message.NewMessage(GlobalContext, StepName);
         msg.StepParameter.Add("WorkflowName", WorkflowName);
@@ -24,7 +27,6 @@ public class SubWorkflowRunner : StepBody
         GlobalContext.Logger.LogDebug("RunWorkflow start:{Name}", WorkflowName);
         GlobalContext.Host.StartWorkflow(WorkflowName, GlobalContext).GetAwaiter().GetResult();
         msg.StepResponse = $"RunWorkflow {WorkflowName} success";
-        GlobalContext.CurrentSubWorkflowName = WorkflowName;
 
         //使用上一个步骤，因为本步骤只是启动另一个流程，并不关心结果。
         GlobalContext.LatestMessage = lastMsg;

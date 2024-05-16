@@ -43,6 +43,8 @@ public class Message
             StepName = stepName,
             StepDescription = stepDescription,
             StepDueDate = DateTime.Now.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss"),
+            FlowName = ctx.CurrentWorkflowName,
+
             //节点的输入默认为上一个step的输出
             StepInput = ctx.LatestMessage.StepResponse
         };

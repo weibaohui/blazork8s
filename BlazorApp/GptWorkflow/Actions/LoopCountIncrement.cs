@@ -17,6 +17,8 @@ public class LoopCountIncrement : StepBody
         GlobalContext.LoopCount += 1;
         if (GlobalContext.LoopCount >= GlobalContext.MaxLoopCount)
         {
+            msg.StepParameter.Add("LoopControl",
+                $"GlobalContext.LoopCount({GlobalContext.LoopCount}) >= GlobalContext.MaxLoopCount({GlobalContext.MaxLoopCount}) => true");
             GlobalContext.AllowLoop = false;
         }
 

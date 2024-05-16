@@ -33,10 +33,15 @@ public class GlobalContext
     /// <summary>
     /// 循环次数
     /// </summary>
-    public int LoopCount { get; set; } = 0;
+    public int LoopCount { get; set; } = 1;
 
     /// <summary>
     /// 最大循环次数
     /// </summary>
     public int MaxLoopCount { get; set; } = 5;
+
+    /// <summary>
+    /// 当前工作流名称
+    /// </summary>
+    public string CurrentWorkflowName { get; set; }
 }

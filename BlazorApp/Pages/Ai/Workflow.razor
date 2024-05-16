@@ -32,7 +32,7 @@
                                 <Avatar Style="color: #f56a00; background-color: #fde3cf; ">
                                     @(message.Message.StepName.Substring(0, 1))
                                 </Avatar>
-                                @(message.Message.StepName) @(message.Message.StepDueDate)
+                                @(message.Message.FlowName) @(message.Message.StepName) @(message.Message.StepDueDate)
                             </div>
                         }
                         @if (ShowStepPrompt && !string.IsNullOrWhiteSpace(message.Message?.StepPrompt))

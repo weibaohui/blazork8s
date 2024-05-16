@@ -11,9 +11,9 @@ public class LoopBegin : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
+        GlobalContext.AllowLoop = true;
         var msg = Message.NewMessage(GlobalContext, StepName);
         msg.StepResponse = msg.StepInput;
-        GlobalContext.AllowLoop = true;
         return ExecutionResult.Next();
     }
 }

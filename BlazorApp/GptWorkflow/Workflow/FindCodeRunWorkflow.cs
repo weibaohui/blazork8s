@@ -18,13 +18,14 @@ public class FindCodeRunWorkflow : IGptWorkflow<GlobalContext>
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
             .StartWith<SomethingRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
+            //找到代码块
             .Then<CodeExtractor>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.Pattern, ctx => CodeExtractPattern.SHELL)
+            .Input(step => step.Pattern, ctx => WorkflowConst.RegexPatternShell)
             //提取命令
             .Then<CodeExtractor>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
+            .Input(step => step.Pattern, ctx => WorkflowConst.RegexPatternKubectl)
             //运行kubectl
             .Then<KubectlCommandRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)

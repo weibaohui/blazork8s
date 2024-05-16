@@ -1,6 +1,5 @@
 ﻿using BlazorApp.GptWorkflow.Actions;
 using BlazorApp.GptWorkflow.Steps;
-using BlazorApp.GptWorkflow.Tools;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -20,20 +19,15 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .StartWith<Start>()
             .Input(step => step.HumanCommand, ctx => ctx.UserTask)
             .Input(step => step.GlobalContext, ctx => ctx)
+            .Input(step => step.WorkflowName, ctx => InspectPodRepairWorkflow.Name)
             //启动k8s顾问，将用户输入语言，转换为k8s命令
             .Then<ExpertKubernetesConsul>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            //提取命令
-            .Then<CodeExtractor>()
+            //启动命令提取执行子流程
+            .Then<SubWorkflowRunner>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.Pattern, ctx => CodeExtractPattern.SHELL)
-            //提取命令
-            .Then<CodeExtractor>()
-            .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
-            //运行kubectl
-            .Then<KubectlCommandRunner>()
-            .Input(step => step.GlobalContext, ctx => ctx)
+            .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
+            .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
             //根据用户诉求、k8s命令的执行结果，综合判断是否需要进行故障排查
             .Then<ExpertKubernetesRepair>()
             .Input(step => step.GlobalContext, ctx => ctx)
@@ -47,14 +41,11 @@ public class InspectPodRepairWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             //PASS代表无需故障修复，其他需要提取指令运行。
             .If(data => data.LatestMessage.StepResponse != "PASS").Do(then => then
-                .StartWith<CodeExtractor>()
+                //启动命令提取执行子流程
+                .StartWith<SubWorkflowRunner>()
                 .Input(step => step.GlobalContext, ctx => ctx)
-                .Input(step => step.Pattern, ctx => CodeExtractPattern.SHELL)
-                .Then<CodeExtractor>()
-                .Input(step => step.GlobalContext, ctx => ctx)
-                .Input(step => step.Pattern, ctx => CodeExtractPattern.KUBECTL)
-                .Then<KubectlCommandRunner>()
-                .Input(step => step.GlobalContext, ctx => ctx)
+                .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
+                .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
             )
             .Then<End>()
             .Input(step => step.GlobalContext, ctx => ctx);
