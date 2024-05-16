@@ -14,12 +14,9 @@ public class FindCodeRunWorkflow : IGptWorkflow<GlobalContext>
 
     public void Build(IWorkflowBuilder<GlobalContext> builder)
     {
-        builder
-            .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
-            .StartWith<SomethingRunner>()
-            .Input(step => step.GlobalContext, ctx => ctx)
+        var branchShell = builder.CreateBranch()
+            .StartWith<CodeExtractor>()
             //找到代码块
-            .Then<CodeExtractor>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.Pattern, ctx => WorkflowConst.RegexPatternShell)
             //提取命令
@@ -31,6 +28,26 @@ public class FindCodeRunWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Then<End>()
             .Input(step => step.GlobalContext, ctx => ctx);
-        ;
+
+        var branchYaml = builder.CreateBranch()
+            //找到Yaml块
+            .Then<CodeExtractor>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Input(step => step.Pattern, ctx => WorkflowConst.RegexPatternYaml)
+            //运行kubectl
+            .Then<KubectlYamlApplier>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Then<End>()
+            .Input(step => step.GlobalContext, ctx => ctx);
+
+        builder
+            .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
+            .StartWith<SomethingRunner>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Then<YamlDetector>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Decide(data => data.CodeType)
+            .Branch(WorkflowConst.CodeType.Shell, branchShell)
+            .Branch(WorkflowConst.CodeType.Yaml, branchYaml);
     }
 }

@@ -6,8 +6,7 @@ public class WorkflowConst
     public enum CodeType
     {
         Shell,
-        Yaml,
-        Kubectl
+        Yaml
     }
 
     public const string SubWorkflowEnd = "SubWorkflowEnd";

@@ -44,4 +44,9 @@ public class GlobalContext
     /// 当前工作流名称
     /// </summary>
     public string CurrentWorkflowName { get; set; }
+
+    /// <summary>
+    /// 记录识别到的可执行代码类型
+    /// </summary>
+    public WorkflowConst.CodeType CodeType { get; set; }
 }

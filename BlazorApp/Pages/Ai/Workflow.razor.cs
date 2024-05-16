@@ -55,7 +55,7 @@ var chatContent = document.getElementById(""chat-box"");
 
             if (_userInput.StartsWith("#"))
             {
-                await WorkflowStarter.Start(_userInput, DoWhileWorkflow.Name, EventHandler);
+                await WorkflowStarter.Start(_userInput, DoWhileYamlWorkflow.Name, EventHandler);
             }
 
             _userInput = string.Empty;

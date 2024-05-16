@@ -21,6 +21,7 @@ public class KubectlService(ILogger<KubectlService> logger) : IKubectlService
 
     public async Task<string> Apply(string yaml)
     {
+        Console.WriteLine(yaml);
         if (string.IsNullOrWhiteSpace(yaml))
         {
             return string.Empty;
