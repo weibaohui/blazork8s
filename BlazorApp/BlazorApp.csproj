@@ -3,9 +3,9 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-      <PackageReference Include="AntDesign" Version="0.18.3"/>
+      <PackageReference Include="AntDesign" Version="0.19.0"/>
       <PackageReference Include="AntDesign.Charts" Version="0.5.1" />
-      <PackageReference Include="AntDesign.ProLayout" Version="0.18.2"/>
+      <PackageReference Include="AntDesign.ProLayout" Version="0.19.0"/>
       <PackageReference Include="BlazorMonaco" Version="3.2.0" />
       <PackageReference Include="CliWrap" Version="3.6.6" />
       <PackageReference Include="FluentScheduler" Version="5.5.1" />
