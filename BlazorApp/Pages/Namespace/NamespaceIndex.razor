@@ -1,8 +1,8 @@
 @page "/Namespace"
-@using k8s.Models
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
-@using BlazorApp.Pages.Common
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<V1Namespace>
 @if (TableData.PagedItems != null)
 {
@@ -32,6 +32,9 @@
                     <Selection Key="@(context.Name())"/>
                     <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Selector"] TData="string">
+                        <SelectorView Selector="@context.Metadata.Labels"></SelectorView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Finalizers"] TData="string">
                         @if (context.Spec.Finalizers is { Count: > 0 })

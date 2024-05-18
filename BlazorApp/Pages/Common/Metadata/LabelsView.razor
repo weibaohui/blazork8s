@@ -1,15 +1,13 @@
 @using BlazorApp.Pages.Common.Html
 @using BlazorApp.Utils
-@inherits BlazorApp.Pages.Common.PageBase
+@inherits PageBase
 
 @if (Labels != null)
 {
     <HTableColumn Title=@L["Labels"] ExplainField="@ExplainField">
         @foreach (var label in Labels)
         {
-            <Paragraph Copyable>
-                <Tag Color="@RandomColorHelper.RandomInverseColor()">@label.Key = @label.Value</Tag>
-            </Paragraph>
+            <ColorfulTag Color="@RandomColorHelper.RandomColor()">@label.Key = @label.Value</ColorfulTag>
         }
     </HTableColumn>
 }
@@ -17,11 +15,8 @@
 @code {
 
 
+    [Parameter] public IDictionary<string, string> Labels { get; set; }
 
-    [Parameter]
-    public IDictionary<string, string> Labels { get; set; }
-
-    [Parameter]
-    public string ExplainField { get; set; }
+    [Parameter] public string ExplainField { get; set; }
 
 }
