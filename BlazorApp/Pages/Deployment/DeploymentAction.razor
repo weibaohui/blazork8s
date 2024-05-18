@@ -7,12 +7,10 @@
     {
         <MenuItem OnClick="@(() => OnRestartClick(Item))">@L["Restart"]</MenuItem>
         <MenuItem OnClick="@(() => OnScaleClick(Item))">@L["Scale"]</MenuItem>
-        <MenuItem OnClick="@(() => OnDiagramClick(Item))">@L["Diagram"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
         <Button OnClick="@(() => OnRestartClick(Item))">@L["Restart"]</Button>
         <Button OnClick="@(() => OnScaleClick(Item))">@L["Scale"]</Button>
-        <Button OnClick="@(() => OnDiagramClick(Item))">@L["Diagram"]</Button>
     }
 </ShareMenuItem>
