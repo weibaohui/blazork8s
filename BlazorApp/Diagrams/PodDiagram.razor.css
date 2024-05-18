@@ -41,3 +41,13 @@
     /* cursor: pointer; */
     cursor: default;
 }
+
+.diagram-toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    width: calc(100% - 2px);
+    align-content: center;
+    flex-wrap: nowrap;
+}

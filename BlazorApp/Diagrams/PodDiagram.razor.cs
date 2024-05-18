@@ -47,6 +47,13 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
     private IList<V1Pod> Pods { get; set; }
     private BlazorDiagram Diagram { get; set; }
 
+    public async Task OnSearch()
+    {
+        if (!string.IsNullOrWhiteSpace(PodName))
+            Pods = PodService.List().Where(p => p.Name().Contains(PodName))
+                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        await LoadDiagram();
+    }
 
     protected override async Task OnInitializedAsync()
     {

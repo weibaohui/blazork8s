@@ -11,6 +11,13 @@
         <a href=@($"/PodDiagram/{Pod.Metadata.Name}") target="_blank">@L["OpenInNewWindow"]</a>
     }
 
+    <div class="diagram-toolbar">
+        <Search Placeholder=" Search Pod Name"
+                WrapperStyle="width: 400px;" ClassicSearchIcon
+                AllowClear EnterButton="@($"{L["Search"]}")"
+                @bind-Value="@PodName" OnSearch="OnSearch">
+        </Search>
+    </div>
     <div class="diagram-container">
         <CascadingValue Value="Diagram">
             <DiagramCanvas>
