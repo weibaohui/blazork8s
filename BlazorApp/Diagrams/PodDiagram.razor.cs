@@ -49,9 +49,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
 
     public async Task OnSearch()
     {
-        if (!string.IsNullOrWhiteSpace(PodName))
-            Pods = PodService.List().Where(p => p.Name().Contains(PodName))
-                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        SearchPods();
         await LoadDiagram();
     }
 
@@ -65,13 +63,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         }
         else
         {
-            //如果没有传递Pod，那么就按PodName搜索，如果PodName为空，则展示所有Pod
-            if (string.IsNullOrWhiteSpace(PodName))
-                Pods = PodService.List()
-                    .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
-            else
-                Pods = PodService.List().Where(p => p.Name().Contains(PodName))
-                    .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+            SearchPods();
         }
 
 
@@ -102,6 +94,16 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         await base.OnInitializedAsync();
     }
 
+    private void SearchPods()
+    {
+        //如果没有传递Pod，那么就按PodName搜索，如果PodName为空，则展示所有Pod
+        if (string.IsNullOrWhiteSpace(PodName))
+            Pods = PodService.List()
+                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+        else
+            Pods = PodService.List().Where(p => p.Name().Contains(PodName))
+                .OrderByDescending(x => x.OwnerReferences()?.FirstOrDefault()?.Kind).ToList();
+    }
 
     private async Task LoadDiagram()
     {
