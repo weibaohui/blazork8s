@@ -2,13 +2,11 @@
 
 
 <p align="center">
-  <a href="https://github.com/weibaohui/blazork8s">
-    <img src="/BlazorApp/wwwroot/pro_icon.svg">
-  </a>
+    <img src="/BlazorApp/wwwroot/pro_icon.svg" />
   <h1 align="center"> Blazor k8s </h1>
   <h4 align="center"> 
-   <a href="https://github.com/weibaohui/blazork8s/blob/main/Readme.md">English</a>
-    <a href="https://gitee.com/weibaohui/blazork8s/blob/main/Readme_cn.md">中文</a>
+   <a href="Readme.md">English</a>
+    <a href="Readme_cn.md">中文</a>
  </h4>
 </p>
 A Kubernetes management tool written in C# Blazor, integrating the ChatGPT large models. 
@@ -66,11 +64,11 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 ### x86 Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.0
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.1
 ```
 ### ARM Run (Mac M1/2/3)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.0-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.1-arm
 ```
 
 * View：http://IP:4000 (!Do not use 127.0.0.1/localhost!)
