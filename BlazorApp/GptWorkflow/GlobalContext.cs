@@ -49,4 +49,9 @@ public class GlobalContext
     /// 记录识别到的可执行代码类型
     /// </summary>
     public WorkflowConst.CodeType CodeType { get; set; }
+
+    /// <summary>
+    /// Decide 分支判断结果
+    /// </summary>
+    public string DecideResult { get; set; }
 }

@@ -14,6 +14,20 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
 
     public void Build(IWorkflowBuilder<GlobalContext> builder)
     {
+        var branchPass = builder.CreateBranch()
+            .StartWith<LoopEnd>()
+            .Input(step => step.GlobalContext, ctx => ctx);
+        var branchNoPass = builder.CreateBranch()
+            //启动命令提取执行子流程
+            .StartWith<SubWorkflowRunner>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
+            .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
+            //休眠10秒再继续，避免执行命令后没有生效的情况
+            .Then<Sleep>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Input(step => step.Period, data => TimeSpan.FromSeconds(10));
+
         builder
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
             //开始
@@ -44,22 +58,11 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
                 .Then<PassDetector>()
                 .Input(step => step.GlobalContext, ctx => ctx)
                 //PASS代表无需故障修复，其他需要提取指令运行。
-                .If(data => data.LatestMessage.StepResponse != "PASS").Do(then => then
-                    //启动命令提取执行子流程
-                    .StartWith<SubWorkflowRunner>()
-                    .Input(step => step.GlobalContext, ctx => ctx)
-                    .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
-                    .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
-                    //休眠10秒再继续，避免执行命令后没有生效的情况
-                    .Then<Sleep>()
-                    .Input(step => step.GlobalContext, ctx => ctx)
-                    .Input(step => step.Period, data => TimeSpan.FromSeconds(10))
-                )
-                .If(data => data.LatestMessage.StepResponse == "PASS").Do(then => then
-                    // 返回PASS，结束循环
-                    .StartWith<LoopEnd>()
-                    .Input(step => step.GlobalContext, ctx => ctx)
-                )
+                .Decide(data => data.DecideResult)
+                .Branch(WorkflowConst.DecideNonePASS, branchNoPass)
+                .Branch(WorkflowConst.DecidePASS, branchPass)
+                .Then<PassDetectorCleaner>()
+                .Input(step => step.GlobalContext, ctx => ctx)
             )
             .Then<End>()
             .Input(step => step.GlobalContext, ctx => ctx);
