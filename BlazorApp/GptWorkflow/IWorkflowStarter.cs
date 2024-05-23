@@ -26,7 +26,7 @@ public class WorkflowStarter(IAiService ai, IKubectlService kubectl, IWorkflowCo
             KubectlService = kubectl,
             Host = workflowHost,
             OutputEventHandler = eventHandler,
-            MaxLoopCount = 3
+            MaxLoopCount = 5
         };
         await workflowHost.StartWorkflow(workflowName, ctx);
     }
