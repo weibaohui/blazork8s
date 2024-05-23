@@ -23,7 +23,6 @@ public class SubWorkflowRunner : StepBody
         msg.StepParameter.Add("SubWorkflowName", WorkflowName);
 
         GlobalContext.Host.StartWorkflow(WorkflowName, GlobalContext).GetAwaiter().GetResult();
-        msg.StepResponse = $"RunWorkflow {WorkflowName} success";
 
         //使用上一个步骤，因为本步骤只是启动另一个流程，并不关心结果。
         GlobalContext.LatestMessage = lastMsg;

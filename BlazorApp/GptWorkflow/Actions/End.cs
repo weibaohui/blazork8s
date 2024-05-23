@@ -15,18 +15,17 @@ public class End : StepBody
         if (!string.IsNullOrWhiteSpace(currentSubWorkflowName))
         {
             //结束子流程
-            msg.StepResponseIsPassedThrough = true;
-            msg.StepResponse = msg.StepInput;
             GlobalContext.Host.PublishEvent(WorkflowConst.SubWorkflowEnd, WorkflowConst.SubWorkflowEnd,
                 WorkflowConst.SubWorkflowEnd);
             msg.StepParameter.Add("End", currentSubWorkflowName);
         }
         else
         {
-            msg.StepResponse = "Goodbye";
             msg.StepParameter.Add("End", GlobalContext.CurrentWorkflowName);
         }
 
+        msg.StepResponseIsPassedThrough = true;
+        msg.StepResponse = msg.StepInput;
 
         return ExecutionResult.Next();
     }

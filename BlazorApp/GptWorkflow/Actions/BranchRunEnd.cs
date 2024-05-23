@@ -1,21 +1,23 @@
 ﻿using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
-namespace BlazorApp.GptWorkflow.Steps;
+namespace BlazorApp.GptWorkflow.Actions;
 
-public class PassDetectorCleaner : StepBody
+public class BranchRunEnd : StepBody
 {
-    private const string StepName = "PassDetectorCleaner";
-
+    private const string StepName = "BranchRunEnd";
     public GlobalContext GlobalContext { get; set; }
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         var msg = Message.NewMessage(GlobalContext, StepName);
-        GlobalContext.DecideResult = string.Empty;
-        //将输入原样返回，让下一个环节处理
+        //结束子流程
         msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
+        GlobalContext.Host.PublishEvent(WorkflowConst.BranchRunEnd, WorkflowConst.BranchRunEnd,
+            WorkflowConst.BranchRunEnd);
+        msg.StepParameter.Add("End", "BranchRunEnd");
+
         return ExecutionResult.Next();
     }
 }

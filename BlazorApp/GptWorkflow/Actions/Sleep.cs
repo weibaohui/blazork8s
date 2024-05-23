@@ -1,5 +1,4 @@
 using System;
-using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -17,7 +16,6 @@ public class Sleep : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
-        GlobalContext.Logger.LogDebug("Start:Hello world");
         var msg = Message.NewMessage(GlobalContext, StepName);
         msg.StepParameter.Add("Sleep", "True");
         msg.StepParameter.Add("Period", Period);

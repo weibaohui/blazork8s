@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
@@ -36,7 +37,11 @@ public class ExpertKubernetesRepair : StepBody
 
     public override ExecutionResult Run(IStepExecutionContext context)
     {
+        var input = GlobalContext.LatestMessage.StepResponse;
+        Console.WriteLine($"GlobalContext.LatestMessage {GlobalContext.LatestMessage.StepName}");
+
         var msg = Message.NewMessage(GlobalContext, StepName);
+
         if (Check())
         {
             _prompt = $"用户诉求：{msg.UserTask}\n获得信息：{msg.StepInput}\n{_prompt}";

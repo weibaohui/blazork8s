@@ -10,6 +10,7 @@ public class WorkflowConst
     }
 
     public const string SubWorkflowEnd = "SubWorkflowEnd";
+    public const string BranchRunEnd = "BranchRunEnd";
     public static string RegexPatternShell = @"```shell(?:[\s\S]*?)```";
     public static string RegexPatternYaml = @"```yaml(?:[\s\S]*?)```";
     public static string RegexPatternKubectl = @"kubectl\s+\w+\s+.*?(?=\r?\n)";

@@ -44,6 +44,8 @@ public class FindCodeRunWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Decide(data => data.CodeType)
             .Branch(WorkflowConst.CodeType.Shell, branchShell)
-            .Branch(WorkflowConst.CodeType.Yaml, branchYaml);
+            .Branch(WorkflowConst.CodeType.Yaml, branchYaml)
+            // .WaitFor(WorkflowConst.BranchRunEnd, ctx => WorkflowConst.BranchRunEnd)
+            ;
     }
 }

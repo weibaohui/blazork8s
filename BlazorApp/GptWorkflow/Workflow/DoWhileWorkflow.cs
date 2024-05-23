@@ -1,5 +1,4 @@
-﻿using System;
-using BlazorApp.GptWorkflow.Actions;
+﻿using BlazorApp.GptWorkflow.Actions;
 using BlazorApp.GptWorkflow.Steps;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
@@ -16,6 +15,8 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
     {
         var branchPass = builder.CreateBranch()
             .StartWith<LoopEnd>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+            .Then<BranchRunEnd>()
             .Input(step => step.GlobalContext, ctx => ctx);
         var branchNoPass = builder.CreateBranch()
             //启动命令提取执行子流程
@@ -23,10 +24,11 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
             .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
-            //休眠10秒再继续，避免执行命令后没有生效的情况
-            .Then<Sleep>()
+            .Then<SubWorkflowCleaner>()
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.Period, data => TimeSpan.FromSeconds(10));
+            .Then<BranchRunEnd>()
+            .Input(step => step.GlobalContext, ctx => ctx);
+
 
         builder
             .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
@@ -43,6 +45,9 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx)
             .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
             .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
+            .Then<SubWorkflowCleaner>()
+            .Input(step => step.GlobalContext, ctx => ctx)
+
             //接下来进行循环，直到没有问题，或者超出loop次数
             .Then<LoopBegin>()
             .Input(step => step.GlobalContext, ctx => ctx)
@@ -54,15 +59,35 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
                 //记录执行了一次
                 .Then<LoopCountIncrement>()
                 .Input(step => step.GlobalContext, ctx => ctx)
+                .Then<PassDetectorCleaner>()
+                .Input(step => step.GlobalContext, ctx => ctx)
                 //检测修复专家是否给出了修复建议
                 .Then<PassDetector>()
                 .Input(step => step.GlobalContext, ctx => ctx)
-                //PASS代表无需故障修复，其他需要提取指令运行。
+                //
+                // //PASS代表无需故障修复，其他需要提取指令运行。
+                // .If(data => data.DecideResult == WorkflowConst.DecidePASS).Do(b =>
+                //     b.StartWith<LoopEnd>()
+                //         .Input(step => step.GlobalContext, ctx => ctx)
+                //         .Then<BranchRunEnd>()
+                //         .Input(step => step.GlobalContext, ctx => ctx)
+                //     )
+                // .If(data => data.DecideResult == WorkflowConst.DecideNonePASS).Do(b =>
+                //     //启动命令提取执行子流程
+                //     b.StartWith<SubWorkflowRunner>()
+                //         .Input(step => step.GlobalContext, ctx => ctx)
+                //         .Input(step => step.WorkflowName, ctx => FindCodeRunWorkflow.Name)
+                //         .WaitFor(WorkflowConst.SubWorkflowEnd, ctx => WorkflowConst.SubWorkflowEnd)
+                //         .Then<SubWorkflowCleaner>()
+                //         .Input(step => step.GlobalContext, ctx => ctx)
+                //         .Then<BranchRunEnd>()
+                //         .Input(step => step.GlobalContext, ctx => ctx)
+                //
+                //     )
                 .Decide(data => data.DecideResult)
                 .Branch(WorkflowConst.DecideNonePASS, branchNoPass)
                 .Branch(WorkflowConst.DecidePASS, branchPass)
-                .Then<PassDetectorCleaner>()
-                .Input(step => step.GlobalContext, ctx => ctx)
+                .WaitFor(WorkflowConst.BranchRunEnd, ctx => WorkflowConst.BranchRunEnd)
             )
             .Then<End>()
             .Input(step => step.GlobalContext, ctx => ctx);
