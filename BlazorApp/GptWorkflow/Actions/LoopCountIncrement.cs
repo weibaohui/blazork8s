@@ -12,6 +12,7 @@ public class LoopCountIncrement : StepBody
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         var msg = Message.NewMessage(GlobalContext, StepName);
+        msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
         GlobalContext.AllowLoop = true;
         if (GlobalContext.LoopCount >= GlobalContext.MaxLoopCount)

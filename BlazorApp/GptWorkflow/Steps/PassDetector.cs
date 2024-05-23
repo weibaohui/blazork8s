@@ -16,9 +16,17 @@ public class PassDetector : StepBody
 
         GlobalContext.Logger.LogDebug("msg.StepInput={Input}", msg.StepInput);
         var text = msg.StepInput.Trim().TrimEnd('.').TrimEnd('。');
-        if (text.StartsWith(WorkflowConst.DecideNonePASS) || text.EndsWith(WorkflowConst.DecideNonePASS))
+        text = text.Replace("```shell", "")
+            .Replace("```bash", "")
+            .Replace("```python", "")
+            .Replace("```yaml", "")
+            .Replace("```", "")
+            .Trim();
+        if (text.StartsWith(WorkflowConst.DecidePASS) || text.EndsWith(WorkflowConst.DecidePASS))
         {
             GlobalContext.DecideResult = WorkflowConst.DecidePASS;
+            msg.StepParameter.Add("DecideResult", GlobalContext.DecideResult);
+
             GlobalContext.Logger.LogDebug("PASS detect: {Text} ====>>>> PASS", text);
             //PASS,清空输出
             msg.StepResponse = string.Empty;
@@ -26,7 +34,9 @@ public class PassDetector : StepBody
         else
         {
             GlobalContext.DecideResult = WorkflowConst.DecideNonePASS;
+            msg.StepParameter.Add("DecideResult", GlobalContext.DecideResult);
             //将输入原样返回，让下一个环节处理
+            msg.StepResponseIsPassedThrough = true;
             msg.StepResponse = msg.StepInput;
         }
 

@@ -26,7 +26,9 @@ public partial class Workflow : PageBase
 
     private async Task ScrollToBottom()
     {
-        await JsRuntime.InvokeVoidAsync("eval", @"
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("eval", @"
 var chatContent = document.getElementById(""chat-box"");
  try {
         if (chatContent) {
@@ -39,6 +41,11 @@ var chatContent = document.getElementById(""chat-box"");
         console.error(error.message);
     }
 ");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+        }
     }
 
     private async Task SendMessage()

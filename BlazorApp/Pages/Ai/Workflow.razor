@@ -61,9 +61,19 @@
                             </div>
                         }
 
-                        <Text Copyable="true">
-                            <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
-                        </Text>
+                        @if (message.Message?.StepResponseIsPassedThrough is false)
+                        {
+                            @if (message.Message?.StepName?.Contains("Expert") is true)
+                            {
+                                <Alert Type="@AlertType.Error">
+                                    <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
+                                </Alert>
+                            }
+                            else
+                            {
+                                <p>@((MarkupString)message.Content.ToHtmlDisplayNoMarkdown())</p>
+                            }
+                        }
                     </div>
                 }
             </div>

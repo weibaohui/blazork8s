@@ -14,6 +14,7 @@ public class PassDetectorCleaner : StepBody
         var msg = Message.NewMessage(GlobalContext, StepName);
         GlobalContext.DecideResult = string.Empty;
         //将输入原样返回，让下一个环节处理
+        msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
 
 

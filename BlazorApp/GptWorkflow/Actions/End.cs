@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using WorkflowCore.Interface;
+﻿using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Actions;
@@ -16,15 +15,16 @@ public class End : StepBody
         if (!string.IsNullOrWhiteSpace(currentSubWorkflowName))
         {
             //结束子流程
+            msg.StepResponseIsPassedThrough = true;
             msg.StepResponse = msg.StepInput;
             GlobalContext.Host.PublishEvent(WorkflowConst.SubWorkflowEnd, WorkflowConst.SubWorkflowEnd,
                 WorkflowConst.SubWorkflowEnd);
-            GlobalContext.Logger.LogDebug("Goodbye SubWorkflow: {SubWorkflowName}", currentSubWorkflowName);
+            msg.StepParameter.Add("End", currentSubWorkflowName);
         }
         else
         {
             msg.StepResponse = "Goodbye";
-            GlobalContext.Logger.LogDebug("Goodbye world");
+            msg.StepParameter.Add("End", GlobalContext.CurrentWorkflowName);
         }
 
 

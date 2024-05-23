@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using WorkflowCore.Interface;
+﻿using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Steps;
@@ -18,13 +17,11 @@ public class SubWorkflowRunner : StepBody
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         GlobalContext.CurrentSubWorkflowName = WorkflowName;
-        GlobalContext.CurrentWorkflowName = WorkflowName;
 
         var lastMsg = GlobalContext.LatestMessage;
         var msg = Message.NewMessage(GlobalContext, StepName);
-        msg.StepParameter.Add("WorkflowName", WorkflowName);
+        msg.StepParameter.Add("SubWorkflowName", WorkflowName);
 
-        GlobalContext.Logger.LogDebug("RunWorkflow start:{Name}", WorkflowName);
         GlobalContext.Host.StartWorkflow(WorkflowName, GlobalContext).GetAwaiter().GetResult();
         msg.StepResponse = $"RunWorkflow {WorkflowName} success";
 

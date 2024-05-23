@@ -12,6 +12,11 @@ public class Message
     public string StepPrompt { get; set; }
     public Dictionary<string, object> StepParameter { get; set; } = new();
 
+    /// <summary>
+    ///     Whether the step response is passed through from the previous step.
+    /// </summary>
+    public bool StepResponseIsPassedThrough { get; set; }
+
     public string StepResponse
     {
         get => _stepResponse;

@@ -12,6 +12,7 @@ public class LoopEnd : StepBody
     public override ExecutionResult Run(IStepExecutionContext context)
     {
         var msg = Message.NewMessage(GlobalContext, StepName);
+        msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
         msg.StepParameter.Add("LoopControl", $"LoopEnd => true");
         GlobalContext.AllowLoop = false;

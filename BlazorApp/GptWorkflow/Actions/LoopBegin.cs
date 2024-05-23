@@ -13,6 +13,7 @@ public class LoopBegin : StepBody
     {
         GlobalContext.AllowLoop = true;
         var msg = Message.NewMessage(GlobalContext, StepName);
+        msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
         return ExecutionResult.Next();
     }

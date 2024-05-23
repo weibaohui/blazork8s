@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
 using WorkflowCore.Interface;
 using WorkflowCore.Models;
 
@@ -30,7 +29,6 @@ public class Start : StepBody
         };
         GlobalContext.LatestMessage = msg;
         GlobalContext.CurrentWorkflowName = WorkflowName;
-        GlobalContext.Logger.LogDebug("Start:Hello world");
         return ExecutionResult.Next();
     }
 }

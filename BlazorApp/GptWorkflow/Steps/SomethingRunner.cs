@@ -15,6 +15,7 @@ public class SomethingRunner : StepBody
         var msg = Message.NewMessage(GlobalContext, StepName);
         GlobalContext.Logger.LogDebug("DoSomething Input={Input}", msg.StepInput);
         // Do something with the input，and set the output to the message
+        msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
 
         return ExecutionResult.Next();

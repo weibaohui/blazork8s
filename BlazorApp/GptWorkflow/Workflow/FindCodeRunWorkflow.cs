@@ -2,7 +2,6 @@
 using BlazorApp.GptWorkflow.Steps;
 using BlazorApp.GptWorkflow.Tools;
 using WorkflowCore.Interface;
-using WorkflowCore.Models;
 
 namespace BlazorApp.GptWorkflow.Workflow;
 
@@ -41,10 +40,7 @@ public class FindCodeRunWorkflow : IGptWorkflow<GlobalContext>
             .Input(step => step.GlobalContext, ctx => ctx);
 
         builder
-            .UseDefaultErrorBehavior(WorkflowErrorHandling.Suspend)
-            .StartWith<SomethingRunner>()
-            .Input(step => step.GlobalContext, ctx => ctx)
-            .Then<YamlDetector>()
+            .StartWith<YamlDetector>()
             .Input(step => step.GlobalContext, ctx => ctx)
             .Decide(data => data.CodeType)
             .Branch(WorkflowConst.CodeType.Shell, branchShell)

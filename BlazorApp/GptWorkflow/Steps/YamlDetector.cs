@@ -31,6 +31,7 @@ public class YamlDetector : StepBody
 
         msg.StepParameter.Add("CodeType", GlobalContext.CodeType);
         //将输入原样返回，让下一个环节处理
+        msg.StepResponseIsPassedThrough = true;
         msg.StepResponse = msg.StepInput;
 
 
