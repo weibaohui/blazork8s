@@ -1,0 +1,23 @@
+@using BlazorApp.Pages.Common
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Namespace>
+
+@if (_keys is { Count: > 0 })
+{
+    <GridRow Class="grid-table">
+        <GridCol Span="12">@L["Item"]</GridCol>
+        <GridCol Span="4">@L["Min"]</GridCol>
+        <GridCol Span="4">@L["Max"]</GridCol>
+    </GridRow>
+    foreach (var key in _keys)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="12">@key</GridCol>
+            <GridCol Span="4">
+                <ColorfulTag>@_minQuotas.GetValueOrDefault(key, 0).CanonicalizeString()</ColorfulTag>
+            </GridCol>
+            <GridCol Span="4">
+                <ColorfulTag>@_maxQuotas.GetValueOrDefault(key, 0).CanonicalizeString()</ColorfulTag>
+            </GridCol>
+        </GridRow>
+    }
+}

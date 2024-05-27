@@ -6,9 +6,11 @@
     @if (MenuMode == MenuMode.Vertical)
     {
         <MenuItem OnClick=@(() => OnResourceClick(Item))>@L["ResourceQuota"]</MenuItem>
+        <MenuItem OnClick=@(() => OnLimitRangeClick(Item))>@L["LimitRange"]</MenuItem>
     }
     @if (MenuMode == MenuMode.Horizontal)
     {
         <Button OnClick=@(() => OnResourceClick(Item))>@L["ResourceQuota"]</Button>
+        <Button OnClick=@(() => OnLimitRangeClick(Item))>@L["LimitRange"]</Button>
     }
 </ShareMenuItem>

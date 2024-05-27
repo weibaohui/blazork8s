@@ -18,4 +18,10 @@ public partial class NamespaceAction : PageBase
         var options = PageDrawerService.DefaultOptions($"{L["ResourceQuota"]}:{item.Name()}", width: 1000);
         await PageDrawerService.ShowDrawerAsync<NamespaceResourceQuota, V1Namespace, bool>(options, item);
     }
+
+    private async Task OnLimitRangeClick(V1Namespace item)
+    {
+        var options = PageDrawerService.DefaultOptions($"{L["LimitRange"]}:{item.Name()}", width: 1000);
+        await PageDrawerService.ShowDrawerAsync<NamespaceLimitRange, V1Namespace, bool>(options, item);
+    }
 }
