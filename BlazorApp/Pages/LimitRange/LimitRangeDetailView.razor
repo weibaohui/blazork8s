@@ -15,7 +15,7 @@
             @foreach (var limit in LimitRange.Spec.Limits)
             {
                 <PropertySimpleView Item="limit.Type" Title=@L["Type"]
-                                    ExplainField="limitRange.spec.limits.type" ]>
+                                    ExplainField="limitRange.spec.limits.type">
                 </PropertySimpleView>
                 <PropertyMapView Items="limit.DefaultProperty" Title=@L["Default"] T="ResourceQuantity"
                                  ExplainField="limitRange.spec.limits.default">
