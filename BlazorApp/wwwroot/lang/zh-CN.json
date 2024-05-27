@@ -672,5 +672,7 @@
   "Backend": "后端",
   "Diagram": "拓扑图",
   "AiWorkflow": "智能自动化",
-  "OpenInNewWindow": "在新窗口打开"
+  "OpenInNewWindow": "在新窗口打开",
+  "Default Request": "默认请求",
+  "Default Limits": "默认限制"
 }

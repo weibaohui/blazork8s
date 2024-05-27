@@ -1,4 +1,3 @@
-
 @page "/LimitRange"
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
@@ -39,6 +38,66 @@
                         @foreach (var type in context.Spec.Limits.Where(x => x != null).Select(x => x.Type))
                         {
                             <ColorfulTag>@type</ColorfulTag>
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Default Limits"] TData="string">
+                        @foreach (var d in context.Spec.Limits.Where(x => x != null).Select(x => x.DefaultProperty))
+                        {
+                            if (d is { Count: > 0 })
+                            {
+                                foreach (var (key, value) in d)
+                                {
+                                    <ColorfulTag>@key=@value</ColorfulTag>
+                                }
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Default Request"] TData="string">
+                        @foreach (var d in context.Spec.Limits.Where(x => x != null).Select(x => x.DefaultRequest))
+                        {
+                            if (d is { Count: > 0 })
+                            {
+                                foreach (var (key, value) in d)
+                                {
+                                    <ColorfulTag>@key=@value</ColorfulTag>
+                                }
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["MaxLimitRequestRatio"] TData="string">
+                        @foreach (var d in context.Spec.Limits.Where(x => x != null).Select(x => x.MaxLimitRequestRatio))
+                        {
+                            if (d is { Count: > 0 })
+                            {
+                                foreach (var (key, value) in d)
+                                {
+                                    <ColorfulTag>@key=@value</ColorfulTag>
+                                }
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Min"] TData="string">
+                        @foreach (var min in context.Spec.Limits.Where(x => x != null).Select(x => x.Min))
+                        {
+                            if (min is { Count: > 0 })
+                            {
+                                foreach (var (key, value) in min)
+                                {
+                                    <ColorfulTag>@key=@value</ColorfulTag>
+                                }
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Max"] TData="string">
+                        @foreach (var max in context.Spec.Limits.Where(x => x != null).Select(x => x.Max))
+                        {
+                            if (max is { Count: > 0 })
+                            {
+                                foreach (var (key, value) in max)
+                                {
+                                    <ColorfulTag>@key=@value</ColorfulTag>
+                                }
+                            }
                         }
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
