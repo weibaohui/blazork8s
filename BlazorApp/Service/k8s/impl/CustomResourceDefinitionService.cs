@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Entity.Crd;
 using k8s;
 using k8s.Models;
+using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class CustomResourceDefinitionService(IKubeService kubeService)
+public class CustomResourceDefinitionService(IKubeService kubeService, ILogger<CustomResourceDefinitionService> logger)
     : CommonAction<V1CustomResourceDefinition>, ICustomResourceDefinitionService
 {
     public new async Task<object> Delete(string ns, string name)
@@ -24,14 +26,23 @@ public class CustomResourceDefinitionService(IKubeService kubeService)
     {
         List<CustomResource> crInstanceList = [];
 
-        var group    = crd.Spec.Group;
+        var group = crd.Spec.Group;
         var versions = crd.Spec.Versions;
-        var plural   = crd.Spec.Names.Plural;
+        var plural = crd.Spec.Names.Plural;
         foreach (var version in versions)
         {
-            var generic = new GenericClient(kubeService.Client(), group, version.Name, plural);
-            var list    = await generic.ListAsync<CustomResourceList<CustomResource>>();
-            crInstanceList.AddRange(list.Items);
+            try
+            {
+                var generic = new GenericClient(kubeService.Client(), group, version.Name, plural);
+                var list = await generic.ListAsync<CustomResourceList<CustomResource>>();
+                crInstanceList.AddRange(list.Items);
+            }
+            catch (Exception e)
+            {
+                logger.LogInformation(
+                    "Error getting CustomResource {Plural} in version {Group}/{VersionName}: {EMessage}", plural, group,
+                    version.Name, e.Message);
+            }
         }
 
         return crInstanceList;
@@ -44,12 +55,11 @@ public class CustomResourceDefinitionService(IKubeService kubeService)
     /// <param name="crd"></param>
     /// <param name="cr">CustomResource只有基础信息</param>
     /// <returns></returns>
-
     public async Task<object> GetCrInstanceWithSpec(V1CustomResourceDefinition crd, CustomResource cr)
     {
-        var    group        = crd.Spec.Group;
-        var    versions     = crd.Spec.Versions;
-        var    plural       = crd.Spec.Names.Plural;
+        var group = crd.Spec.Group;
+        var versions = crd.Spec.Versions;
+        var plural = crd.Spec.Names.Plural;
         object customObject = null;
         if (crd.Spec.Scope == "Namespaced")
         {
