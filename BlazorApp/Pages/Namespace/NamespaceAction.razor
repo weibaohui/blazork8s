@@ -2,4 +2,13 @@
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.PageBase
 
-<ShareMenuItem T="V1Namespace" Item="Item" MenuMode="MenuMode"></ShareMenuItem>
+<ShareMenuItem T="V1Namespace" Item="Item" MenuMode="MenuMode">
+    @if (MenuMode == MenuMode.Vertical)
+    {
+        <MenuItem OnClick=@(() => OnResourceClick(Item))>@L["ResourceQuota"]</MenuItem>
+    }
+    @if (MenuMode == MenuMode.Horizontal)
+    {
+        <Button OnClick=@(() => OnResourceClick(Item))>@L["ResourceQuota"]</Button>
+    }
+</ShareMenuItem>

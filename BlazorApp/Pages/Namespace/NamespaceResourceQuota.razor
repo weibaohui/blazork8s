@@ -1,0 +1,58 @@
+@using BlazorApp.Pages.Common
+@using Extension
+@inherits BlazorApp.Pages.Common.DrawerPageBase<k8s.Models.V1Namespace>
+@if (_finalQuotas is { Count: > 0 })
+{
+    <GridRow Class="grid-table">
+        <GridCol Span="12">@L["Item"]</GridCol>
+        <GridCol Span="4">@L["Request"]</GridCol>
+        <GridCol Span="4">@L["Limits"]</GridCol>
+        <GridCol Span="4">@L["Used"]</GridCol>
+    </GridRow>
+    foreach (var (k, value) in _finalQuotas.Where(x => x.Key.ToLower().Contains("requests.")))
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="12">@k</GridCol>
+            <GridCol Span="4">
+                <ColorfulTag>@value.Humanize()</ColorfulTag>
+            </GridCol>
+            <GridCol Span="4">
+                @{
+                    var nk = k.Replace("requests.", "limits.");
+                    _finalQuotas.TryGetValue(nk, out var nv);
+                    if (nv != null)
+                    {
+                        <ColorfulTag>@nv.Humanize()</ColorfulTag>
+                    }
+                    else
+                    {
+                        <ColorfulTag>@L["No Limit"]</ColorfulTag>
+                    }
+                }
+            </GridCol>
+            <GridCol Span="4">
+                <ColorfulTag>@_usedQuotas.GetValueOrDefault(k, 0).CanonicalizeString()</ColorfulTag>
+            </GridCol>
+        </GridRow>
+    }
+
+
+    <br/>
+    <GridRow Class="grid-table">
+        <GridCol Span="16">@L["Item"]</GridCol>
+        <GridCol Span="4">@L["Limits"]</GridCol>
+        <GridCol Span="4">@L["Used"]</GridCol>
+    </GridRow>
+    foreach (var (k, value) in _finalQuotas.Where(x => !x.Key.ToLower().Contains("requests.") && !x.Key.ToLower().Contains("limits.")))
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="16">@k</GridCol>
+            <GridCol Span="4">
+                <ColorfulTag>@value</ColorfulTag>
+            </GridCol>
+            <GridCol Span="4">
+                <ColorfulTag>@_usedQuotas.GetValueOrDefault(k, 0)</ColorfulTag>
+            </GridCol>
+        </GridRow>
+    }
+}
