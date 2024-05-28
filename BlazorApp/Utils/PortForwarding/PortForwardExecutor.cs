@@ -1,62 +1,53 @@
 using System;
 using System.Threading.Tasks;
-using BlazorApp.Utils.Terminal;
 using CliWrap;
 using CliWrap.Buffered;
 using Entity;
+using k8s.Models;
 using Microsoft.Extensions.Logging;
 
 namespace BlazorApp.Utils.PortForwarding;
 
-public class PortForwardExecutor
+public class PortForwardExecutor(PortForward pf)
 {
     private static readonly ILogger<PortForwardExecutor> Logger = LoggingHelper<PortForwardExecutor>.Logger();
 
-    public PortForwardExecutor(PortForward portForward)
+    public PortForward GetPortForward()
     {
-        PortForward = portForward;
+        return pf;
     }
 
-    public PortForward PortForward { get; set; }
 
-    private string Command()
+    private string Args()
     {
-        var command =
-            $"kubectl port-forward -n {PortForward.KubeNamespace}  --address 0.0.0.0 {PortForward.Type.ToString().ToLower()}/{PortForward.KubeName} {PortForward.LocalPort}:{PortForward.KubePort} \r";
-        return command;
+        var args =
+            $" port-forward -n {pf.KubeNamespace}  --address 0.0.0.0 {pf.Type.ToString().ToLower()}/{pf.KubeName} {pf.LocalPort}:{pf.KubePort}";
+        return args;
     }
 
-    public async Task Start()
+    public void Start()
     {
-        if (PortForward == null)
+        if (pf == null)
         {
             return;
         }
 
-        var command = Command();
-        // Logger.LogError("PTY: {Command}",command);
-        var service = TerminalHelper.Instance.GetOrCreate(command);
-        if (!service.IsRunning)
-        {
-            await service.Start();
-        }
-
-        await service.Write(command);
+        ProcessManager.Instance.StartService(pf.Name(), "kubectl", Args());
     }
 
     private string GetNcProbeCommand()
     {
-        return $"nc -v -w 1 -z 127.0.0.1 {PortForward.LocalPort} \r";
+        return $"nc -v -w 1 -z 127.0.0.1 {pf.LocalPort} \r";
     }
 
-    private string GetNcProbeParameters()
+    private string GetNcProbeArgs()
     {
-        return $"-v -w 1 -z 127.0.0.1 {PortForward.LocalPort} \r";
+        return $"-v -w 1 -z 127.0.0.1 {pf.LocalPort} \r";
     }
 
     public async Task StartProbe()
     {
-        if (PortForward == null)
+        if (pf == null)
         {
             return;
         }
@@ -65,32 +56,31 @@ public class PortForwardExecutor
         {
             var cmd = Cli.Wrap("nc")
                 .WithValidation(CommandResultValidation.None)
-                .WithArguments(GetNcProbeParameters());
+                .WithArguments(GetNcProbeArgs());
             // 执行命令并捕获输出
             var result = await cmd.ExecuteBufferedAsync();
             var all = result.StandardOutput + result.StandardError;
             if (all.Contains("failed"))
-                PortForward.Status = "failed";
-            else if (all.Contains("succeeded")) PortForward.Status = "succeeded";
+                pf.Status = "failed";
+            else if (all.Contains("succeeded")) pf.Status = "succeeded";
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "PortForwardExecutor Probe Error:  {Command}", GetNcProbeCommand());
-            PortForward.Status = "failed";
+            Logger.LogError(ex, " Probe Error:  {Command}", GetNcProbeCommand());
+            pf.Status = "failed";
             return;
         }
 
-        PortForward.StatusTimestamp = DateTime.Now;
+        pf.StatusTimestamp = DateTime.Now;
     }
 
     public void Dispose()
     {
-        if (PortForward == null)
+        if (pf == null)
         {
             return;
         }
 
-        //释放探测终端、转发命令执行终端
-        TerminalHelper.Instance.GetOrCreate(Command()).Dispose();
+        ProcessManager.Instance.StopService(pf.Name());
     }
 }

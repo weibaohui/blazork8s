@@ -1,6 +1,7 @@
 @page "/PortForward"
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @using Entity
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<Entity.PortForward>
@@ -32,9 +33,11 @@
                 <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
                     <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                 </AntDesign.Column>
-                <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
-                <AntDesign.Column Field="@context.Type" Title=@L["KubeType"]/>
-                <AntDesign.Column Field="@context.KubeName" Title=@L["KubeName"]/>
+                <AntDesign.Column Field="@context.LocalPort" Title=@L["KubeName"]>
+                    <RefView FullView="true"
+                             Ref="@KubeHelper.GetObjectRef(context.Type.ToString(), context.Namespace(), context.KubeName)">
+                    </RefView>
+                </AntDesign.Column>
                 <AntDesign.Column Field="@context.KubePort" Title=@L["KubePort"]/>
                 <AntDesign.Column Field="@context.LocalPort" Title=@L["LocalPort"]>
                     <div>

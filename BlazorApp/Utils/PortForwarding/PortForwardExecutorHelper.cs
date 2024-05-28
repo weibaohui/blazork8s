@@ -48,12 +48,12 @@ public class PortForwardExecutorHelper
             return;
         }
 
-        Logger.LogInformation("开始探测{Count}端口是否存活", Map.Count);
+        Logger.LogInformation("开始探测端口是否存活,数量:{Count}", Map.Count);
         lock (_lockObj)
         {
             foreach (var (_, pfe) in Map)
             {
-                var pf = pfe.PortForward;
+                var pf = pfe.GetPortForward();
                 if (pf.StatusTimestamp != null && pf.StatusTimestamp.FromNowSeconds() < 10)
                 {
                     continue;
@@ -82,7 +82,7 @@ public class PortForwardExecutorHelper
         {
             foreach (var (_, pfe) in Map)
             {
-                var pf = pfe.PortForward;
+                var pf = pfe.GetPortForward();
                 if (pf.StatusTimestamp != null && pf.Status.IsNullOrEmpty())
                 {
                     DisposeByItem(pf);
@@ -117,13 +117,13 @@ public class PortForwardExecutorHelper
             }
         };
 
-        PortForwardExecutor pfe = new PortForwardExecutor(pf);
+        var pfe = new PortForwardExecutor(pf);
         lock (_lockObj)
         {
-            Map.TryAdd(pfe.PortForward.Metadata.Name, pfe);
+            Map.TryAdd(pf.Name(), pfe);
         }
 
-        await pfe.Start();
+        pfe.Start();
         await WatchUpdate(WatchEventType.Added, pf);
     }
 
@@ -134,10 +134,10 @@ public class PortForwardExecutorHelper
     /// <param name="pf">PortForward</param>
     public void DisposeByItem(PortForward pf)
     {
-        string name = pf.Metadata.Name;
+        var name = pf.Metadata.Name;
         lock (_lockObj)
         {
-            Map.TryGetValue(name, out PortForwardExecutor? executor);
+            Map.TryGetValue(name, out var executor);
             if (executor != null)
             {
                 executor.Dispose();
@@ -146,7 +146,7 @@ public class PortForwardExecutorHelper
                     Map.Remove(name);
                 }
 
-                WatchUpdate(WatchEventType.Deleted, executor.PortForward);
+                WatchUpdate(WatchEventType.Deleted, executor.GetPortForward());
             }
         }
 
