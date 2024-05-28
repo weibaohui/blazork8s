@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
@@ -9,8 +10,9 @@ public class ProcessManager
     private static readonly ILogger<ProcessManager> Logger = LoggingHelper<ProcessManager>.Logger();
     private readonly Dictionary<string, Process> _services = new Dictionary<string, Process>();
 
-
     public static ProcessManager Instance => Nested.Instance;
+    public event EventHandler<string> StandardOutput;
+    public event EventHandler<string> StandardError;
 
     public void StartService(string name, string binPath, string args)
     {
@@ -35,8 +37,16 @@ public class ProcessManager
             }
         };
 
-        process.OutputDataReceived += (sender, arg) => Logger.LogInformation("[{Name}] 输出: {ArgData}", name, arg.Data);
-        process.ErrorDataReceived += (sender, arg) => Logger.LogInformation("[{Name}] 错误: {ArgData}", name, arg.Data);
+        process.OutputDataReceived += (sender, arg) =>
+        {
+            StandardOutput?.Invoke(sender, arg.Data);
+            Logger.LogInformation("[{Name}] 输出: {ArgData}", name, arg.Data);
+        };
+        process.ErrorDataReceived += (sender, arg) =>
+        {
+            StandardError?.Invoke(sender, arg.Data);
+            Logger.LogInformation("[{Name}] 错误: {ArgData}", name, arg.Data);
+        };
 
         process.Start();
         process.BeginOutputReadLine();
