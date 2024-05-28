@@ -11,8 +11,19 @@ public class ProcessManager
     private readonly Dictionary<string, Process> _services = new Dictionary<string, Process>();
 
     public static ProcessManager Instance => Nested.Instance;
+    public bool IsStandardOutPutSet => StandardOutput != null;
+
+    /// <summary>
+    ///     todo 改为按name 设置，否则多个服务会使用同一个输出
+    /// </summary>
     public event EventHandler<string> StandardOutput;
+
     public event EventHandler<string> StandardError;
+
+    public Process GetService(string name)
+    {
+        return _services[name];
+    }
 
     public void StartService(string name, string binPath, string args)
     {
@@ -29,11 +40,15 @@ public class ProcessManager
             {
                 FileName = binPath,
                 Arguments = args,
-
+                RedirectStandardInput = true,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
-                CreateNoWindow = true
+                CreateNoWindow = true,
+                EnvironmentVariables =
+                {
+                    ["TERM"] = "xterm"
+                }
             }
         };
 
@@ -55,6 +70,21 @@ public class ProcessManager
         _services[name] = process;
 
         Logger.LogInformation("服务 {Name} 已启动", name);
+    }
+
+    public void SendCommandToService(string name, string command)
+    {
+        if (_services.ContainsKey(name))
+        {
+            var process = _services[name];
+            process.StandardInput.WriteLine(command);
+            process.StandardInput.Flush();
+            Logger.LogInformation("命令已发送到服务 {Name}: {Command}", name, command);
+        }
+        else
+        {
+            Logger.LogInformation("未找到运行中的服务 {Name}", name);
+        }
     }
 
     public void StopService(string name)

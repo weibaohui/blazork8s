@@ -1,5 +1,4 @@
 #nullable enable
-using System;
 using System.Threading.Tasks;
 using BlazorApp.Chat;
 using BlazorApp.Utils.Terminal;
@@ -13,20 +12,20 @@ namespace BlazorApp.Utils;
 public class PodLogExecutor
 {
     private static readonly ILogger<PodLogExecutor> Logger = LoggingHelper<PodLogExecutor>.Logger();
-    private readonly        string                  _name;
+    private readonly string _name;
 
     private readonly string _namespace;
 
     private string? _command;
-    private string  _containerName;
+    private string _containerName;
 
     //返回的日志内容
     private IHubContext<ChatHub>? _ctx;
 
     public PodLogExecutor(string ns, string name, string containerName)
     {
-        _namespace     = ns;
-        _name          = name;
+        _namespace = ns;
+        _name = name;
         _containerName = containerName;
     }
 
@@ -42,12 +41,13 @@ public class PodLogExecutor
 
     public PodLogExecutor BuildExecCommand()
     {
-        _command = $"""exec -i -t -n {_namespace} {_name} -c {_containerName} -- sh -c "clear; (bash  || sh)" """;
+        _command = $"""exec -i  -n {_namespace} {_name} -c {_containerName} -- sh -c "clear; (bash  || sh)" """;
         return this;
     }
 
     public void Kill()
     {
+        // ProcessManager.Instance.StopService(Key);
         TerminalHelper.Instance.Kill(Key);
         Logger.LogInformation("{Key} killed", Key);
     }
@@ -60,6 +60,25 @@ public class PodLogExecutor
         }
 
         Logger.LogInformation("Exec {Command}", _command);
+        // ProcessManager.Instance.StopService(Key);
+        // if (!ProcessManager.Instance.IsStandardOutPutSet)
+        // {
+        //     ProcessManager.Instance.StandardOutput += (_, e) =>
+        //     {
+        //         var entity = new PodLogEntity
+        //         {
+        //             Namespace = _namespace,
+        //             Name = _name,
+        //             ContainerName = _containerName,
+        //             LogLineContent = e,
+        //         };
+        //         //TODO PodLog更换为枚举值
+        //         _ctx?.Clients.All.SendAsync("PodLog", entity);
+        //     };
+        // }
+        // ProcessManager.Instance.StartService(Key, "kubectl", _command);
+
+
         TerminalHelper.Instance.Kill(Key);
 
         var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
@@ -69,9 +88,9 @@ public class PodLogExecutor
             {
                 var entity = new PodLogEntity
                 {
-                    Namespace      = _namespace,
-                    Name           = _name,
-                    ContainerName  = _containerName,
+                    Namespace = _namespace,
+                    Name = _name,
+                    ContainerName = _containerName,
                     LogLineContent = e,
                 };
                 //TODO PodLog更换为枚举值
@@ -85,7 +104,7 @@ public class PodLogExecutor
             await terminalService.Start();
         }
 
-        Console.WriteLine("terminalService.IsRunning {0}", terminalService.IsRunning);
+        // Console.WriteLine("terminalService.IsRunning {0}", terminalService.IsRunning);
 
         await terminalService.Write($"kubectl {_command} \r");
     }
@@ -95,6 +114,8 @@ public class PodLogExecutor
         var terminalService = TerminalHelper.Instance.GetOrCreate(Key);
         await terminalService.Write(content);
         await terminalService.Write("\r");
+        // ProcessManager.Instance.SendCommandToService(Key,  content);
+        // ProcessManager.Instance.SendCommandToService(Key,  "\r");
     }
 
     #region Getter Setter
