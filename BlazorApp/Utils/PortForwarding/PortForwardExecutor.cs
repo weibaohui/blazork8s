@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
 using BlazorApp.Utils.Terminal;
+using CliWrap;
+using CliWrap.Buffered;
 using Entity;
 using Microsoft.Extensions.Logging;
 
@@ -42,9 +44,14 @@ public class PortForwardExecutor
         await service.Write(command);
     }
 
-    public string GetNcProbeCommand()
+    private string GetNcProbeCommand()
     {
         return $"nc -v -w 1 -z 127.0.0.1 {PortForward.LocalPort} \r";
+    }
+
+    private string GetNcProbeParameters()
+    {
+        return $"-v -w 1 -z 127.0.0.1 {PortForward.LocalPort} \r";
     }
 
     public async Task StartProbe()
@@ -54,34 +61,26 @@ public class PortForwardExecutor
             return;
         }
 
-        var command = GetNcProbeCommand();
-        var service = TerminalHelper.Instance.GetOrCreate(command);
-
-        if (!service.IsRunning)
+        try
         {
-            await service.Start();
+            var cmd = Cli.Wrap("nc")
+                .WithValidation(CommandResultValidation.None)
+                .WithArguments(GetNcProbeParameters());
+            // 执行命令并捕获输出
+            var result = await cmd.ExecuteBufferedAsync();
+            var all = result.StandardOutput + result.StandardError;
+            if (all.Contains("failed"))
+                PortForward.Status = "failed";
+            else if (all.Contains("succeeded")) PortForward.Status = "succeeded";
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "PortForwardExecutor Probe Error:  {Command}", GetNcProbeCommand());
+            PortForward.Status = "failed";
+            return;
         }
 
-        if (!service.IsStandardOutPutSet)
-        {
-            service.StandardOutput += (sender, e) =>
-            {
-                // Logger.LogInformation("PortForwardExecutor Probe StandardOutput:  {Command}::::{Data}", GetNcProbeCommand(),e);
-                if (e.Contains("failed"))
-                {
-                    PortForward.Status = "failed";
-                }
-
-                if (e.Contains("succeeded"))
-                {
-                    PortForward.Status = "succeeded";
-                }
-
-                PortForward.StatusTimestamp = DateTime.Now;
-            };
-        }
-
-        await service.Write(command);
+        PortForward.StatusTimestamp = DateTime.Now;
     }
 
     public void Dispose()

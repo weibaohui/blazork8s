@@ -10,7 +10,6 @@ using k8s;
 using k8s.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BlazorApp.Utils.PortForwarding;
 
@@ -20,26 +19,13 @@ public class PortForwardExecutorHelper
         LoggingHelper<PortForwardExecutorHelper>.Logger();
 
     private static readonly Dictionary<string, PortForwardExecutor> Map = new();
-    private readonly        ResourceCache<PortForward> _cache = ResourceCacheHelper<PortForward>.Instance.Build();
-    private readonly        object _lockObj = new object();
+    private readonly ResourceCache<PortForward> _cache = ResourceCacheHelper<PortForward>.Instance.Build();
+    private readonly object _lockObj = new();
 
     /// <summary>
     /// 发送watch event ，使用DI获取后，赋值到本helper
     /// </summary>
     private IHubContext<ChatHub>? _ctx;
-
-    public static PortForwardExecutorHelper Instance => Nested.Instance;
-
-    private class Nested
-    {
-        // Explicit static constructor to tell C# compiler
-        // not to mark type as beforefieldinit
-        static Nested()
-        {
-        }
-
-        internal static readonly PortForwardExecutorHelper Instance = new PortForwardExecutorHelper();
-    }
 
     public PortForwardExecutorHelper()
     {
@@ -48,6 +34,8 @@ public class PortForwardExecutorHelper
         JobManager.AddJob(NcProbe, (s) => s.ToRunEvery(5).Seconds());
         JobManager.AddJob(RemoveFailedPort, (s) => s.ToRunEvery(30).Seconds());
     }
+
+    public static PortForwardExecutorHelper Instance => Nested.Instance;
 
 
     /// <summary>
@@ -71,7 +59,7 @@ public class PortForwardExecutorHelper
                     continue;
                 }
 
-                pfe.StartProbe().ConfigureAwait(true);
+                pfe.StartProbe().ConfigureAwait(true).GetAwaiter().GetResult();
                 WatchUpdate(WatchEventType.Modified, pf);
                 Logger.LogInformation(
                     "探测状态:{Port} {Status},{Time}",
@@ -112,20 +100,20 @@ public class PortForwardExecutorHelper
     {
         var pf = new PortForward
         {
-            Kind          = "PortForward",
-            ApiVersion    = "blazorK8s.io/v1",
-            Type          = type,
-            LocalPort     = localPort,
-            KubePort      = kubePort,
-            KubeName      = kubeName,
+            Kind = "PortForward",
+            ApiVersion = "blazorK8s.io/v1",
+            Type = type,
+            LocalPort = localPort,
+            KubePort = kubePort,
+            KubeName = kubeName,
             KubeNamespace = ns,
             Metadata = new V1ObjectMeta
             {
-                Name              = $"{kubeName}-{kubePort}-{localPort}",
+                Name = $"{kubeName}-{kubePort}-{localPort}",
                 NamespaceProperty = ns,
                 //k8s时间
                 CreationTimestamp = DateTime.Now.ToUniversalTime(),
-                Uid               = Guid.NewGuid().ToString()
+                Uid = Guid.NewGuid().ToString()
             }
         };
 
@@ -182,8 +170,8 @@ public class PortForwardExecutorHelper
         var data = new ResourceWatchEntity<PortForward>
         {
             Message = $"{type}:{item.Kind}:{item.Metadata.Name}",
-            Type    = type,
-            Item    = item
+            Type = type,
+            Item = item
         };
         Logger.LogInformation("{Type}:{ItemKind}:{MetadataName}", type, item.Kind, item.Metadata.Name);
         _cache.Update(type, item);
@@ -193,5 +181,16 @@ public class PortForwardExecutorHelper
         }
 
         return Task.CompletedTask;
+    }
+
+    private class Nested
+    {
+        internal static readonly PortForwardExecutorHelper Instance = new();
+
+        // Explicit static constructor to tell C# compiler
+        // not to mark type as beforefieldinit
+        static Nested()
+        {
+        }
     }
 }
