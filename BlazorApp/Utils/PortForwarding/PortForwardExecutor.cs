@@ -91,7 +91,6 @@ public class PortForwardExecutor
         }
 
         //释放探测终端、转发命令执行终端
-        TerminalHelper.Instance.GetOrCreate(GetNcProbeCommand()).Dispose();
         TerminalHelper.Instance.GetOrCreate(Command()).Dispose();
     }
 }
