@@ -106,7 +106,15 @@ public partial class BasicLayout : LayoutComponentBase
     {
         return new[]
         {
-            GetMenuItemWithPath(L["Language"], "translation", "/Settings/Language")
+            GetMenuItemWithPath(L["Language"], "translation", "/Settings/Language"),
+            new MenuDataItem
+            {
+                Path = "/Settings/Run",
+                Name = L["Run"],
+                Key = "Run",
+                Icon = "pic-center",
+                HideInMenu = !KubernetesClientConfiguration.IsInCluster()
+            },
         };
     }
 

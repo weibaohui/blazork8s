@@ -25,6 +25,7 @@ builder.Services.Configure<ProSettings>(builder.Configuration.GetSection("ProSet
 builder.Services.AddHttpClient();
 builder.Services.AddHttpContextAccessor();
 
+
 builder.Services.AddSingleton<IStringLocalizer, SimpleI18NStringLocalizer>();
 builder.Services.AddScoped<IPageDrawerService, PageDrawerService>();
 builder.Services.AddHostedService<HostedService>();

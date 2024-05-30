@@ -1,0 +1,10 @@
+@page "/Settings/Run"
+@inherits BlazorApp.Pages.Common.PageBase
+<Card Title="@L["Config"]" Style="margin: 50px">
+    <Alert Type="AlertType.Warning">
+        @L["Restart Reminder"]
+        <br/>
+        @L["Running Time"] @(_runningTime.Hours):@(_runningTime.Minutes):@(_runningTime.Seconds)
+    </Alert>
+    <Button OnClick="@(() => Restart())">@L["Restart"]</Button>
+</Card>
