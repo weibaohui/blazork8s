@@ -23,6 +23,7 @@ public partial class Workflow : PageBase
     [Inject] private IWorkflowStarter WorkflowStarter { get; set; }
 
     [Inject] private IAiService AiService { get; set; }
+    [Parameter] public string UserTask { get; set; }
 
     private async Task ScrollToBottom()
     {
@@ -46,6 +47,35 @@ var chatContent = document.getElementById(""chat-box"");
         {
             Console.WriteLine(e);
         }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(UserTask)) await StartFromUserTask(UserTask);
+
+        await base.OnInitializedAsync();
+    }
+
+    private async Task StartFromUserTask(string userTask)
+    {
+        _userInput = userTask;
+        lock (_lock)
+        {
+            _messages.Add(new ChatMessage
+            {
+                Content = _userInput, IsUser = true
+            });
+        }
+
+
+        await WorkflowStarter.Start(_userInput, DoWhileWorkflow.Name, EventHandler);
+
+
+        _userInput = string.Empty;
+
+        await InvokeAsync(StateHasChanged);
+        await ScrollToBottom();
+        await ScrollToBottom();
     }
 
     private async Task SendMessage()

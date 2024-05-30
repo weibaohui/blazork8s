@@ -197,7 +197,15 @@
                         </div>
                     </GridCol>
                     <GridCol Span="4">
-                        <Button OnClick="@(() => OnAnalyzeClick(item))">@L["AI Analysis"]</Button>
+                        @if (Ai.Enabled())
+                        {
+                            <Button OnClick="@(() => OnAnalyzeClick(item))">@L["AI Analysis"]</Button>
+                            <a class="ant-btn ant-btn-default"
+                               href="/Ai/Workflow/@($"请尝试修复{item.Namespace()}命名空间里名为{item.Name()}的{item.Kind}")"
+                               target="_blank">
+                                @L["Try Fix"]
+                            </a>
+                        }
                     </GridCol>
                 </GridRow>
             }
