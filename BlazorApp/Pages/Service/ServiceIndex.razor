@@ -47,10 +47,16 @@
                         }
                     </AntDesign.Column>
 
-                    <AntDesign.Column Title=@L["ClusterIP"] TData="string" Width="100px">
+                    <AntDesign.Column Title=@L["Ports"] TData="string" Width="100px">
                         @foreach (var p in context.Spec.Ports)
                         {
                             <ColorfulTag>@($"{p.Port}{(p.NodePort != null ? ":" + p.NodePort : "")}/{p.Protocol}")</ColorfulTag>
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Headless"] TData="string" Width="100px">
+                        @if (context.Spec.ClusterIP == "None" && context.Spec.Type == "ClusterIP")
+                        {
+                            <ColorfulTag>True</ColorfulTag>
                         }
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Selector"] TData="string" Width="100px">
