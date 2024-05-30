@@ -57,6 +57,7 @@ public partial class Example : PageBase
     private List<string> GetYamlFiles(string directoryPath)
     {
         var yamlFiles = Directory.GetFiles(directoryPath, "*.yaml").ToList();
+        yamlFiles.Sort();
         return yamlFiles;
     }
 
