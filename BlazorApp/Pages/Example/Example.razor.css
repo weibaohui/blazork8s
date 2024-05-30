@@ -1,0 +1,25 @@
+
+.container {
+    display: flex;
+    width: 100%;
+    margin: 10px
+}
+
+.div-40 {
+    margin: 10px;
+    width: 40%;
+    /*background-color: lightblue;*/
+    /* 添加以下属性来确保高度可以不同 */
+    align-self: flex-start;
+}
+
+.div-60 {
+    margin: 10px;
+    width: 60%;
+    height: 800px;
+    /*background-color: lightcoral;*/
+    /* 添加以下属性来确保高度可以不同 */
+    align-self: flex-start;
+    /* 使高度根据内容自动调整 */
+    flex-grow: 1;
+}

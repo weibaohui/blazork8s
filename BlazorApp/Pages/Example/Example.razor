@@ -3,66 +3,60 @@
 @inherits BlazorApp.Pages.Common.PageBase
 
 <div style="margin: 20px">
-
     <Breadcrumb>
         <BreadcrumbItem>@L["Example"]</BreadcrumbItem>
     </Breadcrumb>
     <Divider/>
+</div>
+<div class="container">
+    <div class="div-40">
+        <div>
+            <Button OnClick="ExpandAll">@L["Expand"]</Button>
+            <Button OnClick="CollapseAll">@L["Collapse"]</Button>
+        </div>
+        <Divider/>
+        <div style="margin: 5px;height:100%;max-height: 1000px;overflow-y: auto;">
+            <Tree
+                ChildrenExpression="x => x.DataItem.ChildList"
+                DataSource="_dataList"
+                IsLeafExpression="x => x.DataItem.IsLeaf"
+                KeyExpression="x => x.DataItem.Name"
+                TitleExpression="x => x.DataItem.Name"
+                OnClick="OnItemClick"
+                SwitcherIcon="down"
+                IconExpression="x => x.DataItem.Icon"
+                @ref="_tree"
+                ShowLeafIcon="false"
+                ShowIcon="true"
+                ShowLine="true"
+                TItem="DirectoryNode"
+                OnNodeLoadDelayAsync="OnNodeLoadDelayAsync">
+                <SwitcherIconTemplate>
+                    <Icon Type="down"/>
+                </SwitcherIconTemplate>
+            </Tree>
+        </div>
+    </div>
+    <div class="div-60">
 
-    <div>
-        <GridRow>
-            <GridCol Span="8" Style="overflow-scrolling: auto;overflow-x: hidden">
-                <div>
-                    <Button OnClick="ExpandAll">@L["Expand"]</Button>
-                    <Button OnClick="CollapseAll">@L["Collapse"]</Button>
-                </div>
-                <Divider/>
-                <div>
-                    <Tree
-                        ChildrenExpression="x => x.DataItem.ChildList"
-                        DataSource="_dataList"
-                        IsLeafExpression="x => x.DataItem.IsLeaf"
-                        KeyExpression="x => x.DataItem.Name"
-                        TitleExpression="x => x.DataItem.Name"
-                        OnClick="OnItemClick"
-                        SwitcherIcon="down"
-                        IconExpression="x => x.DataItem.Icon"
-                        @ref="_tree"
-                        ShowLeafIcon="false"
-                        ShowIcon="true"
-                        ShowLine="true"
-                        TItem="DirectoryNode"
-                        OnNodeLoadDelayAsync="OnNodeLoadDelayAsync">
-                        <SwitcherIconTemplate>
-                            <Icon Type="down"/>
-                        </SwitcherIconTemplate>
-                    </Tree>
-                </div>
-            </GridCol>
-            <GridCol Span="16">
-
-                <div style="margin: 20px">
-                    <div style="height: 600px;width: 800px">
-                        <StandaloneCodeEditor
-                            @ref="_editor"
-                            Id="yaml-editor"
-                            ConstructionOptions="EditorConstructionOptions"/>
-                    </div>
-                    <Button OnClick="@BtnApplyClicked" Type="@ButtonType.Primary">@L["Apply"]</Button>
-                    <Button Danger="true" Type="@ButtonType.Primary" OnClick="@BtnDeleteClicked">@L["Delete"]</Button>
-                    @if (!string.IsNullOrEmpty(_execResult))
-                    {
-                        <Divider Orientation="left" Style="font-weight:bold">@L["Result"]</Divider>
-                        <div>
-                            <p>
-                                <Text>
-                                    @((MarkupString)_execResult.ToHtmlDisplay())
-                                </Text>
-                            </p>
-                        </div>
-                    }
-                </div>
-            </GridCol>
-        </GridRow>
+        <div style="height:calc(100% - 50px);width: calc(100% - 10px);">
+            <StandaloneCodeEditor
+                @ref="_editor"
+                Id="yaml-editor"
+                ConstructionOptions="EditorConstructionOptions"/>
+        </div>
+        <Button OnClick="@BtnApplyClicked" Type="@ButtonType.Primary">@L["Apply"]</Button>
+        <Button Danger="true" Type="@ButtonType.Primary" OnClick="@BtnDeleteClicked">@L["Delete"]</Button>
+        @if (!string.IsNullOrEmpty(_execResult))
+        {
+            <Divider Orientation="left" Style="font-weight:bold">@L["Result"]</Divider>
+            <div>
+                <p>
+                    <Text>
+                        @((MarkupString)_execResult.ToHtmlDisplay())
+                    </Text>
+                </p>
+            </div>
+        }
     </div>
 </div>
