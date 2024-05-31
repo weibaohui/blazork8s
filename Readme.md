@@ -108,12 +108,13 @@ The available values for `LANGUAGE` include
 # ChatGPT config 
 
 * √ [MoonShot AI](https://kimi.moonshot.cn/)
-* √ [Ollama](https://ollama.com/)
 * √ [Google Gemini](https://gemini.google.com/)
 * √ [Ali Qwen](https://tongyi.aliyun.com/qianwen/)
 * √ [iFlytek Spark](https://xinghuo.xfyun.cn/spark)
 * √ [OpenAI](https://openai.com/)
-* √ [One-API](https://github.com/songquanpeng/one-api) same as OpenAI 
+* √ [One-API](https://github.com/songquanpeng/one-api) same as OpenAI
+* √ [LM Studio](https://github.com/lmstudio-ai/lms)  same as OpenAI
+* √ [Ollama](https://ollama.com/) same as OpenAI
 
 Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.json`  in the image.
 

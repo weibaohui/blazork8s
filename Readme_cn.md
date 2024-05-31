@@ -112,12 +112,13 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 # 大模型 配置
 
 * √ [月之暗面 MoonShot AI](https://kimi.moonshot.cn/)
-* √ [Ollama](https://ollama.com/)
 * √ [谷歌 Gemini](https://gemini.google.com/)
 * √ [阿里云通义千问](https://tongyi.aliyun.com/qianwen/)
 * √ [科大讯飞星火大模型](https://xinghuo.xfyun.cn/spark)
 * √ [OpenAI](https://openai.com/)
-* √ [One-API](https://github.com/songquanpeng/one-api)
+* √ [One-API](https://github.com/songquanpeng/one-api) 使用OpenAI接口
+* √ [LM Studio](https://github.com/lmstudio-ai/lms) 使用OpenAI接口
+* √ [Ollama](https://ollama.com/) 使用OpenAI接口
 
 修改源码BlazorApp目录下的appsettings.json
 或镜像/app/目录下的appsettings.json
