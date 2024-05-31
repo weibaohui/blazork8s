@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
+using BlazorApp.Pages.Ai;
 using BlazorApp.Pages.Common;
+using BlazorApp.Service.AI;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity;
@@ -23,7 +25,7 @@ public partial class Cluster : PageBase
 
     [Inject] public INodeService NodeService { get; set; }
 
-
+    [Inject] private IPromptService PromptService { get; set; }
     private List<V1ComponentStatus> ComponentStatus { get; set; }
     private List<V1APIService> ApiServicesList { get; set; }
     private IList<IMetric> AllMetrics { get; set; }
@@ -51,5 +53,13 @@ public partial class Cluster : PageBase
         ApiServicesList = apiServiceList.Items.ToList();
         AllMetrics = await KubeService.GetMetrics();
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnAnyChatClick(string item)
+    {
+        var prompt = PromptService.GetPrompt("FeatureExplain");
+        prompt = prompt.Replace("{FeatureName}", item);
+        var options = PageDrawerService.DefaultOptions($"{L["AI Chat"]}", 1000);
+        await PageDrawerService.ShowDrawerAsync<AnyChat, string, bool>(options, prompt);
     }
 }

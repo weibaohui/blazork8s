@@ -72,8 +72,9 @@
             {
                 <GridRow Class="grid-table">
                     <GridCol Span="8">Name</GridCol>
-                    <GridCol Span="6">Stage</GridCol>
-                    <GridCol Span="6">Status</GridCol>
+                    <GridCol Span="4">Stage</GridCol>
+                    <GridCol Span="4">Status</GridCol>
+                    <GridCol Span="4">AI</GridCol>
 
                 </GridRow>
                 var measurements = AllMetrics.FirstOrDefault(x => x.Name == "kubernetes_feature_enabled")?.Measurements;
@@ -86,10 +87,10 @@
                             <GridCol Span="8">
                                 @item.Labels["name"]
                             </GridCol>
-                            <GridCol Span="6">
+                            <GridCol Span="4">
                                 @item.Labels["stage"]
                             </GridCol>
-                            <GridCol Span="6">
+                            <GridCol Span="4">
                                 @if (item is { Value: > 0 })
                                 {
                                     <Tag Color="@PresetColor.Green.ToString()">@L["Enabled"]</Tag>
@@ -98,6 +99,11 @@
                                 {
                                     <Tag >@L["Disabled"]</Tag>
                                 }
+                            </GridCol>
+                            <GridCol Span="4">
+                                <Button Type="@ButtonType.Default" Icon="@IconType.Outline.Question"
+                                        OnClick="@(() => OnAnyChatClick(item.Labels["name"]))">
+                                </Button>
                             </GridCol>
                         </GridRow>
                     }
