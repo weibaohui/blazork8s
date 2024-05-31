@@ -1,14 +1,15 @@
 [![Build](https://github.com/weibaohui/blazork8s/actions/workflows/BlazorApp.yml/badge.svg)](https://github.com/weibaohui/blazork8s/actions/workflows/server.yml)
 
-
 <p align="center">
-    <img src="/BlazorApp/wwwroot/pro_icon.svg" />
-  <h1 align="center"> Blazor k8s </h1>
-  <h4 align="center"> 
-   <a href="Readme.md">English</a>
-    <a href="Readme_cn.md">中文</a>
- </h4>
+  <img src="/BlazorApp/wwwroot/pro_icon.svg" />
 </p>
+
+<h1 align="center">Blazor k8s</h1>
+
+<div align="center">
+  <a href="Readme.md">English</a> | <a href="Readme_cn.md">中文</a>
+</div>
+
 A Kubernetes management tool written in C# Blazor, integrating the ChatGPT large models. 
 It features a user-friendly interface for easy and efficient Kubernetes administration. 
 Particularly suitable for beginners, it offers various convenient functionalities to help novices grasp Kubernetes knowledge.
