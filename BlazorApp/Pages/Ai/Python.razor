@@ -1,0 +1,38 @@
+@page "/Python"
+@using BlazorApp.GptWorkflow.Service
+@using Extension
+<Card>
+    <p>
+        <Alert
+            Type="@AlertType.Success">
+            @_code
+        </Alert>
+    </p>
+
+    <div style="background-color: #012B36;color: #839496;">
+        <p style="margin: 15px; word-wrap: break-word;overflow-wrap: break-word;">
+            @((MarkupString)_result.ToHtmlDisplayNoMarkdown())
+        </p>
+    </div>
+</Card>
+
+@code {
+    [Inject] IPythonService PythonService { get; set; }
+    private string _result = string.Empty;
+    private string _code = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _code = "print('Hello World from Python!')";
+        PythonService.SetOutputEventHandler(EventHandler);
+        _result = await PythonService.Run(_code);
+        await base.OnInitializedAsync();
+    }
+
+    private async void EventHandler(object sender, string resp)
+    {
+        _result += resp;
+        await InvokeAsync(StateHasChanged);
+    }
+
+}

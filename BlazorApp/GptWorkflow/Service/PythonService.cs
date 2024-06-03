@@ -11,6 +11,8 @@ namespace BlazorApp.GptWorkflow.Service;
 
 public class PythonService(ILogger<KubectlService> logger) : IPythonService
 {
+    private readonly bool _outPutAppendNewLine = true;
+
     /// <summary>
     ///     var gracefulCts = new CancellationTokenSource();
     ///     var token = gracefulCts.Token;
@@ -18,7 +20,7 @@ public class PythonService(ILogger<KubectlService> logger) : IPythonService
     /// </summary>
     private CancellationToken Token { get; set; } = CancellationToken.None;
 
-    public async Task<string> Execute(string code)
+    public async Task<string> Run(string code)
     {
         Console.WriteLine(code);
         if (string.IsNullOrWhiteSpace(code)) return string.Empty;
@@ -34,7 +36,7 @@ public class PythonService(ILogger<KubectlService> logger) : IPythonService
 
         MakeExecutableShell($"{guid}/run.sh");
         var output = await ShellRun("bash", $"{guid}/run.sh");
-        // Directory.Delete(guid, true);
+        Directory.Delete(guid, true);
         return output; // 输出命令输出结果
     }
 
@@ -51,14 +53,19 @@ public class PythonService(ILogger<KubectlService> logger) : IPythonService
 
     private static void MakeExecutableShell(string path)
     {
-        const string shell = """
-                             #!/bin/bash
-                             uv venv create;
-                             source venv/bin/activate;
-                             uv pip freeze > requirements.txt;
-                             uv pip install -r requirements.txt;
-                             python3 main.py;
-                             """;
+        var folder = Path.GetDirectoryName(path);
+        var shell = """
+                    #!/bin/bash
+                    cd {folder}
+                    python3 -m venv .venv
+                    source .venv/bin/activate;
+                    # pip3 freeze > requirements.txt;
+                    #uv pip freeze > requirements.txt;
+                    pip3 list --format=freeze > requirements.txt .venv/bin/activate;
+                    pip3 install -r requirements.txt;
+                    python3 main.py;
+                    """;
+        shell = shell.Replace("{folder}", folder);
         File.WriteAllText(path, shell);
     }
 
@@ -108,6 +115,7 @@ public class PythonService(ILogger<KubectlService> logger) : IPythonService
 
     private string OnResponseProcess(object sender, string data)
     {
+        if (_outPutAppendNewLine && data?.EndsWith('\n') is not true) data += "\n";
         OnCommandExecutedHandler?.Invoke(sender, data);
         return data;
     }
@@ -115,7 +123,7 @@ public class PythonService(ILogger<KubectlService> logger) : IPythonService
 
 public interface IPythonService
 {
-    Task<string> Execute(string code);
+    Task<string> Run(string code);
     void SetOutputEventHandler(EventHandler<string> eventHandler);
     void SetCancellationToken(CancellationToken token);
 }
