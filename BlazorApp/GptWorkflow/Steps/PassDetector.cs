@@ -21,15 +21,15 @@ public class PassDetector : StepBody
             .Replace("```yaml", "")
             .Replace("```", "")
             .Trim();
-        if (text.StartsWith(WorkflowConst.DecidePASS) || text.EndsWith(WorkflowConst.DecidePASS))
+        if (text.StartsWith(WorkflowConst.DecidePass) || text.EndsWith(WorkflowConst.DecidePass))
         {
-            GlobalContext.DecideResult = WorkflowConst.DecidePASS;
+            GlobalContext.DecideResult = WorkflowConst.DecidePass;
             msg.StepParameter.Add("DecideResult", GlobalContext.DecideResult);
             GlobalContext.Logger.LogDebug("PASS detect: {Text} ====>>>> PASS", text);
         }
         else
         {
-            GlobalContext.DecideResult = WorkflowConst.DecideNonePASS;
+            GlobalContext.DecideResult = WorkflowConst.DecideNonePass;
             msg.StepParameter.Add("DecideResult", GlobalContext.DecideResult);
         }
 

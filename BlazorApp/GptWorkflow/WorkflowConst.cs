@@ -15,6 +15,6 @@ public class WorkflowConst
     public const string RegexPatternYaml = @"```yaml(?:[\s\S]*?)```";
     public const string RegexPatternPython = @"```python(?:[\s\S]*?)```";
     public const string RegexPatternKubectl = @"kubectl\s+\w+\s+.*?(?=\r?\n)";
-    public const string DecidePASS = "PASS";
-    public const string DecideNonePASS = "NonePASS";
+    public const string DecidePass = "PASS";
+    public const string DecideNonePass = "NonePASS";
 }

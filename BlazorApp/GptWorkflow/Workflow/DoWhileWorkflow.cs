@@ -36,7 +36,7 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
             .StartWith<Start>()
             .Input(step => step.HumanCommand, ctx => ctx.UserTask)
             .Input(step => step.GlobalContext, ctx => ctx)
-            .Input(step => step.WorkflowName, ctx => DoWhileWorkflow.Name)
+            .Input(step => step.WorkflowName, ctx => Name)
             //启动k8s顾问，将用户输入语言，转换为k8s命令
             .Then<ExpertKubernetesConsul>()
             .Input(step => step.GlobalContext, ctx => ctx)
@@ -85,8 +85,8 @@ public class DoWhileWorkflow : IGptWorkflow<GlobalContext>
                 //
                 //     )
                 .Decide(data => data.DecideResult)
-                .Branch(WorkflowConst.DecideNonePASS, branchNoPass)
-                .Branch(WorkflowConst.DecidePASS, branchPass)
+                .Branch(WorkflowConst.DecideNonePass, branchNoPass)
+                .Branch(WorkflowConst.DecidePass, branchPass)
                 .WaitFor(WorkflowConst.BranchRunEnd, ctx => WorkflowConst.BranchRunEnd)
             )
             .Then<End>()
