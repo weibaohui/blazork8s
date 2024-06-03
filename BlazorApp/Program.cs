@@ -2,6 +2,7 @@ using System;
 using AntDesign.ProLayout;
 using BlazorApp.Chat;
 using BlazorApp.GptWorkflow;
+using BlazorApp.GptWorkflow.Service;
 using BlazorApp.Service;
 using BlazorApp.Service.AI;
 using BlazorApp.Service.AI.impl;
@@ -88,6 +89,7 @@ builder.Services.AddSingleton<IReplicationControllerService, ReplicationControll
 builder.Services.AddSingleton<IResourceCrudService, ResourceCrudService>();
 builder.Services.AddSingleton<IWorkflowContainer, WorkflowContainer>();
 builder.Services.AddSingleton<IWorkflowStarter, WorkflowStarter>();
+builder.Services.AddSingleton<IPythonService, PythonService>();
 builder.Services.AddSingleton
     <ISqlSugarClient>(s =>
     {
