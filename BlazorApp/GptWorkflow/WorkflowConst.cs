@@ -6,7 +6,8 @@ public class WorkflowConst
     public enum CodeType
     {
         Shell,
-        Yaml
+        Yaml,
+        Python
     }
 
     public const string SubWorkflowEnd = "SubWorkflowEnd";
