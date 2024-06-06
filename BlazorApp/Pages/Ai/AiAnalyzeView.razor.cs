@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.AI;
@@ -14,6 +15,7 @@ public partial class AiAnalyzeView : DrawerPageBase<IAiService.AiChatData>
     [Inject] private IPodService PodService { get; set; }
 
     [Inject] private IAiService Ai { get; set; }
+    [Inject] private IPromptService PromptService { get; set; }
 
     string Advice { get; set; }
 
@@ -21,12 +23,18 @@ public partial class AiAnalyzeView : DrawerPageBase<IAiService.AiChatData>
     {
         _item = base.Options;
         Ai.SetChatEventHandler(EventHandler);
-        Advice = _item.Style switch
+
+        var prompt = _item.Style switch
         {
-            "security" => await Ai.ExplainSecurity(KubernetesJson.Serialize(_item)),
-            "error" => await Ai.ExplainError(KubernetesJson.Serialize(_item)),
-            _ => Advice
+            "security" => PromptService.GetPrompt("Security"),
+            "error" => PromptService.GetPrompt("Error"),
+            "Optimize" => PromptService.GetPrompt("Optimize"),
+            _ => "Explain"
         };
+        Console.WriteLine(prompt);
+        var serialize = KubernetesJson.Serialize(_item);
+        var content = $"{prompt} \n {serialize}";
+        Advice = await Ai.AIChat(content);
 
         await base.OnInitializedAsync();
     }

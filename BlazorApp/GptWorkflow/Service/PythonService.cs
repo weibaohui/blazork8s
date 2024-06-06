@@ -69,6 +69,20 @@ public class PythonService(ILogger<KubectlService> logger) : IPythonService
         File.WriteAllText(path, shell);
     }
 
+    private async Task VenvRun(string command)
+    {
+        var shell = """
+                    #!/bin/bash
+                    cd {folder}
+                    python3 -m venv .venv
+                    source .venv/bin/activate;
+                    {command};
+                    """;
+        shell = shell.Replace("{command}", command);
+        // File.WriteAllText(path, shell);
+        // var output = await ShellRun("bash", $"{guid}/run.sh");
+    }
+
 
     public event EventHandler<string> OnCommandExecutedHandler;
 

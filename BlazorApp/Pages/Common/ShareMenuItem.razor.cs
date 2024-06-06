@@ -83,4 +83,15 @@ public partial class ShareMenuItem<T> : PageBase where T : IKubernetesObject<V1O
                 Style = "security"
             });
     }
+
+    private async Task OnOptimizeClick(T item)
+    {
+        var options = PageDrawerService.DefaultOptions($"{L["Optimize"]}:{item.Name()}", 1000);
+        await PageDrawerService.ShowDrawerAsync<AiAnalyzeView, IAiService.AiChatData, bool>(options,
+            new IAiService.AiChatData
+            {
+                Data = item,
+                Style = "Optimize"
+            });
+    }
 }

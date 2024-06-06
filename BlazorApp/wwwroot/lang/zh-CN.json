@@ -679,5 +679,6 @@
   "Run": "运行",
   "RestartSuccess": "重启成功",
   "Restart Reminder": "如果系统长时间运行后，无法及时收到更新数据，请尝试重启",
-  "Running Time": "运行时长"
+  "Running Time": "运行时长",
+  "Optimize": "优化"
 }

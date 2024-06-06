@@ -14,6 +14,7 @@
                 {
                     <MenuItem OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</MenuItem>
                     <MenuItem OnClick="@(() => OnSecurityClick(Item))">@L["Security"]</MenuItem>
+                    <MenuItem OnClick="@(() => OnOptimizeClick(Item))">@L["Optimize"]</MenuItem>
                 }
                 @ChildContent
             </Menu>
@@ -37,6 +38,7 @@
         {
             <Button OnClick="@(() => OnAnalyzeClick(Item))">@L["Inspection"]</Button>
             <Button OnClick="@(() => OnSecurityClick(Item))">@L["Security"]</Button>
+            <Button OnClick="@(() => OnOptimizeClick(Item))">@L["Optimize"]</Button>
         }
         @ChildContent
     </Alert>
