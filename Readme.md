@@ -116,6 +116,7 @@ The available values for `LANGUAGE` include
 * √ [One-API](https://github.com/songquanpeng/one-api) same as OpenAI
 * √ [LM Studio](https://github.com/lmstudio-ai/lms)  same as OpenAI
 * √ [Ollama](https://ollama.com/) same as OpenAI
+* √ [SiliconFlow](https://siliconflow.cn/) same as OpenAI
 
 Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.json`  in the image.
 
@@ -125,9 +126,9 @@ Modify the `appsettings.json` in the BlazorApp directory or `/app/appsettings.js
     "Select": "OpenAI" //choose a model from below
   },
   "OpenAI": {
-    "Token": "sk-xxx",
-    "Model": "gpt-3.5-turbo",
-    "BaseUrl": "https://api.openai.com/v1"
+    "Token": "sk-kkkkkkkkkkkkkkkkkkkk",
+    "Model": "alibaba/Qwen2-7B-Instruct",
+    "BaseUrl": "https://api.siliconflow.cn/v1"
   },
   "GeminiAI": {
     "APIKey": "AIxxxxxxx7dd3494880a7920axxxxxxxxx",

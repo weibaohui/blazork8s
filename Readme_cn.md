@@ -120,6 +120,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 * √ [One-API](https://github.com/songquanpeng/one-api) 使用OpenAI接口
 * √ [LM Studio](https://github.com/lmstudio-ai/lms) 使用OpenAI接口
 * √ [Ollama](https://ollama.com/) 使用OpenAI接口
+* √ [SiliconFlow](https://siliconflow.cn/) 使用OpenAI接口,强烈建议使用免费
 
 修改源码BlazorApp目录下的appsettings.json
 或镜像/app/目录下的appsettings.json
@@ -130,9 +131,9 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
     "Select": "OpenAI" //choose a model from below
   },
   "OpenAI": {
-    "Token": "sk-xxx",
-    "Model": "gpt-3.5-turbo",
-    "BaseUrl": "https://api.openai.com/v1"
+    "Token": "sk-kkkkkkkkkkkkkkkkkkkk",
+    "Model": "alibaba/Qwen2-7B-Instruct",
+    "BaseUrl": "https://api.siliconflow.cn/v1"
   },
   "GeminiAI": {
     "APIKey": "AIxxxxxxx7dd3494880a7920axxxxxxxxx",
