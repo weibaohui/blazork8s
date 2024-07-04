@@ -4,6 +4,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using Entity.Crd.Gateway
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1GatewayClass>
 
 @if (TableData.PagedItems != null)
@@ -11,7 +12,7 @@
     <HTable Class="wideTable">
         <HTr>
             <HTd>
-                <SearchToolBar Title=@L["Gateway"] Count="@TableData.Total"
+                <SearchToolBar Title=@L["GatewayClass"] Count="@TableData.Total"
                                OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
@@ -36,8 +37,19 @@
                         <Button Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
 
+                    <AntDesign.Column Title=@L["Controller"] TData="string">
+                        @context.Spec.ControllerName
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Description"] TData="string">
+                        @context.Spec.Description
+                    </AntDesign.Column>
                     <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Condition"] TData="string" Width="150px">
+                        <ConditionsTagView
+                            Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())">
+                        </ConditionsTagView>
                     </AntDesign.Column>
                     <ActionColumn Title=@L["Action"] Width="100px">
                         <GatewayAction Item="@context"></GatewayAction>
