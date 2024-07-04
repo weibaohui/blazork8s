@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
 
-namespace Entity.Crd;
+namespace Entity.Crd.Gateway;
 
 public class V1GRPCRouteList : IKubernetesObject<V1ListMeta>, IItems<V1GRPCRoute>
 {
@@ -71,14 +71,6 @@ public class GRPCRouteFilter
     [JsonPropertyName("extensionRef")] public LocalObjectReference ExtensionRef { get; set; }
 }
 
-public enum GRPCRouteFilterType
-{
-    RequestHeaderModifier,
-    ResponseHeaderModifier,
-    RequestMirror,
-    ExtensionRef
-}
-
 public class GRPCRouteMatch
 {
     [JsonPropertyName("method")] public GRPCMethodMatch Method { get; set; }
@@ -102,12 +94,6 @@ public class GRPCMethodMatch
     [JsonPropertyName("method")] public string Method { get; set; }
 
     [JsonPropertyName("type")] public GRPCMethodMatchType Type { get; set; }
-}
-
-public enum GRPCMethodMatchType
-{
-    Exact,
-    RegularExpression
 }
 
 public class GRPCRouteStatus

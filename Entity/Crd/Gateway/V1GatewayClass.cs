@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
 
-namespace Entity.Crd;
+namespace Entity.Crd.Gateway;
 
 public class V1GatewayClassList : IKubernetesObject<V1ListMeta>, IItems<V1GatewayClass>
 {
@@ -41,22 +41,6 @@ public class ParametersReference
     [JsonPropertyName("kind")] public string Kind { get; set; }
     [JsonPropertyName("name")] public string Name { get; set; }
     [JsonPropertyName("namespace")] public string Namespace { get; set; }
-}
-
-public enum GatewayClassConditionType
-{
-    Accepted,
-    SupportedVersion
-}
-
-public enum GatewayClassConditionReason
-{
-    Accepted,
-    InvalidParameters,
-    Unsupported,
-    Pending,
-    SupportedVersion,
-    UnsupportedVersion
 }
 
 public class GatewayClassStatus

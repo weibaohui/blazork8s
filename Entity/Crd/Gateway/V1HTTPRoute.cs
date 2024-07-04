@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
 
-namespace Entity.Crd;
+namespace Entity.Crd.Gateway;
 
 public class V1HTTPRouteList : IKubernetesObject<V1ListMeta>, IItems<V1HTTPRoute>
 {
@@ -193,47 +193,5 @@ public class HTTPBackendRef
 
 public class HTTPRouteStatus
 {
-    [JsonPropertyName("status")] public RouteStatus Status { get; set; }
-}
-
-public enum HTTPRouteFilterType
-{
-    RequestHeaderModifier,
-    ResponseHeaderModifier,
-    RequestRedirect,
-    URLRewrite,
-    RequestMirror,
-    ExtensionRef
-}
-
-public enum HTTPPathModifierType
-{
-    ReplaceFullPath,
-    ReplacePrefixMatch
-}
-
-public enum HTTPMethodType
-{
-    GET,
-    HEAD,
-    POST,
-    PUT,
-    DELETE,
-    CONNECT,
-    OPTIONS,
-    PATCH,
-    TRACE
-}
-
-public enum PathMatchType
-{
-    Exact,
-    PathPrefix,
-    RegularExpression
-}
-
-public enum QueryParamMatchType
-{
-    Exact,
-    RegularExpression
+    [JsonPropertyName("parents")] public IList<RouteParentStatus> Parents { get; set; }
 }

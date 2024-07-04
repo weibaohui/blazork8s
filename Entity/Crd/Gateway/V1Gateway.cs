@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using k8s;
 using k8s.Models;
 
-namespace Entity.Crd;
+namespace Entity.Crd.Gateway;
 
 public class V1GatewayList : IKubernetesObject<V1ListMeta>, IItems<V1Gateway>
 {
@@ -67,15 +67,6 @@ public class Listener
     [JsonPropertyName("allowedRoutes")] public AllowedRoutes AllowedRoutes { get; set; }
 }
 
-public enum ProtocolType
-{
-    HTTP,
-    HTTPS,
-    TLS,
-    TCP,
-    UDP
-}
-
 public class GatewayTLSConfig
 {
     [JsonPropertyName("mode")] public TLSModeType? Mode { get; set; }
@@ -85,12 +76,6 @@ public class GatewayTLSConfig
     public FrontendTLSValidation FrontendValidation { get; set; }
 
     [JsonPropertyName("options")] public Dictionary<string, string> Options { get; set; }
-}
-
-public enum TLSModeType
-{
-    Terminate,
-    Passthrough
 }
 
 public class FrontendTLSValidation
@@ -110,13 +95,6 @@ public class RouteNamespaces
 {
     [JsonPropertyName("from")] public FromNamespaces? From { get; set; }
     [JsonPropertyName("selector")] public LabelSelector Selector { get; set; }
-}
-
-public enum FromNamespaces
-{
-    All,
-    Selector,
-    Same
 }
 
 public class RouteGroupKind
