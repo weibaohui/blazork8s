@@ -27,13 +27,6 @@ public class V1HTTPRoute : IKubernetesObject<V1ObjectMeta>, ISpec<HTTPRouteSpec>
     [JsonPropertyName("spec")] public HTTPRouteSpec Spec { get; set; }
 }
 
-public class HTTPRoute
-{
-    [JsonPropertyName("spec")] public HTTPRouteSpec Spec { get; set; }
-
-    [JsonPropertyName("status")] public HTTPRouteStatus Status { get; set; }
-}
-
 public class HTTPRouteSpec
 {
     [JsonPropertyName("hostnames")] public IList<string> Hostnames { get; set; }
@@ -66,75 +59,151 @@ public class HTTPRouteTimeouts
 
 public class HTTPRouteMatch
 {
-    public string Path { get; set; }
-    public Dictionary<string, string> Headers { get; set; }
-    public Dictionary<string, string> QueryParams { get; set; }
-    public string Method { get; set; }
+    [JsonPropertyName("path")] public HTTPPathMatch Path { get; set; }
+
+    [JsonPropertyName("headers")] public IList<HTTPHeaderMatch> Headers { get; set; }
+
+    [JsonPropertyName("queryParams")] public IList<HTTPQueryParamMatch> QueryParams { get; set; }
+
+    [JsonPropertyName("method")] public HTTPMethodType Method { get; set; }
+}
+
+public class HTTPPathMatch
+{
+    [JsonPropertyName("type")] public PathMatchType Type { get; set; }
+    [JsonPropertyName("value")] public string Value { get; set; }
+}
+
+public class HTTPHeaderMatch
+{
+    [JsonPropertyName("name")] public string Name { get; set; }
+    [JsonPropertyName("type")] public HeaderMatchType Type { get; set; }
+    [JsonPropertyName("value")] public string Value { get; set; }
+}
+
+public class HTTPQueryParamMatch
+{
+    [JsonPropertyName("name")] public string Name { get; set; }
+    [JsonPropertyName("type")] public QueryParamMatchType Type { get; set; }
+    [JsonPropertyName("value")] public string Value { get; set; }
 }
 
 public class HTTPRouteFilter
 {
-    public HTTPRouteFilterType Type { get; set; }
-    public Dictionary<string, string> Parameters { get; set; }
+    [JsonPropertyName("type")] public HTTPRouteFilterType Type { get; set; }
+
+    [JsonPropertyName("parameters")] public Dictionary<string, string> Parameters { get; set; }
+
+    [JsonPropertyName("requestHeaderModifier")]
     public HTTPHeaderFilter RequestHeaderModifier { get; set; }
+
+    [JsonPropertyName("responseHeaderModifier")]
     public HTTPHeaderFilter ResponseHeaderModifier { get; set; }
-    public HTTPRequestMirrorFilter RequestMirror { get; set; }
-    public HTTPRequestRedirectFilter RequestRedirect { get; set; }
-    public HTTPURLRewriteFilter URLRewrite { get; set; }
-    public LocalObjectReference ExtensionRef { get; set; }
+
+    [JsonPropertyName("requestMirror")] public HTTPRequestMirrorFilter RequestMirror { get; set; }
+
+    [JsonPropertyName("requestRedirect")] public HTTPRequestRedirectFilter RequestRedirect { get; set; }
+
+    [JsonPropertyName("urlRewrite")] public HTTPURLRewriteFilter URLRewrite { get; set; }
+
+    [JsonPropertyName("extensionRef")] public LocalObjectReference ExtensionRef { get; set; }
 }
 
 public class LocalObjectReference
 {
-    public string Name { get; set; }
-    public string Kind { get; set; }
-    public string Group { get; set; }
+    [JsonPropertyName("name")] public string Name { get; set; }
+
+    [JsonPropertyName("kind")] public string Kind { get; set; }
+
+    [JsonPropertyName("group")] public string Group { get; set; }
 }
 
 public class HTTPURLRewriteFilter
 {
-    public string Hostname { get; set; }
-    public HTTPPathModifier Path { get; set; }
+    [JsonPropertyName("hostname")] public string Hostname { get; set; }
+
+    [JsonPropertyName("path")] public HTTPPathModifier Path { get; set; }
 }
 
 public class HTTPRequestRedirectFilter
 {
-    public string Scheme { get; set; }
-    public string Hostname { get; set; }
-    public HTTPPathModifier Path { get; set; }
-    public int Port { get; set; }
-    public int StatusCode { get; set; }
+    [JsonPropertyName("scheme")] public string Scheme { get; set; }
+
+    [JsonPropertyName("hostname")] public string Hostname { get; set; }
+
+    [JsonPropertyName("path")] public HTTPPathModifier Path { get; set; }
+
+    [JsonPropertyName("port")] public int Port { get; set; }
+
+    [JsonPropertyName("statusCode")] public int StatusCode { get; set; }
 }
 
 public class HTTPPathModifier
 {
-    public HTTPPathModifierType Type { get; set; }
-    public string ReplaceFullPath { get; set; }
-    public string ReplacePrefixMatch { get; set; }
-}
+    [JsonPropertyName("type")] public HTTPPathModifierType Type { get; set; }
 
-public enum HTTPPathModifierType
-{
-    ReplaceFullPath,
-    ReplacePrefixMatch
+    [JsonPropertyName("replaceFullPath")] public string ReplaceFullPath { get; set; }
+
+    [JsonPropertyName("replacePrefixMatch")]
+    public string ReplacePrefixMatch { get; set; }
 }
 
 public class HTTPRequestMirrorFilter
 {
-    public BackendObjectReference BackendRef { get; set; }
+    [JsonPropertyName("backendRef")] public BackendObjectReference BackendRef { get; set; }
 }
 
 public class HTTPHeaderFilter
 {
-    public IList<HTTPHeader> Set { get; set; }
-    public IList<HTTPHeader> Add { get; set; }
-    public IList<string> Remove { get; set; }
+    [JsonPropertyName("set")] public IList<HTTPHeader> Set { get; set; }
+
+    [JsonPropertyName("add")] public IList<HTTPHeader> Add { get; set; }
+
+    [JsonPropertyName("remove")] public IList<string> Remove { get; set; }
 }
 
 public class HTTPHeader
 {
-    public string Name { get; set; }
-    public string Value { get; set; }
+    [JsonPropertyName("name")] public string Name { get; set; }
+
+    [JsonPropertyName("value")] public string Value { get; set; }
+}
+
+public class HTTPRouteHost
+{
+    [JsonPropertyName("hostname")] public string Hostname { get; set; }
+
+    [JsonPropertyName("pathType")] public string PathType { get; set; }
+
+    [JsonPropertyName("path")] public string Path { get; set; }
+
+    [JsonPropertyName("pathExact")] public string PathExact { get; set; }
+
+    [JsonPropertyName("pathPrefix")] public string PathPrefix { get; set; }
+
+    [JsonPropertyName("pathRegex")] public string PathRegex { get; set; }
+}
+
+public class HTTPBackendRef
+{
+    [JsonPropertyName("name")] public string Name { get; set; }
+
+    [JsonPropertyName("kind")] public string Kind { get; set; }
+
+    [JsonPropertyName("group")] public string Group { get; set; }
+
+    [JsonPropertyName("namespace")] public string Namespace { get; set; }
+
+    [JsonPropertyName("port")] public int Port { get; set; }
+
+    [JsonPropertyName("weight")] public int Weight { get; set; }
+
+    [JsonPropertyName("filters")] public List<HTTPRouteFilter> Filters { get; set; }
+}
+
+public class HTTPRouteStatus
+{
+    [JsonPropertyName("status")] public RouteStatus Status { get; set; }
 }
 
 public enum HTTPRouteFilterType
@@ -143,31 +212,44 @@ public enum HTTPRouteFilterType
     ResponseHeaderModifier,
     RequestRedirect,
     URLRewrite,
-    RequestMirror
+    RequestMirror,
+    ExtensionRef
 }
 
-public class HTTPRouteHost
+public enum HTTPPathModifierType
 {
-    public string Hostname { get; set; }
-    public string PathType { get; set; }
-    public string Path { get; set; }
-    public string PathExact { get; set; }
-    public string PathPrefix { get; set; }
-    public string PathRegex { get; set; }
+    ReplaceFullPath,
+    ReplacePrefixMatch
 }
 
-public class HTTPBackendRef
+public enum HTTPMethodType
 {
-    public string Name { get; set; }
-    public string Kind { get; set; }
-    public string Group { get; set; }
-    public string Namespace { get; set; }
-    public int Port { get; set; }
-    public int Weight { get; set; }
-    public List<HTTPRouteFilter> Filters { get; set; }
+    GET,
+    HEAD,
+    POST,
+    PUT,
+    DELETE,
+    CONNECT,
+    OPTIONS,
+    PATCH,
+    TRACE
 }
 
-public class HTTPRouteStatus
+public enum HeaderMatchType
 {
-    public RouteStatus Status { get; set; }
+    Exact,
+    RegularExpression
+}
+
+public enum PathMatchType
+{
+    Exact,
+    PathPrefix,
+    RegularExpression
+}
+
+public enum QueryParamMatchType
+{
+    Exact,
+    RegularExpression
 }
