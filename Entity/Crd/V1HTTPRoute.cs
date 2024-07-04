@@ -29,8 +29,9 @@ public class V1HTTPRoute : IKubernetesObject<V1ObjectMeta>, ISpec<HTTPRouteSpec>
 
 public class HTTPRoute
 {
-    public HTTPRouteSpec Spec { get; set; }
-    public HTTPRouteStatus Status { get; set; }
+    [JsonPropertyName("spec")] public HTTPRouteSpec Spec { get; set; }
+
+    [JsonPropertyName("status")] public HTTPRouteStatus Status { get; set; }
 }
 
 public class HTTPRouteSpec
@@ -44,21 +45,23 @@ public class HTTPRouteSpec
 
 public class HTTPRouteRule
 {
-    public List<HTTPRouteMatch> Matches { get; set; }
-    public List<HTTPRouteFilter> Filters { get; set; }
+    [JsonPropertyName("matches")] public List<HTTPRouteMatch> Matches { get; set; }
 
-    public List<HTTPBackendRef> BackendRefs { get; set; }
+    [JsonPropertyName("filters")] public List<HTTPRouteFilter> Filters { get; set; }
 
-    // Timeouts *HTTPRouteTimeouts `json:"timeouts,omitempty"`
-    // SessionPersistence *SessionPersistence `json:"sessionPersistence,omitempty"`
-    public HTTPRouteTimeouts Timeouts { get; set; }
+    [JsonPropertyName("backendRefs")] public List<HTTPBackendRef> BackendRefs { get; set; }
+
+    [JsonPropertyName("timeouts")] public HTTPRouteTimeouts Timeouts { get; set; }
+
+    [JsonPropertyName("sessionPersistence")]
     public SessionPersistence SessionPersistence { get; set; }
 }
 
 public class HTTPRouteTimeouts
 {
-    public string Request { get; set; }
-    public string BackendRequest { get; set; }
+    [JsonPropertyName("request")] public string Request { get; set; }
+
+    [JsonPropertyName("backendRequest")] public string BackendRequest { get; set; }
 }
 
 public class HTTPRouteMatch
