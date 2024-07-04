@@ -27,7 +27,7 @@ public class V1Gateway : IKubernetesObject<V1ObjectMeta>, ISpec<GatewaySpec>
 
 public class GatewaySpec
 {
-    [JsonPropertyName("addresses")] public IList<Addresses> Addresses { get; set; }
+    [JsonPropertyName("addresses")] public IList<GatewayAddress> Addresses { get; set; }
 
     [JsonPropertyName("gatewayClassName")] public string GatewayClassName { get; set; }
 
@@ -55,13 +55,6 @@ public class GatewayStatus
     [JsonPropertyName("addresses")] public List<GatewayStatusAddress> Addresses { get; set; }
     [JsonPropertyName("conditions")] public List<Condition> Conditions { get; set; }
     [JsonPropertyName("listeners")] public List<ListenerStatus> Listeners { get; set; }
-}
-
-public class Addresses
-{
-    [JsonPropertyName("type")] public string Type { get; set; }
-
-    [JsonPropertyName("value")] public string Value { get; set; }
 }
 
 public class Listener
@@ -134,7 +127,7 @@ public class RouteGroupKind
 
 public class GatewayAddress
 {
-    [JsonPropertyName("type")] public string Type { get; set; }
+    [JsonPropertyName("type")] public AddressType Type { get; set; }
     [JsonPropertyName("value")] public string Value { get; set; }
 }
 

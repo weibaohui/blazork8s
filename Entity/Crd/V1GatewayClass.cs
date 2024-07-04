@@ -61,6 +61,8 @@ public enum GatewayClassConditionReason
 
 public class GatewayClassStatus
 {
-    public List<Condition> Conditions { get; set; }
+    [JsonPropertyName("conditions")] public List<Condition> Conditions { get; set; }
+
+    [JsonPropertyName("supportedFeatures")]
     public List<string> SupportedFeatures { get; set; }
 }

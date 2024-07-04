@@ -4,26 +4,6 @@ using System.Text.Json.Serialization;
 
 namespace Entity.Crd;
 
-public class ParentReference
-{
-    [JsonPropertyName("group")] public string Group { get; set; }
-
-    [JsonPropertyName("kind")] public string Kind { get; set; }
-
-    [JsonPropertyName("namespace")] public string Namespace { get; set; }
-
-    [JsonPropertyName("name")] public string Name { get; set; }
-
-    [JsonPropertyName("sectionName")] public string SectionName { get; set; }
-
-    [JsonPropertyName("port")] public int? Port { get; set; }
-}
-
-public class CommonRouteSpec
-{
-    public List<ParentReference> ParentRefs { get; set; }
-}
-
 public struct PortNumber
 {
     private int value;
@@ -37,12 +17,6 @@ public struct PortNumber
     {
         return portNumber.value;
     }
-}
-
-public class BackendRef
-{
-    public BackendObjectReference BackendObjectReference { get; set; }
-    public int? Weight { get; set; }
 }
 
 public enum RouteConditionType
@@ -77,11 +51,6 @@ public class RouteCondition
     public DateTime LastTransitionTime { get; set; }
 }
 
-public class RouteSpec
-{
-    public CommonRouteSpec CommonSpec { get; set; }
-}
-
 public class RouteStatus
 {
     [JsonPropertyName("parents")] public IList<RouteParentStatus> Parents { get; set; }
@@ -92,14 +61,6 @@ public class RouteParentStatus
     [JsonPropertyName("parentRef")] public ParentReference ParentRef { get; set; }
     [JsonPropertyName("controllerName")] public string ControllerName { get; set; }
     [JsonPropertyName("conditions")] public IList<Condition> Conditions { get; set; }
-}
-
-public class Route
-{
-    public string ApiVersion { get; set; }
-    public string Kind { get; set; }
-    public RouteSpec Spec { get; set; }
-    public RouteStatus Status { get; set; }
 }
 
 public class BackendObjectReference
@@ -171,4 +132,19 @@ public class LocalObjectReference
     [JsonPropertyName("kind")] public string Kind { get; set; }
 
     [JsonPropertyName("group")] public string Group { get; set; }
+}
+
+public class ParentReference
+{
+    [JsonPropertyName("group")] public string Group { get; set; }
+
+    [JsonPropertyName("kind")] public string Kind { get; set; }
+
+    [JsonPropertyName("namespace")] public string Namespace { get; set; }
+
+    [JsonPropertyName("name")] public string Name { get; set; }
+
+    [JsonPropertyName("sectionName")] public string SectionName { get; set; }
+
+    [JsonPropertyName("port")] public int? Port { get; set; }
 }
