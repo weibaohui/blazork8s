@@ -81,22 +81,27 @@ public enum GRPCRouteFilterType
 
 public class GRPCRouteMatch
 {
-    public GRPCMethodMatch Method { get; set; }
-    public IList<GRPCHeaderMatch> Headers { get; set; }
+    [JsonPropertyName("method")] public GRPCMethodMatch Method { get; set; }
+
+    [JsonPropertyName("headers")] public IList<GRPCHeaderMatch> Headers { get; set; }
 }
 
 public class GRPCHeaderMatch
 {
-    public string Value { get; set; }
-    public string Name { get; set; }
-    public HeaderMatchType Type { get; set; }
+    [JsonPropertyName("value")] public string Value { get; set; }
+
+    [JsonPropertyName("name")] public string Name { get; set; }
+
+    [JsonPropertyName("type")] public HeaderMatchType Type { get; set; }
 }
 
 public class GRPCMethodMatch
 {
-    public string Service { get; set; }
-    public string Method { get; set; }
-    public GRPCMethodMatchType Type { get; set; }
+    [JsonPropertyName("service")] public string Service { get; set; }
+
+    [JsonPropertyName("method")] public string Method { get; set; }
+
+    [JsonPropertyName("type")] public GRPCMethodMatchType Type { get; set; }
 }
 
 public enum GRPCMethodMatchType
