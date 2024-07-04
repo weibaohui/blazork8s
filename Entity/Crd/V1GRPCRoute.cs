@@ -7,12 +7,9 @@ namespace Entity.Crd;
 
 public class V1GRPCRouteList : IKubernetesObject<V1ListMeta>, IItems<V1GRPCRoute>
 {
-    public IList<V1GRPCRoute> Items { get; set; }
-
+    [JsonPropertyName("items")] public IList<V1GRPCRoute> Items { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
-
     [JsonPropertyName("kind")] public string Kind { get; set; }
-
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
@@ -21,11 +18,8 @@ public class V1GRPCRoute : IKubernetesObject<V1ObjectMeta>, ISpec<GRPCRouteSpec>
     [JsonPropertyName("status")] public GRPCRouteStatus Status { get; set; }
 
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
-
     [JsonPropertyName("kind")] public string Kind { get; set; }
-
     [JsonPropertyName("metadata")] public V1ObjectMeta Metadata { get; set; }
-
     [JsonPropertyName("spec")] public GRPCRouteSpec Spec { get; set; }
 }
 
@@ -33,22 +27,85 @@ public class GRPCRouteSpec
 {
     [JsonPropertyName("hostnames")] public IList<string> Hostnames { get; set; }
 
-    [JsonPropertyName("parentRefs")] public IList<Parents> ParentRefs { get; set; }
+    [JsonPropertyName("parentRefs")] public IList<ParentReference> ParentRefs { get; set; }
 
-    [JsonPropertyName("rules")] public IList<string> Rules { get; set; }
+    [JsonPropertyName("rules")] public IList<GRPCRouteRule> Rules { get; set; }
+}
+
+public class GRPCRouteRule
+{
+    [JsonPropertyName("matches")] public List<GRPCRouteMatch> Matches { get; set; }
+
+    [JsonPropertyName("filters")] public List<GRPCRouteFilter> Filters { get; set; }
+
+    [JsonPropertyName("backendRefs")] public List<GRPCBackendRef> BackendRefs { get; set; }
+
+    [JsonPropertyName("sessionPersistence")]
+    public SessionPersistence SessionPersistence { get; set; }
+}
+
+public class GRPCBackendRef
+{
+    [JsonPropertyName("name")] public string Name { get; set; }
+    [JsonPropertyName("kind")] public string Kind { get; set; }
+    [JsonPropertyName("group")] public string Group { get; set; }
+    [JsonPropertyName("namespace")] public string Namespace { get; set; }
+    [JsonPropertyName("port")] public int Port { get; set; }
+    [JsonPropertyName("weight")] public int Weight { get; set; }
+    [JsonPropertyName("filters")] public IList<GRPCRouteFilter> Filters { get; set; }
+}
+
+public class GRPCRouteFilter
+{
+    [JsonPropertyName("type")] public GRPCRouteFilterType Type { get; set; }
+
+
+    [JsonPropertyName("requestHeaderModifier")]
+    public HTTPHeaderFilter RequestHeaderModifier { get; set; }
+
+    [JsonPropertyName("responseHeaderModifier")]
+    public HTTPHeaderFilter ResponseHeaderModifier { get; set; }
+
+    [JsonPropertyName("requestMirror")] public HTTPRequestMirrorFilter RequestMirror { get; set; }
+
+    [JsonPropertyName("extensionRef")] public LocalObjectReference ExtensionRef { get; set; }
+}
+
+public enum GRPCRouteFilterType
+{
+    RequestHeaderModifier,
+    ResponseHeaderModifier,
+    RequestMirror,
+    ExtensionRef
+}
+
+public class GRPCRouteMatch
+{
+    public GRPCMethodMatch Method { get; set; }
+    public IList<GRPCHeaderMatch> Headers { get; set; }
+}
+
+public class GRPCHeaderMatch
+{
+    public string Value { get; set; }
+    public string Name { get; set; }
+    public HeaderMatchType Type { get; set; }
+}
+
+public class GRPCMethodMatch
+{
+    public string Service { get; set; }
+    public string Method { get; set; }
+    public GRPCMethodMatchType Type { get; set; }
+}
+
+public enum GRPCMethodMatchType
+{
+    Exact,
+    RegularExpression
 }
 
 public class GRPCRouteStatus
 {
-    [JsonPropertyName("parents")] public IList<Parents> Parents { get; set; }
-}
-
-public class Parents
-{
-    [JsonPropertyName("conditions")] public IList<Conditions> Conditions { get; set; }
-
-    [JsonPropertyName("controllerName")] public string ControllerName { get; set; }
-
-    // [JsonPropertyName("parentRef")]
-    // public ParentRef ParentRef { get; set; }
+    [JsonPropertyName("parents")] public IList<RouteParentStatus> Parents { get; set; }
 }

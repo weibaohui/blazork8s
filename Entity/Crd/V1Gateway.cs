@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using k8s;
@@ -176,18 +175,4 @@ public class ListenerStatus
     [JsonPropertyName("supportedKinds")] public List<RouteGroupKind> SupportedKinds { get; set; }
     [JsonPropertyName("attachedRoutes")] public int AttachedRoutes { get; set; }
     [JsonPropertyName("conditions")] public List<Condition> Conditions { get; set; }
-}
-
-public class Condition
-{
-    [JsonPropertyName("type")] public string Type { get; set; }
-    [JsonPropertyName("status")] public string Status { get; set; }
-    [JsonPropertyName("reason")] public string Reason { get; set; }
-    [JsonPropertyName("message")] public string Message { get; set; }
-
-    [JsonPropertyName("observedGeneration")]
-    public int ObservedGeneration { get; set; }
-
-    [JsonPropertyName("lastTransitionTime")]
-    public DateTime LastTransitionTime { get; set; }
 }

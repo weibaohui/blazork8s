@@ -92,7 +92,6 @@ public class HTTPRouteFilter
 {
     [JsonPropertyName("type")] public HTTPRouteFilterType Type { get; set; }
 
-    [JsonPropertyName("parameters")] public Dictionary<string, string> Parameters { get; set; }
 
     [JsonPropertyName("requestHeaderModifier")]
     public HTTPHeaderFilter RequestHeaderModifier { get; set; }
@@ -107,15 +106,6 @@ public class HTTPRouteFilter
     [JsonPropertyName("urlRewrite")] public HTTPURLRewriteFilter URLRewrite { get; set; }
 
     [JsonPropertyName("extensionRef")] public LocalObjectReference ExtensionRef { get; set; }
-}
-
-public class LocalObjectReference
-{
-    [JsonPropertyName("name")] public string Name { get; set; }
-
-    [JsonPropertyName("kind")] public string Kind { get; set; }
-
-    [JsonPropertyName("group")] public string Group { get; set; }
 }
 
 public class HTTPURLRewriteFilter
@@ -233,12 +223,6 @@ public enum HTTPMethodType
     OPTIONS,
     PATCH,
     TRACE
-}
-
-public enum HeaderMatchType
-{
-    Exact,
-    RegularExpression
 }
 
 public enum PathMatchType
