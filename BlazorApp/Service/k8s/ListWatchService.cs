@@ -67,6 +67,7 @@ public class ListWatchService
         WatchCrd();
         WatchLease();
         WatchGatewayClass();
+        WatchGateway();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
@@ -369,5 +370,13 @@ public class ListWatchService
             .ListClusterCustomObjectWithHttpMessagesAsync<V1GatewayClassList>
                 ("gateway.networking.k8s.io", "v1", "gatewayclasses", watch: true);
         await new Watcher<V1GatewayClass, V1GatewayClassList>(_ctx).Watch(listResp);
+    }
+
+    private async Task WatchGateway()
+    {
+        var listResp = _kubeService.Client().CustomObjects
+            .ListClusterCustomObjectWithHttpMessagesAsync<V1GatewayList>
+                ("gateway.networking.k8s.io", "v1", "gateways", watch: true);
+        await new Watcher<V1Gateway, V1GatewayList>(_ctx).Watch(listResp);
     }
 }
