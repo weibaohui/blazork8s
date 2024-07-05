@@ -60,6 +60,13 @@ public partial class BasicLayout : LayoutComponentBase
             },
             new MenuDataItem
             {
+                Name = L["Gateway"],
+                Key = "Gateway",
+                Icon = "Gateway",
+                Children = GatewayMenu()
+            },
+            new MenuDataItem
+            {
                 Name = L["Storage"],
                 Key = "Storage",
                 Icon = "inbox",
@@ -100,6 +107,17 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItemWithPath(L["OpenSource"], "github", "/OpenSource")
         ];
         await base.OnInitializedAsync();
+    }
+
+    private MenuDataItem[] GatewayMenu()
+    {
+        return new[]
+        {
+            GetMenuItemWithPath(L["GatewayClass"], "gateway", "/Gateway/GatewayClass"),
+            GetMenuItemWithPath(L["Gateway"], "gateway", "/Gateway/Gateway"),
+            GetMenuItemWithPath(L["HTTPRoute"], "gateway", "/Gateway/HTTPRoute"),
+            GetMenuItemWithPath(L["GRPCRoute"], "gateway", "/Gateway/GRPCRoute")
+        };
     }
 
     private MenuDataItem[] SettingMenu()
