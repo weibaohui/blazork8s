@@ -1,1 +1,100 @@
 @page "/Gateway/GRPCRoute"
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using Entity.Crd.Gateway
+@using k8s.Models
+@using Mapster
+@inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1GRPCRoute>
+
+@if (TableData.PagedItems != null)
+{
+    <HTable Class="wideTable">
+        <HTr>
+            <HTd>
+                <SearchToolBar Title=@L["GRPCRoutes"] Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1GRPCRoute"
+                               OnNsSelected="OnNsSelectedHandler">
+                </SearchToolBar>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>
+                <Table TItem="V1GRPCRoute"
+                       DataSource="@TableData.PagedItems"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="TableData.Total"
+                       @bind-PageIndex="TableData.PageIndex"
+                       @bind-PageSize="TableData.PageSize"
+                       @bind-SelectedRows="TableData.SelectedRows"
+                       Loading="TableData.Loading"
+                       OnChange="OnPageChangeHandler">
+                    <Selection Key="@(context.Name())"/>
+                    <AntDesign.Column Field="@context.Name()" Title=@L["Name"]>
+                        <Button Type="@ButtonType.Link">@context.Name()</Button>
+                    </AntDesign.Column>
+                    <AntDesign.Column Field="@context.Namespace()" Title=@L["Namespace"] Width="110px"/>
+
+                    <AntDesign.Column Title=@L["Hostname"] TData="string">
+                        @if (context.Spec.Hostnames is { Count: > 0 })
+                        {
+                            foreach (var hostname in context.Spec.Hostnames)
+                            {
+                                <ColorfulTag>@hostname</ColorfulTag>
+                            }
+                        }
+                    </AntDesign.Column>
+
+
+                    <AntDesign.Column Title=@L["Addresses"] TData="string">
+                        @if (context.Spec.Rules is { Count: > 0 })
+                        {
+                            foreach (var rule in context.Spec.Rules)
+                            {
+                                foreach (var backendRef in rule.BackendRefs)
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="6">@backendRef.Weight</GridCol>
+                                        <GridCol Span="12">
+                                            <RefView
+                                                Ref="@KubeHelper.GetObjectRef(backendRef.Kind, context.Metadata.Namespace(), backendRef.Name)">
+                                            </RefView>
+                                        </GridCol>
+                                        <GridCol Span="6">@backendRef.Port</GridCol>
+                                    </GridRow>
+                                }
+                            }
+                        }
+
+                    </AntDesign.Column>
+
+                    <AntDesign.Column Title=@L["Condition"] TData="string">
+                        @if (context.Status.Parents is { Count: > 0 })
+                        {
+                            @foreach (var parent in context.Status.Parents)
+                            {
+                                <ColorfulTag>@parent.ParentRef.Name</ColorfulTag>
+                                <ConditionsTagView
+                                    Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
+                                </ConditionsTagView>
+                            }
+                        }
+
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Age"] TData="string" Width="100px">
+                        <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <ActionColumn Title=@L["Action"] Width="100px">
+                        <GatewayAction Item="@context"></GatewayAction>
+                    </ActionColumn>
+                </Table>
+            </HTd>
+        </HTr>
+    </HTable>
+
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1GRPCRoute"></ResourceWatcher>
+}

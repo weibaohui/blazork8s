@@ -16,7 +16,6 @@ public class V1GRPCRouteList : IKubernetesObject<V1ListMeta>, IItems<V1GRPCRoute
 public class V1GRPCRoute : IKubernetesObject<V1ObjectMeta>, ISpec<GRPCRouteSpec>
 {
     [JsonPropertyName("status")] public GRPCRouteStatus Status { get; set; }
-
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
     [JsonPropertyName("kind")] public string Kind { get; set; }
     [JsonPropertyName("metadata")] public V1ObjectMeta Metadata { get; set; }
