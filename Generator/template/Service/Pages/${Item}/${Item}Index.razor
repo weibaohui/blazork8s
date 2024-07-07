@@ -4,45 +4,53 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Common.Html.HTable
+@using Entity.Crd.Gateway
 @inherits TableBase<${ItemType}>
+
+
 @if (TableData.PagedItems != null)
 {
-        <HTable Class="wideTable">
-        <HTr>
-            <HTd >
-                 <SearchToolBar Title="${Item}" Count="@TableData.Total"
-                               OnSearch="OnSearchHandler"
-                               OnNsSelected="OnNsSelectedHandler">
-                 </SearchToolBar>
-            </HTd>
-        </HTr>
-        <HTr>
-            <HTd >
-              <Table TItem="${ItemType}"
-                                  DataSource="@TableData.PagedItems"
-                                  Size=@TableSize.Small Bordered="true"
-                                  Total="TableData.Total"
-                                  @bind-PageIndex="TableData.PageIndex"
-                                  @bind-PageSize="TableData.PageSize"
-                                  @bind-SelectedRows="TableData.SelectedRows"
-                                  Loading="TableData.Loading"
-                                  OnChange="OnPageChangeHandler">
-                               <Selection Key="@(context.Name())"/>
-                               <AntDesign.Column Field="@context.Name()" Title="Name">
-                                   <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
-                               </AntDesign.Column>
-                               <AntDesign.Column Field="@context.Namespace()" Title="Namespace"  Width="110px"/>
-                               <AntDesign.Column  Title="Age" TData="string"  Width="100px">
-                                   <AgeView Age="@context.CreationTimestamp()"></AgeView>
-                               </AntDesign.Column>
-                               <ActionColumn Title="Action" Width="100px" >
-                                   <${Item}Action Item="@context"></${Item}Action>
-                               </ActionColumn>
-                           </Table>
+<HTable Class="wideTable">
+    <HTr>
+        <HTd>
+            <SearchToolBar Title=@L["${Item}"] Count="@TableData.Total"
+                           OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                           OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                           OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                           OnSearch="OnSearchHandler" TItem="${ItemType}"
+                           OnNsSelected="OnNsSelectedHandler"
+                           HideNsSelector="true">
+            </SearchToolBar>
+        </HTd>
+    </HTr>
+    <HTr>
+        <HTd>
+            <Table TItem="${ItemType}"
+                   DataSource="@TableData.PagedItems"
+                   Size=@TableSize.Small Bordered="true"
+                   Total="TableData.Total"
+                   @bind-PageIndex="TableData.PageIndex"
+                   @bind-PageSize="TableData.PageSize"
+                   @bind-SelectedRows="TableData.SelectedRows"
+                   Loading="TableData.Loading"
+                   OnChange="OnPageChangeHandler">
+                <Selection Key="@(context.Name())"/>
+                <AntDesign.Column Field="@context.Name()" Title="Name">
+                    <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                </AntDesign.Column>
+                <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                <AntDesign.Column Title="Age" TData="string" Width="100px">
+                    <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                </AntDesign.Column>
+                <ActionColumn Title="Action" Width="100px">
+                    <${Item}Action Item="@context">
+                </
+                ${Item}Action>
+                </ActionColumn>
+            </Table>
+        </HTd>
+    </HTr>
+</HTable>
 
-            </HTd>
-        </HTr>
-        </HTable>
-
-    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="${ItemType}"></ResourceWatcher>
+<ResourceWatcher OnResourceChanged="OnResourceChanged" T="${ItemType}"></ResourceWatcher>
 }

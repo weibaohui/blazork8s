@@ -5,8 +5,9 @@ using BlazorApp.Utils;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using BlazorApp.Pages.Common;
+using Entity.Crd.Gateway;
 
-namespace BlazorApp.Pages.${Item};
+namespace BlazorApp.Pages.Gateway.${Item};
 
 public partial class ${Item}Index : TableBase<${ItemType}>
 {

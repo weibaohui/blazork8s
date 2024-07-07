@@ -1,16 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using AntDesign;
-using BlazorApp.Pages.Common.Metadata;
-using BlazorApp.Pages.Workload;
-using BlazorApp.Service;
-using BlazorApp.Service.k8s;
+using Entity.Crd.Gateway;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using BlazorApp.Pages.Common;
-using Microsoft.Extensions.Logging;
-
-namespace BlazorApp.Pages.${Item};
+namespace BlazorApp.Pages.Gateway.${Item};
 
 public partial class ${Item}Action : PageBase
 {
