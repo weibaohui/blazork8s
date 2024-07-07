@@ -1,4 +1,5 @@
-﻿using Generator;
+﻿using Entity.Crd.Gateway;
+using Generator;
 using k8s.Models;
 
 class Program
@@ -37,7 +38,17 @@ class Program
         // dictList.AddItem("StatefulSet", typeof(V1StatefulSet));
         // dictList.AddItem("ServiceAccount", typeof(V1ServiceAccount));
         // dictList.AddItem("ReplicationController", typeof(V1ReplicationController));
-        dictList.AddItem("Lease", typeof(V1Lease));
+        // dictList.AddItem("Lease", typeof(V1Lease));
+        dictList.AddItem("GatewayClass", typeof(V1GatewayClass));
+        dictList.AddItem("Gateway", typeof(V1Gateway));
+        dictList.AddItem("HttpRoute", typeof(V1HTTPRoute));
+        dictList.AddItem("GrpcRoute", typeof(V1GRPCRoute));
+        dictList.AddItem("TcpRoute", typeof(V1Alpha2TCPRoute));
+        dictList.AddItem("UdpRoute", typeof(V1Alpha2UDPRoute));
+        dictList.AddItem("TlsRoute", typeof(V1Alpha2TLSRoute));
+        dictList.AddItem("ReferenceGrant", typeof(V1Alpha2ReferenceGrant));
+        dictList.AddItem("BackendTLSPolicy", typeof(V1Alpha3BackendTLSPolicy));
+        dictList.AddItem("BackendLBPolicy", typeof(V1Alpha2BackendLBPolicy));
 
 
         GeneratorHelper.Generator(dictList.GetDictList()).Run();
@@ -45,11 +56,11 @@ class Program
 
     public static void Main()
     {
-        // MakeTemplate();
+        MakeTemplate();
         // EntityPrepare.PrepareK8SEntity();
         // RazorEngineProcessor.Process();
         // Volume();
-        kubectExplainGen.Explain();
+        // kubectExplainGen.Explain();
     }
 
     public static void Volume()
