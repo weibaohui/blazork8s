@@ -1,9 +1,10 @@
-@page "/Gateway"
+@page "/Gateway/Gateway"
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using Entity.Crd.Gateway
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Gateway>
 @if (TableData.PagedItems != null)
 {
@@ -15,8 +16,7 @@
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Gateway"
-                               OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true">
+                               OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>
         </HTr>
@@ -36,6 +36,57 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+
+                    <AntDesign.Column Title=@L["GatewayClassName"] TData="string" Width="150px">
+                        @context.Spec.GatewayClassName
+                    </AntDesign.Column>
+
+
+                    <AntDesign.Column Title=@L["Addresses"] TData="string">
+                        @if (context.Status.Addresses is { Count: > 0 })
+                        {
+                            foreach (var address in context.Status.Addresses)
+                            {
+                                <ColorfulTag>@address.Type</ColorfulTag>
+                                <ColorfulTag>@address.Value</ColorfulTag>
+                            }
+                        }
+
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Listener"] TData="string">
+                        @if (context.Status.Listeners is { Count: > 0 })
+                        {
+                            foreach (var listener in context.Status.Listeners)
+                            {
+                                <ColorfulTag>@listener.Name</ColorfulTag>
+                                <ColorfulTag>@listener.AttachedRoutes</ColorfulTag>
+                                <ConditionsTagView
+                                    Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
+                                </ConditionsTagView>
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["SupportedKinds"] TData="string">
+                        @if (context.Status.Listeners is { Count: > 0 })
+                        {
+                            foreach (var listener in context.Status.Listeners)
+                            {
+                                <ColorfulTag>@listener.Name</ColorfulTag>
+                                if (listener.SupportedKinds is { Count: > 0 })
+                                {
+                                    foreach (var kind in listener.SupportedKinds)
+                                    {
+                                        <ColorfulTag>@kind.Kind</ColorfulTag>
+                                    }
+                                }
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Condition"] TData="string" Width="150px">
+                        <ConditionsTagView
+                            Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())">
+                        </ConditionsTagView>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="Age" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>

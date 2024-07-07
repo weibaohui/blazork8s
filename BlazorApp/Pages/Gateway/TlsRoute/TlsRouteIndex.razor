@@ -1,4 +1,4 @@
-@page "/TlsRoute"
+@page "/Gateway/TlsRoute"
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
@@ -15,8 +15,7 @@
                                OnSelectedItemCloseClicked="@TableData.RemoveSelection"
                                OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
                                OnSearch="OnSearchHandler" TItem="V1Alpha2TLSRoute"
-                               OnNsSelected="OnNsSelectedHandler"
-                               HideNsSelector="true">
+                               OnNsSelected="OnNsSelectedHandler">
                 </SearchToolBar>
             </HTd>
         </HTr>
