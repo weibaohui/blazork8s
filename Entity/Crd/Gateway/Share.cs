@@ -13,16 +13,17 @@ public class RouteParentStatus
 
 public class SessionPersistence
 {
-    public string SessionName { get; set; }
-    public string AbsoluteTimeout { get; set; }
-    public string IdleTimeout { get; set; }
-    public string Type { get; set; }
-    public CookieConfig CookieConfig { get; set; }
+    [JsonPropertyName("sessionName")] public string SessionName { get; set; }
+    [JsonPropertyName("absoluteTimeout")] public string AbsoluteTimeout { get; set; }
+    [JsonPropertyName("idleTimeout")] public string IdleTimeout { get; set; }
+    [JsonPropertyName("type")] public string Type { get; set; }
+    [JsonPropertyName("cookieConfig")] public CookieConfig CookieConfig { get; set; }
 }
 
 public class CookieConfig
 {
-    public CookieLifetimeType? LifetimeType { get; set; }
+    [JsonPropertyName("lifetimeType")] public string Name { get; set; }
+    public CookieLifetimeType LifetimeType { get; set; }
 }
 
 public class Condition
