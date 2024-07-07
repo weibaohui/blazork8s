@@ -1,0 +1,23 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha3BackendTLSPolicy>
+@if (BackendTLSPolicy != null)
+{
+    <BackendTLSPolicyAction Item="BackendTLSPolicy" MenuMode="MenuMode.Horizontal"></BackendTLSPolicyAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
+    <MetadataView Item="BackendTLSPolicy.Metadata" ExplainFieldPrefix="backendTLSPolicy"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Spec" Item="@BackendTLSPolicy.Spec"
+                            ExplainField="backendTLSPolicy.spec">
+        </PropertySimpleView>
+    </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Status" Item="@BackendTLSPolicy.Status"
+                            ExplainField="backendTLSPolicy.status">
+        </PropertySimpleView>
+    </HTable>
+    <MiniEventListView Uid="@BackendTLSPolicy.Metadata.Uid"></MiniEventListView>
+}

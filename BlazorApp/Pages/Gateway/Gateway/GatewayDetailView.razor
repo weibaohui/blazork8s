@@ -1,0 +1,19 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Gateway>
+@if (Gateway != null)
+{
+    <GatewayAction Item="Gateway" MenuMode="MenuMode.Horizontal"></GatewayAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
+    <MetadataView Item="Gateway.Metadata" ExplainFieldPrefix="gateway"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Spec" Item="@Gateway.Spec" ExplainField="gateway.spec"></PropertySimpleView>
+    </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Status" Item="@Gateway.Status" ExplainField="gateway.status"></PropertySimpleView>
+    </HTable>
+    <MiniEventListView Uid="@Gateway.Metadata.Uid"></MiniEventListView>
+}

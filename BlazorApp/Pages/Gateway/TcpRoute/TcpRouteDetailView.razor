@@ -1,0 +1,19 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha2TCPRoute>
+@if (TcpRoute != null)
+{
+    <TcpRouteAction Item="TcpRoute" MenuMode="MenuMode.Horizontal"></TcpRouteAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
+    <MetadataView Item="TcpRoute.Metadata" ExplainFieldPrefix="tcpRoute"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Spec" Item="@TcpRoute.Spec" ExplainField="tcpRoute.spec"></PropertySimpleView>
+    </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Status" Item="@TcpRoute.Status" ExplainField="tcpRoute.status"></PropertySimpleView>
+    </HTable>
+    <MiniEventListView Uid="@TcpRoute.Metadata.Uid"></MiniEventListView>
+}

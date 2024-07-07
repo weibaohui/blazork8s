@@ -88,6 +88,17 @@ builder.Services.AddSingleton<IReplicationControllerService, ReplicationControll
 builder.Services.AddSingleton<IResourceCrudService, ResourceCrudService>();
 builder.Services.AddSingleton<IWorkflowContainer, WorkflowContainer>();
 builder.Services.AddSingleton<IWorkflowStarter, WorkflowStarter>();
+builder.Services.AddSingleton<IGatewayClassService, GatewayClassService>();
+builder.Services.AddSingleton<IGatewayService, GatewayService>();
+builder.Services.AddSingleton<IHttpRouteService, HttpRouteService>();
+builder.Services.AddSingleton<IGrpcRouteService, GrpcRouteService>();
+builder.Services.AddSingleton<ITcpRouteService, TcpRouteService>();
+builder.Services.AddSingleton<IUdpRouteService, UdpRouteService>();
+builder.Services.AddSingleton<ITlsRouteService, TlsRouteService>();
+builder.Services.AddSingleton<IReferenceGrantService, ReferenceGrantService>();
+builder.Services.AddSingleton<IBackendTLSPolicyService, BackendTLSPolicyService>();
+builder.Services.AddSingleton<IBackendLBPolicyService, BackendLBPolicyService>();
+
 builder.Services.AddSingleton
     <ISqlSugarClient>(s =>
     {

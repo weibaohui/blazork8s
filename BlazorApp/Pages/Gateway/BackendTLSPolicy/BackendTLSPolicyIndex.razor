@@ -1,0 +1,50 @@
+@page "/BackendTLSPolicy"
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using Entity.Crd.Gateway
+@using k8s.Models
+@inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Alpha3BackendTLSPolicy>
+@if (TableData.PagedItems != null)
+{
+    <HTable Class="wideTable">
+        <HTr>
+            <HTd>
+                <SearchToolBar Title=@L["BackendTLSPolicy"] Count="@TableData.Total"
+                               OnItemDeletedCallback="@(async () => await InvokeAsync(StateHasChanged))"
+                               OnSelectedItemCloseClicked="@TableData.RemoveSelection"
+                               OnRemoveAllClicked="@TableData.RemoveAllSelection" TableData="@TableData"
+                               OnSearch="OnSearchHandler" TItem="V1Alpha3BackendTLSPolicy"
+                               OnNsSelected="OnNsSelectedHandler"
+                               HideNsSelector="true">
+                </SearchToolBar>
+            </HTd>
+        </HTr>
+        <HTr>
+            <HTd>
+                <Table TItem="V1Alpha3BackendTLSPolicy"
+                       DataSource="@TableData.PagedItems"
+                       Size=@TableSize.Small Bordered="true"
+                       Total="TableData.Total"
+                       @bind-PageIndex="TableData.PageIndex"
+                       @bind-PageSize="TableData.PageSize"
+                       @bind-SelectedRows="TableData.SelectedRows"
+                       Loading="TableData.Loading"
+                       OnChange="OnPageChangeHandler">
+                    <Selection Key="@(context.Name())"/>
+                    <AntDesign.Column Field="@context.Name()" Title="Name">
+                        <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+                    </AntDesign.Column>
+                    <AntDesign.Column Field="@context.Namespace()" Title="Namespace" Width="110px"/>
+                    <AntDesign.Column Title="Age" TData="string" Width="100px">
+                        <AgeView Age="@context.CreationTimestamp()"></AgeView>
+                    </AntDesign.Column>
+                    <ActionColumn Title="Action" Width="100px">
+                        <BackendTLSPolicyAction Item="@context"></BackendTLSPolicyAction>
+                    </ActionColumn>
+                </Table>
+            </HTd>
+        </HTr>
+    </HTable>
+    <ResourceWatcher OnResourceChanged="OnResourceChanged" T="V1Alpha3BackendTLSPolicy"></ResourceWatcher>
+}

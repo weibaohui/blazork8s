@@ -1,0 +1,23 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha2BackendLBPolicy>
+@if (BackendLBPolicy != null)
+{
+    <BackendLBPolicyAction Item="BackendLBPolicy" MenuMode="MenuMode.Horizontal"></BackendLBPolicyAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
+    <MetadataView Item="BackendLBPolicy.Metadata" ExplainFieldPrefix="backendLBPolicy"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Spec" Item="@BackendLBPolicy.Spec"
+                            ExplainField="backendLBPolicy.spec">
+        </PropertySimpleView>
+    </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Status" Item="@BackendLBPolicy.Status"
+                            ExplainField="backendLBPolicy.status">
+        </PropertySimpleView>
+    </HTable>
+    <MiniEventListView Uid="@BackendLBPolicy.Metadata.Uid"></MiniEventListView>
+}

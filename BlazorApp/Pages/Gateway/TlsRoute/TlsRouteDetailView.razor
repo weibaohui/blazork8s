@@ -1,0 +1,19 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Event
+@inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha2TLSRoute>
+@if (TlsRoute != null)
+{
+    <TlsRouteAction Item="TlsRoute" MenuMode="MenuMode.Horizontal"></TlsRouteAction>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
+    <MetadataView Item="TlsRoute.Metadata" ExplainFieldPrefix="tlsRoute"></MetadataView>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Spec" Item="@TlsRoute.Spec" ExplainField="tlsRoute.spec"></PropertySimpleView>
+    </HTable>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+    <HTable Bordered Column="1">
+        <PropertySimpleView Title="Status" Item="@TlsRoute.Status" ExplainField="tlsRoute.status"></PropertySimpleView>
+    </HTable>
+    <MiniEventListView Uid="@TlsRoute.Metadata.Uid"></MiniEventListView>
+}
