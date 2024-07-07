@@ -1,6 +1,9 @@
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1GatewayClass>
 @if (GatewayClass != null)
 {
@@ -9,13 +12,27 @@
     <MetadataView Item="GatewayClass.Metadata" ExplainFieldPrefix="gatewayClass"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@GatewayClass.Spec" ExplainField="gatewayClass.spec"></PropertySimpleView>
+        <PropertySimpleView Title=@L["ControllerName"] Item="@GatewayClass.Spec.ControllerName"
+                            ExplainField="gatewayClass.spec.controllerName">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Description"] Item="@GatewayClass.Spec.Description"
+                            ExplainField="gatewayClass.spec.description">
+        </PropertySimpleView>
+        <PropertySimpleView Title=@L["Ref"] Item="@GatewayClass.Spec.ParametersRef"
+                            ExplainField="gatewayClass.spec.parametersRef" ShowInJson="true">
+        </PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Status" Item="@GatewayClass.Status"
-                            ExplainField="gatewayClass.status">
-        </PropertySimpleView>
+
+        <PropertyListView></PropertyListView>
+        <PropertyListView Items="GatewayClass.Status.SupportedFeatures" T="string" Title=@L["SupportedFeatures"]
+                          ExplainField="gatewayClass.status.supportedFeatures">
+        </PropertyListView>
+        <ConditionsView Conditions="@(GatewayClass.Status.Conditions.Adapt<IList<V1Condition>>())"
+                        ExplainField="gatewayClass.status.conditions">
+        </ConditionsView>
+
     </HTable>
     <MiniEventListView Uid="@GatewayClass.Metadata.Uid"></MiniEventListView>
 }
