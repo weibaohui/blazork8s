@@ -1,6 +1,9 @@
+@using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Gateway>
 @if (Gateway != null)
 {
@@ -13,7 +16,56 @@
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Status" Item="@Gateway.Status" ExplainField="gateway.status"></PropertySimpleView>
+
+        <ConditionsView Conditions="@(Gateway.Status.Conditions.Adapt<IList<V1Condition>>())"
+                        ExplainField="gateway.status.conditions">
+        </ConditionsView>
+        <PropertySimpleView Title="@L["Addresses"]" Item="@Gateway.Status.Addresses"
+                            ExplainField="gateway.status.addresses">
+            @if (Gateway.Status.Addresses is { Count: > 0 })
+            {
+                foreach (var address in Gateway.Status.Addresses)
+                {
+                    <ColorfulTag>@address.Type</ColorfulTag>
+                    <ColorfulTag>@address.Value</ColorfulTag>
+                }
+            }
+        </PropertySimpleView>
+
+
+        <PropertySimpleView Title="@L["Listeners"]" Item="@Gateway.Status.Listeners"
+                            ExplainField="gateway.status.listeners">
+            @if (Gateway.Status.Listeners is { Count: > 0 })
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="4">@L["Name"]</GridCol>
+                    <GridCol Span="4">@L["Support"]</GridCol>
+                    <GridCol Span="4">@L["Attached"]</GridCol>
+                    <GridCol Span="12">@L["Conditions"]</GridCol>
+                </GridRow>
+                foreach (var listener in Gateway.Status.Listeners)
+                {
+                    <GridRow Class="grid-table">
+                        <GridCol Span="4">@listener.Name</GridCol>
+                        <GridCol Span="4">
+                            @if (listener.SupportedKinds is { Count: > 0 })
+                            {
+                                foreach (var kind in listener.SupportedKinds)
+                                {
+                                    <ColorfulTag>@kind.Kind</ColorfulTag>
+                                }
+                            }
+                        </GridCol>
+                        <GridCol Span="4">@listener.AttachedRoutes</GridCol>
+                        <GridCol Span="12">
+                            <ConditionsTagView
+                                Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
+                            </ConditionsTagView>
+                        </GridCol>
+                    </GridRow>
+                }
+            }
+        </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@Gateway.Metadata.Uid"></MiniEventListView>
 }
