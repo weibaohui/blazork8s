@@ -80,7 +80,6 @@ public class GatewayTLSConfig
 
 public class FrontendTLSValidation
 {
-    //todo 校验一下是不是
     [JsonPropertyName("caCertificateRefs")]
     public List<ObjectReference> CACertificateRefs { get; set; }
 }
