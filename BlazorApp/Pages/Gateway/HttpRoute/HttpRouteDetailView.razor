@@ -76,6 +76,17 @@
                         </HTable>
                     }
                 </PropertySimpleView>
+                <PropertySimpleView Title="@L["BackendRefs"]" Item="@rule.BackendRefs">
+                    @foreach (var item in rule.BackendRefs)
+                    {
+                        <HTable Title="" Bordered Column="1">
+
+                            <PropertySimpleView Title="@L["Name"]" Item="@item.Name"
+                                                ExplainField="httpRoute.spec.rules.backendRefs.name">
+                            </PropertySimpleView>
+                        </HTable>
+                    }
+                </PropertySimpleView>
             </HTable>
         }
     }
