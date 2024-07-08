@@ -60,7 +60,7 @@ public class ParentReference
 
     [JsonPropertyName("sectionName")] public string SectionName { get; set; }
 
-    [JsonPropertyName("port")] public int Port { get; set; }
+    [JsonPropertyName("port")] public int? Port { get; set; }
 }
 
 public class BackendObjectReference
@@ -69,5 +69,5 @@ public class BackendObjectReference
     [JsonPropertyName("kind")] public string Kind { get; set; }
     [JsonPropertyName("namespace")] public string Namespace { get; set; }
     [JsonPropertyName("name")] public string Name { get; set; }
-    [JsonPropertyName("prot")] public int Port { get; set; }
+    [JsonPropertyName("prot")] public int? Port { get; set; }
 }
