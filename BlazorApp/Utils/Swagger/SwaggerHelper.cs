@@ -1,4 +1,6 @@
 #nullable enable
+using System.Collections.Generic;
+using Entity.Crd.Gateway;
 using k8s;
 using Microsoft.Extensions.Logging;
 
@@ -9,11 +11,25 @@ public class SwaggerHelper
     private readonly ILogger<SwaggerHelper> _logger = LoggingHelper<SwaggerHelper>.Logger();
 
     public static SwaggerHelper Instance => Nested.Instance;
-    private       SwaggerEntity Entity   { get; set; }
+    private SwaggerEntity Entity { get; set; }
+    private Dictionary<string, SwaggerEntity> entities = new();
 
-    public SwaggerHelper()
+    public enum EntityType
     {
-        Entity = KubernetesJson.Deserialize<SwaggerEntity>(SwaggerDefinition.KubeSwaggerDefinitionCN);
+        K8SInTree,
+        Gateway,
+        Istio
+    }
+
+    /// <summary>
+    /// 构造函数，初始化Swagger实体，可参考Gateway方式初始化其他的CRD文档
+    /// </summary>
+    private SwaggerHelper()
+    {
+        entities.Add(EntityType.K8SInTree.ToString(),
+            KubernetesJson.Deserialize<SwaggerEntity>(SwaggerDefinition.KubeSwaggerDefinitionCN));
+        entities.Add(EntityType.Gateway.ToString(),
+            KubernetesJson.Deserialize<SwaggerEntity>(GatewaySwaggerDefinition.Definition));
     }
 
     private class Nested
@@ -28,20 +44,18 @@ public class SwaggerHelper
     }
 
 
-    public SwaggerEntity GetAllEntity()
+    public SwaggerEntity GetAllEntity(EntityType entityType)
     {
+        Entity = entities[entityType.ToString()];
         return Entity;
     }
 
-    public Definition? GetEntityByName(string name)
+    public Definition? GetEntityByName(EntityType entityType, string name)
     {
-        if (Entity == null)
-        {
-            return null;
-        }
+        Entity = entities[entityType.ToString()];
 
         Definition? d = null;
-        var         b = Entity.definitions?.TryGetValue(name, out d);
+        var b = Entity.definitions?.TryGetValue(name, out d);
         if (b == false)
         {
             return null;
@@ -70,7 +84,7 @@ public class SwaggerHelper
             return "";
         }
 
-        var refs   = fullRef.Split("/");
+        var refs = fullRef.Split("/");
         var length = refs.Length;
         return refs[length - 1];
     }

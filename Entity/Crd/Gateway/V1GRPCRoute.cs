@@ -13,8 +13,13 @@ public class V1GRPCRouteList : IKubernetesObject<V1ListMeta>, IItems<V1GRPCRoute
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
+[KubernetesEntity(Group = KubeGroup, Kind = KubeKind, ApiVersion = KubeApiVersion, PluralName = KubePluralName)]
 public class V1GRPCRoute : IKubernetesObject<V1ObjectMeta>, ISpec<GRPCRouteSpec>
 {
+    public const string KubeApiVersion = "v1";
+    public const string KubeKind = "GRPCRoute";
+    public const string KubeGroup = "gateway.networking.k8s.io";
+    public const string KubePluralName = "grpcroutes";
     [JsonPropertyName("status")] public GRPCRouteStatus Status { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
     [JsonPropertyName("kind")] public string Kind { get; set; }

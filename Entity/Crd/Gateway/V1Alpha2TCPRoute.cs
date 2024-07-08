@@ -15,8 +15,13 @@ public class V1Alpha2TCPRouteList : IKubernetesObject<V1ListMeta>, IItems<V1Alph
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
+[KubernetesEntity(Group = KubeGroup, Kind = KubeKind, ApiVersion = KubeApiVersion, PluralName = KubePluralName)]
 public class V1Alpha2TCPRoute : IKubernetesObject<V1ObjectMeta>, ISpec<TCPRouteSpec>
 {
+    public const string KubeApiVersion = "v1alpha2";
+    public const string KubeKind = "TCPRoute";
+    public const string KubeGroup = "gateway.networking.k8s.io";
+    public const string KubePluralName = "tcproutes";
     [JsonPropertyName("status")] public TCPRouteStatus Status { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
 

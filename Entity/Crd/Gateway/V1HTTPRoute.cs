@@ -15,8 +15,13 @@ public class V1HTTPRouteList : IKubernetesObject<V1ListMeta>, IItems<V1HTTPRoute
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
+[KubernetesEntity(Group = KubeGroup, Kind = KubeKind, ApiVersion = KubeApiVersion, PluralName = KubePluralName)]
 public class V1HTTPRoute : IKubernetesObject<V1ObjectMeta>, ISpec<HTTPRouteSpec>
 {
+    public const string KubeApiVersion = "v1";
+    public const string KubeKind = "HTTPRoute";
+    public const string KubeGroup = "gateway.networking.k8s.io";
+    public const string KubePluralName = "httproutes";
     [JsonPropertyName("status")] public HTTPRouteStatus Status { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
 

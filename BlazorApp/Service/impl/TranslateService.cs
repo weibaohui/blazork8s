@@ -17,10 +17,10 @@ using SqlSugar;
 namespace BlazorApp.Service.impl;
 
 public class TranslateService(
-    IAiService                aiService,
+    IAiService aiService,
     ILogger<TranslateService> logger,
-    IKubectlService           kubectl,
-    ISqlSugarClient           db)
+    IKubectlService kubectl,
+    ISqlSugarClient db)
     : ITranslateService
 {
     public async Task<string> Translate(string text)
@@ -40,9 +40,9 @@ public class TranslateService(
         var options = new JsonSerializerOptions
         {
             DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-            WriteIndented          = true // 如果需要格式化输出，可以设置为true
+            WriteIndented = true // 如果需要格式化输出，可以设置为true
         };
-        var entity = SwaggerHelper.Instance.GetAllEntity();
+        var entity = SwaggerHelper.Instance.GetAllEntity(SwaggerHelper.EntityType.K8SInTree);
         if (entity.definitions == null) return;
         foreach (var (key, definition) in entity.definitions)
         {
@@ -141,7 +141,7 @@ public class TranslateService(
         var rfList = await db.Queryable<KubeExplainRef>().Where(x => x.EnId == null).ToListAsync();
         foreach (var rf in rfList)
         {
-            var en   = await kubectl.Explain(rf.ExplainFiled);
+            var en = await kubectl.Explain(rf.ExplainFiled);
             var enId = en.ToMd5Str();
             rf.EnId = enId;
             await db.Updateable<KubeExplainRef>(rf).ExecuteCommandAsync();
@@ -153,9 +153,9 @@ public class TranslateService(
                 {
                     new KubeExplainEN()
                     {
-                        Id      = enId,
+                        Id = enId,
                         Explain = en,
-                        done    = false
+                        done = false
                     }
                 }).ExecuteCommandAsync();
             }
@@ -167,7 +167,7 @@ public class TranslateService(
         var enList = await db.Queryable<KubeExplainEN>().Where(x => x.done == false).ToListAsync();
         if (enList is { Count: 0 }) return;
 
-        var all     = enList.Count;
+        var all = enList.Count;
         var current = 0;
         foreach (var en in enList)
         {
@@ -179,7 +179,7 @@ public class TranslateService(
             }
 
 
-            var cn   = await Translate(en.Explain);
+            var cn = await Translate(en.Explain);
             var cnId = cn.ToMd5Str();
             en.done = true;
             logger.LogInformation("翻译Over {Current}/{All} {EnId} ", current, all, en.Id);
@@ -193,8 +193,8 @@ public class TranslateService(
 
             var rest = await db.Insertable(new KubeExplainCN()
             {
-                Id      = cnId,
-                EnId    = en.Id,
+                Id = cnId,
+                EnId = en.Id,
                 Explain = cn
             }).ExecuteCommandAsync();
             logger.LogInformation("保存 {Current}/{All} {EnId} {Rest} ", current, all, en.Id, rest);

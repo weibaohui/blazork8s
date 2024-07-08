@@ -15,8 +15,13 @@ public class V1Alpha3BackendTLSPolicyList : IKubernetesObject<V1ListMeta>, IItem
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
+[KubernetesEntity(Group = KubeGroup, Kind = KubeKind, ApiVersion = KubeApiVersion, PluralName = KubePluralName)]
 public class V1Alpha3BackendTLSPolicy : IKubernetesObject<V1ObjectMeta>, ISpec<BackendTLSPolicySpec>
 {
+    public const string KubeApiVersion = "v1alpha3";
+    public const string KubeKind = "BackendTLSPolicy";
+    public const string KubeGroup = "gateway.networking.k8s.io";
+    public const string KubePluralName = "backendtlspolicies";
     [JsonPropertyName("status")] public BackendTLSPolicyStatus Status { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
 

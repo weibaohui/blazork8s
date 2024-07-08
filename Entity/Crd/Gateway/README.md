@@ -5,3 +5,15 @@ kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/downloa
 # Gateway API experimental install
 
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/experimental-install.yaml
+
+# Json Schema for Gateway API
+
+https://github.com/kubernetes-sigs/gateway-api/cmd/modelschema/main.go
+
+```
+cmd/modelschema/main.go
+```
+
+# Translate to CN
+
+use TranslateService.ProcessDocTree() to translate the json schema to Chinese.

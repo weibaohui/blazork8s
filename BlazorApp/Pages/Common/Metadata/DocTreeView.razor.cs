@@ -30,6 +30,7 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
 
     [Inject] private IMessageService MessageService { get; set; }
     [Inject] private IPromptService PromptService { get; set; }
+    private SwaggerHelper.EntityType _entityType = SwaggerHelper.EntityType.K8SInTree;
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,9 +44,16 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
         {
             key = "io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.CustomResourceDefinition";
         }
+        else if ($"{group}" == "gateway")
+        {
+            //gateway-api的key单独处理
+            key = $"io.k8s.sigs.gateway-api.apis.{attribute.ApiVersion}.{attribute.Kind}";
+            _entityType = SwaggerHelper.EntityType.Gateway;
+        }
+
 
         _currentRootKey = key;
-        var definition = SwaggerHelper.Instance.GetEntityByName(key);
+        var definition = SwaggerHelper.Instance.GetEntityByName(_entityType, key);
         _dataList.AddRange(definition.ToTreeData().ChildList);
 
         if (AiService.Enabled())
@@ -82,7 +90,7 @@ public partial class DocTreeView<T> : DrawerPageBase<T> where T : IKubernetesObj
             var dataItem = args.Node.DataItem;
             dataItem.ChildList.Clear();
             var refKey = SwaggerHelper.Instance.GetRefKey(args.Node.DataItem.RefKey);
-            var treeData = SwaggerHelper.Instance.GetEntityByName(refKey).ToTreeData();
+            var treeData = SwaggerHelper.Instance.GetEntityByName(_entityType, refKey).ToTreeData();
             if (treeData.ChildList.Count > 0)
             {
                 dataItem.ChildList.AddRange(treeData.ChildList);

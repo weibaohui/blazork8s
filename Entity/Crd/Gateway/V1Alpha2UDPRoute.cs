@@ -15,8 +15,13 @@ public class V1Alpha2UDPRouteList : IKubernetesObject<V1ListMeta>, IItems<V1Alph
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
+[KubernetesEntity(Group = KubeGroup, Kind = KubeKind, ApiVersion = KubeApiVersion, PluralName = KubePluralName)]
 public class V1Alpha2UDPRoute : IKubernetesObject<V1ObjectMeta>, ISpec<UDPRouteSpec>
 {
+    public const string KubeApiVersion = "v1alpha2";
+    public const string KubeKind = "UDPRoute";
+    public const string KubeGroup = "gateway.networking.k8s.io";
+    public const string KubePluralName = "udproutes";
     [JsonPropertyName("status")] public UDPRouteStatus Status { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
 

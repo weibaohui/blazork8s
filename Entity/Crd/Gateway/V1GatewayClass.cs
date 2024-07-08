@@ -15,8 +15,13 @@ public class V1GatewayClassList : IKubernetesObject<V1ListMeta>, IItems<V1Gatewa
     [JsonPropertyName("metadata")] public V1ListMeta Metadata { get; set; }
 }
 
+[KubernetesEntity(Group = KubeGroup, Kind = KubeKind, ApiVersion = KubeApiVersion, PluralName = KubePluralName)]
 public class V1GatewayClass : IKubernetesObject<V1ObjectMeta>, ISpec<GatewayClassSpec>
 {
+    public const string KubeApiVersion = "v1";
+    public const string KubeKind = "GatewayClass";
+    public const string KubeGroup = "gateway.networking.k8s.io";
+    public const string KubePluralName = "gatewayclasses";
     [JsonPropertyName("status")] public GatewayClassStatus Status { get; set; }
     [JsonPropertyName("apiVersion")] public string ApiVersion { get; set; }
 
