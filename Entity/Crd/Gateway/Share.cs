@@ -22,8 +22,7 @@ public class SessionPersistence
 
 public class CookieConfig
 {
-    [JsonPropertyName("lifetimeType")] public string Name { get; set; }
-    public CookieLifetimeType LifetimeType { get; set; }
+    [JsonPropertyName("lifetimeType")] public CookieLifetimeType LifetimeType { get; set; }
 }
 
 public class Condition
