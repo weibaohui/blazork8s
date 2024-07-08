@@ -11,10 +11,75 @@
     <HttpRouteAction Item="HttpRoute" MenuMode="MenuMode.Horizontal"></HttpRouteAction>
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="HttpRoute.Metadata" ExplainFieldPrefix="httpRoute"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
+    <Divider Orientation="left" Style="font-weight:bold">@L["Hostnames"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@HttpRoute.Spec" ExplainField="httpRoute.spec"></PropertySimpleView>
+        <PropertyListView Title=@L["Hostnames"] Items="HttpRoute.Spec.Hostnames" T="string"
+                          ExplainField="httpRoute.spec.hostnames">
+        </PropertyListView>
     </HTable>
+
+
+    @if (HttpRoute.Spec.ParentRefs is { Count: > 0 })
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Parent"]</Divider>
+
+        @foreach (var parent in HttpRoute.Spec.ParentRefs)
+        {
+            <BadgeRibbon Text="@parent.Name" Placement="start">
+                <Card Bordered>
+                    <HTable Title="" Bordered Column="1">
+
+                        <PropertySimpleView Title="@L["Ref"]" Item="@parent.Name">
+                            <RefView FullView="true"
+                                     Ref="@KubeHelper.GetObjectRef(parent.Kind, parent.Namespace, parent.Name)">
+                            </RefView>
+                        </PropertySimpleView>
+                        <PropertySimpleView Title="@L["Group"]" Item="@parent.Group"
+                                            ExplainField="httpRoute.status.parents.parentRef.group">
+                        </PropertySimpleView>
+                        <PropertySimpleView Title="@L["Kind"]" Item="@parent.Kind"
+                                            ExplainField="httpRoute.status.parents.parentRef.kind">
+                        </PropertySimpleView>
+                        <PropertySimpleView Title="@L["Namespace"]" Item="@parent.Namespace"
+                                            ExplainField="httpRoute.status.parents.parentRef.namespace">
+                        </PropertySimpleView>
+                        <PropertySimpleView Title="@L["Name"]" Item="@parent.Name"
+                                            ExplainField="httpRoute.status.parents.parentRef.name">
+                        </PropertySimpleView>
+                        <PropertySimpleView Title="@L["SectionName"]" Item="@parent.SectionName"
+                                            ExplainField="httpRoute.status.parents.parentRef.sectionName">
+                        </PropertySimpleView>
+                        <PropertySimpleView Title="@L["Port"]" Item="@parent.Port"
+                                            ExplainField="httpRoute.status.parents.parentRef.port">
+                        </PropertySimpleView>
+
+                    </HTable>
+                </Card>
+            </BadgeRibbon>
+        }
+    }
+
+    @if (HttpRoute.Spec.Rules is { Count: > 0 })
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Rules"]</Divider>
+        @foreach (var rule in HttpRoute.Spec.Rules)
+        {
+            <HTable Bordered Column="1">
+                <PropertySimpleView Title="@L["Matches"]" Item="@rule.Matches">
+                    @foreach (var item in rule.Matches)
+                    {
+                        <HTable Title="" Bordered Column="1">
+
+                            <PropertySimpleView Title="@L["Path"]" Item="@item.Path"
+                                                ExplainField="httpRoute.spec.rules.matches.path">
+                            </PropertySimpleView>
+                        </HTable>
+                    }
+                </PropertySimpleView>
+            </HTable>
+        }
+    }
+
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     @if (HttpRoute.Status.Parents is { Count: > 0 })
     {
@@ -23,7 +88,6 @@
             <BadgeRibbon Text="@parent.ControllerName" Placement="start">
                 <Card Bordered>
                     <HTable Title="" Bordered Column="1">
-                        @* <PropertySimpleView Title="@L["ControllerName"]"  Item="@parent.ControllerName" ExplainField="httpRoute.status.parents.controllerName"></PropertySimpleView> *@
                         <PropertySimpleView Title="@L["Parent"]" Item="@parent.ParentRef">
                             <HTable Title="" Bordered Column="1">
                                 <PropertySimpleView Title="@L["Ref"]" Item="@parent.ParentRef.Name">
@@ -51,6 +115,10 @@
                                 </PropertySimpleView>
                             </HTable>
                         </PropertySimpleView>
+                        <PropertySimpleView Title="@L["ControllerName"]" Item="@parent.ControllerName"
+                                            ExplainField="httpRoute.status.parents.controllerName">
+                        </PropertySimpleView>
+
                         <PropertySimpleView Title="@L["Conditions"]" Item="@parent.Conditions"
                                             ExplainField="httpRoute.status.parents.conditions">
                             <ConditionsTagView
