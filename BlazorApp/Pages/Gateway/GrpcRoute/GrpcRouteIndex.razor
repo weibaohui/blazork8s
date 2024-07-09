@@ -79,7 +79,7 @@
                     </AntDesign.Column>
 
                     <AntDesign.Column Title=@L["Condition"] TData="string">
-                        @if (context.Status.Parents is { Count: > 0 })
+                        @if (context.Status is not null && context.Status.Parents is { Count: > 0 })
                         {
                             @foreach (var parent in context.Status.Parents)
                             {

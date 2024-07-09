@@ -2,8 +2,10 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @using Entity.Crd.Gateway
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Alpha2TCPRoute>
 @if (TableData.PagedItems != null)
 {
@@ -35,6 +37,49 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
+
+                    <AntDesign.Column Title=@L["Rules"] TData="string" Width="420px">
+                        @if (context.Spec.Rules is { Count: > 0 })
+                        {
+                            <GridRow Class="grid-table">
+                                <GridCol Span="4">Weight</GridCol>
+                                <GridCol Span="10">Name</GridCol>
+                                <GridCol Span="4">Port</GridCol>
+                                <GridCol Span="6">Ref</GridCol>
+                            </GridRow>
+                            foreach (var rule in context.Spec.Rules)
+                            {
+                                foreach (var backendRef in rule.BackendRefs)
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="4">@backendRef.Weight</GridCol>
+                                        <GridCol Span="10">@backendRef.Name</GridCol>
+                                        <GridCol Span="4">@backendRef.Port</GridCol>
+                                        <GridCol Span="6">
+                                            <RefView
+                                                Ref="@KubeHelper.GetObjectRef(backendRef.Kind, context.Metadata.Namespace(), backendRef.Name)">
+                                            </RefView>
+                                        </GridCol>
+                                    </GridRow>
+                                }
+                            }
+                        }
+
+                    </AntDesign.Column>
+
+                    <AntDesign.Column Title=@L["Condition"] TData="string">
+                        @if (context.Status is not null && context.Status.Parents is { Count: > 0 })
+                        {
+                            @foreach (var parent in context.Status.Parents)
+                            {
+                                <ColorfulTag>@parent.ParentRef.Name</ColorfulTag>
+                                <ConditionsTagView
+                                    Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
+                                </ConditionsTagView>
+                            }
+                        }
+
+                    </AntDesign.Column>
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
