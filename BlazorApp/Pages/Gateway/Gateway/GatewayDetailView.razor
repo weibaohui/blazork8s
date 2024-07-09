@@ -112,10 +112,20 @@
                             ExplainField="gateway.status.addresses">
             @if (Gateway.Status.Addresses is { Count: > 0 })
             {
+                <GridRow Class="grid-table">
+                    <GridCol Span="6">@L["Type"]</GridCol>
+                    <GridCol Span="18">@L["Address"]</GridCol>
+                </GridRow>
                 foreach (var address in Gateway.Status.Addresses)
                 {
-                    <ColorfulTag>@address.Type</ColorfulTag>
-                    <ColorfulTag>@address.Value</ColorfulTag>
+                    <GridRow Class="grid-table">
+                        <GridCol Span="6">
+                            <ColorfulTag>@address.Type</ColorfulTag>
+                        </GridCol>
+                        <GridCol Span="18">
+                            <ColorfulTag>@address.Value</ColorfulTag>
+                        </GridCol>
+                    </GridRow>
                 }
             }
         </PropertySimpleView>
