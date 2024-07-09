@@ -37,7 +37,17 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
-
+                    <AntDesign.Column Title=@L["Gateway"] TData="string" Width="150px">
+                        @if (context.Spec.ParentRefs is { Count: > 0 })
+                        {
+                            foreach (var parent in context.Spec.ParentRefs)
+                            {
+                                <RefView OnlyName
+                                         Ref="@KubeHelper.GetObjectRef(parent.Kind, context.Metadata.Namespace(), parent.Name)">
+                                </RefView>
+                            }
+                        }
+                    </AntDesign.Column>
                     <AntDesign.Column Title=@L["Hostname"] TData="string" Width="150px">
                         @if (context.Spec.Hostnames is { Count: > 0 })
                         {
@@ -93,10 +103,12 @@
                             @foreach (var parent in context.Status.Parents)
                             {
                                 <GridRow Class="grid-table">
-                                    <GridCol Span="8">
-                                        @parent.ParentRef.Name
+                                    <GridCol Span="12">
+                                        <RefView OnlyName
+                                                 Ref="@KubeHelper.GetObjectRef(parent.ParentRef.Kind, context.Metadata.Namespace(), parent.ParentRef.Name)">
+                                        </RefView>
                                     </GridCol>
-                                    <GridCol Span="16">
+                                    <GridCol Span="12">
                                         <ConditionsTagView
                                             Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
                                         </ConditionsTagView>
