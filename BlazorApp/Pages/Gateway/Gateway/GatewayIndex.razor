@@ -4,6 +4,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using Entity.Crd.Gateway
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Gateway>
 @if (TableData.PagedItems != null)
 {
@@ -54,7 +55,11 @@
                     <AntDesign.Column Title=@L["Listener"] TData="string">
                         <ListenerStatusView Status="@context.Status.Listeners"></ListenerStatusView>
                     </AntDesign.Column>
-
+                    <AntDesign.Column Title=@L["Condition"] TData="string" Width="150px">
+                        <ConditionsTagView
+                            Conditions="@(context.Status.Conditions.Adapt<IList<V1Condition>>())">
+                        </ConditionsTagView>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>
