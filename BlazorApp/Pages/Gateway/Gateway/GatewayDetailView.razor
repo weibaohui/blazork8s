@@ -2,6 +2,8 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Utils
+@using k8s
 @using k8s.Models
 @using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Gateway>
@@ -12,7 +14,93 @@
     <MetadataView Item="Gateway.Metadata" ExplainFieldPrefix="gateway"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@Gateway.Spec" ExplainField="gateway.spec"></PropertySimpleView>
+        <PropertySimpleView Title="@L["GatewayClassName"]" Item="@Gateway.Spec.GatewayClassName"
+                            ExplainField="gateway.spec.gatewayClassName">
+        </PropertySimpleView>
+        <PropertySimpleView Title="@L["Listeners"]" Item="@Gateway.Spec.Listeners"
+                            ExplainField="gateway.spec.listeners">
+            <GridRow Class="grid-table">
+                <GridCol Span="4">@L["Name"]</GridCol>
+                <GridCol Span="20">@L["Detail"]</GridCol>
+            </GridRow>
+            @foreach (var listener in Gateway.Spec.Listeners)
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="4">@listener.Name</GridCol>
+                    <GridCol Span="20">
+                        <HTable Bordered Column="1">
+                            <PropertySimpleView Title="@L["Protocol"]" Item="@listener.Protocol"
+                                                ExplainField="gateway.spec.listeners.protocol">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Hostname"]" Item="@listener.Hostname"
+                                                ExplainField="gateway.spec.listeners.hostname">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Port"]" Item="@listener.Port"
+                                                ExplainField="gateway.spec.listeners.port">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["AllowedRoutes"]" Item="@listener.AllowedRoutes"
+                                                ExplainField="gateway.spec.listeners.allowedRoutes" ShowInJson>
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="12">@L["Namespace From"]</GridCol>
+                                    <GridCol Span="12">@L["Namespace Selector"]</GridCol>
+                                </GridRow>
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="12">
+                                        @if (listener.AllowedRoutes.Namespaces.From is not null)
+                                        {
+                                            @listener.AllowedRoutes.Namespaces.From
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="12">
+                                        @if (listener.AllowedRoutes.Namespaces.Selector is not null)
+                                        {
+                                            @KubernetesYaml.Serialize(listener.AllowedRoutes.Namespaces.Selector)
+                                        }
+                                    </GridCol>
+                                </GridRow>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["TLS"]" Item="@listener.TLS"
+                                                ExplainField="gateway.spec.listeners.tls" ShowInJson>
+                            </PropertySimpleView>
+                        </HTable>
+                    </GridCol>
+                </GridRow>
+            }
+        </PropertySimpleView>
+        <PropertySimpleView Title="@L["Infrastructure"]" Item="@Gateway.Spec.Infrastructure"
+                            ExplainField="gateway.spec.infrastructure">
+            <HTable Bordered Column="1">
+                <PropertySimpleView Title="@L["Labels"]" Item="@Gateway.Spec.Infrastructure.Labels"
+                                    ExplainField="gateway.spec.infrastructure.labels">
+                </PropertySimpleView>
+                <LabelsView Labels="Gateway.Spec.Infrastructure.Labels"
+                            ExplainField="gateway.spec.infrastructure.labels">
+                </LabelsView>
+                <AnnotationsView Annotations="Gateway.Spec.Infrastructure.Annotations"
+                                 ExplainField="gateway.spec.infrastructure.annotations">
+                </AnnotationsView>
+                <PropertySimpleView Title="@L["ParametersRef"]" Item="@Gateway.Spec.Infrastructure.ParametersRef"
+                                    ExplainField="gateway.spec.infrastructure.parametersRef">
+
+                    <GridRow Class="grid-table">
+                        <GridCol Span="6">Group</GridCol>
+                        <GridCol Span="6">Kind</GridCol>
+                        <GridCol Span="6">Name</GridCol>
+                        <GridCol Span="6">Ref</GridCol>
+                    </GridRow>
+                    <GridRow Class="grid-table">
+                        <GridCol Span="6">@Gateway.Spec.Infrastructure.ParametersRef.Group</GridCol>
+                        <GridCol Span="6">@Gateway.Spec.Infrastructure.ParametersRef.Kind</GridCol>
+                        <GridCol Span="6">@Gateway.Spec.Infrastructure.ParametersRef.Name</GridCol>
+                        <GridCol Span="6">
+                            <RefView FullView="true"
+                                     Ref="@KubeHelper.GetObjectRef(Gateway.Spec.Infrastructure.ParametersRef.Kind, Gateway.Metadata.Namespace(), Gateway.Spec.Infrastructure.ParametersRef.Name)">
+                            </RefView>
+                        </GridCol>
+                    </GridRow>
+                </PropertySimpleView>
+            </HTable>
+        </PropertySimpleView>
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
@@ -35,35 +123,32 @@
 
         <PropertySimpleView Title="@L["Listeners"]" Item="@Gateway.Status.Listeners"
                             ExplainField="gateway.status.listeners">
-            @if (Gateway.Status.Listeners is { Count: > 0 })
+            <GridRow Class="grid-table">
+                <GridCol Span="4">@L["Name"]</GridCol>
+                <GridCol Span="4">@L["Support"]</GridCol>
+                <GridCol Span="4">@L["Attached"]</GridCol>
+                <GridCol Span="12">@L["Conditions"]</GridCol>
+            </GridRow>
+            @foreach (var listener in Gateway.Status.Listeners)
             {
                 <GridRow Class="grid-table">
-                    <GridCol Span="4">@L["Name"]</GridCol>
-                    <GridCol Span="4">@L["Support"]</GridCol>
-                    <GridCol Span="4">@L["Attached"]</GridCol>
-                    <GridCol Span="12">@L["Conditions"]</GridCol>
-                </GridRow>
-                foreach (var listener in Gateway.Status.Listeners)
-                {
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">@listener.Name</GridCol>
-                        <GridCol Span="4">
-                            @if (listener.SupportedKinds is { Count: > 0 })
+                    <GridCol Span="4">@listener.Name</GridCol>
+                    <GridCol Span="4">
+                        @if (listener.SupportedKinds is { Count: > 0 })
+                        {
+                            foreach (var kind in listener.SupportedKinds)
                             {
-                                foreach (var kind in listener.SupportedKinds)
-                                {
-                                    <ColorfulTag>@kind.Kind</ColorfulTag>
-                                }
+                                <ColorfulTag>@kind.Kind</ColorfulTag>
                             }
-                        </GridCol>
-                        <GridCol Span="4">@listener.AttachedRoutes</GridCol>
-                        <GridCol Span="12">
-                            <ConditionsTagView
-                                Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
-                            </ConditionsTagView>
-                        </GridCol>
-                    </GridRow>
-                }
+                        }
+                    </GridCol>
+                    <GridCol Span="4">@listener.AttachedRoutes</GridCol>
+                    <GridCol Span="12">
+                        <ConditionsTagView
+                            Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
+                        </ConditionsTagView>
+                    </GridCol>
+                </GridRow>
             }
         </PropertySimpleView>
     </HTable>
