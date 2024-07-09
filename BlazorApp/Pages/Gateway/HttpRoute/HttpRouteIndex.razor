@@ -47,6 +47,15 @@
                             }
                         }
                     </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Path"] TData="string" Width="150px">
+                        @if (context.Spec.Rules is { Count: > 0 })
+                        {
+                            foreach (var path in context.Spec.Rules.SelectMany(r => r.Matches).Select(m => m.Path))
+                            {
+                                <ColorfulTag>@path.Value</ColorfulTag>
+                            }
+                        }
+                    </AntDesign.Column>
 
 
                     <AntDesign.Column Title=@L["Addresses"] TData="string" Width="420px">
