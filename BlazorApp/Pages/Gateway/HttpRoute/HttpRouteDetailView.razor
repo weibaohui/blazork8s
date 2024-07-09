@@ -65,27 +65,232 @@
         @foreach (var rule in HttpRoute.Spec.Rules)
         {
             <HTable Bordered Column="1">
-                <PropertySimpleView Title="@L["Matches"]" Item="@rule.Matches">
+                <PropertySimpleView Title="@L["Matches"]" Item="@rule.Matches"
+                                    ExplainField="httpRoute.spec.rules.matches">
                     @foreach (var item in rule.Matches)
                     {
                         <HTable Title="" Bordered Column="1">
 
                             <PropertySimpleView Title="@L["Path"]" Item="@item.Path"
                                                 ExplainField="httpRoute.spec.rules.matches.path">
+                                <ColorfulTag>@item.Method</ColorfulTag>
+                                <ColorfulTag>@item.Path.Value</ColorfulTag>
+                                <ColorfulTag>@item.Path.Type</ColorfulTag>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Headers"]" Item="@item.Headers">
+                                @foreach (var header in item.Headers)
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="8">@header.Type</GridCol>
+                                        <GridCol Span="16">@($"{header.Name}={header.Value}")</GridCol>
+                                    </GridRow>
+                                }
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["QueryParams"]" Item="@item.QueryParams">
+                                @foreach (var query in item.QueryParams)
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="8">@query.Type</GridCol>
+                                        <GridCol Span="16">@($"{query.Name}={query.Value}")</GridCol>
+                                    </GridRow>
+                                }
                             </PropertySimpleView>
                         </HTable>
                     }
                 </PropertySimpleView>
-                <PropertySimpleView Title="@L["BackendRefs"]" Item="@rule.BackendRefs">
-                    @foreach (var item in rule.BackendRefs)
+                <PropertySimpleView Title="@L["BackendRefs"]" Item="@rule.BackendRefs"
+                                    ExplainField="httpRoute.spec.rules.backendRefs">
+                    <GridRow Class="grid-table">
+                        <GridCol Span="4">Weight</GridCol>
+                        <GridCol Span="10">Name</GridCol>
+                        <GridCol Span="4">Port</GridCol>
+                        <GridCol Span="6">Ref</GridCol>
+                    </GridRow>
+                    @foreach (var backendRef in rule.BackendRefs)
+                    {
+                        <GridRow Class="grid-table">
+                            <GridCol Span="4">@backendRef.Weight</GridCol>
+                            <GridCol Span="10">@backendRef.Name</GridCol>
+                            <GridCol Span="4">@backendRef.Port</GridCol>
+                            <GridCol Span="6">
+                                <RefView
+                                    Ref="@KubeHelper.GetObjectRef(backendRef.Kind, HttpRoute.Metadata.Namespace(), backendRef.Name)">
+                                </RefView>
+                            </GridCol>
+                        </GridRow>
+                    }
+                </PropertySimpleView>
+                <PropertySimpleView Title="@L["Filters"]" Item="@rule.Filters"
+                                    ExplainField="httpRoute.spec.rules.filters">
+                    @foreach (var item in rule.Filters)
                     {
                         <HTable Title="" Bordered Column="1">
+                            <PropertySimpleView Title="@L["Type"]" Item="@item.Type"
+                                                ExplainField="httpRoute.spec.rules.filters.type">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["ExtensionRef"]" Item="@item.ExtensionRef"
+                                                ExplainField="httpRoute.spec.rules.filters.extensionRef">
 
-                            <PropertySimpleView Title="@L["Name"]" Item="@item.Name"
-                                                ExplainField="httpRoute.spec.rules.backendRefs.name">
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">Group</GridCol>
+                                    <GridCol Span="6">Kind</GridCol>
+                                    <GridCol Span="6">Name</GridCol>
+                                    <GridCol Span="6">Ref</GridCol>
+                                </GridRow>
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">@item.ExtensionRef.Group</GridCol>
+                                    <GridCol Span="6">@item.ExtensionRef.Kind</GridCol>
+                                    <GridCol Span="6">@item.ExtensionRef.Name</GridCol>
+                                    <GridCol Span="6">
+                                        <RefView FullView="true"
+                                                 Ref="@KubeHelper.GetObjectRef(item.ExtensionRef.Kind, HttpRoute.Metadata.Namespace(), item.ExtensionRef.Name)">
+                                        </RefView>
+                                    </GridCol>
+                                </GridRow>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["RequestMirror"]" Item="@item.RequestMirror"
+                                                ExplainField="httpRoute.spec.rules.filters.requestMirror">
+                                <HTable Title="" Bordered Column="1">
+                                    <PropertySimpleView Title="@L["Ref"]" Item="@item.RequestMirror.BackendRef.Name">
+                                        <RefView FullView="true"
+                                                 Ref="@KubeHelper.GetObjectRef(item.RequestMirror.BackendRef.Kind, item.RequestMirror.BackendRef.Namespace, item.RequestMirror.BackendRef.Name)">
+                                        </RefView>
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Group"]" Item="@item.RequestMirror.BackendRef.Group"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestMirror.backendRef.group">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Kind"]" Item="@item.RequestMirror.BackendRef.Kind"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestMirror.backendRef.kind">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Namespace"]"
+                                                        Item="@item.RequestMirror.BackendRef.Namespace"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestMirror.backendRef.namespace">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Name"]" Item="@item.RequestMirror.BackendRef.Name"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestMirror.backendRef.name">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Port"]" Item="@item.RequestMirror.BackendRef.Port"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestMirror.backendRef.port">
+                                    </PropertySimpleView>
+                                </HTable>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["RequestRedirect"]" Item="@item.RequestRedirect"
+                                                ExplainField="httpRoute.spec.rules.filters.requestRedirect">
+                                <HTable Title="" Bordered Column="1">
+
+                                    <PropertySimpleView Title="@L["Hostname"]" Item="@item.RequestRedirect.Hostname"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestRedirect.hostname">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Scheme"]" Item="@item.RequestRedirect.Scheme"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestRedirect.scheme">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Port"]" Item="@item.RequestRedirect.Port"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestRedirect.port">
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["Path"]" Item="@item.RequestRedirect.Path"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestRedirect.path">
+
+                                        <GridRow Class="grid-table">
+                                            <GridCol Span="6">Type</GridCol>
+                                            <GridCol Span="9">ReplacePrefixMatch</GridCol>
+                                            <GridCol Span="9">replaceFullPath</GridCol>
+                                        </GridRow>
+                                        <GridRow Class="grid-table">
+                                            <GridCol Span="6">@item.RequestRedirect.Path.Type</GridCol>
+                                            <GridCol Span="9">@item.RequestRedirect.Path.ReplacePrefixMatch</GridCol>
+                                            <GridCol Span="9">@item.RequestRedirect.Path.ReplaceFullPath</GridCol>
+                                        </GridRow>
+                                    </PropertySimpleView>
+                                    <PropertySimpleView Title="@L["StatusCode"]" Item="@item.RequestRedirect.StatusCode"
+                                                        ExplainField="httpRoute.spec.rules.filters.requestRedirect.statusCode">
+                                    </PropertySimpleView>
+
+                                </HTable>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["RequestHeaderModifier"]" Item="@item.RequestHeaderModifier"
+                                                ExplainField="httpRoute.spec.rules.filters.requestHeaderModifier">
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">Set</GridCol>
+                                    <GridCol Span="9">Add</GridCol>
+                                    <GridCol Span="9">Remove</GridCol>
+                                </GridRow>
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">
+                                        @if (item.RequestHeaderModifier.Set is { Count: > 0 })
+                                        {
+                                            @foreach (var set in item.RequestHeaderModifier.Set)
+                                            {
+                                                <ColorfulTag>@($"{set.Name}={set.Value}")</ColorfulTag>
+                                            }
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="9">
+                                        @if (item.RequestHeaderModifier.Add is { Count: > 0 })
+                                        {
+                                            @foreach (var add in item.RequestHeaderModifier.Add)
+                                            {
+                                                <ColorfulTag>@($"{add.Name}={add.Value}")</ColorfulTag>
+                                            }
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="9">
+                                        @if (item.RequestHeaderModifier.Remove is { Count: > 0 })
+                                        {
+                                            @foreach (var remove in item.RequestHeaderModifier.Remove)
+                                            {
+                                                <ColorfulTag>@remove</ColorfulTag>
+                                            }
+                                        }
+                                    </GridCol>
+                                </GridRow>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["ResponseHeaderModifier"]" Item="@item.ResponseHeaderModifier"
+                                                ExplainField="httpRoute.spec.rules.filters.responseHeaderModifier">
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">Set</GridCol>
+                                    <GridCol Span="9">Add</GridCol>
+                                    <GridCol Span="9">Remove</GridCol>
+                                </GridRow>
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">
+                                        @if (item.ResponseHeaderModifier.Set is { Count: > 0 })
+                                        {
+                                            @foreach (var set in item.ResponseHeaderModifier.Set)
+                                            {
+                                                <ColorfulTag>@($"{set.Name}={set.Value}")</ColorfulTag>
+                                            }
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="9">
+                                        @if (item.ResponseHeaderModifier.Add is { Count: > 0 })
+                                        {
+                                            @foreach (var add in item.ResponseHeaderModifier.Add)
+                                            {
+                                                <ColorfulTag>@($"{add.Name}={add.Value}")</ColorfulTag>
+                                            }
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="9">
+                                        @if (item.ResponseHeaderModifier.Remove is { Count: > 0 })
+                                        {
+                                            @foreach (var remove in item.ResponseHeaderModifier.Remove)
+                                            {
+                                                <ColorfulTag>@remove</ColorfulTag>
+                                            }
+                                        }
+                                    </GridCol>
+                                </GridRow>
                             </PropertySimpleView>
                         </HTable>
                     }
+                </PropertySimpleView>
+                <PropertySimpleView Title="@L["SessionPersistence"]" Item="@rule.SessionPersistence"
+                                    ExplainField="httpRoute.spec.rules.sessionPersistence">
+                </PropertySimpleView>
+                <PropertySimpleView Title="@L["Timeouts"]" Item="@rule.Timeouts"
+                                    ExplainField="httpRoute.spec.rules.timeouts">
+                    <Tag>@L["BackendRequest"]=@rule.Timeouts.BackendRequest</Tag>
+                    <Tag>@L["Request"]=@rule.Timeouts.Request</Tag>
                 </PropertySimpleView>
             </HTable>
         }
