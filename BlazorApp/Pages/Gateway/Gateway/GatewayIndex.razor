@@ -47,7 +47,7 @@
                         {
                             foreach (var address in context.Status.Addresses)
                             {
-                                @($"{address.Type}:{address.Value}")
+                                <ColorfulTag>@address.Value</ColorfulTag>
                             }
                         }
 
