@@ -1,0 +1,69 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-filter-url-rewrite-part
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - path.rewrite.lvh.me
+  rules:
+    - matches:
+        - path:
+            value: "/get"
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /replace
+      backendRefs:
+        - name: backend
+          port: 3000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-filter-url-rewrite-full
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - path.rewrite.lvh.me
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/get/origin/path"
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplaceFullPath
+              replaceFullPath: /force/replace/fullpath
+      backendRefs:
+        - name: backend
+          port: 3000
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-filter-url-rewrite-hostname
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - path.rewrite.lvh.me
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/hostname"
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            hostname: "envoygateway.io"
+      backendRefs:
+        - name: backend
+          port: 3000

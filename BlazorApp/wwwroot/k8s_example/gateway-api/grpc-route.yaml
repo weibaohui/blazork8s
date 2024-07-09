@@ -1,36 +1,3 @@
-#https://gateway.envoyproxy.io/v0.3.0/user/quickstart/
-#apiVersion: gateway.networking.k8s.io/v1
-#kind: GatewayClass
-#metadata:
-#  name: example-gateway-class
-#  labels:
-#    example: grpc-routing
-#spec:
-#  controllerName: gateway.envoyproxy.io/gatewayclass-controller
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: GatewayClass
-metadata:
-  name: example-gateway-class
-  labels:
-    example: grpc-routing
-spec:
-  controllerName: istio.io/gateway-controller
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
-  name: example-gateway
-  labels:
-    example: grpc-routing
-  annotations:
-    networking.istio.io/service-type: NodePort
-spec:
-  gatewayClassName: istio
-  listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -81,9 +48,9 @@ metadata:
     example: grpc-routing
 spec:
   parentRefs:
-    - name: example-gateway
+    - name: eg
   hostnames:
-    - "grpc-example.com"
+    - "grpc-example.lvh.me"
   rules:
     - backendRefs:
         - group: ""
@@ -91,3 +58,62 @@ spec:
           name: yages
           port: 9000
           weight: 1
+---
+#grpcurl -plaintext -authority=grpc-example.lvh.me 127.0.0.1:80 yages.Echo/Ping
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: yages-matches
+  labels:
+    example: grpc-routing
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - "grpc-example.matches.lvh.me"
+  rules:
+    - matches:
+        - method:
+            method: ServerReflectionInfo
+            service: grpc.reflection.v1alpha.ServerReflection
+        - method:
+            method: Ping
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: yages
+          port: 9000
+          weight: 1
+---
+#grpcurl -plaintext -authority=grpc-example.matches.lvh.me 127.0.0.1:80 yages.Echo/Ping
+#grpcurl -plaintext -authority=grpc-example.matches.lvh.me 127.0.0.1:80 yages.Echo/ServerReflectionInfo
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: yages-regular-expression
+  labels:
+    example: grpc-routing
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - "grpc-example.regular.lvh.me"
+  rules:
+    - matches:
+        - method:
+            method: ServerReflectionInfo
+            service: grpc.reflection.v1alpha.ServerReflection
+        - method:
+            method: "Pin.+"
+            service: ".*.Echo"
+            type: RegularExpression
+      backendRefs:
+        - group: ""
+          kind: Service
+          name: yages
+          port: 9000
+          weight: 1
+---
+#grpcurl -plaintext -authority=grpc-example.regular.lvh.me 127.0.0.1:80 yages.Echo/Ping

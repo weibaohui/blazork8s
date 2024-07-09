@@ -1,0 +1,78 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-to-https-filter-redirect
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - redirect.example   #curl -L -vvv --header "Host: redirect.example" "http://www.lvh.me/get"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+            hostname: www.example.com
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tls-redirect
+spec:
+  parentRefs:
+    - name: eg
+      sectionName: https
+  hostnames:
+    # - "*.example.com" # catch all hostnames
+    - "www.example.com"
+  rules:
+    - filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: backend-path-prefix-https
+spec:
+  parentRefs:
+    - name: eg
+      sectionName: https
+  hostnames:
+    - "www.example.me"
+  rules:
+    - backendRefs:
+        - group: ""
+          kind: Service
+          name: backend
+          port: 3000
+          weight: 1
+      matches:
+        - path:
+            type: PathPrefix
+            value: /https
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-filter-path-redirect
+spec:
+  parentRefs:
+    - name: eg
+  hostnames:
+    - redirect.lvh.me
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /get
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            path:
+              type: ReplaceFullPath
+              replaceFullPath: /status/200
+            statusCode: 302
