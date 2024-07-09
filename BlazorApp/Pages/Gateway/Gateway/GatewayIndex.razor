@@ -4,7 +4,6 @@
 @using BlazorApp.Pages.Common.Metadata
 @using Entity.Crd.Gateway
 @using k8s.Models
-@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Gateway>
 @if (TableData.PagedItems != null)
 {
@@ -53,40 +52,7 @@
 
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Listener"] TData="string">
-                        @if (context.Status.Listeners is { Count: > 0 })
-                        {
-                            <GridRow Class="grid-table">
-                                <GridCol Span="4">@L["Name"]</GridCol>
-                                <GridCol Span="4">@L["Attached"]</GridCol>
-                                <GridCol Span="4">@L["Support"]</GridCol>
-                                <GridCol Span="12">@L["Condition"]</GridCol>
-                            </GridRow>
-                            foreach (var listener in context.Status.Listeners)
-                            {
-                                <GridRow Class="grid-table">
-                                    <GridCol Span="4">
-                                        <ColorfulTag>@listener.Name</ColorfulTag>
-                                    </GridCol>
-                                    <GridCol Span="4">
-                                        <ColorfulTag>@listener.AttachedRoutes</ColorfulTag>
-                                    </GridCol>
-                                    <GridCol Span="4">
-                                        @if (listener.SupportedKinds is { Count: > 0 })
-                                        {
-                                            foreach (var kind in listener.SupportedKinds)
-                                            {
-                                                <ColorfulTag>@kind.Kind</ColorfulTag>
-                                            }
-                                        }
-                                    </GridCol>
-                                    <GridCol Span="12">
-                                        <ConditionsTagView
-                                            Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
-                                        </ConditionsTagView>
-                                    </GridCol>
-                                </GridRow>
-                            }
-                        }
+                        <ListenerStatusView Status="@context.Status.Listeners"></ListenerStatusView>
                     </AntDesign.Column>
 
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">

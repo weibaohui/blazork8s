@@ -133,33 +133,7 @@
 
         <PropertySimpleView Title="@L["Listeners"]" Item="@Gateway.Status.Listeners"
                             ExplainField="gateway.status.listeners">
-            <GridRow Class="grid-table">
-                <GridCol Span="4">@L["Name"]</GridCol>
-                <GridCol Span="4">@L["Support"]</GridCol>
-                <GridCol Span="4">@L["Attached"]</GridCol>
-                <GridCol Span="12">@L["Conditions"]</GridCol>
-            </GridRow>
-            @foreach (var listener in Gateway.Status.Listeners)
-            {
-                <GridRow Class="grid-table">
-                    <GridCol Span="4">@listener.Name</GridCol>
-                    <GridCol Span="4">
-                        @if (listener.SupportedKinds is { Count: > 0 })
-                        {
-                            foreach (var kind in listener.SupportedKinds)
-                            {
-                                <ColorfulTag>@kind.Kind</ColorfulTag>
-                            }
-                        }
-                    </GridCol>
-                    <GridCol Span="4">@listener.AttachedRoutes</GridCol>
-                    <GridCol Span="12">
-                        <ConditionsTagView
-                            Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
-                        </ConditionsTagView>
-                    </GridCol>
-                </GridRow>
-            }
+            <ListenerStatusView Status="@Gateway.Status.Listeners"></ListenerStatusView>
         </PropertySimpleView>
     </HTable>
     <MiniEventListView Uid="@Gateway.Metadata.Uid"></MiniEventListView>
