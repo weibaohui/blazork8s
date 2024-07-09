@@ -1,6 +1,7 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Gateway.Share
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1GRPCRoute>
 @if (GrpcRoute != null)
 {
@@ -13,7 +14,7 @@
     </HTable>
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Status" Item="@GrpcRoute.Status" ExplainField="grpcRoute.status"></PropertySimpleView>
+        <RouteParentStatusView Parents="@GrpcRoute.Status.Parents"></RouteParentStatusView>
     </HTable>
     <MiniEventListView Uid="@GrpcRoute.Metadata.Uid"></MiniEventListView>
 }

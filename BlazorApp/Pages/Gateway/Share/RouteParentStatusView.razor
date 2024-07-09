@@ -1,0 +1,58 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using k8s.Models
+@using Mapster
+@inherits BlazorApp.Pages.Common.PageBase
+
+@if (Parents is { Count: > 0 })
+{
+    foreach (var parent in Parents)
+    {
+        <BadgeRibbon Text="@parent.ControllerName" Placement="start">
+            <Card Bordered>
+                <HTable Title="" Bordered Column="1">
+                    <PropertySimpleView Title="@L["Parent"]" Item="@parent.ParentRef">
+                        <HTable Title="" Bordered Column="1">
+                            <PropertySimpleView Title="@L["Ref"]" Item="@parent.ParentRef.Name">
+                                <RefView FullView="true"
+                                         Ref="@KubeHelper.GetObjectRef(parent.ParentRef.Kind, parent.ParentRef.Namespace, parent.ParentRef.Name)">
+                                </RefView>
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Group"]" Item="@parent.ParentRef.Group"
+                                                ExplainField="httpRoute.status.parents.parentRef.group">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Kind"]" Item="@parent.ParentRef.Kind"
+                                                ExplainField="httpRoute.status.parents.parentRef.kind">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Namespace"]" Item="@parent.ParentRef.Namespace"
+                                                ExplainField="httpRoute.status.parents.parentRef.namespace">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Name"]" Item="@parent.ParentRef.Name"
+                                                ExplainField="httpRoute.status.parents.parentRef.name">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["SectionName"]" Item="@parent.ParentRef.SectionName"
+                                                ExplainField="httpRoute.status.parents.parentRef.sectionName">
+                            </PropertySimpleView>
+                            <PropertySimpleView Title="@L["Port"]" Item="@parent.ParentRef.Port"
+                                                ExplainField="httpRoute.status.parents.parentRef.port">
+                            </PropertySimpleView>
+                        </HTable>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["ControllerName"]" Item="@parent.ControllerName"
+                                        ExplainField="httpRoute.status.parents.controllerName">
+                    </PropertySimpleView>
+
+                    <PropertySimpleView Title="@L["Conditions"]" Item="@parent.Conditions"
+                                        ExplainField="httpRoute.status.parents.conditions">
+                        <ConditionsTagView
+                            Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
+                        </ConditionsTagView>
+                    </PropertySimpleView>
+
+                </HTable>
+            </Card>
+        </BadgeRibbon>
+    }
+}
