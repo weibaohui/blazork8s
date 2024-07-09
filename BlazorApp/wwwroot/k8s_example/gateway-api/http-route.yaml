@@ -1,4 +1,4 @@
-
+#https://gateway.envoyproxy.io/v0.3.0/user/quickstart/
 ---
 kind: GatewayClass
 apiVersion: gateway.networking.k8s.io/v1
