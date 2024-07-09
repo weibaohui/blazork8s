@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Gateway.Share
 @using Entity.Crd.Gateway
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Alpha2TLSRoute>
@@ -35,6 +36,11 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
+                    <AntDesign.Column Title=@L["Gateway"] TData="string" Width="150px">
+                        <ParentRefSimpleView ns="@context.Namespace()"
+                                             ParentRefs="@context.Spec.ParentRefs">
+                        </ParentRefSimpleView>
+                    </AntDesign.Column>
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>

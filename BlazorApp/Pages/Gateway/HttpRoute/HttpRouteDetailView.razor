@@ -93,6 +93,37 @@
                             <PropertySimpleView Title="@L["Type"]" Item="@item.Type"
                                                 ExplainField="httpRoute.spec.rules.filters.type">
                             </PropertySimpleView>
+                            <PropertySimpleView Title="@L["URLRewrite"]" Item="@item.URLRewrite"
+                                                ExplainField="httpRoute.spec.rules.filters.uRLRewrite">
+
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">Hostname</GridCol>
+                                    <GridCol Span="6">Type</GridCol>
+                                    <GridCol Span="6">PrefixMatch</GridCol>
+                                    <GridCol Span="6">Path</GridCol>
+                                </GridRow>
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="6">@item.URLRewrite.Hostname</GridCol>
+                                    <GridCol Span="6">
+                                        @if (item.URLRewrite.Path is not null)
+                                        {
+                                            @item.URLRewrite.Path.Type
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="6">
+                                        @if (item.URLRewrite.Path is not null)
+                                        {
+                                            @item.URLRewrite.Path.ReplacePrefixMatch
+                                        }
+                                    </GridCol>
+                                    <GridCol Span="6">
+                                        @if (item.URLRewrite.Path is not null)
+                                        {
+                                            @item.URLRewrite.Path.ReplaceFullPath
+                                        }
+                                    </GridCol>
+                                </GridRow>
+                            </PropertySimpleView>
                             <PropertySimpleView Title="@L["ExtensionRef"]" Item="@item.ExtensionRef"
                                                 ExplainField="httpRoute.spec.rules.filters.extensionRef">
 

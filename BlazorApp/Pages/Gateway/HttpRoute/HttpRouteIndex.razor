@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Pages.Gateway.Share
 @using BlazorApp.Utils
 @using Entity.Crd.Gateway
 @using k8s.Models
@@ -38,15 +39,9 @@
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
                     <AntDesign.Column Title=@L["Gateway"] TData="string" Width="150px">
-                        @if (context.Spec.ParentRefs is { Count: > 0 })
-                        {
-                            foreach (var parent in context.Spec.ParentRefs)
-                            {
-                                <RefView OnlyName
-                                         Ref="@KubeHelper.GetObjectRef(parent.Kind, context.Metadata.Namespace(), parent.Name)">
-                                </RefView>
-                            }
-                        }
+                        <ParentRefSimpleView ns="@context.Namespace()"
+                                             ParentRefs="@context.Spec.ParentRefs">
+                        </ParentRefSimpleView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Hostname"] TData="string" Width="150px">
                         @if (context.Spec.Hostnames is { Count: > 0 })
@@ -79,18 +74,21 @@
                             </GridRow>
                             foreach (var rule in context.Spec.Rules)
                             {
-                                foreach (var backendRef in rule.BackendRefs)
+                                if (rule.BackendRefs is { Count: > 0 })
                                 {
-                                    <GridRow Class="grid-table">
-                                        <GridCol Span="4">@backendRef.Weight</GridCol>
-                                        <GridCol Span="10">@backendRef.Name</GridCol>
-                                        <GridCol Span="4">@backendRef.Port</GridCol>
-                                        <GridCol Span="6">
-                                            <RefView
-                                                Ref="@KubeHelper.GetObjectRef(backendRef.Kind, context.Metadata.Namespace(), backendRef.Name)">
-                                            </RefView>
-                                        </GridCol>
-                                    </GridRow>
+                                    foreach (var backendRef in rule.BackendRefs)
+                                    {
+                                        <GridRow Class="grid-table">
+                                            <GridCol Span="4">@backendRef.Weight</GridCol>
+                                            <GridCol Span="10">@backendRef.Name</GridCol>
+                                            <GridCol Span="4">@backendRef.Port</GridCol>
+                                            <GridCol Span="6">
+                                                <RefView
+                                                    Ref="@KubeHelper.GetObjectRef(backendRef.Kind, context.Metadata.Namespace(), backendRef.Name)">
+                                                </RefView>
+                                            </GridCol>
+                                        </GridRow>
+                                    }
                                 }
                             }
                         }

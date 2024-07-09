@@ -1,0 +1,22 @@
+@using BlazorApp.Pages.Common
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using Entity.Crd.Gateway
+@if (ParentRefs is { Count: > 0 })
+{
+    foreach (var parent in ParentRefs)
+    {
+        <RefView OnlyName
+                 Ref="@KubeHelper.GetObjectRef(parent.Kind, ns, parent.Name)">
+        </RefView>
+        @if (parent.SectionName is not null)
+        {
+            <ColorfulTag>@parent.SectionName</ColorfulTag>
+        }
+    }
+}
+
+@code {
+    [Parameter] public string ns { get; set; }
+    [Parameter] public IList<ParentReference> ParentRefs { get; set; }
+}
