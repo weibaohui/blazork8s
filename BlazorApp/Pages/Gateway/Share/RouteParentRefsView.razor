@@ -1,0 +1,41 @@
+@using BlazorApp.Pages.Common.Html.HTable
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@inherits  BlazorApp.Pages.Common.PageBase
+@if (ParentRefs is { Count: > 0 })
+{
+    @foreach (var parent in ParentRefs)
+    {
+        <BadgeRibbon Text="@parent.Name" Placement="start">
+            <Card Bordered>
+                <HTable Title="" Bordered Column="1">
+
+                    <PropertySimpleView Title="@L["Ref"]" Item="@parent.Name">
+                        <RefView FullView="true"
+                                 Ref="@KubeHelper.GetObjectRef(parent.Kind, parent.Namespace, parent.Name)">
+                        </RefView>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["Group"]" Item="@parent.Group"
+                                        ExplainField=@(ExplainFieldPrefix + ".group")>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["Kind"]" Item="@parent.Kind"
+                                        ExplainField=@(ExplainFieldPrefix + ".kind")>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["Namespace"]" Item="@parent.Namespace"
+                                        ExplainField=@(ExplainFieldPrefix + ".namespace")>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["Name"]" Item="@parent.Name"
+                                        ExplainField=@(ExplainFieldPrefix + ".name")>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["SectionName"]" Item="@parent.SectionName"
+                                        ExplainField=@(ExplainFieldPrefix + ".sectionName")>
+                    </PropertySimpleView>
+                    <PropertySimpleView Title="@L["Port"]" Item="@parent.Port"
+                                        ExplainField=@(ExplainFieldPrefix + ".port")>
+                    </PropertySimpleView>
+
+                </HTable>
+            </Card>
+        </BadgeRibbon>
+    }
+}

@@ -21,31 +21,31 @@
                                 </RefView>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["Group"]" Item="@parent.ParentRef.Group"
-                                                ExplainField="httpRoute.status.parents.parentRef.group">
+                                                ExplainField=@(ExplainFieldPrefix + ".status.parents.parentRef.group")>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["Kind"]" Item="@parent.ParentRef.Kind"
-                                                ExplainField="httpRoute.status.parents.parentRef.kind">
+                                                ExplainField=@(ExplainFieldPrefix + ".status.parents.parentRef.kind")>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["Namespace"]" Item="@parent.ParentRef.Namespace"
-                                                ExplainField="httpRoute.status.parents.parentRef.namespace">
+                                                ExplainField=@(ExplainFieldPrefix + ".status.parents.parentRef.namespace")>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["Name"]" Item="@parent.ParentRef.Name"
-                                                ExplainField="httpRoute.status.parents.parentRef.name">
+                                                ExplainField=@(ExplainFieldPrefix + ".status.parents.parentRef.name")>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["SectionName"]" Item="@parent.ParentRef.SectionName"
-                                                ExplainField="httpRoute.status.parents.parentRef.sectionName">
+                                                ExplainField=@(ExplainFieldPrefix + ".status.parents.parentRef.sectionName")>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["Port"]" Item="@parent.ParentRef.Port"
-                                                ExplainField="httpRoute.status.parents.parentRef.port">
+                                                ExplainField=@(ExplainFieldPrefix + ".status.parents.parentRef.port")>
                             </PropertySimpleView>
                         </HTable>
                     </PropertySimpleView>
                     <PropertySimpleView Title="@L["ControllerName"]" Item="@parent.ControllerName"
-                                        ExplainField="httpRoute.status.parents.controllerName">
+                                        ExplainField=@(ExplainFieldPrefix + ".status.parents.controllerName")>
                     </PropertySimpleView>
 
                     <PropertySimpleView Title="@L["Conditions"]" Item="@parent.Conditions"
-                                        ExplainField="httpRoute.status.parents.conditions">
+                                        ExplainField=@(ExplainFieldPrefix + ".status.parents.conditions")>
                         <ConditionsTagView
                             Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
                         </ConditionsTagView>

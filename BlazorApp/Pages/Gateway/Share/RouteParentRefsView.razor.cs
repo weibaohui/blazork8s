@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Components;
 
 namespace BlazorApp.Pages.Gateway.Share;
 
-public partial class RouteParentStatusView : PageBase
+public partial class RouteParentRefsView : PageBase
 {
-    [Parameter] public IList<RouteParentStatus> Parents { get; set; }
+    [Parameter] public IList<ParentReference> ParentRefs { get; set; }
     [Parameter] public string ExplainFieldPrefix { get; set; }
 }

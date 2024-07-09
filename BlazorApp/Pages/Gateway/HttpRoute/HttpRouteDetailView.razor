@@ -19,45 +19,10 @@
     </HTable>
 
 
-    @if (HttpRoute.Spec.ParentRefs is { Count: > 0 })
-    {
-        <Divider Orientation="left" Style="font-weight:bold">@L["Parent"]</Divider>
-
-        @foreach (var parent in HttpRoute.Spec.ParentRefs)
-        {
-            <BadgeRibbon Text="@parent.Name" Placement="start">
-                <Card Bordered>
-                    <HTable Title="" Bordered Column="1">
-
-                        <PropertySimpleView Title="@L["Ref"]" Item="@parent.Name">
-                            <RefView FullView="true"
-                                     Ref="@KubeHelper.GetObjectRef(parent.Kind, parent.Namespace, parent.Name)">
-                            </RefView>
-                        </PropertySimpleView>
-                        <PropertySimpleView Title="@L["Group"]" Item="@parent.Group"
-                                            ExplainField="httpRoute.status.parents.parentRef.group">
-                        </PropertySimpleView>
-                        <PropertySimpleView Title="@L["Kind"]" Item="@parent.Kind"
-                                            ExplainField="httpRoute.status.parents.parentRef.kind">
-                        </PropertySimpleView>
-                        <PropertySimpleView Title="@L["Namespace"]" Item="@parent.Namespace"
-                                            ExplainField="httpRoute.status.parents.parentRef.namespace">
-                        </PropertySimpleView>
-                        <PropertySimpleView Title="@L["Name"]" Item="@parent.Name"
-                                            ExplainField="httpRoute.status.parents.parentRef.name">
-                        </PropertySimpleView>
-                        <PropertySimpleView Title="@L["SectionName"]" Item="@parent.SectionName"
-                                            ExplainField="httpRoute.status.parents.parentRef.sectionName">
-                        </PropertySimpleView>
-                        <PropertySimpleView Title="@L["Port"]" Item="@parent.Port"
-                                            ExplainField="httpRoute.status.parents.parentRef.port">
-                        </PropertySimpleView>
-
-                    </HTable>
-                </Card>
-            </BadgeRibbon>
-        }
-    }
+    <Divider Orientation="left" Style="font-weight:bold">@L["Parent"]</Divider>
+    <RouteParentRefsView ParentRefs="HttpRoute.Spec.ParentRefs"
+                         ExplainFieldPrefix="httpRoute.spec.parentRefs">
+    </RouteParentRefsView>
 
     @if (HttpRoute.Spec.Rules is { Count: > 0 })
     {
@@ -285,7 +250,7 @@
                     }
                 </PropertySimpleView>
                 <PropertySimpleView Title="@L["SessionPersistence"]" Item="@rule.SessionPersistence"
-                                    ExplainField="httpRoute.spec.rules.sessionPersistence">
+                                    ExplainField="httpRoute.spec.rules.sessionPersistence" ShowInJson>
                 </PropertySimpleView>
                 <PropertySimpleView Title="@L["Timeouts"]" Item="@rule.Timeouts"
                                     ExplainField="httpRoute.spec.rules.timeouts">
@@ -297,6 +262,6 @@
     }
 
     <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <RouteParentStatusView Parents="@HttpRoute.Status.Parents"></RouteParentStatusView>
+    <RouteParentStatusView Parents="@HttpRoute.Status.Parents" ExplainFieldPrefix="httpRoute"></RouteParentStatusView>
     <MiniEventListView Uid="@HttpRoute.Metadata.Uid"></MiniEventListView>
 }
