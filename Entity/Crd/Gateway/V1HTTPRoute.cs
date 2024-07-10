@@ -164,21 +164,6 @@ public class HTTPHeader
     [JsonPropertyName("value")] public string Value { get; set; }
 }
 
-public class HTTPRouteHost
-{
-    [JsonPropertyName("hostname")] public string Hostname { get; set; }
-
-    [JsonPropertyName("pathType")] public string PathType { get; set; }
-
-    [JsonPropertyName("path")] public string Path { get; set; }
-
-    [JsonPropertyName("pathExact")] public string PathExact { get; set; }
-
-    [JsonPropertyName("pathPrefix")] public string PathPrefix { get; set; }
-
-    [JsonPropertyName("pathRegex")] public string PathRegex { get; set; }
-}
-
 public class HTTPBackendRef : BackendRefWithWeight
 {
     [JsonPropertyName("filters")] public List<HTTPRouteFilter> Filters { get; set; }
