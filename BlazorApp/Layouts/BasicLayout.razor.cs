@@ -119,9 +119,9 @@ public partial class BasicLayout : LayoutComponentBase
             GetMenuItemWithPath(L["GRPCRoute"], "gateway", "/Gateway/GRPCRoute"),
             GetMenuItemWithPath(L["TCPRoute"], "gateway", "/Gateway/TcpRoute"),
             GetMenuItemWithPath(L["UDPRoute"], "gateway", "/Gateway/UdpRoute"),
-            GetMenuItemWithPath(L["TLSRoute"], "gateway", "/Gateway/TlsRoute"),
+            // GetMenuItemWithPath(L["TLSRoute"], "gateway", "/Gateway/TlsRoute"),
             GetMenuItemWithPath(L["TLSPolicy"], "gateway", "/Gateway/BackendTLSPolicy"),
-            GetMenuItemWithPath(L["LBPolicy"], "gateway", "/Gateway/BackendLBPolicy"),
+            // GetMenuItemWithPath(L["LBPolicy"], "gateway", "/Gateway/BackendLBPolicy"),
             GetMenuItemWithPath(L["ReferenceGrant"], "gateway", "/Gateway/ReferenceGrant"),
         };
     }
