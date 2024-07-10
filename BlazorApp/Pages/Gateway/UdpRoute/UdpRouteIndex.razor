@@ -5,6 +5,7 @@
 @using BlazorApp.Pages.Gateway.Share
 @using Entity.Crd.Gateway
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Alpha2UDPRoute>
 @if (TableData.PagedItems != null)
 {
@@ -37,9 +38,35 @@
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
                     <AntDesign.Column Title=@L["Gateway"] TData="string" Width="150px">
-                        <ParentRefSimpleView ns="@context.Namespace()"
+                        <ParentRefSimpleView Ns="@context.Namespace()"
                                              ParentRefs="@context.Spec.ParentRefs">
                         </ParentRefSimpleView>
+                    </AntDesign.Column>
+                    <AntDesign.Column Title=@L["Rules"] TData="string" Width="420px">
+                        @if (context.Spec.Rules is { Count: > 0 })
+                        {
+                            @foreach (var rule in context.Spec.Rules)
+                            {
+                                <BackendRefsSimpleView BackendRefWithWeight="@rule.BackendRefs"
+                                                       ExplainField="udpRoute.spec.rules.backendRefs"
+                                                       Ns="@context.Metadata.Namespace()">
+                                </BackendRefsSimpleView>
+                            }
+                        }
+                    </AntDesign.Column>
+
+                    <AntDesign.Column Title=@L["Condition"] TData="string">
+                        @if (context.Status is not null && context.Status.Parents is { Count: > 0 })
+                        {
+                            @foreach (var parent in context.Status.Parents)
+                            {
+                                <ColorfulTag>@parent.ParentRef.Name</ColorfulTag>
+                                <ConditionsTagView
+                                    Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
+                                </ConditionsTagView>
+                            }
+                        }
+
                     </AntDesign.Column>
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>

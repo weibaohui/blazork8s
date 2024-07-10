@@ -1,0 +1,20 @@
+@using BlazorApp.Pages.Common.Metadata
+@using Entity.Crd.Gateway
+@inherits BlazorApp.Pages.Common.PageBase
+@if (BackendRefWithWeight is { Count: > 0 })
+{
+    <PropertySimpleView Title="@L["BackendRefs"]" Item="@BackendRefWithWeight"
+                        ExplainField="@ExplainField">
+        <BackendRefsSimpleView BackendRefWithWeight="@BackendRefWithWeight"
+                               Ns="@Ns"
+                               ExplainField="@ExplainField">
+        </BackendRefsSimpleView>
+    </PropertySimpleView>
+}
+
+@code {
+    [Parameter] public IList<BackendRefWithWeight> BackendRefWithWeight { get; set; }
+    [Parameter] public string Ns { get; set; }
+    [Parameter] public string ExplainField { get; set; }
+
+}

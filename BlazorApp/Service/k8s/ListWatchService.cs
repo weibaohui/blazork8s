@@ -71,6 +71,7 @@ public class ListWatchService
         WatchHttpRoute();
         WatchGrpcRoute();
         WatchTcpRoute();
+        WatchUdpRoute();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
@@ -405,5 +406,13 @@ public class ListWatchService
             .ListClusterCustomObjectWithHttpMessagesAsync<V1Alpha2TCPRouteList>
                 ("gateway.networking.k8s.io", "v1alpha2", "tcproutes", watch: true);
         await new Watcher<V1Alpha2TCPRoute, V1Alpha2TCPRouteList>(_ctx).Watch(listResp);
+    }
+
+    private async Task WatchUdpRoute()
+    {
+        var listResp = _kubeService.Client().CustomObjects
+            .ListClusterCustomObjectWithHttpMessagesAsync<V1Alpha2UDPRouteList>
+                ("gateway.networking.k8s.io", "v1alpha2", "udproutes", watch: true);
+        await new Watcher<V1Alpha2UDPRoute, V1Alpha2UDPRouteList>(_ctx).Watch(listResp);
     }
 }

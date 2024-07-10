@@ -4,7 +4,9 @@
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Gateway.Share
 @using BlazorApp.Utils
+@using Entity.Crd.Gateway
 @using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1HTTPRoute>
 @if (HttpRoute != null)
 {
@@ -259,35 +261,17 @@
                         </HTable>
                     }
                 </PropertySimpleView>
-                <PropertySimpleView Title="@L["BackendRefs"]" Item="@rule.BackendRefs"
-                                    ExplainField="httpRoute.spec.rules.backendRefs">
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">Weight</GridCol>
-                        <GridCol Span="10">Name</GridCol>
-                        <GridCol Span="4">Port</GridCol>
-                        <GridCol Span="6">Ref</GridCol>
-                    </GridRow>
-                    @foreach (var backendRef in rule.BackendRefs)
-                    {
-                        <GridRow Class="grid-table">
-                            <GridCol Span="4">@backendRef.Weight</GridCol>
-                            <GridCol Span="10">@backendRef.Name</GridCol>
-                            <GridCol Span="4">@backendRef.Port</GridCol>
-                            <GridCol Span="6">
-                                <RefView
-                                    Ref="@KubeHelper.GetObjectRef(backendRef.Kind, HttpRoute.Metadata.Namespace(), backendRef.Name)">
-                                </RefView>
-                            </GridCol>
-                        </GridRow>
-                    }
-                </PropertySimpleView>
+                <BackendRefsView BackendRefWithWeight="@(rule.BackendRefs.Adapt<IList<BackendRefWithWeight>>())"
+                                 ExplainField="httpRoute.spec.rules.backendRefs"
+                                 Ns="@HttpRoute.Metadata.Namespace()">
+                </BackendRefsView>
                 <PropertySimpleView Title="@L["SessionPersistence"]" Item="@rule.SessionPersistence"
                                     ExplainField="httpRoute.spec.rules.sessionPersistence" ShowInJson>
                 </PropertySimpleView>
                 <PropertySimpleView Title="@L["Timeouts"]" Item="@rule.Timeouts"
                                     ExplainField="httpRoute.spec.rules.timeouts">
-                    <Tag>@L["BackendRequest"]=@rule.Timeouts.BackendRequest</Tag>
-                    <Tag>@L["Request"]=@rule.Timeouts.Request</Tag>
+                    <Tag>BackendRequest=@rule.Timeouts.BackendRequest</Tag>
+                    <Tag>Request=@rule.Timeouts.Request</Tag>
                 </PropertySimpleView>
             </HTable>
         }

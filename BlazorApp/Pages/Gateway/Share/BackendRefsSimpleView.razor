@@ -1,0 +1,33 @@
+@using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
+@using Entity.Crd.Gateway
+@inherits BlazorApp.Pages.Common.PageBase
+@if (BackendRefWithWeight is { Count: > 0 })
+{
+    <GridRow Class="grid-table">
+        <GridCol Span="4">Weight</GridCol>
+        <GridCol Span="10">Name</GridCol>
+        <GridCol Span="4">Port</GridCol>
+        <GridCol Span="6">Ref</GridCol>
+    </GridRow>
+    @foreach (var backendRef in BackendRefWithWeight)
+    {
+        <GridRow Class="grid-table">
+            <GridCol Span="4">@backendRef.Weight</GridCol>
+            <GridCol Span="10">@backendRef.Name</GridCol>
+            <GridCol Span="4">@backendRef.Port</GridCol>
+            <GridCol Span="6">
+                <RefView
+                    Ref="@KubeHelper.GetObjectRef(backendRef.Kind, Ns, backendRef.Name)">
+                </RefView>
+            </GridCol>
+        </GridRow>
+    }
+}
+
+@code {
+    [Parameter] public IList<BackendRefWithWeight> BackendRefWithWeight { get; set; }
+    [Parameter] public string Ns { get; set; }
+    [Parameter] public string ExplainField { get; set; }
+
+}

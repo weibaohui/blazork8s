@@ -40,22 +40,7 @@ public class TCPRouteSpec
 
 public class TCPRouteRule
 {
-    [JsonPropertyName("backendRefs")] public List<TCPBackendRef> BackendRefs { get; set; }
-}
-
-public class TCPBackendRef
-{
-    [JsonPropertyName("name")] public string Name { get; set; }
-
-    [JsonPropertyName("kind")] public string Kind { get; set; }
-
-    [JsonPropertyName("group")] public string Group { get; set; }
-
-    [JsonPropertyName("namespace")] public string Namespace { get; set; }
-
-    [JsonPropertyName("port")] public int Port { get; set; }
-
-    [JsonPropertyName("weight")] public int Weight { get; set; }
+    [JsonPropertyName("backendRefs")] public List<BackendRefWithWeight> BackendRefs { get; set; }
 }
 
 public class TCPRouteStatus

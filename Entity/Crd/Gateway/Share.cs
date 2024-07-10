@@ -71,3 +71,8 @@ public class BackendObjectReference
     [JsonPropertyName("name")] public string Name { get; set; }
     [JsonPropertyName("port")] public int? Port { get; set; }
 }
+
+public class BackendRefWithWeight : BackendObjectReference
+{
+    [JsonPropertyName("weight")] public int Weight { get; set; }
+}

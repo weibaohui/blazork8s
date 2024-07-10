@@ -40,22 +40,7 @@ public class UDPRouteSpec
 
 public class UDPRouteRule
 {
-    [JsonPropertyName("backendRefs")] public List<UDPBackendRef> BackendRefs { get; set; }
-}
-
-public class UDPBackendRef
-{
-    [JsonPropertyName("name")] public string Name { get; set; }
-
-    [JsonPropertyName("kind")] public string Kind { get; set; }
-
-    [JsonPropertyName("group")] public string Group { get; set; }
-
-    [JsonPropertyName("namespace")] public string Namespace { get; set; }
-
-    [JsonPropertyName("port")] public int Port { get; set; }
-
-    [JsonPropertyName("weight")] public int Weight { get; set; }
+    [JsonPropertyName("backendRefs")] public List<BackendRefWithWeight> BackendRefs { get; set; }
 }
 
 public class UDPRouteStatus

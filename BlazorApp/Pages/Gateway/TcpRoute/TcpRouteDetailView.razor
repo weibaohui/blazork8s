@@ -2,7 +2,6 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Gateway.Share
-@using BlazorApp.Utils
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha2TCPRoute>
 @if (TcpRoute != null)
@@ -10,10 +9,7 @@
     <TcpRouteAction Item="TcpRoute" MenuMode="MenuMode.Horizontal"></TcpRouteAction>
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="TcpRoute.Metadata" ExplainFieldPrefix="tcpRoute"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
-    <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@TcpRoute.Spec" ExplainField="tcpRoute.spec"></PropertySimpleView>
-    </HTable>
+
     <Divider Orientation="left" Style="font-weight:bold">@L["Parent"]</Divider>
     <RouteParentRefsView ParentRefs="TcpRoute.Spec.ParentRefs"
                          ExplainFieldPrefix="tcpRoute.spec.parentRefs">
@@ -22,33 +18,14 @@
     @if (TcpRoute.Spec.Rules is { Count: > 0 })
     {
         <Divider Orientation="left" Style="font-weight:bold">@L["Rules"]</Divider>
-        @foreach (var rule in TcpRoute.Spec.Rules)
-        {
-            <HTable Bordered Column="1">
-                <PropertySimpleView Title="@L["BackendRefs"]" Item="@rule.BackendRefs"
-                                    ExplainField="tcpRoute.spec.rules.backendRefs">
-                    <GridRow Class="grid-table">
-                        <GridCol Span="4">Weight</GridCol>
-                        <GridCol Span="10">Name</GridCol>
-                        <GridCol Span="4">Port</GridCol>
-                        <GridCol Span="6">Ref</GridCol>
-                    </GridRow>
-                    @foreach (var backendRef in rule.BackendRefs)
-                    {
-                        <GridRow Class="grid-table">
-                            <GridCol Span="4">@backendRef.Weight</GridCol>
-                            <GridCol Span="10">@backendRef.Name</GridCol>
-                            <GridCol Span="4">@backendRef.Port</GridCol>
-                            <GridCol Span="6">
-                                <RefView
-                                    Ref="@KubeHelper.GetObjectRef(backendRef.Kind, TcpRoute.Metadata.Namespace(), backendRef.Name)">
-                                </RefView>
-                            </GridCol>
-                        </GridRow>
-                    }
-                </PropertySimpleView>
-            </HTable>
-        }
+        <HTable Bordered Column="1">
+            @foreach (var rule in TcpRoute.Spec.Rules)
+            {
+                <BackendRefsView BackendRefWithWeight="@rule.BackendRefs" ExplainField="tcpRoute.spec.rules.backendRefs"
+                                 Ns="@TcpRoute.Metadata.Namespace()">
+                </BackendRefsView>
+            }
+        </HTable>
     }
 
 

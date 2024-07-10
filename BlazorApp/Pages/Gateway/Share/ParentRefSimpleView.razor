@@ -7,7 +7,7 @@
     foreach (var parent in ParentRefs)
     {
         <RefView OnlyName
-                 Ref="@KubeHelper.GetObjectRef(parent.Kind, ns, parent.Name)">
+                 Ref="@KubeHelper.GetObjectRef(parent.Kind, Ns, parent.Name)">
         </RefView>
         @if (parent.SectionName is not null)
         {
@@ -17,6 +17,6 @@
 }
 
 @code {
-    [Parameter] public string ns { get; set; }
+    [Parameter] public string Ns { get; set; }
     [Parameter] public IList<ParentReference> ParentRefs { get; set; }
 }

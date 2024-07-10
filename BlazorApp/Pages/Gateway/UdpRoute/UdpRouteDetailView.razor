@@ -1,19 +1,43 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Gateway.Share
+@using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha2UDPRoute>
 @if (UdpRoute != null)
 {
     <UdpRouteAction Item="UdpRoute" MenuMode="MenuMode.Horizontal"></UdpRouteAction>
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="UdpRoute.Metadata" ExplainFieldPrefix="udpRoute"></MetadataView>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
-    <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@UdpRoute.Spec" ExplainField="udpRoute.spec"></PropertySimpleView>
-    </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <HTable Bordered Column="1">
-        <PropertySimpleView Title="Status" Item="@UdpRoute.Status" ExplainField="udpRoute.status"></PropertySimpleView>
-    </HTable>
+
+    <Divider Orientation="left" Style="font-weight:bold">@L["Parent"]</Divider>
+    <RouteParentRefsView ParentRefs="UdpRoute.Spec.ParentRefs"
+                         ExplainFieldPrefix="udpRoute.spec.parentRefs">
+    </RouteParentRefsView>
+
+    @if (UdpRoute.Spec.Rules is { Count: > 0 })
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Rules"]</Divider>
+        <HTable Bordered Column="1">
+            @foreach (var rule in UdpRoute.Spec.Rules)
+            {
+                <BackendRefsView BackendRefWithWeight="@rule.BackendRefs" ExplainField="udpRoute.spec.rules.backendRefs"
+                                 Ns="@UdpRoute.Metadata.Namespace()">
+                </BackendRefsView>
+            }
+        </HTable>
+    }
+
+
+    @if (UdpRoute.Status is not null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+        <HTable Bordered Column="1">
+            <RouteParentStatusView Parents="@UdpRoute.Status.Parents"
+                                   ExplainFieldPrefix="tcpRoute">
+            </RouteParentStatusView>
+        </HTable>
+    }
+
     <MiniEventListView Uid="@UdpRoute.Metadata.Uid"></MiniEventListView>
 }

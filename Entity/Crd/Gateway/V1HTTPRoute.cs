@@ -179,20 +179,8 @@ public class HTTPRouteHost
     [JsonPropertyName("pathRegex")] public string PathRegex { get; set; }
 }
 
-public class HTTPBackendRef
+public class HTTPBackendRef : BackendRefWithWeight
 {
-    [JsonPropertyName("name")] public string Name { get; set; }
-
-    [JsonPropertyName("kind")] public string Kind { get; set; }
-
-    [JsonPropertyName("group")] public string Group { get; set; }
-
-    [JsonPropertyName("namespace")] public string Namespace { get; set; }
-
-    [JsonPropertyName("port")] public int Port { get; set; }
-
-    [JsonPropertyName("weight")] public int Weight { get; set; }
-
     [JsonPropertyName("filters")] public List<HTTPRouteFilter> Filters { get; set; }
 }
 
