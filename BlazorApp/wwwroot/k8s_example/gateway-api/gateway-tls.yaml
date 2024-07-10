@@ -13,3 +13,55 @@ spec:
           - kind: Secret
             group: ""
             name: example-com-cert
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: tls-basic
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: foo-https
+      protocol: HTTPS
+      port: 443
+      hostname: foo.example.com
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: foo-example-com-cert
+    - name: bar-https
+      protocol: HTTPS
+      port: 443
+      hostname: bar.example.com
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: bar-example-com-cert
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: wildcard-tls-gateway
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: foo-https
+      protocol: HTTPS
+      port: 443
+      hostname: foo.example.com
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: foo-example-com-cert
+    - name: wildcard-https
+      protocol: HTTPS
+      port: 443
+      hostname: "*.example.com"
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: wildcard-example-com-cert

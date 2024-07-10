@@ -6,15 +6,15 @@
 @if (Status is { Count: > 0 })
 {
     <GridRow Class="grid-table">
-        <GridCol Span="4">@L["Name"]</GridCol>
+        <GridCol Span="5">@L["Name"]</GridCol>
         <GridCol Span="4">@L["Attached"]</GridCol>
         <GridCol Span="4">@L["Support"]</GridCol>
-        <GridCol Span="12">@L["Condition"]</GridCol>
+        <GridCol Span="11">@L["Condition"]</GridCol>
     </GridRow>
     foreach (var listener in Status)
     {
         <GridRow Class="grid-table">
-            <GridCol Span="4">
+            <GridCol Span="5">
                 <ColorfulTag>@listener.Name</ColorfulTag>
             </GridCol>
             <GridCol Span="4">
@@ -29,7 +29,7 @@
                     }
                 }
             </GridCol>
-            <GridCol Span="12">
+            <GridCol Span="11">
                 <ConditionsTagView
                     Conditions="@(listener.Conditions.Adapt<IList<V1Condition>>())">
                 </ConditionsTagView>

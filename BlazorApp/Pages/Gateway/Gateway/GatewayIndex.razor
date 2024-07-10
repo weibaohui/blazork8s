@@ -38,11 +38,11 @@
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
 
                     <AntDesign.Column Title=@L["GatewayClassName"] TData="string" Width="150px">
-                        @context.Spec.GatewayClassName
+                        <ColorfulTag>@context.Spec.GatewayClassName</ColorfulTag>
                     </AntDesign.Column>
 
 
-                    <AntDesign.Column Title=@L["Addresses"] TData="string">
+                    <AntDesign.Column Title=@L["Addresses"] TData="string" Width="200px">
                         @if (context.Status.Addresses is { Count: > 0 })
                         {
                             foreach (var address in context.Status.Addresses)
@@ -52,7 +52,7 @@
                         }
 
                     </AntDesign.Column>
-                    <AntDesign.Column Title=@L["Listener"] TData="string">
+                    <AntDesign.Column Title=@L["Listener"] TData="string" Width="600px">
                         <ListenerStatusView Status="@context.Status.Listeners"></ListenerStatusView>
                     </AntDesign.Column>
                     <AntDesign.Column Title=@L["Condition"] TData="string" Width="150px">
