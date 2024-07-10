@@ -68,8 +68,11 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
             "V1StatefulSet" => "project",
             "V1ReplicationController" => "split-cells",
             "V1Node" => "database",
-            "V1Ingress" => "gateway",
+            "V1Ingress" => "chrome",
             "V1Service" => "api",
+            "V1HTTPRoute" => "codepen-square",
+            "V1GRPCRoute" => "google-square",
+            "V1Alpha2TCPRoute" => "usb",
             _ => "hdd"
         };
     }

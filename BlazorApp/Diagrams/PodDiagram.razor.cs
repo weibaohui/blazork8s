@@ -6,6 +6,7 @@ using Blazor.Diagrams.Core.Geometry;
 using Blazor.Diagrams.Options;
 using BlazorApp.Pages.Common;
 using BlazorApp.Service.k8s;
+using Entity.Crd.Gateway;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -30,6 +31,9 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
     [Inject] private IPodService PodService { get; set; }
     [Inject] private IServiceService ServiceService { get; set; }
     [Inject] private IIngressService IngressService { get; set; }
+    [Inject] private IHttpRouteService HttpRouteService { get; set; }
+    [Inject] private ITcpRouteService TcpRouteService { get; set; }
+    [Inject] private IGrpcRouteService GrpcRouteService { get; set; }
 
     /// <summary>
     /// PodName是一个非全称名称，可能是部分名称，比如"web"，"api"等。
@@ -88,6 +92,9 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         Diagram.RegisterComponent<KubeNode<V1Ingress>, KubeNodeWidget<V1Ingress>>();
         Diagram.RegisterComponent<KubeNode<V1Service>, KubeNodeWidget<V1Service>>();
         Diagram.RegisterComponent<KubeNode<V1CronJob>, KubeNodeWidget<V1CronJob>>();
+        Diagram.RegisterComponent<KubeNode<V1HTTPRoute>, KubeNodeWidget<V1HTTPRoute>>();
+        Diagram.RegisterComponent<KubeNode<V1GRPCRoute>, KubeNodeWidget<V1GRPCRoute>>();
+        Diagram.RegisterComponent<KubeNode<V1Alpha2TCPRoute>, KubeNodeWidget<V1Alpha2TCPRoute>>();
 
         await LoadDiagram();
 
@@ -118,6 +125,9 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         KubeNodeContainer<V1Node>.Instance.Clear();
         KubeNodeContainer<V1Service>.Instance.Clear();
         KubeNodeContainer<V1Ingress>.Instance.Clear();
+        KubeNodeContainer<V1HTTPRoute>.Instance.Clear();
+        KubeNodeContainer<V1Alpha2TCPRoute>.Instance.Clear();
+        KubeNodeContainer<V1GRPCRoute>.Instance.Clear();
         Diagram.Nodes.Clear();
 
 
@@ -307,6 +317,54 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                         }
 
                         DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, ingNode);
+                    }
+
+                    //寻找Service后面的HTTPRoute
+                    var httpRouteList = HttpRouteService.ListByServiceList([svc]);
+                    foreach (var httpRoute in httpRouteList)
+                    {
+                        var httpRouteKey = $"{httpRoute.Namespace()}/{httpRoute.Name()}";
+                        var httpRouteNode = KubeNodeContainer<V1HTTPRoute>.Instance.Get(httpRouteKey);
+                        if (httpRouteNode == null)
+                        {
+                            _ = new KubeNode<V1HTTPRoute>(Diagram, httpRoute, new Point(column5XBase, y));
+                            httpRouteNode = KubeNodeContainer<V1HTTPRoute>.Instance.Get(httpRouteKey);
+                            if (httpRouteList.Count > 1) y += offset;
+                        }
+
+                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, httpRouteNode);
+                    }
+
+                    //寻找Service后面的TcpRoute
+                    var tcpRouteList = TcpRouteService.ListByServiceList(new List<V1Service> { svc });
+                    foreach (var tcpRoute in tcpRouteList)
+                    {
+                        var tcpRouteKey = $"{tcpRoute.Namespace()}/{tcpRoute.Name()}";
+                        var tcpRouteNode = KubeNodeContainer<V1Alpha2TCPRoute>.Instance.Get(tcpRouteKey);
+                        if (tcpRouteNode == null)
+                        {
+                            _ = new KubeNode<V1Alpha2TCPRoute>(Diagram, tcpRoute, new Point(column5XBase, y));
+                            tcpRouteNode = KubeNodeContainer<V1Alpha2TCPRoute>.Instance.Get(tcpRouteKey);
+                            if (tcpRouteList.Count > 1) y += offset;
+                        }
+
+                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, tcpRouteNode);
+                    }
+
+                    //寻找Service后面的grpcRoute
+                    var grpcRouteList = GrpcRouteService.ListByServiceList(new List<V1Service> { svc });
+                    foreach (var grpcRoute in grpcRouteList)
+                    {
+                        var grpcRouteKey = $"{grpcRoute.Namespace()}/{grpcRoute.Name()}";
+                        var grpcRouteNode = KubeNodeContainer<V1GRPCRoute>.Instance.Get(grpcRouteKey);
+                        if (grpcRouteNode == null)
+                        {
+                            _ = new KubeNode<V1GRPCRoute>(Diagram, grpcRoute, new Point(column5XBase, y));
+                            grpcRouteNode = KubeNodeContainer<V1GRPCRoute>.Instance.Get(grpcRouteKey);
+                            if (grpcRouteList.Count > 1) y += offset;
+                        }
+
+                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, grpcRouteNode);
                     }
                 }
             }
