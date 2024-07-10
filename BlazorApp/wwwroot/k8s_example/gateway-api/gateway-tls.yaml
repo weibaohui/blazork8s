@@ -1,0 +1,15 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: example-gateway-tls
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: grpc
+      protocol: HTTPS
+      port: 50051
+      tls:
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: example-com-cert

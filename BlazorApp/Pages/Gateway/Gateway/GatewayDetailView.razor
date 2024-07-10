@@ -61,6 +61,55 @@
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["TLS"]" Item="@listener.TLS"
                                                 ExplainField="gateway.spec.listeners.tls" ShowInJson>
+
+                                @if (listener.TLS.Mode is not null)
+                                {
+                                    <PropertyOptionView Title=@L["Mode"] Item="@listener.TLS.Mode"
+                                                        Options='@(new[] { "Terminate", "Passthrough" })'
+                                                        ExplainField="gateway.spec.listeners.tls.mode">
+                                    </PropertyOptionView>
+                                }
+
+                                @if (listener.TLS.CertificateRefs is { Count: > 0 })
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="8">@L["Certificate"]</GridCol>
+                                        <GridCol Span="16">
+                                            @foreach (var cert in listener.TLS.CertificateRefs)
+                                            {
+                                                <RefView OnlyName
+                                                         Ref="@KubeHelper.GetObjectRef("Secret", cert.Namespace, cert.Name)">
+                                                </RefView>
+                                            }
+                                        </GridCol>
+                                    </GridRow>
+                                }
+                                @if (listener.TLS.FrontendValidation is not null && listener.TLS.FrontendValidation.CACertificateRefs is { Count: > 0 })
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="8">@L["FrontendValidation"]</GridCol>
+                                        <GridCol Span="16">
+                                            @foreach (var cert in listener.TLS.FrontendValidation.CACertificateRefs)
+                                            {
+                                                <RefView OnlyName
+                                                         Ref="@KubeHelper.GetObjectRef("Secret", cert.Namespace, cert.Name)">
+                                                </RefView>
+                                            }
+                                        </GridCol>
+                                    </GridRow>
+                                }
+                                @if (listener.TLS.Options is { Count: > 0 })
+                                {
+                                    <GridRow Class="grid-table">
+                                        <GridCol Span="8">@L["Options"]</GridCol>
+                                        <GridCol Span="16">
+                                            @foreach (var item in listener.TLS.Options)
+                                            {
+                                                <ColorfulTag>@($"{item.Key}={item.Value}")</ColorfulTag>
+                                            }
+                                        </GridCol>
+                                    </GridRow>
+                                }
                             </PropertySimpleView>
                         </HTable>
                     </GridCol>
