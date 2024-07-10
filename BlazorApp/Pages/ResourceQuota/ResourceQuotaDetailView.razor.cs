@@ -24,22 +24,20 @@ namespace BlazorApp.Pages.ResourceQuota
                 return null;
             }
 
-            var config = TypeAdapterConfig<V1ScopedResourceSelectorRequirement, V1LabelSelectorRequirement>
-                .NewConfig()
-                .Map(dest => dest.Key, src => src.ScopeName);
             var expressions = ResourceQuota?.Spec?.ScopeSelector?
                 .MatchExpressions
                 .Select(x => x.Adapt<V1LabelSelectorRequirement>())
                 .ToList();
             var labels = new V1LabelSelector()
             {
-                MatchLabels      = null,
+                MatchLabels = null,
                 MatchExpressions = expressions,
             };
             return labels;
         }
 
-        private IDictionary<string, string> Calculate(IDictionary<string, ResourceQuantity> hard, IDictionary<string, ResourceQuantity> used)
+        private IDictionary<string, string> Calculate(IDictionary<string, ResourceQuantity> hard,
+            IDictionary<string, ResourceQuantity> used)
         {
             var result = new Dictionary<string, string>();
             foreach (var (k, v) in hard)
