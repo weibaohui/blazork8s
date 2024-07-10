@@ -36,6 +36,42 @@
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
+                    <AntDesign.Column Title="@L["From"]" TData="string" Width="450px">
+                        @if (context.Spec.ReferenceGrantFrom is { Count: > 0 })
+                        {
+                            <GridRow Class="grid-table">
+                                <GridCol Span="12">Group</GridCol>
+                                <GridCol Span="6">Kind</GridCol>
+                                <GridCol Span="6">Namespace</GridCol>
+                            </GridRow>
+                            @foreach (var item in context.Spec.ReferenceGrantFrom)
+                            {
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="12">@item.Group</GridCol>
+                                    <GridCol Span="6">@item.Kind</GridCol>
+                                    <GridCol Span="6">@item.Namespace</GridCol>
+                                </GridRow>
+                            }
+                        }
+                    </AntDesign.Column>
+                    <AntDesign.Column Title="@L["To"]" TData="string" Width="450px">
+                        @if (context.Spec.ReferenceGrantTo is { Count: > 0 })
+                        {
+                            <GridRow Class="grid-table">
+                                <GridCol Span="12">Group</GridCol>
+                                <GridCol Span="6">Kind</GridCol>
+                                <GridCol Span="6">Name</GridCol>
+                            </GridRow>
+                            @foreach (var item in context.Spec.ReferenceGrantTo)
+                            {
+                                <GridRow Class="grid-table">
+                                    <GridCol Span="12">@item.Group</GridCol>
+                                    <GridCol Span="6">@item.Kind</GridCol>
+                                    <GridCol Span="6">@item.Name</GridCol>
+                                </GridRow>
+                            }
+                        }
+                    </AntDesign.Column>
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>

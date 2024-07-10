@@ -7,14 +7,43 @@
     <ReferenceGrantAction Item="ReferenceGrant" MenuMode="MenuMode.Horizontal"></ReferenceGrantAction>
     <Divider Orientation="left" Style="font-weight:bold">@L["Metadata"]</Divider>
     <MetadataView Item="ReferenceGrant.Metadata" ExplainFieldPrefix="referenceGrant"></MetadataView>
+
+
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@ReferenceGrant.Spec"
-                            ExplainField="referenceGrant.spec">
+        <PropertySimpleView Title="@L["From"]" Item="@ReferenceGrant.Spec.ReferenceGrantFrom"
+                            ExplainField="referenceGrant.spec.from">
+            <GridRow Class="grid-table">
+                <GridCol Span="12">Group</GridCol>
+                <GridCol Span="6">Kind</GridCol>
+                <GridCol Span="6">Namespace</GridCol>
+            </GridRow>
+            @foreach (var item in ReferenceGrant.Spec.ReferenceGrantFrom)
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="12">@item.Group</GridCol>
+                    <GridCol Span="6">@item.Kind</GridCol>
+                    <GridCol Span="6">@item.Namespace</GridCol>
+                </GridRow>
+            }
+        </PropertySimpleView>
+        <PropertySimpleView Title="@L["To"]" Item="@ReferenceGrant.Spec.ReferenceGrantTo"
+                            ExplainField="referenceGrant.spec.to">
+            <GridRow Class="grid-table">
+                <GridCol Span="12">Group</GridCol>
+                <GridCol Span="6">Kind</GridCol>
+                <GridCol Span="6">Name</GridCol>
+            </GridRow>
+            @foreach (var item in ReferenceGrant.Spec.ReferenceGrantTo)
+            {
+                <GridRow Class="grid-table">
+                    <GridCol Span="12">@item.Group</GridCol>
+                    <GridCol Span="6">@item.Kind</GridCol>
+                    <GridCol Span="6">@item.Name</GridCol>
+                </GridRow>
+            }
         </PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <HTable Bordered Column="1">
-    </HTable>
+
     <MiniEventListView Uid="@ReferenceGrant.Metadata.Uid"></MiniEventListView>
 }
