@@ -1,6 +1,11 @@
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
+@using BlazorApp.Pages.Gateway.Share
+@using BlazorApp.Utils
+@using Entity.Crd.Gateway
+@using k8s.Models
+@using Mapster
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha3BackendTLSPolicy>
 @if (BackendTLSPolicy != null)
 {
@@ -9,15 +14,64 @@
     <MetadataView Item="BackendTLSPolicy.Metadata" ExplainFieldPrefix="backendTLSPolicy"></MetadataView>
     <Divider Orientation="left" Style="font-weight:bold">@L["Spec"]</Divider>
     <HTable Bordered Column="1">
-        <PropertySimpleView Title="Spec" Item="@BackendTLSPolicy.Spec"
-                            ExplainField="backendTLSPolicy.spec">
+        <PropertySimpleView Title="@L["Targets"]" Item="@BackendTLSPolicy.Spec.TargetRefs"
+                            ExplainField="backendTLSPolicy.spec.targetRefs">
+            @if (BackendTLSPolicy.Spec.TargetRefs is { Count: > 0 })
+            {
+                @foreach (var targetRef in BackendTLSPolicy.Spec.TargetRefs)
+                {
+                    <RefView FullView="true"
+                             Ref="@KubeHelper.GetObjectRef(targetRef.Kind, BackendTLSPolicy.Namespace(), targetRef.Name)">
+                    </RefView>
+                }
+            }
+        </PropertySimpleView>
+        <PropertySimpleView Title="@L["Validation"]" Item="@BackendTLSPolicy.Spec.Validation"
+                            ExplainField="backendTLSPolicy.spec.validation">
+            <HTable Bordered Column="1">
+                <PropertySimpleView Title="@L["Hostname"]" Item="@BackendTLSPolicy.Spec.Validation.Hostname"
+                                    ExplainField="backendTLSPolicy.spec.validation.hostname">
+                </PropertySimpleView>
+                <PropertyOptionView Title="@L["WellKnownCA"]"
+                                    Item="@BackendTLSPolicy.Spec.Validation.WellKnownCACertificates"
+                                    Options='@(new[] { "System", "" })'
+                                    ExplainField="backendTLSPolicy.spec.validation.wellKnownCACertificates">
+                </PropertyOptionView>
+                <PropertySimpleView Title="@L["CA"]" Item="@BackendTLSPolicy.Spec.Validation.CACertificateRefs"
+                                    ExplainField="backendTLSPolicy.spec.validation.caCertificateRefs">
+                    @if (BackendTLSPolicy.Spec.Validation.CACertificateRefs is { Count: > 0 })
+                    {
+                        @foreach (var caCertificateRef in BackendTLSPolicy.Spec.Validation.CACertificateRefs)
+                        {
+                            <RefView FullView="true"
+                                     Ref="@KubeHelper.GetObjectRef(caCertificateRef.Kind, BackendTLSPolicy.Namespace(), caCertificateRef.Name)">
+                            </RefView>
+                        }
+                    }
+                </PropertySimpleView>
+            </HTable>
+
         </PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <HTable Bordered Column="1">
-        <PropertySimpleView Title="Status" Item="@BackendTLSPolicy.Status"
-                            ExplainField="backendTLSPolicy.status">
-        </PropertySimpleView>
-    </HTable>
+
+    @if (BackendTLSPolicy.Status is not null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+        <HTable Bordered Column="1">
+            <PropertySimpleView Title="@L["Ancestors"]" Item="@BackendTLSPolicy.Status.Ancestors"
+                                ExplainField="backendTLSPolicy.status.ancestors">
+            </PropertySimpleView>
+
+            @{
+                var config = new TypeAdapterConfig();
+                config.ForType<PolicyAncestorStatus, RouteParentStatus>()
+                    .Map(dest => dest.ParentRef, src => src.AncestorRef);
+            }
+            <RouteParentStatusView Parents="@BackendTLSPolicy.Status.Ancestors.Adapt<IList<RouteParentStatus>>(config)"
+                                   ExplainFieldPrefix="backendTLSPolicy">
+            </RouteParentStatusView>
+        </HTable>
+    }
+
     <MiniEventListView Uid="@BackendTLSPolicy.Metadata.Uid"></MiniEventListView>
 }

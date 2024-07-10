@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common
 @using BlazorApp.Pages.Common.Html.HTable
 @using BlazorApp.Pages.Common.Metadata
+@using BlazorApp.Utils
 @using Entity.Crd.Gateway
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.TableBase<Entity.Crd.Gateway.V1Alpha3BackendTLSPolicy>
@@ -31,10 +32,28 @@
                        Loading="TableData.Loading"
                        OnChange="OnPageChangeHandler">
                     <Selection Key="@(context.Name())"/>
-                    <AntDesign.Column Field="@context.Name()" Title="@L["Name"]">
+                    <AntDesign.Column Field="@context.Name()" Title="@L["Name"]" Width="150px">
                         <Button OnClick="@(() => OnItemNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
                     </AntDesign.Column>
                     <AntDesign.Column Field="@context.Namespace()" Title="@L["Namespace"]" Width="110px"/>
+                    <ActionColumn Title="@L["Hostname"]" Width="200px">
+                        @if (context.Spec.Validation is not null && context.Spec.Validation.Hostname is not null)
+                        {
+                            <ColorfulTag>@context.Spec.Validation.Hostname</ColorfulTag>
+                        }
+                    </ActionColumn>
+                    <ActionColumn Title="@L["Target"]" Width="200px">
+                        @if (context.Spec.TargetRefs is { Count: > 0 })
+                        {
+                            @foreach (var targetRef in context.Spec.TargetRefs)
+                            {
+                                <RefView FullView="true"
+                                         Ref="@KubeHelper.GetObjectRef(targetRef.Kind, context.Namespace(), targetRef.Name)">
+                                </RefView>
+                            }
+                        }
+                    </ActionColumn>
+
                     <AntDesign.Column Title="@L["Age"]" TData="string" Width="100px">
                         <AgeView Age="@context.CreationTimestamp()"></AgeView>
                     </AntDesign.Column>

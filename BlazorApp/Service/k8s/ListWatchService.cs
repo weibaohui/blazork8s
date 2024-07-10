@@ -73,6 +73,7 @@ public class ListWatchService
         WatchTcpRoute();
         WatchUdpRoute();
         WatchReferenceGrant();
+        WatchBackendTLSPolicy();
 #pragma warning restore CS4014
         return Task.CompletedTask;
     }
@@ -423,5 +424,13 @@ public class ListWatchService
             .ListClusterCustomObjectWithHttpMessagesAsync<V1Alpha2ReferenceGrantList>
                 ("gateway.networking.k8s.io", "v1alpha2", "referencegrants", watch: true);
         await new Watcher<V1Alpha2ReferenceGrant, V1Alpha2ReferenceGrantList>(_ctx).Watch(listResp);
+    }
+
+    private async Task WatchBackendTLSPolicy()
+    {
+        var listResp = _kubeService.Client().CustomObjects
+            .ListClusterCustomObjectWithHttpMessagesAsync<V1Alpha3BackendTLSPolicyList>
+                ("gateway.networking.k8s.io", "v1alpha3", "backendtlspolicies", watch: true);
+        await new Watcher<V1Alpha3BackendTLSPolicy, V1Alpha3BackendTLSPolicyList>(_ctx).Watch(listResp);
     }
 }
