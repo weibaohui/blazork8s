@@ -151,39 +151,44 @@
             </HTable>
         </PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <HTable Bordered Column="1">
 
-        <ConditionsView Conditions="@(Gateway.Status.Conditions.Adapt<IList<V1Condition>>())"
-                        ExplainField="gateway.status.conditions">
-        </ConditionsView>
-        <PropertySimpleView Title="@L["Addresses"]" Item="@Gateway.Status.Addresses"
-                            ExplainField="gateway.status.addresses">
-            @if (Gateway.Status.Addresses is { Count: > 0 })
-            {
-                <GridRow Class="grid-table">
-                    <GridCol Span="6">@L["Type"]</GridCol>
-                    <GridCol Span="18">@L["Address"]</GridCol>
-                </GridRow>
-                foreach (var address in Gateway.Status.Addresses)
+    @if (Gateway.Status is not null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+        <HTable Bordered Column="1">
+
+            <ConditionsView Conditions="@(Gateway.Status.Conditions.Adapt<IList<V1Condition>>())"
+                            ExplainField="gateway.status.conditions">
+            </ConditionsView>
+            <PropertySimpleView Title="@L["Addresses"]" Item="@Gateway.Status.Addresses"
+                                ExplainField="gateway.status.addresses">
+                @if (Gateway.Status.Addresses is { Count: > 0 })
                 {
                     <GridRow Class="grid-table">
-                        <GridCol Span="6">
-                            <ColorfulTag>@address.Type</ColorfulTag>
-                        </GridCol>
-                        <GridCol Span="18">
-                            <ColorfulTag>@address.Value</ColorfulTag>
-                        </GridCol>
+                        <GridCol Span="6">@L["Type"]</GridCol>
+                        <GridCol Span="18">@L["Address"]</GridCol>
                     </GridRow>
+                    foreach (var address in Gateway.Status.Addresses)
+                    {
+                        <GridRow Class="grid-table">
+                            <GridCol Span="6">
+                                <ColorfulTag>@address.Type</ColorfulTag>
+                            </GridCol>
+                            <GridCol Span="18">
+                                <ColorfulTag>@address.Value</ColorfulTag>
+                            </GridCol>
+                        </GridRow>
+                    }
                 }
-            }
-        </PropertySimpleView>
+            </PropertySimpleView>
 
 
-        <PropertySimpleView Title="@L["Listeners"]" Item="@Gateway.Status.Listeners"
-                            ExplainField="gateway.status.listeners">
-            <ListenerStatusView Status="@Gateway.Status.Listeners"></ListenerStatusView>
-        </PropertySimpleView>
-    </HTable>
+            <PropertySimpleView Title="@L["Listeners"]" Item="@Gateway.Status.Listeners"
+                                ExplainField="gateway.status.listeners">
+                <ListenerStatusView Status="@Gateway.Status.Listeners"></ListenerStatusView>
+            </PropertySimpleView>
+        </HTable>
+    }
+
     <MiniEventListView Uid="@Gateway.Metadata.Uid"></MiniEventListView>
 }

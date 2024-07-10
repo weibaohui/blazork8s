@@ -61,8 +61,8 @@
                             }
                         }
                     </AntDesign.Column>
-
-
+                    @* *@
+                    @* *@
                     <AntDesign.Column Title=@L["Rules"] TData="string" Width="420px">
                         @if (context.Spec.Rules is { Count: > 0 })
                         {
@@ -78,7 +78,7 @@
                     </AntDesign.Column>
 
                     <AntDesign.Column Title=@L["Condition"] TData="string" Width="300px">
-                        @if (context.Status.Parents is { Count: > 0 })
+                        @if (context.Status is not null && context.Status.Parents is { Count: > 0 })
                         {
                             @foreach (var parent in context.Status.Parents)
                             {
@@ -89,9 +89,12 @@
                                         </RefView>
                                     </GridCol>
                                     <GridCol Span="12">
-                                        <ConditionsTagView
-                                            Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
-                                        </ConditionsTagView>
+                                        @if (parent.Conditions is { Count: > 0 })
+                                        {
+                                            <ConditionsTagView
+                                                Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
+                                            </ConditionsTagView>
+                                        }
                                     </GridCol>
                                 </GridRow>
                             }

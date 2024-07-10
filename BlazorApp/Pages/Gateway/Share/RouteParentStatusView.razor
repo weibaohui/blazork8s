@@ -46,9 +46,12 @@
 
                     <PropertySimpleView Title="@L["Conditions"]" Item="@parent.Conditions"
                                         ExplainField=@(ExplainFieldPrefix + ".status.parents.conditions")>
-                        <ConditionsTagView
-                            Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
-                        </ConditionsTagView>
+                        @if (parent.Conditions is { Count: > 0 })
+                        {
+                            <ConditionsTagView
+                                Conditions="@(parent.Conditions.Adapt<IList<V1Condition>>())">
+                            </ConditionsTagView>
+                        }
                     </PropertySimpleView>
 
                 </HTable>

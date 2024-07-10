@@ -277,7 +277,11 @@
         }
     }
 
-    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <RouteParentStatusView Parents="@HttpRoute.Status.Parents" ExplainFieldPrefix="httpRoute"></RouteParentStatusView>
+    @if (HttpRoute.Status is not null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+        <RouteParentStatusView Parents="@HttpRoute.Status.Parents" ExplainFieldPrefix="httpRoute"></RouteParentStatusView>
+    }
+
     <MiniEventListView Uid="@HttpRoute.Metadata.Uid"></MiniEventListView>
 }

@@ -67,8 +67,9 @@
                 config.ForType<PolicyAncestorStatus, RouteParentStatus>()
                     .Map(dest => dest.ParentRef, src => src.AncestorRef);
             }
-            <RouteParentStatusView Parents="@BackendTLSPolicy.Status.Ancestors.Adapt<IList<RouteParentStatus>>(config)"
-                                   ExplainFieldPrefix="backendTLSPolicy">
+            <RouteParentStatusView
+                Parents="@(BackendTLSPolicy.Status.Ancestors.Adapt<IList<RouteParentStatus>>(config))"
+                ExplainFieldPrefix="backendTLSPolicy">
             </RouteParentStatusView>
         </HTable>
     }

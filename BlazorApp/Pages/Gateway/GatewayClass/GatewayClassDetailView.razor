@@ -22,15 +22,19 @@
                             ExplainField="gatewayClass.spec.parametersRef" ShowInJson="true">
         </PropertySimpleView>
     </HTable>
-    <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
-    <HTable Bordered Column="1">
-        <PropertyListView Items="GatewayClass.Status.SupportedFeatures" T="string" Title=@L["SupportedFeatures"]
-                          ExplainField="gatewayClass.status.supportedFeatures">
-        </PropertyListView>
-        <ConditionsView Conditions="@(GatewayClass.Status.Conditions.Adapt<IList<V1Condition>>())"
-                        ExplainField="gatewayClass.status.conditions">
-        </ConditionsView>
+    @if (GatewayClass.Status is not null)
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Status"]</Divider>
+        <HTable Bordered Column="1">
+            <PropertyListView Items="GatewayClass.Status.SupportedFeatures" T="string" Title=@L["SupportedFeatures"]
+                              ExplainField="gatewayClass.status.supportedFeatures">
+            </PropertyListView>
+            <ConditionsView Conditions="@(GatewayClass.Status.Conditions.Adapt<IList<V1Condition>>())"
+                            ExplainField="gatewayClass.status.conditions">
+            </ConditionsView>
 
-    </HTable>
+        </HTable>
+    }
+
     <MiniEventListView Uid="@GatewayClass.Metadata.Uid"></MiniEventListView>
 }
