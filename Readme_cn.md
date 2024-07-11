@@ -27,6 +27,7 @@
 * 集群页面增加巡检功能，对主要资源对象的常见错误进行巡检，并给出巡检结果明细列表。
 * 支持中文、英文以及法语、德语、意大利语、俄语、西班牙语、法语、日语、韩语等12国语言。
 * 支持通过拓扑图直观展示workload资源之间的关系以及状态
+* 支持GatewayAPI,包括GatewayClass、Gateway、HTTPRoute、GRPCRoute、TCPRoute、UDPRoute等。
 ## ☀️ 授权协议
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
@@ -174,6 +175,7 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 <br>
 ## 资源拓扑展示
 <img src="/docs/img/deploy-diagram.jpg">
+<img src="/docs/img/diagram.gif">
 <br>
 ## 巡检支持资源情况
 

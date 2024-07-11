@@ -27,6 +27,7 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Inspection functionality added to the cluster page, conducting common error checks on major resource objects and providing detailed lists.
 * Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
 * Visualize the relationships and states between workload resources intuitively through a topology diagram.
+* Supports GatewayAPI, including GatewayClass, Gateway, HTTPRoute, GRPCRoute, TCPRoute, and UDPRoute.
 
 ## ☀️ License
 
@@ -171,6 +172,7 @@ Added intelligent analysis and security analysis buttons on each resource.
 ### Workload Diagram
 Visualize the relationships and states between workload resources intuitively through a topology diagram
 <img src="/docs/img/deploy-diagram.jpg">
+<img src="/docs/img/diagram.gif">
 <br>
 
 ## List of inspectable resources
