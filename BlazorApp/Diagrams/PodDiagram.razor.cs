@@ -34,6 +34,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
     [Inject] private IHttpRouteService HttpRouteService { get; set; }
     [Inject] private ITcpRouteService TcpRouteService { get; set; }
     [Inject] private IGrpcRouteService GrpcRouteService { get; set; }
+    [Inject] private IUdpRouteService UdpRouteService { get; set; }
 
     /// <summary>
     /// PodName是一个非全称名称，可能是部分名称，比如"web"，"api"等。
@@ -95,6 +96,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         Diagram.RegisterComponent<KubeNode<V1HTTPRoute>, KubeNodeWidget<V1HTTPRoute>>();
         Diagram.RegisterComponent<KubeNode<V1GRPCRoute>, KubeNodeWidget<V1GRPCRoute>>();
         Diagram.RegisterComponent<KubeNode<V1Alpha2TCPRoute>, KubeNodeWidget<V1Alpha2TCPRoute>>();
+        Diagram.RegisterComponent<KubeNode<V1Alpha2UDPRoute>, KubeNodeWidget<V1Alpha2UDPRoute>>();
 
         await LoadDiagram();
 
@@ -128,18 +130,22 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         KubeNodeContainer<V1HTTPRoute>.Instance.Clear();
         KubeNodeContainer<V1Alpha2TCPRoute>.Instance.Clear();
         KubeNodeContainer<V1GRPCRoute>.Instance.Clear();
+        KubeNodeContainer<V1Alpha2UDPRoute>.Instance.Clear();
         Diagram.Nodes.Clear();
 
 
         var offset = 75;
-        var columnXBase = 50;
-        var column2XBase = 400;
-        var column3XBase = 750; //中央位置
-        var column4XBase = 1100;
-        var column5XBase = 1450;
+        var columnXBase = 50; //第一列的X坐标
+        var column2XBase = 400; //第二列的X坐标
+        var column3XBase = 750; //中央位置,第三列的X坐标
+        var column4XBase = 1100; //第四列的X坐标
+        var column5XBase = 1450; //第五列的X坐标
+        var column6XBase = 1750; //第六列的X坐标
         var y = 50;
 
-        //1.Pod在中央，左边1是来源rs，左边2是deploy
+        //1.Pod在中央，左边1是来源rs\或直接owner，左边2是deploy
+        //2.Pod在中央，右边1是service，右边2是ingress\tcproute\grpcroute
+        //3.右边3是gateway
         //先按controllerBy 查找所有相关的rs
         if (Pods is not { Count: > 0 })
         {
@@ -284,7 +290,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                 }
             }
 
-            //寻找Service
+            //寻找Service,svc后面可能有ingress，httproute，tcproute，grpcroute、udproute
             var labels = pod.Metadata.Labels;
             if (labels is { Count: > 0 })
             {
@@ -365,6 +371,22 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                         }
 
                         DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, grpcRouteNode);
+                    }
+
+                    //寻找Service后面的udpRoute
+                    var udpRouteList = UdpRouteService.ListByServiceList(new List<V1Service> { svc });
+                    foreach (var udpRoute in udpRouteList)
+                    {
+                        var udpRouteKey = $"{udpRoute.Namespace()}/{udpRoute.Name()}";
+                        var udpRouteNode = KubeNodeContainer<V1Alpha2UDPRoute>.Instance.Get(udpRouteKey);
+                        if (udpRouteNode == null)
+                        {
+                            _ = new KubeNode<V1Alpha2UDPRoute>(Diagram, udpRoute, new Point(column5XBase, y));
+                            udpRouteNode = KubeNodeContainer<V1Alpha2UDPRoute>.Instance.Get(udpRouteKey);
+                            if (udpRouteList.Count > 1) y += offset;
+                        }
+
+                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, udpRouteNode);
                     }
                 }
             }

@@ -73,6 +73,7 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
             "V1HTTPRoute" => "codepen-square",
             "V1GRPCRoute" => "google-square",
             "V1Alpha2TCPRoute" => "usb",
+            "V1Alpha2UDPRoute" => "alert",
             _ => "hdd"
         };
     }
