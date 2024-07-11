@@ -9,4 +9,5 @@ public partial class RouteParentStatusView : PageBase
 {
     [Parameter] public IList<RouteParentStatus> Parents { get; set; }
     [Parameter] public string ExplainFieldPrefix { get; set; }
+    [Parameter] public string Ns { get; set; }
 }

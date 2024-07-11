@@ -16,8 +16,8 @@
                     <PropertySimpleView Title="@L["Parent"]" Item="@parent.ParentRef">
                         <HTable Title="" Bordered Column="1">
                             <PropertySimpleView Title="@L["Ref"]" Item="@parent.ParentRef.Name">
-                                <RefView FullView="true"
-                                         Ref="@KubeHelper.GetObjectRef(parent.ParentRef.Kind, parent.ParentRef.Namespace, parent.ParentRef.Name)">
+                                <RefView OnlyName
+                                         Ref="@KubeHelper.GetObjectRef(parent.ParentRef.Kind, string.IsNullOrWhiteSpace(parent.ParentRef.Namespace) ? Ns : parent.ParentRef.Namespace, parent.ParentRef.Name)">
                                 </RefView>
                             </PropertySimpleView>
                             <PropertySimpleView Title="@L["Group"]" Item="@parent.ParentRef.Group"
