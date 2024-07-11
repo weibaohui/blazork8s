@@ -56,3 +56,14 @@
     background-color: transparent;
     color: #000000;
 }
+
+::deep .diagram-link path:not(.selection-helper) {
+    stroke-dasharray: 5;
+    animation: dash .5s linear infinite;
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: -10;
+    }
+}
