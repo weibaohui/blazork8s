@@ -8,20 +8,24 @@ namespace BlazorApp.Diagrams;
 
 public class DiagramHelper
 {
-    public static void LinkNodesTwoWay(BlazorDiagram diagram, NodeModel source, NodeModel target)
+    public static void LinkNodesTwoWay(BlazorDiagram diagram, NodeModel source, NodeModel target, string title = "")
     {
         var sourcePort = source.GetPort(PortAlignment.Right);
         var targetPort = target.GetPort(PortAlignment.Left);
         if (sourcePort != null && targetPort != null)
-            diagram.Links.Add(new LinkModel(sourcePort, targetPort)
+        {
+            var spaLink = diagram.Links.Add(new LinkModel(sourcePort, targetPort));
+            spaLink.Router = new OrthogonalRouter();
+            spaLink.PathGenerator = new StraightPathGenerator(5);
+            spaLink.Color = GetSourceColor(source.Id);
+            spaLink.Width = 1.5;
+            spaLink.SourceMarker = LinkMarker.NewArrow(6, 6);
+            spaLink.TargetMarker = LinkMarker.NewArrow(6, 6);
+            if (!string.IsNullOrWhiteSpace(title))
             {
-                Router = new OrthogonalRouter(),
-                PathGenerator = new StraightPathGenerator(5),
-                SourceMarker = LinkMarker.NewArrow(6, 6),
-                TargetMarker = LinkMarker.NewArrow(6, 6),
-                Color = GetSourceColor(source.Id),
-                Width = 1.5
-            });
+                spaLink.Labels.Add(new LinkLabelModel(spaLink, title));
+            }
+        }
     }
 
     /// <summary>
@@ -31,20 +35,24 @@ public class DiagramHelper
     /// <param name="diagram"></param>
     /// <param name="target"></param>
     /// <param name="source"></param>
-    public static void LinkNodesRight2Left(BlazorDiagram diagram, NodeModel target, NodeModel source)
+    /// <param name="title"></param>
+    public static void LinkNodesRight2Left(BlazorDiagram diagram, NodeModel target, NodeModel source, string title = "")
     {
         var sourcePort = source.GetPort(PortAlignment.Left);
         var targetPort = target.GetPort(PortAlignment.Right);
         if (sourcePort != null && targetPort != null)
-            diagram.Links.Add(new LinkModel(sourcePort, targetPort)
+        {
+            var spaLink = diagram.Links.Add(new LinkModel(sourcePort, targetPort));
+            spaLink.Router = new OrthogonalRouter();
+            spaLink.PathGenerator = new StraightPathGenerator(5);
+            spaLink.Color = GetSourceColor(source.Id);
+            spaLink.Width = 1.5;
+            spaLink.TargetMarker = LinkMarker.NewArrow(6, 6);
+            if (!string.IsNullOrWhiteSpace(title))
             {
-                Router = new OrthogonalRouter(),
-                PathGenerator = new StraightPathGenerator(5),
-                // SourceMarker = LinkMarker.NewArrow(6, 6),
-                TargetMarker = LinkMarker.NewArrow(6, 6),
-                Color = GetSourceColor(source.Id),
-                Width = 1.5
-            });
+                spaLink.Labels.Add(new LinkLabelModel(spaLink, title));
+            }
+        }
     }
 
     /// <summary>
@@ -54,20 +62,24 @@ public class DiagramHelper
     /// <param name="diagram"></param>
     /// <param name="source"></param>
     /// <param name="target"></param>
-    public static void LinkNodesLeft2Right(BlazorDiagram diagram, NodeModel source, NodeModel target)
+    /// <param name="title"></param>
+    public static void LinkNodesLeft2Right(BlazorDiagram diagram, NodeModel source, NodeModel target, string title = "")
     {
         var sourcePort = source.GetPort(PortAlignment.Right);
         var targetPort = target.GetPort(PortAlignment.Left);
         if (sourcePort != null && targetPort != null)
-            diagram.Links.Add(new LinkModel(sourcePort, targetPort)
+        {
+            var spaLink = diagram.Links.Add(new LinkModel(sourcePort, targetPort));
+            spaLink.Router = new OrthogonalRouter();
+            spaLink.PathGenerator = new StraightPathGenerator(5);
+            spaLink.Color = GetSourceColor(source.Id);
+            spaLink.Width = 1.5;
+            spaLink.TargetMarker = LinkMarker.NewArrow(6, 6);
+            if (!string.IsNullOrWhiteSpace(title))
             {
-                Router = new OrthogonalRouter(),
-                PathGenerator = new StraightPathGenerator(5),
-                // SourceMarker = LinkMarker.NewArrow(6, 6),
-                TargetMarker = LinkMarker.NewArrow(6, 6),
-                Color = GetSourceColor(source.Id),
-                Width = 1.5
-            });
+                spaLink.Labels.Add(new LinkLabelModel(spaLink, title));
+            }
+        }
     }
 
     private static string GetSourceColor(string key)

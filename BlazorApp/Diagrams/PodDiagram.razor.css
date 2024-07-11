@@ -51,3 +51,8 @@
     align-content: center;
     flex-wrap: nowrap;
 }
+
+::deep .diagram-link div.default-link-label {
+    background-color: transparent;
+    color: #000000;
+}

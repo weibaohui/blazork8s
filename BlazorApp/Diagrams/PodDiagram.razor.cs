@@ -359,7 +359,17 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                             if (httpRouteList.Count > 1) y += offset;
                         }
 
+                        //暂不显示分流权重，图上显示有点乱
+                        // var bck = httpRoute.Spec?.Rules?.SelectMany(r => r.BackendRefs)
+                        //     .First(r => r.Name == svc.Name());
+                        // if (bck is { Weight: > 0 })
+                        // {
+                        //     DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, httpRouteNode,$"{bck.Weight}");
+                        // }
+                        // else
+                        // {
                         DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, httpRouteNode);
+                        // }
                     }
 
                     //寻找Service后面的TcpRoute
