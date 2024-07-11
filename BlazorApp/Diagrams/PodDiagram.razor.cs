@@ -35,6 +35,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
     [Inject] private ITcpRouteService TcpRouteService { get; set; }
     [Inject] private IGrpcRouteService GrpcRouteService { get; set; }
     [Inject] private IUdpRouteService UdpRouteService { get; set; }
+    [Inject] private IGatewayService GatewayService { get; set; }
 
     /// <summary>
     /// PodName是一个非全称名称，可能是部分名称，比如"web"，"api"等。
@@ -95,6 +96,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         Diagram.RegisterComponent<KubeNode<V1CronJob>, KubeNodeWidget<V1CronJob>>();
         Diagram.RegisterComponent<KubeNode<V1HTTPRoute>, KubeNodeWidget<V1HTTPRoute>>();
         Diagram.RegisterComponent<KubeNode<V1GRPCRoute>, KubeNodeWidget<V1GRPCRoute>>();
+        Diagram.RegisterComponent<KubeNode<V1Gateway>, KubeNodeWidget<V1Gateway>>();
         Diagram.RegisterComponent<KubeNode<V1Alpha2TCPRoute>, KubeNodeWidget<V1Alpha2TCPRoute>>();
         Diagram.RegisterComponent<KubeNode<V1Alpha2UDPRoute>, KubeNodeWidget<V1Alpha2UDPRoute>>();
 
@@ -131,6 +133,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         KubeNodeContainer<V1Alpha2TCPRoute>.Instance.Clear();
         KubeNodeContainer<V1GRPCRoute>.Instance.Clear();
         KubeNodeContainer<V1Alpha2UDPRoute>.Instance.Clear();
+        KubeNodeContainer<V1Gateway>.Instance.Clear();
         Diagram.Nodes.Clear();
 
 
@@ -140,7 +143,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
         var column3XBase = 750; //中央位置,第三列的X坐标
         var column4XBase = 1100; //第四列的X坐标
         var column5XBase = 1450; //第五列的X坐标
-        var column6XBase = 1750; //第六列的X坐标
+        var column6XBase = 1800; //第六列的X坐标
         var y = 50;
 
         //1.Pod在中央，左边1是来源rs\或直接owner，左边2是deploy
@@ -339,6 +342,22 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                         }
 
                         DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, httpRouteNode);
+
+                        //寻找HTTPRoute后面的Gateway
+                        var gatewayList = GatewayService.ListByParentRefs(httpRoute.Spec.ParentRefs);
+                        foreach (var gateway in gatewayList)
+                        {
+                            var gatewayKey = $"{gateway.Namespace()}/{gateway.Name()}";
+                            var gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                            if (gatewayNode == null)
+                            {
+                                _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
+                                gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                                if (gatewayList.Count > 1) y += offset;
+                            }
+
+                            DiagramHelper.LinkNodesTwoWay(Diagram, httpRouteNode, gatewayNode);
+                        }
                     }
 
                     //寻找Service后面的TcpRoute
@@ -355,6 +374,22 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                         }
 
                         DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, tcpRouteNode);
+
+                        //寻找TcpRoute后面的Gateway
+                        var gatewayList = GatewayService.ListByParentRefs(tcpRoute.Spec.ParentRefs);
+                        foreach (var gateway in gatewayList)
+                        {
+                            var gatewayKey = $"{gateway.Namespace()}/{gateway.Name()}";
+                            var gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                            if (gatewayNode == null)
+                            {
+                                _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
+                                gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                                if (gatewayList.Count > 1) y += offset;
+                            }
+
+                            DiagramHelper.LinkNodesTwoWay(Diagram, tcpRouteNode, gatewayNode);
+                        }
                     }
 
                     //寻找Service后面的grpcRoute
@@ -371,6 +406,22 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                         }
 
                         DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, grpcRouteNode);
+
+                        //寻找grpcRoute后面的Gateway
+                        var gatewayList = GatewayService.ListByParentRefs(grpcRoute.Spec.ParentRefs);
+                        foreach (var gateway in gatewayList)
+                        {
+                            var gatewayKey = $"{gateway.Namespace()}/{gateway.Name()}";
+                            var gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                            if (gatewayNode == null)
+                            {
+                                _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
+                                gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                                if (gatewayList.Count > 1) y += offset;
+                            }
+
+                            DiagramHelper.LinkNodesTwoWay(Diagram, grpcRouteNode, gatewayNode);
+                        }
                     }
 
                     //寻找Service后面的udpRoute
@@ -387,6 +438,22 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                         }
 
                         DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, udpRouteNode);
+
+                        //寻找UdpRouteRoute后面的Gateway
+                        var gatewayList = GatewayService.ListByParentRefs(udpRoute.Spec.ParentRefs);
+                        foreach (var gateway in gatewayList)
+                        {
+                            var gatewayKey = $"{gateway.Namespace()}/{gateway.Name()}";
+                            var gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                            if (gatewayNode == null)
+                            {
+                                _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
+                                gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
+                                if (gatewayList.Count > 1) y += offset;
+                            }
+
+                            DiagramHelper.LinkNodesTwoWay(Diagram, udpRouteNode, gatewayNode);
+                        }
                     }
                 }
             }
