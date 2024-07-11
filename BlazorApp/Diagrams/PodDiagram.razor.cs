@@ -351,7 +351,6 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 {
                                     _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
-                                    // if (gatewayList.Count > 1) y += offset;
                                 }
 
                                 DiagramHelper.LinkNodesTwoWay(Diagram, httpRouteNode, gatewayNode);
@@ -384,7 +383,6 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 {
                                     _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
-                                    // if (gatewayList.Count > 1) y += offset;
                                 }
 
                                 DiagramHelper.LinkNodesTwoWay(Diagram, tcpRouteNode, gatewayNode);
@@ -417,7 +415,6 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 {
                                     _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
-                                    // if (gatewayList.Count > 1) y += offset;
                                 }
 
                                 DiagramHelper.LinkNodesTwoWay(Diagram, grpcRouteNode, gatewayNode);
@@ -450,7 +447,6 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 {
                                     _ = new KubeNode<V1Gateway>(Diagram, gateway, new Point(column6XBase, y));
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
-                                    // if (gatewayList.Count > 1) y += offset;
                                 }
 
                                 DiagramHelper.LinkNodesTwoWay(Diagram, udpRouteNode, gatewayNode);
