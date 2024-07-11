@@ -6,6 +6,12 @@ using BlazorApp.Pages.CronJob;
 using BlazorApp.Pages.DaemonSet;
 using BlazorApp.Pages.Deployment;
 using BlazorApp.Pages.Endpoints;
+using BlazorApp.Pages.Gateway.Gateway;
+using BlazorApp.Pages.Gateway.GatewayClass;
+using BlazorApp.Pages.Gateway.GrpcRoute;
+using BlazorApp.Pages.Gateway.HttpRoute;
+using BlazorApp.Pages.Gateway.TcpRoute;
+using BlazorApp.Pages.Gateway.UdpRoute;
 using BlazorApp.Pages.HorizontalPodAutoscaler;
 using BlazorApp.Pages.Ingress;
 using BlazorApp.Pages.Job;
@@ -22,6 +28,7 @@ using BlazorApp.Pages.ServiceAccount;
 using BlazorApp.Pages.StatefulSet;
 using BlazorApp.Service.k8s;
 using BlazorApp.Utils;
+using Entity.Crd.Gateway;
 using k8s.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
@@ -91,6 +98,12 @@ public partial class RefView : PageBase
     [Inject] private IServiceService ServiceService { get; set; }
 
     [Inject] private IHorizontalPodAutoscalerService HpaService { get; set; }
+    [Inject] private IHttpRouteService HttpRouteService { get; set; }
+    [Inject] private ITcpRouteService TcpRouteService { get; set; }
+    [Inject] private IGrpcRouteService GrpcRouteService { get; set; }
+    [Inject] private IUdpRouteService UdpRouteService { get; set; }
+    [Inject] private IGatewayService GatewayService { get; set; }
+    [Inject] private IGatewayClassService GatewayClassService { get; set; }
 
     private string GetDelimiter()
     {
@@ -127,10 +140,66 @@ public partial class RefView : PageBase
             "Ingress" => OnIngressClick(Ref),
             "Namespace" => OnNamespaceClick(Ref),
             "PersistentVolumeClaim" => OnPersistentVolumeClaimClick(Ref),
+
+
+            "HTTPRoute" => OnHttpRouteClick(Ref),
+            "TCPRoute" => OnTcpRouteClick(Ref),
+            "GRPCRoute" => OnGrpcRouteClick(Ref),
+            "UDPRoute" => OnUdpRouteClick(Ref),
+            "Gateway" => OnGatewayClick(Ref),
+            "GatewayClass" => OnGatewayClassClick(Ref),
             _ => OnXClick(Ref)
         };
 
         return task;
+    }
+
+    private async Task OnGatewayClassClick(V1ObjectReference r)
+    {
+        var item = GatewayClassService.GetByName(r.Name);
+        await PageDrawerHelper<V1GatewayClass>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<GatewayClassDetailView, V1GatewayClass, bool>(item);
+    }
+
+    private async Task OnGatewayClick(V1ObjectReference r)
+    {
+        var item = GatewayService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Gateway>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<GatewayDetailView, V1Gateway, bool>(item);
+    }
+
+    private async Task OnUdpRouteClick(V1ObjectReference r)
+    {
+        var item = UdpRouteService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Alpha2UDPRoute>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<UdpRouteDetailView, V1Alpha2UDPRoute, bool>(item);
+    }
+
+    private async Task OnGrpcRouteClick(V1ObjectReference r)
+    {
+        var item = GrpcRouteService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1GRPCRoute>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<GrpcRouteDetailView, V1GRPCRoute, bool>(item);
+    }
+
+    private async Task OnTcpRouteClick(V1ObjectReference r)
+    {
+        var item = TcpRouteService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1Alpha2TCPRoute>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<TcpRouteDetailView, V1Alpha2TCPRoute, bool>(item);
+    }
+
+    private async Task OnHttpRouteClick(V1ObjectReference r)
+    {
+        var item = HttpRouteService.GetByName(r.NamespaceProperty, r.Name);
+        await PageDrawerHelper<V1HTTPRoute>.Instance
+            .SetDrawerService(DrawerService)
+            .ShowDrawerAsync<HttpRouteDetailView, V1HTTPRoute, bool>(item);
     }
 
     private async Task OnNamespaceClick(V1ObjectReference r)
@@ -207,7 +276,7 @@ public partial class RefView : PageBase
 
     private Task OnXClick(V1ObjectReference r)
     {
-        Message.Error($"{r.Name}点击未实现");
+        Message.Error($"{r.Kind}{r.Name}点击未实现");
         return Task.CompletedTask;
     }
 
