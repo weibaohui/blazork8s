@@ -177,7 +177,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                             _ = new KubeNode<V1StatefulSet>(Diagram, sts, new Point(column2XBase, y));
                             var key = $"{sts.Namespace()}/{sts.Name()}";
                             var stsNode = KubeNodeContainer<V1StatefulSet>.Instance.Get(key);
-                            DiagramHelper.LinkNodes(Diagram, stsNode, podNode);
+                            DiagramHelper.LinkNodesLeft2Right(Diagram, stsNode, podNode);
                         }
 
                         break;
@@ -193,7 +193,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 dsNode = KubeNodeContainer<V1DaemonSet>.Instance.Get(key);
                             }
 
-                            DiagramHelper.LinkNodes(Diagram, dsNode, podNode);
+                            DiagramHelper.LinkNodesLeft2Right(Diagram, dsNode, podNode);
                         }
 
                         break;
@@ -204,7 +204,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                             _ = new KubeNode<V1ReplicationController>(Diagram, rc, new Point(column2XBase, y));
                             var key = $"{rc.Namespace()}/{rc.Name()}";
                             var rcNode = KubeNodeContainer<V1ReplicationController>.Instance.Get(key);
-                            DiagramHelper.LinkNodes(Diagram, rcNode, podNode);
+                            DiagramHelper.LinkNodesLeft2Right(Diagram, rcNode, podNode);
                         }
 
                         break;
@@ -220,7 +220,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 nodeNode = KubeNodeContainer<V1Node>.Instance.Get(key);
                             }
 
-                            DiagramHelper.LinkNodes(Diagram, nodeNode, podNode);
+                            DiagramHelper.LinkNodesLeft2Right(Diagram, nodeNode, podNode);
                         }
 
                         break;
@@ -236,7 +236,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 rsNode = KubeNodeContainer<V1ReplicaSet>.Instance.Get(key);
                             }
 
-                            DiagramHelper.LinkNodes(Diagram, rsNode, podNode);
+                            DiagramHelper.LinkNodesLeft2Right(Diagram, rsNode, podNode);
 
                             //rs上一层是deploy
                             var ownerOwner = rs.GetController();
@@ -252,7 +252,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                     {
                                         _ = new KubeNode<V1Deployment>(Diagram, deploy, new Point(columnXBase, y));
                                         deployNode = KubeNodeContainer<V1Deployment>.Instance.Get(deployKey);
-                                        DiagramHelper.LinkNodes(Diagram, deployNode, rsNode);
+                                        DiagramHelper.LinkNodesLeft2Right(Diagram, deployNode, rsNode);
                                     }
                                 }
                             }
@@ -266,7 +266,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                             _ = new KubeNode<V1Job>(Diagram, job, new Point(column2XBase, y));
                             var key = $"{job.Namespace()}/{job.Name()}";
                             var jobNode = KubeNodeContainer<V1Job>.Instance.Get(key);
-                            DiagramHelper.LinkNodes(Diagram, jobNode, podNode);
+                            DiagramHelper.LinkNodesLeft2Right(Diagram, jobNode, podNode);
 
                             //job 上一层是CronJob
                             var ownerOwner = job.GetController();
@@ -283,7 +283,7 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                     {
                                         _ = new KubeNode<V1CronJob>(Diagram, cronJob, new Point(columnXBase, y));
                                         cronJobNode = KubeNodeContainer<V1CronJob>.Instance.Get(cronJobKey);
-                                        DiagramHelper.LinkNodes(Diagram, cronJobNode, jobNode);
+                                        DiagramHelper.LinkNodesLeft2Right(Diagram, cronJobNode, jobNode);
                                     }
                                 }
                             }
@@ -320,14 +320,14 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                 if (ingList.Count > 1) y += offset;
                             }
 
-                            DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, ingNode);
+                            DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, ingNode);
                         }
 
 
                         if (svcList.Count > 1) y += offset;
                     }
 
-                    DiagramHelper.LinkNodesTwoWay(Diagram, podNode, svcNode);
+                    DiagramHelper.LinkNodesRight2Left(Diagram, podNode, svcNode);
 
 
                     //寻找Service后面的HTTPRoute
@@ -353,13 +353,13 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
                                 }
 
-                                DiagramHelper.LinkNodesTwoWay(Diagram, httpRouteNode, gatewayNode);
+                                DiagramHelper.LinkNodesRight2Left(Diagram, httpRouteNode, gatewayNode);
                             }
 
                             if (httpRouteList.Count > 1) y += offset;
                         }
 
-                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, httpRouteNode);
+                        DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, httpRouteNode);
                     }
 
                     //寻找Service后面的TcpRoute
@@ -385,13 +385,13 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
                                 }
 
-                                DiagramHelper.LinkNodesTwoWay(Diagram, tcpRouteNode, gatewayNode);
+                                DiagramHelper.LinkNodesRight2Left(Diagram, tcpRouteNode, gatewayNode);
                             }
 
                             if (tcpRouteList.Count > 1) y += offset;
                         }
 
-                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, tcpRouteNode);
+                        DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, tcpRouteNode);
                     }
 
                     //寻找Service后面的grpcRoute
@@ -417,13 +417,13 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
                                 }
 
-                                DiagramHelper.LinkNodesTwoWay(Diagram, grpcRouteNode, gatewayNode);
+                                DiagramHelper.LinkNodesRight2Left(Diagram, grpcRouteNode, gatewayNode);
                             }
 
                             if (grpcRouteList.Count > 1) y += offset;
                         }
 
-                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, grpcRouteNode);
+                        DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, grpcRouteNode);
                     }
 
                     //寻找Service后面的udpRoute
@@ -449,14 +449,14 @@ public partial class PodDiagram : DrawerPageBase<V1Pod>
                                     gatewayNode = KubeNodeContainer<V1Gateway>.Instance.Get(gatewayKey);
                                 }
 
-                                DiagramHelper.LinkNodesTwoWay(Diagram, udpRouteNode, gatewayNode);
+                                DiagramHelper.LinkNodesRight2Left(Diagram, udpRouteNode, gatewayNode);
                             }
 
 
                             if (udpRouteList.Count > 1) y += offset;
                         }
 
-                        DiagramHelper.LinkNodesTwoWay(Diagram, svcNode, udpRouteNode);
+                        DiagramHelper.LinkNodesRight2Left(Diagram, svcNode, udpRouteNode);
                     }
                 }
             }

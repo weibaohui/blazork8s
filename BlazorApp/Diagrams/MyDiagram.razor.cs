@@ -83,7 +83,7 @@ public partial class MyDiagram : ComponentBase, IDisposable
                 _ = new KubeNode<V1ReplicaSet>(Diagram, rs, new Point(column2XBase, y));
                 var rkey = $"{rs.Namespace()}/{rs.Name()}";
                 var rsNode = KubeNodeContainer<V1ReplicaSet>.Instance.Get(rkey);
-                DiagramHelper.LinkNodes(Diagram, deployNode, rsNode);
+                DiagramHelper.LinkNodesLeft2Right(Diagram, deployNode, rsNode);
 
                 var pods = PodService.ListByOwnerUid(rs.Metadata.Uid);
                 for (var m = 0; m < pods.Count; m++)
@@ -92,7 +92,7 @@ public partial class MyDiagram : ComponentBase, IDisposable
                     _ = new KubeNode<V1Pod>(Diagram, pod, new Point(column3XBase, y));
                     var pkey = $"{pod.Namespace()}/{pod.Name()}";
                     var podNode = KubeNodeContainer<V1Pod>.Instance.Get(pkey);
-                    DiagramHelper.LinkNodes(Diagram, rsNode, podNode);
+                    DiagramHelper.LinkNodesLeft2Right(Diagram, rsNode, podNode);
                     if (pods.Count > 1 && m != pods.Count - 1)
                         //只有一个就不用往下移位
                         y += offset;
