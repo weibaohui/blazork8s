@@ -4,7 +4,7 @@ using k8s.Models;
 
 namespace Extension.k8s;
 
-public static class Extension
+public static class NodeExtension
 {
     public static bool IsReady(this IList<V1NodeCondition> conditions)
     {
