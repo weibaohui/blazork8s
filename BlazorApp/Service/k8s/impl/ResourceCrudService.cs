@@ -48,8 +48,78 @@ public class ResourceCrudService(
             "ClusterRoleBinding" => OnClusterRoleBindingDelete(ns, name),
             "RoleBinding" => OnRoleBindingDelete(ns, name),
             "CustomResourceDefinition" => OnCustomResourceDefinitionDelete(ns, name),
+            "GatewayClass" => OnGatewayClassDelete(ns, name),
+            "Gateway" => OnGatewayDelete(ns, name),
+            "HTTPRoute" => OnHttpRouteDelete(ns, name),
+            "TLSRoute" => OnTlsRouteDelete(ns, name),
+            "GRPCRoute" => OnGrpcRouteDelete(ns, name),
+            "UDPRoute" => OnUdpRouteDelete(ns, name),
+            "TCPRoute" => OnTcpRouteDelete(ns, name),
+            "ReferenceGrant" => OnReferenceGrantDelete(ns, name),
+            "BackendTLSPolicy" => OnBackendTlsPolicyDelete(ns, name),
+            "BackendLBPolicy" => OnBackendLbPolicyDelete(ns, name),
             _ => OnXDelete(kind, ns, name)
         });
+    }
+
+    private async Task<object> OnBackendLbPolicyDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "backendlbpolicies", name);
+    }
+
+    private async Task<object> OnBackendTlsPolicyDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha3", ns, "backendtlspolicies", name);
+    }
+
+    private async Task<object> OnReferenceGrantDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "referencegrants", name);
+    }
+
+    private async Task<object> OnTcpRouteDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "tcproutes", name);
+    }
+
+    private async Task<object> OnUdpRouteDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "udproutes", name);
+    }
+
+    private async Task<object> OnGrpcRouteDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1", ns, "grpcroutes", name);
+    }
+
+    private async Task<object> OnTlsRouteDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "tlsroutes", name);
+    }
+
+    private async Task<object> OnHttpRouteDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1", ns, "httproutes", name);
+    }
+
+    private async Task<object> OnGatewayDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1", ns, "gateways", name);
+    }
+
+    private async Task<object> OnGatewayClassDelete(string ns, string name)
+    {
+        return await kubeService.Client().CustomObjects
+            .DeleteClusterCustomObjectAsync("gateway.networking.k8s.io", "v1", "gatewayclasses", name);
     }
 
     private async Task<V1PersistentVolumeClaim> OnPersistentVolumeClaimDelete(string ns, string name)

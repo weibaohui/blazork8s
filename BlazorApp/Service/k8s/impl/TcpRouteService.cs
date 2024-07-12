@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Entity.Crd.Gateway;
+using k8s;
 using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -10,9 +11,8 @@ public class TcpRouteService(IKubeService kubeService) : CommonAction<V1Alpha2TC
 {
     public new async Task<object> Delete(string ns, string name)
     {
-        return Task.CompletedTask;
-
-        // return await kubeService.Client().DeleteNamespacedTcpRouteAsync(name, ns);
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "tcproutes", name);
     }
 
     public IList<V1Alpha2TCPRoute> ListByServiceList(List<V1Service> services)

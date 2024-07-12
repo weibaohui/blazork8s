@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Entity.Crd.Gateway;
+using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
 
@@ -8,8 +9,7 @@ public class ReferenceGrantService(IKubeService kubeService)
 {
     public new async Task<object> Delete(string ns, string name)
     {
-        return Task.CompletedTask;
-
-        // return await kubeService.Client().DeleteNamespacedReferenceGrantAsync(name, ns);
+        return await kubeService.Client().CustomObjects
+            .DeleteNamespacedCustomObjectAsync("gateway.networking.k8s.io", "v1alpha2", ns, "referencegrants", name);
     }
 }
