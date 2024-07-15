@@ -7,4 +7,5 @@ namespace BlazorApp.Service.k8s;
 public interface ITcpRouteService : ICommonAction<V1Alpha2TCPRoute>
 {
     IList<V1Alpha2TCPRoute> ListByServiceList(List<V1Service> services);
+    IList<V1Service> GetBackendServices(V1Alpha2TCPRoute tcpRoute);
 }

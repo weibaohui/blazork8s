@@ -7,7 +7,8 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class HttpRouteService(IKubeService kubeService) : CommonAction<V1HTTPRoute>, IHttpRouteService
+public class HttpRouteService(IKubeService kubeService, IServiceService serviceService)
+    : CommonAction<V1HTTPRoute>, IHttpRouteService
 {
     public new async Task<object> Delete(string ns, string name)
     {
@@ -31,5 +32,34 @@ public class HttpRouteService(IKubeService kubeService) : CommonAction<V1HTTPRou
         }
 
         return list;
+    }
+
+
+    public IList<V1Service> GetBackendServices(V1HTTPRoute httpRoute)
+    {
+        IList<V1Service> svcList = new List<V1Service>();
+
+        var backendRefs = httpRoute?.Spec?.Rules?
+            .SelectMany(x => x.BackendRefs)?
+            .Where(x => x.Kind == "Service")?
+            .ToList();
+        if (backendRefs is { Count: > 0 })
+        {
+            foreach (var backendRef in backendRefs)
+            {
+                if (string.IsNullOrWhiteSpace(backendRef.Namespace))
+                {
+                    backendRef.Namespace = httpRoute.Namespace();
+                }
+
+                var service = serviceService.GetByName(backendRef.Namespace, backendRef.Name);
+                if (service is not null)
+                {
+                    svcList.Add(service);
+                }
+            }
+        }
+
+        return svcList;
     }
 }

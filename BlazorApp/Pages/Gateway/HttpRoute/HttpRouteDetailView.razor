@@ -3,6 +3,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Gateway.Share
+@using BlazorApp.Pages.Service
 @using BlazorApp.Utils
 @using Entity.Crd.Gateway
 @using k8s.Models
@@ -283,6 +284,12 @@
         <RouteParentStatusView Parents="@HttpRoute.Status.Parents" ExplainFieldPrefix="httpRoute"
                                Ns="@HttpRoute.Metadata.Namespace()">
         </RouteParentStatusView>
+    }
+
+
+    @if (_svcList is { Count: > 0 })
+    {
+        <MiniServiceListView Services="@_svcList"></MiniServiceListView>
     }
 
     <MiniEventListView Uid="@HttpRoute.Metadata.Uid"></MiniEventListView>

@@ -2,6 +2,7 @@
 @using BlazorApp.Pages.Common.Metadata
 @using BlazorApp.Pages.Event
 @using BlazorApp.Pages.Gateway.Share
+@using BlazorApp.Pages.Service
 @using k8s.Models
 @inherits BlazorApp.Pages.Common.DrawerPageBase<Entity.Crd.Gateway.V1Alpha2TCPRoute>
 @if (TcpRoute != null)
@@ -38,6 +39,11 @@
                                    Ns="@TcpRoute.Metadata.Namespace()">
             </RouteParentStatusView>
         </HTable>
+    }
+
+    @if (_svcList is { Count: > 0 })
+    {
+        <MiniServiceListView Services="@_svcList"></MiniServiceListView>
     }
 
     <MiniEventListView Uid="@TcpRoute.Metadata.Uid"></MiniEventListView>

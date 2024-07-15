@@ -7,7 +7,8 @@ using k8s.Models;
 
 namespace BlazorApp.Service.k8s.impl;
 
-public class TcpRouteService(IKubeService kubeService) : CommonAction<V1Alpha2TCPRoute>, ITcpRouteService
+public class TcpRouteService(IKubeService kubeService, IServiceService serviceService)
+    : CommonAction<V1Alpha2TCPRoute>, ITcpRouteService
 {
     public new async Task<object> Delete(string ns, string name)
     {
@@ -31,5 +32,33 @@ public class TcpRouteService(IKubeService kubeService) : CommonAction<V1Alpha2TC
         }
 
         return list;
+    }
+
+    public IList<V1Service> GetBackendServices(V1Alpha2TCPRoute tcpRoute)
+    {
+        IList<V1Service> svcList = new List<V1Service>();
+
+        var backendRefs = tcpRoute?.Spec?.Rules?
+            .SelectMany(x => x.BackendRefs)?
+            .Where(x => x.Kind == "Service")?
+            .ToList();
+        if (backendRefs is { Count: > 0 })
+        {
+            foreach (var backendRef in backendRefs)
+            {
+                if (string.IsNullOrWhiteSpace(backendRef.Namespace))
+                {
+                    backendRef.Namespace = tcpRoute.Namespace();
+                }
+
+                var service = serviceService.GetByName(backendRef.Namespace, backendRef.Name);
+                if (service is not null)
+                {
+                    svcList.Add(service);
+                }
+            }
+        }
+
+        return svcList;
     }
 }

@@ -7,4 +7,5 @@ namespace BlazorApp.Service.k8s;
 public interface IGrpcRouteService : ICommonAction<V1GRPCRoute>
 {
     IList<V1GRPCRoute> ListByServiceList(List<V1Service> services);
+    IList<V1Service> GetBackendServices(V1GRPCRoute grpcRoute);
 }
