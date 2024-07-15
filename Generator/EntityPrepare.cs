@@ -23,16 +23,16 @@ public class EntityPrepare
 
 
         var list = zList
-            .Where(x => (x.FieldLevel == 2 || x.FieldLevel == 3)
-                        && !x.FullName.Contains(".Metadata")
-                        && !x.FullName.Contains(".ApiVersion")
-                        && !x.FullName.Contains(".Kind")
-            )
+            // .Where(x => (x.FieldLevel == 2 || x.FieldLevel == 3)
+            //             && !x.FullName.Contains(".Metadata")
+            //             && !x.FullName.Contains(".ApiVersion")
+            //             && !x.FullName.Contains(".Kind")
+            // )
             .ToList();
 
-        // list = RemoveMultipleItem(list);
-        // list = RemoveOnlyOneChildItem(list);
-        // list = RemoveExpandedItem(list);
+        list = RemoveMultipleItem(list);
+        list = RemoveOnlyOneChildItem(list);
+        list = RemoveExpandedItem(list);
         File.WriteAllText("pod-zip3.json", KubernetesJson.Serialize(list));
         return list;
     }

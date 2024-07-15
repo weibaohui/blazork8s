@@ -155,6 +155,7 @@ public class TranslateService(
                     {
                         Id = enId,
                         Explain = en,
+                        Date = DateTime.Now.ToString("yyyy-MM-dd"),
                         done = false
                     }
                 }).ExecuteCommandAsync();
@@ -195,12 +196,12 @@ public class TranslateService(
             {
                 Id = cnId,
                 EnId = en.Id,
-                Explain = cn
+                Explain = cn, Date = DateTime.Now.ToString("yyyy-MM-dd")
             }).ExecuteCommandAsync();
             logger.LogInformation("保存 {Current}/{All} {EnId} {Rest} ", current, all, en.Id, rest);
             await db.Updateable(en).ExecuteCommandAsync();
 
-            Thread.Sleep(1000);
+            Thread.Sleep(200);
         }
     }
 }

@@ -56,11 +56,11 @@ class Program
 
     public static void Main()
     {
-        MakeTemplate();
+        // MakeTemplate();
         // EntityPrepare.PrepareK8SEntity();
         // RazorEngineProcessor.Process();
         // Volume();
-        // kubectExplainGen.Explain();
+        kubectExplainGen.Explain();
     }
 
     public static void Volume()

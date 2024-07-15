@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Entity;
-using k8s.Models;
+using Entity.Crd.Gateway;
 using SqlSugar;
 
 namespace Generator;
@@ -51,7 +51,18 @@ public class kubectExplainGen
         // dictList.AddItem("Pod", typeof(V1Pod));
         // dictList.AddItem("Lease", typeof(V1Lease));
         // dictList.AddItem("Namespace", typeof(V1Namespace));
-        dictList.AddItem("Event", typeof(Corev1Event));
+        // dictList.AddItem("Event", typeof(Corev1Event));
+
+        dictList.AddItem("GatewayClass", typeof(V1GatewayClass));
+        dictList.AddItem("Gateway", typeof(V1Gateway));
+        dictList.AddItem("HttpRoute", typeof(V1HTTPRoute));
+        dictList.AddItem("GrpcRoute", typeof(V1GRPCRoute));
+        dictList.AddItem("TcpRoute", typeof(V1Alpha2TCPRoute));
+        dictList.AddItem("UdpRoute", typeof(V1Alpha2UDPRoute));
+        dictList.AddItem("TlsRoute", typeof(V1Alpha2TLSRoute));
+        dictList.AddItem("ReferenceGrant", typeof(V1Alpha2ReferenceGrant));
+        dictList.AddItem("BackendTLSPolicy", typeof(V1Alpha3BackendTLSPolicy));
+        dictList.AddItem("BackendLBPolicy", typeof(V1Alpha2BackendLBPolicy));
 
         Console.WriteLine("AddList Over");
 

@@ -15,10 +15,10 @@ public class ReflectHelper<T>
     /// <returns></returns>
     public static string GetValue(T item, string key)
     {
-        Type          type     = typeof(T);
-        var           property = type.GetProperty(key);
-        DynamicMethod method   = new DynamicMethod("GetPropertyValue", typeof(object), new Type[] { type }, true);
-        ILGenerator   il       = method.GetILGenerator();
+        Type type = typeof(T);
+        var property = type.GetProperty(key);
+        DynamicMethod method = new DynamicMethod("GetPropertyValue", typeof(object), new Type[] { type }, true);
+        ILGenerator il = method.GetILGenerator();
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Callvirt, property.GetGetMethod());
 
@@ -28,8 +28,8 @@ public class ReflectHelper<T>
         }
 
         il.Emit(OpCodes.Ret);
-        Func<T, object> fun   = method.CreateDelegate(typeof(Func<T, object>)) as Func<T, object>;
-        object          value = fun.Invoke(item);
+        Func<T, object> fun = method.CreateDelegate(typeof(Func<T, object>)) as Func<T, object>;
+        object value = fun.Invoke(item);
         return value.ToString();
     }
 
@@ -53,14 +53,15 @@ public class ReflectHelper<T>
                 .Replace("`1", "")
                 .Replace("[", "")
                 .Replace("]", "");
-            kt.Name         = method?.Name.Replace("get_", "");
-            kt.FullName     = parentName + "." + kt.Name;
+            kt.Name = method?.Name.Replace("get_", "");
+            kt.FullName = parentName + "." + kt.Name;
             kt.ExplainFiled = kt.FullName.ToCamelCase(true);
-            kt.FieldLevel   = kt.ExplainFiled.CountBy(".") + 1;
-            kt.IsList       = IsList(kt.Type);
-            kt.IsStatus     = kt.FullName.Contains(".Status");
-            kt.ShowInJson   = ShowInJson(kt.Type);
-            if (kt.Type != null && kt.Type.Contains("k8s"))
+            kt.FieldLevel = kt.ExplainFiled.CountBy(".") + 1;
+            kt.IsList = IsList(kt.Type);
+            kt.IsStatus = kt.FullName.Contains(".Status");
+            kt.ShowInJson = ShowInJson(kt.Type);
+            if (kt.Type != null && (kt.Type.Contains("k8s") || kt.Type.Contains("Gateway")))
+                // if (kt.Type != null )
             {
                 if (kt.IsList)
                 {
