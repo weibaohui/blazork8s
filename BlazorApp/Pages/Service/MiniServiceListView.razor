@@ -13,12 +13,29 @@
     <Table TItem="V1Service" DataSource="@Services"
            HidePagination="true" PageSize="5000"
            Size=@TableSize.Small Bordered="true">
-        <AntDesign.Column Title=@L["Name"] TData="string">
-            <Button OnClick="@(() => OnServiceNameClick(context))" Type="@ButtonType.Link">@context.Name()</Button>
+        <AntDesign.Column Title=@L["Name"] TData="string" Width="200px">
+            <a onclick="@(() => OnServiceNameClick(context))">@context.Name()</a>
         </AntDesign.Column>
         <AntDesign.Column Sortable="true" TData="string" Title=@L["Namespace"] Field="@context.Namespace()"/>
         <AntDesign.Column Title=@L["Type"] TData="string">
             <ColorfulTag>@context.Spec.Type</ColorfulTag>
+        </AntDesign.Column>
+        <AntDesign.Column Title=@L["IP"] TData="string">
+            @if (!string.IsNullOrEmpty(context.Spec.ClusterIP))
+            {
+                <ColorfulTag>@context.Spec.ClusterIP</ColorfulTag>
+            }
+            @if (!string.IsNullOrEmpty(context.Spec.LoadBalancerIP))
+            {
+                <ColorfulTag>@context.Spec.LoadBalancerIP</ColorfulTag>
+            }
+            @if (context.Spec.ExternalIPs is { Count: > 0 })
+            {
+                @foreach (var ip in context.Spec.ExternalIPs)
+                {
+                    <ColorfulTag>@ip</ColorfulTag>
+                }
+            }
         </AntDesign.Column>
         <AntDesign.Column Title=@L["Selector"] TData="string" Width="100px">
             <SelectorView Selector="@context.Spec.Selector"></SelectorView>
