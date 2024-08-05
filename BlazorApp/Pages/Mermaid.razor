@@ -1,0 +1,14 @@
+@page "/Mermaid"
+<MermaidDiagram Definition=@diagramDef></MermaidDiagram>
+
+@code {
+    string diagramDef = def1;
+
+    const string def1 = @"
+flowchart LR
+A --> B
+B --> C
+C --> A
+";
+
+}

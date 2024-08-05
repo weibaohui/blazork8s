@@ -124,8 +124,11 @@ builder.Services.AddSingleton
 
 builder.Services.AddWorkflow();
 
-
 var app = builder.Build();
+
+
+app.UseMiddleware<ModifyResponseMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
