@@ -175,22 +175,20 @@ Visualize the relationships and states between workload resources intuitively th
 <img src="/docs/img/diagram.gif">
 <br>
 
-## List of inspectable resources
 
-* Node
-* Pod
-* Deployment
-* StatefulSet
-* ReplicaSet
-* CronJob
-* Ingress
-* Service/Endpoints
-* PersistentVolumeClaim
-* NetworkPolicy
-* HorizontalPodAutoscaler
+
+## GatewayAPI support
+
+* GatewayClass
+* Gateway
+* HTTPRoute
+* GRPCRoute
+* TCPRoute
+* UDPRoute
   <br>
-  <img src="/docs/img/cluster-inspection.png">
-  <br>
+  <img src="/docs/img/HTTPRoute-Graph-View.png">
+
+
 
 ## UI preview
 

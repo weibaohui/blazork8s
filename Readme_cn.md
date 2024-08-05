@@ -177,22 +177,19 @@ docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/b
 <img src="/docs/img/deploy-diagram.jpg">
 <img src="/docs/img/diagram.gif">
 <br>
-## 巡检支持资源情况
 
-* Node
-* Pod
-* Deployment
-* StatefulSet
-* ReplicaSet
-* CronJob
-* Ingress
-* Service/Endpoints
-* PersistentVolumeClaim
-* NetworkPolicy
-* HorizontalPodAutoscaler
+## GatewayAPI 支持
+
+* GatewayClass
+* Gateway
+* HTTPRoute
+* GRPCRoute
+* TCPRoute
+* UDPRoute
   <br>
-  <img src="/docs/img/cluster-inspection.png">
-  <br>
+  <img src="/docs/img/HTTPRoute-Graph-View.png">
+
+
 
 ## 页面预览
 [click me](docs/ui.md)
