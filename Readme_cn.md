@@ -28,6 +28,7 @@
 * 支持中文、英文以及法语、德语、意大利语、俄语、西班牙语、法语、日语、韩语等12国语言。
 * 支持通过拓扑图直观展示workload资源之间的关系以及状态
 * 支持GatewayAPI,包括GatewayClass、Gateway、HTTPRoute、GRPCRoute、TCPRoute、UDPRoute等。
+* 支持使用Mermaid.js绘制HttpRoute资源，直观明了
 ## ☀️ 授权协议
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)

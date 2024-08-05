@@ -28,7 +28,7 @@ Particularly suitable for beginners, it offers various convenient functionalitie
 * Supports Chinese, English, as well as French, German, Italian, Russian, Spanish, French, Japanese, Korean, and 12  languages.
 * Visualize the relationships and states between workload resources intuitively through a topology diagram.
 * Supports GatewayAPI, including GatewayClass, Gateway, HTTPRoute, GRPCRoute, TCPRoute, and UDPRoute.
-
+* Support using Mermaid.js to visualize HttpRoute resources, which is intuitive and clear.
 ## ☀️ License
 
 [![BlazorK8s](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](https://github.com/weibaohui/blazork8s/blob/master/LICENSE)
