@@ -26,4 +26,7 @@
         <ProjectReference Include="..\Entity\Entity.csproj" />
         <ProjectReference Include="..\Extension\Extension.csproj" />
     </ItemGroup>
+    <ItemGroup>
+        <Folder Include="wwwroot\js\"/>
+    </ItemGroup>
 </Project>

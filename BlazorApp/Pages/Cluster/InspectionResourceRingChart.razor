@@ -2,11 +2,9 @@
 
 @code {
 
-    [Parameter]
-    public double Numerator { get; set; } = 1;
+    [Parameter] public double Numerator { get; set; } = 1;
 
-    [Parameter]
-    public double Denominator { get; set; } = 1;
+    [Parameter] public double Denominator { get; set; } = 1;
 
 
     private double CalcLoad()
@@ -21,7 +19,7 @@
 
     private RingProgressConfig _loadConfig = new RingProgressConfig
     {
-        Width  = 50,
+        Width = 50,
         Height = 50,
         Color = new[]
         {
