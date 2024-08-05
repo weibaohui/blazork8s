@@ -30,6 +30,7 @@
     @if (HttpRoute.Spec.Rules is { Count: > 0 })
     {
         <Divider Orientation="left" Style="font-weight:bold">@L["Rules"]</Divider>
+
         @foreach (var rule in HttpRoute.Spec.Rules)
         {
             <HTable Bordered Column="1">
@@ -276,6 +277,13 @@
                 </PropertySimpleView>
             </HTable>
         }
+    }
+
+    @if (HttpRoute.Spec.Rules is { Count: > 0 })
+    {
+        <Divider Orientation="left" Style="font-weight:bold">@L["Graph"]</Divider>
+
+        <RulesDetailView Rules="@HttpRoute.Spec.Rules"></RulesDetailView>
     }
 
     @if (HttpRoute.Status is not null)

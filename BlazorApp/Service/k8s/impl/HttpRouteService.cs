@@ -40,8 +40,9 @@ public class HttpRouteService(IKubeService kubeService, IServiceService serviceS
         IList<V1Service> svcList = new List<V1Service>();
 
         var backendRefs = httpRoute?.Spec?.Rules?
+            .Where(x => x.BackendRefs is { Count: > 0 })
             .SelectMany(x => x.BackendRefs)?
-            .Where(x => x.Kind == "Service")?
+            .Where(x => x is { Kind: "Service" })?
             .ToList();
         if (backendRefs is { Count: > 0 })
         {

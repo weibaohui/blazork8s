@@ -1,0 +1,5 @@
+@inherits BlazorApp.Pages.Common.PageBase
+@if (_diagramDef is { Length: > 0 })
+{
+    <MermaidDiagram Definition=@_diagramDef></MermaidDiagram>
+}
