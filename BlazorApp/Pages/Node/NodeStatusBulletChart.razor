@@ -1,28 +1,25 @@
-@using k8s.Models
-@using BlazorApp.Service.k8s
 @using System.Timers
+@using BlazorApp.Service.k8s
+@using k8s.Models
 <Bullet Config="_uiConfig"/>
 
 @code {
 
-    [Inject]
-    public INodeService NodeService { get; set; }
+    [Inject] public INodeService NodeService { get; set; }
 
-    [Parameter]
-    public V1Node Node { get; set; }
+    [Parameter] public V1Node Node { get; set; }
 
-    [Inject]
-    private IMetricsService MetricsService { get; set; }
+    [Inject] private IMetricsService MetricsService { get; set; }
 
-    private bool         _isMetricsServerReady;
+    private bool _isMetricsServerReady;
     private BulletConfig _uiConfig;
-    private Timer        _timer;
+    private Timer _timer;
 
     protected override async Task OnInitializedAsync()
     {
         _isMetricsServerReady = await MetricsService.MetricsServerReady();
 
-        _timer         =  new Timer(10000);
+        _timer = new Timer(10000);
         _timer.Elapsed += async (sender, eventArgs) => await OnTimerCallback();
         _timer.Start();
         _uiConfig = GetConfig();
@@ -38,8 +35,8 @@
     private int CalcMeasure(string fullValue)
     {
         var strings = fullValue.Split("/");
-        var s1      = strings[0];
-        var s2      = strings[1];
+        var s1 = strings[0];
+        var s2 = strings[1];
         if (string.IsNullOrWhiteSpace(s1))
         {
             s1 = "0";
@@ -56,40 +53,46 @@
 
     BulletConfig GetConfig()
     {
-        var nodeName       = Node.Name();
-        var podCapacity    = NodeService.GetPodCapacity(nodeName);
-        var cpuCapacity    = NodeService.GetCpuCapacity(nodeName);
+        var nodeName = Node.Name();
+        var podCapacity = NodeService.GetPodCapacity(nodeName);
+        var cpuCapacity = NodeService.GetCpuCapacity(nodeName);
         var memoryCapacity = NodeService.GetMemoryCapacity(nodeName);
 
-        var config = new BulletConfig
+        BulletConfig config = new BulletConfig()
         {
-            Width       = 300,
-            Height      = 150,
-            RangeMax    = 100,
-            RangeColors = new string[] { "#9ebc19", "#e18a3b", "#c12c1f" },
-            Data = new[]
+            Data = new BulletViewConfigData[]
             {
                 new BulletViewConfigData
                 {
-                    Title    = "Pods (%)",
-                    Measures = new int[] { CalcMeasure(podCapacity) },
-                    Ranges   = new double[] { 0, 0.5, 0.8, 1 },
+                    Title = "Pods (%)",
+                    Measures = new[] { CalcMeasure(podCapacity) },
+                    Targets = new[] { 85 },
+                    Ranges = new double[] { 25, 50, 75, 100 },
                 },
                 new BulletViewConfigData
                 {
-                    Title    = "CPU (%)",
-                    Measures = new int[] { CalcMeasure(cpuCapacity) },
-                    Ranges   = new double[] { 0, 0.5, 0.8, 1 },
+                    Title = "CPU (%)",
+                    Measures = new[] { CalcMeasure(cpuCapacity) },
+                    Targets = new[] { 85 },
+                    Ranges = new double[] { 25, 50, 75, 100 },
                 },
                 new BulletViewConfigData
                 {
-                    Title    = "Memory (%)",
-                    Measures = new int[] { CalcMeasure(memoryCapacity) },
-                    Ranges   = new double[] { 0, 0.5, 0.8, 1 },
+                    Title = "Memory (%)",
+                    Targets = new[] { 85 },
+                    Measures = new[] { CalcMeasure(memoryCapacity) },
+                    Ranges = new double[] { 25, 50, 75, 100 },
                 }
-            }
+            },
+            Width = 300,
+            Height = 150,
+            RangeMax = 100,
+            TargetField = "target",
+            RangeField = "ranges",
+            MeasureField = "measures",
+            XField = "title",
+            RangeColors = new string[] { "#64DAAB", "#6595FA", "#FF9D4F", "#D62A0E" },
         };
-
         return config;
     }
 
