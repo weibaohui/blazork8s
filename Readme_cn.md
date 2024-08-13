@@ -62,7 +62,7 @@ kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deploymen
 
 * 访问：
   默认使用了nodePort开放，请访问31999端口。或自行配置Ingress
-  http://NodePortIP:31999
+  http://NodePortIP:31999 (!不要使用 127.0.0.1/localhost!)
 
 # 使用docker启动镜像进行体验
 
@@ -71,11 +71,11 @@ kubectl apply -f https://gitee.com/weibaohui/blazork8s/raw/main/deploy/deploymen
 使用docker-desktop需要自行处理apiserver的访问域名地址，请确保在docker内可访问
 ### X86架构环境
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.6
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.7
 ```
 ### ARM Run (Mac M1/2/3等ARM架构)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.6-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.7-arm
 ```
 
 * 访问：http://IP:4000  (!不要使用 127.0.0.1/localhost!)

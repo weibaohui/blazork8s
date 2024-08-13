@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using BlazorApp.Utils.Prometheus;
@@ -13,8 +15,8 @@ namespace BlazorApp.Service.k8s.impl;
 
 public class KubeService : IKubeService
 {
-    private string?     ContextName { get; set; }
-    private Kubernetes? _client     { get; set; }
+    private string? ContextName { get; set; }
+    private Kubernetes? _client { get; set; }
 
     public void ChangeContext(string ctxName)
     {
@@ -49,7 +51,7 @@ public class KubeService : IKubeService
             ? KubernetesClientConfiguration.InClusterConfig()
             : KubernetesClientConfiguration.BuildConfigFromConfigFile(currentContext: ContextName);
         ContextName = config.CurrentContext;
-        _client     = new Kubernetes(config);
+        _client = new Kubernetes(config);
         Console.WriteLine($"KubeService initialized.{config.CurrentContext}");
         return _client;
     }
@@ -63,8 +65,51 @@ public class KubeService : IKubeService
     {
         var baseUrl = Client().BaseUri.ToString();
         requestUri = requestUri.StartsWith('/') ? requestUri.Remove(0, 1).Trim() : requestUri;
+        if (KubernetesClientConfiguration.IsInCluster())
+        {
+            return await GetStringInClusterAsync(requestUri);
+        }
+
         return await Client().HttpClient.GetStringAsync($"{baseUrl}{requestUri}");
     }
+
+
+    private async Task<string> GetStringInClusterAsync(string requestUri)
+    {
+        var serviceAccountTokenPath = "/var/run/secrets/kubernetes.io/serviceaccount/token";
+        var caCertPath = "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt";
+
+        var token = await File.ReadAllTextAsync(serviceAccountTokenPath);
+        var handler = new HttpClientHandler();
+
+        // Set the CA certificate
+        handler.ServerCertificateCustomValidationCallback =
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+        handler.ClientCertificates.Add(new System.Security.Cryptography.X509Certificates.X509Certificate2(caCertPath));
+
+        var client = new HttpClient(handler);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        var baseUrl = Client().BaseUri.ToString();
+        requestUri = requestUri.StartsWith('/') ? requestUri.Remove(0, 1).Trim() : requestUri;
+
+
+        var response = await client.GetAsync($"{baseUrl}{requestUri}");
+
+        var content = "";
+        if (response.IsSuccessStatusCode)
+        {
+            content = await response.Content.ReadAsStringAsync();
+            // Console.WriteLine(content);
+        }
+        // else
+        // {
+        //     Console.WriteLine($"Error: {response.StatusCode}");
+        // }
+
+        return content;
+    }
+
 
     private async Task<Stream> GetStreamAsync(string requestUri)
     {
@@ -97,9 +142,9 @@ public class KubeService : IKubeService
 
     public async Task<List<IMetric>> ConvertStringToMetrics(string metricString)
     {
-        var             byteArray = Encoding.UTF8.GetBytes(metricString);
-        await using var ms        = new MemoryStream(byteArray);
-        var             metric    = await PrometheusMetricsParser.ParseAsync(ms);
+        var byteArray = Encoding.UTF8.GetBytes(metricString);
+        await using var ms = new MemoryStream(byteArray);
+        var metric = await PrometheusMetricsParser.ParseAsync(ms);
         return metric;
     }
 
@@ -114,10 +159,10 @@ public class KubeService : IKubeService
     /// <returns></returns>
     public async Task<List<IMetric>> GetMetricsSlis()
     {
-        var             metricString = await GetStringAsync("/metrics/slis");
-        var             byteArray    = Encoding.UTF8.GetBytes(metricString);
-        await using var ms           = new MemoryStream(byteArray);
-        var             metric       = await PrometheusMetricsParser.ParseAsync(ms);
+        var metricString = await GetStringAsync("/metrics/slis");
+        var byteArray = Encoding.UTF8.GetBytes(metricString);
+        await using var ms = new MemoryStream(byteArray);
+        var metric = await PrometheusMetricsParser.ParseAsync(ms);
         return metric;
     }
 

@@ -1,4 +1,3 @@
-using System;
 using System.Threading.Tasks;
 using BlazorApp.Pages.Common;
 using Entity.Crd.Gateway;
@@ -25,7 +24,7 @@ public partial class KubeNodeWidget<T> : PageBase where T : IKubernetesObject<V1
 
     private bool? GetReadyStatus(T item)
     {
-        Console.WriteLine($"GetReadyStatus for {_typeName} {_resName}");
+        // Console.WriteLine($"GetReadyStatus for {_typeName} {_resName}");
         return _typeName switch
         {
             "V1Deployment" => (item as V1Deployment)?.IsReady(),

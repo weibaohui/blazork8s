@@ -60,17 +60,17 @@ kubectl apply -f https://raw.githubusercontent.com/weibaohui/blazork8s/main/depl
 
 * View the ui：
   By default, it uses NodePort for access. Please visit port 31999, or configure Ingress on your own.
-  http://NodePortIP:31999
+  http://NodePortIP:31999 (!Do not use 127.0.0.1/localhost!)
 
 ## Start a Docker image to experience it
 ### x86 Run
 Note: When using Docker Desktop, you need to handle the access domain address of the API server yourself. Ensure that it is accessible within the Docker environment.
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.6
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.7
 ```
 ### ARM Run (Mac M1/2/3)
 ```docker
-docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.6-arm
+docker run -it --rm    -v ~/.kube/:/root/.kube/ -p 4000:8080 ghcr.io/weibaohui/blazork8s:0.2.7-arm
 ```
 
 * View：http://IP:4000 (!Do not use 127.0.0.1/localhost!)
