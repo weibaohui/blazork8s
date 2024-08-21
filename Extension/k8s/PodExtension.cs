@@ -91,9 +91,24 @@ public static class PodExtension
 
     public static bool IsProcessing(this V1Pod pod)
     {
-        if (pod.Status?.Conditions == null) return false;
+        var phase = pod.Status?.Phase switch
+        {
+            "Pending" => true,
+            "Running" => false,
+            "Succeeded" => false,
+            "Unknown" => true,
+            "Failed" => false,
+            _ => false
+        };
+// Console.WriteLine($"IsProcessing {pod.Metadata.Name} {phase}");
+        if (phase)
+        {
+            return true;
+        }
 
-        return pod.Status.Conditions.Any(condition => condition.Status != "True");
+        return phase;
+        // if (pod.Status?.Conditions == null) return false;
+        // return pod.Status.Conditions.Any(condition => condition.Status != "True");
     }
 
     /// <summary>
