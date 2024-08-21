@@ -11,9 +11,11 @@ namespace BlazorApp.Utils.Prometheus;
 
 public class PrometheusMetricsParser
 {
-    private const string MetricInfoRegex  = @"# (\w+) (\w*) (.*)";
+    private const string MetricInfoRegex = @"# (\w+) (\w*) (.*)";
     private const string MeasurementRegex1 = "([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)+ *(\\d*)*";
-    private const string MeasurementRegex = @"([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)(\d+\.?\d*(?:e[+-]?\d+)?)";
+
+    private const string MeasurementRegex =
+        @"([^{\\ ]+)({.+})* ((?:-?\\d+(?:\\.\\d*)*)*(?:NaN)*)(\d+\.?\d*(?:e[+-]?\d+)?)";
 
     public static async Task<List<IMetric>> ParseAsync(Stream rawMetricsStream)
     {
@@ -39,11 +41,11 @@ public class PrometheusMetricsParser
 
     private static async Task<List<IMetric>> InterpretRawMetricsStreamAsync(Stream rawMetricsStream)
     {
-        var metrics      = new List<IMetric>();
+        var metrics = new List<IMetric>();
         var streamReader = new StreamReader(rawMetricsStream);
 
         Metric lastMetric = null;
-        var    done       = false;
+        var done = false;
         //逐行进行处理
         var line = await streamReader.ReadLineAsync();
         if (string.IsNullOrWhiteSpace(line))
@@ -80,9 +82,10 @@ public class PrometheusMetricsParser
                         lastMetric.Description = metricInfoMatch.Groups[3].Value;
                         break;
                     case "TYPE":
-                        lastMetric.Name    = metricInfoMatch.Groups[2].Value;
-                        var currentMetricType = Enum.Parse<MetricTypes>(metricInfoMatch.Groups[3].Value, ignoreCase: true);
-                        lastMetric.Type    = currentMetricType;
+                        lastMetric.Name = metricInfoMatch.Groups[2].Value;
+                        var currentMetricType =
+                            Enum.Parse<MetricTypes>(metricInfoMatch.Groups[3].Value, ignoreCase: true);
+                        lastMetric.Type = currentMetricType;
 
                         break;
                 }
@@ -124,7 +127,7 @@ public class PrometheusMetricsParser
     /// <exception cref="Exception"></exception>
     private static Measurement ParseMeasurement(string line)
     {
-        var measurement  = new Measurement();
+        var measurement = new Measurement();
         var regexOutcome = Regex.Match(line, MeasurementRegex);
         if (regexOutcome.Success == false)
         {
@@ -158,19 +161,21 @@ public class PrometheusMetricsParser
         if (rawMetricValue.Contains("e+"))
         {
             var numbers = rawMetricValue.Split("e+");
-            var before  = numbers[0];
-            var after   = numbers[1];
+            var before = numbers[0];
+            var after = numbers[1];
             // Console.WriteLine($"{rawMetricValue} = {before} * 10 的{after}次方");
             return double.Parse(before) * Math.Pow(10, int.Parse(after));
         }
+
         if (rawMetricValue.Contains("e-"))
         {
             var numbers = rawMetricValue.Split("e-");
-            var before  = numbers[0];
-            var after   = numbers[1];
+            var before = numbers[0];
+            var after = numbers[1];
             // Console.WriteLine($"{rawMetricValue} = {before} * 10 的 -{after}次方");
             return double.Parse(before) * Math.Pow(10, -int.Parse(after));
         }
+
         return double.Parse(rawMetricValue);
     }
 
@@ -203,11 +208,13 @@ public class PrometheusMetricsParser
         // Get every individual raw label
         foreach (var rawLabel in rawLabels.Split(','))
         {
-            // Split label into information
-            var splitLabelInfo = rawLabel.Split('=');
-
-            // Add to the outcome
-            measurement.Labels.Add(splitLabelInfo[0], splitLabelInfo[1].Replace("\"", ""));
+            if (rawLabel.Contains('='))
+            {
+                // Split label into information
+                var splitLabelInfo = rawLabel.Split('=');
+                // Add to the outcome
+                measurement.Labels.Add(splitLabelInfo[0], splitLabelInfo[1].Replace("\"", ""));
+            }
         }
     }
 }

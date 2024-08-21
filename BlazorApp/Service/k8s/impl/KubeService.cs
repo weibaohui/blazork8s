@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using BlazorApp.Utils.Prometheus;
 using BlazorApp.Utils.Prometheus.Models.Interfaces;
 using Entity;
+using Extension;
 using k8s;
 
 namespace BlazorApp.Service.k8s.impl;
@@ -137,11 +138,17 @@ public class KubeService : IKubeService
     public async Task<List<IMetric>> GetMetrics()
     {
         var metricString = await GetStringAsync("/metrics");
+
         return await ConvertStringToMetrics(metricString);
     }
 
     public async Task<List<IMetric>> ConvertStringToMetrics(string metricString)
     {
+        if (metricString.IsNullOrWhiteSpace())
+        {
+            return [];
+        }
+
         var byteArray = Encoding.UTF8.GetBytes(metricString);
         await using var ms = new MemoryStream(byteArray);
         var metric = await PrometheusMetricsParser.ParseAsync(ms);
