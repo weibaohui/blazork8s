@@ -167,6 +167,11 @@ public class KubeService : IKubeService
     public async Task<List<IMetric>> GetMetricsSlis()
     {
         var metricString = await GetStringAsync("/metrics/slis");
+        if (metricString.IsNullOrWhiteSpace())
+        {
+            return [];
+        }
+
         var byteArray = Encoding.UTF8.GetBytes(metricString);
         await using var ms = new MemoryStream(byteArray);
         var metric = await PrometheusMetricsParser.ParseAsync(ms);
