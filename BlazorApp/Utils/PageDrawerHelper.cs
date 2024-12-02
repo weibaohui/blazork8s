@@ -33,7 +33,7 @@ public class PageDrawerHelper<T> where T : class, IKubernetesObject<V1ObjectMeta
         var options = new DrawerOptions
         {
             Title = title,
-            Width = width,
+            Width = $"{width}",
         };
         return options;
     }

@@ -13,7 +13,7 @@ public class PageDrawerService(DrawerService drawerService) : IPageDrawerService
         var options = new DrawerOptions
         {
             Title = title,
-            Width = width,
+            Width = $"{width}",
         };
         return options;
     }
