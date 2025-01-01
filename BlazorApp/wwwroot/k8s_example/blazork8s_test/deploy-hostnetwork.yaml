@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hostnetwork-demo
+  labels:
+    app: hostnetwork-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hostnetwork-demo
+  template:
+    metadata:
+      labels:
+        app: hostnetwork-demo
+    spec:
+      hostNetwork: true
+      containers:
+        - name: hostnetwork-container
+          image: nginx:1.23.4
+          ports:
+            - containerPort: 80

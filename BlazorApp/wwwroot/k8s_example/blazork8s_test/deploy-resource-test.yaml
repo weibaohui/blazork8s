@@ -1,0 +1,225 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: request-limit-combinations
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: request-limit-example
+  template:
+    metadata:
+      labels:
+        app: request-limit-example
+    spec:
+      containers:
+        - name: example-container
+          image: nginx:1.14.2
+          # 情况 1：不设置 request 和 limit
+          resources: { }
+        - name: example-container-2
+          image: nginx:1.14.2
+          # 情况 2：只设置 request
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+        - name: example-container-3
+          image: nginx:1.14.2
+          # 情况 3：只设置 limit
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+        - name: example-container-4
+          image: nginx:1.14.2
+          # 情况 4：同时设置 request 和 limit，且 request = limit
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+        - name: example-container-5
+          image: nginx:1.14.2
+          # 情况 5：同时设置 request 和 limit，且 request < limit
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+        - name: example-container-6
+          image: nginx:1.14.2
+          # 情况 6：cpu 不设置，memory 只设置 request
+          resources:
+            requests:
+              memory: "128Mi"
+        - name: example-container-7
+          image: nginx:1.14.2
+          # 情况 7：cpu 不设置，memory 只设置 limit
+          resources:
+            limits:
+              memory: "256Mi"
+        - name: example-container-8
+          image: nginx:1.14.2
+          # 情况 8：cpu 不设置，memory 同时设置 request 和 limit 且 request = limit
+          resources:
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+        - name: example-container-9
+          image: nginx:1.14.2
+          # 情况 9：cpu 不设置，memory 同时设置 request 和 limit 且 request < limit
+          resources:
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
+        - name: example-container-10
+          image: nginx:1.14.2
+          # 情况 10：cpu 只设置 request，memory 不设置
+          resources:
+            requests:
+              cpu: "100m"
+        - name: example-container-11
+          image: nginx:1.14.2
+          # 情况 11：cpu 只设置 request，memory 只设置 limit
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+        - name: example-container-12
+          image: nginx:1.14.2
+          # 情况 12：cpu 只设置 request，memory 同时设置 request 和 limit 且 request = limit
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+        - name: example-container-13
+          image: nginx:1.14.2
+          # 情况 13：cpu 只设置 request，memory 同时设置 request 和 limit 且 request < limit
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
+        - name: example-container-14
+          image: nginx:1.14.2
+          # 情况 14：cpu 只设置 limit，memory 不设置
+          resources:
+            limits:
+              cpu: "200m"
+        - name: example-container-15
+          image: nginx:1.14.2
+          # 情况 15：cpu 只设置 limit，memory 只设置 request
+          resources:
+            limits:
+              cpu: "200m"
+            requests:
+              memory: "128Mi"
+        - name: example-container-16
+          image: nginx:1.14.2
+          # 情况 16：cpu 只设置 limit，memory 同时设置 request 和 limit 且 request = limit
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+            requests:
+              memory: "128Mi"
+        - name: example-container-17
+          image: nginx:1.14.2
+          # 情况 17：cpu 只设置 limit，memory 同时设置 request 和 limit 且 request < limit
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
+        - name: example-container-18
+          image: nginx:1.14.2
+          # 情况 18：cpu 同时设置 request 和 limit 且 request = limit，memory 不设置
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "100m"
+        - name: example-container-19
+          image: nginx:1.14.2
+          # 情况 19：cpu 同时设置 request 和 limit 且 request = limit，memory 只设置 request
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+        - name: example-container-20
+          image: nginx:1.14.2
+          # 情况 20：cpu 同时设置 request 和 limit 且 request = limit，memory 只设置 limit
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
+        - name: example-container-21
+          image: nginx:1.14.2
+          # 情况 21：cpu 同时设置 request 和 limit 且 request = limit，memory 同时设置 request 和 limit 且 request < limit
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
+        - name: example-container-22
+          image: nginx:1.14.2
+          # 情况 22：cpu 同时设置 request 和 limit 且 request < limit，memory 不设置
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "200m"
+        - name: example-container-23
+          image: nginx:1.14.2
+          # 情况 23：cpu 同时设置 request 和 limit 且 request < limit，memory 只设置 request
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+        - name: example-container-24
+          image: nginx:1.14.2
+          # 情况 24：cpu 同时设置 request 和 limit 且 request < limit，memory 只设置 limit
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+        - name: example-container-25
+          image: nginx:1.14.2
+          # 情况 25：cpu 同时设置 request 和 limit 且 request < limit，memory 同时设置 request 和 limit 且 request = limit
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"

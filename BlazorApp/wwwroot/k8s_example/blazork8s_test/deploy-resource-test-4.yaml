@@ -1,0 +1,177 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-same-resources
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-same-resources
+  template:
+    metadata:
+      labels:
+        app: multi-container-same-resources
+    spec:
+      containers:
+        - name: container-one
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+        - name: container-two
+          image: httpd
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-request-only
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-request-only
+  template:
+    metadata:
+      labels:
+        app: multi-container-request-only
+    spec:
+      containers:
+        - name: container-one
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+        - name: container-two
+          image: httpd
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-limit-only
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-limit-only
+  template:
+    metadata:
+      labels:
+        app: multi-container-limit-only
+    spec:
+      containers:
+        - name: container-one
+          image: nginx
+          resources:
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+        - name: container-two
+          image: httpd
+          resources:
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-different-resources
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-different-resources
+  template:
+    metadata:
+      labels:
+        app: multi-container-different-resources
+    spec:
+      containers:
+        - name: container-one
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+        - name: container-two
+          image: httpd
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-no-resources
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-no-resources
+  template:
+    metadata:
+      labels:
+        app: multi-container-no-resources
+    spec:
+      containers:
+        - name: container-one
+          image: nginx
+        - name: container-two
+          image: httpd
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-completely-different-resources
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-completely-different-resources
+  template:
+    metadata:
+      labels:
+        app: multi-container-completely-different-resources
+    spec:
+      containers:
+        - name: container-one
+          image: nginx
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "400m"
+              memory: "512Mi"
+        - name: container-two
+          image: httpd
+          resources:
+            requests:
+              cpu: "25m"
+              memory: "32Mi"
+            limits:
+              cpu: "50m"
+              memory: "64Mi"

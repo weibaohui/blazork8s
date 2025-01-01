@@ -1,0 +1,22 @@
+apiVersion: apisix.apache.org/v2
+kind: ApisixRoute
+metadata:
+  name: foo-bar-route
+spec:
+  http:
+    - name: foo
+      match:
+        hosts:
+          - foo.com
+        paths:
+          - "/foo/*"
+      backends:
+        - serviceName: foo
+          servicePort: 80
+    - name: bar
+      match:
+        paths:
+          - "/bar/*"
+      backends:
+        - serviceName: bar
+          servicePort: 80

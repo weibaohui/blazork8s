@@ -1,0 +1,213 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-memory-none-set
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-memory-none-set
+  template:
+    metadata:
+      labels:
+        app: cpu-memory-none-set
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests: { }
+            limits: { }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-set-equal-memory-none-set
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-set-equal-memory-none-set
+  template:
+    metadata:
+      labels:
+        app: cpu-set-equal-memory-none-set
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "100m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-set-not-equal-memory-none-set
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-set-not-equal-memory-none-set
+  template:
+    metadata:
+      labels:
+        app: cpu-set-not-equal-memory-none-set
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+            limits:
+              cpu: "200m"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-none-set-memory-equal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-none-set-memory-equal
+  template:
+    metadata:
+      labels:
+        app: cpu-none-set-memory-equal
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-none-set-memory-not-equal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-none-set-memory-not-equal
+  template:
+    metadata:
+      labels:
+        app: cpu-none-set-memory-not-equal
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              memory: "128Mi"
+            limits:
+              memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-memory-both-set-equal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-memory-both-set-equal
+  template:
+    metadata:
+      labels:
+        app: cpu-memory-both-set-equal
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-memory-both-set-cpu-equal-memory-not-equal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-memory-both-set-cpu-equal-memory-not-equal
+  template:
+    metadata:
+      labels:
+        app: cpu-memory-both-set-cpu-equal-memory-not-equal
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "256Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-memory-both-set-cpu-not-equal-memory-equal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-memory-both-set-cpu-not-equal-memory-equal
+  template:
+    metadata:
+      labels:
+        app: cpu-memory-both-set-cpu-not-equal-memory-equal
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "128Mi"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cpu-memory-both-set-not-equal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cpu-memory-both-set-not-equal
+  template:
+    metadata:
+      labels:
+        app: cpu-memory-both-set-not-equal
+    spec:
+      containers:
+        - name: container
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"

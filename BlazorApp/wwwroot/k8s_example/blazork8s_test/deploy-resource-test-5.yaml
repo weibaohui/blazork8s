@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: multi-container-mixed-resources
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: multi-container-mixed-resources
+  template:
+    metadata:
+      labels:
+        app: multi-container-mixed-resources
+    spec:
+      containers:
+        # 容器 1: requests 和 limits 相等
+        - name: container-one
+          image: nginx
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
+        # 容器 2: requests 和 limits 不相等
+        - name: container-two
+          image: httpd
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "64Mi"
+            limits:
+              cpu: "100m"
+              memory: "128Mi"
