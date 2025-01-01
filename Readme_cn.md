@@ -10,7 +10,10 @@
 <div align="center">
   <a href="Readme.md">English</a> | <a href="Readme_cn.md">中文</a>
 </div>
+<div align="center">
+  golang 版本 [https://github.com/weibaohui/k8m](https://github.com/weibaohui/k8m)
 
+</div>
 使用C# Blazor 编写的kubernetes管理工具，集成了ChatGPT类大模型，用简单易用的操作界面，提升k8s管理效率。
 尤其适合新手入门使用，提供多种便捷功能方便初学者掌握k8s知识。
 
