@@ -10,6 +10,9 @@
   <a href="Readme.md">English</a> | <a href="Readme_cn.md">中文</a>
 </div>
 
+
+golang 版本  [https://github.com/weibaohui/k8m](https://github.com/weibaohui/k8m)
+
 A Kubernetes management tool written in C# Blazor, integrating the ChatGPT large models. 
 It features a user-friendly interface for easy and efficient Kubernetes administration. 
 Particularly suitable for beginners, it offers various convenient functionalities to help novices grasp Kubernetes knowledge.
