@@ -1,0 +1,1 @@
+wget https://github.com/kubernetes-sigs/kwok/releases/download/v0.6.1/kwok.yaml

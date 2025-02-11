@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 定义节点数量
-num_nodes=100
+num_nodes=50
 
 # 生成节点定义并写入文件
 for ((i = 1; i <= num_nodes; i++)); do
